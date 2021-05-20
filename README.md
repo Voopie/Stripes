@@ -1,6 +1,6 @@
 ## Stripes
 
-[CurseForge](https://www.curseforge.com/wow/addons/stripes) | [Wago Addons](https://addons.wago.io/addons/stripes)
+[CurseForge](https://www.curseforge.com/wow/addons/stripes) | [Wago Addons](https://addons.wago.io/addons/stripes) | [Discord](https://discord.gg/rWy6KG94ec)
 
 ---
 
