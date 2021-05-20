@@ -5,10 +5,14 @@
 ---
 
 ### ***Features:***
-
+- Customization of nameplates for everyone, not just hardcore players!
+- A wide variety of settings
+- Profiles with exporting / importing
+- It's easier to try once than to read walls of text!
 
 ### ***Chat commands:***
-
+- /stripes - to toggle options
+- /stripes minimap - to toggle visibility of the minimap button
 ---
 
 ## Copyright
