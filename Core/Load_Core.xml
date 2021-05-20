@@ -1,0 +1,6 @@
+<Ui>
+    <Script file="Core.lua" />
+    <Script file="Data.lua" />
+    <Script file="Utility.lua" />
+    <Script file="Elements.lua" />
+</Ui>

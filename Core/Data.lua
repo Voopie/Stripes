@@ -1,0 +1,426 @@
+local S, L, O, U, D, E = unpack(select(2, ...));
+local Data = S:NewModule('Core_Data');
+
+local TEEMING_AFFIX_ID = 5;
+
+D.Player = {
+    Name            = UnitName('player'),
+    Realm           = GetRealmName(),
+    RealmNormalized = GetNormalizedRealmName() or GetRealmName():gsub('[%s%-]', ''),
+
+    Class           = select(2, UnitClass('player')),
+    ClassColor      = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[select(2, UnitClass('player'))] or CreateColor(1, 1, 1),
+
+    GuildName = '';
+};
+
+D.Player.NameWithRealm = D.Player.Name .. '-' .. D.Player.RealmNormalized;
+
+D.Player.State = {
+    inCombat            = false,
+    inInstance          = false,
+    inMythic            = false,
+    inMythicPlus        = false,
+    inMythicPlusTeeming = false,
+    inArena             = false,
+    inPvPInstance       = false,
+    inBossFight         = false,
+};
+
+D.MythicPlusPercentage = {
+    [168949] = { count = 4,  normal = 384, teeming = 1000 },
+    [168992] = { count = 4,  normal = 384, teeming = 1000 },
+    [168986] = { count = 3,  normal = 384, teeming = 1000 },
+    [170147] = { count = 0,  normal = 384, teeming = 1000 },
+    [170490] = { count = 5,  normal = 384, teeming = 1000 },
+    [171333] = { count = 2,  normal = 384, teeming = 1000 },
+    [167963] = { count = 5,  normal = 384, teeming = 1000 },
+    [170480] = { count = 5,  normal = 384, teeming = 1000 },
+    [168942] = { count = 6,  normal = 384, teeming = 1000 },
+    [167964] = { count = 8,  normal = 384, teeming = 1000 },
+    [164862] = { count = 3,  normal = 384, teeming = 1000 },
+    [166608] = { count = 0,  normal = 384, teeming = 1000 },
+    [164857] = { count = 2,  normal = 384, teeming = 1000 },
+    [167965] = { count = 5,  normal = 384, teeming = 1000 },
+    [171342] = { count = 2,  normal = 384, teeming = 1000 },
+    [169905] = { count = 6,  normal = 384, teeming = 1000 },
+    [168934] = { count = 8,  normal = 384, teeming = 1000 },
+    [167967] = { count = 6,  normal = 384, teeming = 1000 },
+    [164861] = { count = 2,  normal = 384, teeming = 1000 },
+    [164558] = { count = 0,  normal = 384, teeming = 1000 },
+    [171341] = { count = 1,  normal = 384, teeming = 1000 },
+    [164556] = { count = 0,  normal = 384, teeming = 1000 },
+    [171181] = { count = 4,  normal = 384, teeming = 1000 },
+    [171343] = { count = 5,  normal = 384, teeming = 1000 },
+    [167962] = { count = 8,  normal = 384, teeming = 1000 },
+    [164555] = { count = 0,  normal = 384, teeming = 1000 },
+    [171184] = { count = 12, normal = 384, teeming = 1000 },
+    [164873] = { count = 4,  normal = 384, teeming = 1000 },
+    [164450] = { count = 0,  normal = 384, teeming = 1000 },
+    [170572] = { count = 6,  normal = 384, teeming = 1000 },
+    [165515] = { count = 4,  normal = 273, teeming = 1000 },
+    [164562] = { count = 4,  normal = 273, teeming = 1000 },
+    [165414] = { count = 4,  normal = 273, teeming = 1000 },
+    [164557] = { count = 10, normal = 273, teeming = 1000 },
+    [167892] = { count = 0,  normal = 273, teeming = 1000 },
+    [167876] = { count = 20, normal = 273, teeming = 1000 },
+    [165408] = { count = 0,  normal = 273, teeming = 1000 },
+    [164218] = { count = 0,  normal = 273, teeming = 1000 },
+    [174175] = { count = 4,  normal = 273, teeming = 1000 },
+    [167612] = { count = 6,  normal = 273, teeming = 1000 },
+    [167610] = { count = 1,  normal = 273, teeming = 1000 },
+    [164563] = { count = 4,  normal = 273, teeming = 1000 },
+    [165415] = { count = 2,  normal = 273, teeming = 1000 },
+    [167611] = { count = 4,  normal = 273, teeming = 1000 },
+    [167607] = { count = 7,  normal = 273, teeming = 1000 },
+    [165529] = { count = 4,  normal = 273, teeming = 1000 },
+    [164185] = { count = 0,  normal = 273, teeming = 1000 },
+    [165410] = { count = 0,  normal = 273, teeming = 1000 },
+    [165111] = { count = 2,  normal = 260, teeming = 1000 },
+    [164929] = { count = 7,  normal = 260, teeming = 1000 },
+    [164921] = { count = 4,  normal = 260, teeming = 1000 },
+    [163058] = { count = 4,  normal = 260, teeming = 1000 },
+    [167111] = { count = 5,  normal = 260, teeming = 1000 },
+    [167113] = { count = 4,  normal = 260, teeming = 1000 },
+    [166301] = { count = 4,  normal = 260, teeming = 1000 },
+    [172312] = { count = 4,  normal = 260, teeming = 1000 },
+    [164926] = { count = 6,  normal = 260, teeming = 1000 },
+    [166304] = { count = 4,  normal = 260, teeming = 1000 },
+    [167116] = { count = 4,  normal = 260, teeming = 1000 },
+    [164517] = { count = 0,  normal = 260, teeming = 1000 },
+    [166276] = { count = 4,  normal = 260, teeming = 1000 },
+    [173720] = { count = 16, normal = 260, teeming = 1000 },
+    [164920] = { count = 4,  normal = 260, teeming = 1000 },
+    [164567] = { count = 0,  normal = 260, teeming = 1000 },
+    [166299] = { count = 4,  normal = 260, teeming = 1000 },
+    [173655] = { count = 16, normal = 260, teeming = 1000 },
+    [166275] = { count = 4,  normal = 260, teeming = 1000 },
+    [164804] = { count = 0,  normal = 260, teeming = 1000 },
+    [173714] = { count = 16, normal = 260, teeming = 1000 },
+    [167117] = { count = 1,  normal = 260, teeming = 1000 },
+    [164501] = { count = 0,  normal = 260, teeming = 1000 },
+    [164967] = { count = 0,  normal = 600, teeming = 1000 },
+    [168365] = { count = 0,  normal = 600, teeming = 1000 },
+    [169696] = { count = 8,  normal = 600, teeming = 1000 },
+    [168969] = { count = 1,  normal = 600, teeming = 1000 },
+    [168155] = { count = 0,  normal = 600, teeming = 1000 },
+    [168153] = { count = 12, normal = 600, teeming = 1000 },
+    [163882] = { count = 14, normal = 600, teeming = 1000 },
+    [168572] = { count = 8,  normal = 600, teeming = 1000 },
+    [168580] = { count = 8,  normal = 600, teeming = 1000 },
+    [163915] = { count = 10, normal = 600, teeming = 1000 },
+    [171474] = { count = 0,  normal = 600, teeming = 1000 },
+    [164255] = { count = 0,  normal = 600, teeming = 1000 },
+    [163894] = { count = 12, normal = 600, teeming = 1000 },
+    [164707] = { count = 6,  normal = 600, teeming = 1000 },
+    [163862] = { count = 8,  normal = 600, teeming = 1000 },
+    [164266] = { count = 0,  normal = 600, teeming = 1000 },
+    [163857] = { count = 4,  normal = 600, teeming = 1000 },
+    [169159] = { count = 0,  normal = 600, teeming = 1000 },
+    [168627] = { count = 8,  normal = 600, teeming = 1000 },
+    [168022] = { count = 10, normal = 600, teeming = 1000 },
+    [167493] = { count = 8,  normal = 600, teeming = 1000 },
+    [169861] = { count = 25, normal = 600, teeming = 1000 },
+    [168578] = { count = 8,  normal = 600, teeming = 1000 },
+    [168361] = { count = 8,  normal = 600, teeming = 1000 },
+    [168574] = { count = 8,  normal = 600, teeming = 1000 },
+    [168396] = { count = 12, normal = 600, teeming = 1000 },
+    [163892] = { count = 6,  normal = 600, teeming = 1000 },
+    [164705] = { count = 6,  normal = 600, teeming = 1000 },
+    [168886] = { count = 25, normal = 600, teeming = 1000 },
+    [168747] = { count = 0,  normal = 600, teeming = 1000 },
+    [168907] = { count = 10, normal = 600, teeming = 1000 },
+    [164267] = { count = 0,  normal = 600, teeming = 1000 },
+    [168968] = { count = 0,  normal = 600, teeming = 1000 },
+    [168878] = { count = 8,  normal = 600, teeming = 1000 },
+    [163891] = { count = 6,  normal = 600, teeming = 1000 },
+    [164737] = { count = 12, normal = 600, teeming = 1000 },
+    [162041] = { count = 2,  normal = 364, teeming = 1000 },
+    [162046] = { count = 1,  normal = 364, teeming = 1000 },
+    [165076] = { count = 4,  normal = 364, teeming = 1000 },
+    [162100] = { count = 0,  normal = 364, teeming = 1000 },
+    [171384] = { count = 4,  normal = 364, teeming = 1000 },
+    [171799] = { count = 7,  normal = 364, teeming = 1000 },
+    [162039] = { count = 4,  normal = 364, teeming = 1000 },
+    [168058] = { count = 1,  normal = 364, teeming = 1000 },
+    [171448] = { count = 4,  normal = 364, teeming = 1000 },
+    [162056] = { count = 1,  normal = 364, teeming = 1000 },
+    [162049] = { count = 4,  normal = 364, teeming = 1000 },
+    [162051] = { count = 2,  normal = 364, teeming = 1000 },
+    [167956] = { count = 1,  normal = 364, teeming = 1000 },
+    [162103] = { count = 0,  normal = 364, teeming = 1000 },
+    [166396] = { count = 4,  normal = 364, teeming = 1000 },
+    [162038] = { count = 7,  normal = 364, teeming = 1000 },
+    [162057] = { count = 7,  normal = 364, teeming = 1000 },
+    [171455] = { count = 1,  normal = 364, teeming = 1000 },
+    [162099] = { count = 0,  normal = 364, teeming = 1000 },
+    [162040] = { count = 7,  normal = 364, teeming = 1000 },
+    [167955] = { count = 1,  normal = 364, teeming = 1000 },
+    [162047] = { count = 7,  normal = 364, teeming = 1000 },
+    [168591] = { count = 4,  normal = 364, teeming = 1000 },
+    [171376] = { count = 10, normal = 364, teeming = 1000 },
+    [172265] = { count = 4,  normal = 364, teeming = 1000 },
+    [162102] = { count = 0,  normal = 364, teeming = 1000 },
+    [163459] = { count = 4,  normal = 285, teeming = 1000 },
+    [163457] = { count = 4,  normal = 285, teeming = 1000 },
+    [163458] = { count = 4,  normal = 285, teeming = 1000 },
+    [163501] = { count = 4,  normal = 285, teeming = 1000 },
+    [168718] = { count = 4,  normal = 285, teeming = 1000 },
+    [168717] = { count = 4,  normal = 285, teeming = 1000 },
+    [168420] = { count = 4,  normal = 285, teeming = 1000 },
+    [166411] = { count = 1,  normal = 285, teeming = 1000 },
+    [163077] = { count = 0,  normal = 285, teeming = 1000 },
+    [163520] = { count = 6,  normal = 285, teeming = 1000 },
+    [168843] = { count = 12, normal = 285, teeming = 1000 },
+    [168844] = { count = 12, normal = 285, teeming = 1000 },
+    [163506] = { count = 4,  normal = 285, teeming = 1000 },
+    [168845] = { count = 12, normal = 285, teeming = 1000 },
+    [168318] = { count = 8,  normal = 285, teeming = 1000 },
+    [162059] = { count = 0,  normal = 285, teeming = 1000 },
+    [163524] = { count = 5,  normal = 285, teeming = 1000 },
+    [168418] = { count = 4,  normal = 285, teeming = 1000 },
+    [163503] = { count = 2,  normal = 285, teeming = 1000 },
+    [162058] = { count = 0,  normal = 285, teeming = 1000 },
+    [162061] = { count = 0,  normal = 285, teeming = 1000 },
+    [162060] = { count = 0,  normal = 285, teeming = 1000 },
+    [168681] = { count = 6,  normal = 285, teeming = 1000 },
+    [162729] = { count = 4,  normal = 283, teeming = 1000 },
+    [165138] = { count = 1,  normal = 283, teeming = 1000 },
+    [163121] = { count = 5,  normal = 283, teeming = 1000 },
+    [163128] = { count = 4,  normal = 283, teeming = 1000 },
+    [165197] = { count = 12, normal = 283, teeming = 1000 },
+    [162693] = { count = 0,  normal = 283, teeming = 1000 },
+    [166079] = { count = 0,  normal = 283, teeming = 1000 },
+    [163619] = { count = 4,  normal = 283, teeming = 1000 },
+    [171500] = { count = 1,  normal = 283, teeming = 1000 },
+    [162689] = { count = 0,  normal = 283, teeming = 1000 },
+    [165137] = { count = 6,  normal = 283, teeming = 1000 },
+    [163618] = { count = 8,  normal = 283, teeming = 1000 },
+    [173016] = { count = 4,  normal = 283, teeming = 1000 },
+    [164578] = { count = 0,  normal = 283, teeming = 1000 },
+    [172981] = { count = 5,  normal = 283, teeming = 1000 },
+    [163126] = { count = 0,  normal = 283, teeming = 1000 },
+    [166264] = { count = 0,  normal = 283, teeming = 1000 },
+    [166302] = { count = 4,  normal = 283, teeming = 1000 },
+    [165872] = { count = 4,  normal = 283, teeming = 1000 },
+    [163122] = { count = 0,  normal = 283, teeming = 1000 },
+    [167731] = { count = 4,  normal = 283, teeming = 1000 },
+    [163157] = { count = 0,  normal = 283, teeming = 1000 },
+    [173044] = { count = 4,  normal = 283, teeming = 1000 },
+    [165919] = { count = 6,  normal = 283, teeming = 1000 },
+    [163621] = { count = 6,  normal = 283, teeming = 1000 },
+    [163622] = { count = 0,  normal = 283, teeming = 1000 },
+    [162691] = { count = 0,  normal = 283, teeming = 1000 },
+    [165222] = { count = 4,  normal = 283, teeming = 1000 },
+    [163623] = { count = 0,  normal = 283, teeming = 1000 },
+    [165911] = { count = 4,  normal = 283, teeming = 1000 },
+    [163620] = { count = 6,  normal = 283, teeming = 1000 },
+    [165824] = { count = 15, normal = 283, teeming = 1000 },
+    [174197] = { count = 4,  normal = 271, teeming = 1000 },
+    [170838] = { count = 4,  normal = 271, teeming = 1000 },
+    [164451] = { count = 0,  normal = 271, teeming = 1000 },
+    [164510] = { count = 4,  normal = 271, teeming = 1000 },
+    [167998] = { count = 8,  normal = 271, teeming = 1000 },
+    [170882] = { count = 4,  normal = 271, teeming = 1000 },
+    [167994] = { count = 4,  normal = 271, teeming = 1000 },
+    [160495] = { count = 4,  normal = 271, teeming = 1000 },
+    [167534] = { count = 20, normal = 271, teeming = 1000 },
+    [164463] = { count = 0,  normal = 271, teeming = 1000 },
+    [167538] = { count = 20, normal = 271, teeming = 1000 },
+    [169893] = { count = 6,  normal = 271, teeming = 1000 },
+    [167532] = { count = 20, normal = 271, teeming = 1000 },
+    [162309] = { count = 0,  normal = 271, teeming = 1000 },
+    [167536] = { count = 20, normal = 271, teeming = 1000 },
+    [174210] = { count = 4,  normal = 271, teeming = 1000 },
+    [170850] = { count = 7,  normal = 271, teeming = 1000 },
+    [164461] = { count = 0,  normal = 271, teeming = 1000 },
+    [164506] = { count = 5,  normal = 271, teeming = 1000 },
+    [170690] = { count = 4,  normal = 271, teeming = 1000 },
+    [162763] = { count = 8,  normal = 271, teeming = 1000 },
+    [169927] = { count = 5,  normal = 271, teeming = 1000 },
+    [167533] = { count = 20, normal = 271, teeming = 1000 },
+    [163086] = { count = 8,  normal = 271, teeming = 1000 },
+    [162317] = { count = 0,  normal = 271, teeming = 1000 },
+    [164464] = { count = 0,  normal = 271, teeming = 1000 },
+    [162329] = { count = 0,  normal = 271, teeming = 1000 },
+    [165946] = { count = 0,  normal = 271, teeming = 1000 },
+    [163089] = { count = 1,  normal = 271, teeming = 1000 },
+    [162744] = { count = 20, normal = 271, teeming = 1000 },
+    [169875] = { count = 2,  normal = 271, teeming = 1000 },
+};
+
+D.NPCs = {
+    -- Common
+    [1] = {
+        120651, 174773, 173729,
+    },
+
+    -- Mists of Tirna Scithe
+    [2] = {
+        164567, 164804, 164501, 164517, 165111, 164929, 164921, 163058, 167111, 167113, 166301, 172312, 164926,
+        166304, 167116, 166276, 173720, 164920, 166299, 173655, 166275,  173714, 166304, 167117,
+    },
+
+    -- The Necrotic Wake
+    [3] = {
+        162691, 163157, 162689, 162693, 162729, 165138, 163121, 163128, 165197, 166079, 163619, 171500, 165137,
+        163618, 173016, 164578, 172981, 163126, 166264, 166302, 165872, 163122, 167731, 173044, 165919, 163621,
+        163622, 165222, 163623, 165911, 163620, 165824,
+    },
+
+    -- De Other Side
+    [4] = {
+        164558, 164556, 164555, 164450, 166608, 168949, 168992, 168986, 170147, 170490, 171333, 167963, 170480,
+        168942, 167964, 164862, 164857, 167965, 171342, 169905, 168934, 167967, 164861, 171341, 171181, 171343,
+        167962, 171184, 164873, 170572,
+    },
+
+    -- Halls of Atonement
+    [5] = {
+        165408, 164185, 165410, 164218, 165515, 164562, 165414, 164557, 167892, 167876, 174175, 167612, 167610,
+        164563, 165415, 167611, 167607, 165529,
+    },
+
+    -- Plaguefall
+    [6] = {
+        164255, 164967, 164266, 164267, 168365, 169696, 168969, 168155, 168153, 163882, 168572, 168580, 163915,
+        171474, 163894, 164707, 163862, 163857, 169159, 168627, 168022, 167493, 169861, 168578, 168361, 168574,
+        168396, 163892, 164705, 168886, 168747, 168907, 168396,  168968, 168878, 163891, 164737,
+    },
+
+    -- Sanguine Depths
+    [7] = {
+        162100, 162103, 162102, 162099, 162041, 162046, 165076, 171384, 171799, 162039, 168058, 171448, 162056,
+        162049, 162051, 167956, 166396, 162038, 162057, 171455, 162040, 167955, 162047, 168591, 171376, 172265,
+    },
+
+    -- Spires of Ascension
+    [8] = {
+        162059, 163077, 162058, 162060, 162061, 163459, 163457, 163458, 163501, 168718, 168717, 168420, 166411,
+        163520, 168843, 168844, 163506, 168845, 168318, 163524, 168418, 163503, 168681,
+    },
+
+    -- Theater of Pain
+    [9] = {
+        164451, 164463, 164461, 162317, 162329, 162309, 165946, 174197, 170838, 164510, 167998, 170882, 167994,
+        160495, 167534, 167538, 169893, 167532, 167536, 174210, 170850, 164506, 170690, 162763, 169927, 167533,
+        163086, 163089, 162744, 169875,
+    },
+
+    -- Tazavesh, the Veiled Market
+    -- [x] = {},
+
+    -- Castle Nathria
+    [10] = {
+        164406, 165066, 169457, 171557, 165067, 169458, 165805,  24664, 166644, 164261, 165521, 166971, 166969,
+        166970, 164407, 168112, 168113, 167406, 168156, 174733, 166644, 173430, 175992, 173464, 169196, 169924,
+        168973, 172803, 169157, 168962, 169601, 174335, 167999, 172858, 174134, 165762, 173484, 174126, 169925,
+        174161, 174162, 170199, 173798, 174843, 176026, 173448, 173466, 171146, 174626, 165763, 170197, 173178,
+        173053, 165483, 173604, 165474, 173445, 167566, 165481, 174208, 174194, 174012, 173953, 168337, 174090,
+        173973, 174842, 174069, 173633, 174100, 165764, 165479, 165469, 167691, 173276, 173142, 173145, 173469,
+        174093, 168700, 173802, 171145, 173298, 171801, 165472, 174071, 173146, 173444, 173190, 174070, 173189,
+        173446, 174336, 165471, 165470, 173641, 173613, 173949, 173280, 173609, 174092, 173568, 172899,
+    },
+
+    -- Sanctum of Domination
+    -- [x] = {},
+};
+
+local function UpdatePlayer()
+    D.Player.Name, D.Player.RealmNormalized = UnitFullName('player');
+    D.Player.NameWithRealm                  = D.Player.Name .. '-' .. D.Player.RealmNormalized;
+    D.Player.Realm                          = GetRealmName();
+end
+
+function Data:PLAYER_LOGIN()
+    UpdatePlayer();
+end
+
+function Data:PLAYER_ENTERING_WORLD()
+    UpdatePlayer();
+
+    if IsInInstance() then
+        D.Player.State.inInstance = true;
+
+        local instanceType, difficulty = select(2, GetInstanceInfo());
+
+        if difficulty == DifficultyUtil.ID.DungeonMythic then
+            D.Player.State.inChallenge = true;
+            D.Player.State.inMythic    = true;
+        end
+
+        if difficulty == DifficultyUtil.ID.DungeonChallenge then
+            D.Player.State.inChallenge         = true;
+            D.Player.State.inMythicPlus        = true;
+            D.Player.State.inMythicPlusTeeming = U.IsAffixCurrent(TEEMING_AFFIX_ID);
+        end
+
+        D.Player.State.inPvPInstance = (instanceType == 'pvp' or instanceType == 'arena') and true or false;
+    else
+        D.Player.State.inInstance          = false;
+        D.Player.State.inChallenge         = false;
+        D.Player.State.inMythic            = false;
+        D.Player.State.inMythicPlus        = false;
+        D.Player.State.inMythicPlusTeeming = false;
+        D.Player.State.inPvPInstance       = false;
+    end
+
+    D.Player.State.inArena = U.IsInArena();
+end
+
+function Data:CHALLENGE_MODE_START()
+    D.Player.State.inChallenge         = true;
+    D.Player.State.inMythic            = true;
+    D.Player.State.inMythicPlus        = true;
+    D.Player.State.inMythicPlusTeeming = U.IsAffixCurrent(TEEMING_AFFIX_ID);
+end
+
+function Data:CHALLENGE_MODE_COMPLETED()
+    D.Player.State.inChallenge         = true;
+    D.Player.State.inMythic            = true;
+    D.Player.State.inMythicPlus        = false;
+    D.Player.State.inMythicPlusTeeming = false;
+end
+
+function Data:CHALLENGE_MODE_RESET()
+    D.Player.State.inMythicPlus        = false;
+    D.Player.State.inMythicPlusTeeming = false;
+end
+
+function Data:PLAYER_REGEN_ENABLED()
+    D.Player.State.inCombat = true;
+end
+
+function Data:PLAYER_REGEN_DISABLED()
+    D.Player.State.inCombat = false;
+end
+
+function Data:ENCOUNTER_START()
+    D.Player.State.inBossFight = true;
+end
+
+function Data:ENCOUNTER_END()
+    D.Player.State.inBossFight = false;
+end
+
+function Data:GUILD_ROSTER_UPDATE()
+    D.Player.GuildName = U.UnitInGuild('player');
+end
+
+function Data:PLAYER_GUILD_UPDATE()
+    D.Player.GuildName = U.UnitInGuild('player');
+end
+
+function Data:StartUp()
+    self:RegisterEvent('PLAYER_LOGIN');
+    self:RegisterEvent('PLAYER_ENTERING_WORLD');
+    self:RegisterEvent('CHALLENGE_MODE_START');
+    self:RegisterEvent('CHALLENGE_MODE_COMPLETED');
+    self:RegisterEvent('CHALLENGE_MODE_RESET');
+    self:RegisterEvent('ENCOUNTER_START');
+    self:RegisterEvent('ENCOUNTER_END');
+    self:RegisterEvent('PLAYER_REGEN_ENABLED');
+    self:RegisterEvent('PLAYER_REGEN_DISABLED');
+    self:RegisterEvent('GUILD_ROSTER_UPDATE');
+    self:RegisterEvent('PLAYER_GUILD_UPDATE');
+end

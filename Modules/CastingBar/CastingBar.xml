@@ -1,0 +1,68 @@
+<Ui>
+    <Script file="CastingBar.lua"/>
+
+    <StatusBar name="StripesNameplateCastBarTemplate" frameLevel="100" virtual="true" hidden="true">
+        <KeyValues>
+            <KeyValue key="iconWhenNoninterruptible" value="true" type="boolean"/>
+        </KeyValues>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture parentKey="background">
+                    <Color r="0.2" g="0.2" b="0.2" a="0.85"/>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY" textureSubLevel="1">
+                <FontString parentKey="Text" inherits="SystemFont_Shadow_Small">
+                    <Size x="0" y="16" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="0"/>
+                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
+                    </Anchors>
+                    <Shadow>
+                        <Color r="0" g="0" b="0" />
+                    </Shadow>
+                </FontString>
+                <Texture parentKey="BorderShield" atlas="nameplates-InterruptShield" hidden="true" ignoreParentAlpha="true">
+                    <Size x="12" y="12" />
+                    <Anchors>
+                        <Anchor point="CENTER" relativePoint="LEFT" x="0" y="0"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="Icon" hidden="true" ignoreParentAlpha="true">
+                    <Size x="12" y="12" />
+                    <TexCoords left="0.1" right="0.9" top="0.1" bottom="0.9" />  
+                    <Anchors>
+                        <Anchor point="RIGHT" relativePoint="LEFT" x="0" y="0"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY" textureSubLevel="2">
+                <Texture parentKey="BorderShield" atlas="nameplates-InterruptShield" hidden="true" ignoreParentAlpha="true">
+                    <Size x="12" y="12" />
+                    <Anchors>
+                        <Anchor point="CENTER" relativePoint="LEFT" x="0" y="0"/>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <Texture parentKey="Spark" file="Interface\CastingBar\UI-CastingBar-Spark" alphaMode="ADD">
+                    <Size x="16" y="16" />
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="0"/>
+                    </Anchors>
+                </Texture>
+                <Texture parentKey="Flash" file="Interface\TargetingFrame\UI-TargetingFrame-BarFill" alphaMode="ADD" />
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnLoad>
+                StripesCastingBar_OnLoad(self, nil, false, true);
+            </OnLoad>
+            <OnEvent function="StripesCastingBar_OnEvent" />
+            <OnUpdate function="StripesCastingBar_OnUpdate" />
+            <OnShow function="StripesCastingBar_OnShow" />
+        </Scripts>
+        <BarTexture file="Interface\TargetingFrame\UI-StatusBar" />
+        <BarColor r="1.0" g="0.7" b="0.0" />
+    </StatusBar>
+</Ui>

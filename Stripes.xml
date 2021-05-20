@@ -1,0 +1,8 @@
+<Ui>
+    <Include file="Libraries\Load_Libraries.xml" />
+    <Include file="Locales\Load_Locales.xml" />
+    <Include file="Core\Load_Core.xml" />
+    <Include file="Media\Load_Media.xml" />
+    <Include file="Options\Load_Options.xml" />
+    <Include file="Modules\Load_Modules.xml" />
+</Ui>

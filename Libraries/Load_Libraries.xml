@@ -1,0 +1,17 @@
+<Ui>
+    <!-- Not a library actually -->
+    <Include file="TaintLess.xml" />
+
+    <!-- And this -->
+    <Script file="Fuzzy.lua" />
+
+    <Script file="LibStub.lua" />
+    <Script file="CallbackHandler-1.0.lua" />
+    <Script file="LibSharedMedia-3.0.lua" />
+    <Script file="LibCustomGlow-1.0.lua" />
+    <Script file="LibDataBroker-1.1.lua" />
+    <Script file="LibDBIcon-1.0.lua" />
+    <Script file="LibSerialize\LibSerialize.lua" />
+    <Script file="LibDeflate.lua" />
+    <Include file="LibPlayerSpells-1.0\lib.xml" />
+</Ui>

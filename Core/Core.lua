@@ -1,0 +1,569 @@
+local ADDON_NAME, NAMESPACE = ...;
+
+-- Lua API
+local ipairs, pairs, tostring, table_insert, table_remove = ipairs, pairs, tostring, table.insert, table.remove;
+
+local locale = GetLocale();
+local convert = {
+    enGB = 'enUS',
+    ptPT = 'ptBR',
+};
+local gameLocale = convert[locale] or locale or 'enUS';
+
+local AddOn = CreateFrame('Frame');
+AddOn:SetScript('OnEvent', function(self, event, ...)
+    if self[event] then
+        return self[event](self, ...);
+    end
+end);
+
+local EN_I18N = NAMESPACE[2]['enUS'];
+
+NAMESPACE[1] = AddOn;                    -- AddOn
+NAMESPACE[2] = NAMESPACE[2][gameLocale] or EN_I18N; -- Locale
+NAMESPACE[3] = {};                       -- Options
+NAMESPACE[4] = {};                       -- Utility
+NAMESPACE[5] = {};                       -- Data
+NAMESPACE[6] = {};                       -- Elements
+
+local L = setmetatable(NAMESPACE[2], {
+	__index = function(t, k)
+        if EN_I18N[tostring(k)] then
+            t[k] = tostring(EN_I18N[tostring(k)]);
+        else
+            t[k] = tostring(k);
+        end
+
+        return t[k];
+	end
+});
+
+AddOn.AddonName        = ADDON_NAME;
+AddOn.Title            = GetAddOnMetadata(ADDON_NAME, 'Title');
+AddOn.Version          = GetAddOnMetadata(ADDON_NAME, 'Version');
+AddOn.ClientLocale     = gameLocale;
+AddOn.Modules          = {};
+AddOn.NameplateModules = {};
+AddOn.NamePlates       = {};
+AddOn.UnitFrames       = {};
+AddOn.Debug            = false;
+
+local NP = AddOn.NamePlates;
+local UF = AddOn.UnitFrames;
+
+AddOn.Libraries = {
+    CH  = _G.LibStub('CallbackHandler-1.0'),
+    LSM = _G.LibStub('LibSharedMedia-3.0'),
+    LCG = _G.LibStub('LibCustomGlow-1.0'),
+    LPS = _G.LibStub('LibPlayerSpells-1.0'),
+
+    LibSerialize = _G.LibStub('LibSerialize'),
+    LibDeflate   = _G.LibStub('LibDeflate'),
+};
+
+local Eventer = {};
+
+Eventer.frame     = CreateFrame('Frame', 'Stripes_Eventer', UIParent);
+Eventer.frameUnit = CreateFrame('Frame', 'Stripes_Eventer_Unit', UIParent);
+
+Eventer.frame.embeds         = {};
+Eventer.frameUnit.embedsUnit = {};
+Eventer.frame.addons         = {};
+
+local embeds     = Eventer.frame.embeds;
+local embedsUnit = Eventer.frameUnit.embedsUnit;
+local addons     = Eventer.frame.addons;
+
+Eventer.frame:SetScript('OnEvent', function(_, event, ...)
+    if not embeds[event] then
+        return;
+    end
+
+    for _, data in ipairs(embeds[event]) do
+        for callback, func in pairs(data) do
+            if func == 0 then
+                callback[event](callback, ...);
+            else
+                if callback[func] then
+                    callback[func](callback, ...);
+                else
+                    func(...);
+                end
+            end
+        end
+    end
+end);
+
+Eventer.frameUnit:SetScript('OnEvent', function(_, event, ...)
+    if not embedsUnit[event] then
+        return;
+    end
+
+    for _, data in ipairs(embedsUnit[event]) do
+        for callback, func in pairs(data) do
+            if func == 0 then
+                callback[event](callback, ...);
+            else
+                if callback[func] then
+                    callback[func](callback, ...);
+                else
+                    func(...);
+                end
+            end
+        end
+    end
+end);
+
+function Eventer:RegisterEvent(event, callback, func)
+    if self:IsEventRegistered(event, callback) then
+        return;
+    end
+
+    if func == nil then
+        func = 0;
+    end
+
+    if embeds[event] == nil then
+        embeds[event] = {};
+        Eventer.frame:RegisterEvent(event);
+    end
+
+    table_insert(embeds[event], { [callback] = func });
+end
+
+function Eventer:IsEventRegistered(event, callback)
+    if not embeds[event] then
+        return false;
+    end
+
+    for _, data in ipairs(embeds[event]) do
+        for c, _ in pairs(data) do
+            if callback == c then
+                return true;
+            end
+        end
+    end
+
+    return false;
+end
+
+function Eventer:IsUnitEventRegistered(event, callback)
+    if not embedsUnit[event] then
+        return false;
+    end
+
+    for _, data in ipairs(embedsUnit[event]) do
+        for c, _ in pairs(data) do
+            if callback == c then
+                return true;
+            end
+        end
+    end
+
+    return false;
+end
+
+function Eventer:RegisterUnitEvent(event, callback, unit1, unit2, func)
+    if func == nil then
+        func = 0;
+    end
+
+    unit1 = unit1 or 'player';
+
+    if embedsUnit[event] == nil then
+        embedsUnit[event] = {};
+
+        if unit2 and unit2 ~= '' then
+            Eventer.frameUnit:RegisterUnitEvent(event, unit1, unit2);
+        else
+            Eventer.frameUnit:RegisterUnitEvent(event, unit1);
+        end
+    end
+
+    table_insert(embedsUnit[event], { [callback] = func });
+end
+
+function Eventer:UnregisterEvent(event, callback)
+	if not embeds[event] then
+        return;
+    end
+
+    if not self:IsEventRegistered(event, callback) then
+        return;
+    end
+
+    for index, data in ipairs(embeds[event]) do
+        for cb, _ in pairs(data) do
+            if cb == callback then
+                table_remove(embeds[event], index);
+            end
+        end
+    end
+
+    if #embeds[event] == 0 then
+        embeds[event] = nil;
+        Eventer.frame:UnregisterEvent(event);
+    end
+end
+
+function Eventer:UnregisterUnitEvent(event, callback)
+	if not embedsUnit[event] then
+        return;
+    end
+
+    for index, data in ipairs(embedsUnit[event]) do
+        for cb, _ in pairs(data) do
+            if cb == callback then
+                table_remove(embedsUnit[event], index)
+            end
+        end
+    end
+
+    if #embedsUnit[event] == 0 then
+        embedsUnit[event] = nil;
+        Eventer.frameUnit:UnregisterEvent(event);
+    end
+end
+
+function Eventer:ADDON_LOADED(name)
+    if not addons[name] then
+        return;
+    end
+
+    for _, data in ipairs(addons[name]) do
+        for callback, func in pairs(data) do
+            if func == 0 then
+                callback[name](callback);
+            else
+                if callback[func] then
+                    callback[func](callback, name);
+                else
+                    func(name);
+                end
+            end
+
+            if func or func == 0 or callback[func] then
+                self:UnregisterAddon(name, callback, func);
+            end
+        end
+    end
+end
+
+function Eventer:RegisterAddon(name, callback, func)
+    if func == nil then
+        func = 0;
+    end
+
+    if IsAddOnLoaded(name) then
+        if func == 0 then
+            callback[name](callback);
+        else
+            if callback[func] then
+                callback[func](callback, name);
+            else
+                func(name);
+            end
+        end
+    else
+        self:RegisterEvent('ADDON_LOADED', self);
+
+        if addons[name] == nil then
+            addons[name] = {};
+        end
+
+        table_insert(addons[name], { [callback] = func });
+	end
+end
+
+function Eventer:UnregisterAddon(name, callback, func)
+    if not addons[name] then
+        return;
+    end
+
+    if func == nil then
+        func = 0;
+    end
+
+    for index, data in ipairs(addons[name]) do
+        for cb, ff in pairs(data) do
+            if cb == callback and ff == func then
+                table_remove(addons[name], index);
+            end
+        end
+    end
+
+    if #addons[name] == 0 then
+        addons[name] = nil;
+    end
+end
+
+AddOn.Eventer = Eventer;
+
+local ModulePrototype = {};
+
+function ModulePrototype:RegisterEvent(event, func)
+	Eventer:RegisterEvent(event, self, func);
+end
+
+function ModulePrototype:UnregisterEvent(event)
+	Eventer:UnregisterEvent(event, self);
+end
+
+function ModulePrototype:IsEventRegistered(event)
+	return Eventer:IsEventRegistered(event, self);
+end
+
+function ModulePrototype:RegisterUnitEvent(event, unit1, unit2, func)
+	Eventer:RegisterUnitEvent(event, self, unit1, unit2, func);
+end
+
+function ModulePrototype:UnregisterUnitEvent(event)
+	Eventer:UnregisterUnitEvent(event, self);
+end
+
+function ModulePrototype:IsUnitEventRegistered(event)
+	return Eventer:IsUnitEventRegistered(event, self);
+end
+
+function ModulePrototype:RegisterAddon(name, func)
+	Eventer:RegisterAddon(name, self, func);
+end
+
+function ModulePrototype:UnregisterAddon(name)
+	Eventer:UnregisterAddon(name, self);
+end
+
+function ModulePrototype:CheckNamePlate(nameplate)
+    if NP[nameplate] then
+        return true;
+    end
+
+    return false;
+end
+
+function ModulePrototype:GetNamePlate(nameplate)
+    return NP[nameplate];
+end
+
+function ModulePrototype:CheckUnitFrame(unitframe)
+    for _, frame in pairs(NP) do
+        if frame == unitframe then
+            return true;
+        end
+    end
+
+    return false;
+end
+
+function ModulePrototype:GetUnitFrame(unitframe)
+    for _, frame in pairs(NP) do
+        if frame == unitframe then
+            return frame;
+        end
+    end
+end
+
+function ModulePrototype:SecureHook(name, func)
+    if not _G[name] then
+        return;
+    end
+
+    if self.Hooks[name] then
+        error('SecureHook: ' .. name .. ' was already hooked!');
+    end
+
+    self.Hooks[name] = func;
+
+    if type(func) == 'table' then
+        for hookMethod, hookFunc2 in pairs(func) do
+            hooksecurefunc(_G[name], hookMethod, hookFunc2);
+        end
+    else
+        hooksecurefunc(name, func);
+    end
+end
+
+function ModulePrototype:SecureUnitFrameHook(name, func)
+    if not _G[name] then
+        return;
+    end
+
+    if self.Hooks[name] then
+        error('SecureUnitFrameHook: ' .. name.. ' was already hooked!');
+    end
+
+    self.Hooks[name] = func;
+
+    if type(func) == 'table' then
+        for hookMethod, hookFunc2 in pairs(func) do
+            hooksecurefunc(_G[name], hookMethod, function(unitframe)
+                if not self:CheckUnitFrame(unitframe) then
+                    return;
+                end
+
+                hookFunc2(unitframe);
+            end);
+        end
+    else
+        hooksecurefunc(name, function(unitframe)
+            if not self:CheckUnitFrame(unitframe) then
+                return;
+            end
+
+            func(unitframe);
+        end);
+    end
+end
+
+local Modules          = AddOn.Modules;
+local NameplateModules = AddOn.NameplateModules;
+
+function AddOn:NewModule(name)
+    local object = {};
+
+    Modules[name] = object;
+    table_insert(Modules, object);
+
+    setmetatable(object, { __index = ModulePrototype });
+
+    object.Name  = name;
+    object.Hooks = {};
+
+    return object;
+end
+
+function AddOn:GetModule(name)
+    return Modules[name] or error('Invalid module name ' .. name);
+end
+
+function AddOn:ForAllModules(event, ...)
+	for _, m in ipairs(Modules) do
+		if m[event] then
+			m[event](m, ...);
+		end
+	end
+end
+
+function AddOn:NewNameplateModule(name)
+    local object = {};
+
+    NameplateModules[name] = object;
+    table_insert(NameplateModules, object);
+
+    setmetatable(object, { __index = ModulePrototype });
+
+    object.Name  = name;
+    object.Hooks = {};
+
+    return object;
+end
+
+function AddOn:GetNameplateModule(name)
+    return NameplateModules[name] or error('Invalid nameplate module name ' .. name);
+end
+
+function AddOn:ForAllNameplateModules(event, ...)
+	for _, m in ipairs(NameplateModules) do
+		if m[event] then
+			m[event](m, ...);
+		end
+	end
+end
+
+local MinimapButton = {};
+local LDB = _G.LibStub('LibDataBroker-1.1', true);
+local LDBIcon = LDB and _G.LibStub('LibDBIcon-1.0', true);
+
+do
+    local defaultCoords  = { 0, 1, 0, 1 };
+    local deltaX, deltaY = 0, 0;
+
+    MinimapButton.UpdateCoord = function(self)
+        local coords = self:GetParent().dataObject.iconCoords or defaultCoords
+        self:SetTexCoord(coords[1] + deltaX, coords[2] - deltaX, coords[3] + deltaY, coords[4] - deltaY)
+    end
+end
+
+MinimapButton.Initialize = function()
+    if not LDB then
+        return;
+    end
+
+    local LDB_Stripes = LDB:NewDataObject('Stripes', {
+        type          = 'launcher',
+        text          = 'Stripes',
+        icon          = NAMESPACE[1].Media.StripesArt.TEXTURE,
+        iconCoords    = NAMESPACE[1].Media.StripesArt.COORDS.MINI_NOSTROKE_GRADIENT,
+        OnClick       = MinimapButton.OnClick,
+        OnTooltipShow = MinimapButton.OnTooltipShow,
+    });
+
+    if LDBIcon then
+        LDBIcon:Register('Stripes', LDB_Stripes, StripesDB.minimap_button);
+
+        if not StripesDB.minimap_button.hide then
+            LDBIcon:GetMinimapButton('Stripes').icon.UpdateCoord = MinimapButton.UpdateCoord;
+            LDBIcon:GetMinimapButton('Stripes').icon:UpdateCoord();
+        end
+    end
+end
+
+MinimapButton.ToggleShown = function()
+    StripesDB.minimap_button.hide = not StripesDB.minimap_button.hide;
+
+    if StripesDB.minimap_button.hide then
+        LDBIcon:Hide('Stripes');
+        NAMESPACE[4].Print(L['MINIMAP_BUTTON_COMMAND_SHOW']);
+    else
+        LDBIcon:Show('Stripes');
+        LDBIcon:GetMinimapButton('Stripes').icon.UpdateCoord = MinimapButton.UpdateCoord;
+        LDBIcon:GetMinimapButton('Stripes').icon:UpdateCoord();
+    end
+end
+
+MinimapButton.OnClick = function(_, button)
+    if button == 'LeftButton' then
+        NAMESPACE[3]:ToggleOptions();
+    elseif button == 'RightButton' then
+        MinimapButton:ToggleShown();
+    end
+end
+
+MinimapButton.OnTooltipShow = function(tooltip)
+    tooltip:AddDoubleLine(AddOn.Media.GRADIENT_NAME, AddOn.Version);
+    tooltip:AddLine(' ');
+    tooltip:AddDoubleLine(L['MINIMAP_BUTTON_LMB'], L['MINIMAP_BUTTON_OPEN'], 1, 0.85, 0, 1, 1, 1);
+    tooltip:AddDoubleLine(L['MINIMAP_BUTTON_RMB'], L['MINIMAP_BUTTON_HIDE'], 1, 0.85, 0, 1, 1, 1);
+end
+
+AddOn:RegisterEvent('ADDON_LOADED');
+
+function AddOn:ADDON_LOADED(addonName)
+    if addonName ~= AddOn.AddonName then
+        return;
+    end
+
+    StripesDB = StripesDB or {};
+    StripesDB.minimap_button = StripesDB.minimap_button or { hide = false };
+    StripesDB.last_used_hex_color = StripesDB.last_used_hex_color or nil;
+
+    self:ForAllModules('StartUp');
+    self:ForAllNameplateModules('StartUp');
+
+    self:UnregisterEvent('ADDON_LOADED');
+
+    MinimapButton:Initialize();
+
+    _G['SLASH_STRIPES1'] = '/stripes';
+    SlashCmdList['STRIPES'] = function(input)
+        if input then
+            if string.find(input, 'minimap') then
+                MinimapButton:ToggleShown();
+
+                return;
+            end
+        end
+
+        NAMESPACE[3]:ToggleOptions();
+    end
+end

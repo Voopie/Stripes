@@ -1,0 +1,7 @@
+<Ui>
+    <Script file="Core.lua" />
+    <Script file="Search.lua" />
+    <Script file="Panel.lua" />
+
+    <Include file="Categories\Load_Categories.xml" />
+</Ui>

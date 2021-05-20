@@ -1,0 +1,369 @@
+local S, L, O, U, D, E = unpack(select(2, ...));
+local Module = S:NewNameplateModule('Name');
+
+-- Lua API
+local string_format, string_gsub = string.format, string.gsub;
+local strlenutf8 = strlenutf8;
+
+-- WoW API
+local UnitSelectionColor = UnitSelectionColor;
+
+-- Stripes API
+local utf8sub = U.UTF8SUB;
+local GetUnitArenaId = U.GetUnitArenaId;
+local PlayerState = D.Player.State;
+local UnitIsTapped = U.UnitIsTapped;
+
+local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
+local IsNameOnlyMode = S:GetNameplateModule('Handler').IsNameOnlyMode;
+local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyModeAndFriendly;
+local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+
+-- Local Config
+local POSITION, TRUNCATE, ABBR_ENABLED, ABBR_SPACE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE;
+local NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
+local NAME_PVP, NAME_WITHOUT_REALM;
+local NAME_TEXT_ENABLED;
+
+local StripesNameFont      = CreateFont('StripesNameFont');
+local StripesGuildNameFont = CreateFont('StripesGuildNameFont');
+
+local ABBR_FORMAT = '(%S+) ';
+local ARENAID_STRING_FORMAT = '%s  %s';
+local GUILD_NAME_FORMAT = '«%s»';
+local GREY_COLOR_START = '|cff666666';
+
+-- local strangeFontSize = 31330.236328125;
+
+-- local function UpdateStrangeFont(unitframe)
+--     local _, size = unitframe.name:GetFontObject():GetFont();
+
+--     if strangeFontSize == size then
+--         unitframe.name:SetFontObject(SystemFont_NamePlate);
+--     end
+-- end
+
+local function UpdateFont(unitframe)
+    unitframe.name:SetFontObject(StripesNameFont);
+end
+
+local function DefaultColor(frame)
+    if not frame.data.unit then
+        return;
+    end
+
+	if frame.UpdateNameOverride and frame:UpdateNameOverride() then
+		return;
+	end
+
+    if UnitIsTapped(frame.data.unit) then
+        frame.name:SetVertexColor(0.5, 0.5, 0.5);
+    elseif frame.optionTable.colorNameBySelection then
+        frame.name:SetVertexColor(UnitSelectionColor(frame.data.unit, frame.optionTable.colorNameWithExtendedColors));
+    end
+end
+
+local function UpdateAnchor(unitframe)
+    unitframe.name:ClearAllPoints();
+
+    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+        unitframe.name:SetJustifyH('CENTER');
+        PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, O.db.name_only_friendly_y_offset);
+
+        return;
+    end
+
+    if POSITION == 1 then
+        unitframe.name:SetJustifyH('LEFT');
+
+        if TRUNCATE then
+            PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', 0, 0);
+            PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, 0);
+            PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 0);
+        else
+            PixelUtil.SetPoint(unitframe.name, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', 0, 0);
+        end
+
+    elseif POSITION == 2 then
+        unitframe.name:SetJustifyH('CENTER');
+
+        if TRUNCATE then
+            PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', 0, 0);
+            PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, 0);
+            PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 0);
+        else
+            PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 0);
+        end
+    else
+        unitframe.name:SetJustifyH('RIGHT');
+
+        if TRUNCATE then
+            PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', 0, 0);
+            PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, 0);
+            PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 0);
+        else
+            PixelUtil.SetPoint(unitframe.name, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, 0);
+        end
+    end
+
+    PixelUtil.SetHeight(unitframe.name, unitframe.name:GetLineHeight() + 1);
+end
+
+local function abbrSub(t)
+    return utf8sub(t, 1, 1) .. (ABBR_SPACE and '. '  or '.');
+end
+
+local function UpdateAbbreviated(unitframe)
+    if not ABBR_ENABLED then
+        return;
+    end
+
+    if unitframe.data.commonUnitType == 'NPC' then
+        local name = unitframe.data.name;
+        if name then
+            unitframe.name:SetText(string_gsub(name, ABBR_FORMAT, abbrSub));
+            unitframe.data.nameAbbr = unitframe.name:GetText();
+        end
+    end
+end
+
+local function UpdateArenaId(unitframe)
+    if not SHOW_ARENA_ID or not PlayerState.inArena then
+        unitframe.name:SetText((ABBR_ENABLED and unitframe.data.nameAbbr ~= '') and unitframe.data.nameAbbr or unitframe.data.name);
+        return;
+    end
+
+    local arenaId = GetUnitArenaId(unitframe.data.unit);
+
+    if SHOW_ARENA_ID_SOLO then
+        unitframe.name:SetText(arenaId);
+    else
+        unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, unitframe.data.name));
+    end
+end
+
+local function UpdateColor(unitframe)
+    if IsNameOnlyMode() and NAME_ONLY_COLOR_CLASS and unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+        unitframe.name:SetVertexColor(unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB);
+        return;
+    end
+
+    if COLORING_MODE == 1 then -- NONE
+        unitframe.name:SetVertexColor(1, 1, 1);
+    elseif COLORING_MODE == 2 then -- CLASS COLOR
+        if unitframe.data.commonUnitType == 'PLAYER' then
+            unitframe.name:SetVertexColor(unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB);
+        else
+            DefaultColor(unitframe);
+        end
+    elseif COLORING_MODE == 3 then -- FACTION COLOR
+        if unitframe.data.commonUnitType == 'NPC' then
+            unitframe.name:SetVertexColor(1, 1, 1);
+        else
+            DefaultColor(unitframe);
+        end
+    else
+        DefaultColor(unitframe);
+    end
+end
+
+local function UpdateNameVisibility(unitframe)
+    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+        unitframe.name:SetShown(NAME_TEXT_ENABLED and not unitframe.data.widgetsOnly);
+    else
+        unitframe.name:SetShown(ShouldShowName(unitframe));
+    end
+end
+
+local function NameOnly_UpdateHealthBar(unitframe)
+    if unitframe.data.unitType == 'SELF' then
+        return;
+    end
+
+    unitframe.RaidTargetFrame:ClearAllPoints();
+
+    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.name, 'TOP', 0, 8);
+
+        unitframe.healthBar:SetShown(false);
+        unitframe.classificationIndicator:SetShown(false);
+    else
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'RIGHT', unitframe.healthBar, 'LEFT', -15, 0);
+
+        unitframe.healthBar:SetShown(not unitframe.data.widgetsOnly);
+    end
+end
+
+local function NameOnly_UpdateHealth(unitframe)
+    if IsNameOnlyMode() and NAME_ONLY_COLOR_HEALTH then
+        if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+            if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
+                local name;
+                if NAME_PVP then
+                    name = unitframe.data.namePVP;
+                elseif NAME_WITHOUT_REALM then
+                    name = unitframe.data.nameWoRealm;
+                end
+
+                if not name then
+                    name = unitframe.data.name;
+                end
+
+                local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
+                unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
+            end
+        elseif not NAME_ONLY_FRIENDLY_PLAYERS_ONLY and unitframe.data.unitType == 'FRIENDLY_NPC' then
+            local name = (ABBR_ENABLED and unitframe.data.nameAbbr ~= '') and unitframe.data.nameAbbr or unitframe.data.name;
+
+            if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
+                local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
+                unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
+            end
+        end
+    end
+end
+
+local function NameOnly_CreateGuildName(unitframe)
+    if unitframe.GuildName then
+        return;
+    end
+
+    local frame = CreateFrame('Frame', '$parentGuildName', unitframe);
+    frame:SetAllPoints(unitframe.healthBar);
+
+    frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesGuildNameFont');
+    PixelUtil.SetPoint(frame.text, 'TOP', unitframe.name, 'BOTTOM', 0, -1);
+    frame.text:SetTextColor(unpack(NAME_ONLY_GUILD_NAME_COLOR));
+
+    frame:SetShown(false);
+
+    unitframe.GuildName = frame;
+end
+
+local function NameOnly_UpdateGuildName(unitframe)
+    if IsNameOnlyMode() and NAME_ONLY_GUILD_NAME then
+        if unitframe.data.guild and unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+            unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, unitframe.data.guild));
+
+            if D.Player.GuildName == unitframe.data.guild then
+                unitframe.GuildName.text:SetTextColor(unpack(NAME_ONLY_GUILD_NAME_SAME_COLOR));
+            else
+                unitframe.GuildName.text:SetTextColor(unpack(NAME_ONLY_GUILD_NAME_COLOR));
+            end
+
+            unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
+        elseif unitframe.data.subLabel and unitframe.data.unitType == 'FRIENDLY_NPC' then
+            unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, unitframe.data.subLabel));
+            unitframe.GuildName.text:SetTextColor(unpack(NAME_ONLY_GUILD_NAME_COLOR));
+
+            unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
+        else
+            unitframe.GuildName:SetShown(false);
+        end
+    else
+        unitframe.GuildName:SetShown(false);
+    end
+end
+
+function Module:UnitAdded(unitframe)
+    UpdateFont(unitframe)
+    UpdateAbbreviated(unitframe);
+    UpdateArenaId(unitframe)
+    UpdateColor(unitframe);
+    UpdateNameVisibility(unitframe);
+
+    NameOnly_UpdateHealthBar(unitframe);
+    NameOnly_UpdateHealth(unitframe);
+    NameOnly_CreateGuildName(unitframe);
+    NameOnly_UpdateGuildName(unitframe);
+
+    UpdateAnchor(unitframe);
+end
+
+function Module:UnitRemoved(unitframe)
+    if unitframe.GuildName then
+        unitframe.GuildName:SetShown(false);
+    end
+end
+
+function Module:Update(unitframe)
+    UpdateFont(unitframe)
+    UpdateAbbreviated(unitframe);
+    UpdateArenaId(unitframe);
+    UpdateColor(unitframe);
+    UpdateNameVisibility(unitframe);
+
+    NameOnly_UpdateHealthBar(unitframe);
+    NameOnly_UpdateHealth(unitframe);
+    NameOnly_CreateGuildName(unitframe);
+    NameOnly_UpdateGuildName(unitframe);
+
+    UpdateAnchor(unitframe);
+end
+
+function Module:UpdateLocalConfig()
+    POSITION               = O.db.name_text_position;
+    TRUNCATE               = O.db.name_text_truncate;
+    ABBR_ENABLED           = O.db.name_text_abbreviated
+    ABBR_SPACE             = O.db.name_text_abbreviated_with_space;
+    SHOW_ARENA_ID          = O.db.name_text_show_arenaid;
+    SHOW_ARENA_ID_SOLO     = O.db.name_text_show_arenaid_solo;
+    COLORING_MODE          = O.db.name_text_coloring_mode;
+    NAME_ONLY_COLOR_CLASS  = O.db.name_only_friendly_color_name_by_class;
+    NAME_ONLY_COLOR_HEALTH = O.db.name_only_friendly_color_name_by_health;
+    NAME_ONLY_GUILD_NAME   = O.db.name_only_friendly_guild_name;
+
+    NAME_ONLY_GUILD_NAME_COLOR = NAME_ONLY_GUILD_NAME_COLOR or {};
+    NAME_ONLY_GUILD_NAME_COLOR[1] = O.db.name_only_friendly_guild_name_color[1];
+    NAME_ONLY_GUILD_NAME_COLOR[2] = O.db.name_only_friendly_guild_name_color[2];
+    NAME_ONLY_GUILD_NAME_COLOR[3] = O.db.name_only_friendly_guild_name_color[3];
+    NAME_ONLY_GUILD_NAME_COLOR[4] = O.db.name_only_friendly_guild_name_color[4] or 1;
+
+    NAME_ONLY_GUILD_NAME_SAME_COLOR = NAME_ONLY_GUILD_NAME_SAME_COLOR or {};
+    NAME_ONLY_GUILD_NAME_SAME_COLOR[1] = O.db.name_only_friendly_guild_name_same_color[1];
+    NAME_ONLY_GUILD_NAME_SAME_COLOR[2] = O.db.name_only_friendly_guild_name_same_color[2];
+    NAME_ONLY_GUILD_NAME_SAME_COLOR[3] = O.db.name_only_friendly_guild_name_same_color[3];
+    NAME_ONLY_GUILD_NAME_SAME_COLOR[4] = O.db.name_only_friendly_guild_name_same_color[4] or 1;
+
+    NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
+
+    NAME_PVP = O.db.name_only_friendly_name_pvp;
+
+    NAME_WITHOUT_REALM = O.db.name_without_realm;
+
+    NAME_TEXT_ENABLED = O.db.name_text_enabled;
+
+    UpdateFontObject(SystemFont_NamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    UpdateFontObject(SystemFont_NamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    UpdateFontObject(SystemFont_LargeNamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    UpdateFontObject(SystemFont_LargeNamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    UpdateFontObject(StripesNameFont, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    UpdateFontObject(StripesGuildNameFont, O.db.name_text_font_value, O.db.name_text_font_size - 2, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+end
+
+function Module:StartUp()
+    self:UpdateLocalConfig();
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', function(unitframe)
+        NameOnly_UpdateHealth(unitframe);
+    end);
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
+        UpdateAbbreviated(unitframe);
+        UpdateArenaId(unitframe);
+        UpdateColor(unitframe);
+        UpdateNameVisibility(unitframe);
+
+        NameOnly_UpdateHealthBar(unitframe);
+        NameOnly_UpdateHealth(unitframe);
+
+        UpdateAnchor(unitframe);
+    end);
+
+    self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', function(unitframe)
+        UpdateAnchor(unitframe);
+        NameOnly_UpdateHealthBar(unitframe);
+    end);
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateWidgetsOnlyMode', NameOnly_UpdateHealthBar);
+end

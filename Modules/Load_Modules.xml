@@ -1,0 +1,33 @@
+<Ui>
+    <Script file="Handler.lua" />
+    <Include file="CastingBar\CastingBar.xml" />
+    <Script file="CastBar.lua" />
+
+    <Include file="Auras\Load_Auras.xml" />
+
+    <Script file="Name.lua" />
+    <Script file="HealthText.lua" />
+    <Script file="LevelText.lua" />
+    <Script file="HealthBar.lua" />
+    
+    <Script file="AbsorbBar.lua" />
+    <Script file="FactionIcon.lua" />
+    <Script file="TargetIndicator.lua" />
+    <Script file="TargetName.lua" />
+    <Script file="HideNonCasting.lua" />
+    <Script file="WhoInterrupted.lua" />
+    <Script file="SpellInterrupted.lua" />
+    <Script file="Visibility.lua" />
+    <Script file="MythicPlusPercentage.lua" />
+    <Script file="MythicPlusExplosiveOrbs.lua" />
+    <Script file="MythicPlusSpiteful.lua" />
+    <Script file="PvEHealersIndicator.lua" />
+    <Script file="PvPHealersIndicator.lua" />
+    <Script file="QuestIndicator.lua" />
+    <Script file="StealthDetect.lua" />
+    <Script file="TotemIcon.lua" />
+
+    <!-- Not nameplates modules-->
+    <Script file="AutoSlotKeystone.lua" />
+    <Script file="TalkingHead.lua" />
+</Ui>
