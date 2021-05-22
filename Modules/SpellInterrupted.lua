@@ -147,7 +147,8 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    ENABLED = O.db.spell_interrupted_icon;
+    ENABLED          = O.db.spell_interrupted_icon;
+    CASTER_NAME_SHOW = O.db.spell_interrupted_icon_caster_name_show;
 
     UpdateFontObject(StripesSpellInterruptedCooldownFont, O.db.spell_interrupted_icon_countdown_font_value, O.db.spell_interrupted_icon_countdown_font_size, O.db.spell_interrupted_icon_countdown_font_flag, O.db.spell_interrupted_icon_countdown_font_shadow);
     UpdateFontObject(StripesSpellInterruptedCasterFont, O.db.spell_interrupted_icon_caster_name_font_value, O.db.spell_interrupted_icon_caster_name_font_size, O.db.spell_interrupted_icon_caster_name_font_flag, O.db.spell_interrupted_icon_caster_name_font_shadow);
