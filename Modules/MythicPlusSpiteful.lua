@@ -7,7 +7,7 @@ local LCG_PixelGlow_Start, LCG_PixelGlow_Stop = LCG.PixelGlow_Start, LCG.PixelGl
 -- Local config
 local ENABLED;
 
-local SPITEFUL_NPC_ID  = 174569; -- 174773;
+local SPITEFUL_NPC_ID  = 174773;
 local SPITEFUL_TEXTURE = 135945;
 local LCG_SUFFIX = 'S_SPITEFUL';
 
