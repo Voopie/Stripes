@@ -10,6 +10,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED;
+local NAME_POSITION_V;
 
 local StripesAurasSpellStealCooldownFont = CreateFont('StripesAurasSpellStealCooldownFont');
 local StripesAurasSpellStealCountFont    = CreateFont('StripesAurasSpellStealCountFont');
@@ -39,7 +40,8 @@ local function UpdateAnchor(unitframe)
         local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
 
         if ShouldShowName(unitframe) then
-            PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + unitframe.name:GetLineHeight() + showMechanicOnTarget);
+            local offset = NAME_POSITION_V == 1 and (unitframe.name:GetLineHeight() + showMechanicOnTarget) or showMechanicOnTarget;
+            PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset);
         else
             local offset = unitframe.BuffFrame:GetBaseYOffset() + (UnitIsUnit(unitframe.data.unit, 'target') and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
             PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset);
@@ -168,6 +170,7 @@ end
 function Module:UpdateLocalConfig()
     ENABLED           = O.db.auras_spellsteal_enabled;
     COUNTDOWN_ENABLED = O.db.auras_spellsteal_countdown_enabled;
+    NAME_POSITION_V   = O.db.name_text_position_v;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);

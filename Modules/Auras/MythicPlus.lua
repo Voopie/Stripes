@@ -13,6 +13,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED;
+local NAME_POSITION_V;
 
 local StripesAurasMythicPlusCooldownFont = CreateFont('StripesAurasMythicPlusCooldownFont');
 local StripesAurasMythicPlusCountFont    = CreateFont('StripesAurasMythicPlusCountFont');
@@ -50,7 +51,8 @@ local function UpdateAnchor(unitframe)
     local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
 
     if unit and ShouldShowName(unitframe) then
-        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + unitframe.name:GetLineHeight() + showMechanicOnTarget);
+        local offset = NAME_POSITION_V == 1 and (unitframe.name:GetLineHeight() + showMechanicOnTarget) or showMechanicOnTarget;
+        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset);
     else
         local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
         PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset);
@@ -184,6 +186,7 @@ end
 function Module:UpdateLocalConfig()
     ENABLED           = O.db.auras_mythicplus_enabled;
     COUNTDOWN_ENABLED = O.db.auras_mythicplus_countdown_enabled;
+    NAME_POSITION_V   = O.db.name_text_position_v;
 
     UpdateFontObject(StripesAurasMythicPlusCooldownFont, O.db.auras_mythicplus_cooldown_font_value, O.db.auras_mythicplus_cooldown_font_size, O.db.auras_mythicplus_cooldown_font_flag, O.db.auras_mythicplus_cooldown_font_shadow);
     UpdateFontObject(StripesAurasMythicPlusCountFont, O.db.auras_mythicplus_count_font_value, O.db.auras_mythicplus_count_font_size, O.db.auras_mythicplus_count_font_flag, O.db.auras_mythicplus_count_font_shadow);

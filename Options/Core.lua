@@ -43,6 +43,11 @@ O.Lists = {
         [3] = L['POSITION_RIGHT'],
     },
 
+    name_position_v = {
+        [1] = L['POSITION_TOP'],
+        [2] = L['POSITION_BOTTOM'],
+    },
+
     auras_sort_method = {
         [1] = L['AURAS_SORT_EXPIRES_ASC'],
         [2] = L['AURAS_SORT_EXPIRES_DESC'],
@@ -153,6 +158,7 @@ O.DefaultValues = {
     name_text_font_flag              = 1, -- NONE
     name_text_font_shadow            = true,
     name_text_position               = 2, -- CENTER
+    name_text_position_v             = 1, -- TOP
     name_text_truncate               = false,
     name_text_abbreviated            = false,
     name_text_abbreviated_with_space = false,

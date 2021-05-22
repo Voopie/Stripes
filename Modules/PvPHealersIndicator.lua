@@ -130,7 +130,7 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetPoint('BOTTOM', unitframe.name, 'TOP', 0, 0);
+    frame.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, 4);
     frame.icon:SetSize(32, 32);
 
     frame:SetShown(false);

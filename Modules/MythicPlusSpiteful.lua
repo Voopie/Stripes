@@ -7,9 +7,9 @@ local LCG_PixelGlow_Start, LCG_PixelGlow_Stop = LCG.PixelGlow_Start, LCG.PixelGl
 -- Local config
 local ENABLED;
 
-local SPITEFUL_NPC_ID  = 174773;
+local SPITEFUL_NPC_ID  = 174569; -- 174773;
 local SPITEFUL_TEXTURE = 135945;
-local LSG_SUFFIX = 'S_SPITEFUL';
+local LCG_SUFFIX = 'S_SPITEFUL';
 
 local function Create(unitframe)
     if unitframe.Spiteful then
@@ -17,7 +17,7 @@ local function Create(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentSpiteful', unitframe.healthBar);
-    frame:SetPoint('BOTTOM', unitframe.name, 'TOP', 0, 4);
+    frame:SetPoint('BOTTOM', unitframe, 'TOP', 0, 4);
     frame:SetSize(32, 32);
     frame:SetFrameStrata('LOW');
 
@@ -39,10 +39,10 @@ local function Update(unitframe)
 
     if unitframe:IsShown() then
         if ENABLED and unitframe.data.npcId == SPITEFUL_NPC_ID then
-            LCG_PixelGlow_Start(unitframe.Spiteful, nil, 16, nil, 6, nil, 1, 1, nil, LSG_SUFFIX);
+            LCG_PixelGlow_Start(unitframe.Spiteful, nil, 16, nil, 6, nil, 1, 1, nil, LCG_SUFFIX);
             unitframe.Spiteful:SetShown(true);
         else
-            LCG_PixelGlow_Stop(unitframe.Spiteful, LSG_SUFFIX);
+            LCG_PixelGlow_Stop(unitframe.Spiteful, LCG_SUFFIX);
             unitframe.Spiteful:SetShown(false);
         end
     end
@@ -55,7 +55,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.Spiteful then
-        LCG_PixelGlow_Stop(unitframe.Spiteful, LSG_SUFFIX);
+        LCG_PixelGlow_Stop(unitframe.Spiteful, LCG_SUFFIX);
         unitframe.Spiteful:SetShown(false);
     end
 end

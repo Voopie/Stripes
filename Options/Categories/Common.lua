@@ -102,12 +102,24 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.name_text_font_value, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.name_text_position_v = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_position_v:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.name_text_position_v:SetSize(110, 20);
+    self.name_text_position_v:SetList(O.Lists.name_position_v);
+    self.name_text_position_v:SetValue(O.db.name_text_position_v);
+    self.name_text_position_v:SetLabel(L['OPTIONS_NAME_TEXT_POSITION']);
+    self.name_text_position_v:SetTooltip(L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP']);
+    self.name_text_position_v:AddToSearch(button, L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP'], self.Tabs[1]);
+    self.name_text_position_v.OnValueChangedCallback = function(_, value)
+        O.db.name_text_position_v = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     self.name_text_position = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_position:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.name_text_position:SetPosition('LEFT', self.name_text_position_v, 'RIGHT', 12, 0);
     self.name_text_position:SetSize(110, 20);
     self.name_text_position:SetList(O.Lists.name_position);
     self.name_text_position:SetValue(O.db.name_text_position);
-    self.name_text_position:SetLabel(L['OPTIONS_NAME_TEXT_POSITION']);
     self.name_text_position:SetTooltip(L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP']);
     self.name_text_position:AddToSearch(button, L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP'], self.Tabs[1]);
     self.name_text_position.OnValueChangedCallback = function(_, value)
@@ -127,7 +139,7 @@ panel.Load = function(self)
     end
 
     self.coloring_name_text = E.CreateFontString(self.TabsFrames['NameTab'].Content);
-    self.coloring_name_text:SetPosition('TOPLEFT', self.name_text_position, 'BOTTOMLEFT', 0, -8);
+    self.coloring_name_text:SetPosition('TOPLEFT', self.name_text_position_v, 'BOTTOMLEFT', 0, -8);
     self.coloring_name_text:SetText(L['OPTIONS_NAME_TEXT_COLORING']);
     self.coloring_name_text:AddToSearch(button, L['OPTIONS_NAME_TEXT_COLORING'], self.Tabs[1]);
 
