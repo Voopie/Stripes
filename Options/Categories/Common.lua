@@ -104,7 +104,7 @@ panel.Load = function(self)
 
     self.name_text_position_v = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
     self.name_text_position_v:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.name_text_position_v:SetSize(110, 20);
+    self.name_text_position_v:SetSize(100, 20);
     self.name_text_position_v:SetList(O.Lists.name_position_v);
     self.name_text_position_v:SetValue(O.db.name_text_position_v);
     self.name_text_position_v:SetLabel(L['OPTIONS_NAME_TEXT_POSITION']);
@@ -116,8 +116,8 @@ panel.Load = function(self)
     end
 
     self.name_text_position = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_position:SetPosition('LEFT', self.name_text_position_v, 'RIGHT', 12, 0);
-    self.name_text_position:SetSize(110, 20);
+    self.name_text_position:SetPosition('LEFT', self.name_text_position_v, 'RIGHT', 6, 0);
+    self.name_text_position:SetSize(100, 20);
     self.name_text_position:SetList(O.Lists.name_position);
     self.name_text_position:SetValue(O.db.name_text_position);
     self.name_text_position:SetTooltip(L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP']);
@@ -127,8 +127,19 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.name_text_offset_y = E.CreateSlider(self.TabsFrames['NameTab'].Content);
+    self.name_text_offset_y:SetPosition('LEFT', self.name_text_position, 'RIGHT', 4, 0);
+    self.name_text_offset_y:SetW(120);
+    self.name_text_offset_y:SetValues(O.db.name_text_offset_y, -50, 50, 1);
+    self.name_text_offset_y:SetTooltip(L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP']);
+    self.name_text_offset_y:AddToSearch(button, L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
+    self.name_text_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.name_text_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     self.name_text_truncate = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_truncate:SetPosition('LEFT', self.name_text_position, 'RIGHT', 12, 0);
+    self.name_text_truncate:SetPosition('LEFT', self.name_text_offset_y, 'RIGHT', 10, 0);
     self.name_text_truncate:SetLabel(L['OPTIONS_NAME_TEXT_TRUNCATE']);
     self.name_text_truncate:SetTooltip(L['OPTIONS_NAME_TEXT_TRUNCATE_TOOLTIP']);
     self.name_text_truncate:SetChecked(O.db.name_text_truncate);

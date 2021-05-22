@@ -20,8 +20,8 @@ local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyMode
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
-local POSITION, POSITION_V, TRUNCATE, ABBR_ENABLED, ABBR_SPACE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE;
-local NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
+local POSITION, POSITION_V, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_SPACE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE;
+local NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 local NAME_PVP, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
 
@@ -68,7 +68,7 @@ local function UpdateAnchor(unitframe)
 
     if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
         unitframe.name:SetJustifyH('CENTER');
-        PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, O.db.name_only_friendly_y_offset);
+        PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, NAME_ONLY_OFFSET_Y);
 
         return;
     end
@@ -81,15 +81,15 @@ local function UpdateAnchor(unitframe)
             PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, 0);
 
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 0);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
             else
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, -2);
+                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
             end
         else
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', 0, 0);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', 0, OFFSET_Y);
             else
-                PixelUtil.SetPoint(unitframe.name, 'TOPLEFT', unitframe.healthBar, 'BOTTOMLEFT', 0, -2);
+                PixelUtil.SetPoint(unitframe.name, 'TOPLEFT', unitframe.healthBar, 'BOTTOMLEFT', 0, OFFSET_Y);
             end
         end
 
@@ -101,15 +101,15 @@ local function UpdateAnchor(unitframe)
             PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, 0);
 
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 0);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
             else
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, -2);
+                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
             end
         else
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 0);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
             else
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, -2);
+                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
             end
         end
     else
@@ -120,15 +120,15 @@ local function UpdateAnchor(unitframe)
             PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, 0);
 
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 0);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
             else
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, -2);
+                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
             end
         else
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, 0);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, OFFSET_Y);
             else
-                PixelUtil.SetPoint(unitframe.name, 'TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', 0, -2);
+                PixelUtil.SetPoint(unitframe.name, 'TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', 0, OFFSET_Y);
             end
         end
     end
@@ -331,12 +331,16 @@ end
 function Module:UpdateLocalConfig()
     POSITION               = O.db.name_text_position;
     POSITION_V             = O.db.name_text_position_v;
+    OFFSET_Y               = O.db.name_text_offset_y;
     TRUNCATE               = O.db.name_text_truncate;
     ABBR_ENABLED           = O.db.name_text_abbreviated
     ABBR_SPACE             = O.db.name_text_abbreviated_with_space;
     SHOW_ARENA_ID          = O.db.name_text_show_arenaid;
     SHOW_ARENA_ID_SOLO     = O.db.name_text_show_arenaid_solo;
     COLORING_MODE          = O.db.name_text_coloring_mode;
+
+    NAME_ONLY_OFFSET_Y     = O.db.name_only_friendly_y_offset;
+
     NAME_ONLY_COLOR_CLASS  = O.db.name_only_friendly_color_name_by_class;
     NAME_ONLY_COLOR_HEALTH = O.db.name_only_friendly_color_name_by_health;
     NAME_ONLY_GUILD_NAME   = O.db.name_only_friendly_guild_name;

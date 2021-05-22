@@ -14,7 +14,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
 local BORDER_COLOR_ENABLED, COUNTDOWN_ENABLED;
-local NAME_POSITION_V;
+local NAME_POSITION_V, NAME_TEXT_OFFSET_Y;
 
 local DebuffTypeColor = DebuffTypeColor;
 
@@ -57,7 +57,7 @@ local function UpdateAnchor(unitframe)
     local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
 
     if unit and ShouldShowName(unitframe) then
-        local offset = NAME_POSITION_V == 1 and (unitframe.name:GetLineHeight() + showMechanicOnTarget) or showMechanicOnTarget;
+        local offset = NAME_POSITION_V == 1 and (unitframe.name:GetLineHeight() + NAME_TEXT_OFFSET_Y + showMechanicOnTarget) or showMechanicOnTarget;
         PixelUtil.SetPoint(unitframe.BuffFrame, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset);
     else
         local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
@@ -89,6 +89,7 @@ function Module:UpdateLocalConfig()
     BORDER_COLOR_ENABLED = O.db.auras_border_color_enabled;
     COUNTDOWN_ENABLED    = O.db.auras_countdown_enabled;
     NAME_POSITION_V      = O.db.name_text_position_v;
+    NAME_TEXT_OFFSET_Y   = O.db.name_text_offset_y;
 
     UpdateFontObject(StripesAurasModCooldownFont, O.db.auras_cooldown_font_value, O.db.auras_cooldown_font_size, O.db.auras_cooldown_font_flag, O.db.auras_cooldown_font_shadow);
     UpdateFontObject(StripesAurasModCountFont, O.db.auras_count_font_value, O.db.auras_count_font_size, O.db.auras_count_font_flag, O.db.auras_count_font_shadow);

@@ -123,6 +123,7 @@ L['OPTIONS_NAME_TEXT_FONT_SHADOW'] = 'Тень шрифта имени';
 L['OPTIONS_NAME_TEXT_POSITION'] = 'Расположение';
 L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP'] = 'Расположение имени по горизонтали';
 L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP'] = 'Расположение имени по вертикали';
+L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP'] = 'Смещение имени по вертикали';
 L['OPTIONS_NAME_TEXT_TRUNCATE'] = 'Обрезать';
 L['OPTIONS_NAME_TEXT_TRUNCATE_TOOLTIP'] = 'Обрезать имя, если оно выходит за границы полосы здоровья';
 L['OPTIONS_NAME_TEXT_ABBREVIATED'] = 'Аббревиация имени NPC';

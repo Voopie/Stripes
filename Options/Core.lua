@@ -159,6 +159,7 @@ O.DefaultValues = {
     name_text_font_shadow            = true,
     name_text_position               = 2, -- CENTER
     name_text_position_v             = 1, -- TOP
+    name_text_offset_y               = 0,
     name_text_truncate               = false,
     name_text_abbreviated            = false,
     name_text_abbreviated_with_space = false,

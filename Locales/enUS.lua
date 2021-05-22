@@ -123,6 +123,7 @@ L['OPTIONS_NAME_TEXT_FONT_SHADOW'] = 'Name font shadow';
 L['OPTIONS_NAME_TEXT_POSITION'] = 'Position';
 L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP'] = 'Horizontal name position';
 L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP'] = 'Vertical name position';
+L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP'] = 'Vertical name offset';
 L['OPTIONS_NAME_TEXT_TRUNCATE'] = 'Truncate';
 L['OPTIONS_NAME_TEXT_TRUNCATE_TOOLTIP'] = 'Truncate the name if it goes outside the health bar';
 L['OPTIONS_NAME_TEXT_ABBREVIATED'] = 'NPC name abbreviation';

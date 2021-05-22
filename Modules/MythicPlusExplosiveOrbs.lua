@@ -122,7 +122,7 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     local icon = frame:CreateTexture(nil, 'ARTWORK', nil, 2);
-    icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, 0);
+    icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, 4);
     icon:SetSize(24, 16);
     icon:SetTexture(explosiveTexture);
     icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
