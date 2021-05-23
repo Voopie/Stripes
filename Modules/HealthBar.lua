@@ -417,11 +417,16 @@ function Module:ROLE_CHANGED_INFORM(changedName, _, _, newRole)
     PLAYER_IS_TANK = newRole == 'TANK';
 end
 
+function Module:PLAYER_ROLES_ASSIGNED()
+    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+end
+
 function Module:StartUp()
     self:UpdateLocalConfig();
 
     self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED');
     self:RegisterEvent('ROLE_CHANGED_INFORM');
+    self:RegisterEvent('PLAYER_ROLES_ASSIGNED'); -- Just to be sure...
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', Update);
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
