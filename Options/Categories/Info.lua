@@ -12,7 +12,7 @@ panel.Load = function(self)
 
     self.DiscordLogoTexture = Mixin(self:CreateTexture(nil, 'ARTWORK'), E.PixelPerfectMixin);
     self.DiscordLogoTexture:SetPosition('CENTER', self, 'CENTER', 0, 30);
-    self.DiscordLogoTexture:SetSize(26, 26);
+    self.DiscordLogoTexture:SetSize(28, 28);
     self.DiscordLogoTexture:SetTexture(S.Media.Icons64.TEXTURE);
     self.DiscordLogoTexture:SetTexCoord(unpack(S.Media.Icons64.COORDS.DISCORD_WHITE));
 
