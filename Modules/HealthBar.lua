@@ -368,6 +368,7 @@ function Module:UpdateLocalConfig()
     offTankColor[1] = O.db.threat_color_offtank[1];
     offTankColor[2] = O.db.threat_color_offtank[2];
     offTankColor[3] = O.db.threat_color_offtank[3];
+    offTankColor[4] = O.db.threat_color_offtank[4] or 1;
 
     CUSTOM_HP_ENABLED = O.db.custom_color_enabled;
     CUSTOM_HP_DATA    = O.db.custom_color_data;
@@ -408,10 +409,19 @@ function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
     PLAYER_IS_TANK = IsPlayerEffectivelyTank();
 end
 
+function Module:ROLE_CHANGED_INFORM(changedName, _, _, newRole)
+    if changedName ~= D.Player.Name then
+        return;
+    end
+
+    PLAYER_IS_TANK = newRole == 'TANK';
+end
+
 function Module:StartUp()
     self:UpdateLocalConfig();
 
     self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED');
+    self:RegisterEvent('ROLE_CHANGED_INFORM');
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', Update);
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
