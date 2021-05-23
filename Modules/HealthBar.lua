@@ -401,6 +401,10 @@ function Module:UpdateLocalConfig()
     PLAYER_HEIGHT      = O.db.size_self_height;
 end
 
+function Module:PLAYER_LOGIN()
+    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+end
+
 function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
     if unit ~= PLAYER_UNIT then
         return;
@@ -424,6 +428,7 @@ end
 function Module:StartUp()
     self:UpdateLocalConfig();
 
+    self:RegisterEvent('PLAYER_LOGIN');
     self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED');
     self:RegisterEvent('ROLE_CHANGED_INFORM');
     self:RegisterEvent('PLAYER_ROLES_ASSIGNED'); -- Just to be sure...
