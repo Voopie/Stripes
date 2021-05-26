@@ -22,6 +22,7 @@ local whitelist = {
     [226510] = true, -- Mythic Plus Affix: Sanguine
     [209859] = true, -- Mythic Plus Affix: Bolstering
     [343502] = true, -- Mythic Plus Affix: Inspiring
+    [228318] = true, -- Mythic Plus Affix: Raging
 
     [323059] = true, -- Mists of Tirna Scithe (Droman's Wrath)
 };
