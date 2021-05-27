@@ -553,6 +553,8 @@ L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'] = 'Переключить на HARMF
 L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'] = 'Переключить на HELPFUL (бафф)';
 L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE'] = 'Копировать из профиля';
 L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE_SHIFT'] = 'Заменить из профиля';
+L['OPTIONS_AURAS_CUSTOM_HELPFUL'] = 'HELPFUL (бафф)';
+L['OPTIONS_AURAS_CUSTOM_HELPFUL_TOOLTIP'] = 'Добавить ауру как HELPFUL (бафф)';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';

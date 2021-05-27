@@ -45,14 +45,14 @@ local function FilterToggleTooltip_Show(self)
     GameTooltip:Show();
 end
 
-local function AddCustomAura(id, filter)
+local function AddCustomAura(id)
     if O.db.auras_custom_data[id] then
         return;
     end
 
     O.db.auras_custom_data[id] = {
         id      = id,
-        filter  = filter or 'HELPFUL',
+        filter  = O.db.auras_custom_helpful and 'HELPFUL' or 'HARMFUL',
         enabled = true,
     };
 end
@@ -1065,7 +1065,7 @@ panel.Load = function(self)
     self.auras_custom_editbox:SetScript('OnEnterPressed', function(self)
         local id = tonumber(strtrim(self:GetText()));
 
-        if type(id) ~= 'number' or id == 0  or not GetSpellInfo(id) then
+        if type(id) ~= 'number' or id == 0 or not GetSpellInfo(id) then
             self:SetText('');
             self:ClearFocus();
             return;
@@ -1073,11 +1073,21 @@ panel.Load = function(self)
 
         AddCustomAura(id);
 
-        panel.UpdateScroll();
+        panel:UpdateScroll();
         self:SetText('');
 
         Handler:UpdateAll();
     end);
+
+    self.auras_custom_helpful = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_helpful:SetPosition('LEFT', self.auras_custom_editbox, 'RIGHT', 16, 0);
+    self.auras_custom_helpful:SetLabel(L['OPTIONS_AURAS_CUSTOM_HELPFUL']);
+    self.auras_custom_helpful:SetChecked(O.db.auras_custom_helpful);
+    self.auras_custom_helpful:SetTooltip(L['OPTIONS_AURAS_CUSTOM_HELPFUL_TOOLTIP']);
+    self.auras_custom_helpful:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_HELPFUL_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_helpful.Callback = function(self)
+        O.db.auras_custom_helpful = self:GetChecked();
+    end
 
     self.auras_custom_editframe = CreateFrame('Frame', nil, self.TabsFrames['CustomTab'].Content, 'BackdropTemplate');
     self.auras_custom_editframe:SetPoint('TOPLEFT', self.auras_custom_editbox, 'BOTTOMLEFT', -5, -8);
