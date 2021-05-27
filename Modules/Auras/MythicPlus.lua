@@ -24,7 +24,10 @@ local whitelist = {
     [343502] = true, -- Mythic Plus Affix: Inspiring
     [228318] = true, -- Mythic Plus Affix: Raging
 
+    -- Shadowlands
     [323059] = true, -- Mists of Tirna Scithe (Droman's Wrath)
+    [333241] = true, -- Theater of Pain (Raging Tantrum)
+    [331510] = true, -- Theater of Pain (Death Wish)
 };
 
 local PlayerState = D.Player.State;
