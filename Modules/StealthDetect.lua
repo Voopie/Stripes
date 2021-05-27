@@ -24,6 +24,7 @@ local units = {
     [164563] = true, -- Vicious Gargon (Halls of Atonement)
     [163524] = true, -- Kyrian Dark-Praetor (Spires of Ascension)
     [164929] = true, -- Tirnenn Villager (Mists of Tirna Scithe)
+    [170850] = true, -- Raging Bloodhorn (Theater of Pain)
 
     -- Maw
     [173188] = true, -- Mawsworn Outrider
