@@ -435,6 +435,18 @@ O.DefaultValues = {
     auras_important_castername_font_flag   = 1, -- NONE
     auras_important_castername_font_shadow = true,
 
+    auras_custom_enabled              = true,
+    auras_custom_countdown_enabled    = true,
+    auras_custom_cooldown_font_value  = 'BigNoodleToo Titling',
+    auras_custom_cooldown_font_size   = 14,
+    auras_custom_cooldown_font_flag   = 2, -- OUTLINE
+    auras_custom_cooldown_font_shadow = true,
+    auras_custom_count_font_value     = 'BigNoodleToo Titling',
+    auras_custom_count_font_size      = 12,
+    auras_custom_count_font_flag      = 2, -- OUTLINE
+    auras_custom_count_font_shadow    = true,
+    auras_custom_data                 = {},
+
     custom_color_enabled = true,
     custom_color_data    = {},
 };

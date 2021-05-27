@@ -462,6 +462,7 @@ L['OPTIONS_AURAS_TAB_COMMON'] = 'Основное';
 L['OPTIONS_AURAS_TAB_SPELLSTEAL'] = 'Развеиваемые';
 L['OPTIONS_AURAS_TAB_MYTHICPLUS'] = 'Эпохальные';
 L['OPTIONS_AURAS_TAB_IMPORTANT'] = 'Важные';
+L['OPTIONS_AURAS_TAB_CUSTOM'] = 'Пользовательские';
 
 L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED'] = 'Все свои ауры';
 L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED_TOOLTIP'] = 'Показывать все свои ауры (дебаффы) на неймплейтах противников';
@@ -534,6 +535,24 @@ L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_VALUE'] = 'Шрифт имени иг
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SIZE'] = 'Размер шрифта имени игрока на важных аурах';
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_FLAG'] = 'Контур шрифта имени игрока на важных аурах';
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW'] = 'Тень шрифта имени игрока на важных аурах';
+
+L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Включить';
+L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Показывать пользовательские ауры';
+L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED'] = 'Оставшееся время';
+L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED_TOOLTIP'] = 'Показывать оставшееся время пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_VALUE'] = 'Шрифт таймера пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SIZE'] = 'Размер шрифта таймера пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_FLAG'] = 'Контур шрифта таймера пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SHADOW'] = 'Тень шрифта таймера пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_VALUE'] = 'Шрифт количества пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SIZE'] = 'Размер шрифта количества пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_FLAG'] = 'Контур шрифта количества пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SHADOW'] = 'Тень шрифта количества пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_EDITBOX_ENTER_ID'] = 'Введите ID ауры';
+L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'] = 'Переключить на HARMFUL (дебафф)';
+L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'] = 'Переключить на HELPFUL (бафф)';
+L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE'] = 'Копировать из профиля';
+L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE_SHIFT'] = 'Заменить из профиля';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';

@@ -462,6 +462,7 @@ L['OPTIONS_AURAS_TAB_COMMON'] = 'General';
 L['OPTIONS_AURAS_TAB_SPELLSTEAL'] = 'Dispelable';
 L['OPTIONS_AURAS_TAB_MYTHICPLUS'] = 'Mythic+';
 L['OPTIONS_AURAS_TAB_IMPORTANT'] = 'Important';
+L['OPTIONS_AURAS_TAB_CUSTOM'] = 'Custom';
 
 L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED'] = 'No filter';
 L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED_TOOLTIP'] = 'Show all auras (debuffs) on enemy nameplates';
@@ -534,6 +535,24 @@ L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_VALUE'] = 'Player name font on import
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SIZE'] = 'Player name font size on important auras';
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_FLAG'] = 'Player name font outline on important auras';
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW'] = 'Player name font shadow on important auras';
+
+L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Enable';
+L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Show custom auras';
+L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED'] = 'Show countdown';
+L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED_TOOLTIP'] = 'Show countdown timers on custom auras';
+L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_VALUE'] = 'Countdown font of custom auras';
+L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SIZE'] = 'Countdown font size of custom auras';
+L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_FLAG'] = 'Countdown font outline of custom auras';
+L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SHADOW'] = 'Countdown font shadow of custom auras';
+L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_VALUE'] = 'Count font of custom auras';
+L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SIZE'] = 'Count font size of custom auras';
+L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_FLAG'] = 'Count font outline of custom auras';
+L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SHADOW'] = 'Count font shadow of custom auras';
+L['OPTIONS_AURAS_CUSTOM_EDITBOX_ENTER_ID'] = 'Enter aura ID';
+L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'] = 'Switch to HARMFUL (debuff)';
+L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'] = 'Switch to HELPFUL (buff)';
+L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE'] = 'Copy from profile';
+L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE_SHIFT'] = 'Replace from profile';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Enable';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Enable custom health bar colors';
