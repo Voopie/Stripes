@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('Auras_Custom');
 local pairs, table_wipe = pairs, wipe;
 
 -- WoW API
-local CooldownFrame_Set, AuraUtil_ForEachAura = CooldownFrame_Set, AuraUtil.ForEachAura;
+local CooldownFrame_Set, GetCVarBool, UnitIsUnit, AuraUtil_ForEachAura = CooldownFrame_Set, GetCVarBool, UnitIsUnit, AuraUtil.ForEachAura;
 
 -- Stripes API
 local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
