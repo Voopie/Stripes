@@ -120,7 +120,7 @@ local function Update(unitframe)
 
             aura.CountFrame.Count:SetFontObject(StripesAurasMythicPlusCountFont);
 
-            aura.Border:SetColorTexture(0.81, 0.05, 0.05, 1);
+            aura.Border:SetColorTexture(0.80, 0.05, 0.05, 1);
 
             unitframe.AurasMythicPlus.buffList[buffIndex] = aura;
         end
