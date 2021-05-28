@@ -115,7 +115,7 @@ E.CreateButton = function(parent)
         bgFile   = 'Interface\\Buttons\\WHITE8x8',
         insets   = {top = 1, left = 1, bottom = 1, right = 1},
         edgeFile = 'Interface\\Buttons\\WHITE8x8',
-		edgeSize = 1,
+        edgeSize = 1,
     });
 
     b.Glow = Mixin(CreateFrame('Frame', nil, b), E.PixelPerfectMixin);
@@ -154,8 +154,8 @@ E.CreateButton = function(parent)
             return;
         end
 
-		self:SetBackdropColor(unpack(self.HighlightColor));
-		self:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
+        self:SetBackdropColor(unpack(self.HighlightColor));
+        self:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
         LCG.PixelGlow_Stop(self.Glow);
     end);
 
@@ -172,19 +172,19 @@ E.CreateButton = function(parent)
             return;
         end
 
-		if self:IsEnabled() then
-			self:SetBackdropColor(unpack(self.HighlightColor));
+        if self:IsEnabled() then
+            self:SetBackdropColor(unpack(self.HighlightColor));
 
             self.OnLeavePrev = self:GetScript('OnLeave');
-			self:SetScript('OnLeave', nil);
+            self:SetScript('OnLeave', nil);
 
-			if U.CanAccessObject(GameTooltip) and GameTooltip:IsShown() then
-				GameTooltip_Hide();
-			end
+            if U.CanAccessObject(GameTooltip) and GameTooltip:IsShown() then
+                GameTooltip_Hide();
+            end
 
-			self:SetNormalFontObject('StripesOptionsButtonHighlightFont');
-			self:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
-		end
+            self:SetNormalFontObject('StripesOptionsButtonHighlightFont');
+            self:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
+        end
     end);
 
 	b:SetScript('OnMouseUp', function(self)
@@ -192,18 +192,18 @@ E.CreateButton = function(parent)
             return;
         end
 
-		if self:IsEnabled() then
-			self:SetNormalFontObject('StripesOptionsButtonNormalFont');
-			self:SetHighlightFontObject('StripesOptionsButtonNormalFont');
+        if self:IsEnabled() then
+            self:SetNormalFontObject('StripesOptionsButtonNormalFont');
+            self:SetHighlightFontObject('StripesOptionsButtonNormalFont');
 
-			self:SetBackdropColor(unpack(self.NormalColor));
+            self:SetBackdropColor(unpack(self.NormalColor));
 
-			self:SetScript('OnLeave', self.OnLeavePrev or self.OnLeave);
+            self:SetScript('OnLeave', self.OnLeavePrev or self.OnLeave);
 
             if self:IsMouseOver() then
                 self:GetScript('OnEnter')(self);
             end
-		end
+        end
     end);
 
     hooksecurefunc(b, 'LockHighlight', function(self)
