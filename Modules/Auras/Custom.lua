@@ -140,7 +140,7 @@ local function Update(unitframe)
 
             aura.CountFrame.Count:SetFontObject(StripesAurasCustomCountFont);
 
-            aura.Border:SetColorTexture(0.80, 0.05, 0.05, 1);
+            aura.Border:SetColorTexture(unpack(O.db.auras_custom_border_color));
 
             unitframe.AurasCustom.buffList[buffIndex] = aura;
         end
@@ -188,6 +188,12 @@ local function Update(unitframe)
     end
 end
 
+local function UpdateStyle(unitframe)
+    for _, buff in ipairs(unitframe.AurasCustom.buffList) do
+        buff.Border:SetColorTexture(unpack(O.db.auras_custom_border_color));
+    end
+end
+
 function Module:UnitAdded(unitframe)
     CreateAnchor(unitframe);
     Update(unitframe);
@@ -205,6 +211,7 @@ end
 
 function Module:Update(unitframe)
     Update(unitframe);
+    UpdateStyle(unitframe);
 end
 
 function Module:UpdateLocalConfig()

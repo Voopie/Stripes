@@ -965,6 +965,20 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_custom_border_color = E.CreateColorPicker(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_border_color:SetPosition('LEFT', self.auras_custom_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_custom_border_color:SetTooltip(L['OPTIONS_AURAS_CUSTOM_BORDER_COLOR_TOOLTIP']);
+    self.auras_custom_border_color:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_BORDER_COLOR_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_border_color:SetValue(unpack(O.db.auras_custom_border_color));
+    self.auras_custom_border_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.auras_custom_border_color[1] = r;
+        O.db.auras_custom_border_color[2] = g;
+        O.db.auras_custom_border_color[3] = b;
+        O.db.auras_custom_border_color[4] = a or 1;
+
+        Handler:UpdateAll();
+    end
+
     self.auras_custom_countdown_enabled = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
     self.auras_custom_countdown_enabled:SetPosition('TOPLEFT', self.auras_custom_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_custom_countdown_enabled:SetLabel(L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED']);

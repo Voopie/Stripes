@@ -445,6 +445,7 @@ O.DefaultValues = {
     auras_custom_count_font_size      = 12,
     auras_custom_count_font_flag      = 2, -- OUTLINE
     auras_custom_count_font_shadow    = true,
+    auras_custom_border_color         = { 0.80, 0.05, 0.05, 1 },
     auras_custom_data                 = {},
     auras_custom_helpful              = true,
 
