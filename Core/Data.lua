@@ -388,11 +388,11 @@ function Data:CHALLENGE_MODE_RESET()
 end
 
 function Data:PLAYER_REGEN_ENABLED()
-    D.Player.State.inCombat = true;
+    D.Player.State.inCombat = false;
 end
 
 function Data:PLAYER_REGEN_DISABLED()
-    D.Player.State.inCombat = false;
+    D.Player.State.inCombat = true;
 end
 
 function Data:ENCOUNTER_START()
