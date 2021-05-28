@@ -44,6 +44,7 @@ panel.Load = function(self)
         O.db.stealth_detect_enabled = self:GetChecked();
 
         panel.stealth_detect_always:SetEnabled(O.db.stealth_detect_enabled);
+        panel.stealth_detect_not_in_combat:SetEnabled(O.db.stealth_detect_enabled);
 
         Handler:UpdateAll();
     end
@@ -57,6 +58,18 @@ panel.Load = function(self)
     self.stealth_detect_always:SetEnabled(O.db.stealth_detect_enabled);
     self.stealth_detect_always.Callback = function(self)
         O.db.stealth_detect_always = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.stealth_detect_not_in_combat = E.CreateCheckButton(self);
+    self.stealth_detect_not_in_combat:SetPosition('LEFT', self.stealth_detect_always.Label, 'RIGHT', 12, 0);
+    self.stealth_detect_not_in_combat:SetLabel(L['OPTIONS_STEALTH_DETECT_NOT_IN_COMBAT']);
+    self.stealth_detect_not_in_combat:SetTooltip(L['OPTIONS_STEALTH_DETECT_NOT_IN_COMBAT_TOOLTIP']);
+    self.stealth_detect_not_in_combat:AddToSearch(button, L['OPTIONS_STEALTH_DETECT_NOT_IN_COMBAT_TOOLTIP']);
+    self.stealth_detect_not_in_combat:SetChecked(O.db.stealth_detect_not_in_combat);
+    self.stealth_detect_not_in_combat:SetEnabled(O.db.stealth_detect_enabled);
+    self.stealth_detect_not_in_combat.Callback = function(self)
+        O.db.stealth_detect_not_in_combat = self:GetChecked();
         Handler:UpdateAll();
     end
 

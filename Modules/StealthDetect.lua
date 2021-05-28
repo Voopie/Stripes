@@ -8,7 +8,9 @@ local LCG_PixelGlow_Start = LCG.PixelGlow_Start;
 local NP = S.NamePlates;
 
 -- Local Config
-local ENABLED, ALWAYS;
+local ENABLED, ALWAYS, NOT_IN_COMBAT;
+
+local PlayerState = D.Player.State;
 
 local STEALTH_TEXTURE = 1391768;
 local GLOW_COLOR = { 0.64, 0.24, 0.94 };
@@ -89,10 +91,14 @@ end
 
 local function Update(unitframe)
     if ENABLED then
-        if ALWAYS then
-            unitframe.StealthDetect:SetShown(units[unitframe.data.npcId]);
+        if NOT_IN_COMBAT and PlayerState.inCombat then
+            unitframe.StealthDetect:SetShown(false);
         else
-            unitframe.StealthDetect:SetShown(stealthed and units[unitframe.data.npcId]);
+            if ALWAYS then
+                unitframe.StealthDetect:SetShown(units[unitframe.data.npcId]);
+            else
+                unitframe.StealthDetect:SetShown(stealthed and units[unitframe.data.npcId]);
+            end
         end
     else
         unitframe.StealthDetect:SetShown(false);
@@ -118,22 +124,39 @@ function Module:Update(unitframe)
     Update(unitframe);
 end
 
-function Module:UpdateLocalConfig()
-    stealthed = IsStealthed();
-
-    ENABLED = O.db.stealth_detect_enabled;
-    ALWAYS  = O.db.stealth_detect_always;
-end
-
-function Module:UPDATE_STEALTH()
-    stealthed = IsStealthed();
-
+function Module:UpdateAll()
     for _, unitframe in pairs(NP) do
         Update(unitframe);
     end
 end
 
+function Module:UpdateLocalConfig()
+    stealthed = IsStealthed();
+
+    ENABLED       = O.db.stealth_detect_enabled;
+    ALWAYS        = O.db.stealth_detect_always;
+    NOT_IN_COMBAT = O.db.stealth_detect_not_in_combat;
+
+    if ENABLED then
+        self:RegisterEvent('UPDATE_STEALTH');
+
+        if NOT_IN_COMBAT then
+            self:RegisterEvent('PLAYER_REGEN_ENABLED', 'UpdateAll');
+            self:RegisterEvent('PLAYER_REGEN_DISABLED', 'UpdateAll');
+        end
+    else
+        self:UnregisterEvent('UPDATE_STEALTH');
+        self:UnregisterEvent('PLAYER_REGEN_ENABLED');
+        self:UnregisterEvent('PLAYER_REGEN_DISABLED');
+    end
+end
+
+function Module:UPDATE_STEALTH()
+    stealthed = IsStealthed();
+
+    self:UpdateAll();
+end
+
 function Module:StartUp()
     self:UpdateLocalConfig();
-    self:RegisterEvent('UPDATE_STEALTH');
 end
