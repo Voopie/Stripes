@@ -549,12 +549,12 @@ L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SIZE'] = 'Размер шрифта коли�
 L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_FLAG'] = 'Контур шрифта количества пользовательских аур';
 L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SHADOW'] = 'Тень шрифта количества пользовательских аур';
 L['OPTIONS_AURAS_CUSTOM_EDITBOX_ENTER_ID'] = 'Введите ID ауры';
-L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'] = 'Переключить на HARMFUL (дебафф)';
-L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'] = 'Переключить на HELPFUL (бафф)';
+L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'] = 'Переключить на дебафф (HARMFUL)';
+L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'] = 'Переключить на бафф (HELPFUL)';
 L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE'] = 'Копировать из профиля';
 L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE_SHIFT'] = 'Заменить из профиля';
-L['OPTIONS_AURAS_CUSTOM_HELPFUL'] = 'HELPFUL (бафф)';
-L['OPTIONS_AURAS_CUSTOM_HELPFUL_TOOLTIP'] = 'Добавить ауру как HELPFUL (бафф)';
+L['OPTIONS_AURAS_CUSTOM_HELPFUL'] = 'Бафф (HELPFUL)';
+L['OPTIONS_AURAS_CUSTOM_HELPFUL_TOOLTIP'] = 'Добавить ауру как бафф (HELPFUL)';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';
