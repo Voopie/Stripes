@@ -10,7 +10,7 @@ local panel = O.frame.Right.Auras;
 local aurasCustomFramePool;
 local ROW_HEIGHT = 28;
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
-local NAME_WIDTH = 300;
+local NAME_WIDTH = 400;
 
 panel.TabsData = {
     [1] = {
@@ -41,7 +41,7 @@ local function FilterToggleTooltip_Show(self)
     end
 
     GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
-    GameTooltip:AddLine(self.tooltip, 1, 0.85, 0, true);
+    GameTooltip:AddLine(self.tooltip, 1, 0.85, 0, false);
     GameTooltip:Show();
 end
 
@@ -57,9 +57,9 @@ local function AddCustomAura(id)
     };
 end
 
-local DataRows = {};
+local DataCustomAuraRows = {};
 
-local function CreateRow(frame)
+local function CreateCustomAuraRow(frame)
     frame:SetBackdrop(BACKDROP);
     frame.backgroundColor = frame.backgroundColor or {};
 
@@ -88,11 +88,15 @@ local function CreateRow(frame)
             O.db.auras_custom_data[self:GetParent().id].filter = 'HARMFUL';
             self.texture:SetColorTexture(1, 0.4, 0.4);
 
+            self.text:SetText('D');
+
             self.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'];
             FilterToggleTooltip_Show(self);
         else
             O.db.auras_custom_data[self:GetParent().id].filter = 'HELPFUL';
             self.texture:SetColorTexture(0.4, 0.85, 0.4);
+
+            self.text:SetText('B');
 
             self.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'];
             FilterToggleTooltip_Show(self);
@@ -100,8 +104,19 @@ local function CreateRow(frame)
 
         S:GetNameplateModule('Handler'):UpdateAll();
     end);
-    frame.FilterToggleButton:SetScript('OnEnter', FilterToggleTooltip_Show);
-    frame.FilterToggleButton:SetScript('OnLeave', GameTooltip_Hide);
+
+    frame.FilterToggleButton.text = frame.FilterToggleButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.FilterToggleButton.text:SetAllPoints(frame.FilterToggleButton.texture);
+    frame.FilterToggleButton.text:SetJustifyH('CENTER');
+
+    frame.FilterToggleButton:HookScript('OnEnter', FilterToggleTooltip_Show);
+    frame.FilterToggleButton:HookScript('OnLeave', GameTooltip_Hide);
+    frame.FilterToggleButton:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+    frame.FilterToggleButton:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+    end);
 
     frame.Icon = frame:CreateTexture(nil, 'ARTWORK');
     frame.Icon:SetPoint('LEFT', frame.FilterToggleButton, 'RIGHT', 8, 0);
@@ -125,7 +140,7 @@ local function CreateRow(frame)
         if O.db.auras_custom_data[tonumber(self:GetParent().id)] then
             O.db.auras_custom_data[tonumber(self:GetParent().id)] = nil;
 
-            panel.UpdateScroll();
+            panel:UpdateScroll();
             S:GetNameplateModule('Handler'):UpdateAll();
         end
     end);
@@ -156,13 +171,13 @@ local function CreateRow(frame)
     frame:HookScript('OnLeave', GameTooltip_Hide);
 end
 
-local function UpdateRow(frame)
+local function UpdateCustomAuraRow(frame)
     if frame.index == 1 then
         PixelUtil.SetPoint(frame, 'TOPLEFT', panel.auras_custom_scrollchild, 'TOPLEFT', 0, 0);
         PixelUtil.SetPoint(frame, 'TOPRIGHT', panel.auras_custom_scrollchild, 'TOPRIGHT', 0, 0);
     else
-        PixelUtil.SetPoint(frame, 'TOPLEFT', DataRows[frame.index - 1], 'BOTTOMLEFT', 0, 0);
-        PixelUtil.SetPoint(frame, 'TOPRIGHT', DataRows[frame.index - 1], 'BOTTOMRIGHT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPLEFT', DataCustomAuraRows[frame.index - 1], 'BOTTOMLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', DataCustomAuraRows[frame.index - 1], 'BOTTOMRIGHT', 0, 0);
     end
 
     frame:SetSize(frame:GetParent():GetWidth(), ROW_HEIGHT);
@@ -183,15 +198,21 @@ local function UpdateRow(frame)
 
     if frame.filter == 'HELPFUL' then
         frame.FilterToggleButton.texture:SetColorTexture(0.4, 0.85, 0.4);
+
+        frame.FilterToggleButton.text:SetText('B');
+
         frame.FilterToggleButton.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'];
     else
         frame.FilterToggleButton.texture:SetColorTexture(1, 0.4, 0.4);
+
+        frame.FilterToggleButton.text:SetText('D');
+
         frame.FilterToggleButton.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'];
     end
 end
 
 panel.UpdateScroll = function()
-    wipe(DataRows);
+    wipe(DataCustomAuraRows);
     aurasCustomFramePool:ReleaseAll();
 
     local index = 0;
@@ -202,10 +223,10 @@ panel.UpdateScroll = function()
 
         frame, isNew = aurasCustomFramePool:Acquire();
 
-        table.insert(DataRows, frame);
+        table.insert(DataCustomAuraRows, frame);
 
         if isNew then
-            CreateRow(frame);
+            CreateCustomAuraRow(frame);
         end
 
         frame.index   = index;
@@ -213,7 +234,7 @@ panel.UpdateScroll = function()
         frame.filter  = data.filter;
         frame.enabled = data.enabled;
 
-        UpdateRow(frame);
+        UpdateCustomAuraRow(frame);
 
         frame:SetShown(true);
     end
