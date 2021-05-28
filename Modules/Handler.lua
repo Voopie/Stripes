@@ -207,15 +207,15 @@ local function CVarsReset()
     C_CVar.SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'));
 
     C_CVar.SetCVar('nameplateShowEnemyMinions', GetCVarDefault('nameplateShowEnemyMinions'));
-	C_CVar.SetCVar('nameplateShowEnemyGuardians', GetCVarDefault('nameplateShowEnemyGuardians'));
-	C_CVar.SetCVar('nameplateShowEnemyMinus', GetCVarDefault('nameplateShowEnemyMinus'));
-	C_CVar.SetCVar('nameplateShowEnemyPets', GetCVarDefault('nameplateShowEnemyPets'));
-	C_CVar.SetCVar('nameplateShowEnemyTotems', GetCVarDefault('nameplateShowEnemyTotems'));
-	C_CVar.SetCVar('nameplateShowFriendlyMinions', GetCVarDefault('nameplateShowFriendlyMinions'));
-	C_CVar.SetCVar('nameplateShowFriendlyGuardians', GetCVarDefault('nameplateShowFriendlyGuardians'));
-	C_CVar.SetCVar('nameplateShowFriendlyNPCs', GetCVarDefault('nameplateShowFriendlyNPCs'));
-	C_CVar.SetCVar('nameplateShowFriendlyPets', GetCVarDefault('nameplateShowFriendlyPets'));
-	C_CVar.SetCVar('nameplateShowFriendlyTotems', GetCVarDefault('nameplateShowFriendlyTotems'));
+    C_CVar.SetCVar('nameplateShowEnemyGuardians', GetCVarDefault('nameplateShowEnemyGuardians'));
+    C_CVar.SetCVar('nameplateShowEnemyMinus', GetCVarDefault('nameplateShowEnemyMinus'));
+    C_CVar.SetCVar('nameplateShowEnemyPets', GetCVarDefault('nameplateShowEnemyPets'));
+    C_CVar.SetCVar('nameplateShowEnemyTotems', GetCVarDefault('nameplateShowEnemyTotems'));
+    C_CVar.SetCVar('nameplateShowFriendlyMinions', GetCVarDefault('nameplateShowFriendlyMinions'));
+    C_CVar.SetCVar('nameplateShowFriendlyGuardians', GetCVarDefault('nameplateShowFriendlyGuardians'));
+    C_CVar.SetCVar('nameplateShowFriendlyNPCs', GetCVarDefault('nameplateShowFriendlyNPCs'));
+    C_CVar.SetCVar('nameplateShowFriendlyPets', GetCVarDefault('nameplateShowFriendlyPets'));
+    C_CVar.SetCVar('nameplateShowFriendlyTotems', GetCVarDefault('nameplateShowFriendlyTotems'));
 
     C_CVar.SetCVar('NameplatePersonalClickThrough', GetCVarDefault('NameplatePersonalClickThrough'));
 end
@@ -258,15 +258,15 @@ local function CVarsUpdate()
     C_CVar.SetCVar('nameplateSelfBottomInset', O.db.self_bottom_inset);
 
     C_CVar.SetCVar('nameplateShowEnemyMinions', O.db.show_enemy_minions and 1 or 0);
-	C_CVar.SetCVar('nameplateShowEnemyGuardians', O.db.show_enemy_guardians and 1 or 0);
-	C_CVar.SetCVar('nameplateShowEnemyMinus', O.db.show_enemy_minus and 1 or 0);
-	C_CVar.SetCVar('nameplateShowEnemyPets', O.db.show_enemy_pets and 1 or 0);
-	C_CVar.SetCVar('nameplateShowEnemyTotems', O.db.show_enemy_totems and 1 or 0);
-	C_CVar.SetCVar('nameplateShowFriendlyMinions', O.db.show_friendly_minions and 1 or 0);
-	C_CVar.SetCVar('nameplateShowFriendlyGuardians', O.db.show_friendly_guardians and 1 or 0);
-	C_CVar.SetCVar('nameplateShowFriendlyNPCs', O.db.show_friendly_npcs and 1 or 0);
-	C_CVar.SetCVar('nameplateShowFriendlyPets', O.db.show_friendly_pets and 1 or 0);
-	C_CVar.SetCVar('nameplateShowFriendlyTotems', O.db.show_friendly_totems and 1 or 0);
+    C_CVar.SetCVar('nameplateShowEnemyGuardians', O.db.show_enemy_guardians and 1 or 0);
+    C_CVar.SetCVar('nameplateShowEnemyMinus', O.db.show_enemy_minus and 1 or 0);
+    C_CVar.SetCVar('nameplateShowEnemyPets', O.db.show_enemy_pets and 1 or 0);
+    C_CVar.SetCVar('nameplateShowEnemyTotems', O.db.show_enemy_totems and 1 or 0);
+    C_CVar.SetCVar('nameplateShowFriendlyMinions', O.db.show_friendly_minions and 1 or 0);
+    C_CVar.SetCVar('nameplateShowFriendlyGuardians', O.db.show_friendly_guardians and 1 or 0);
+    C_CVar.SetCVar('nameplateShowFriendlyNPCs', O.db.show_friendly_npcs and 1 or 0);
+    C_CVar.SetCVar('nameplateShowFriendlyPets', O.db.show_friendly_pets and 1 or 0);
+    C_CVar.SetCVar('nameplateShowFriendlyTotems', O.db.show_friendly_totems and 1 or 0);
 
     C_CVar.SetCVar('NameplatePersonalClickThrough', O.db.size_self_click_through and 1 or 0);
 end

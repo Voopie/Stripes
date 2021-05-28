@@ -48,8 +48,8 @@ local healerSpecIDs = {
     256, -- Priest Discipline
     105, -- Druid Restoration
     270, -- Monk Mistweaver
-	65,	 -- Paladin Holy
-	264, -- Shaman Restoration
+    65,	 -- Paladin Holy
+    264, -- Shaman Restoration
 
     -- Hooking tanks
     268, -- Monk Brewmaster
@@ -63,10 +63,10 @@ local healerSpecIDs = {
 local Healers, HealerSpecs = {}, {}
 
 for _, specID in ipairs(healerSpecIDs) do
-	local _, name = GetSpecializationInfoByID(specID);
-	if name and not HealerSpecs[name] then
-		HealerSpecs[name] = specID;
-	end
+    local _, name = GetSpecializationInfoByID(specID);
+    if name and not HealerSpecs[name] then
+        HealerSpecs[name] = specID;
+    end
 end
 
 local function GetNameWithRealm(unit)
@@ -81,7 +81,7 @@ local function GetNameWithRealm(unit)
 end
 
 local function UpdateData()
-	if not PlayerState.inPvPInstance then
+    if not PlayerState.inPvPInstance then
         return;
     end
 

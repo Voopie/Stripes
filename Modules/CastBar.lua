@@ -150,15 +150,15 @@ local function CreateTimer(unitframe)
     unitframe.castingBar.updateDelay = updateDelay;
     unitframe.castingBar:HookScript('OnUpdate', OnUpdate);
 
-	unitframe.castingBar.Text:SetFontObject('StripesCastBarFont');
+    unitframe.castingBar.Text:SetFontObject('StripesCastBarFont');
 
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.Icon);
-	StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.BorderShield);
+    StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.BorderShield);
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.Timer);
 
     StripesCastingBar_SetStartCastColor(unitframe.castingBar, unpack(START_CAST_COLOR));
-	StripesCastingBar_SetStartChannelColor(unitframe.castingBar, unpack(START_CHANNEL_COLOR));
-	StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, unpack(NONINTERRUPTIBLE_COLOR));
+    StripesCastingBar_SetStartChannelColor(unitframe.castingBar, unpack(START_CHANNEL_COLOR));
+    StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, unpack(NONINTERRUPTIBLE_COLOR));
     StripesCastingBar_SetFailedCastColor(unitframe.castingBar, unpack(FAILED_CAST_COLOR));
 end
 
@@ -168,8 +168,8 @@ local function UpdateColors(unitframe)
     end
 
     StripesCastingBar_SetStartCastColor(unitframe.castingBar, unpack(START_CAST_COLOR));
-	StripesCastingBar_SetStartChannelColor(unitframe.castingBar, unpack(START_CHANNEL_COLOR));
-	StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, unpack(NONINTERRUPTIBLE_COLOR));
+    StripesCastingBar_SetStartChannelColor(unitframe.castingBar, unpack(START_CHANNEL_COLOR));
+    StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, unpack(NONINTERRUPTIBLE_COLOR));
     StripesCastingBar_SetFailedCastColor(unitframe.castingBar, unpack(FAILED_CAST_COLOR));
 end
 

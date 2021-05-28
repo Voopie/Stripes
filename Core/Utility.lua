@@ -33,11 +33,11 @@ U.Print = function(message, debug)
         return;
     end
 
-	if debug and S.Debug then
+    if debug and S.Debug then
         print(string_format('%s | DEBUG | %s', S.Media.GRADIENT_NAME, message));
     else
         print(string_format('%s | %s', S.Media.GRADIENT_NAME, message));
-	end
+    end
 end
 
 U.CanAccessObject = function(obj)

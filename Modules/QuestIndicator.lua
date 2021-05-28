@@ -34,15 +34,15 @@ local LOOT_TYPES = {
 };
 
 local function GetQuestProgress(unit)
-	TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
+    TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
     TooltipScanner:SetUnit(unit);
 
     local tooltipLine, tooltipLineText;
-	local progressGlob, questType, questLogIndex, questId;
-	local objectiveCount = 0;
+    local progressGlob, questType, questLogIndex, questId;
+    local objectiveCount = 0;
 
-	for i = 3, TooltipScanner:NumLines() do
-		tooltipLine     = _G[string_format(TOOLTIP_LINE_PATTERN, TooltipScannerName, TOOLTIP_LINE_TEXT_LEFT, i)];
+    for i = 3, TooltipScanner:NumLines() do
+        tooltipLine     = _G[string_format(TOOLTIP_LINE_PATTERN, TooltipScannerName, TOOLTIP_LINE_TEXT_LEFT, i)];
         tooltipLineText = tooltipLine and tooltipLine:GetText();
 
         if tooltipLineText and tooltipLineText ~= '' then
@@ -86,9 +86,9 @@ local function GetQuestProgress(unit)
             end
 
         end
-	end
+    end
 
-	return progressGlob, progressGlob and 1 or questType, objectiveCount, questLogIndex, questId;
+    return progressGlob, progressGlob and 1 or questType, objectiveCount, questLogIndex, questId;
 end
 
 local function Update(unitframe, unit)
@@ -96,17 +96,17 @@ local function Update(unitframe, unit)
 
     if not ENABLED or not unit or unitframe.data.unitType == 'SELF' or (select(10, C_Scenario_GetInfo()) == LE_SCENARIO_TYPE_CHALLENGE_MODE) then
         unitframe.QuestIndicator:SetShown(false);
-		return;
+        return;
     end
 
     local progressGlob, questType, objectiveCount, questLogIndex, questId = GetQuestProgress(unit);
-	if progressGlob and questType then
+    if progressGlob and questType then
         unitframe.QuestIndicator.counterText:SetText(objectiveCount > 0 and objectiveCount or '?');
 
-		if questType == 1 then
-			unitframe.QuestIndicator.counterText:SetTextColor(1, 1, 1);
-		elseif questType == 2 then
-			unitframe.QuestIndicator.counterText:SetTextColor(1, 0.42, 0.3);
+        if questType == 1 then
+            unitframe.QuestIndicator.counterText:SetTextColor(1, 1, 1);
+        elseif questType == 2 then
+            unitframe.QuestIndicator.counterText:SetTextColor(1, 0.42, 0.3);
         end
 
         local lootIconShow = false;
@@ -157,9 +157,9 @@ local function Update(unitframe, unit)
         end
 
         unitframe.QuestIndicator:SetShown(true);
-	else
-		unitframe.QuestIndicator:SetShown(false);
-	end
+    else
+        unitframe.QuestIndicator:SetShown(false);
+    end
 end
 
 local function Create(unitframe)
@@ -181,22 +181,22 @@ local function Create(unitframe)
         frame.swordIcon:SetPoint('BOTTOMLEFT', frame, 'BOTTOMRIGHT', 4, 0);
     end
 
-	frame.swordIcon:SetSize(16, 16);
-	frame.swordIcon:SetTexture(S.Media.Icons2.TEXTURE);
+    frame.swordIcon:SetSize(16, 16);
+    frame.swordIcon:SetTexture(S.Media.Icons2.TEXTURE);
     frame.swordIcon:SetTexCoord(unpack(S.Media.Icons2.COORDS.ROUNDSHIELD_SWORD));
 
-	frame.lootIcon = frame:CreateTexture(nil, 'BORDER', nil, 1);
+    frame.lootIcon = frame:CreateTexture(nil, 'BORDER', nil, 1);
     frame.lootIcon:SetPoint('BOTTOMLEFT', frame.swordIcon, 'BOTTOMLEFT', -3, 0);
-	frame.lootIcon:SetSize(16, 16);
+    frame.lootIcon:SetSize(16, 16);
     frame.lootIcon:SetTexture(S.Media.Icons2.TEXTURE);
     frame.lootIcon:SetTexCoord(unpack(S.Media.Icons2.COORDS.LOOT));
-	frame.lootIcon:SetShown(false);
+    frame.lootIcon:SetShown(false);
 
     frame.counterText = frame:CreateFontString(nil, 'OVERLAY');
     frame.counterText:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 8, 'OUTLINE');
     frame.counterText:SetJustifyH('CENTER');
-	frame.counterText:SetShadowOffset(1, -1);
-	frame.counterText:SetTextColor(1, 1, 1);
+    frame.counterText:SetShadowOffset(1, -1);
+    frame.counterText:SetTextColor(1, 1, 1);
 
     unitframe.QuestIndicator = frame;
 end
@@ -206,9 +206,9 @@ local function UpdateQuestLogIndexCache()
 
     for i = 1, C_QuestLog_GetNumQuestLogEntries() do
         local info = C_QuestLog_GetInfo(i);
-		if info and not info.isHeader then
+        if info and not info.isHeader then
             QuestLogIndexCache[info.title] = i;
-		end
+        end
     end
 
     for _, unitframe in pairs(NP) do
