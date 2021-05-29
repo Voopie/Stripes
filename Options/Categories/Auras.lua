@@ -1094,19 +1094,27 @@ panel.Load = function(self)
 
     self.auras_custom_editbox = E.CreateEditBox(self.TabsFrames['CustomTab'].Content);
     self.auras_custom_editbox:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 5, -12);
-    self.auras_custom_editbox:SetSize(160, 22);
+    self.auras_custom_editbox:SetSize(200, 22);
     self.auras_custom_editbox.useLastValue = false;
     self.auras_custom_editbox:SetInstruction(L['OPTIONS_AURAS_CUSTOM_EDITBOX_ENTER_ID']);
     self.auras_custom_editbox:SetScript('OnEnterPressed', function(self)
-        local id = tonumber(strtrim(self:GetText()));
+        local text = strtrim(self:GetText());
+        local saveId;
+        local id = tonumber(text);
 
-        if type(id) ~= 'number' or id == 0 or not GetSpellInfo(id) then
+        if id and id ~= 0 and GetSpellInfo(id) then
+            saveId = id;
+        else
+            saveId = tonumber(select(7, GetSpellInfo(text)) or '');
+        end
+
+        if not saveId then
             self:SetText('');
             self:ClearFocus();
             return;
         end
 
-        AddCustomAura(id);
+        AddCustomAura(tonumber(saveId));
 
         panel:UpdateScroll();
         self:SetText('');
