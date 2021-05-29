@@ -37,6 +37,8 @@ L['FRAME_ANCHOR_TOP'] = 'Top';
 L['FRAME_ANCHOR_TOPLEFT'] = 'Top left';
 L['FRAME_ANCHOR_TOPRIGHT'] = 'Top right';
 
+L['FRAME_STRATA_INHERIT'] = 'Inherit';
+
 L['AURAS_SORT_EXPIRES_ASC'] = 'By less time';
 L['AURAS_SORT_EXPIRES_DESC'] = 'By longer time';
 
@@ -395,6 +397,17 @@ L['OPTIONS_VISIBILITY_SHOW_ENEMY_PETS'] = 'Pets';
 L['OPTIONS_VISIBILITY_SHOW_ENEMY_PETS_TOOLTIP'] = 'Show enemy pets';
 L['OPTIONS_VISIBILITY_SHOW_ENEMY_TOTEMS'] = 'Totems';
 L['OPTIONS_VISIBILITY_SHOW_ENEMY_TOTEMS_TOOLTIP'] = 'Show enemy totems';
+L['OPTIONS_HEADER_RAID_TARGET_ICON'] = 'Target marker icon';
+L['OPTIONS_RAID_TARGET_ICON_SHOW'] = 'Show';
+L['OPTIONS_RAID_TARGET_ICON_SHOW_TOOLTIP'] = 'Show target marker icon';
+L['OPTIONS_RAID_TARGET_ICON_SCALE'] = 'Scale';
+L['OPTIONS_RAID_TARGET_ICON_SCALE_TOOLTIP'] = 'Scale of the target marker icon';
+L['OPTIONS_RAID_TARGET_ICON_POSITION'] = 'Position';
+L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP'] = 'Position of the target marker icon';
+L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_X_TOOLTIP'] = 'Horizontal offset of the target marker icon';
+L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_Y_TOOLTIP'] = 'Vertical offset of the target marker icon';
+L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA'] = 'Strata';
+L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP'] = 'Strata of the target marker icon';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Percentage';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Enable';

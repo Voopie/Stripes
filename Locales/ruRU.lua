@@ -37,6 +37,8 @@ L['FRAME_ANCHOR_TOP'] = 'Сверху';
 L['FRAME_ANCHOR_TOPLEFT'] = 'Сверху слева';
 L['FRAME_ANCHOR_TOPRIGHT'] = 'Сверху справа';
 
+L['FRAME_STRATA_INHERIT'] = 'Наследовать';
+
 L['AURAS_SORT_EXPIRES_ASC'] = 'По меньшему времени';
 L['AURAS_SORT_EXPIRES_DESC'] = 'По большему времени';
 
@@ -395,6 +397,17 @@ L['OPTIONS_VISIBILITY_SHOW_ENEMY_PETS'] = 'Питомцы';
 L['OPTIONS_VISIBILITY_SHOW_ENEMY_PETS_TOOLTIP'] = 'Показывать враждебных питомцев';
 L['OPTIONS_VISIBILITY_SHOW_ENEMY_TOTEMS'] = 'Тотемы';
 L['OPTIONS_VISIBILITY_SHOW_ENEMY_TOTEMS_TOOLTIP'] = 'Показывать враждебные тотемы';
+L['OPTIONS_HEADER_RAID_TARGET_ICON'] = 'Метка цели';
+L['OPTIONS_RAID_TARGET_ICON_SHOW'] = 'Показывать';
+L['OPTIONS_RAID_TARGET_ICON_SHOW_TOOLTIP'] = 'Показывать метку цели';
+L['OPTIONS_RAID_TARGET_ICON_SCALE'] = 'Масштаб';
+L['OPTIONS_RAID_TARGET_ICON_SCALE_TOOLTIP'] = 'Масштаб метки цели';
+L['OPTIONS_RAID_TARGET_ICON_POSITION'] = 'Расположение';
+L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP'] = 'Расположение метки цели';
+L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение метки цели';
+L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение метки цели';
+L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA'] = 'Слой';
+L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP'] = 'Слой метки цели';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Проценты';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Включить';

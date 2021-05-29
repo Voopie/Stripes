@@ -24,6 +24,7 @@ local POSITION, POSITION_V, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_SPACE, SHOW_A
 local NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 local NAME_PVP, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
+local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
 
 local StripesNameFont      = CreateFont('StripesNameFont');
 local StripesGuildNameFont = CreateFont('StripesGuildNameFont');
@@ -202,6 +203,40 @@ local function UpdateNameVisibility(unitframe)
     end
 end
 
+local UpdateRaidTargetIconPosition = {
+    [1] = function(unitframe)
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'RIGHT', unitframe.healthBar, 'LEFT', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
+    end,
+
+    [2] = function(unitframe)
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'LEFT', unitframe.healthBar, 'RIGHT', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
+    end,
+
+    [3] = function(unitframe)
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'CENTER', unitframe.healthBar, 'CENTER', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
+    end,
+
+    [4] = function(unitframe)
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.healthBar, 'TOP', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
+    end,
+
+    [5] = function(unitframe)
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'TOP', unitframe.healthBar, 'BOTTOM', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
+    end,
+};
+
+local function UpdateRaidTargetIcon(unitframe)
+    unitframe.RaidTargetFrame:SetScale(RAID_TARGET_ICON_SCALE);
+
+    if RAID_TARGET_ICON_FRAME_STRATA == 1 then
+        unitframe.RaidTargetFrame:SetFrameStrata(unitframe.RaidTargetFrame:GetParent():GetFrameStrata());
+    else
+        unitframe.RaidTargetFrame:SetFrameStrata(RAID_TARGET_ICON_FRAME_STRATA);
+    end
+
+    unitframe.RaidTargetFrame:SetShown(RAID_TARGET_ICON_SHOW);
+end
+
 local function NameOnly_UpdateHealthBar(unitframe)
     if unitframe.data.unitType == 'SELF' then
         return;
@@ -215,7 +250,7 @@ local function NameOnly_UpdateHealthBar(unitframe)
         unitframe.healthBar:SetShown(false);
         unitframe.classificationIndicator:SetShown(false);
     else
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'RIGHT', unitframe.healthBar, 'LEFT', -15, 0);
+        UpdateRaidTargetIconPosition[RAID_TARGET_ICON_POSITION](unitframe);
 
         unitframe.healthBar:SetShown(not unitframe.data.widgetsOnly);
     end
@@ -304,6 +339,8 @@ function Module:UnitAdded(unitframe)
     NameOnly_CreateGuildName(unitframe);
     NameOnly_UpdateGuildName(unitframe);
 
+    UpdateRaidTargetIcon(unitframe);
+
     UpdateAnchor(unitframe);
 end
 
@@ -324,6 +361,8 @@ function Module:Update(unitframe)
     NameOnly_UpdateHealth(unitframe);
     NameOnly_CreateGuildName(unitframe);
     NameOnly_UpdateGuildName(unitframe);
+
+    UpdateRaidTargetIcon(unitframe);
 
     UpdateAnchor(unitframe);
 end
@@ -364,6 +403,13 @@ function Module:UpdateLocalConfig()
     NAME_WITHOUT_REALM = O.db.name_without_realm;
 
     NAME_TEXT_ENABLED = O.db.name_text_enabled;
+
+    RAID_TARGET_ICON_SHOW              = O.db.raid_target_icon_show;
+    RAID_TARGET_ICON_SCALE             = O.db.raid_target_icon_scale;
+    RAID_TARGET_ICON_FRAME_STRATA      = O.db.raid_target_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.raid_target_icon_frame_strata] or 1;
+    RAID_TARGET_ICON_POSITION          = O.db.raid_target_icon_position;
+    RAID_TARGET_ICON_POSITION_OFFSET_X = O.db.raid_target_icon_position_offset_x;
+    RAID_TARGET_ICON_POSITION_OFFSET_Y = O.db.raid_target_icon_position_offset_y;
 
     UpdateFontObject(SystemFont_NamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
     UpdateFontObject(SystemFont_NamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);

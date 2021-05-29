@@ -48,6 +48,14 @@ O.Lists = {
         [2] = L['POSITION_BOTTOM'],
     },
 
+    raid_target_icon_position = {
+        [1] = L['POSITION_LEFT'],
+        [2] = L['POSITION_RIGHT'],
+        [3] = L['POSITION_CENTER'],
+        [4] = L['POSITION_TOP'],
+        [5] = L['POSITION_BOTTOM'],
+    },
+
     auras_sort_method = {
         [1] = L['AURAS_SORT_EXPIRES_ASC'],
         [2] = L['AURAS_SORT_EXPIRES_DESC'],
@@ -116,6 +124,18 @@ O.Lists = {
         [1] = L['POSITION_LEFT'],
         [2] = L['POSITION_CENTER'],
         [3] = L['POSITION_RIGHT'],
+    },
+
+    frame_strata = {
+        [1] = L['FRAME_STRATA_INHERIT'],
+        [2] = 'BACKGROUND',
+        [3] = 'LOW',
+        [4] = 'MEDIUM',
+        [5] = 'HIGH',
+        [6] = 'DIALOG',
+        [7] = 'FULLSCREEN',
+        [8] = 'FULLSCREEN_DIALOG',
+        [9] = 'TOOLTIP',
     },
 
     custom_color_npcs = {
@@ -317,6 +337,13 @@ O.DefaultValues = {
     hide_non_casting_enabled              = false,
     hide_non_casting_modifier             = 2, -- CTRL
     hide_non_casting_show_uninterruptible = true,
+
+    raid_target_icon_show              = true,
+    raid_target_icon_scale             = 1,
+    raid_target_icon_frame_strata      = 1, -- Inherit
+    raid_target_icon_position          = 1, -- LEFT
+    raid_target_icon_position_offset_x = -4,
+    raid_target_icon_position_offset_y = 0,
 
     name_only_friendly_enabled               = C_CVar.GetCVar('nameplateShowOnlyNames') == '1',
     name_only_friendly_color_name_by_health  = true,

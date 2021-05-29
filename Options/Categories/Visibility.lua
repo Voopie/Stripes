@@ -1,14 +1,14 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_Visibility');
 
-O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);
+O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);
 local button = O.frame.Left.Visibility;
 local panel = O.frame.Right.Visibility;
 
 panel.TabsData = {
     [1] = {
         name  = 'CommonTab',
-        title = string.upper(L['OPTIONS_VISIBILITY_TAB_COMMON']),
+        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_VISIBILITY_TAB_COMMON']),
     },
     [2] = {
         name  = 'EnemyTab',
@@ -150,9 +150,8 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.max_distance_openworld, 'BOTTOMLEFT', -5, -4);
     Delimiter:SetW(self:GetWidth());
 
-
     self.hide_non_casting_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.hide_non_casting_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.hide_non_casting_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
     self.hide_non_casting_enabled:SetLabel(L['OPTIONS_VISIBILITY_HIDE_NON_CAST_ENABLED']);
     self.hide_non_casting_enabled:SetTooltip(L['OPTIONS_VISIBILITY_HIDE_NON_CAST_ENABLED_TOOLTIP']);
     self.hide_non_casting_enabled:AddToSearch(button, nil, self.Tabs[1]);
@@ -193,6 +192,79 @@ panel.Load = function(self)
     self.hide_non_casting_show_uninterruptible:SetEnabled(O.db.hide_non_casting_enabled);
     self.hide_non_casting_show_uninterruptible.Callback = function(self)
         O.db.hide_non_casting_show_uninterruptible = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    local RaidTargeIconHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, S.Media.INLINE_NEW_ICON .. L['OPTIONS_HEADER_RAID_TARGET_ICON']);
+    RaidTargeIconHeader:SetPosition('TOPLEFT', self.hide_non_casting_enabled, 'BOTTOMLEFT', 0, -8);
+    RaidTargeIconHeader:SetW(self:GetWidth());
+
+    self.raid_target_icon_show = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.raid_target_icon_show:SetPosition('TOPLEFT', RaidTargeIconHeader, 'BOTTOMLEFT', 0, -12);
+    self.raid_target_icon_show:SetLabel(L['OPTIONS_RAID_TARGET_ICON_SHOW']);
+    self.raid_target_icon_show:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_SHOW_TOOLTIP']);
+    self.raid_target_icon_show:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_SHOW_TOOLTIP'], self.Tabs[1]);
+    self.raid_target_icon_show:SetChecked(O.db.raid_target_icon_show);
+    self.raid_target_icon_show.Callback = function(self)
+        O.db.raid_target_icon_show = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.raid_target_icon_scale = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.raid_target_icon_scale:SetPosition('LEFT', self.raid_target_icon_show.Label, 'RIGHT', 16, 0);
+    self.raid_target_icon_scale:SetW(137);
+    self.raid_target_icon_scale:SetLabel(L['OPTIONS_RAID_TARGET_ICON_SCALE']);
+    self.raid_target_icon_scale:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_SCALE_TOOLTIP']);
+    self.raid_target_icon_scale:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_SCALE_TOOLTIP'], self.Tabs[1]);
+    self.raid_target_icon_scale:SetValues(O.db.raid_target_icon_scale, 0.1, 2, 0.05);
+    self.raid_target_icon_scale.OnValueChangedCallback = function(_, value)
+        O.db.raid_target_icon_scale = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.raid_target_icon_frame_strata = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.raid_target_icon_frame_strata:SetPosition('LEFT', self.raid_target_icon_scale, 'RIGHT', 12, 0);
+    self.raid_target_icon_frame_strata:SetSize(160, 20);
+    self.raid_target_icon_frame_strata:SetList(O.Lists.frame_strata);
+    self.raid_target_icon_frame_strata:SetValue(O.db.raid_target_icon_frame_strata);
+    self.raid_target_icon_frame_strata:SetLabel(L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA']);
+    self.raid_target_icon_frame_strata:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP']);
+    self.raid_target_icon_frame_strata:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP'], self.Tabs[1]);
+    self.raid_target_icon_frame_strata.OnValueChangedCallback = function(_, value)
+        O.db.raid_target_icon_frame_strata = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.raid_target_icon_position = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.raid_target_icon_position:SetPosition('TOPLEFT', self.raid_target_icon_show, 'BOTTOMLEFT', 0, -12);
+    self.raid_target_icon_position:SetSize(100, 20);
+    self.raid_target_icon_position:SetList(O.Lists.raid_target_icon_position);
+    self.raid_target_icon_position:SetValue(O.db.raid_target_icon_position);
+    self.raid_target_icon_position:SetLabel(L['OPTIONS_RAID_TARGET_ICON_POSITION']);
+    self.raid_target_icon_position:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP']);
+    self.raid_target_icon_position:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP'], self.Tabs[1]);
+    self.raid_target_icon_position.OnValueChangedCallback = function(_, value)
+        O.db.raid_target_icon_position = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.raid_target_icon_position_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.raid_target_icon_position_offset_x:SetPosition('LEFT', self.raid_target_icon_position, 'RIGHT', 12, 0);
+    self.raid_target_icon_position_offset_x:SetValues(O.db.raid_target_icon_position_offset_x, -50, 50, 1);
+    self.raid_target_icon_position_offset_x:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_X_TOOLTIP']);
+    self.raid_target_icon_position_offset_x:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_X_TOOLTIP'], self.Tabs[1]);
+    self.raid_target_icon_position_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.raid_target_icon_position_offset_x = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.raid_target_icon_position_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.raid_target_icon_position_offset_y:SetPosition('LEFT', self.raid_target_icon_position_offset_x, 'RIGHT', 12, 0);
+    self.raid_target_icon_position_offset_y:SetValues(O.db.raid_target_icon_position_offset_y, -50, 50, 1);
+    self.raid_target_icon_position_offset_y:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_Y_TOOLTIP']);
+    self.raid_target_icon_position_offset_y:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
+    self.raid_target_icon_position_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.raid_target_icon_position_offset_y = tonumber(value);
         Handler:UpdateAll();
     end
 
