@@ -24,16 +24,9 @@ local UPDATE_INTERVAL = 0.2;
 local elapsed = 0;
 
 local function TargetChanged(unitframe)
-    if unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' then
+    if unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
         unitframe.TargetName.text:SetShown(false);
         return;
-    end
-
-    if ONLY_ENEMY then
-        if unitframe.data.commonReaction == 'FRIENDLY' then
-            unitframe.TargetName.text:SetShown(false);
-            return;
-        end
     end
 
     if unitframe.TargetName.targetName then
@@ -75,7 +68,7 @@ local function Create(unitframe)
         return;
     end
 
-    local text = unitframe:CreateFontString(nil, 'OVERLAY', 'SystemFont_NamePlate');
+    local text = unitframe:CreateFontString(nil, 'OVERLAY', 'StripesNameFont');
     PixelUtil.SetPoint(text, 'LEFT', unitframe.name, 'RIGHT', 2, 0);
     text:SetTextColor(1, 1, 1);
 
