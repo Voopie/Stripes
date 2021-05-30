@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('Auras_Pandemic');
 local select, ipairs, table_wipe, bit_band = select, ipairs, wipe, bit.band;
 
 -- WoW API
-local UnitAura, IsPlayerSpell = UnitAura, IsPlayerSpell;
+local UnitAura, GetSpellInfo, IsSpellKnown = UnitAura, GetSpellInfo, IsSpellKnown;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED, PANDEMIC_COLOR;
@@ -16,6 +16,15 @@ local CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LP
 local CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
 local knownSpells = {};
+
+local function GetTrullySpellId(spellId)
+    return select(7, GetSpellInfo(GetSpellInfo(spellId))); -- here we extract the spell name and then get needed spellId by spell name
+end
+
+--[[
+    IsPlayerSpell(spellId), IsSpellKnown(spellId), IsSpellKnownOrOverridesKnown(spellId)
+    Incorrectly returned false for some spells
+]]
 
 local function Update(unitframe)
     if not ENABLED or not COUNTDOWN_ENABLED or unitframe.data.unitType == 'SELF' or not unitframe.BuffFrame then
@@ -32,7 +41,9 @@ local function Update(unitframe)
 
             if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
                 if expirationTime - GetTime() <= duration/100*30 and expirationTime - GetTime() >= 1 then
-                    if knownSpells[spellId] or IsPlayerSpell(spellId) then
+                    spellId = GetTrullySpellId(spellId);
+
+                    if spellId and (knownSpells[spellId] or IsSpellKnown(spellId)) then
                         buff.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4] or 1);
 
                         if not knownSpells[spellId] then
