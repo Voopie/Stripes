@@ -124,7 +124,7 @@ local function CreateCustomAuraRow(frame)
     frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
 
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
+    frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 10, 0);
     frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
@@ -194,7 +194,7 @@ local function UpdateCustomAuraRow(frame)
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
     frame.Icon:SetTexture(icon)
-    frame.NameText:SetText(name);
+    frame.NameText:SetText('|cffaaaaaa[' .. frame.id .. ']|r  ' .. name);
 
     if frame.filter == 'HELPFUL' then
         frame.FilterToggleButton.texture:SetColorTexture(0.4, 0.85, 0.4);
