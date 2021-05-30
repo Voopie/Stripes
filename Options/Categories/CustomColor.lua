@@ -8,7 +8,7 @@ local panel = O.frame.Right.CustomColor;
 local framePool;
 local ROW_HEIGHT = 28;
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
-local NAME_WIDTH = 300;
+local NAME_WIDTH = 400;
 local DELAY_SECONDS = 0.2;
 
 local DEFAULT_LIST_VALUE = 1;
