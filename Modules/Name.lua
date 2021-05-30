@@ -34,16 +34,6 @@ local ARENAID_STRING_FORMAT = '%s  %s';
 local GUILD_NAME_FORMAT = '«%s»';
 local GREY_COLOR_START = '|cff666666';
 
--- local strangeFontSize = 31330.236328125;
-
--- local function UpdateStrangeFont(unitframe)
---     local _, size = unitframe.name:GetFontObject():GetFont();
-
---     if strangeFontSize == size then
---         unitframe.name:SetFontObject(SystemFont_NamePlate);
---     end
--- end
-
 local function UpdateFont(unitframe)
     unitframe.name:SetFontObject(StripesNameFont);
 end
