@@ -17,7 +17,7 @@ local CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
 local knownSpells = {};
 
-local function GetTrullySpellId(spellId)
+local function GetTrulySpellId(spellId)
     return select(7, GetSpellInfo(GetSpellInfo(spellId))); -- here we extract the spell name and then get needed spellId by spell name
 end
 
@@ -41,7 +41,7 @@ local function Update(unitframe)
 
             if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
                 if expirationTime - GetTime() <= duration/100*30 and expirationTime - GetTime() >= 1 then
-                    spellId = GetTrullySpellId(spellId);
+                    spellId = GetTrulySpellId(spellId);
 
                     if spellId and (knownSpells[spellId] or IsSpellKnown(spellId)) then
                         buff.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4] or 1);
