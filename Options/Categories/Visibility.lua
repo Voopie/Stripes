@@ -159,13 +159,8 @@ panel.Load = function(self)
     self.hide_non_casting_enabled.Callback = function(self)
         O.db.hide_non_casting_enabled = self:GetChecked();
 
-        if not O.db.hide_non_casting_enabled then
-            panel.hide_non_casting_modifier:SetEnabled(false);
-            panel.hide_non_casting_show_uninterruptible:SetEnabled(false);
-        else
-            panel.hide_non_casting_modifier:SetEnabled(true);
-            panel.hide_non_casting_show_uninterruptible:SetEnabled(true);
-        end
+        panel.hide_non_casting_modifier:SetEnabled(O.db.hide_non_casting_enabled);
+        panel.hide_non_casting_show_uninterruptible:SetEnabled(O.db.hide_non_casting_enabled);
 
         Handler:UpdateAll();
     end
@@ -680,6 +675,8 @@ panel.Load = function(self)
         panel.show_personal_always:SetEnabled(O.db.show_personal);
 
         C_CVar.SetCVar('nameplateShowSelf', O.db.show_personal and 1 or 0);
+
+        Handler:UpdateAll();
     end
 
     self.show_personal_always = E.CreateCheckButton(self.TabsFrames['SelfTab'].Content);
