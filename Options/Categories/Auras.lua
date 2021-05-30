@@ -1168,7 +1168,7 @@ panel.Load = function(self)
         panel:UpdateScroll();
     end
 
-    self.CopyFromProfileText = E.CreateFontString(self);
+    self.CopyFromProfileText = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
     self.CopyFromProfileText:SetPosition('BOTTOMLEFT', self.ProfilesDropdown, 'TOPLEFT', 0, 0);
     self.CopyFromProfileText:SetText(L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE']);
 end
