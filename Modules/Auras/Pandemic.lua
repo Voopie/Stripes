@@ -44,7 +44,7 @@ local function Update(unitframe)
                     spellId = GetTrulySpellId(spellId);
 
                     if spellId and (knownSpells[spellId] or IsSpellKnown(spellId)) then
-                        buff.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4] or 1);
+                        buff.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
 
                         if not knownSpells[spellId] then
                             knownSpells[spellId] = true;
