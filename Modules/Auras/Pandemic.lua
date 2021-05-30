@@ -17,14 +17,18 @@ local CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
 local knownSpells = {};
 
-local function GetTrulySpellId(spellId)
-    return select(7, GetSpellInfo(GetSpellInfo(spellId))); -- here we extract the spell name and then get needed spellId by spell name
-end
-
 --[[
     IsPlayerSpell(spellId), IsSpellKnown(spellId), IsSpellKnownOrOverridesKnown(spellId)
     Incorrectly returned false for some spells
 ]]
+
+local function GetTrulySpellId(spellId)
+    return select(7, GetSpellInfo(GetSpellInfo(spellId))); -- here we extract the spell name and then get needed spellId by spell name
+end
+
+local function IsOnPandemic(duration, expirationTime)
+    return expirationTime - GetTime() <= duration/100*30 and expirationTime - GetTime() >= 1;
+end
 
 local function Update(unitframe)
     if not ENABLED or not COUNTDOWN_ENABLED or unitframe.data.unitType == 'SELF' or not unitframe.BuffFrame then
@@ -36,11 +40,10 @@ local function Update(unitframe)
     for _, buff in ipairs(unitframe.BuffFrame.buffList) do
         duration, expirationTime, _, _, _, spellId = select(5, UnitAura(unitframe.BuffFrame.unit, buff:GetID(), unitframe.BuffFrame.filter));
 
-        if spellId and expirationTime and duration then
-            flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
-
-            if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
-                if expirationTime - GetTime() <= duration/100*30 and expirationTime - GetTime() >= 1 then
+        if spellId and duration and expirationTime then
+            if IsOnPandemic(duration, expirationTime) then
+                flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
+                if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
                     spellId = GetTrulySpellId(spellId);
 
                     if spellId and (knownSpells[spellId] or IsSpellKnown(spellId)) then
@@ -50,9 +53,9 @@ local function Update(unitframe)
                             knownSpells[spellId] = true;
                         end
                     end
-                else
-                    buff.Cooldown:GetRegions():SetTextColor(1, 1, 1, 1);
                 end
+            else
+                buff.Cooldown:GetRegions():SetTextColor(1, 1, 1, 1);
             end
         end
     end
