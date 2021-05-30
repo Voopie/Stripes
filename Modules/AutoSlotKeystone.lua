@@ -6,6 +6,10 @@ function Module:Slot()
         return;
     end
 
+	if C_ChallengeMode.HasSlottedKeystone() then
+		return;
+	end
+
 	for container = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
 		local slots = GetContainerNumSlots(container);
 
