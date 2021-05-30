@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('HealthBar');
 
 -- Lua API
-local select, unpack = select, unpack;
+local unpack = unpack;
 
 -- WoW API
 local UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =

@@ -18,7 +18,6 @@ local NP = S.NamePlates;
 local ENABLED, ONLY_ENEMY;
 
 local PlayerName = D.Player.Name;
-local LIST_FONT_FLAGS = O.Lists.font_flags;
 local YOU = YOU;
 
 local UPDATE_INTERVAL = 0.2;

@@ -293,7 +293,7 @@ do
 	preloader:SetPoint('TOP', UIParent, 'BOTTOM', 0, -500);
 	preloader:SetSize(100, 100);
 
-	local cacheFont = function(key, data)
+	local cacheFont = function(_, data)
 		local loadFont = preloader:CreateFontString()
 		loadFont:SetAllPoints()
 

@@ -312,7 +312,7 @@ function Module:Find(editbox, str)
             table.sort(filtered, function(a, b) return a[3] > b[3]; end);
 
             local text;
-            for i, result in ipairs(filtered) do
+            for _, result in ipairs(filtered) do
                 numResults = numResults + 1;
                 text = strsplit('|n', prepareFuzzy[result[1]]);
 
