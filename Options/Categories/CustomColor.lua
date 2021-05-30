@@ -126,6 +126,20 @@ local function CreateRow(frame)
     end);
 
     E.CreateTooltip(frame);
+
+    frame:HookScript('OnEnter', function(self)
+        if modelBlacklist[self.npc_id] then
+            return;
+        end
+
+        ModelFrame:SetCreature(self.npc_id);
+        GameTooltip_InsertFrame(GameTooltip, HolderModelFrame, 0);
+        HolderModelFrame:SetSize(GameTooltip:GetWidth(), GameTooltip:GetWidth() * 2);
+        HolderModelFrame:SetPoint('TOPLEFT', GameTooltip, 'BOTTOMLEFT', 0, -1);
+        ModelFrame:SetSize(GameTooltip:GetWidth() - 3, GameTooltip:GetWidth() * 2 - 3);
+        ModelFrame:SetCamDistanceScale(1.2);
+    end);
+
 end
 
 local function UpdateRow(frame)
@@ -148,10 +162,10 @@ local function UpdateRow(frame)
     end
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
-    frame.NameText:SetText(frame.name);
+    frame.NameText:SetText('|cffaaaaaa[' .. frame.npc_id .. ']|r  ' .. frame.name);
     frame.ColorPicker:SetValue(unpack(frame.color));
 
-    frame.tooltip = frame.npc_id;
+    frame.tooltip = string.format(LIST_TOOLTIP_PATTERN, frame.name, frame.npc_id);
 end
 
 panel.UpdateScroll = function()
