@@ -364,7 +364,7 @@ panel.Load = function(self)
 
     self.EditNameEditBox:SetTextInsets(0, 0, 0, 0);
 
-    self.EditNameEditBox.FocusLostCallback = function(self)
+    self.EditNameEditBox.FocusLostCallback = function()
         if panel.SaveProfileName:IsMouseOver() then
             return;
         end
