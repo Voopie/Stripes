@@ -47,6 +47,7 @@ L['MINIMAP_BUTTON_OPEN'] = 'Открыть настройки «Stripes»';
 L['MINIMAP_BUTTON_RMB'] = 'ПКМ';
 L['MINIMAP_BUTTON_HIDE'] = 'Скрыть эту кнопку';
 L['MINIMAP_BUTTON_COMMAND_SHOW'] = 'Напишите в чате /stripes minimap, чтобы снова показать кнопку у миникарты';
+L['MINIMAP_ACTIVE_PROFILE'] = 'Активный профиль';
 
 L['DUNGEON_SL_MISTS'] = 'Туманы Тирна Скитта';
 L['DUNGEON_SL_NW'] = 'Смертельная тризна';

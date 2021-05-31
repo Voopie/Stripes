@@ -47,6 +47,7 @@ L['MINIMAP_BUTTON_OPEN'] = 'Open «Stripes» options';
 L['MINIMAP_BUTTON_RMB'] = 'RMB';
 L['MINIMAP_BUTTON_HIDE'] = 'Hide this button';
 L['MINIMAP_BUTTON_COMMAND_SHOW'] = 'Use /stripes minimap to show the minimap button again';
+L['MINIMAP_ACTIVE_PROFILE'] = 'Active profile';
 
 L['DUNGEON_SL_MISTS'] = 'Mists of Tirna Scithe';
 L['DUNGEON_SL_NW'] = 'The Necrotic Wake';
