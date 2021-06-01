@@ -35,7 +35,7 @@ panel.Load = function(self)
 
     self.motion = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
     self.motion:SetPosition('TOPLEFT', self.TabsFrames['CommonTab'].Content, 'TOPLEFT', 0, -4);
-    self.motion:SetSize(160, 20);
+    self.motion:SetSize(170, 20);
     self.motion:SetList(O.Lists.motion);
     self.motion:SetValue(O.db.motion);
     self.motion:SetLabel(L['OPTIONS_VISIBILITY_MOTION']);
