@@ -28,10 +28,14 @@ NAMESPACE[6] = {};                       -- Elements
 
 local L = setmetatable(NAMESPACE[2], {
 	__index = function(t, k)
-        if EN_I18N[tostring(k)] then
-            t[k] = tostring(EN_I18N[tostring(k)]);
-        else
+        if gameLocale == 'enUS' then
             t[k] = tostring(k);
+        else
+            if EN_I18N[tostring(k)] then
+                t[k] = tostring(EN_I18N[tostring(k)]);
+            else
+                t[k] = tostring(k);
+            end
         end
 
         return t[k];
