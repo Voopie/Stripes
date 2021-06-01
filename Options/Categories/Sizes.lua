@@ -176,7 +176,7 @@ panel.Load = function(self)
     self.size_friendly_click_through:SetPosition('TOPLEFT', self.size_friendly_clickable_width, 'BOTTOMLEFT', 0, -12);
     self.size_friendly_click_through:SetLabel(L['OPTIONS_SIZES_FRIENDLY_CLICK_THROUGH']);
     self.size_friendly_click_through:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_CLICK_THROUGH_TOOLTIP']);
-    self.size_friendly_click_through:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLYCLICK_THROUGH_TOOLTIP'], self.Tabs[2]);
+    self.size_friendly_click_through:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_CLICK_THROUGH_TOOLTIP'], self.Tabs[2]);
     self.size_friendly_click_through:SetChecked(O.db.size_friendly_click_through);
     self.size_friendly_click_through.Callback = function(self)
         O.db.size_friendly_click_through = self:GetChecked();
