@@ -35,19 +35,19 @@ local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HELPFUL';
 local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 
-local function CreateAnchor(uniframe)
-    if uniframe.AurasMythicPlus then
+local function CreateAnchor(unitframe)
+    if unitframe.AurasMythicPlus then
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentAurasMythicPlus', uniframe);
-    frame:SetPoint('RIGHT', uniframe.healthBar, 'RIGHT', 0, 0);
+    local frame = CreateFrame('Frame', '$parentAurasMythicPlus', unitframe);
+    frame:SetPoint('RIGHT', unitframe.healthBar, 'RIGHT', 0, 0);
     frame:SetHeight(14);
 
     frame.buffList = {};
     frame.buffCompact = {};
 
-    uniframe.AurasMythicPlus = frame;
+    unitframe.AurasMythicPlus = frame;
 end
 
 local function UpdateAnchor(unitframe)

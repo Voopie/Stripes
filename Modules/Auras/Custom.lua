@@ -23,19 +23,19 @@ local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 local filterHelpful = 'HELPFUL';
 local filterHarmful = 'HARMFUL';
 
-local function CreateAnchor(uniframe)
-    if uniframe.AurasCustom then
+local function CreateAnchor(unitframe)
+    if unitframe.AurasCustom then
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentAurasCustom', uniframe);
-    frame:SetPoint('RIGHT', uniframe.healthBar, 'RIGHT', 0, 0);
+    local frame = CreateFrame('Frame', '$parentAurasCustom', unitframe);
+    frame:SetPoint('RIGHT', unitframe.healthBar, 'RIGHT', 0, 0);
     frame:SetHeight(14);
 
     frame.buffList = {};
     frame.buffCompact = {};
 
-    uniframe.AurasCustom = frame;
+    unitframe.AurasCustom = frame;
 end
 
 local function UpdateAnchor(unitframe)
