@@ -473,6 +473,13 @@ L['OPTIONS_PVE_HEALERS_ENABLED_TOOLTIP'] = 'Показывать метки на
 L['OPTIONS_PVE_HEALERS_SCALE_TOOLTIP'] = 'Масштаб метки лекаря в PvE';
 L['OPTIONS_PVE_HEALERS_SOUND'] = 'Звук';
 L['OPTIONS_PVE_HEALERS_SOUND_TOOLTIP'] = 'Воспроизвести звук при наведении на лекаря в PvE';
+L['OPTIONS_COMBAT_INDICATOR_HEADER'] = 'Индикатор боя';
+L['OPTIONS_COMBAT_INDICATOR_ENABLED'] = 'Включить';
+L['OPTIONS_COMBAT_INDICATOR_ENABLED_TOOLTIP'] = 'Показывать значок в зависимости от того, в бою ли видимый неймплейт';
+L['OPTIONS_COMBAT_INDICATOR_COLOR_TOOLTIP'] = 'Цвет индикатора боя';
+L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение значка индикатора боя';
+L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение значка индикатора боя';
+L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP'] = 'Размер значка индикатора боя';
 
 L['OPTIONS_AURAS_TAB_COMMON'] = 'Основное';
 L['OPTIONS_AURAS_TAB_SPELLSTEAL'] = 'Развеиваемые';

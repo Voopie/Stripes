@@ -85,7 +85,8 @@ S.Media.Icons2 = {
         ASTERISK            = {3/4, 4/4,        0, 1/4},
 
         -- 2nd row
-        REFRESH_WHITE = {0, 1/4, 1/4, 2/4},
+        REFRESH_WHITE      = {  0, 1/4, 1/4, 2/4},
+        CROSS_SWORDS_WHITE = {1/4, 2/4, 1/4, 2/4},
     },
 };
 

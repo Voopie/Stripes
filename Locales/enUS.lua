@@ -473,6 +473,13 @@ L['OPTIONS_PVE_HEALERS_ENABLED_TOOLTIP'] = 'Show marks on enemy healers in PvE (
 L['OPTIONS_PVE_HEALERS_SCALE_TOOLTIP'] = 'Set scale of the marks in PvE';
 L['OPTIONS_PVE_HEALERS_SOUND'] = 'Sound';
 L['OPTIONS_PVE_HEALERS_SOUND_TOOLTIP'] = 'Play sound when hovering a healer in PvE';
+L['OPTIONS_COMBAT_INDICATOR_HEADER'] = 'Combat indicator';
+L['OPTIONS_COMBAT_INDICATOR_ENABLED'] = 'Enable';
+L['OPTIONS_COMBAT_INDICATOR_ENABLED_TOOLTIP'] = 'Show the icon depending on whether the visible nameplate is in combat';
+L['OPTIONS_COMBAT_INDICATOR_COLOR_TOOLTIP'] = 'Color of combat indicator icon';
+L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP'] = 'Horizontal offset of combat indicator icon';
+L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of combat indicator icon';
+L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP'] = 'Size of combat indicator icon';
 
 L['OPTIONS_AURAS_TAB_COMMON'] = 'General';
 L['OPTIONS_AURAS_TAB_SPELLSTEAL'] = 'Dispelable';

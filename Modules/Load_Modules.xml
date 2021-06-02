@@ -26,6 +26,7 @@
     <Script file="QuestIndicator.lua" />
     <Script file="StealthDetect.lua" />
     <Script file="TotemIcon.lua" />
+    <Script file="CombatIndicator.lua" />
 
     <!-- Not nameplates modules-->
     <Script file="AutoSlotKeystone.lua" />

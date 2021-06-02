@@ -3,7 +3,7 @@ local Module = S:NewModule('Options_Categories_Useful');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.Useful, O.frame.Right.Useful = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_USEFUL']), 'useful', 9);
+O.frame.Left.Useful, O.frame.Right.Useful = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_USEFUL']), 'useful', 9);
 local button = O.frame.Left.Useful;
 local panel = O.frame.Right.Useful;
 
@@ -110,8 +110,67 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    local CombatIndicatorHeader = E.CreateHeader(self, S.Media.INLINE_NEW_ICON .. L['OPTIONS_COMBAT_INDICATOR_HEADER']);
+    CombatIndicatorHeader:SetPosition('TOPLEFT', self.talking_head_suppress, 'BOTTOMLEFT', 0, -8);
+    CombatIndicatorHeader:SetW(self:GetWidth());
+
+    self.combat_indicator_enabled = E.CreateCheckButton(self);
+    self.combat_indicator_enabled:SetPosition('TOPLEFT', CombatIndicatorHeader, 'BOTTOMLEFT', 0, -4);
+    self.combat_indicator_enabled:SetLabel(L['OPTIONS_COMBAT_INDICATOR_ENABLED']);
+    self.combat_indicator_enabled:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_ENABLED_TOOLTIP']);
+    self.combat_indicator_enabled:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_ENABLED_TOOLTIP']);
+    self.combat_indicator_enabled:SetChecked(O.db.combat_indicator_enabled);
+    self.combat_indicator_enabled.Callback = function(self)
+        O.db.combat_indicator_enabled = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.combat_indicator_color = E.CreateColorPicker(self);
+    self.combat_indicator_color:SetPosition('LEFT', self.combat_indicator_enabled.Label, 'RIGHT', 12, 0);
+    self.combat_indicator_color:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_COLOR_TOOLTIP']);
+    self.combat_indicator_color:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_COLOR_TOOLTIP']);
+    self.combat_indicator_color:SetValue(unpack(O.db.combat_indicator_color));
+    self.combat_indicator_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.combat_indicator_color[1] = r;
+        O.db.combat_indicator_color[2] = g;
+        O.db.combat_indicator_color[3] = b;
+        O.db.combat_indicator_color[4] = a or 1;
+
+        Handler:UpdateAll();
+    end
+
+    self.combat_indicator_size = E.CreateSlider(self);
+    self.combat_indicator_size:SetPosition('LEFT', self.combat_indicator_color, 'RIGHT', 12, 0);
+    self.combat_indicator_size:SetValues(O.db.combat_indicator_size, 2, 32, 1);
+    self.combat_indicator_size:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP']);
+    self.combat_indicator_size:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP']);
+    self.combat_indicator_size.OnValueChangedCallback = function(_, value)
+        O.db.combat_indicator_size = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.combat_indicator_offset_x = E.CreateSlider(self);
+    self.combat_indicator_offset_x:SetPosition('TOPLEFT', self.combat_indicator_enabled, 'BOTTOMLEFT', 0, -12);
+    self.combat_indicator_offset_x:SetValues(O.db.combat_indicator_offset_x, -50, 50, 1);
+    self.combat_indicator_offset_x:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP']);
+    self.combat_indicator_offset_x:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP']);
+    self.combat_indicator_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.combat_indicator_offset_x = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.combat_indicator_offset_y = E.CreateSlider(self);
+    self.combat_indicator_offset_y:SetPosition('LEFT', self.combat_indicator_offset_x, 'RIGHT', 12, 0);
+    self.combat_indicator_offset_y:SetValues(O.db.combat_indicator_offset_y, -50, 50, 1);
+    self.combat_indicator_offset_y:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP']);
+    self.combat_indicator_offset_y:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP']);
+    self.combat_indicator_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.combat_indicator_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     local SpellInterruptedHeader = E.CreateHeader(self, L['OPTIONS_SPELL_INTERRUPTED_ICON_HEADER']);
-    SpellInterruptedHeader:SetPosition('TOPLEFT', self.talking_head_suppress, 'BOTTOMLEFT', 0, -8);
+    SpellInterruptedHeader:SetPosition('TOPLEFT', self.combat_indicator_offset_x, 'BOTTOMLEFT', 0, -8);
     SpellInterruptedHeader:SetW(self:GetWidth());
 
     self.spell_interrupted_icon = E.CreateCheckButton(self);

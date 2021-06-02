@@ -1,14 +1,14 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_Visibility');
 
-O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);
+O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);
 local button = O.frame.Left.Visibility;
 local panel = O.frame.Right.Visibility;
 
 panel.TabsData = {
     [1] = {
         name  = 'CommonTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_VISIBILITY_TAB_COMMON']),
+        title = string.upper(L['OPTIONS_VISIBILITY_TAB_COMMON']),
     },
     [2] = {
         name  = 'EnemyTab',
@@ -190,12 +190,12 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    local RaidTargeIconHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, S.Media.INLINE_NEW_ICON .. L['OPTIONS_HEADER_RAID_TARGET_ICON']);
-    RaidTargeIconHeader:SetPosition('TOPLEFT', self.hide_non_casting_enabled, 'BOTTOMLEFT', 0, -8);
-    RaidTargeIconHeader:SetW(self:GetWidth());
+    local RaidTargetIconHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_RAID_TARGET_ICON']);
+    RaidTargetIconHeader:SetPosition('TOPLEFT', self.hide_non_casting_enabled, 'BOTTOMLEFT', 0, -8);
+    RaidTargetIconHeader:SetW(self:GetWidth());
 
     self.raid_target_icon_show = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.raid_target_icon_show:SetPosition('TOPLEFT', RaidTargeIconHeader, 'BOTTOMLEFT', 0, -12);
+    self.raid_target_icon_show:SetPosition('TOPLEFT', RaidTargetIconHeader, 'BOTTOMLEFT', 0, -12);
     self.raid_target_icon_show:SetLabel(L['OPTIONS_RAID_TARGET_ICON_SHOW']);
     self.raid_target_icon_show:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_SHOW_TOOLTIP']);
     self.raid_target_icon_show:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_SHOW_TOOLTIP'], self.Tabs[1]);
