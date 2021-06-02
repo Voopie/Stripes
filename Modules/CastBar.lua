@@ -180,10 +180,14 @@ local function UpdateVisibility(unitframe)
     end
 
     if unitframe.castingBar then
-        if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+        if unitframe.data.unitType == 'SELF' then
             StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
         else
-            StripesCastingBar_SetUnit(unitframe.castingBar, unitframe.data.unit, SHOW_TRADE_SKILLS, SHOW_SHIELD);
+            if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+                StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
+            else
+                StripesCastingBar_SetUnit(unitframe.castingBar, unitframe.data.unit, SHOW_TRADE_SKILLS, SHOW_SHIELD);
+            end
         end
 
         unitframe.castingBar.iconWhenNoninterruptible = SHOW_ICON_NOTINTERRUPTIBLE;
