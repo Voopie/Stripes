@@ -4,11 +4,8 @@ local Module = S:NewNameplateModule('CombatIndicator');
 -- WoW API
 local UnitExists, UnitAffectingCombat = UnitExists, UnitAffectingCombat;
 
--- Nameplates
-local NP = S.NamePlates;
-
 -- Local config
-local ENABLED, COLOR, OFFSET_X, OFFSET_Y;
+local ENABLED, COLOR, OFFSET_X, OFFSET_Y, SIZE;
 
 local UPDATE_INTERVAL = 0.5;
 
@@ -39,8 +36,6 @@ local function Create(unitframe)
     frame:SetAllPoints();
 
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    PixelUtil.SetPoint(frame.icon, 'TOPLEFT', frame, 'BOTTOMLEFT', OFFSET_X, OFFSET_Y);
-    PixelUtil.SetSize(frame.icon, 8, 8);
     frame.icon:SetTexture(S.Media.Icons2.TEXTURE);
     frame.icon:SetTexCoord(unpack(S.Media.Icons2.COORDS.CROSS_SWORDS_WHITE));
     frame.icon:SetShown(false);
@@ -55,6 +50,7 @@ local function Update(unitframe)
     unitframe.elapsed = 0;
     unitframe.CombatIndicator:SetShown(ENABLED and unitframe.data.unitType ~= 'SELF');
     PixelUtil.SetPoint(unitframe.CombatIndicator.icon, 'TOPLEFT', unitframe.CombatIndicator, 'BOTTOMLEFT', OFFSET_X, OFFSET_Y);
+    PixelUtil.SetSize(unitframe.CombatIndicator.icon, SIZE, SIZE);
     unitframe.CombatIndicator.icon:SetVertexColor(COLOR[1], COLOR[2], COLOR[3], COLOR[4]);
 end
 
@@ -88,6 +84,8 @@ function Module:UpdateLocalConfig()
 
     OFFSET_X = O.db.combat_indicator_offset_x;
     OFFSET_Y = O.db.combat_indicator_offset_y;
+
+    SIZE = O.db.combat_indicator_size;
 end
 
 function Module:StartUp()
