@@ -253,6 +253,7 @@ D.NPCs = {
     -- Common
     [1] = {
         120651, 174773, 173729,
+        -- 179446, 179892, 179891, 179890 -- SL Season 2 Affix
     },
 
     -- Mists of Tirna Scithe
