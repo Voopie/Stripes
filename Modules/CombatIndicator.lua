@@ -47,8 +47,9 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    unitframe.elapsed = 0;
+    unitframe.CombatIndicator.elapsed = 0;
     unitframe.CombatIndicator:SetShown(ENABLED and unitframe.data.unitType ~= 'SELF');
+
     PixelUtil.SetPoint(unitframe.CombatIndicator.icon, 'TOPLEFT', unitframe.CombatIndicator, 'BOTTOMLEFT', OFFSET_X, OFFSET_Y);
     PixelUtil.SetSize(unitframe.CombatIndicator.icon, SIZE, SIZE);
     unitframe.CombatIndicator.icon:SetVertexColor(COLOR[1], COLOR[2], COLOR[3], COLOR[4]);
