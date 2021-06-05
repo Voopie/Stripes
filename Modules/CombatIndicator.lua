@@ -52,8 +52,11 @@ local function Update(unitframe)
     unitframe.CombatIndicator.elapsed = 0;
     unitframe.CombatIndicator:SetShown(ENABLED and unitframe.data.unitType ~= 'SELF');
 
+    unitframe.CombatIndicator.icon:ClearAllPoints();
     PixelUtil.SetPoint(unitframe.CombatIndicator.icon, ANCHOR, unitframe.CombatIndicator, RELATIVE_ANCHOR, OFFSET_X, OFFSET_Y);
+
     PixelUtil.SetSize(unitframe.CombatIndicator.icon, SIZE, SIZE);
+
     unitframe.CombatIndicator.icon:SetVertexColor(COLOR[1], COLOR[2], COLOR[3], COLOR[4]);
 end
 
