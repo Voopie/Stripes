@@ -1,6 +1,8 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Elements');
 
+local MEDIA_PATH = 'Interface\\AddOns\\' .. S.AddonName .. '\\Media\\';
+
 local LSM = S.Libraries.LSM;
 local LCG = S.Libraries.LCG;
 
@@ -105,130 +107,134 @@ E.CreateFontString = function(parent, layer, template)
     return frame;
 end
 
-E.CreateButton = function(parent)
-    local b = Mixin(CreateFrame('Button', nil, parent, 'BackdropTemplate'), E.PixelPerfectMixin);
-
-    b:SetNormalFontObject('StripesOptionsButtonNormalFont');
-    b:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
-
-    b:SetBackdrop({
+do
+    local BUTTON_BACKDROP = {
         bgFile   = 'Interface\\Buttons\\WHITE8x8',
-        insets   = {top = 1, left = 1, bottom = 1, right = 1},
+        insets   = { left = 1, right = 1, top = 1, bottom = 1 },
         edgeFile = 'Interface\\Buttons\\WHITE8x8',
         edgeSize = 1,
-    });
+    };
 
-    b.Glow = Mixin(CreateFrame('Frame', nil, b), E.PixelPerfectMixin);
-    b.Glow:SetPosition('TOPLEFT', b, 'TOPLEFT', -2, 2);
-    b.Glow:SetPosition('BOTTOMRIGHT', b, 'BOTTOMRIGHT', 2, -2);
+    E.CreateButton = function(parent)
+        local b = Mixin(CreateFrame('Button', nil, parent, 'BackdropTemplate'), E.PixelPerfectMixin);
 
-    b.NormalColor    = { U.HEX2RGB('404040') };
-    b.HighlightColor = { U.HEX2RGB('A74DFF') };
+        b:SetNormalFontObject('StripesOptionsButtonNormalFont');
+        b:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
 
-    b.SetLabel = function(self, label)
-        label = string.gsub(label, '(:%d+|)T', '%1t');
+        b:SetBackdrop(BUTTON_BACKDROP);
 
-        self:SetText(string.upper(label));
-        self:SetSize(self:GetTextWidth() + 16, 22);
+        b.Glow = Mixin(CreateFrame('Frame', nil, b), E.PixelPerfectMixin);
+        b.Glow:SetPosition('TOPLEFT', b, 'TOPLEFT', -2, 2);
+        b.Glow:SetPosition('BOTTOMRIGHT', b, 'BOTTOMRIGHT', 2, -2);
 
-        self.SearchText = label;
-    end
+        b.NormalColor    = { U.HEX2RGB('404040') };
+        b.HighlightColor = { U.HEX2RGB('A74DFF') };
 
-    b.SetNormalColor = function(self, hexColor)
-        self.NormalColor = { U.HEX2RGB(hexColor) };
-    end
+        b.SetLabel = function(self, label)
+            label = string.gsub(label, '(:%d+|)T', '%1t');
 
-    b.SetHighlightColor = function(self, hexColor)
-        self.HighlightColor = { U.HEX2RGB(hexColor) };
-    end
+            self:SetText(string.upper(label));
+            self:SetSize(self:GetTextWidth() + 16, 22);
 
-    b:SetBackdropColor(unpack(b.NormalColor));
-    b:SetBackdropBorderColor(0.3, 0.3, 0.33, 1);
-
-    b.OnLeave = function(self)
-        self:SetBackdropColor(unpack(self.NormalColor));
-    end
-
-    b:HookScript('OnEnter', function(self)
-        if self.isLocked then
-            return;
+            self.SearchText = label;
         end
 
-        self:SetBackdropColor(unpack(self.HighlightColor));
-        self:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
-        LCG.PixelGlow_Stop(self.Glow);
-    end);
-
-    b:HookScript('OnLeave', function(self)
-        if self.isLocked then
-            return;
+        b.SetNormalColor = function(self, hexColor)
+            self.NormalColor = { U.HEX2RGB(hexColor) };
         end
 
-        self:SetBackdropColor(unpack(self.NormalColor));
-    end);
-
-    b:SetScript('OnMouseDown', function(self)
-        if self.isLocked then
-            return;
+        b.SetHighlightColor = function(self, hexColor)
+            self.HighlightColor = { U.HEX2RGB(hexColor) };
         end
 
-        if self:IsEnabled() then
-            self:SetBackdropColor(unpack(self.HighlightColor));
+        b:SetBackdropColor(unpack(b.NormalColor));
+        b:SetBackdropBorderColor(0.3, 0.3, 0.33, 1);
 
-            self.OnLeavePrev = self:GetScript('OnLeave');
-            self:SetScript('OnLeave', nil);
+        b.OnLeave = function(self)
+            self:SetBackdropColor(unpack(self.NormalColor));
+        end
 
-            if U.CanAccessObject(GameTooltip) and GameTooltip:IsShown() then
-                GameTooltip_Hide();
+        b:HookScript('OnEnter', function(self)
+            if self.isLocked then
+                return;
             end
 
-            self:SetNormalFontObject('StripesOptionsButtonHighlightFont');
+            self:SetBackdropColor(unpack(self.HighlightColor));
             self:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
-        end
-    end);
+            LCG.PixelGlow_Stop(self.Glow);
+        end);
 
-	b:SetScript('OnMouseUp', function(self)
-        if self.isLocked then
-            return;
-        end
-
-        if self:IsEnabled() then
-            self:SetNormalFontObject('StripesOptionsButtonNormalFont');
-            self:SetHighlightFontObject('StripesOptionsButtonNormalFont');
+        b:HookScript('OnLeave', function(self)
+            if self.isLocked then
+                return;
+            end
 
             self:SetBackdropColor(unpack(self.NormalColor));
+        end);
 
-            self:SetScript('OnLeave', self.OnLeavePrev or self.OnLeave);
-
-            if self:IsMouseOver() then
-                self:GetScript('OnEnter')(self);
+        b:SetScript('OnMouseDown', function(self)
+            if self.isLocked then
+                return;
             end
+
+            if self:IsEnabled() then
+                self:SetBackdropColor(unpack(self.HighlightColor));
+
+                self.OnLeavePrev = self:GetScript('OnLeave');
+                self:SetScript('OnLeave', nil);
+
+                if U.CanAccessObject(GameTooltip) and GameTooltip:IsShown() then
+                    GameTooltip_Hide();
+                end
+
+                self:SetNormalFontObject('StripesOptionsButtonHighlightFont');
+                self:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
+            end
+        end);
+
+        b:SetScript('OnMouseUp', function(self)
+            if self.isLocked then
+                return;
+            end
+
+            if self:IsEnabled() then
+                self:SetNormalFontObject('StripesOptionsButtonNormalFont');
+                self:SetHighlightFontObject('StripesOptionsButtonNormalFont');
+
+                self:SetBackdropColor(unpack(self.NormalColor));
+
+                self:SetScript('OnLeave', self.OnLeavePrev or self.OnLeave);
+
+                if self:IsMouseOver() then
+                    self:GetScript('OnEnter')(self);
+                end
+            end
+        end);
+
+        hooksecurefunc(b, 'LockHighlight', function(self)
+            self.isLocked = true;
+            self:SetNormalFontObject('StripesOptionsButtonHighlightFont');
+            self:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
+            self:SetBackdropColor(unpack(self.HighlightColor));
+        end);
+
+        hooksecurefunc(b, 'UnlockHighlight', function(self)
+            self.isLocked = false;
+            self:SetNormalFontObject('StripesOptionsButtonNormalFont');
+            self:SetHighlightFontObject('StripesOptionsButtonNormalFont');
+            self:SetBackdropColor(unpack(self.NormalColor));
+        end);
+
+        b.AddToSearch = AddToSearch;
+
+        b.SetTooltip = function(self, tooltip)
+            self.tooltip = tooltip;
         end
-    end);
 
-    hooksecurefunc(b, 'LockHighlight', function(self)
-        self.isLocked = true;
-        self:SetNormalFontObject('StripesOptionsButtonHighlightFont');
-        self:SetHighlightFontObject('StripesOptionsButtonHighlightFont');
-        self:SetBackdropColor(unpack(self.HighlightColor));
-    end);
+        E.CreateTooltip(b);
 
-    hooksecurefunc(b, 'UnlockHighlight', function(self)
-        self.isLocked = false;
-        self:SetNormalFontObject('StripesOptionsButtonNormalFont');
-        self:SetHighlightFontObject('StripesOptionsButtonNormalFont');
-        self:SetBackdropColor(unpack(self.NormalColor));
-    end);
-
-    b.AddToSearch = AddToSearch;
-
-    b.SetTooltip = function(self, tooltip)
-        self.tooltip = tooltip;
+        return b;
     end
-
-    E.CreateTooltip(b);
-
-    return b;
 end
 
 E.CreateCheckButton = function(parent)
@@ -406,398 +412,400 @@ E.CreateScrollFrame = function(parent, scrollStep, scrollChild)
     return scrollChild, scrollArea;
 end
 
-local function SliderRound(val, minVal, valueStep)
-    return math.floor((val - minVal) / valueStep + 0.5) * valueStep + minVal;
-end
-
-E.CreateSlider = function(parent)
-    local slider  = Mixin(CreateFrame('Slider', nil, parent, 'OptionsSliderTemplate'), E.PixelPerfectMixin);
-    local editbox = Mixin(CreateFrame('EditBox', '$parentEditBox', slider, 'InputBoxTemplate'), E.PixelPerfectMixin);
-
-    slider:SetH(18);
-
-    slider.Thumb:SetTexture('');
-
-    slider:SetBackdrop({
+do
+    local SLIDER_BACKDROP = {
         bgFile   = 'Interface\\Buttons\\UI-SliderBar-Background',
-        edgeFile = S.Media.Path .. 'Textures\\Assets\\UI-SliderBar-Border',
+        edgeFile = MEDIA_PATH .. 'Textures\\Assets\\UI-SliderBar-Border',
         tile     = true,
         tileEdge = true,
         tileSize = 8,
         edgeSize = 8,
         insets   = { left = 3, right = 3, top = 6, bottom = 6 },
-    });
-    slider:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+    };
 
-    slider.Glow = Mixin(CreateFrame('Frame', nil, slider), E.PixelPerfectMixin);
-    slider.Glow:SetPosition('TOPLEFT', slider, 'TOPLEFT', -2, 6);
-    slider.Glow:SetPosition('BOTTOMRIGHT', slider, 'BOTTOMRIGHT', 2, -6);
-
-    slider:SetOrientation('HORIZONTAL');
-
-    slider.Low:ClearAllPoints();
-    PixelUtil.SetPoint(slider.Low, 'LEFT', slider, 'LEFT', 0, 0);
-    slider.Low:SetFontObject('StripesOptionsNormalFont');
-    slider.Low:SetShown(false);
-
-    slider.High:ClearAllPoints();
-    PixelUtil.SetPoint(slider.High, 'RIGHT', slider, 'RIGHT', 0, 0);
-    slider.High:SetFontObject('StripesOptionsNormalFont');
-    slider.High:SetShown(false);
-
-    slider.Text:ClearAllPoints();
-    PixelUtil.SetPoint(slider.Text, 'BOTTOMLEFT', slider, 'TOPLEFT', 0, 4);
-    slider.Text:SetFontObject('StripesOptionsHighlightFont');
-
-    hooksecurefunc(slider, 'SetValue', function(self, value)
-        self.currentValue = value;
-    end);
-
-    slider.AddToSearch = AddToSearch;
-
-    slider.SetTooltip = function(self, tooltip)
-        self.tooltip = tooltip;
-    end
-
-    slider.SetLabel = function(self, label)
-        self.Text:SetText(label);
-
-        self.SearchText = label;
-    end
-
-    slider.SetValues = function(self, currentValue, minValue, maxValue, stepValue)
-        self.currentValue = currentValue or 0;
-        self.minValue     = minValue or 0;
-        self.maxValue     = maxValue or 100;
-        self.stepValue    = stepValue or 1;
-
-        self:SetMinMaxValues(self.minValue, self.maxValue);
-        self:SetStepsPerPage(self.stepValue);
-        self:SetValueStep(self.stepValue);
-        self:SetValue(SliderRound(self.currentValue, self.minValue, self.stepValue));
-
-        self.Low:SetText(self.minValue);
-        self.High:SetText(self.maxValue);
-
-        self.editbox:SetText(SliderRound(self.currentValue, self.minValue, self.stepValue));
-        self.CurrentValueBox.Text:SetText(SliderRound(self.currentValue, self.minValue, self.stepValue));
-    end
-
-    slider:SetScript('OnValueChanged', function(self, value)
-        value = SliderRound(value, self.minValue, self.stepValue);
-        value = math.max(value, self.minValue); -- Sometimes value goes to 0 when minValue > 0 Hmmm....
-
-        self.currentValue = value;
-
-        self.editbox:SetText(self.currentValue);
-        self.CurrentValueBox.Text:SetText(self.currentValue);
-
-        if slider:IsDraggingThumb() and self.editbox:HasFocus() then
-            self.editbox:ClearFocus();
-        end
-
-        if self.OnValueChangedCallback then
-            self:OnValueChangedCallback(self.currentValue);
-        end
-    end);
-
-    slider:SetScript('OnMouseUp', function(self, button)
-        if not self:IsEnabled() then
-            return;
-        end
-
-        AddToFreqUsed(self);
-
-        if button == 'RightButton' then
-            self.editbox:SetShown(true);
-            self.editbox:SetFocus();
-            self.CurrentValueBox:SetShown(false);
-
-            return;
-        end
-
-        if self.OnMouseUpCallback then
-            self:OnMouseUpCallback(self.currentValue);
-        end
-    end);
-
-    slider:HookScript('OnEnter', function(self)
-        LCG.PixelGlow_Stop(self.Glow);
-    end);
-
-    slider.CurrentValueBox = Mixin(CreateFrame('Frame', nil, slider, 'BackdropTemplate'), E.PixelPerfectMixin);
-    slider.CurrentValueBox:SetPosition('CENTER', slider.Thumb, 'CENTER', 0, 0);
-    slider.CurrentValueBox:SetSize(34, 20);
-    slider.CurrentValueBox:SetBackdrop({
+    local SLIDER_CURRENT_VALUE_BACKDROP = {
         bgFile   = 'Interface\\Buttons\\WHITE8x8',
-        insets   = { top = 1, left = 1, bottom = 1, right = 1 },
+        insets   = { left = 1, right = 1, top = 1, bottom = 1 },
         edgeFile = 'Interface\\Buttons\\WHITE8x8',
         edgeSize = 1,
-    });
-    slider.CurrentValueBox:SetBackdropColor(0.05, 0.05, 0.05, 1);
-    slider.CurrentValueBox:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
-    slider.CurrentValueBox.Text = Mixin(slider.CurrentValueBox:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
-    slider.CurrentValueBox.Text:SetPosition('CENTER', slider.CurrentValueBox, 'CENTER', 0, 0);
+    };
 
-    editbox:SetFrameLevel(slider:GetFrameLevel() + 3);
-    editbox:SetShown(false);
-    editbox:ClearAllPoints();
-    editbox:SetPosition('TOPLEFT', slider.CurrentValueBox, 'TOPLEFT', 5, 0);
-    editbox:SetPosition('BOTTOMRIGHT', slider.CurrentValueBox, 'BOTTOMRIGHT', 0, 0);
-    editbox:SetSize(34, 20);
-
-    editbox:SetFontObject('StripesOptionsNormalFont');
-    editbox:SetAutoFocus(false);
-
-    editbox.Left:Hide();
-    editbox.Middle:Hide();
-    editbox.Right:Hide();
-
-    editbox.Background = Mixin(CreateFrame('Frame', '$parentBackground', editbox, 'BackdropTemplate'), E.PixelPerfectMixin);
-    editbox.Background:SetPosition('TOPLEFT', editbox, 'TOPLEFT', -5, 0);
-    editbox.Background:SetSize(34, 20);
-    editbox.Background:SetFrameLevel(editbox:GetFrameLevel() - 1);
-    editbox.Background:SetBackdrop({
+    local SLIDER_EDITBOX_BACKGROUND_BACKDROP = {
         bgFile   = 'Interface\\Buttons\\WHITE8x8',
-        insets   = { top = 1, left = 1, bottom = 1, right = 1 },
+        insets   = { left = 1, right = 1, top = 1, bottom = 1 },
         edgeFile = 'Interface\\Buttons\\WHITE8x8',
         edgeSize = 1,
-    });
+    };
 
-    editbox.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
-    editbox.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
-
-    editbox:SetScript('OnEnterPressed', function(self)
-        self.lastValue = nil;
-        self:ClearFocus();
-
-        local value = tonumber((string.gsub(self:GetText(), ',', '.')));
-        if value then
-            value = math.min(value, self:GetParent().maxValue);
-            value = math.max(value, self:GetParent().minValue);
-        else
-            value = self:GetParent().currentValue;
-        end
-
-        value = SliderRound(value, self:GetParent().minValue, self:GetParent().stepValue);
-
-        self:GetParent():SetValue(value);
-        self:SetText(value);
-        self:GetParent().CurrentValueBox.Text:SetText(value);
-
-        if self:GetParent().OnValueChangedCallback then
-            self:GetParent():OnValueChangedCallback(value);
-        end
-
-        if self:GetParent().OnMouseUpCallback then
-            self:GetParent():OnMouseUpCallback(value);
-        end
-
-        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-
-        self:SetShown(false);
-        self:GetParent().CurrentValueBox:SetShown(true);
-    end);
-
-    editbox:SetScript('OnEditFocusGained', function(self)
-        self.isFocused = true;
-        self.lastValue = tonumber(self:GetText());
-        self:HighlightText();
-        self.Background:SetBackdropBorderColor(0.8, 0.8, 0.8, 1);
-    end);
-
-    editbox:SetScript('OnEditFocusLost', function(self)
-        self.isFocused = false;
-        if self.lastValue then
-            self:SetText(SliderRound(self.lastValue, self:GetParent().minValue, self:GetParent().stepValue));
-            self:GetParent().CurrentValueBox.Text:SetText(SliderRound(self.lastValue, self:GetParent().minValue, self:GetParent().stepValue));
-        end
-
-        EditBox_ClearHighlight(self);
-        self.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
-
-        self:SetShown(false);
-        self:GetParent().CurrentValueBox:SetShown(true);
-    end);
-
-    editbox:HookScript('OnEnter', function(self)
-        if not self.isFocused then
-            self.Background:SetBackdropBorderColor(0.5, 0.5, 0.5, 1);
-        end
-
-        LCG.PixelGlow_Stop(self:GetParent().Glow);
-
-        if not self:GetParent().tooltip then
-            return;
-        end
-
-        GameTooltip:SetOwner(self:GetParent(), 'ANCHOR_RIGHT');
-        GameTooltip:AddLine(self:GetParent().tooltip, 1, 0.85, 0, true);
-        GameTooltip:Show();
-    end);
-
-    editbox:HookScript('OnLeave', function(self)
-        if not self.isFocused then
-            self.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
-        end
-
-        GameTooltip_Hide();
-    end);
-
-    slider.editbox = editbox;
-
-    E.CreateTooltip(slider);
-
-    hooksecurefunc(slider, 'SetEnabled', function(self, state)
-        if state then
-            self.CurrentValueBox.Text:SetFontObject('StripesOptionsNormalFont');
-            self.Text:SetFontObject('StripesOptionsHighlightFont');
-        else
-            self.CurrentValueBox.Text:SetFontObject('StripesOptionsDisabledFont');
-            self.Text:SetFontObject('StripesOptionsDisabledFont');
-        end
-    end);
-
-    slider:Show();
-
-    slider.type = 'Slider';
-
-    return slider;
-end
-
-E.CreateEditBox = function(parent)
-    local editbox = Mixin(CreateFrame('EditBox', nil, parent, 'InputBoxTemplate'), E.PixelPerfectMixin);
-
-    editbox:SetSize(30, 25);
-
-    editbox:SetFontObject('StripesOptionsNormalFont');
-    editbox:SetAutoFocus(false);
-
-    editbox.Left:Hide();
-    editbox.Middle:Hide();
-    editbox.Right:Hide();
-
-    editbox.Background = Mixin(CreateFrame('Frame', nil, editbox, 'BackdropTemplate'), E.PixelPerfectMixin);
-    editbox.Background:SetPosition('TOPLEFT', editbox, 'TOPLEFT', -5, 0);
-    editbox.Background:SetPosition('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', 5, 0);
-    editbox.Background:SetFrameLevel(editbox:GetFrameLevel() - 1);
-    editbox.Background:SetBackdrop({
-        bgFile   = 'Interface\\Buttons\\WHITE8x8',
-        insets   = { top = 1, left = 1, bottom = 1, right = 1 },
-        edgeFile = 'Interface\\Buttons\\WHITE8x8',
-        edgeSize = 1,
-    });
-
-    editbox.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
-    editbox.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
-
-    editbox.Label = Mixin(editbox:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
-    editbox.Label:SetPosition('LEFT', editbox.Background, 'RIGHT', 4, 0);
-
-    editbox.Glow = Mixin(CreateFrame('Frame', nil, editbox), E.PixelPerfectMixin);
-    editbox.Glow:SetPosition('TOPLEFT', editbox, 'TOPLEFT', -8, 2);
-    editbox.Glow:SetPosition('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', 8, -2);
-
-    editbox.Instruction = Mixin(editbox:CreateFontString(nil, 'ARTWORK', 'StripesOptionsLightGreyedFont'), E.PixelPerfectMixin);
-    editbox.Instruction:SetPosition('LEFT', editbox, 'LEFT', 0, 0);
-
-    editbox.SetLabel = function(self, label)
-        self.Label:SetText(label);
-
-        self.Glow:SetPosition('TOPLEFT', self, 'TOPLEFT', -8, 2);
-        self.Glow:SetPosition('TOPRIGHT', self.Label, 'TOPRIGHT', 4, 2);
-        self.Glow:SetPosition('BOTTOMLEFT', self, 'BOTTOMLEFT', -8, -2);
-        self.Glow:SetPosition('BOTTOMRIGHT', self.Label, 'BOTTOMRIGHT', 4, -2);
-
-        self.SearchText = label;
+    local function SliderRound(val, minVal, valueStep)
+        return math.floor((val - minVal) / valueStep + 0.5) * valueStep + minVal;
     end
 
-    editbox.SetInstruction = function(self, text)
-        self.Instruction:SetText(text);
-    end
+    E.CreateSlider = function(parent)
+        local slider  = Mixin(CreateFrame('Slider', nil, parent, 'OptionsSliderTemplate'), E.PixelPerfectMixin);
+        local editbox = Mixin(CreateFrame('EditBox', '$parentEditBox', slider, 'InputBoxTemplate'), E.PixelPerfectMixin);
 
-    editbox.AddToSearch = AddToSearch;
+        slider:SetH(18);
 
-    editbox:SetScript('OnEnterPressed', function(self)
-        self.lastValue = nil;
-        self:ClearFocus();
+        slider.Thumb:SetTexture('');
 
-        AddToFreqUsed(self);
+        slider:SetBackdrop(SLIDER_BACKDROP);
+        slider:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
 
-        if self.Callback then
+        slider.Glow = Mixin(CreateFrame('Frame', nil, slider), E.PixelPerfectMixin);
+        slider.Glow:SetPosition('TOPLEFT', slider, 'TOPLEFT', -2, 6);
+        slider.Glow:SetPosition('BOTTOMRIGHT', slider, 'BOTTOMRIGHT', 2, -6);
+
+        slider:SetOrientation('HORIZONTAL');
+
+        slider.Low:ClearAllPoints();
+        PixelUtil.SetPoint(slider.Low, 'LEFT', slider, 'LEFT', 0, 0);
+        slider.Low:SetFontObject('StripesOptionsNormalFont');
+        slider.Low:SetShown(false);
+
+        slider.High:ClearAllPoints();
+        PixelUtil.SetPoint(slider.High, 'RIGHT', slider, 'RIGHT', 0, 0);
+        slider.High:SetFontObject('StripesOptionsNormalFont');
+        slider.High:SetShown(false);
+
+        slider.Text:ClearAllPoints();
+        PixelUtil.SetPoint(slider.Text, 'BOTTOMLEFT', slider, 'TOPLEFT', 0, 4);
+        slider.Text:SetFontObject('StripesOptionsHighlightFont');
+
+        hooksecurefunc(slider, 'SetValue', function(self, value)
+            self.currentValue = value;
+        end);
+
+        slider.AddToSearch = AddToSearch;
+
+        slider.SetTooltip = function(self, tooltip)
+            self.tooltip = tooltip;
+        end
+
+        slider.SetLabel = function(self, label)
+            self.Text:SetText(label);
+
+            self.SearchText = label;
+        end
+
+        slider.SetValues = function(self, currentValue, minValue, maxValue, stepValue)
+            self.currentValue = currentValue or 0;
+            self.minValue     = minValue or 0;
+            self.maxValue     = maxValue or 100;
+            self.stepValue    = stepValue or 1;
+
+            self:SetMinMaxValues(self.minValue, self.maxValue);
+            self:SetStepsPerPage(self.stepValue);
+            self:SetValueStep(self.stepValue);
+            self:SetValue(SliderRound(self.currentValue, self.minValue, self.stepValue));
+
+            self.Low:SetText(self.minValue);
+            self.High:SetText(self.maxValue);
+
+            self.editbox:SetText(SliderRound(self.currentValue, self.minValue, self.stepValue));
+            self.CurrentValueBox.Text:SetText(SliderRound(self.currentValue, self.minValue, self.stepValue));
+        end
+
+        slider:SetScript('OnValueChanged', function(self, value)
+            value = SliderRound(value, self.minValue, self.stepValue);
+            value = math.max(value, self.minValue); -- Sometimes value goes to 0 when minValue > 0 Hmmm....
+
+            self.currentValue = value;
+
+            self.editbox:SetText(self.currentValue);
+            self.CurrentValueBox.Text:SetText(self.currentValue);
+
+            if slider:IsDraggingThumb() and self.editbox:HasFocus() then
+                self.editbox:ClearFocus();
+            end
+
+            if self.OnValueChangedCallback then
+                self:OnValueChangedCallback(self.currentValue);
+            end
+        end);
+
+        slider:SetScript('OnMouseUp', function(self, button)
+            if not self:IsEnabled() then
+                return;
+            end
+
+            AddToFreqUsed(self);
+
+            if button == 'RightButton' then
+                self.editbox:SetShown(true);
+                self.editbox:SetFocus();
+                self.CurrentValueBox:SetShown(false);
+
+                return;
+            end
+
+            if self.OnMouseUpCallback then
+                self:OnMouseUpCallback(self.currentValue);
+            end
+        end);
+
+        slider:HookScript('OnEnter', function(self)
+            LCG.PixelGlow_Stop(self.Glow);
+        end);
+
+        slider.CurrentValueBox = Mixin(CreateFrame('Frame', nil, slider, 'BackdropTemplate'), E.PixelPerfectMixin);
+        slider.CurrentValueBox:SetPosition('CENTER', slider.Thumb, 'CENTER', 0, 0);
+        slider.CurrentValueBox:SetSize(34, 20);
+        slider.CurrentValueBox:SetBackdrop(SLIDER_CURRENT_VALUE_BACKDROP);
+        slider.CurrentValueBox:SetBackdropColor(0.05, 0.05, 0.05, 1);
+        slider.CurrentValueBox:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+        slider.CurrentValueBox.Text = Mixin(slider.CurrentValueBox:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
+        slider.CurrentValueBox.Text:SetPosition('CENTER', slider.CurrentValueBox, 'CENTER', 0, 0);
+
+        editbox:SetFrameLevel(slider:GetFrameLevel() + 3);
+        editbox:SetShown(false);
+        editbox:ClearAllPoints();
+        editbox:SetPosition('TOPLEFT', slider.CurrentValueBox, 'TOPLEFT', 5, 0);
+        editbox:SetPosition('BOTTOMRIGHT', slider.CurrentValueBox, 'BOTTOMRIGHT', 0, 0);
+        editbox:SetSize(34, 20);
+
+        editbox:SetFontObject('StripesOptionsNormalFont');
+        editbox:SetAutoFocus(false);
+
+        editbox.Left:Hide();
+        editbox.Middle:Hide();
+        editbox.Right:Hide();
+
+        editbox.Background = Mixin(CreateFrame('Frame', '$parentBackground', editbox, 'BackdropTemplate'), E.PixelPerfectMixin);
+        editbox.Background:SetPosition('TOPLEFT', editbox, 'TOPLEFT', -5, 0);
+        editbox.Background:SetSize(34, 20);
+        editbox.Background:SetFrameLevel(editbox:GetFrameLevel() - 1);
+        editbox.Background:SetBackdrop(SLIDER_EDITBOX_BACKGROUND_BACKDROP);
+        editbox.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
+        editbox.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+
+        editbox:SetScript('OnEnterPressed', function(self)
+            self.lastValue = nil;
+            self:ClearFocus();
+
+            local value = tonumber((string.gsub(self:GetText(), ',', '.')));
+            if value then
+                value = math.min(value, self:GetParent().maxValue);
+                value = math.max(value, self:GetParent().minValue);
+            else
+                value = self:GetParent().currentValue;
+            end
+
+            value = SliderRound(value, self:GetParent().minValue, self:GetParent().stepValue);
+
+            self:GetParent():SetValue(value);
+            self:SetText(value);
+            self:GetParent().CurrentValueBox.Text:SetText(value);
+
+            if self:GetParent().OnValueChangedCallback then
+                self:GetParent():OnValueChangedCallback(value);
+            end
+
+            if self:GetParent().OnMouseUpCallback then
+                self:GetParent():OnMouseUpCallback(value);
+            end
+
             PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-            self:Callback();
-        end
-    end);
 
-    editbox:SetScript('OnEditFocusGained', function(self)
-        self.isFocused = true;
-        self.lastValue = self:GetText() ~= '' and self:GetText() or nil;
-        self:HighlightText();
-        self.Background:SetBackdropBorderColor(0.8, 0.8, 0.8, 1);
+            self:SetShown(false);
+            self:GetParent().CurrentValueBox:SetShown(true);
+        end);
 
-        self.Instruction:SetShown(false);
+        editbox:SetScript('OnEditFocusGained', function(self)
+            self.isFocused = true;
+            self.lastValue = tonumber(self:GetText());
+            self:HighlightText();
+            self.Background:SetBackdropBorderColor(0.8, 0.8, 0.8, 1);
+        end);
 
-        if self.FocusGainedCallback then
-            self:FocusGainedCallback();
-        end
-    end);
+        editbox:SetScript('OnEditFocusLost', function(self)
+            self.isFocused = false;
+            if self.lastValue then
+                self:SetText(SliderRound(self.lastValue, self:GetParent().minValue, self:GetParent().stepValue));
+                self:GetParent().CurrentValueBox.Text:SetText(SliderRound(self.lastValue, self:GetParent().minValue, self:GetParent().stepValue));
+            end
 
-    editbox:SetScript('OnEditFocusLost', function(self)
-        self.isFocused = false;
-        if self.lastValue and self.useLastValue then
-            self:SetText(self.lastValue);
-        end
-
-        EditBox_ClearHighlight(self);
-        self.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
-
-        self.Instruction:SetShown(self:GetText() == '');
-
-        if self.FocusLostCallback then
-            self:FocusLostCallback();
-        end
-    end);
-
-    editbox:SetScript('OnTextChanged', function(self)
-        if self.OnTextChangedCallback then
-            self:OnTextChangedCallback();
-        end
-    end);
-
-    editbox:HookScript('OnEnter', function(self)
-        if not self.isFocused and self:IsEnabled() then
-            self.Background:SetBackdropBorderColor(0.5, 0.5, 0.5, 1);
-        end
-
-        LCG.PixelGlow_Stop(self.Glow);
-    end);
-
-    editbox:HookScript('OnLeave', function(self)
-        if not self.isFocused and self:IsEnabled() then
+            EditBox_ClearHighlight(self);
             self.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
-        end
-    end);
 
-    hooksecurefunc(editbox, 'SetEnabled', function(self, state)
-        if state then
-            self:SetFontObject('StripesOptionsNormalFont');
-            self.Label:SetFontObject('StripesOptionsNormalFont');
-        else
-            self:SetFontObject('StripesOptionsDisabledFont');
-            self.Label:SetFontObject('StripesOptionsDisabledFont');
-        end
-    end);
+            self:SetShown(false);
+            self:GetParent().CurrentValueBox:SetShown(true);
+        end);
 
-    E.CreateTooltip(editbox);
+        editbox:HookScript('OnEnter', function(self)
+            if not self.isFocused then
+                self.Background:SetBackdropBorderColor(0.5, 0.5, 0.5, 1);
+            end
 
-    editbox.SetTooltip = function(self, tooltip)
-        self.tooltip = tooltip;
+            LCG.PixelGlow_Stop(self:GetParent().Glow);
+
+            if not self:GetParent().tooltip then
+                return;
+            end
+
+            GameTooltip:SetOwner(self:GetParent(), 'ANCHOR_RIGHT');
+            GameTooltip:AddLine(self:GetParent().tooltip, 1, 0.85, 0, true);
+            GameTooltip:Show();
+        end);
+
+        editbox:HookScript('OnLeave', function(self)
+            if not self.isFocused then
+                self.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+            end
+
+            GameTooltip_Hide();
+        end);
+
+        slider.editbox = editbox;
+
+        E.CreateTooltip(slider);
+
+        hooksecurefunc(slider, 'SetEnabled', function(self, state)
+            if state then
+                self.CurrentValueBox.Text:SetFontObject('StripesOptionsNormalFont');
+                self.Text:SetFontObject('StripesOptionsHighlightFont');
+            else
+                self.CurrentValueBox.Text:SetFontObject('StripesOptionsDisabledFont');
+                self.Text:SetFontObject('StripesOptionsDisabledFont');
+            end
+        end);
+
+        slider:Show();
+
+        slider.type = 'Slider';
+
+        return slider;
     end
 
-    editbox.type = 'EditBox';
 
-    return editbox;
+    E.CreateEditBox = function(parent)
+        local editbox = Mixin(CreateFrame('EditBox', nil, parent, 'InputBoxTemplate'), E.PixelPerfectMixin);
+
+        editbox:SetSize(30, 25);
+
+        editbox:SetFontObject('StripesOptionsNormalFont');
+        editbox:SetAutoFocus(false);
+
+        editbox.Left:Hide();
+        editbox.Middle:Hide();
+        editbox.Right:Hide();
+
+        editbox.Background = Mixin(CreateFrame('Frame', nil, editbox, 'BackdropTemplate'), E.PixelPerfectMixin);
+        editbox.Background:SetPosition('TOPLEFT', editbox, 'TOPLEFT', -5, 0);
+        editbox.Background:SetPosition('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', 5, 0);
+        editbox.Background:SetFrameLevel(editbox:GetFrameLevel() - 1);
+        editbox.Background:SetBackdrop(SLIDER_EDITBOX_BACKGROUND_BACKDROP);
+        editbox.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
+        editbox.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+
+        editbox.Label = Mixin(editbox:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
+        editbox.Label:SetPosition('LEFT', editbox.Background, 'RIGHT', 4, 0);
+
+        editbox.Glow = Mixin(CreateFrame('Frame', nil, editbox), E.PixelPerfectMixin);
+        editbox.Glow:SetPosition('TOPLEFT', editbox, 'TOPLEFT', -8, 2);
+        editbox.Glow:SetPosition('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', 8, -2);
+
+        editbox.Instruction = Mixin(editbox:CreateFontString(nil, 'ARTWORK', 'StripesOptionsLightGreyedFont'), E.PixelPerfectMixin);
+        editbox.Instruction:SetPosition('LEFT', editbox, 'LEFT', 0, 0);
+
+        editbox.SetLabel = function(self, label)
+            self.Label:SetText(label);
+
+            self.Glow:SetPosition('TOPLEFT', self, 'TOPLEFT', -8, 2);
+            self.Glow:SetPosition('TOPRIGHT', self.Label, 'TOPRIGHT', 4, 2);
+            self.Glow:SetPosition('BOTTOMLEFT', self, 'BOTTOMLEFT', -8, -2);
+            self.Glow:SetPosition('BOTTOMRIGHT', self.Label, 'BOTTOMRIGHT', 4, -2);
+
+            self.SearchText = label;
+        end
+
+        editbox.SetInstruction = function(self, text)
+            self.Instruction:SetText(text);
+        end
+
+        editbox.AddToSearch = AddToSearch;
+
+        editbox:SetScript('OnEnterPressed', function(self)
+            self.lastValue = nil;
+            self:ClearFocus();
+
+            AddToFreqUsed(self);
+
+            if self.Callback then
+                PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+                self:Callback();
+            end
+        end);
+
+        editbox:SetScript('OnEditFocusGained', function(self)
+            self.isFocused = true;
+            self.lastValue = self:GetText() ~= '' and self:GetText() or nil;
+            self:HighlightText();
+            self.Background:SetBackdropBorderColor(0.8, 0.8, 0.8, 1);
+
+            self.Instruction:SetShown(false);
+
+            if self.FocusGainedCallback then
+                self:FocusGainedCallback();
+            end
+        end);
+
+        editbox:SetScript('OnEditFocusLost', function(self)
+            self.isFocused = false;
+            if self.lastValue and self.useLastValue then
+                self:SetText(self.lastValue);
+            end
+
+            EditBox_ClearHighlight(self);
+            self.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+
+            self.Instruction:SetShown(self:GetText() == '');
+
+            if self.FocusLostCallback then
+                self:FocusLostCallback();
+            end
+        end);
+
+        editbox:SetScript('OnTextChanged', function(self)
+            if self.OnTextChangedCallback then
+                self:OnTextChangedCallback();
+            end
+        end);
+
+        editbox:HookScript('OnEnter', function(self)
+            if not self.isFocused and self:IsEnabled() then
+                self.Background:SetBackdropBorderColor(0.5, 0.5, 0.5, 1);
+            end
+
+            LCG.PixelGlow_Stop(self.Glow);
+        end);
+
+        editbox:HookScript('OnLeave', function(self)
+            if not self.isFocused and self:IsEnabled() then
+                self.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+            end
+        end);
+
+        hooksecurefunc(editbox, 'SetEnabled', function(self, state)
+            if state then
+                self:SetFontObject('StripesOptionsNormalFont');
+                self.Label:SetFontObject('StripesOptionsNormalFont');
+            else
+                self:SetFontObject('StripesOptionsDisabledFont');
+                self.Label:SetFontObject('StripesOptionsDisabledFont');
+            end
+        end);
+
+        E.CreateTooltip(editbox);
+
+        editbox.SetTooltip = function(self, tooltip)
+            self.tooltip = tooltip;
+        end
+
+        editbox.type = 'EditBox';
+
+        return editbox;
+    end
 end
 
 E.CreateHeader = function(parent, text)
@@ -849,26 +857,26 @@ do
 
     local DROPDOWN_HOLDER_BACKDROP = {
         bgFile   = 'Interface\\Buttons\\WHITE8x8',
-        insets   = { top = 0, left = 0, bottom = 0, right = 0 },
+        insets   = { left = 0, right = 0, top = 0, bottom = 0 },
         edgeFile = 'Interface\\Buttons\\WHITE8x8',
         edgeSize = 1,
     };
 
     local DROPDOWN_ARROWBUTTON_BACKDROP = {
         bgFile   = 'Interface\\Buttons\\WHITE8x8',
-        insets   = { top = 0, left = 0, bottom = 0, right = 0 },
+        insets   = { left = 0, right = 0, top = 0, bottom = 0 },
         edgeFile = 'Interface\\Buttons\\WHITE8x8',
         edgeSize = 1,
     };
 
     local DROPDOWN_LIST_BACKDROP = {
         bgFile = 'Interface\\Buttons\\WHITE8x8',
-        insets = { top = 0, left = 0, bottom = 0, right = 0 },
+        insets = { left = 0, right = 0, top = 0, bottom = 0 },
     };
 
     local DROPDOWN_ITEMBUTTON_BACKDROP = {
         bgFile = 'Interface\\Buttons\\WHITE8x8',
-        insets = { top = 0, left = 0, bottom = 0, right = 0 },
+        insets = { left = 0, right = 0, top = 0, bottom = 0 },
     };
 
     local function UpdateScrollArea(scrollArea, height, heightValue, counter)
@@ -1533,6 +1541,13 @@ local NewColorPicker do
         '9900d9',
     };
 
+    local COLOR_BUTTON_BACKDROP = {
+        bgFile   = 'Interface\\Buttons\\WHITE8x8',
+        insets   = { left = 1, right = 1, top = 1, bottom = 1 },
+        edgeFile = 'Interface\\Buttons\\WHITE8x8',
+        edgeSize = 1,
+    };
+
     function CreateColorButton(hexColor)
         local b = Mixin(CreateFrame('Button', nil, ColorPickerButtons, 'BackdropTemplate'), E.PixelPerfectMixin);
         b:SetSize(80, 20);
@@ -1540,12 +1555,7 @@ local NewColorPicker do
 
         b.hexColor = hexColor or 'ffffff';
 
-        b:SetBackdrop({
-            bgFile   = 'Interface\\Buttons\\WHITE8x8',
-            insets   = {top = 1, left = 1, bottom = 1, right = 1},
-            edgeFile = 'Interface\\Buttons\\WHITE8x8',
-            edgeSize = 1,
-        });
+        b:SetBackdrop(COLOR_BUTTON_BACKDROP);
         b:SetBackdropColor(U.HEX2RGB(b.hexColor));
         b:SetBackdropBorderColor(0.3, 0.3, 0.33, 1);
 

@@ -11,9 +11,11 @@ local UnitClass, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlay
       UnitClass, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID;
 local UnitLevel, UnitEffectiveLevel, UnitGUID, UnitAffectingCombat, UnitClassification, UnitTreatAsPlayerForDisplay =
       UnitLevel, UnitEffectiveLevel, UnitGUID, UnitAffectingCombat, UnitClassification, UnitTreatAsPlayerForDisplay;
+local UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole = UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole;
 local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
 local GetQuestDifficultyColor = GetQuestDifficultyColor;
 local IsInGuild, GetGuildInfo = IsInGuild, GetGuildInfo;
+local IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map_GetBestMapForUnit = IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map.GetBestMapForUnit
 
 -- WoW C API
 local C_MythicPlus_GetCurrentAffixes, C_ChallengeMode_GetActiveKeystoneInfo = C_MythicPlus.GetCurrentAffixes, C_ChallengeMode.GetActiveKeystoneInfo;
@@ -84,8 +86,6 @@ U.IsPlayerEffectivelyTank = function ()
 
 	return assignedRole == 'TANK';
 end
-
-local IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map_GetBestMapForUnit = IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map.GetBestMapForUnit
 
 U.IsInArena = function()
     if IsActiveBattlefieldArena() or GetZonePVPInfo() == 'arena' or select(2, IsInInstance()) == 'arena' or (UnitInBattleground(PLAYER_UNIT) and (C_Map_GetBestMapForUnit(PLAYER_UNIT) and C_Map_GetBestMapForUnit(PLAYER_UNIT) < 0)) then
@@ -239,7 +239,7 @@ end
 U.GetUnitArenaId = function(unit)
     for i = 1, GetNumArenaOpponents() do
         if UnitIsUnit(unit, 'arena' .. i) or UnitIsUnit(unit, 'arenapet' .. i) then
-            return i
+            return i;
         end
     end
 end
@@ -424,5 +424,5 @@ U.Merge = function(src, dst)
         end
     end
 
-    return dst
+    return dst;
 end
