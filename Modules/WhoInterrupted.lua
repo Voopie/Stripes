@@ -24,6 +24,10 @@ local CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
 local INTERRUPTED_FORMAT = '|cff%s%s! [%s]|r';
 
+local blacklist = {
+    [197214] = true, -- Sundering (Shaman Enhancement talent)
+};
+
 local function OnInterrupt(unitframe, name, guid)
     if name and guid then
         unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, GetClassColorByGUID(guid, 1), INTERRUPTED, name));
@@ -39,7 +43,7 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
                 OnInterrupt(unitframe, sourceName, sourceGUID);
             end
         end
-    elseif subEvent == 'SPELL_AURA_APPLIED' then
+    elseif subEvent == 'SPELL_AURA_APPLIED' and not blacklist[spellId] then
         local flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
         if flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0 then
             for _, unitframe in pairs(NP) do
