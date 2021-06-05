@@ -5,7 +5,9 @@ local Module = S:NewNameplateModule('CombatIndicator');
 local UnitExists, UnitAffectingCombat = UnitExists, UnitAffectingCombat;
 
 -- Local config
-local ENABLED, COLOR, OFFSET_X, OFFSET_Y, SIZE;
+local ENABLED, COLOR, ANCHOR, RELATIVE_ANCHOR, OFFSET_X, OFFSET_Y, SIZE;
+
+local FRAME_ANCHORS = O.Lists.frame_positions;
 
 local UPDATE_INTERVAL = 0.5;
 
@@ -50,7 +52,7 @@ local function Update(unitframe)
     unitframe.CombatIndicator.elapsed = 0;
     unitframe.CombatIndicator:SetShown(ENABLED and unitframe.data.unitType ~= 'SELF');
 
-    PixelUtil.SetPoint(unitframe.CombatIndicator.icon, 'TOPLEFT', unitframe.CombatIndicator, 'BOTTOMLEFT', OFFSET_X, OFFSET_Y);
+    PixelUtil.SetPoint(unitframe.CombatIndicator.icon, ANCHOR, unitframe.CombatIndicator, RELATIVE_ANCHOR, OFFSET_X, OFFSET_Y);
     PixelUtil.SetSize(unitframe.CombatIndicator.icon, SIZE, SIZE);
     unitframe.CombatIndicator.icon:SetVertexColor(COLOR[1], COLOR[2], COLOR[3], COLOR[4]);
 end
@@ -82,6 +84,9 @@ function Module:UpdateLocalConfig()
     COLOR[2] = O.db.combat_indicator_color[2];
     COLOR[3] = O.db.combat_indicator_color[3];
     COLOR[4] = O.db.combat_indicator_color[4] or 1;
+
+    ANCHOR          = FRAME_ANCHORS[O.db.combat_indicator_anchor] or 'TOPLEFT';
+    RELATIVE_ANCHOR = FRAME_ANCHORS[O.db.combat_indicator_relative_anchor] or 'BOTTOMLEFT';
 
     OFFSET_X = O.db.combat_indicator_offset_x;
     OFFSET_Y = O.db.combat_indicator_offset_y;

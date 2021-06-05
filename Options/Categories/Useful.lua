@@ -149,8 +149,34 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.combat_indicator_anchor = E.CreateDropdown('plain', self);
+    self.combat_indicator_anchor:SetPosition('TOPLEFT', self.combat_indicator_enabled, 'BOTTOMLEFT', 0, -12);
+    self.combat_indicator_anchor:SetSize(120, 20);
+    self.combat_indicator_anchor:SetList(O.Lists.frame_positions_localized);
+    self.combat_indicator_anchor:SetValue(O.db.combat_indicator_anchor);
+    self.combat_indicator_anchor:SetLabel(L['OPTIONS_COMBAT_INDICATOR_POSITION']);
+    self.combat_indicator_anchor:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_ANCHOR_TOOLTIP']);
+    self.combat_indicator_anchor:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_ANCHOR_TOOLTIP']);
+    self.combat_indicator_anchor.OnValueChangedCallback = function(_, value)
+        O.db.combat_indicator_anchor = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.combat_indicator_relative_anchor = E.CreateDropdown('plain', self);
+    self.combat_indicator_relative_anchor:SetPosition('LEFT', self.combat_indicator_anchor, 'RIGHT', 12, 0);
+    self.combat_indicator_relative_anchor:SetSize(120, 20);
+    self.combat_indicator_relative_anchor:SetList(O.Lists.frame_positions_localized);
+    self.combat_indicator_relative_anchor:SetValue(O.db.combat_indicator_relative_anchor);
+    self.combat_indicator_relative_anchor:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_RELATIVE_ANCHOR_TOOLTIP']);
+    self.combat_indicator_relative_anchor:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_RELATIVE_ANCHOR_TOOLTIP']);
+    self.combat_indicator_relative_anchor.OnValueChangedCallback = function(_, value)
+        O.db.combat_indicator_relative_anchor = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     self.combat_indicator_offset_x = E.CreateSlider(self);
-    self.combat_indicator_offset_x:SetPosition('TOPLEFT', self.combat_indicator_enabled, 'BOTTOMLEFT', 0, -12);
+    self.combat_indicator_offset_x:SetPosition('LEFT', self.combat_indicator_relative_anchor, 'RIGHT', 8, 0);
+    self.combat_indicator_offset_x:SetSize(120, 18);
     self.combat_indicator_offset_x:SetValues(O.db.combat_indicator_offset_x, -50, 50, 1);
     self.combat_indicator_offset_x:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP']);
     self.combat_indicator_offset_x:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP']);
@@ -161,6 +187,7 @@ panel.Load = function(self)
 
     self.combat_indicator_offset_y = E.CreateSlider(self);
     self.combat_indicator_offset_y:SetPosition('LEFT', self.combat_indicator_offset_x, 'RIGHT', 12, 0);
+    self.combat_indicator_offset_y:SetSize(120, 18);
     self.combat_indicator_offset_y:SetValues(O.db.combat_indicator_offset_y, -50, 50, 1);
     self.combat_indicator_offset_y:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP']);
     self.combat_indicator_offset_y:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP']);
@@ -170,7 +197,7 @@ panel.Load = function(self)
     end
 
     local SpellInterruptedHeader = E.CreateHeader(self, L['OPTIONS_SPELL_INTERRUPTED_ICON_HEADER']);
-    SpellInterruptedHeader:SetPosition('TOPLEFT', self.combat_indicator_offset_x, 'BOTTOMLEFT', 0, -8);
+    SpellInterruptedHeader:SetPosition('TOPLEFT', self.combat_indicator_anchor, 'BOTTOMLEFT', 0, -8);
     SpellInterruptedHeader:SetW(self:GetWidth());
 
     self.spell_interrupted_icon = E.CreateCheckButton(self);

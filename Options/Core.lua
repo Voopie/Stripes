@@ -386,10 +386,12 @@ O.DefaultValues = {
     talking_head_suppress_always = false,
 
     combat_indicator_enabled  = true,
-    combat_indicator_color    = { 1, 0.3, 0.3, 1 },
+    combat_indicator_color    = { 1, 0, 0, 1 },
     combat_indicator_size     = 8,
-    combat_indicator_offset_x = 0,
-    combat_indicator_offset_y = -1,
+    combat_indicator_anchor            = 8, -- TOPLEFT
+    combat_indicator_relative_anchor   = 2, -- BOTTOMLEFT
+    combat_indicator_offset_x          = 0,
+    combat_indicator_offset_y          = -1,
 
     spell_interrupted_icon  = false,
     spell_interrupted_icon_countdown_font_value    = 'BigNoodleToo Titling',

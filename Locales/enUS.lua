@@ -480,6 +480,9 @@ L['OPTIONS_COMBAT_INDICATOR_COLOR_TOOLTIP'] = 'Color of combat indicator icon';
 L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP'] = 'Horizontal offset of combat indicator icon';
 L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of combat indicator icon';
 L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP'] = 'Size of combat indicator icon';
+L['OPTIONS_COMBAT_INDICATOR_POSITION'] = 'Position';
+L['OPTIONS_COMBAT_INDICATOR_ANCHOR_TOOLTIP'] = 'Point of attachment of combat indicator icon';
+L['OPTIONS_COMBAT_INDICATOR_RELATIVE_ANCHOR_TOOLTIP'] = 'To which point of the health bar attach the combat indicator icon';
 
 L['OPTIONS_AURAS_TAB_COMMON'] = 'General';
 L['OPTIONS_AURAS_TAB_SPELLSTEAL'] = 'Dispelable';

@@ -480,6 +480,10 @@ L['OPTIONS_COMBAT_INDICATOR_COLOR_TOOLTIP'] = 'Цвет индикатора б�
 L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение значка индикатора боя';
 L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение значка индикатора боя';
 L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP'] = 'Размер значка индикатора боя';
+L['OPTIONS_COMBAT_INDICATOR_POSITION'] = 'Позиция';
+L['OPTIONS_COMBAT_INDICATOR_ANCHOR_TOOLTIP'] = 'Точка крепления значка индикатора боя';
+L['OPTIONS_COMBAT_INDICATOR_RELATIVE_ANCHOR_TOOLTIP'] = 'К какой точке полосы здоровья прикрепить значок индикатора боя';
+
 
 L['OPTIONS_AURAS_TAB_COMMON'] = 'Основное';
 L['OPTIONS_AURAS_TAB_SPELLSTEAL'] = 'Развеиваемые';
