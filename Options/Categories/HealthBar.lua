@@ -229,8 +229,23 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    local ResetThreatColorsButton = E.CreateTextureButton(self, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);
+    ResetThreatColorsButton:SetPosition('TOPLEFT', self.threat_color_enabled, 'BOTTOMLEFT', 4, -12);
+    ResetThreatColorsButton:SetTooltip(L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP']);
+    ResetThreatColorsButton:AddToSearch(button, L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP']);
+    ResetThreatColorsButton.Callback = function()
+        local defaultStatusColors = S:GetNameplateModule('HealthBar').defaultStatusColors;
+        local defaultOffTankColor = S:GetNameplateModule('HealthBar').defaultOffTankColor;
+
+        panel.threat_color_status_0:SetValue(unpack(defaultStatusColors[0]));
+        panel.threat_color_status_1:SetValue(unpack(defaultStatusColors[1]));
+        panel.threat_color_status_2:SetValue(unpack(defaultStatusColors[2]));
+        panel.threat_color_status_3:SetValue(unpack(defaultStatusColors[3]));
+        panel.threat_color_offtank:SetValue(unpack(defaultOffTankColor));
+    end
+
     self.threat_color_status_0 = E.CreateColorPicker(self);
-    self.threat_color_status_0:SetPosition('TOPLEFT', self.threat_color_enabled, 'BOTTOMLEFT', 0, -8);
+    self.threat_color_status_0:SetPosition('LEFT', ResetThreatColorsButton, 'RIGHT', 16, 0);
     self.threat_color_status_0:SetTooltip(L['OPTIONS_THREAT_COLOR_STATUS_0_TOOLTIP']);
     self.threat_color_status_0:AddToSearch(button, L['OPTIONS_THREAT_COLOR_STATUS_0_TOOLTIP']);
     self.threat_color_status_0:SetValue(unpack(O.db.threat_color_status_0));
@@ -299,24 +314,8 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    local ResetThreatColorsButton = E.CreateButton(self);
-    ResetThreatColorsButton:SetPosition('LEFT', self.threat_color_offtank, 'RIGHT', 12, 0);
-    ResetThreatColorsButton:SetLabel(L['OPTIONS_RESET_THREAT_COLORS']);
-    ResetThreatColorsButton:SetTooltip(L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP']);
-    ResetThreatColorsButton:AddToSearch(button, L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP']);
-    ResetThreatColorsButton:SetScript('OnClick', function()
-        local defaultStatusColors = S:GetNameplateModule('HealthBar').defaultStatusColors;
-        local defaultOffTankColor = S:GetNameplateModule('HealthBar').defaultOffTankColor;
-
-        panel.threat_color_status_0:SetValue(unpack(defaultStatusColors[0]));
-        panel.threat_color_status_1:SetValue(unpack(defaultStatusColors[1]));
-        panel.threat_color_status_2:SetValue(unpack(defaultStatusColors[2]));
-        panel.threat_color_status_3:SetValue(unpack(defaultStatusColors[3]));
-        panel.threat_color_offtank:SetValue(unpack(defaultOffTankColor));
-    end);
-
     local ExecutionHeader = E.CreateHeader(self, L['OPTIONS_HEADER_EXECUTION']);
-    ExecutionHeader:SetPosition('TOPLEFT', self.threat_color_status_0, 'BOTTOMLEFT', 0, -4);
+    ExecutionHeader:SetPosition('TOPLEFT', ResetThreatColorsButton, 'BOTTOMLEFT', -4, -4);
     ExecutionHeader:SetW(self:GetWidth());
 
     self.execution_enabled = E.CreateCheckButton(self);

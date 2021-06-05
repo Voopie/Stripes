@@ -322,6 +322,48 @@ E.CreateCheckButton = function(parent)
     return b;
 end
 
+E.CreateTextureButton = function(parent, texturePath, textureCoord)
+    local b = Mixin(CreateFrame('Button', nil, parent), E.PixelPerfectMixin);
+
+    b:SetSize(16, 16);
+
+    b:SetNormalTexture(texturePath);
+    b:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7, 1);
+    b:SetHighlightTexture(texturePath, 'BLEND')
+    b:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
+
+    if textureCoord then
+        b:GetNormalTexture():SetTexCoord(unpack(textureCoord));
+        b:GetHighlightTexture():SetTexCoord(unpack(textureCoord));
+    end
+
+    b.Glow = Mixin(CreateFrame('Frame', nil, b), E.PixelPerfectMixin);
+    b.Glow:SetPosition('TOPLEFT', b, 'TOPLEFT', -6, 6);
+    b.Glow:SetPosition('BOTTOMRIGHT', b, 'BOTTOMRIGHT', 6, -6);
+
+    b.SetTooltip = function(self, tooltip)
+        self.tooltip = tooltip;
+    end
+
+    E.CreateTooltip(b);
+
+    b.AddToSearch = AddToSearch;
+
+    b:HookScript('OnEnter', function(self)
+        LCG.PixelGlow_Stop(self.Glow);
+    end);
+
+    b:SetScript('OnClick', function(self)
+        AddToFreqUsed(self);
+
+        if self.Callback then
+            self:Callback();
+        end
+    end);
+
+    return b;
+end
+
 E.CreateScrollFrame = function(parent, scrollStep, scrollChild)
     scrollStep = scrollStep or 20;
 
