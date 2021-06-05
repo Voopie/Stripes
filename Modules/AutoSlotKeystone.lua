@@ -6,26 +6,26 @@ function Module:Slot()
         return;
     end
 
-	if C_ChallengeMode.HasSlottedKeystone() then
-		return;
-	end
+    if C_ChallengeMode.HasSlottedKeystone() then
+        return;
+    end
 
-	for container = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
-		local slots = GetContainerNumSlots(container);
+    for container = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
+        local slots = GetContainerNumSlots(container);
 
-		for slot = 1, slots do
-			local slotLink = select(7, GetContainerItemInfo(container, slot));
+        for slot = 1, slots do
+            local slotLink = select(7, GetContainerItemInfo(container, slot));
 
-			if slotLink and string.match(slotLink, '|Hkeystone:') then
-				PickupContainerItem(container, slot);
+            if slotLink and string.match(slotLink, '|Hkeystone:') then
+                PickupContainerItem(container, slot);
 
-				if CursorHasItem() then
-					C_ChallengeMode.SlotKeystone();
-					return;
-				end
-			end
-		end
-	end
+                if CursorHasItem() then
+                    C_ChallengeMode.SlotKeystone();
+                    return;
+                end
+            end
+        end
+    end
 end
 
 function Module:Blizzard_ChallengesUI()

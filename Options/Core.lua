@@ -385,9 +385,9 @@ O.DefaultValues = {
     talking_head_suppress        = false,
     talking_head_suppress_always = false,
 
-    combat_indicator_enabled  = true,
-    combat_indicator_color    = { 1, 0, 0, 1 },
-    combat_indicator_size     = 8,
+    combat_indicator_enabled           = true,
+    combat_indicator_color             = { 1, 0, 0, 1 },
+    combat_indicator_size              = 8,
     combat_indicator_anchor            = 4, -- CENTER
     combat_indicator_relative_anchor   = 1, -- BOTTOM
     combat_indicator_offset_x          = 0,

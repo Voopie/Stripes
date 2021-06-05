@@ -18,7 +18,7 @@ local function Create(unitframe)
     local absorbBar = CreateFrame('StatusBar', '$parentAbsorbBar', unitframe.healthBar, 'BackdropTemplate');
     absorbBar:SetAllPoints(unitframe.healthBar);
     absorbBar:SetBackdrop(BACKDROP);
-	absorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 0);
+    absorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 0);
 
     absorbBar.t = absorbBar:CreateTexture(nil, 'ARTWORK');
     absorbBar.t:SetTexture('Interface\\RaidFrame\\Shield-Fill', 'REPEAT', 'REPEAT');

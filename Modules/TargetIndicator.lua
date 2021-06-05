@@ -47,11 +47,11 @@ local function Glow_Hide(unitframe)
 end
 
 local function MouseOnUnit(unitframe)
-	if unitframe and unitframe:IsVisible() and UnitExists('mouseover') then
-		return UnitIsUnit('mouseover', unitframe.data.unit);
-	end
+    if unitframe and unitframe:IsVisible() and UnitExists('mouseover') then
+        return UnitIsUnit('mouseover', unitframe.data.unit);
+    end
 
-	return false;
+    return false;
 end
 
 local function OnUpdate(self, elapsed)
@@ -60,12 +60,12 @@ local function OnUpdate(self, elapsed)
 
         if not MouseOnUnit(unitframe) then
             Glow_Hide(unitframe);
-		end
+        end
 
-		self.elapsed = 0;
-	else
-		self.elapsed = (self.elapsed or 0) + elapsed;
-	end
+        self.elapsed = 0;
+    else
+        self.elapsed = (self.elapsed or 0) + elapsed;
+    end
 end
 
 local function UpdateTargetSelection(unitframe)
