@@ -382,7 +382,7 @@ panel.Load = function(self)
     self.health_text_anchor = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
     self.health_text_anchor:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -20);
     self.health_text_anchor:SetSize(120, 20);
-    self.health_text_anchor:SetList(O.Lists.frame_positions_simple_localized);
+    self.health_text_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.health_text_anchor:SetValue(O.db.health_text_anchor);
     self.health_text_anchor:SetLabel(L['OPTIONS_HEALTH_TEXT_ANCHOR']);
     self.health_text_anchor:SetTooltip(L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP']);
@@ -525,7 +525,7 @@ panel.Load = function(self)
     self.level_text_anchor = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
     self.level_text_anchor:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -20);
     self.level_text_anchor:SetSize(120, 20);
-    self.level_text_anchor:SetList(O.Lists.frame_positions_simple_localized);
+    self.level_text_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.level_text_anchor:SetValue(O.db.level_text_anchor);
     self.level_text_anchor:SetLabel(L['OPTIONS_LEVEL_TEXT_ANCHOR']);
     self.level_text_anchor:SetTooltip(L['OPTIONS_LEVEL_TEXT_ANCHOR_TOOLTIP']);

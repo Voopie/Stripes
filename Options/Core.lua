@@ -90,7 +90,7 @@ O.Lists = {
         [6] = L['FONT_FLAG_THICKOUTLINE_MONOCHROME'],
     },
 
-    frame_positions = {
+    frame_points = {
         [1] = 'BOTTOM',
         [2] = 'BOTTOMLEFT',
         [3] = 'BOTTOMRIGHT',
@@ -102,25 +102,25 @@ O.Lists = {
         [9] = 'TOPRIGHT',
     },
 
-    frame_positions_localized = {
-        [1] = L['FRAME_ANCHOR_BOTTOM'],
-        [2] = L['FRAME_ANCHOR_BOTTOMLEFT'],
-        [3] = L['FRAME_ANCHOR_BOTTOMRIGHT'],
-        [4] = L['FRAME_ANCHOR_CENTER'],
-        [5] = L['FRAME_ANCHOR_LEFT'],
-        [6] = L['FRAME_ANCHOR_RIGHT'],
-        [7] = L['FRAME_ANCHOR_TOP'],
-        [8] = L['FRAME_ANCHOR_TOPLEFT'],
-        [9] = L['FRAME_ANCHOR_TOPRIGHT'],
+    frame_points_localized = {
+        [1] = L['FRAME_POINT_BOTTOM'],
+        [2] = L['FRAME_POINT_BOTTOMLEFT'],
+        [3] = L['FRAME_POINT_BOTTOMRIGHT'],
+        [4] = L['FRAME_POINT_CENTER'],
+        [5] = L['FRAME_POINT_LEFT'],
+        [6] = L['FRAME_POINT_RIGHT'],
+        [7] = L['FRAME_POINT_TOP'],
+        [8] = L['FRAME_POINT_TOPLEFT'],
+        [9] = L['FRAME_POINT_TOPRIGHT'],
     },
 
-    frame_positions_simple = {
+    frame_points_simple = {
         [1] = 'LEFT',
         [2] = 'CENTER',
         [3] = 'RIGHT',
     },
 
-    frame_positions_simple_localized = {
+    frame_points_simple_localized = {
         [1] = L['POSITION_LEFT'],
         [2] = L['POSITION_CENTER'],
         [3] = L['POSITION_RIGHT'],
@@ -385,13 +385,13 @@ O.DefaultValues = {
     talking_head_suppress        = false,
     talking_head_suppress_always = false,
 
-    combat_indicator_enabled           = true,
-    combat_indicator_color             = { 1, 0, 0, 1 },
-    combat_indicator_size              = 8,
-    combat_indicator_anchor            = 4, -- CENTER
-    combat_indicator_relative_anchor   = 1, -- BOTTOM
-    combat_indicator_offset_x          = 0,
-    combat_indicator_offset_y          = 0,
+    combat_indicator_enabled          = true,
+    combat_indicator_color            = { 1, 0, 0, 1 },
+    combat_indicator_size             = 8,
+    combat_indicator_point            = 4, -- CENTER
+    combat_indicator_relative_point   = 1, -- BOTTOM
+    combat_indicator_offset_x         = 0,
+    combat_indicator_offset_y         = 0,
 
     spell_interrupted_icon  = false,
     spell_interrupted_icon_countdown_font_value    = 'BigNoodleToo Titling',

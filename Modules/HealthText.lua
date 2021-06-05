@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('HealthText');
 local ShortValue = U.ShortValue;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
-local LIST_FRAME_POSITIONS_SIMPLE = O.Lists.frame_positions_simple;
+local FRAME_POINTS_SIMPLE = O.Lists.frame_points_simple;
 
 -- Local Config
 local ENABLED, HIDE_FULL, DISPLAY_MODE, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
@@ -21,7 +21,7 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
-    PixelUtil.SetPoint(frame.text, LIST_FRAME_POSITIONS_SIMPLE[O.db.health_text_anchor], frame, LIST_FRAME_POSITIONS_SIMPLE[O.db.health_text_anchor], O.db.health_text_x_offset, O.db.health_text_y_offset);
+    PixelUtil.SetPoint(frame.text, FRAME_POINTS_SIMPLE[O.db.health_text_anchor], frame, FRAME_POINTS_SIMPLE[O.db.health_text_anchor], O.db.health_text_x_offset, O.db.health_text_y_offset);
 
     if CUSTOM_COLOR_ENABLED then
         frame.text:SetTextColor(unpack(CUSTOM_COLOR));
@@ -82,7 +82,7 @@ end
 
 local function UpdateStyle(unitframe)
     unitframe.HealthText.text:ClearAllPoints();
-    PixelUtil.SetPoint(unitframe.HealthText.text, LIST_FRAME_POSITIONS_SIMPLE[O.db.health_text_anchor], unitframe.HealthText, LIST_FRAME_POSITIONS_SIMPLE[O.db.health_text_anchor], O.db.health_text_x_offset, O.db.health_text_y_offset);
+    PixelUtil.SetPoint(unitframe.HealthText.text, FRAME_POINTS_SIMPLE[O.db.health_text_anchor], unitframe.HealthText, FRAME_POINTS_SIMPLE[O.db.health_text_anchor], O.db.health_text_x_offset, O.db.health_text_y_offset);
 
     if CUSTOM_COLOR_ENABLED then
         unitframe.HealthText.text:SetTextColor(unpack(CUSTOM_COLOR));

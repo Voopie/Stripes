@@ -27,15 +27,15 @@ L['POSITION_LEFT'] = 'Left';
 L['POSITION_CENTER'] = 'Center';
 L['POSITION_RIGHT'] = 'Right';
 
-L['FRAME_ANCHOR_BOTTOM'] = 'Bottom';
-L['FRAME_ANCHOR_BOTTOMLEFT'] = 'Bottom left';
-L['FRAME_ANCHOR_BOTTOMRIGHT'] = 'Bottom right';
-L['FRAME_ANCHOR_CENTER'] = 'Center';
-L['FRAME_ANCHOR_LEFT'] = 'Left';
-L['FRAME_ANCHOR_RIGHT'] = 'Right';
-L['FRAME_ANCHOR_TOP'] = 'Top';
-L['FRAME_ANCHOR_TOPLEFT'] = 'Top left';
-L['FRAME_ANCHOR_TOPRIGHT'] = 'Top right';
+L['FRAME_POINT_BOTTOM'] = 'Bottom';
+L['FRAME_POINT_BOTTOMLEFT'] = 'Bottom left';
+L['FRAME_POINT_BOTTOMRIGHT'] = 'Bottom right';
+L['FRAME_POINT_CENTER'] = 'Center';
+L['FRAME_POINT_LEFT'] = 'Left';
+L['FRAME_POINT_RIGHT'] = 'Right';
+L['FRAME_POINT_TOP'] = 'Top';
+L['FRAME_POINT_TOPLEFT'] = 'Top left';
+L['FRAME_POINT_TOPRIGHT'] = 'Top right';
 
 L['FRAME_STRATA_INHERIT'] = 'Inherit';
 
@@ -481,8 +481,8 @@ L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP'] = 'Horizontal offset of combat in
 L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of combat indicator icon';
 L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP'] = 'Size of combat indicator icon';
 L['OPTIONS_COMBAT_INDICATOR_POSITION'] = 'Position';
-L['OPTIONS_COMBAT_INDICATOR_ANCHOR_TOOLTIP'] = 'Point of attachment of combat indicator icon';
-L['OPTIONS_COMBAT_INDICATOR_RELATIVE_ANCHOR_TOOLTIP'] = 'To which point of the health bar attach the combat indicator icon';
+L['OPTIONS_COMBAT_INDICATOR_POINT_TOOLTIP'] = 'Point of attachment of combat indicator icon';
+L['OPTIONS_COMBAT_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'To which point of the health bar attach the combat indicator icon';
 
 L['OPTIONS_AURAS_TAB_COMMON'] = 'General';
 L['OPTIONS_AURAS_TAB_SPELLSTEAL'] = 'Dispelable';
