@@ -484,7 +484,6 @@ L['OPTIONS_COMBAT_INDICATOR_POSITION'] = 'Позиция';
 L['OPTIONS_COMBAT_INDICATOR_ANCHOR_TOOLTIP'] = 'Точка крепления значка индикатора боя';
 L['OPTIONS_COMBAT_INDICATOR_RELATIVE_ANCHOR_TOOLTIP'] = 'К какой точке полосы здоровья прикрепить значок индикатора боя';
 
-
 L['OPTIONS_AURAS_TAB_COMMON'] = 'Основное';
 L['OPTIONS_AURAS_TAB_SPELLSTEAL'] = 'Развеиваемые';
 L['OPTIONS_AURAS_TAB_MYTHICPLUS'] = 'Эпохальные';
