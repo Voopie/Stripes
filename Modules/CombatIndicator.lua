@@ -49,7 +49,7 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    unitframe.CombatIndicator.elapsed = 0;
+    unitframe.CombatIndicator.elapsed = UPDATE_INTERVAL + 0.01;
     unitframe.CombatIndicator:SetShown(ENABLED and unitframe.data.unitType ~= 'SELF');
 
     unitframe.CombatIndicator.icon:ClearAllPoints();
