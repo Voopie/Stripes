@@ -184,7 +184,6 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
         if self.Icon then
             self.Icon:SetTexture(texture);
-            --PixelUtil.SetWidth(self.Icon, self.Icon:GetHeight());
 
             if notInterruptible then
                 self.Icon:SetShown(self.iconWhenNoninterruptible);
@@ -328,7 +327,6 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
         if self.Icon then
             self.Icon:SetTexture(texture);
-            --PixelUtil.SetWidth(self.Icon, self.Icon:GetHeight());
         end
 
         if self.Spark then
