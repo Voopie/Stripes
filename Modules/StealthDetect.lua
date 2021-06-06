@@ -3,6 +3,7 @@ local Module = S:NewNameplateModule('StealthDetect');
 
 local LCG = S.Libraries.LCG;
 local LCG_PixelGlow_Start = LCG.PixelGlow_Start;
+local LCG_SUFFIX = 'S_STEALTHDETECT';
 
 -- Nameplates
 local NP = S.NamePlates;
@@ -82,7 +83,7 @@ local function Create(unitframe)
     frame.glow = CreateFrame('Frame', nil, frame);
     frame.glow:SetAllPoints(frame.icon)
 
-    LCG_PixelGlow_Start(frame.glow, GLOW_COLOR, 8, nil, 8, nil, 1, 1, nil, 'S_STEALTHDETECT');
+    LCG_PixelGlow_Start(frame.glow, GLOW_COLOR, 8, nil, 8, nil, 1, 1, nil, LCG_SUFFIX);
 
     frame:SetShown(false);
 
