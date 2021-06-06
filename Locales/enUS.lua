@@ -37,6 +37,7 @@ L['FRAME_POINT_TOP'] = 'Top';
 L['FRAME_POINT_TOPLEFT'] = 'Top left';
 L['FRAME_POINT_TOPRIGHT'] = 'Top right';
 
+L['FRAME_STRATA'] = 'Strata';
 L['FRAME_STRATA_INHERIT'] = 'Inherit';
 
 L['AURAS_SORT_EXPIRES_ASC'] = 'By less time';
@@ -407,7 +408,6 @@ L['OPTIONS_RAID_TARGET_ICON_POSITION'] = 'Position';
 L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP'] = 'Position of the target marker icon';
 L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_X_TOOLTIP'] = 'Horizontal offset of the target marker icon';
 L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_Y_TOOLTIP'] = 'Vertical offset of the target marker icon';
-L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA'] = 'Strata';
 L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP'] = 'Strata of the target marker icon';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Percentage';
@@ -449,6 +449,7 @@ L['OPTIONS_TALKING_HEAD_SUPPRESS_TOOLTIP'] = 'Disable pop-up «talking head» in
 L['OPTIONS_TALKING_HEAD_SUPPRESS_ALWAYS'] = 'Always';
 L['OPTIONS_TALKING_HEAD_SUPPRESS_ALWAYS_TOOLTIP'] = 'Turn off the «talking head» completely»';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_HEADER'] = 'Spell interrupt icon';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_FRAME_STRATA_TOOLTIP'] = 'Strata for spell interrupt icon';
 L['OPTIONS_SPELL_INTERRUPTED_ICON'] = 'Enable';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_TOOLTIP'] = 'Show the spell interrupt icon with a timer when the enemy\'s spell was interrupted';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_TEXT'] = 'Countdown';

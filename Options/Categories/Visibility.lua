@@ -222,7 +222,7 @@ panel.Load = function(self)
     self.raid_target_icon_frame_strata:SetSize(160, 20);
     self.raid_target_icon_frame_strata:SetList(O.Lists.frame_strata);
     self.raid_target_icon_frame_strata:SetValue(O.db.raid_target_icon_frame_strata);
-    self.raid_target_icon_frame_strata:SetLabel(L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA']);
+    self.raid_target_icon_frame_strata:SetLabel(L['FRAME_STRATA']);
     self.raid_target_icon_frame_strata:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP']);
     self.raid_target_icon_frame_strata:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP'], self.Tabs[1]);
     self.raid_target_icon_frame_strata.OnValueChangedCallback = function(_, value)

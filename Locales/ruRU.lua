@@ -37,6 +37,7 @@ L['FRAME_POINT_TOP'] = 'Сверху';
 L['FRAME_POINT_TOPLEFT'] = 'Сверху слева';
 L['FRAME_POINT_TOPRIGHT'] = 'Сверху справа';
 
+L['FRAME_STRATA'] = 'Слой';
 L['FRAME_STRATA_INHERIT'] = 'Наследовать';
 
 L['AURAS_SORT_EXPIRES_ASC'] = 'По меньшему времени';
@@ -407,7 +408,6 @@ L['OPTIONS_RAID_TARGET_ICON_POSITION'] = 'Расположение';
 L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP'] = 'Расположение метки цели';
 L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение метки цели';
 L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение метки цели';
-L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA'] = 'Слой';
 L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP'] = 'Слой метки цели';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Проценты';
@@ -451,6 +451,7 @@ L['OPTIONS_TALKING_HEAD_SUPPRESS_ALWAYS_TOOLTIP'] = 'Полностью выкл
 L['OPTIONS_SPELL_INTERRUPTED_ICON_HEADER'] = 'Иконка прерывания';
 L['OPTIONS_SPELL_INTERRUPTED_ICON'] = 'Включить';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_TOOLTIP'] = 'Показать иконку прерывания заклинания с таймером, когда заклинание противника было прервано';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_FRAME_STRATA_TOOLTIP'] = 'Слой для иконки прерывания';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_TEXT'] = 'Таймер';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_VALUE'] = 'Шрифт таймера иконки прерывания';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_SIZE'] = 'Размер шрифта таймера иконки прерывания';

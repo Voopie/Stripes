@@ -15,7 +15,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local NP = S.NamePlates;
 
 -- Local Config
-local ENABLED, CASTER_NAME_SHOW;
+local ENABLED, CASTER_NAME_SHOW, FRAME_STRATA;
 
 local StripesSpellInterruptedCooldownFont = CreateFont('StripesSpellInterruptedCooldownFont');
 local StripesSpellInterruptedCasterFont   = CreateFont('StripesSpellInterruptedCasterFont');
@@ -50,7 +50,6 @@ local function Create(unitframe)
 
     local frame = CreateFrame('Frame', '$parentSpellInterrupted', unitframe.healthBar);
     frame:SetAllPoints(unitframe.healthBar);
-    frame:SetFrameStrata('HIGH');
     frame:SetFrameLevel(frame:GetFrameLevel() + 100);
 
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
@@ -86,6 +85,12 @@ end
 
 local function Update(unitframe)
     if ENABLED then
+        if FRAME_STRATA == 1 then
+            unitframe.SpellInterrupted:SetFrameStrata(unitframe.SpellInterrupted:GetParent():GetFrameStrata());
+        else
+            unitframe.SpellInterrupted:SetFrameStrata(FRAME_STRATA);
+        end
+
         unitframe.SpellInterrupted:SetShown(unitframe.SpellInterrupted.expTime > GetTime() and unitframe.data.unitGUID == unitframe.SpellInterrupted.destGUID);
     else
         unitframe.SpellInterrupted:SetShown(false);
@@ -149,6 +154,7 @@ end
 function Module:UpdateLocalConfig()
     ENABLED          = O.db.spell_interrupted_icon;
     CASTER_NAME_SHOW = O.db.spell_interrupted_icon_caster_name_show;
+    FRAME_STRATA     = O.db.spell_interrupted_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.spell_interrupted_icon_frame_strata] or 1;
 
     UpdateFontObject(StripesSpellInterruptedCooldownFont, O.db.spell_interrupted_icon_countdown_font_value, O.db.spell_interrupted_icon_countdown_font_size, O.db.spell_interrupted_icon_countdown_font_flag, O.db.spell_interrupted_icon_countdown_font_shadow);
     UpdateFontObject(StripesSpellInterruptedCasterFont, O.db.spell_interrupted_icon_caster_name_font_value, O.db.spell_interrupted_icon_caster_name_font_size, O.db.spell_interrupted_icon_caster_name_font_flag, O.db.spell_interrupted_icon_caster_name_font_shadow);
