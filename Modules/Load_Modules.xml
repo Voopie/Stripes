@@ -12,6 +12,7 @@
     
     <Script file="AbsorbBar.lua" />
     <Script file="FactionIcon.lua" />
+    <Script file="ClassIcon.lua" />
     <Script file="TargetIndicator.lua" />
     <Script file="TargetName.lua" />
     <Script file="HideNonCasting.lua" />

@@ -115,6 +115,27 @@ S.Media.Icons64 = {
     },
 };
 
+S.Media.IconsClass = {
+    TEXTURE = M .. 'Textures\\icons_classes.blp', -- 256x256
+
+    COORDS = {
+        DEATHKNIGHT = {   0, 1/4, 0, 1/4 },
+        PRIEST      = { 1/4, 2/4, 0, 1/4 },
+        ROGUE       = { 2/4, 3/4, 0, 1/4 },
+        DEMONHUNTER = { 3/4, 4/4, 0, 1/4 },
+
+        DRUID   = {   0, 1/4, 1/4, 2/4 },
+        SHAMAN  = { 1/4, 2/4, 1/4, 2/4 },
+        WARLOCK = { 2/4, 3/4, 1/4, 2/4 },
+        HUNTER  = { 3/4, 4/4, 1/4, 2/4 },
+
+        MAGE    = {   0, 1/4, 2/4, 3/4 },
+        WARRIOR = { 1/4, 2/4, 2/4, 3/4 },
+        MONK    = { 2/4, 3/4, 2/4, 3/4 },
+        PALADIN = { 3/4, 4/4, 2/4, 3/4 },
+    },
+};
+
 S.Media.Textures = {
     StatusBar = {
         FLAT    = M .. 'Textures\\StatusBar\\flat.blp',

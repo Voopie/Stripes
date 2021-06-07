@@ -419,9 +419,10 @@ function Module:NAME_PLATE_UNIT_ADDED(unit)
 
     NP[nameplate].data = NP[nameplate].data or {};
 
-    NP[nameplate].data.unit     = unit;
-    NP[nameplate].data.unitGUID = UnitGUID(unit);
-    NP[nameplate].data.isPlayer = UnitIsPlayer(unit);
+    NP[nameplate].data.unit      = unit;
+    NP[nameplate].data.unitGUID  = UnitGUID(unit);
+    NP[nameplate].data.isPlayer  = UnitIsPlayer(unit);
+    NP[nameplate].data.className = NP[nameplate].data.isPlayer and UnitClassBase(unit) or nil;
 
     NP[nameplate].data.widgetsOnly = UnitNameplateShowsWidgetsOnly(unit);
 
