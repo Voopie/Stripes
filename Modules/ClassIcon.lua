@@ -6,7 +6,7 @@ local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
 -- Local Config
 local ENABLED;
 
-local classIconsCoords = S.Media.IconsClass.COORDS;
+local classIconsTexture, classIconsCoords = S.Media.IconsClass.TEXTURE, S.Media.IconsClass.COORDS;
 
 local function Create(unitframe)
     if unitframe.ClassIcon then
@@ -19,7 +19,7 @@ local function Create(unitframe)
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
     PixelUtil.SetPoint(frame.icon, 'BOTTOM', unitframe.name, 'TOP', 0, 2);
     PixelUtil.SetSize(frame.icon, 12, 12);
-    frame.icon:SetTexture(S.Media.IconsClass.TEXTURE);
+    frame.icon:SetTexture(classIconsTexture);
 
     frame:SetShown(false);
 
