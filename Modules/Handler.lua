@@ -405,6 +405,8 @@ local function ResetNameplateData(unitframe)
     unitframe.data.namePVP = nil;
     unitframe.data.nameWoRealm = nil;
     unitframe.data.realm = nil;
+
+    unitframe.data.className = nil;
 end
 
 function Module:NAME_PLATE_UNIT_ADDED(unit)
