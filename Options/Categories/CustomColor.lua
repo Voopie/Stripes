@@ -125,7 +125,7 @@ local function CreateRow(frame)
         self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
     end);
 
-    E.CreateTooltip(frame);
+    E.CreateTooltip(frame, nil, nil, true);
 
     frame:HookScript('OnEnter', function(self)
         if modelBlacklist[self.npc_id] then
