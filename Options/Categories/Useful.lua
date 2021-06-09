@@ -3,7 +3,7 @@ local Module = S:NewModule('Options_Categories_Useful');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.Useful, O.frame.Right.Useful = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_USEFUL']), 'useful', 9);
+O.frame.Left.Useful, O.frame.Right.Useful = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_USEFUL']), 'useful', 9);
 local button = O.frame.Left.Useful;
 local panel = O.frame.Right.Useful;
 
@@ -14,7 +14,7 @@ panel.TabsData = {
     },
     [2] = {
         name  = 'CombatIndicatorTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_USEFUL_TAB_COMBAT_INDICATOR']),
+        title = string.upper(L['OPTIONS_USEFUL_TAB_COMBAT_INDICATOR']),
     },
     [3] = {
         name  = 'SpellInterruptedTab',

@@ -3,14 +3,14 @@ local Module = S:NewModule('Options_Categories_Common');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.Common, O.frame.Right.Common = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_COMMON']), 'common', 1);
+O.frame.Left.Common, O.frame.Right.Common = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_COMMON']), 'common', 1);
 local button = O.frame.Left.Common;
 local panel  = O.frame.Right.Common;
 
 panel.TabsData = {
     [1] = {
         name  = 'NameTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_COMMON_TAB_NAME']),
+        title = string.upper(L['OPTIONS_COMMON_TAB_NAME']),
     },
     [2] = {
         name  = 'HealthTextTab',
@@ -208,7 +208,7 @@ panel.Load = function(self)
 
     self.class_icon_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
     self.class_icon_enabled:SetPosition('LEFT', self.faction_icon_enabled.Label, 'RIGHT', 12, 0);
-    self.class_icon_enabled:SetLabel(S.Media.INLINE_NEW_ICON .. L['OPTIONS_CLASS_ICON_ENABLED']);
+    self.class_icon_enabled:SetLabel(L['OPTIONS_CLASS_ICON_ENABLED']);
     self.class_icon_enabled:SetTooltip(L['OPTIONS_CLASS_ICON_ENABLED_TOOLTIP']);
     self.class_icon_enabled:SetChecked(O.db.class_icon_enabled);
     self.class_icon_enabled:AddToSearch(button, L['OPTIONS_CLASS_ICON_ENABLED_TOOLTIP'], self.Tabs[1]);
