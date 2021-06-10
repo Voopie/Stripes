@@ -357,6 +357,13 @@ O.DefaultValues = {
     name_only_friendly_name_pvp              = false,
     name_only_friendly_stacking              = false,
 
+    selected_alpha      = tonumber(C_CVar.GetCVar('nameplateSelectedAlpha')), -- 1
+    max_alpha           = tonumber(C_CVar.GetCVar('nameplateMaxAlpha')), -- 1
+    max_alpha_distance  = tonumber(C_CVar.GetCVar('nameplateMaxAlphaDistance')), -- 40
+    min_alpha           = tonumber(C_CVar.GetCVar('nameplateMinAlpha')), -- 0.6
+    min_alpha_distance  = tonumber(C_CVar.GetCVar('nameplateMinAlphaDistance')), -- 10
+    occluded_alpha_mult = tonumber(C_CVar.GetCVar('nameplateOccludedAlphaMult')), -- 0.4
+
     -- Mythic plus
     mythic_plus_percentage_enabled     = true,
     mythic_plus_percentage_use_mode    = 1, -- EMBEDDED

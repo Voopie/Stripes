@@ -1,14 +1,14 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_Visibility');
 
-O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);
+O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);
 local button = O.frame.Left.Visibility;
 local panel = O.frame.Right.Visibility;
 
 panel.TabsData = {
     [1] = {
         name  = 'CommonTab',
-        title = string.upper(L['OPTIONS_VISIBILITY_TAB_COMMON']),
+        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_VISIBILITY_TAB_COMMON']),
     },
     [2] = {
         name  = 'EnemyTab',
@@ -146,8 +146,90 @@ panel.Load = function(self)
         end
     end
 
+    local AlphaHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, S.Media.INLINE_NEW_ICON .. L['OPTIONS_VISIBILITY_ALPHA_HEADER']);
+    AlphaHeader:SetPosition('TOPLEFT', self.max_distance_openworld, 'BOTTOMLEFT', -5, -4);
+    AlphaHeader:SetW(self:GetWidth());
+
+    self.selected_alpha = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.selected_alpha:SetPosition('TOPLEFT', AlphaHeader, 'BOTTOMLEFT', 0, -20);
+    self.selected_alpha:SetW(137);
+    self.selected_alpha:SetLabel(L['OPTIONS_VISIBILITY_SELECTED_ALPHA']);
+    self.selected_alpha:SetTooltip(L['OPTIONS_VISIBILITY_SELECTED_ALPHA_TOOLTIP']);
+    self.selected_alpha:AddToSearch(button, L['OPTIONS_VISIBILITY_SELECTED_ALPHA_TOOLTIP'], self.Tabs[1]);
+    self.selected_alpha:SetValues(O.db.selected_alpha, 0.1, 1, 0.05);
+    self.selected_alpha.OnValueChangedCallback = function(_, value)
+        O.db.selected_alpha = tonumber(value);
+
+        C_CVar.SetCVar('nameplateSelectedAlpha', O.db.selected_alpha);
+    end
+
+    self.occluded_alpha_mult = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.occluded_alpha_mult:SetPosition('TOPLEFT', self.selected_alpha, 'BOTTOMLEFT', 0, -28);
+    self.occluded_alpha_mult:SetW(137);
+    self.occluded_alpha_mult:SetLabel(L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT']);
+    self.occluded_alpha_mult:SetTooltip(L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP']);
+    self.occluded_alpha_mult:AddToSearch(button, L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP'], self.Tabs[1]);
+    self.occluded_alpha_mult:SetValues(O.db.occluded_alpha_mult, 0.1, 1, 0.05);
+    self.occluded_alpha_mult.OnValueChangedCallback = function(_, value)
+        O.db.occluded_alpha_mult = tonumber(value);
+
+        C_CVar.SetCVar('nameplateOccludedAlphaMult', O.db.occluded_alpha_mult);
+    end
+
+    self.max_alpha = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.max_alpha:SetPosition('LEFT', self.selected_alpha, 'RIGHT', 12, 0);
+    self.max_alpha:SetW(137);
+    self.max_alpha:SetLabel(L['OPTIONS_VISIBILITY_MAX_ALPHA']);
+    self.max_alpha:SetTooltip(L['OPTIONS_VISIBILITY_MAX_ALPHA_TOOLTIP']);
+    self.max_alpha:AddToSearch(button, L['OPTIONS_VISIBILITY_MAX_ALPHA_TOOLTIP'], self.Tabs[1]);
+    self.max_alpha:SetValues(O.db.max_alpha, 0.1, 1, 0.05);
+    self.max_alpha.OnValueChangedCallback = function(_, value)
+        O.db.max_alpha = tonumber(value);
+
+        C_CVar.SetCVar('nameplateMaxAlpha', O.db.max_alpha);
+    end
+
+    self.max_alpha_distance = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.max_alpha_distance:SetPosition('TOPLEFT', self.max_alpha, 'BOTTOMLEFT', 0, -28);
+    self.max_alpha_distance:SetW(137);
+    self.max_alpha_distance:SetLabel(L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE']);
+    self.max_alpha_distance:SetTooltip(L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE_TOOLTIP']);
+    self.max_alpha_distance:AddToSearch(button, L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE_TOOLTIP'], self.Tabs[1]);
+    self.max_alpha_distance:SetValues(O.db.max_alpha_distance, 8, 100, 1);
+    self.max_alpha_distance.OnValueChangedCallback = function(_, value)
+        O.db.max_alpha_distance = tonumber(value);
+
+        C_CVar.SetCVar('nameplateMaxAlphaDistance', O.db.max_alpha_distance);
+    end
+
+    self.min_alpha = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.min_alpha:SetPosition('LEFT', self.max_alpha, 'RIGHT', 12, 0);
+    self.min_alpha:SetW(137);
+    self.min_alpha:SetLabel(L['OPTIONS_VISIBILITY_MIN_ALPHA']);
+    self.min_alpha:SetTooltip(L['OPTIONS_VISIBILITY_MIN_ALPHA_TOOLTIP']);
+    self.min_alpha:AddToSearch(button, L['OPTIONS_VISIBILITY_MIN_ALPHA_TOOLTIP'], self.Tabs[1]);
+    self.min_alpha:SetValues(O.db.min_alpha, 0.1, 1, 0.05);
+    self.min_alpha.OnValueChangedCallback = function(_, value)
+        O.db.min_alpha = tonumber(value);
+
+        C_CVar.SetCVar('nameplateMinAlpha', O.db.min_alpha);
+    end
+
+    self.min_alpha_distance = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.min_alpha_distance:SetPosition('TOPLEFT', self.min_alpha, 'BOTTOMLEFT', 0, -28);
+    self.min_alpha_distance:SetW(137);
+    self.min_alpha_distance:SetLabel(L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE']);
+    self.min_alpha_distance:SetTooltip(L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP']);
+    self.min_alpha_distance:AddToSearch(button, L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'], self.Tabs[1]);
+    self.min_alpha_distance:SetValues(O.db.min_alpha_distance, 8, 100, 1);
+    self.min_alpha_distance.OnValueChangedCallback = function(_, value)
+        O.db.min_alpha_distance = tonumber(value);
+
+        C_CVar.SetCVar('nameplateMinAlphaDistance', O.db.min_alpha_distance);
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.max_distance_openworld, 'BOTTOMLEFT', -5, -4);
+    Delimiter:SetPosition('TOPLEFT', self.occluded_alpha_mult, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.hide_non_casting_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);

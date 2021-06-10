@@ -218,6 +218,14 @@ local function CVarsReset()
     C_CVar.SetCVar('nameplateShowFriendlyTotems', GetCVarDefault('nameplateShowFriendlyTotems'));
 
     C_CVar.SetCVar('NameplatePersonalClickThrough', GetCVarDefault('NameplatePersonalClickThrough'));
+
+    -- Alpha
+    C_CVar.SetCVar('nameplateSelectedAlpha', GetCVarDefault('nameplateSelectedAlpha'));
+    C_CVar.SetCVar('nameplateMaxAlpha', GetCVarDefault('nameplateMaxAlpha'));
+    C_CVar.SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'));
+    C_CVar.SetCVar('nameplateMinAlpha', GetCVarDefault('nameplateMinAlpha'));
+    C_CVar.SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'));
+    C_CVar.SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'));
 end
 
 Module.CVarsReset = CVarsReset;
@@ -269,6 +277,14 @@ local function CVarsUpdate()
     C_CVar.SetCVar('nameplateShowFriendlyTotems', O.db.show_friendly_totems and 1 or 0);
 
     C_CVar.SetCVar('NameplatePersonalClickThrough', O.db.size_self_click_through and 1 or 0);
+
+    -- Alpha
+    C_CVar.SetCVar('nameplateSelectedAlpha', O.db.selected_alpha);
+    C_CVar.SetCVar('nameplateMaxAlpha', O.db.max_alpha);
+    C_CVar.SetCVar('nameplateMaxAlphaDistance', O.db.max_alpha_distance);
+    C_CVar.SetCVar('nameplateMinAlpha', O.db.min_alpha);
+    C_CVar.SetCVar('nameplateMinAlphaDistance', O.db.min_alpha_distance);
+    C_CVar.SetCVar('nameplateOccludedAlphaMult', O.db.occluded_alpha_mult);
 end
 
 Module.CVarsUpdate = CVarsUpdate;
@@ -383,6 +399,24 @@ local function HookSetCVar(name, value)
     elseif name == 'NameplatePersonalClickThrough' then
         O.frame.Right.Sizes.size_self_click_through:SetChecked(value == '1');
         O.db.size_self_click_through = value == '1';
+    elseif name == 'nameplateSelectedAlpha' then
+        O.frame.Right.Visibility.selected_alpha:SetValue(tonumber(value));
+        O.db.selected_alpha = tonumber(value);
+    elseif name == 'nameplateMaxAlpha' then
+        O.frame.Right.Visibility.max_alpha:SetValue(tonumber(value));
+        O.db.max_alpha = tonumber(value);
+    elseif name == 'nameplateMaxAlphaDistance' then
+        O.frame.Right.Visibility.max_alpha_distance:SetValue(tonumber(value));
+        O.db.max_alpha_distance = tonumber(value);
+    elseif name == 'nameplateMinAlpha' then
+        O.frame.Right.Visibility.min_alpha:SetValue(tonumber(value));
+        O.db.min_alpha = tonumber(value);
+    elseif name == 'nameplateMinAlphaDistance' then
+        O.frame.Right.Visibility.min_alpha_distance:SetValue(tonumber(value));
+        O.db.min_alpha_distance = tonumber(value);
+    elseif name == 'nameplateOccludedAlphaMult' then
+        O.frame.Right.Visibility.occluded_alpha_mult:SetValue(tonumber(value));
+        O.db.occluded_alpha_mult = tonumber(value);
     elseif name == 'NamePlateVerticalScale' or name == 'NamePlateHorizontalScale' then
         C_Timer.After(0.25, function()
             UpdateSizesSafe();
