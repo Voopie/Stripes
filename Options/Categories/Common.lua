@@ -170,24 +170,25 @@ panel.Load = function(self)
     self.name_text_abbreviated:SetPosition('TOPLEFT', self.coloring_name_text, 'BOTTOMLEFT', 0, -12);
     self.name_text_abbreviated:SetLabel(L['OPTIONS_NAME_TEXT_ABBREVIATED']);
     self.name_text_abbreviated:SetChecked(O.db.name_text_abbreviated);
-    self.name_text_abbreviated:AddToSearch(button, nil, self.Tabs[1]);
+    self.name_text_abbreviated:AddToSearch(button, L['OPTIONS_NAME_TEXT_ABBREVIATED'], self.Tabs[1]);
     self.name_text_abbreviated.Callback = function(self)
         O.db.name_text_abbreviated = self:GetChecked();
 
-        panel.name_text_abbreviated_with_space:SetEnabled(O.db.name_text_abbreviated);
+        panel.name_text_abbreviated_mode:SetEnabled(O.db.name_text_abbreviated);
 
         Handler:UpdateAll();
     end
 
-    self.name_text_abbreviated_with_space = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_abbreviated_with_space:SetPosition('LEFT', self.name_text_abbreviated.Label, 'RIGHT', 12, 0);
-    self.name_text_abbreviated_with_space:SetLabel(L['OPTIONS_NAME_TEXT_ABBREVIATED_WITH_SPACE']);
-    self.name_text_abbreviated_with_space:SetTooltip(L['OPTIONS_NAME_TEXT_ABBREVIATED_WITH_SPACE_TOOLTIP']);
-    self.name_text_abbreviated_with_space:SetChecked(O.db.name_text_abbreviated_with_space);
-    self.name_text_abbreviated_with_space:AddToSearch(button, L['OPTIONS_NAME_TEXT_ABBREVIATED_WITH_SPACE_TOOLTIP'], self.Tabs[1]);
-    self.name_text_abbreviated_with_space:SetEnabled(O.db.name_text_abbreviated);
-    self.name_text_abbreviated_with_space.Callback = function(self)
-        O.db.name_text_abbreviated_with_space = self:GetChecked();
+    self.name_text_abbreviated_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_abbreviated_mode:SetPosition('LEFT', self.name_text_abbreviated.Label, 'RIGHT', 12, 0);
+    self.name_text_abbreviated_mode:SetSize(160, 20);
+    self.name_text_abbreviated_mode:SetList(O.Lists.name_text_abbreviation_mode);
+    self.name_text_abbreviated_mode:SetValue(O.db.name_text_abbreviated_mode);
+    self.name_text_abbreviated_mode:SetTooltip(L['OPTIONS_NAME_TEXT_ABBREVIATED_MODE_TOOLTIP']);
+    self.name_text_abbreviated_mode:AddToSearch(button, L['OPTIONS_NAME_TEXT_ABBREVIATED_MODE_TOOLTIP'], self.Tabs[1]);
+    self.name_text_abbreviated_mode:SetEnabled(O.db.name_text_abbreviated);
+    self.name_text_abbreviated_mode.OnValueChangedCallback = function(_, value)
+        O.db.name_text_abbreviated_mode = tonumber(value);
         Handler:UpdateAll();
     end
 

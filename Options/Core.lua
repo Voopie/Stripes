@@ -168,6 +168,12 @@ O.Lists = {
         [1] = L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_USE_MODE_EMBEDDED'],
         [2] = L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_USE_MODE_MDT'],
     },
+
+    name_text_abbreviation_mode = {
+        [1] = L['OPTIONS_NAME_TEXT_ABBREVIATED_WITHOUT_SPACE'],
+        [2] = L['OPTIONS_NAME_TEXT_ABBREVIATED_WITH_SPACE'],
+        [3] = L['OPTIONS_NAME_TEXT_ABBREVIATED_LAST_WORD'],
+    },
 };
 
 O.DefaultValues = {
@@ -182,7 +188,7 @@ O.DefaultValues = {
     name_text_offset_y               = 0,
     name_text_truncate               = false,
     name_text_abbreviated            = false,
-    name_text_abbreviated_with_space = false,
+    name_text_abbreviated_mode       = 1, -- Without space
     name_text_coloring_mode          = 1, -- NONE
     faction_icon_enabled             = false,
     class_icon_enabled               = false,

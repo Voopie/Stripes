@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Name');
 
 -- Lua API
-local string_format, string_gsub = string.format, string.gsub;
+local string_format, string_gsub, string_gmatch = string.format, string.gsub, string.gmatch;
 local strlenutf8 = strlenutf8;
 
 -- WoW API
@@ -20,7 +20,7 @@ local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyMode
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
-local POSITION, POSITION_V, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_SPACE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE;
+local POSITION, POSITION_V, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE;
 local NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 local NAME_PVP, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
@@ -30,6 +30,7 @@ local StripesNameFont      = CreateFont('StripesNameFont');
 local StripesGuildNameFont = CreateFont('StripesGuildNameFont');
 
 local ABBR_FORMAT = '(%S+) ';
+local ABBR_LAST_FORMAT = '%S+';
 local ARENAID_STRING_FORMAT = '%s  %s';
 local GUILD_NAME_FORMAT = '«%s»';
 local GREY_COLOR_START = '|cff666666';
@@ -127,9 +128,35 @@ local function UpdateAnchor(unitframe)
     PixelUtil.SetHeight(unitframe.name, unitframe.name:GetLineHeight() + 1);
 end
 
-local function abbrSub(t)
-    return utf8sub(t, 1, 1) .. (ABBR_SPACE and '. '  or '.');
+local function AbbrSub(t)
+    return utf8sub(t, 1, 1) .. '.';
 end
+
+local function AbbrSubSpace(t)
+    return utf8sub(t, 1, 1) .. '. ';
+end
+
+local function AbbrLast(name)
+    for n in string_gmatch(name, ABBR_LAST_FORMAT) do
+        name = n;
+    end
+
+    return name;
+end
+
+local GetAbbreviatedName = {
+    [1] = function(name)
+        return string_gsub(name, ABBR_FORMAT, AbbrSub);
+    end,
+
+    [2] = function(name)
+        return string_gsub(name, ABBR_FORMAT, AbbrSubSpace);
+    end,
+
+    [3] = function(name)
+        return AbbrLast(name);
+    end,
+};
 
 local function UpdateAbbreviated(unitframe)
     if not ABBR_ENABLED then
@@ -139,7 +166,7 @@ local function UpdateAbbreviated(unitframe)
     if unitframe.data.commonUnitType == 'NPC' then
         local name = unitframe.data.name;
         if name then
-            unitframe.name:SetText(string_gsub(name, ABBR_FORMAT, abbrSub));
+            unitframe.name:SetText(GetAbbreviatedName[ABBR_MODE](name));
             unitframe.data.nameAbbr = unitframe.name:GetText();
         end
     end
@@ -363,7 +390,7 @@ function Module:UpdateLocalConfig()
     OFFSET_Y               = O.db.name_text_offset_y;
     TRUNCATE               = O.db.name_text_truncate;
     ABBR_ENABLED           = O.db.name_text_abbreviated
-    ABBR_SPACE             = O.db.name_text_abbreviated_with_space;
+    ABBR_MODE              = O.db.name_text_abbreviated_mode;
     SHOW_ARENA_ID          = O.db.name_text_show_arenaid;
     SHOW_ARENA_ID_SOLO     = O.db.name_text_show_arenaid_solo;
     COLORING_MODE          = O.db.name_text_coloring_mode;
