@@ -208,18 +208,33 @@ panel.Load = function(self)
     end
 
     self.class_icon_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.class_icon_enabled:SetPosition('LEFT', self.faction_icon_enabled.Label, 'RIGHT', 12, 0);
+    self.class_icon_enabled:SetPosition('TOPLEFT', self.faction_icon_enabled, 'BOTTOMLEFT', 0, -8);
     self.class_icon_enabled:SetLabel(L['OPTIONS_CLASS_ICON_ENABLED']);
     self.class_icon_enabled:SetTooltip(L['OPTIONS_CLASS_ICON_ENABLED_TOOLTIP']);
     self.class_icon_enabled:SetChecked(O.db.class_icon_enabled);
     self.class_icon_enabled:AddToSearch(button, L['OPTIONS_CLASS_ICON_ENABLED_TOOLTIP'], self.Tabs[1]);
     self.class_icon_enabled.Callback = function(self)
         O.db.class_icon_enabled = self:GetChecked();
+
+        panel.class_icon_arena_only:SetEnabled(O.db.class_icon_enabled);
+
+        Handler:UpdateAll();
+    end
+
+    self.class_icon_arena_only = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.class_icon_arena_only:SetPosition('LEFT', self.class_icon_enabled.Label, 'RIGHT', 12, 0);
+    self.class_icon_arena_only:SetLabel(L['OPTIONS_CLASS_ICON_ARENA_ONLY']);
+    self.class_icon_arena_only:SetTooltip(L['OPTIONS_CLASS_ICON_ARENA_ONLY_TOOLTIP']);
+    self.class_icon_arena_only:SetChecked(O.db.class_icon_arena_only);
+    self.class_icon_arena_only:AddToSearch(button, L['OPTIONS_CLASS_ICON_ARENA_ONLY_TOOLTIP'], self.Tabs[1]);
+    self.class_icon_arena_only:SetEnabled(O.db.class_icon_enabled);
+    self.class_icon_arena_only.Callback = function(self)
+        O.db.class_icon_arena_only = self:GetChecked();
         Handler:UpdateAll();
     end
 
     self.target_name_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.target_name_enabled:SetPosition('TOPLEFT', self.faction_icon_enabled, 'BOTTOMLEFT', 0, -8);
+    self.target_name_enabled:SetPosition('TOPLEFT', self.class_icon_enabled, 'BOTTOMLEFT', 0, -8);
     self.target_name_enabled:SetLabel(L['OPTIONS_TARGET_NAME_ENABLED']);
     self.target_name_enabled:SetTooltip(L['OPTIONS_TARGET_NAME_ENABLED_TOOLTIP']);
     self.target_name_enabled:SetChecked(O.db.target_name_enabled);

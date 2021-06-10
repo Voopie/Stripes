@@ -192,6 +192,7 @@ O.DefaultValues = {
     name_text_coloring_mode          = 1, -- NONE
     faction_icon_enabled             = false,
     class_icon_enabled               = false,
+    class_icon_arena_only            = false,
     target_name_enabled              = true,
     target_name_only_enemy           = true,
     name_text_show_arenaid           = false,
