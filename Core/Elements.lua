@@ -1391,10 +1391,6 @@ do
         container.Glow:SetPosition('TOPLEFT', container, 'TOPLEFT', -2, 2);
         container.Glow:SetPosition('BOTTOMRIGHT', container, 'BOTTOMRIGHT', 2, -2);
 
-        container:HookScript('OnEnter', function(self)
-            LCG.PixelGlow_Stop(self.Glow);
-        end);
-
         container.WidthValue  = DROPDOWN_WIDTH;
         container.HeightValue = DROPDOWN_HEIGHT;
 
@@ -1473,7 +1469,14 @@ do
         holderButton.list        = list;
 
         holderButton:HookScript('OnEnter', function()
+            arrowButton.Icon:SetVertexColor(1, 0.72, 0.2);
+            arrowButton:SetBackdropBorderColor(0.8, 0.8, 0.8, 1);
             LCG.PixelGlow_Stop(container.Glow);
+        end);
+
+        holderButton:HookScript('OnLeave', function()
+            arrowButton.Icon:SetVertexColor(1, 1, 1);
+            arrowButton:SetBackdropBorderColor(0.5, 0.5, 0.5, 1);
         end);
 
         hooksecurefunc(holderButton, 'SetScale', function(self, value)
@@ -1537,6 +1540,17 @@ do
             self.holderButton.tooltip = tooltip;
             self.holderButton.arrowButton.tooltip = tooltip;
         end
+
+        container:HookScript('OnEnter', function(self)
+            arrowButton.Icon:SetVertexColor(1, 0.72, 0.2);
+            arrowButton:SetBackdropBorderColor(0.8, 0.8, 0.8, 1);
+            LCG.PixelGlow_Stop(self.Glow);
+        end);
+
+        container:HookScript('OnLeave', function()
+            arrowButton.Icon:SetVertexColor(1, 1, 1);
+            arrowButton:SetBackdropBorderColor(0.5, 0.5, 0.5, 1);
+        end);
 
         container.type = 'DropDown';
 
