@@ -1382,7 +1382,7 @@ do
         container.SetLabel = function(self, label)
             self.Label:SetText(label);
             self.holderButton:SetPosition('LEFT', container.Label, 'RIGHT', 12, 0);
-            self:SetW(self.Label:GetStringWidth() + self:GetWidth() + 8);
+            self:SetW(self.Label:GetStringWidth() + self:GetWidth() + 12);
 
             self.SearchText = label;
         end
@@ -1441,12 +1441,21 @@ do
         arrowButton:HookScript('OnEnter', function(self)
             self.Icon:SetVertexColor(1, 0.72, 0.2);
             self:SetBackdropBorderColor(0.8, 0.8, 0.8, 1);
+
             LCG.PixelGlow_Stop(container.Glow);
+
+            if container.tooltip then
+                GameTooltip:SetOwner(container, 'ANCHOR_RIGHT');
+                GameTooltip:AddLine(container.tooltip, 1, 0.85, 0, true);
+                GameTooltip:Show();
+            end
         end);
 
         arrowButton:HookScript('OnLeave', function(self)
             self.Icon:SetVertexColor(1, 1, 1);
             self:SetBackdropBorderColor(0.5, 0.5, 0.5, 1);
+
+            GameTooltip:Hide();
         end);
 
         local list = CreateFrame('Frame', 'Stripes_DDList_' .. (#activeLists + 1), holderButton, 'BackdropTemplate');
@@ -1471,12 +1480,21 @@ do
         holderButton:HookScript('OnEnter', function()
             arrowButton.Icon:SetVertexColor(1, 0.72, 0.2);
             arrowButton:SetBackdropBorderColor(0.8, 0.8, 0.8, 1);
+
             LCG.PixelGlow_Stop(container.Glow);
+
+            if container.tooltip then
+                GameTooltip:SetOwner(container, 'ANCHOR_RIGHT');
+                GameTooltip:AddLine(container.tooltip, 1, 0.85, 0, true);
+                GameTooltip:Show();
+            end
         end);
 
         holderButton:HookScript('OnLeave', function()
             arrowButton.Icon:SetVertexColor(1, 1, 1);
             arrowButton:SetBackdropBorderColor(0.5, 0.5, 0.5, 1);
+
+            GameTooltip:Hide();
         end);
 
         hooksecurefunc(holderButton, 'SetScale', function(self, value)
@@ -1503,7 +1521,12 @@ do
                 return;
             end
 
-            PixelUtil.SetSize(self, self.Label:GetStringWidth() + width + 8, height);
+            if self.Label:GetStringWidth() > 0 then
+                PixelUtil.SetSize(self, self.Label:GetStringWidth() + width + 12, height);
+            else
+                PixelUtil.SetSize(self, width, height);
+            end
+
             PixelUtil.SetSize(self.holderButton, width, height);
             PixelUtil.SetSize(self.holderButton.arrowButton, height, height);
             PixelUtil.SetSize(self.holderButton.arrowButton.Icon, height / 1.2, height / 1.2);
@@ -1531,26 +1554,21 @@ do
             self.holderButton:SetEnabled(state);
         end
 
-        E.CreateTooltip(container);
-        E.CreateTooltip(container.holderButton);
-        E.CreateTooltip(container.holderButton.arrowButton);
-
         container.SetTooltip = function(self, tooltip)
             self.tooltip = tooltip;
-            self.holderButton.tooltip = tooltip;
-            self.holderButton.arrowButton.tooltip = tooltip;
         end
 
         container:HookScript('OnEnter', function(self)
-            arrowButton.Icon:SetVertexColor(1, 0.72, 0.2);
-            arrowButton:SetBackdropBorderColor(0.8, 0.8, 0.8, 1);
             LCG.PixelGlow_Stop(self.Glow);
+
+            if self.tooltip then
+                GameTooltip:SetOwner(self, 'ANCHOR_RIGHT');
+                GameTooltip:AddLine(self.tooltip, 1, 0.85, 0, true);
+                GameTooltip:Show();
+            end
         end);
 
-        container:HookScript('OnLeave', function()
-            arrowButton.Icon:SetVertexColor(1, 1, 1);
-            arrowButton:SetBackdropBorderColor(0.5, 0.5, 0.5, 1);
-        end);
+        container:HookScript('OnLeave', GameTooltip_Hide);
 
         container.type = 'DropDown';
 

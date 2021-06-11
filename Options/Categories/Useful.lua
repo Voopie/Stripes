@@ -292,7 +292,7 @@ panel.Load = function(self)
     end
 
     self.spell_interrupted_icon_countdown_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_icon_countdown_font_shadow:SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_flag, 'RIGHT', 8, 0);
+    self.spell_interrupted_icon_countdown_font_shadow:SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_flag, 'RIGHT', 12, 0);
     self.spell_interrupted_icon_countdown_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.spell_interrupted_icon_countdown_font_shadow:SetChecked(O.db.spell_interrupted_icon_countdown_font_shadow);
     self.spell_interrupted_icon_countdown_font_shadow:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_SHADOW']);
@@ -348,7 +348,7 @@ panel.Load = function(self)
     end
 
     self.spell_interrupted_icon_caster_name_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_icon_caster_name_font_shadow:SetPosition('LEFT', self.spell_interrupted_icon_caster_name_font_flag, 'RIGHT', 8, 0);
+    self.spell_interrupted_icon_caster_name_font_shadow:SetPosition('LEFT', self.spell_interrupted_icon_caster_name_font_flag, 'RIGHT', 12, 0);
     self.spell_interrupted_icon_caster_name_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.spell_interrupted_icon_caster_name_font_shadow:SetChecked(O.db.spell_interrupted_icon_caster_name_font_shadow);
     self.spell_interrupted_icon_caster_name_font_shadow:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_FONT_SHADOW']);

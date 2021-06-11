@@ -83,7 +83,7 @@ panel.Load = function(self)
     end
 
     self.mythic_plus_percentage_font_shadow = E.CreateCheckButton(self);
-    self.mythic_plus_percentage_font_shadow:SetPosition('LEFT', self.mythic_plus_percentage_font_flag, 'RIGHT', 8, 0);
+    self.mythic_plus_percentage_font_shadow:SetPosition('LEFT', self.mythic_plus_percentage_font_flag, 'RIGHT', 12, 0);
     self.mythic_plus_percentage_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.mythic_plus_percentage_font_shadow:SetChecked(O.db.mythic_plus_percentage_font_shadow);
     self.mythic_plus_percentage_font_shadow:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SHADOW']);
@@ -94,7 +94,7 @@ panel.Load = function(self)
     end
 
     local ExplosiveOrbsHeader = E.CreateHeader(self, L['OPTIONS_HEADER_EXPLOSIVE_ORBS']);
-    ExplosiveOrbsHeader:SetPosition('TOPLEFT', self.mythic_plus_percentage_font_value, 'BOTTOMLEFT', 0, -4);
+    ExplosiveOrbsHeader:SetPosition('TOPLEFT', self.mythic_plus_percentage_font_value, 'BOTTOMLEFT', 0, -8);
     ExplosiveOrbsHeader:SetW(self:GetWidth());
 
     self.explosive_orbs_crosshair = E.CreateCheckButton(self);

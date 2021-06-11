@@ -486,7 +486,7 @@ panel.Load = function(self)
     self.UpdateListScroll(DEFAULT_LIST_VALUE);
 
     self.ProfilesDropdown = E.CreateDropdown('plain', self);
-    self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.CustomColorEditFrame, 'TOPRIGHT', 5, 8);
+    self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.CustomColorEditFrame, 'TOPRIGHT', 0, 8);
     self.ProfilesDropdown:SetSize(157, 22);
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
         local index = S:GetModule('Options'):FindIndexByName(name);

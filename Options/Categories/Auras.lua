@@ -426,7 +426,7 @@ panel.Load = function(self)
     end
 
     self.auras_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_cooldown_font_shadow:SetPosition('LEFT', self.auras_cooldown_font_flag, 'RIGHT', 8, 0);
+    self.auras_cooldown_font_shadow:SetPosition('LEFT', self.auras_cooldown_font_flag, 'RIGHT', 12, 0);
     self.auras_cooldown_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_cooldown_font_shadow:SetChecked(O.db.auras_cooldown_font_shadow);
     self.auras_cooldown_font_shadow:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_FONT_SHADOW']);
@@ -475,7 +475,7 @@ panel.Load = function(self)
     end
 
     self.auras_count_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_count_font_shadow:SetPosition('LEFT', self.auras_count_font_flag, 'RIGHT', 8, 0);
+    self.auras_count_font_shadow:SetPosition('LEFT', self.auras_count_font_flag, 'RIGHT', 12, 0);
     self.auras_count_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_count_font_shadow:SetChecked(O.db.auras_count_font_shadow);
     self.auras_count_font_shadow:SetTooltip(L['OPTIONS_AURAS_COUNT_FONT_SHADOW']);
@@ -566,7 +566,7 @@ panel.Load = function(self)
     end
 
     self.auras_spellsteal_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_cooldown_font_shadow:SetPosition('LEFT', self.auras_spellsteal_cooldown_font_flag, 'RIGHT', 8, 0);
+    self.auras_spellsteal_cooldown_font_shadow:SetPosition('LEFT', self.auras_spellsteal_cooldown_font_flag, 'RIGHT', 12, 0);
     self.auras_spellsteal_cooldown_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_spellsteal_cooldown_font_shadow:SetChecked(O.db.auras_spellsteal_cooldown_font_shadow);
     self.auras_spellsteal_cooldown_font_shadow:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_SHADOW']);
@@ -615,7 +615,7 @@ panel.Load = function(self)
     end
 
     self.auras_spellsteal_count_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_font_shadow:SetPosition('LEFT', self.auras_spellsteal_count_font_flag, 'RIGHT', 8, 0);
+    self.auras_spellsteal_count_font_shadow:SetPosition('LEFT', self.auras_spellsteal_count_font_flag, 'RIGHT', 12, 0);
     self.auras_spellsteal_count_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_spellsteal_count_font_shadow:SetChecked(O.db.auras_spellsteal_count_font_shadow);
     self.auras_spellsteal_count_font_shadow:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_SHADOW']);
@@ -692,7 +692,7 @@ panel.Load = function(self)
     end
 
     self.auras_mythicplus_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_cooldown_font_shadow:SetPosition('LEFT', self.auras_mythicplus_cooldown_font_flag, 'RIGHT', 8, 0);
+    self.auras_mythicplus_cooldown_font_shadow:SetPosition('LEFT', self.auras_mythicplus_cooldown_font_flag, 'RIGHT', 12, 0);
     self.auras_mythicplus_cooldown_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_mythicplus_cooldown_font_shadow:SetChecked(O.db.auras_mythicplus_cooldown_font_shadow);
     self.auras_mythicplus_cooldown_font_shadow:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_SHADOW']);
@@ -741,7 +741,7 @@ panel.Load = function(self)
     end
 
     self.auras_mythicplus_count_font_shadow = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_font_shadow:SetPosition('LEFT', self.auras_mythicplus_count_font_flag, 'RIGHT', 8, 0);
+    self.auras_mythicplus_count_font_shadow:SetPosition('LEFT', self.auras_mythicplus_count_font_flag, 'RIGHT', 12, 0);
     self.auras_mythicplus_count_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_mythicplus_count_font_shadow:SetChecked(O.db.auras_mythicplus_count_font_shadow);
     self.auras_mythicplus_count_font_shadow:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_SHADOW']);
@@ -829,7 +829,7 @@ panel.Load = function(self)
     end
 
     self.auras_important_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_cooldown_font_shadow:SetPosition('LEFT', self.auras_important_cooldown_font_flag, 'RIGHT', 8, 0);
+    self.auras_important_cooldown_font_shadow:SetPosition('LEFT', self.auras_important_cooldown_font_flag, 'RIGHT', 12, 0);
     self.auras_important_cooldown_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_important_cooldown_font_shadow:SetChecked(O.db.auras_important_cooldown_font_shadow);
     self.auras_important_cooldown_font_shadow:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_SHADOW']);
@@ -878,7 +878,7 @@ panel.Load = function(self)
     end
 
     self.auras_important_count_font_shadow = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_font_shadow:SetPosition('LEFT', self.auras_important_count_font_flag, 'RIGHT', 8, 0);
+    self.auras_important_count_font_shadow:SetPosition('LEFT', self.auras_important_count_font_flag, 'RIGHT', 12, 0);
     self.auras_important_count_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_important_count_font_shadow:SetChecked(O.db.auras_important_count_font_shadow);
     self.auras_important_count_font_shadow:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_SHADOW']);
@@ -938,7 +938,7 @@ panel.Load = function(self)
     end
 
     self.auras_important_castername_font_shadow = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_castername_font_shadow:SetPosition('LEFT', self.auras_important_castername_font_flag, 'RIGHT', 8, 0);
+    self.auras_important_castername_font_shadow:SetPosition('LEFT', self.auras_important_castername_font_flag, 'RIGHT', 12, 0);
     self.auras_important_castername_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_important_castername_font_shadow:SetChecked(O.db.auras_important_castername_font_shadow);
     self.auras_important_castername_font_shadow:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW']);
@@ -1029,7 +1029,7 @@ panel.Load = function(self)
     end
 
     self.auras_custom_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_cooldown_font_shadow:SetPosition('LEFT', self.auras_custom_cooldown_font_flag, 'RIGHT', 8, 0);
+    self.auras_custom_cooldown_font_shadow:SetPosition('LEFT', self.auras_custom_cooldown_font_flag, 'RIGHT', 12, 0);
     self.auras_custom_cooldown_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_custom_cooldown_font_shadow:SetChecked(O.db.auras_custom_cooldown_font_shadow);
     self.auras_custom_cooldown_font_shadow:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SHADOW']);
@@ -1078,7 +1078,7 @@ panel.Load = function(self)
     end
 
     self.auras_custom_count_font_shadow = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_font_shadow:SetPosition('LEFT', self.auras_custom_count_font_flag, 'RIGHT', 8, 0);
+    self.auras_custom_count_font_shadow:SetPosition('LEFT', self.auras_custom_count_font_flag, 'RIGHT', 12, 0);
     self.auras_custom_count_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.auras_custom_count_font_shadow:SetChecked(O.db.auras_custom_count_font_shadow);
     self.auras_custom_count_font_shadow:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SHADOW']);
@@ -1147,7 +1147,7 @@ panel.Load = function(self)
     self:UpdateScroll();
 
     self.ProfilesDropdown = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
-    self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.auras_custom_editframe, 'TOPRIGHT', 5, 8);
+    self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.auras_custom_editframe, 'TOPRIGHT', 0, 8);
     self.ProfilesDropdown:SetSize(157, 22);
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
         local index = S:GetModule('Options'):FindIndexByName(name);

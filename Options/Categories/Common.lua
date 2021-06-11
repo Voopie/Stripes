@@ -88,7 +88,7 @@ panel.Load = function(self)
     end
 
     self.name_text_font_shadow = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_font_shadow:SetPosition('LEFT', self.name_text_font_flag, 'RIGHT', 8, 0);
+    self.name_text_font_shadow:SetPosition('LEFT', self.name_text_font_flag, 'RIGHT', 12, 0);
     self.name_text_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.name_text_font_shadow:SetChecked(O.db.name_text_font_shadow);
     self.name_text_font_shadow:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_SHADOW']);
@@ -116,7 +116,7 @@ panel.Load = function(self)
     end
 
     self.name_text_position = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_position:SetPosition('LEFT', self.name_text_position_v, 'RIGHT', 6, 0);
+    self.name_text_position:SetPosition('LEFT', self.name_text_position_v, 'RIGHT', 12, 0);
     self.name_text_position:SetSize(100, 20);
     self.name_text_position:SetList(O.Lists.name_position);
     self.name_text_position:SetValue(O.db.name_text_position);
@@ -128,7 +128,7 @@ panel.Load = function(self)
     end
 
     self.name_text_offset_y = E.CreateSlider(self.TabsFrames['NameTab'].Content);
-    self.name_text_offset_y:SetPosition('LEFT', self.name_text_position, 'RIGHT', 4, 0);
+    self.name_text_offset_y:SetPosition('LEFT', self.name_text_position, 'RIGHT', 12, 0);
     self.name_text_offset_y:SetW(120);
     self.name_text_offset_y:SetValues(O.db.name_text_offset_y, -50, 50, 1);
     self.name_text_offset_y:SetTooltip(L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP']);
@@ -139,7 +139,7 @@ panel.Load = function(self)
     end
 
     self.name_text_truncate = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_truncate:SetPosition('LEFT', self.name_text_offset_y, 'RIGHT', 10, 0);
+    self.name_text_truncate:SetPosition('LEFT', self.name_text_offset_y, 'RIGHT', 12, 0);
     self.name_text_truncate:SetLabel(L['OPTIONS_NAME_TEXT_TRUNCATE']);
     self.name_text_truncate:SetTooltip(L['OPTIONS_NAME_TEXT_TRUNCATE_TOOLTIP']);
     self.name_text_truncate:SetChecked(O.db.name_text_truncate);
@@ -149,16 +149,12 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.coloring_name_text = E.CreateFontString(self.TabsFrames['NameTab'].Content);
-    self.coloring_name_text:SetPosition('TOPLEFT', self.name_text_position_v, 'BOTTOMLEFT', 0, -8);
-    self.coloring_name_text:SetText(L['OPTIONS_NAME_TEXT_COLORING']);
-    self.coloring_name_text:AddToSearch(button, L['OPTIONS_NAME_TEXT_COLORING'], self.Tabs[1]);
-
     self.name_text_coloring_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_coloring_mode:SetPosition('LEFT', self.coloring_name_text, 'RIGHT', 12, 0);
+    self.name_text_coloring_mode:SetPosition('TOPLEFT', self.name_text_position_v, 'BOTTOMLEFT', 0, -8);
     self.name_text_coloring_mode:SetSize(160, 20);
     self.name_text_coloring_mode:SetList(O.Lists.name_text_coloring_mode);
     self.name_text_coloring_mode:SetValue(O.db.name_text_coloring_mode);
+    self.name_text_coloring_mode:SetLabel(L['OPTIONS_NAME_TEXT_COLORING']);
     self.name_text_coloring_mode:SetTooltip(L['OPTIONS_NAME_TEXT_COLORING_MODE_TOOLTIP']);
     self.name_text_coloring_mode:AddToSearch(button, L['OPTIONS_NAME_TEXT_COLORING_MODE_TOOLTIP'], self.Tabs[1]);
     self.name_text_coloring_mode.OnValueChangedCallback = function(_, value)
@@ -167,7 +163,7 @@ panel.Load = function(self)
     end
 
     self.name_text_abbreviated = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_abbreviated:SetPosition('TOPLEFT', self.coloring_name_text, 'BOTTOMLEFT', 0, -12);
+    self.name_text_abbreviated:SetPosition('TOPLEFT', self.name_text_coloring_mode, 'BOTTOMLEFT', 0, -12);
     self.name_text_abbreviated:SetLabel(L['OPTIONS_NAME_TEXT_ABBREVIATED']);
     self.name_text_abbreviated:SetChecked(O.db.name_text_abbreviated);
     self.name_text_abbreviated:AddToSearch(button, L['OPTIONS_NAME_TEXT_ABBREVIATED'], self.Tabs[1]);
@@ -392,7 +388,7 @@ panel.Load = function(self)
     end
 
     self.health_text_font_shadow = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_font_shadow:SetPosition('LEFT', self.health_text_font_flag, 'RIGHT', 8, 0);
+    self.health_text_font_shadow:SetPosition('LEFT', self.health_text_font_flag, 'RIGHT', 12, 0);
     self.health_text_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.health_text_font_shadow:SetChecked(O.db.health_text_font_shadow);
     self.health_text_font_shadow:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_SHADOW']);
@@ -535,7 +531,7 @@ panel.Load = function(self)
     end
 
     self.level_text_font_shadow = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_font_shadow:SetPosition('LEFT', self.level_text_font_flag, 'RIGHT', 8, 0);
+    self.level_text_font_shadow:SetPosition('LEFT', self.level_text_font_flag, 'RIGHT', 12, 0);
     self.level_text_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
     self.level_text_font_shadow:SetChecked(O.db.level_text_font_shadow);
     self.level_text_font_shadow:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_SHADOW']);
