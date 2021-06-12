@@ -10,7 +10,7 @@ local panel = O.frame.Right.Auras;
 local aurasCustomFramePool;
 local ROW_HEIGHT = 28;
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
-local NAME_WIDTH = 400;
+local NAME_WIDTH = 380;
 
 panel.TabsData = {
     [1] = {
@@ -123,8 +123,13 @@ local function CreateCustomAuraRow(frame)
     frame.Icon:SetSize(ROW_HEIGHT - 8, ROW_HEIGHT - 8);
     frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
 
+    frame.IdText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.IdText:SetPoint('LEFT', frame.Icon, 'RIGHT', 10, 0);
+    frame.IdText:SetSize(60, ROW_HEIGHT);
+    frame.IdText:SetTextColor(0.67, 0.67, 0.67);
+
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 10, 0);
+    frame.NameText:SetPoint('LEFT', frame.IdText, 'RIGHT', 10, 0);
     frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
@@ -193,8 +198,9 @@ local function UpdateCustomAuraRow(frame)
     local name, _, icon = GetSpellInfo(frame.id);
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
-    frame.Icon:SetTexture(icon)
-    frame.NameText:SetText('|cffaaaaaa[' .. frame.id .. ']|r  ' .. name);
+    frame.Icon:SetTexture(icon);
+    frame.IdText:SetText(frame.id);
+    frame.NameText:SetText(name);
 
     if frame.filter == 'HELPFUL' then
         frame.FilterToggleButton.texture:SetColorTexture(0.4, 0.85, 0.4);

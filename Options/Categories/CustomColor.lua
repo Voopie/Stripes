@@ -88,8 +88,13 @@ local function CreateRow(frame)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
 
+    frame.IdText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.IdText:SetPoint('LEFT', frame.ColorPicker, 'RIGHT', 8, 0);
+    frame.IdText:SetSize(60, ROW_HEIGHT);
+    frame.IdText:SetTextColor(0.67, 0.67, 0.67);
+
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.NameText:SetPoint('LEFT', frame.ColorPicker, 'RIGHT', 8, 0);
+    frame.NameText:SetPoint('LEFT', frame.IdText, 'RIGHT', 10, 0);
     frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
@@ -162,7 +167,8 @@ local function UpdateRow(frame)
     end
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
-    frame.NameText:SetText('|cffaaaaaa[' .. frame.npc_id .. ']|r  ' .. frame.name);
+    frame.IdText:SetText(frame.npc_id);
+    frame.NameText:SetText(frame.name);
     frame.ColorPicker:SetValue(unpack(frame.color));
 
     frame.tooltip = string.format(LIST_TOOLTIP_PATTERN, frame.name, frame.npc_id);
