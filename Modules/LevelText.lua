@@ -7,6 +7,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
 local ENABLED, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
+local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
 
 local CLOSE_COLOR = '|r';
 local FRAME_POINTS_SIMPLE = O.Lists.frame_points_simple;
@@ -22,7 +23,6 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesLevelTextFont');
-    PixelUtil.SetPoint(frame.text, FRAME_POINTS_SIMPLE[O.db.level_text_anchor], frame, FRAME_POINTS_SIMPLE[O.db.level_text_anchor], O.db.level_text_x_offset, O.db.level_text_y_offset);
     frame.text:SetTextColor(1, 1, 1);
 
     frame:SetShown(false);
@@ -51,7 +51,7 @@ end
 
 local function UpdateStyle(unitframe)
     unitframe.LevelText.text:ClearAllPoints();
-    PixelUtil.SetPoint(unitframe.LevelText.text, FRAME_POINTS_SIMPLE[O.db.level_text_anchor], unitframe.LevelText, FRAME_POINTS_SIMPLE[O.db.level_text_anchor], O.db.level_text_x_offset, O.db.level_text_y_offset);
+    PixelUtil.SetPoint(unitframe.LevelText.text, TEXT_ANCHOR, unitframe.LevelText, TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET);
 end
 
 function Module:UnitAdded(unitframe)
@@ -76,6 +76,10 @@ end
 function Module:UpdateLocalConfig()
     ENABLED        = O.db.level_text_enabled;
     USE_DIFF_COLOR = O.db.level_text_use_diff_color;
+
+    TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.level_text_anchor];
+    TEXT_X_OFFSET = O.db.level_text_x_offset;
+    TEXT_Y_OFFSET = O.db.level_text_y_offset;
 
     CUSTOM_COLOR_ENABLED    = O.db.level_text_custom_color_enabled;
 
