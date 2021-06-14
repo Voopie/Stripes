@@ -135,6 +135,7 @@ function Module:UnitAdded(unitframe)
     Create(unitframe);
     Update(unitframe);
     UpdateShow(unitframe);
+    UpdateStyle(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
