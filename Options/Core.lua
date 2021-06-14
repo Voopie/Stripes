@@ -70,6 +70,8 @@ O.Lists = {
         [6] = '1.2M (100%)',
         [7] = '1.2M',
         [8] = '100%',
+        [9] = '53918',
+        [10] = '53' .. U.NUMBER_SEPARATOR .. '918',
     },
 
     font_flags = {
@@ -174,6 +176,11 @@ O.Lists = {
         [2] = L['OPTIONS_NAME_TEXT_ABBREVIATED_WITH_SPACE'],
         [3] = L['OPTIONS_NAME_TEXT_ABBREVIATED_LAST_WORD'],
     },
+
+    health_text_block_mode = {
+        [1] = L['OPTIONS_HEALTH_TEXT_SINGLE_BLOCK'],
+        [2] = L['OPTIONS_HEALTH_TEXT_DOUBLE_BLOCK'],
+    },
 };
 
 O.DefaultValues = {
@@ -212,6 +219,15 @@ O.DefaultValues = {
     health_text_anchor       = 3, -- RIGHT
     health_text_custom_color_enabled = false,
     health_text_custom_color         = { 1, 1, 1, 1 },
+    health_text_block_mode  = 1,
+    health_text_block_1_display_mode = 7,
+    health_text_block_1_x_offset     = 1,
+    health_text_block_1_y_offset     = 0,
+    health_text_block_1_anchor       = 1, -- LEFT
+    health_text_block_2_display_mode = 8,
+    health_text_block_2_x_offset     = -1,
+    health_text_block_2_y_offset     = 0,
+    health_text_block_2_anchor       = 3, -- RIGHT
 
     level_text_enabled        = true,
     level_text_font_value     = 'BigNoodleToo Titling',

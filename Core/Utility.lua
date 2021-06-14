@@ -1,7 +1,7 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 
 -- Lua API
-local pairs, ipairs, select, type, unpack, tonumber, string_format, string_len, string_sub, string_gsub, string_byte, math_floor = pairs, ipairs, select, type, unpack, tonumber, string.format, string.len, string.sub, string.gsub, string.byte, math.floor;
+local pairs, ipairs, select, type, unpack, tostring, tonumber, string_format, string_len, string_sub, string_gsub, string_byte, math_floor = pairs, ipairs, select, type, unpack, tostring, tonumber, string.format, string.len, string.sub, string.gsub, string.byte, math.floor;
 
 -- WoW/Lua API
 local strsplit = strsplit;
@@ -333,6 +333,26 @@ U.ShortValue = function(num)
         return string_format('%.2fm', num/1000000);
     elseif num >= 1000 then
         return string_format('%.1fk', num/1000);
+    end
+end
+
+U.NUMBER_SEPARATOR = ',';
+
+do
+    local NUMBER_SEPARATOR = U.NUMBER_SEPARATOR;
+
+    U.LargeNumberFormat = function(amount, separator)
+        amount = tostring(amount);
+        separator = separator or NUMBER_SEPARATOR;
+
+        local newDisplay = '';
+        local strlen = string_len(amount);
+
+        for i = 4, strlen, 3 do
+            newDisplay = separator .. string_sub(amount, -(i - 1), -(i - 3)) .. newDisplay;
+        end
+
+        return string_sub(amount, 1, (strlen % 3 == 0) and 3 or (strlen % 3)) .. newDisplay;
     end
 end
 

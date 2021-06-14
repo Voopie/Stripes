@@ -295,10 +295,6 @@ panel.Load = function(self)
     self.health_text_enabled:AddToSearch(button, L['OPTIONS_SHOW_HEALTH_TEXT'], self.Tabs[2]);
     self.health_text_enabled.Callback = function(self)
         O.db.health_text_enabled = self:GetChecked();
-
-        panel.health_text_hide_full:SetEnabled(O.db.health_text_enabled);
-        panel.health_text_display_mode:SetEnabled(O.db.health_text_enabled);
-
         Handler:UpdateAll();
     end
 
@@ -311,20 +307,6 @@ panel.Load = function(self)
     self.health_text_hide_full:SetEnabled(O.db.health_text_enabled);
     self.health_text_hide_full.Callback = function(self)
         O.db.health_text_hide_full = self:GetChecked();
-        Handler:UpdateAll();
-    end
-
-    self.health_text_display_mode = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_display_mode:SetPosition('LEFT', self.health_text_hide_full.Label, 'RIGHT', 12, 0);
-    self.health_text_display_mode:SetSize(120, 20);
-    self.health_text_display_mode:SetList(O.Lists.health_text_display_mode);
-    self.health_text_display_mode:SetValue(O.db.health_text_display_mode);
-    self.health_text_display_mode:SetLabel(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE']);
-    self.health_text_display_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP']);
-    self.health_text_display_mode:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP'], self.Tabs[2]);
-    self.health_text_display_mode:SetEnabled(O.db.health_text_enabled);
-    self.health_text_display_mode.OnValueChangedCallback = function(_, value)
-        O.db.health_text_display_mode = tonumber(value);
         Handler:UpdateAll();
     end
 
@@ -402,42 +384,184 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.health_text_font_value, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
-    self.health_text_anchor = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_anchor:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -20);
+    self.health_text_block_mode = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_block_mode:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
+    self.health_text_block_mode:SetSize(180, 20);
+    self.health_text_block_mode:SetList(O.Lists.health_text_block_mode);
+    self.health_text_block_mode:SetValue(O.db.health_text_block_mode);
+    self.health_text_block_mode:SetLabel(L['OPTIONS_HEALTH_TEXT_BLOCK_MODE']);
+    self.health_text_block_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_BLOCK_MODE_TOOLTIP']);
+    self.health_text_block_mode:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_BLOCK_MODE_TOOLTIP'], self.Tabs[2]);
+    self.health_text_block_mode:SetEnabled(O.db.health_text_enabled);
+    self.health_text_block_mode.OnValueChangedCallback = function(_, value)
+        O.db.health_text_block_mode = tonumber(value);
+
+        panel.SingleBlockHolder:SetShown(O.db.health_text_block_mode == 1);
+        panel.DoubleBlockHolder:SetShown(O.db.health_text_block_mode == 2);
+
+        Handler:UpdateAll();
+    end
+
+    self.SingleBlockHolder = Mixin(CreateFrame('Frame', nil, self.TabsFrames['HealthTextTab'].Content), E.PixelPerfectMixin);
+    self.SingleBlockHolder:SetPosition('TOPLEFT', self.health_text_block_mode, 'BOTTOMLEFT', 0, -4);
+    self.SingleBlockHolder:SetW(self:GetWidth());
+    self.SingleBlockHolder:SetShown(O.db.health_text_block_mode == 1);
+
+    self.DoubleBlockHolder = Mixin(CreateFrame('Frame', nil, self.TabsFrames['HealthTextTab'].Content), E.PixelPerfectMixin);
+    self.DoubleBlockHolder:SetPosition('TOPLEFT', self.health_text_block_mode, 'BOTTOMLEFT', 0, -4);
+    self.DoubleBlockHolder:SetW(self:GetWidth());
+    self.DoubleBlockHolder:SetShown(O.db.health_text_block_mode == 2);
+
+    local SingleBlockHeader = E.CreateHeader(self.SingleBlockHolder, L['OPTIONS_HEALTH_TEXT_SINGLE_BLOCK_HEADER']);
+    SingleBlockHeader:SetPosition('TOPLEFT', self.health_text_block_mode, 'BOTTOMLEFT', 0, -4);
+    SingleBlockHeader:SetW(self:GetWidth());
+
+    self.health_text_display_mode = E.CreateDropdown('plain', self.SingleBlockHolder);
+    self.health_text_display_mode:SetPosition('TOPLEFT', SingleBlockHeader, 'BOTTOMLEFT', 0, -8);
+    self.health_text_display_mode:SetSize(120, 20);
+    self.health_text_display_mode:SetList(O.Lists.health_text_display_mode);
+    self.health_text_display_mode:SetValue(O.db.health_text_display_mode);
+    self.health_text_display_mode:SetLabel(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE']);
+    self.health_text_display_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP']);
+    self.health_text_display_mode.OnValueChangedCallback = function(_, value)
+        O.db.health_text_display_mode = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_text_anchor = E.CreateDropdown('plain', self.SingleBlockHolder);
+    self.health_text_anchor:SetPosition('TOPLEFT', self.health_text_display_mode, 'BOTTOMLEFT', 0, -16);
     self.health_text_anchor:SetSize(120, 20);
     self.health_text_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.health_text_anchor:SetValue(O.db.health_text_anchor);
     self.health_text_anchor:SetLabel(L['OPTIONS_HEALTH_TEXT_ANCHOR']);
     self.health_text_anchor:SetTooltip(L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP']);
-    self.health_text_anchor:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP'], self.Tabs[2]);
     self.health_text_anchor.OnValueChangedCallback = function(_, value)
         O.db.health_text_anchor = tonumber(value);
         Handler:UpdateAll();
     end
 
-    self.health_text_x_offset = E.CreateSlider(self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_x_offset = E.CreateSlider(self.SingleBlockHolder);
     self.health_text_x_offset:SetPosition('LEFT', self.health_text_anchor, 'RIGHT', 16, 0);
     self.health_text_x_offset:SetW(137);
     self.health_text_x_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_X_OFFSET']);
     self.health_text_x_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_X_OFFSET_TOOLTIP']);
-    self.health_text_x_offset:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_X_OFFSET_TOOLTIP'], self.Tabs[2]);
     self.health_text_x_offset:SetValues(O.db.health_text_x_offset, -99, 100, 1);
     self.health_text_x_offset.OnValueChangedCallback = function(_, value)
         O.db.health_text_x_offset = tonumber(value);
         Handler:UpdateAll();
     end
 
-    self.health_text_y_offset = E.CreateSlider(self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_y_offset = E.CreateSlider(self.SingleBlockHolder);
     self.health_text_y_offset:SetPosition('LEFT', self.health_text_x_offset, 'RIGHT', 16, 0);
     self.health_text_y_offset:SetW(137);
     self.health_text_y_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_Y_OFFSET']);
     self.health_text_y_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_Y_OFFSET_TOOLTIP']);
-    self.health_text_y_offset:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_Y_OFFSET_TOOLTIP'], self.Tabs[2]);
     self.health_text_y_offset:SetValues(O.db.health_text_y_offset, -99, 100, 1);
     self.health_text_y_offset.OnValueChangedCallback = function(_, value)
         O.db.health_text_y_offset = tonumber(value);
         Handler:UpdateAll();
     end
+
+    local FirstBlockHeader = E.CreateHeader(self.DoubleBlockHolder, L['OPTIONS_HEALTH_TEXT_FIRST_BLOCK_HEADER']);
+    FirstBlockHeader:SetPosition('TOPLEFT', self.health_text_block_mode, 'BOTTOMLEFT', 0, -4);
+    FirstBlockHeader:SetW(self:GetWidth());
+
+    self.health_text_block_1_display_mode = E.CreateDropdown('plain', self.DoubleBlockHolder);
+    self.health_text_block_1_display_mode:SetPosition('TOPLEFT', FirstBlockHeader, 'BOTTOMLEFT', 0, -8);
+    self.health_text_block_1_display_mode:SetSize(120, 20);
+    self.health_text_block_1_display_mode:SetList(O.Lists.health_text_display_mode);
+    self.health_text_block_1_display_mode:SetValue(O.db.health_text_block_1_display_mode);
+    self.health_text_block_1_display_mode:SetLabel(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE']);
+    self.health_text_block_1_display_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP']);
+    self.health_text_block_1_display_mode.OnValueChangedCallback = function(_, value)
+        O.db.health_text_block_1_display_mode = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_text_block_1_anchor = E.CreateDropdown('plain', self.DoubleBlockHolder);
+    self.health_text_block_1_anchor:SetPosition('TOPLEFT', self.health_text_block_1_display_mode, 'BOTTOMLEFT', 0, -16);
+    self.health_text_block_1_anchor:SetSize(120, 20);
+    self.health_text_block_1_anchor:SetList(O.Lists.frame_points_simple_localized);
+    self.health_text_block_1_anchor:SetValue(O.db.health_text_block_1_anchor);
+    self.health_text_block_1_anchor:SetLabel(L['OPTIONS_HEALTH_TEXT_ANCHOR']);
+    self.health_text_block_1_anchor:SetTooltip(L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP']);
+    self.health_text_block_1_anchor.OnValueChangedCallback = function(_, value)
+        O.db.health_text_block_1_anchor = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_text_block_1_x_offset = E.CreateSlider(self.DoubleBlockHolder);
+    self.health_text_block_1_x_offset:SetPosition('LEFT', self.health_text_block_1_anchor, 'RIGHT', 16, 0);
+    self.health_text_block_1_x_offset:SetW(137);
+    self.health_text_block_1_x_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_X_OFFSET']);
+    self.health_text_block_1_x_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_X_OFFSET_TOOLTIP']);
+    self.health_text_block_1_x_offset:SetValues(O.db.health_text_block_1_x_offset, -99, 100, 1);
+    self.health_text_block_1_x_offset.OnValueChangedCallback = function(_, value)
+        O.db.health_text_block_1_x_offset = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_text_block_1_y_offset = E.CreateSlider(self.DoubleBlockHolder);
+    self.health_text_block_1_y_offset:SetPosition('LEFT', self.health_text_block_1_x_offset, 'RIGHT', 16, 0);
+    self.health_text_block_1_y_offset:SetW(137);
+    self.health_text_block_1_y_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_Y_OFFSET']);
+    self.health_text_block_1_y_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_Y_OFFSET_TOOLTIP']);
+    self.health_text_block_1_y_offset:SetValues(O.db.health_text_block_1_y_offset, -99, 100, 1);
+    self.health_text_block_1_y_offset.OnValueChangedCallback = function(_, value)
+        O.db.health_text_block_1_y_offset = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    local SecondBlockHeader = E.CreateHeader(self.DoubleBlockHolder, L['OPTIONS_HEALTH_TEXT_SECOND_BLOCK_HEADER']);
+    SecondBlockHeader:SetPosition('TOPLEFT', self.health_text_block_1_anchor, 'BOTTOMLEFT', 0, -8);
+    SecondBlockHeader:SetW(self:GetWidth());
+
+    self.health_text_block_2_display_mode = E.CreateDropdown('plain', self.DoubleBlockHolder);
+    self.health_text_block_2_display_mode:SetPosition('TOPLEFT', SecondBlockHeader, 'BOTTOMLEFT', 0, -8);
+    self.health_text_block_2_display_mode:SetSize(120, 20);
+    self.health_text_block_2_display_mode:SetList(O.Lists.health_text_display_mode);
+    self.health_text_block_2_display_mode:SetValue(O.db.health_text_block_2_display_mode);
+    self.health_text_block_2_display_mode:SetLabel(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE']);
+    self.health_text_block_2_display_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP']);
+    self.health_text_block_2_display_mode.OnValueChangedCallback = function(_, value)
+        O.db.health_text_block_2_display_mode = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_text_block_2_anchor = E.CreateDropdown('plain', self.DoubleBlockHolder);
+    self.health_text_block_2_anchor:SetPosition('TOPLEFT', self.health_text_block_2_display_mode, 'BOTTOMLEFT', 0, -16);
+    self.health_text_block_2_anchor:SetSize(120, 20);
+    self.health_text_block_2_anchor:SetList(O.Lists.frame_points_simple_localized);
+    self.health_text_block_2_anchor:SetValue(O.db.health_text_block_2_anchor);
+    self.health_text_block_2_anchor:SetLabel(L['OPTIONS_HEALTH_TEXT_ANCHOR']);
+    self.health_text_block_2_anchor:SetTooltip(L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP']);
+    self.health_text_block_2_anchor.OnValueChangedCallback = function(_, value)
+        O.db.health_text_block_2_anchor = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_text_block_2_x_offset = E.CreateSlider(self.DoubleBlockHolder);
+    self.health_text_block_2_x_offset:SetPosition('LEFT', self.health_text_block_2_anchor, 'RIGHT', 16, 0);
+    self.health_text_block_2_x_offset:SetW(137);
+    self.health_text_block_2_x_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_X_OFFSET']);
+    self.health_text_block_2_x_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_X_OFFSET_TOOLTIP']);
+    self.health_text_block_2_x_offset:SetValues(O.db.health_text_block_2_x_offset, -99, 100, 1);
+    self.health_text_block_2_x_offset.OnValueChangedCallback = function(_, value)
+        O.db.health_text_block_2_x_offset = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_text_block_2_y_offset = E.CreateSlider(self.DoubleBlockHolder);
+    self.health_text_block_2_y_offset:SetPosition('LEFT', self.health_text_block_2_x_offset, 'RIGHT', 16, 0);
+    self.health_text_block_2_y_offset:SetW(137);
+    self.health_text_block_2_y_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_Y_OFFSET']);
+    self.health_text_block_2_y_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_Y_OFFSET_TOOLTIP']);
+    self.health_text_block_2_y_offset:SetValues(O.db.health_text_block_2_y_offset, -99, 100, 1);
+    self.health_text_block_2_y_offset.OnValueChangedCallback = function(_, value)
+        O.db.health_text_block_2_y_offset = tonumber(value);
+        Handler:UpdateAll();
+    end
+
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
