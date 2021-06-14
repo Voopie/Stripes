@@ -10,6 +10,8 @@ local FRAME_POINTS_SIMPLE = O.Lists.frame_points_simple;
 
 -- Local Config
 local ENABLED, HIDE_FULL, DISPLAY_MODE, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
+local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
+local BLOCK_1_TEXT_ANCHOR, BLOCK_1_TEXT_X_OFFSET, BLOCK_1_TEXT_Y_OFFSET, BLOCK_2_TEXT_ANCHOR, BLOCK_2_TEXT_X_OFFSET, BLOCK_2_TEXT_Y_OFFSET;
 local IS_DOUBLE, DISPLAY_MODE_BLOCK_1, DISPLAY_MODE_BLOCK_2;
 
 local StripesHealthTextFont = CreateFont('StripesHealthTextFont');
@@ -23,23 +25,8 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
-    PixelUtil.SetPoint(frame.text, FRAME_POINTS_SIMPLE[O.db.health_text_anchor], frame, FRAME_POINTS_SIMPLE[O.db.health_text_anchor], O.db.health_text_x_offset, O.db.health_text_y_offset);
-
     frame.LeftText = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
-    PixelUtil.SetPoint(frame.LeftText, FRAME_POINTS_SIMPLE[O.db.health_text_block_1_anchor], frame, FRAME_POINTS_SIMPLE[O.db.health_text_block_1_anchor], O.db.health_text_block_1_x_offset, O.db.health_text_block_1_y_offset);
-
     frame.RightText = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
-    PixelUtil.SetPoint(frame.RightText, FRAME_POINTS_SIMPLE[O.db.health_text_block_2_anchor], frame, FRAME_POINTS_SIMPLE[O.db.health_text_block_2_anchor], O.db.health_text_block_2_x_offset, O.db.health_text_block_2_y_offset);
-
-    if CUSTOM_COLOR_ENABLED then
-        frame.text:SetTextColor(unpack(CUSTOM_COLOR));
-        frame.LeftText:SetTextColor(unpack(CUSTOM_COLOR));
-        frame.RightText:SetTextColor(unpack(CUSTOM_COLOR));
-    else
-        frame.text:SetTextColor(1, 1, 1, 1);
-        frame.LeftText:SetTextColor(1, 1, 1, 1);
-        frame.RightText:SetTextColor(1, 1, 1, 1);
-    end
 
     frame:SetShown(false);
 
@@ -116,9 +103,9 @@ local function UpdateStyle(unitframe)
     unitframe.HealthText.LeftText:ClearAllPoints();
     unitframe.HealthText.RightText:ClearAllPoints();
 
-    PixelUtil.SetPoint(unitframe.HealthText.text, FRAME_POINTS_SIMPLE[O.db.health_text_anchor], unitframe.HealthText, FRAME_POINTS_SIMPLE[O.db.health_text_anchor], O.db.health_text_x_offset, O.db.health_text_y_offset);
-    PixelUtil.SetPoint(unitframe.HealthText.LeftText, FRAME_POINTS_SIMPLE[O.db.health_text_block_1_anchor], unitframe.HealthText, FRAME_POINTS_SIMPLE[O.db.health_text_block_1_anchor], O.db.health_text_block_1_x_offset, O.db.health_text_block_1_y_offset);
-    PixelUtil.SetPoint(unitframe.HealthText.RightText, FRAME_POINTS_SIMPLE[O.db.health_text_block_2_anchor], unitframe.HealthText, FRAME_POINTS_SIMPLE[O.db.health_text_block_2_anchor], O.db.health_text_block_2_x_offset, O.db.health_text_block_2_y_offset);
+    PixelUtil.SetPoint(unitframe.HealthText.text, TEXT_ANCHOR, unitframe.HealthText, TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET);
+    PixelUtil.SetPoint(unitframe.HealthText.LeftText, BLOCK_1_TEXT_ANCHOR, unitframe.HealthText, BLOCK_1_TEXT_ANCHOR, BLOCK_1_TEXT_X_OFFSET, BLOCK_1_TEXT_Y_OFFSET);
+    PixelUtil.SetPoint(unitframe.HealthText.RightText, BLOCK_2_TEXT_ANCHOR, unitframe.HealthText, BLOCK_2_TEXT_ANCHOR, BLOCK_2_TEXT_X_OFFSET, BLOCK_2_TEXT_Y_OFFSET);
 
     if CUSTOM_COLOR_ENABLED then
         unitframe.HealthText.text:SetTextColor(unpack(CUSTOM_COLOR));
@@ -155,6 +142,10 @@ function Module:UpdateLocalConfig()
     HIDE_FULL    = O.db.health_text_hide_full;
     DISPLAY_MODE = math.max(math.min(O.db.health_text_display_mode, #UpdateHealthTextFormat), 1);
 
+    TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.health_text_anchor];
+    TEXT_X_OFFSET = O.db.health_text_x_offset;
+    TEXT_Y_OFFSET = O.db.health_text_y_offset;
+
     CUSTOM_COLOR_ENABLED    = O.db.health_text_custom_color_enabled;
 
     CUSTOM_COLOR            = CUSTOM_COLOR or {};
@@ -166,6 +157,13 @@ function Module:UpdateLocalConfig()
     IS_DOUBLE = O.db.health_text_block_mode == 2;
     DISPLAY_MODE_BLOCK_1 = math.max(math.min(O.db.health_text_block_1_display_mode, #UpdateHealthTextFormat), 1);
     DISPLAY_MODE_BLOCK_2 = math.max(math.min(O.db.health_text_block_2_display_mode, #UpdateHealthTextFormat), 1);
+
+    BLOCK_1_TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.health_text_block_1_anchor];
+    BLOCK_1_TEXT_X_OFFSET = O.db.health_text_block_1_x_offset;
+    BLOCK_1_TEXT_Y_OFFSET = O.db.health_text_block_1_y_offset;
+    BLOCK_2_TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.health_text_block_2_anchor];
+    BLOCK_2_TEXT_X_OFFSET = O.db.health_text_block_2_x_offset;
+    BLOCK_2_TEXT_Y_OFFSET = O.db.health_text_block_2_y_offset;
 
     UpdateFontObject(StripesHealthTextFont, O.db.health_text_font_value, O.db.health_text_font_size, O.db.health_text_font_flag, O.db.health_text_font_shadow);
 end
