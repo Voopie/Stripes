@@ -166,6 +166,11 @@ O.Lists = {
         [3] = L['OPTIONS_NAME_TEXT_COLORING_MODE_FACTION'],
     },
 
+    name_text_coloring_mode_npc = {
+        [1] = L['OPTIONS_NAME_TEXT_COLORING_MODE_NONE'],
+        [2] = L['OPTIONS_NAME_TEXT_COLORING_MODE_RELATION'],
+    },
+
     mythic_plus_percentage_use_mode = {
         [1] = L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_USE_MODE_EMBEDDED'],
         [2] = L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_USE_MODE_MDT'],
@@ -197,6 +202,7 @@ O.DefaultValues = {
     name_text_abbreviated            = false,
     name_text_abbreviated_mode       = 1, -- Without space
     name_text_coloring_mode          = 1, -- NONE
+    name_text_coloring_mode_npc      = 1, -- NONE
     faction_icon_enabled             = false,
     class_icon_enabled               = false,
     class_icon_arena_only            = false,

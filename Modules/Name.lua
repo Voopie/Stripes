@@ -20,7 +20,7 @@ local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyMode
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
-local POSITION, POSITION_V, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE;
+local POSITION, POSITION_V, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE, COLORING_MODE_NPC;
 local NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 local NAME_PVP, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
@@ -193,22 +193,26 @@ local function UpdateColor(unitframe)
         return;
     end
 
-    if COLORING_MODE == 1 then -- NONE
-        unitframe.name:SetVertexColor(1, 1, 1);
-    elseif COLORING_MODE == 2 then -- CLASS COLOR
-        if unitframe.data.commonUnitType == 'PLAYER' then
-            unitframe.name:SetVertexColor(unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB);
-        else
-            DefaultColor(unitframe);
-        end
-    elseif COLORING_MODE == 3 then -- FACTION COLOR
-        if unitframe.data.commonUnitType == 'NPC' then
+    if unitframe.data.commonUnitType == 'NPC' then
+        if COLORING_MODE_NPC == 1 then -- NONE
             unitframe.name:SetVertexColor(1, 1, 1);
         else
             DefaultColor(unitframe);
         end
-    else
-        DefaultColor(unitframe);
+
+        return;
+    end
+
+    if unitframe.data.commonUnitType == 'PLAYER' then
+        if COLORING_MODE == 1 then -- NONE
+            unitframe.name:SetVertexColor(1, 1, 1);
+        elseif COLORING_MODE == 2 then -- CLASS COLOR
+            unitframe.name:SetVertexColor(unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB);
+        else -- FACTION COLOR
+            DefaultColor(unitframe);
+        end
+
+        return;
     end
 end
 
@@ -394,6 +398,7 @@ function Module:UpdateLocalConfig()
     SHOW_ARENA_ID          = O.db.name_text_show_arenaid;
     SHOW_ARENA_ID_SOLO     = O.db.name_text_show_arenaid_solo;
     COLORING_MODE          = O.db.name_text_coloring_mode;
+    COLORING_MODE_NPC      = O.db.name_text_coloring_mode_npc;
 
     NAME_ONLY_OFFSET_Y     = O.db.name_only_friendly_y_offset;
 

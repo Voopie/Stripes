@@ -162,6 +162,19 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.name_text_coloring_mode_npc = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_coloring_mode_npc:SetPosition('LEFT', self.name_text_coloring_mode, 'RIGHT', 12, 0);
+    self.name_text_coloring_mode_npc:SetSize(160, 20);
+    self.name_text_coloring_mode_npc:SetList(O.Lists.name_text_coloring_mode_npc);
+    self.name_text_coloring_mode_npc:SetValue(O.db.name_text_coloring_mode_npc);
+    self.name_text_coloring_mode_npc:SetLabel(L['OPTIONS_NAME_TEXT_COLORING_NPC']);
+    self.name_text_coloring_mode_npc:SetTooltip(L['OPTIONS_NAME_TEXT_COLORING_NPC_TOOLTIP']);
+    self.name_text_coloring_mode_npc:AddToSearch(button, L['OPTIONS_NAME_TEXT_COLORING_NPC_TOOLTIP'], self.Tabs[1]);
+    self.name_text_coloring_mode_npc.OnValueChangedCallback = function(_, value)
+        O.db.name_text_coloring_mode_npc = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     self.name_text_abbreviated = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
     self.name_text_abbreviated:SetPosition('TOPLEFT', self.name_text_coloring_mode, 'BOTTOMLEFT', 0, -12);
     self.name_text_abbreviated:SetLabel(L['OPTIONS_NAME_TEXT_ABBREVIATED']);

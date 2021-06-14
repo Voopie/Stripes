@@ -1,14 +1,14 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_Visibility');
 
-O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);
+O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);
 local button = O.frame.Left.Visibility;
 local panel = O.frame.Right.Visibility;
 
 panel.TabsData = {
     [1] = {
         name  = 'CommonTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_VISIBILITY_TAB_COMMON']),
+        title = string.upper(L['OPTIONS_VISIBILITY_TAB_COMMON']),
     },
     [2] = {
         name  = 'EnemyTab',
@@ -146,7 +146,7 @@ panel.Load = function(self)
         end
     end
 
-    local AlphaHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, S.Media.INLINE_NEW_ICON .. L['OPTIONS_VISIBILITY_ALPHA_HEADER']);
+    local AlphaHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_VISIBILITY_ALPHA_HEADER']);
     AlphaHeader:SetPosition('TOPLEFT', self.max_distance_openworld, 'BOTTOMLEFT', -5, -4);
     AlphaHeader:SetW(self:GetWidth());
 
