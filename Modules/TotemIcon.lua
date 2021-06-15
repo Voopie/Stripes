@@ -50,7 +50,7 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    unitframe.TotemIcon:SetShown(ENABLED and unitframe.data.creatureType == TOTEM_NAME and unitframe.data.npcId ~= explosiveId);
+    unitframe.TotemIcon:SetShown(ENABLED and unitframe.data.npcId ~= explosiveId and unitframe.data.creatureType == TOTEM_NAME);
 end
 
 local function Hide(unitframe)
