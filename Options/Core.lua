@@ -458,6 +458,7 @@ O.DefaultValues = {
     auras_sort_method              = 1, -- ASC
     auras_pandemic_enabled         = false,
     auras_pandemic_color           = { 0, 1, 0 },
+    auras_omnicc_suppress          = true,
 
     auras_countdown_enabled     = true,
     auras_cooldown_font_value   = 'BigNoodleToo Titling',

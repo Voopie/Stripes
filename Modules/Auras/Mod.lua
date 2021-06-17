@@ -15,6 +15,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 -- Local Config
 local BORDER_COLOR_ENABLED, COUNTDOWN_ENABLED;
 local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
+local SUPPRESS_OMNICC;
 
 local DebuffTypeColor = DebuffTypeColor;
 
@@ -39,6 +40,7 @@ local function UpdateBuffs(unitframe)
         end
 
         buff.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+        buff.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
         if not buff.Cooldown.__styled then
             buff.Cooldown:GetRegions():ClearAllPoints();
@@ -90,6 +92,7 @@ function Module:UpdateLocalConfig()
     COUNTDOWN_ENABLED    = O.db.auras_countdown_enabled;
     NAME_TEXT_POSITION_V = O.db.name_text_position_v;
     NAME_TEXT_OFFSET_Y   = O.db.name_text_offset_y;
+    SUPPRESS_OMNICC      = O.db.auras_omnicc_suppress;
 
     UpdateFontObject(StripesAurasModCooldownFont, O.db.auras_cooldown_font_value, O.db.auras_cooldown_font_size, O.db.auras_cooldown_font_flag, O.db.auras_cooldown_font_shadow);
     UpdateFontObject(StripesAurasModCountFont, O.db.auras_count_font_value, O.db.auras_count_font_size, O.db.auras_count_font_flag, O.db.auras_count_font_shadow);

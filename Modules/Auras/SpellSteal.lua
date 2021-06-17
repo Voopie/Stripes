@@ -11,10 +11,10 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED;
 local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
+local SUPPRESS_OMNICC;
 
 local StripesAurasSpellStealCooldownFont = CreateFont('StripesAurasSpellStealCooldownFont');
 local StripesAurasSpellStealCountFont    = CreateFont('StripesAurasSpellStealCountFont');
-
 
 local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HELPFUL';
@@ -110,6 +110,8 @@ local function Update(unitframe)
                 aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
             end
 
+            aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+
             aura:SetShown(true);
 
             buffIndex = buffIndex + 1;
@@ -172,6 +174,7 @@ function Module:UpdateLocalConfig()
     COUNTDOWN_ENABLED    = O.db.auras_spellsteal_countdown_enabled;
     NAME_TEXT_POSITION_V = O.db.name_text_position_v;
     NAME_TEXT_OFFSET_Y   = O.db.name_text_offset_y;
+    SUPPRESS_OMNICC      = O.db.auras_omnicc_suppress;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);

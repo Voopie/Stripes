@@ -21,6 +21,7 @@ local CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED, CASTER_NAME_SHOW;
+local SUPPRESS_OMNICC;
 
 local StripesAurasImportantCooldownFont = CreateFont('StripesAurasImportantCooldownFont');
 local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCountFont');
@@ -130,6 +131,7 @@ local function Update(unitframe)
 
             CooldownFrame_Set(aura.Cooldown, expirationTime - duration, duration, duration > 0, true);
             aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+            aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
             LCG.PixelGlow_Stop(aura);
             LCG.PixelGlow_Start(aura, pixelGlowColor);
@@ -208,6 +210,7 @@ function Module:UpdateLocalConfig()
     ENABLED           = O.db.auras_important_enabled;
     COUNTDOWN_ENABLED = O.db.auras_important_countdown_enabled;
     CASTER_NAME_SHOW  = O.db.auras_important_castername_show;
+    SUPPRESS_OMNICC   = O.db.auras_omnicc_suppress;
 
     UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
     UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);

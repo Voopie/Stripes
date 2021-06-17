@@ -393,6 +393,17 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_omnicc_suppress = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_omnicc_suppress:SetPosition('LEFT', self.auras_countdown_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_omnicc_suppress:SetLabel(L['OPTIONS_AURAS_OMNICC_SUPPRESS']);
+    self.auras_omnicc_suppress:SetTooltip(L['OPTIONS_AURAS_OMNICC_SUPPRESS_TOOLTIP']);
+    self.auras_omnicc_suppress:AddToSearch(button, L['OPTIONS_AURAS_OMNICC_SUPPRESS_TOOLTIP'], self.Tabs[1]);
+    self.auras_omnicc_suppress:SetChecked(O.db.auras_omnicc_suppress);
+    self.auras_omnicc_suppress.Callback = function(self)
+        O.db.auras_omnicc_suppress = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     self.auras_countdown_text = E.CreateFontString(self.TabsFrames['CommonTab'].Content);
     self.auras_countdown_text:SetPosition('TOPLEFT', self.auras_countdown_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);

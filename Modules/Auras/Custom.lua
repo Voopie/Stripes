@@ -14,6 +14,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED;
 local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
+local SUPPRESS_OMNICC;
 
 local StripesAurasCustomCooldownFont = CreateFont('StripesAurasCustomCooldownFont');
 local StripesAurasCustomCountFont    = CreateFont('StripesAurasCustomCountFont');
@@ -161,6 +162,7 @@ local function Update(unitframe)
 
         CooldownFrame_Set(aura.Cooldown, spell.expirationTime - spell.duration, spell.duration, spell.duration > 0, true);
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+        aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
         aura:SetShown(true);
 
@@ -219,6 +221,7 @@ function Module:UpdateLocalConfig()
     COUNTDOWN_ENABLED    = O.db.auras_custom_countdown_enabled;
     NAME_TEXT_POSITION_V = O.db.name_text_position_v;
     NAME_TEXT_OFFSET_Y   = O.db.name_text_offset_y;
+    SUPPRESS_OMNICC      = O.db.auras_omnicc_suppress;
 
     UpdateFontObject(StripesAurasCustomCooldownFont, O.db.auras_custom_cooldown_font_value, O.db.auras_custom_cooldown_font_size, O.db.auras_custom_cooldown_font_flag, O.db.auras_custom_cooldown_font_shadow);
     UpdateFontObject(StripesAurasCustomCountFont, O.db.auras_custom_count_font_value, O.db.auras_custom_count_font_size, O.db.auras_custom_count_font_flag, O.db.auras_custom_count_font_shadow);
