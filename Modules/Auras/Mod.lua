@@ -39,10 +39,12 @@ local function UpdateBuffs(unitframe)
             buff.Border:SetColorTexture(0, 0, 0, 1);
         end
 
-        buff.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-        buff.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+
 
         if not buff.Cooldown.__styled then
+            buff.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+            buff.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+
             buff.Cooldown:GetRegions():ClearAllPoints();
             buff.Cooldown:GetRegions():SetPoint('TOPLEFT', -2, 4);
             buff.Cooldown:GetRegions():SetFontObject(StripesAurasModCooldownFont);
@@ -67,15 +69,20 @@ local function UpdateAnchor(unitframe)
     end
 end
 
+local function UpdateStyle(unitframe)
+    for _, aura in ipairs(unitframe.BuffFrame.buffList) do
+        aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+        aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+    end
+end
+
 function Module:UnitAdded(unitframe)
     UpdateBuffs(unitframe);
     UpdateAnchor(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
-    for _, buff in ipairs(unitframe.BuffFrame.buffList) do
-        buff.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-    end
+    UpdateStyle(unitframe);
 end
 
 function Module:UnitAura(unitframe)
@@ -85,6 +92,7 @@ end
 function Module:Update(unitframe)
     UpdateBuffs(unitframe);
     UpdateAnchor(unitframe);
+    UpdateStyle(unitframe);
 end
 
 function Module:UpdateLocalConfig()

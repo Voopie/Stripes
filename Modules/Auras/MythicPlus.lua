@@ -118,6 +118,8 @@ local function Update(unitframe)
             aura.Cooldown:GetRegions():ClearAllPoints();
             aura.Cooldown:GetRegions():SetPoint('TOPLEFT', -2, 4);
             aura.Cooldown:GetRegions():SetFontObject(StripesAurasMythicPlusCooldownFont);
+            aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+            aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
             aura.CountFrame.Count:SetFontObject(StripesAurasMythicPlusCountFont);
 
@@ -141,8 +143,6 @@ local function Update(unitframe)
         end
 
         CooldownFrame_Set(aura.Cooldown, spell.expirationTime - spell.duration, spell.duration, spell.duration > 0, true);
-        aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-        aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
         aura:SetShown(true);
 
@@ -170,6 +170,13 @@ local function Update(unitframe)
     end
 end
 
+local function UpdateStyle(unitframe)
+    for _, aura in ipairs(unitframe.ImportantAuras.buffList) do
+        aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+        aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+    end
+end
+
 function Module:UnitAdded(unitframe)
     CreateAnchor(unitframe);
     Update(unitframe);
@@ -187,6 +194,7 @@ end
 
 function Module:Update(unitframe)
     Update(unitframe);
+    UpdateStyle(unitframe);
 end
 
 function Module:UpdateLocalConfig()

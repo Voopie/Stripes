@@ -99,6 +99,8 @@ local function Update(unitframe)
                 aura.Cooldown:GetRegions():ClearAllPoints();
                 aura.Cooldown:GetRegions():SetPoint('TOPLEFT', -2, 4);
                 aura.Cooldown:GetRegions():SetFontObject(StripesAurasImportantCooldownFont);
+                aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+                aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
                 aura.CountFrame:SetFrameStrata('HIGH');
                 aura.CountFrame.Count:SetFontObject(StripesAurasImportantCountFont);
@@ -130,8 +132,6 @@ local function Update(unitframe)
             end
 
             CooldownFrame_Set(aura.Cooldown, expirationTime - duration, duration, duration > 0, true);
-            aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-            aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
             LCG.PixelGlow_Stop(aura);
             LCG.PixelGlow_Start(aura, pixelGlowColor);
@@ -181,8 +181,10 @@ local function Update(unitframe)
 end
 
 local function UpdateStyle(unitframe)
-    for _, buff in ipairs(unitframe.ImportantAuras.buffList) do
-        buff:SetScale(O.db.auras_important_scale);
+    for _, aura in ipairs(unitframe.ImportantAuras.buffList) do
+        aura:SetScale(O.db.auras_important_scale);
+        aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+        aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
     end
 end
 

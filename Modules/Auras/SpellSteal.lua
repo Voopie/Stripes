@@ -80,6 +80,7 @@ local function Update(unitframe)
                 aura.Cooldown:GetRegions():ClearAllPoints();
                 aura.Cooldown:GetRegions():SetPoint('TOPLEFT', -2, 4);
                 aura.Cooldown:GetRegions():SetFontObject(StripesAurasSpellStealCooldownFont);
+                aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
                 aura.CountFrame.Count:SetFontObject(StripesAurasSpellStealCountFont);
 
@@ -109,8 +110,6 @@ local function Update(unitframe)
             else
                 aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
             end
-
-            aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
             aura:SetShown(true);
 
@@ -144,8 +143,9 @@ local function Update(unitframe)
 end
 
 local function UpdateStyle(unitframe)
-    for _, buff in ipairs(unitframe.AurasSpellSteal.buffList) do
-        buff.Border:SetColorTexture(unpack(O.db.auras_spellsteal_color));
+    for _, aura in ipairs(unitframe.AurasSpellSteal.buffList) do
+        aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+        aura.Border:SetColorTexture(unpack(O.db.auras_spellsteal_color));
     end
 end
 

@@ -138,6 +138,8 @@ local function Update(unitframe)
             aura.Cooldown:GetRegions():ClearAllPoints();
             aura.Cooldown:GetRegions():SetPoint('TOPLEFT', -2, 4);
             aura.Cooldown:GetRegions():SetFontObject(StripesAurasCustomCooldownFont);
+            aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+            aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
             aura.CountFrame.Count:SetFontObject(StripesAurasCustomCountFont);
 
@@ -161,8 +163,6 @@ local function Update(unitframe)
         end
 
         CooldownFrame_Set(aura.Cooldown, spell.expirationTime - spell.duration, spell.duration, spell.duration > 0, true);
-        aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-        aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
         aura:SetShown(true);
 
@@ -191,8 +191,10 @@ local function Update(unitframe)
 end
 
 local function UpdateStyle(unitframe)
-    for _, buff in ipairs(unitframe.AurasCustom.buffList) do
-        buff.Border:SetColorTexture(unpack(O.db.auras_custom_border_color));
+    for _, aura in ipairs(unitframe.AurasCustom.buffList) do
+        aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+        aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+        aura.Border:SetColorTexture(unpack(O.db.auras_custom_border_color));
     end
 end
 
