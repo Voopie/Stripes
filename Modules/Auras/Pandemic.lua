@@ -33,23 +33,23 @@ local function GetTrulySpellId(spellId)
     return select(7, GetSpellInfo(GetSpellInfo(spellId))); -- here we extract the spell name and then get needed spellId by spell name
 end
 
-local function IsOnPandemic(cooldown)
+local function IsOnPandemic(aura)
     if not ENABLED or not COUNTDOWN_ENABLED then
         return;
     end
 
-    local startTimeMs, durationMs = cooldown:GetCooldownTimes();
+    local startTimeMs, durationMs = aura.Cooldown:GetCooldownTimes();
     local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
 
     return remTimeMs > 0 and remTimeMs <= durationMs/100*PANDEMIC_PERCENT;
 end
 
-local function IsOnExpireGlow(cooldown)
+local function IsOnExpireGlow(aura)
     if not EXPIRE_GLOW_ENABLED then
         return;
     end
 
-    local startTimeMs, durationMs = cooldown:GetCooldownTimes();
+    local startTimeMs, durationMs = aura.Cooldown:GetCooldownTimes();
     local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
 
     return remTimeMs > 0 and remTimeMs <= durationMs/100*EXPIRE_GLOW_PERCENT;
@@ -82,10 +82,13 @@ local function Update(unitframe)
         spellId = select(10, UnitAura(unitframe.BuffFrame.unit, aura:GetID(), unitframe.BuffFrame.filter));
 
         if spellId then
-            aura.Cooldown.spellId = spellId;
+            aura.spellId = spellId;
 
-            if not aura.Cooldown.OnUpdateHooked then
-                aura.Cooldown:HookScript('OnUpdate', function(self, elapsed)
+            if not aura.OnUpdateHooked then
+                aura.Cooldown:SetFrameStrata('HIGH');
+                aura.CountFrame:SetFrameStrata('HIGH');
+
+                aura:HookScript('OnUpdate', function(self, elapsed)
                     self.elapsed = (self.elapsed or 0) + elapsed;
 
                     if self.elapsed < UPDATE_INTERVAL then
@@ -98,7 +101,7 @@ local function Update(unitframe)
                             self.spellId = GetTrulySpellId(self.spellId);
 
                             if self.spellId and (knownSpells[self.spellId] or IsSpellKnown(self.spellId)) then
-                                self:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
+                                self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
 
                                 if not knownSpells[self.spellId] then
                                     knownSpells[self.spellId] = true;
@@ -106,7 +109,7 @@ local function Update(unitframe)
                             end
                         end
                     else
-                        self:GetRegions():SetTextColor(1, 1, 1, 1);
+                        self.Cooldown:GetRegions():SetTextColor(1, 1, 1, 1);
                     end
 
                     if IsOnExpireGlow(self) then
@@ -119,7 +122,7 @@ local function Update(unitframe)
                 end);
 
                 aura.Cooldown:HookScript('OnCooldownDone', function(self)
-                    StopExpireGlow(self);
+                    StopExpireGlow(self:GetParent());
                 end);
 
                 aura.Cooldown.OnUpdateHooked = true;
@@ -131,10 +134,10 @@ end
 local function Reset(unitframe)
     if unitframe.BuffFrame and unitframe.BuffFrame.buffList then
         for _, aura in ipairs(unitframe.BuffFrame.buffList) do
-            aura.Cooldown.spellId = nil;
+            aura.spellId = nil;
+            StopExpireGlow(aura);
 
             aura.Cooldown:GetRegions():SetTextColor(1, 1, 1, 1);
-            StopExpireGlow(aura.Cooldown);
         end
     end
 end
