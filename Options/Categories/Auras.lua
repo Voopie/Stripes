@@ -547,7 +547,7 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.auras_expire_glow_percent_sign = E.CreateFontString(self);
+    self.auras_expire_glow_percent_sign = E.CreateFontString(self.TabsFrames['CommonTab'].Content);
     self.auras_expire_glow_percent_sign:SetPosition('LEFT', self.auras_expire_glow_percent, 'RIGHT', 2, 0);
     self.auras_expire_glow_percent_sign:SetText('%');
     self.auras_expire_glow_percent_sign:SetFontObject(O.db.auras_expire_glow_enabled and 'StripesOptionsHighlightFont' or 'StripesOptionsDisabledFont');
