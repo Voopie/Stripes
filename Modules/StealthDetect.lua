@@ -1,6 +1,12 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('StealthDetect');
 
+-- Lua API
+local select = select;
+
+-- WoW API
+local UnitAura = UnitAura;
+
 local LCG = S.Libraries.LCG;
 local LCG_PixelGlow_Start = LCG.PixelGlow_Start;
 local LCG_SUFFIX = 'S_STEALTHDETECT';
@@ -18,7 +24,44 @@ local GLOW_COLOR = { 0.64, 0.24, 0.94 };
 
 local stealthed;
 
--- TODO: also check for auras
+local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
+local FILTER = 'HELPFUL';
+
+local auras = {
+    [201626] = true, -- Sight Beyond Sight
+    [238468] = true, -- Sight Beyond Sight
+    [311928] = true, -- Sight Beyond Sight
+    [319629] = true, -- Sight Beyond Sight
+
+    [230368] = true, -- Detector
+    [248705] = true, -- Detector
+    [276675] = true, -- Detector
+    [298085] = true, -- Detector
+    [307007] = true, -- Detector
+    [333670] = true, -- Detector
+    [339781] = true, -- Detector
+    [351410] = true, -- Detector
+
+    [ 34709] = true, -- Shadow Sight
+    [225649] = true, -- Shadow Sight
+    [323342] = true, -- Shadow Sight
+
+    [127907] = true, -- Phosphorescence
+    [127913] = true, -- Phosphorescence
+
+    [242962] = true, -- One With the Void
+    [242963] = true, -- One With the Void
+
+    [169902] = true, -- All-Seeing Eye
+    [201746] = true, -- Weapon Scope
+    [202568] = true, -- Piercing Vision
+    [203149] = true, -- Animal Instincts
+    [213486] = true, -- Demonic Vision
+    [214793] = true, -- Vigilant
+    [232143] = true, -- Demonic Senses
+
+    [79140] = true, -- Vendetta (Rogue)
+};
 
 local units = {
     -- Shadowlands
@@ -60,6 +103,24 @@ local units = {
     [173051] = true, -- Suppressor Xelors
 };
 
+local function FindAura(unit)
+    local spellId;
+
+    for i = 1, BUFF_MAX_DISPLAY do
+        spellId = select(10, UnitAura(unit, i, FILTER));
+
+        if not spellId then
+            return false;
+        end
+
+        if auras[spellId] then
+            return true;
+        end
+    end
+
+    return false;
+end
+
 local function Create(unitframe)
     if unitframe.StealthDetect then
         return;
@@ -95,10 +156,18 @@ local function Update(unitframe)
         if NOT_IN_COMBAT and PlayerState.inCombat then
             unitframe.StealthDetect:SetShown(false);
         else
-            if ALWAYS then
-                unitframe.StealthDetect:SetShown(units[unitframe.data.npcId]);
+            local found = false;
+
+            if units[unitframe.data.npcId] then
+                found = true;
             else
-                unitframe.StealthDetect:SetShown(stealthed and units[unitframe.data.npcId]);
+                found = FindAura(unitframe.data.unit);
+            end
+
+            if ALWAYS then
+                unitframe.StealthDetect:SetShown(found);
+            else
+                unitframe.StealthDetect:SetShown(stealthed and found);
             end
         end
     else
@@ -119,6 +188,10 @@ end
 
 function Module:UnitRemoved(unitframe)
     Hide(unitframe);
+end
+
+function Module:UnitAura(unitframe)
+    Update(unitframe);
 end
 
 function Module:Update(unitframe)
