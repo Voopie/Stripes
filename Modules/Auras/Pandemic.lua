@@ -84,15 +84,15 @@ local function Update(unitframe)
         if spellId then
             aura.Cooldown.spellId = spellId;
 
-            if not aura.Cooldown.pandemicGlowHooked then
+            if not aura.Cooldown.OnUpdateHooked then
                 aura.Cooldown:HookScript('OnUpdate', function(self, elapsed)
-                    self.pandemicElapsed = (self.pandemicElapsed or 0) + elapsed;
+                    self.elapsed = (self.elapsed or 0) + elapsed;
 
-                    if self.pandemicElapsed < UPDATE_INTERVAL then
+                    if self.elapsed < UPDATE_INTERVAL then
                         return;
                     end
 
-                    if IsOnPandemic(self) then
+                    if self.spellId and IsOnPandemic(self) then
                         flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellId);
                         if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
                             self.spellId = GetTrulySpellId(self.spellId);
@@ -109,34 +109,20 @@ local function Update(unitframe)
                         self:GetRegions():SetTextColor(1, 1, 1, 1);
                     end
 
-                    self.pandemicElapsed = 0;
-                end);
-
-                aura.Cooldown.pandemicGlowHooked = true;
-            end
-
-            if not aura.Cooldown.expireGlowHooked then
-                aura.Cooldown:HookScript('OnUpdate', function(self, elapsed)
-                    self.glowElapsed = (self.glowElapsed or 0) + elapsed;
-
-                    if self.glowElapsed < UPDATE_INTERVAL then
-                        return;
-                    end
-
                     if IsOnExpireGlow(self) then
                         UpdateExpireGlow(self);
                     else
                         StopExpireGlow(self);
                     end
 
-                    self.glowElapsed = 0;
+                    self.elapsed = 0;
                 end);
 
                 aura.Cooldown:HookScript('OnCooldownDone', function(self)
                     StopExpireGlow(self);
                 end);
 
-                aura.Cooldown.expireGlowHooked = true;
+                aura.Cooldown.OnUpdateHooked = true;
             end
         end
     end
@@ -145,6 +131,8 @@ end
 local function Reset(unitframe)
     if unitframe.BuffFrame and unitframe.BuffFrame.buffList then
         for _, aura in ipairs(unitframe.BuffFrame.buffList) do
+            aura.Cooldown.spellId = nil;
+
             aura.Cooldown:GetRegions():SetTextColor(1, 1, 1, 1);
             StopExpireGlow(aura.Cooldown);
         end
@@ -163,12 +151,12 @@ function Module:UnitRemoved(unitframe)
     Reset(unitframe);
 end
 
-function Module:Update(unitframe)
-    Reset(unitframe);
+function Module:UnitAura(unitframe)
     Update(unitframe);
 end
 
-function Module:UnitAura(unitframe)
+function Module:Update(unitframe)
+    Reset(unitframe);
     Update(unitframe);
 end
 
