@@ -99,6 +99,7 @@ L['OPTIONS_PROFILES_CREATE_DEFAULT_PROFILE_BUTTON_LABEL'] = 'Create default prof
 L['OPTIONS_PROFILES_EXPORT_BUTTON_LABEL'] = 'Export';
 L['OPTIONS_PROFILES_IMPORT_BUTTON_LABEL'] = 'Import';
 L['OPTIONS_PROFILES_REMOVE_PROFILE'] = 'Profile annihilation';
+L['OPTIONS_PROFILES_REMOVE_PROFILE_PROMPT'] = 'Annihilate the profile «%s»?';
 L['OPTIONS_PROFILES_EXPORT_COPIED'] = 'Job`s done';
 L['OPTIONS_PROFILES_IMPORT_FAILED'] = 'Check that the string you entered is correct';
 L['OPTIONS_PROFILES_IMPORT_FAILED_DECOMPRESSION'] = 'Failed decompression when importing the profile!';

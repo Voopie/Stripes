@@ -458,6 +458,7 @@ O.DefaultValues = {
 
     -- Auras
     auras_filter_player_enabled    = true,
+    auras_blacklist                = {},
     auras_border_color_enabled     = true,
     auras_show_debuffs_on_friendly = C_CVar.GetCVar('nameplateShowDebuffsOnFriendly') == '1',
     auras_sort_enabled             = false,

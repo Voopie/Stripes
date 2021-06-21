@@ -99,6 +99,7 @@ L['OPTIONS_PROFILES_CREATE_DEFAULT_PROFILE_BUTTON_LABEL'] = 'Создать но
 L['OPTIONS_PROFILES_EXPORT_BUTTON_LABEL'] = 'Экспортировать';
 L['OPTIONS_PROFILES_IMPORT_BUTTON_LABEL'] = 'Импортировать';
 L['OPTIONS_PROFILES_REMOVE_PROFILE'] = 'Аннигиляция профиля';
+L['OPTIONS_PROFILES_REMOVE_PROFILE_PROMPT'] = 'Аннигилировать профиль «%s»?';
 L['OPTIONS_PROFILES_EXPORT_COPIED'] = 'Дело сделано';
 L['OPTIONS_PROFILES_IMPORT_FAILED'] = 'Проверьте правильность введённой строки';
 L['OPTIONS_PROFILES_IMPORT_FAILED_DECOMPRESSION'] = 'Неудачная декомпрессия при импорте профиля!';

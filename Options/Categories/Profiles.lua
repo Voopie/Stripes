@@ -298,6 +298,21 @@ local function RemoveProfileByName(name)
     return true;
 end
 
+StaticPopupDialogs['STRIPES_REMOVE_PROFILE_PROMPT'] = {
+	text    = L['OPTIONS_PROFILES_REMOVE_PROFILE_PROMPT'],
+	button1 = YES,
+	button2 = CANCEL,
+	OnAccept = function(self)
+        RemoveProfileByName(self.data);
+	end,
+    OnCancel = function()
+        UpdateRemoveProfilesDropdown();
+    end,
+    hideOnEscape = true,
+	whileDead = 1,
+	preferredIndex = STATICPOPUPS_NUMDIALOGS,
+};
+
 panel.ImportExportFrame = Mixin(CreateFrame('Frame', nil, panel, 'BackdropTemplate'), E.PixelPerfectMixin);
 panel.ImportExportFrame:SetPosition('TOPLEFT', panel, 'TOPLEFT', 0, 0);
 panel.ImportExportFrame:SetPosition('BOTTOMRIGHT', panel, 'BOTTOMRIGHT', 0, 0);
@@ -545,7 +560,7 @@ panel.Load = function(self)
     self.RemoveProfilesDropdown:SetSize(200, 20);
     UpdateRemoveProfilesDropdown();
     self.RemoveProfilesDropdown.OnValueChangedCallback = function(_, _, name)
-        RemoveProfileByName(name);
+        StaticPopup_Show('STRIPES_REMOVE_PROFILE_PROMPT', name, nil, name);
     end
 
     self.ResetProfileButton = E.CreateButton(self);
