@@ -94,7 +94,7 @@ local function CreateRow(frame)
     frame.IdText:SetTextColor(0.67, 0.67, 0.67);
 
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.NameText:SetPoint('LEFT', frame.IdText, 'RIGHT', 10, 0);
+    frame.NameText:SetPoint('LEFT', frame.IdText, 'RIGHT', 4, 0);
     frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
