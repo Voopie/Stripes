@@ -9,13 +9,20 @@ local UnitAura, GetSpellInfo, IsSpellKnown = UnitAura, GetSpellInfo, IsSpellKnow
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED, PANDEMIC_COLOR;
+local EXPIRE_GLOW_ENABLED, EXPIRE_GLOW_PERCENT, EXPIRE_GLOW_COLOR, EXPIRE_GLOW_TYPE;
+
+-- Libraries
+local LCG = S.Libraries.LCG;
 
 local LPS = S.Libraries.LPS;
 local LPS_GetSpellInfo = LPS.GetSpellInfo;
 local CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.ROOT, LPS.constants.STUN);
 local CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
+local PANDEMIC_PERCENT = 30;
 local knownSpells = {};
+
+local UPDATE_INTERVAL = 0.33;
 
 --[[
     IsPlayerSpell(spellId), IsSpellKnown(spellId), IsSpellKnownOrOverridesKnown(spellId)
@@ -26,36 +33,110 @@ local function GetTrulySpellId(spellId)
     return select(7, GetSpellInfo(GetSpellInfo(spellId))); -- here we extract the spell name and then get needed spellId by spell name
 end
 
-local function IsOnPandemic(duration, expirationTime)
-    return expirationTime - GetTime() <= duration/100*30 and expirationTime - GetTime() >= 1;
-end
-
-local function Update(unitframe)
-    if not ENABLED or not COUNTDOWN_ENABLED or unitframe.data.unitType == 'SELF' or not unitframe.BuffFrame then
+local function IsOnPandemic(cooldown)
+    if not ENABLED or not COUNTDOWN_ENABLED then
         return;
     end
 
-    local _, duration, expirationTime, spellId, flags, cc;
+    local startTimeMs, durationMs = cooldown:GetCooldownTimes();
+    local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
 
-    for _, buff in ipairs(unitframe.BuffFrame.buffList) do
-        duration, expirationTime, _, _, _, spellId = select(5, UnitAura(unitframe.BuffFrame.unit, buff:GetID(), unitframe.BuffFrame.filter));
+    return remTimeMs > 0 and remTimeMs <= durationMs/100*PANDEMIC_PERCENT;
+end
 
-        if spellId and duration and expirationTime then
-            if IsOnPandemic(duration, expirationTime) then
-                flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
-                if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
-                    spellId = GetTrulySpellId(spellId);
+local function IsOnExpireGlow(cooldown)
+    if not EXPIRE_GLOW_ENABLED then
+        return;
+    end
 
-                    if spellId and (knownSpells[spellId] or IsSpellKnown(spellId)) then
-                        buff.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
+    local startTimeMs, durationMs = cooldown:GetCooldownTimes();
+    local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
 
-                        if not knownSpells[spellId] then
-                            knownSpells[spellId] = true;
-                        end
+    return remTimeMs > 0 and remTimeMs <= durationMs/100*EXPIRE_GLOW_PERCENT;
+end
+
+local function UpdateExpireGlow(aura)
+    if EXPIRE_GLOW_TYPE == 1 then
+        LCG.PixelGlow_Start(aura, EXPIRE_GLOW_COLOR);
+    elseif EXPIRE_GLOW_TYPE == 2 then
+        LCG.AutoCastGlow_Start(aura, EXPIRE_GLOW_COLOR);
+    elseif EXPIRE_GLOW_TYPE == 3 then
+        LCG.ButtonGlow_Start(aura, EXPIRE_GLOW_COLOR);
+    end
+end
+
+local function StopExpireGlow(aura)
+    LCG.PixelGlow_Stop(aura);
+    LCG.AutoCastGlow_Stop(aura);
+    LCG.ButtonGlow_Stop(aura);
+end
+
+local function Update(unitframe)
+    if unitframe.data.unitType == 'SELF' or not unitframe.BuffFrame then
+        return;
+    end
+
+    local _, spellId, flags, cc;
+
+    for _, aura in ipairs(unitframe.BuffFrame.buffList) do
+        spellId = select(10, UnitAura(unitframe.BuffFrame.unit, aura:GetID(), unitframe.BuffFrame.filter));
+
+        if spellId then
+            aura.Cooldown.spellId = spellId;
+
+            if not aura.Cooldown.pandemicGlowHooked then
+                aura.Cooldown:HookScript('OnUpdate', function(self, elapsed)
+                    self.pandemicElapsed = (self.pandemicElapsed or 0) + elapsed;
+
+                    if self.pandemicElapsed < UPDATE_INTERVAL then
+                        return;
                     end
-                end
-            else
-                buff.Cooldown:GetRegions():SetTextColor(1, 1, 1, 1);
+
+                    if IsOnPandemic(self) then
+                        flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellId);
+                        if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
+                            self.spellId = GetTrulySpellId(self.spellId);
+
+                            if self.spellId and (knownSpells[self.spellId] or IsSpellKnown(self.spellId)) then
+                                self:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
+
+                                if not knownSpells[self.spellId] then
+                                    knownSpells[self.spellId] = true;
+                                end
+                            end
+                        end
+                    else
+                        self:GetRegions():SetTextColor(1, 1, 1, 1);
+                    end
+
+                    self.pandemicElapsed = 0;
+                end);
+
+                aura.Cooldown.pandemicGlowHooked = true;
+            end
+
+            if not aura.Cooldown.expireGlowHooked then
+                aura.Cooldown:HookScript('OnUpdate', function(self, elapsed)
+                    self.glowElapsed = (self.glowElapsed or 0) + elapsed;
+
+                    if self.glowElapsed < UPDATE_INTERVAL then
+                        return;
+                    end
+
+                    if IsOnExpireGlow(self) then
+                        UpdateExpireGlow(self);
+                    else
+                        StopExpireGlow(self);
+                    end
+
+                    self.glowElapsed = 0;
+                end);
+
+                aura.Cooldown:HookScript('OnCooldownDone', function(self)
+                    StopExpireGlow(self);
+                end);
+
+                aura.Cooldown.expireGlowHooked = true;
             end
         end
     end
@@ -63,8 +144,9 @@ end
 
 local function Reset(unitframe)
     if unitframe.BuffFrame and unitframe.BuffFrame.buffList then
-        for _, buff in ipairs(unitframe.BuffFrame.buffList) do
-            buff.Cooldown:GetRegions():SetTextColor(1, 1, 1, 1);
+        for _, aura in ipairs(unitframe.BuffFrame.buffList) do
+            aura.Cooldown:GetRegions():SetTextColor(1, 1, 1, 1);
+            StopExpireGlow(aura.Cooldown);
         end
     end
 end
@@ -99,6 +181,15 @@ function Module:UpdateLocalConfig()
     PANDEMIC_COLOR[2] = O.db.auras_pandemic_color[2];
     PANDEMIC_COLOR[3] = O.db.auras_pandemic_color[3];
     PANDEMIC_COLOR[4] = O.db.auras_pandemic_color[4] or 1;
+
+    EXPIRE_GLOW_ENABLED  = O.db.auras_expire_glow_enabled;
+    EXPIRE_GLOW_PERCENT  = O.db.auras_expire_glow_percent;
+    EXPIRE_GLOW_COLOR    = EXPIRE_GLOW_COLOR or {};
+    EXPIRE_GLOW_COLOR[1] = O.db.auras_expire_glow_color[1];
+    EXPIRE_GLOW_COLOR[2] = O.db.auras_expire_glow_color[2];
+    EXPIRE_GLOW_COLOR[3] = O.db.auras_expire_glow_color[3];
+    EXPIRE_GLOW_COLOR[4] = O.db.auras_expire_glow_color[4] or 1;
+    EXPIRE_GLOW_TYPE     = O.db.auras_expire_glow_type;
 end
 
 function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
@@ -113,8 +204,4 @@ function Module:StartUp()
     self:UpdateLocalConfig();
 
     self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED');
-
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdatePower', Update);
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', Update);
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthBorder', Update);
 end

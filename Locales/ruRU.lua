@@ -65,6 +65,10 @@ L['RAID_SL_SOD'] = 'Святилище Господства';
 
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C для копирования';
 
+L['GLOW_TYPE_PIXEL'] = 'Пиксельное свечение';
+L['GLOW_TYPE_AUTOCAST'] = 'Свечение при автоприменении';
+L['GLOW_TYPE_BUTTON'] = 'Свечение кнопки действия';
+
 L['OPTIONS_NEED_RELOAD'] = 'Необходимо перезагрузить интерфейс, чтобы применить настройки.\r\rПерезагрузить сейчас?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'Настройки были скрыты на время боя и будут автоматически открыты после завершения боя';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'Настройки будут открыты после боя';
@@ -546,6 +550,11 @@ L['OPTIONS_AURAS_COUNT_FONT_VALUE'] = 'Шрифт количества';
 L['OPTIONS_AURAS_COUNT_FONT_SIZE'] = 'Размер шрифта количества';
 L['OPTIONS_AURAS_COUNT_FONT_FLAG'] = 'Контур шрифта количества';
 L['OPTIONS_AURAS_COUNT_FONT_SHADOW'] = 'Тень шрифта количества';
+L['OPTIONS_AURAS_EXPIRE_GLOW_ENABLED'] = 'Свечение истекающих аур';
+L['OPTIONS_AURAS_EXPIRE_GLOW_ENABLED_TOOLTIP'] = 'Показывать свечение на аурах, время действия которых подходит к концу';
+L['OPTIONS_AURAS_EXPIRE_GLOW_TYPE_TOOLTIP'] = 'Тип свечения истекающих аур';
+L['OPTIONS_AURAS_EXPIRE_GLOW_PERCENT_TOOLTIP'] = 'Оставшееся время в процентах, при котором будет появляться свечение';
+L['OPTIONS_AURAS_EXPIRE_GLOW_COLOR_TOOLTIP'] = 'Цвет свечения истекающих аур';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';

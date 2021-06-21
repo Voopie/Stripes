@@ -186,6 +186,12 @@ O.Lists = {
         [1] = L['OPTIONS_HEALTH_TEXT_SINGLE_BLOCK'],
         [2] = L['OPTIONS_HEALTH_TEXT_DOUBLE_BLOCK'],
     },
+
+    glow_type = {
+        [1] = L['GLOW_TYPE_PIXEL'],
+        [2] = L['GLOW_TYPE_AUTOCAST'],
+        [3] = L['GLOW_TYPE_BUTTON'],
+    },
 };
 
 O.DefaultValues = {
@@ -459,6 +465,10 @@ O.DefaultValues = {
     auras_pandemic_enabled         = false,
     auras_pandemic_color           = { 0, 1, 0 },
     auras_omnicc_suppress          = true,
+    auras_expire_glow_enabled      = false,
+    auras_expire_glow_percent      = 20,
+    auras_expire_glow_color        = { 1, 0.85, 0, 1},
+    auras_expire_glow_type         = 1, -- PIXEL
 
     auras_countdown_enabled     = true,
     auras_cooldown_font_value   = 'BigNoodleToo Titling',

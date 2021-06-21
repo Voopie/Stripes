@@ -65,6 +65,10 @@ L['RAID_SL_SOD'] = 'Sanctum of Domination';
 
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C to copy';
 
+L['GLOW_TYPE_PIXEL'] = 'Pixel glow';
+L['GLOW_TYPE_AUTOCAST'] = 'Autocast glow';
+L['GLOW_TYPE_BUTTON'] = 'Button glow';
+
 L['OPTIONS_NEED_RELOAD'] = 'You must reload the interface to apply the settings.\r\rReload now?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'The settings were hidden for the duration of the combat and will be automatically opened after the end of the combat';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'The settings will be opened after the combat';
@@ -546,6 +550,11 @@ L['OPTIONS_AURAS_COUNT_FONT_VALUE'] = 'Count font';
 L['OPTIONS_AURAS_COUNT_FONT_SIZE'] = 'Count font size';
 L['OPTIONS_AURAS_COUNT_FONT_FLAG'] = 'Count font outline';
 L['OPTIONS_AURAS_COUNT_FONT_SHADOW'] = 'Count font shadow';
+L['OPTIONS_AURAS_EXPIRE_GLOW_ENABLED'] = 'Glow of expiring auras';
+L['OPTIONS_AURAS_EXPIRE_GLOW_ENABLED_TOOLTIP'] = 'Show glow on auras, the timer of which is coming to an end';
+L['OPTIONS_AURAS_EXPIRE_GLOW_TYPE_TOOLTIP'] = 'Type of expiring auras glow';
+L['OPTIONS_AURAS_EXPIRE_GLOW_PERCENT_TOOLTIP'] = 'Remaining time in percent at which the glow will appear';
+L['OPTIONS_AURAS_EXPIRE_GLOW_COLOR_TOOLTIP'] = 'Color of the glow of expiring auras';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Show auras that can be dispelled';
