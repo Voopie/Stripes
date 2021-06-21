@@ -60,7 +60,8 @@ local auras = {
     [214793] = true, -- Vigilant
     [232143] = true, -- Demonic Senses
 
-    [79140] = true, -- Vendetta (Rogue)
+    [ 79140] = true, -- Vendetta (Rogue)
+    [188501] = true, -- Spectral Sight (Demon Hunter)
 };
 
 local units = {
