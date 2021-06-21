@@ -132,7 +132,7 @@ panel.Load = function(self)
         O.db.target_indicator_color[1] = r;
         O.db.target_indicator_color[2] = g;
         O.db.target_indicator_color[3] = b;
-        O.db.target_indicator_color[4] = a;
+        O.db.target_indicator_color[4] = a or 1;
 
         Handler:UpdateAll();
     end
@@ -198,7 +198,7 @@ panel.Load = function(self)
         O.db.target_glow_color[1] = r;
         O.db.target_glow_color[2] = g;
         O.db.target_glow_color[3] = b;
-        O.db.target_glow_color[4] = a;
+        O.db.target_glow_color[4] = a or 1;
 
         Handler:UpdateAll();
     end
@@ -253,7 +253,7 @@ panel.Load = function(self)
         O.db.threat_color_status_0[1] = r;
         O.db.threat_color_status_0[2] = g;
         O.db.threat_color_status_0[3] = b;
-        O.db.threat_color_status_0[4] = a;
+        O.db.threat_color_status_0[4] = a or 1;
 
         Handler:UpdateAll();
     end
@@ -267,7 +267,7 @@ panel.Load = function(self)
         O.db.threat_color_status_1[1] = r;
         O.db.threat_color_status_1[2] = g;
         O.db.threat_color_status_1[3] = b;
-        O.db.threat_color_status_1[4] = a;
+        O.db.threat_color_status_1[4] = a or 1;
 
         Handler:UpdateAll();
     end
@@ -281,7 +281,7 @@ panel.Load = function(self)
         O.db.threat_color_status_2[1] = r;
         O.db.threat_color_status_2[2] = g;
         O.db.threat_color_status_2[3] = b;
-        O.db.threat_color_status_2[4] = a;
+        O.db.threat_color_status_2[4] = a or 1;
 
         Handler:UpdateAll();
     end
@@ -295,7 +295,7 @@ panel.Load = function(self)
         O.db.threat_color_status_3[1] = r;
         O.db.threat_color_status_3[2] = g;
         O.db.threat_color_status_3[3] = b;
-        O.db.threat_color_status_3[4] = a;
+        O.db.threat_color_status_3[4] = a or 1;
 
         Handler:UpdateAll();
     end
@@ -309,7 +309,7 @@ panel.Load = function(self)
         O.db.threat_color_offtank[1] = r;
         O.db.threat_color_offtank[2] = g;
         O.db.threat_color_offtank[3] = b;
-        O.db.threat_color_offtank[4] = a;
+        O.db.threat_color_offtank[4] = a or 1;
 
         Handler:UpdateAll();
     end
@@ -338,7 +338,7 @@ panel.Load = function(self)
         O.db.execution_color[1] = r;
         O.db.execution_color[2] = g;
         O.db.execution_color[3] = b;
-        O.db.execution_color[4] = a;
+        O.db.execution_color[4] = a or 1;
 
         Handler:UpdateAll();
     end

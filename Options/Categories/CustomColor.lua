@@ -76,7 +76,7 @@ local function CreateRow(frame)
         O.db.custom_color_data[self:GetParent().npc_id].color[1] = r;
         O.db.custom_color_data[self:GetParent().npc_id].color[2] = g;
         O.db.custom_color_data[self:GetParent().npc_id].color[3] = b;
-        O.db.custom_color_data[self:GetParent().npc_id].color[4] = a;
+        O.db.custom_color_data[self:GetParent().npc_id].color[4] = a or 1;
 
         S:GetNameplateModule('Handler'):UpdateAll();
     end

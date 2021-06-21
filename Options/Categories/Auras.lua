@@ -322,7 +322,7 @@ panel.Load = function(self)
         O.db.auras_pandemic_color[1] = r;
         O.db.auras_pandemic_color[2] = g;
         O.db.auras_pandemic_color[3] = b;
-        O.db.auras_pandemic_color[4] = a;
+        O.db.auras_pandemic_color[4] = a or 1;
 
         Handler:UpdateAll();
     end
@@ -562,7 +562,7 @@ panel.Load = function(self)
         O.db.auras_expire_glow_color[1] = r;
         O.db.auras_expire_glow_color[2] = g;
         O.db.auras_expire_glow_color[3] = b;
-        O.db.auras_expire_glow_color[4] = a;
+        O.db.auras_expire_glow_color[4] = a or 1;
 
         Handler:UpdateAll();
     end
