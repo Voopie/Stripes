@@ -16,8 +16,8 @@ local LCG_SUFFIX = 'S_EXPLOSIVE';
 
 local PlayerState = D.Player.State;
 
-local explosiveId = 120651;
-local explosiveTexture = 2175503;
+local EXPLOSIVE_ID = 120651;
+local EXPLOSIVE_TEXTURE = 2175503;
 
 local OrbsCounter = CreateFrame('Frame', 'Stripes_ExplosiveOrbsCounter', UIParent);
 OrbsCounter:SetPoint('CENTER', 0, -100);
@@ -31,7 +31,7 @@ OrbsCounter:SetScript('OnDragStop', function(self) self:StopMovingOrSizing(); en
 
 OrbsCounter.texture = OrbsCounter:CreateTexture(nil, 'ARTWORK');
 OrbsCounter.texture:SetPoint('CENTER', 0, 0);
-OrbsCounter.texture:SetTexture(explosiveTexture);
+OrbsCounter.texture:SetTexture(EXPLOSIVE_TEXTURE);
 OrbsCounter.texture:SetTexCoord(0.05, 0.95, 0.1, 0.6)
 OrbsCounter.texture:SetVertexColor(1, 1, 1, 1);
 OrbsCounter.texture:SetSize(42, 42);
@@ -60,7 +60,7 @@ local function CountOrbs()
     counter = 0;
 
     for _, unitframe in pairs(NP) do
-        if unitframe:IsShown() and unitframe.data.npcId == explosiveId then
+        if unitframe:IsShown() and unitframe.data.npcId == EXPLOSIVE_ID then
             counter = counter + 1;
         end
     end
@@ -89,7 +89,7 @@ local function Update(unitframe)
     CountOrbs();
 
     if unitframe:IsShown() then
-        if unitframe.data.npcId == explosiveId then
+        if unitframe.data.npcId == EXPLOSIVE_ID then
             unitframe.Explosive:SetShown(CROSSHAIR);
 
             if GLOW then
@@ -124,7 +124,7 @@ local function Create(unitframe)
     local icon = frame:CreateTexture(nil, 'ARTWORK', nil, 2);
     icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, 4);
     icon:SetSize(24, 16);
-    icon:SetTexture(explosiveTexture);
+    icon:SetTexture(EXPLOSIVE_TEXTURE);
     icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
 
     local border = frame:CreateTexture(nil, 'BORDER');

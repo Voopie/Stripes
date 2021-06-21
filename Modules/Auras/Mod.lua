@@ -39,8 +39,6 @@ local function UpdateBuffs(unitframe)
             buff.Border:SetColorTexture(0, 0, 0, 1);
         end
 
-
-
         if not buff.Cooldown.__styled then
             buff.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
             buff.Cooldown.noCooldownCount = SUPPRESS_OMNICC;

@@ -22,7 +22,7 @@ local TOTEM_LOCALIZED_NAME = {
 
 local TOTEM_NAME = TOTEM_LOCALIZED_NAME[S.ClientLocale];
 
-local explosiveId = 120651;
+local EXPLOSIVE_ID = 120651;
 
 local function Create(unitframe)
     if unitframe.TotemIcon then
@@ -50,7 +50,7 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    unitframe.TotemIcon:SetShown(ENABLED and unitframe.data.npcId ~= explosiveId and unitframe.data.creatureType == TOTEM_NAME);
+    unitframe.TotemIcon:SetShown(ENABLED and unitframe.data.npcId ~= EXPLOSIVE_ID and unitframe.data.creatureType == TOTEM_NAME);
 end
 
 local function Hide(unitframe)
