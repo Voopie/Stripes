@@ -14,10 +14,10 @@ local PROFILE_DEFAULT_ID = '1';
 local MAX_LETTERS = 42;
 
 StaticPopupDialogs['STRIPES_RESET_PROFILE_TO_DEFAULT'] = {
-	text    = L['OPTIONS_PROFILES_RESET_PROFILE_TO_DEFAULT_PROMPT'],
-	button1 = YES,
-	button2 = CANCEL,
-	OnAccept = function()
+    text    = L['OPTIONS_PROFILES_RESET_PROFILE_TO_DEFAULT_PROMPT'],
+    button1 = YES,
+    button2 = CANCEL,
+    OnAccept = function()
         if not StripesDB.profiles[O.activeProfileId] then
             return;
         end
@@ -31,10 +31,10 @@ StaticPopupDialogs['STRIPES_RESET_PROFILE_TO_DEFAULT'] = {
         O.UpdatePanelAll();
         S:GetNameplateModule('Handler'):CVarsReset();
         S:GetNameplateModule('Handler'):UpdateAll();
-	end,
+    end,
     hideOnEscape = true,
-	whileDead = 1,
-	preferredIndex = STATICPOPUPS_NUMDIALOGS,
+    whileDead = 1,
+    preferredIndex = STATICPOPUPS_NUMDIALOGS,
 };
 
 local profilesList = {};
@@ -299,18 +299,18 @@ local function RemoveProfileByName(name)
 end
 
 StaticPopupDialogs['STRIPES_REMOVE_PROFILE_PROMPT'] = {
-	text    = L['OPTIONS_PROFILES_REMOVE_PROFILE_PROMPT'],
-	button1 = YES,
-	button2 = CANCEL,
-	OnAccept = function(self)
+    text    = L['OPTIONS_PROFILES_REMOVE_PROFILE_PROMPT'],
+    button1 = YES,
+    button2 = CANCEL,
+    OnAccept = function(self)
         RemoveProfileByName(self.data);
-	end,
+    end,
     OnCancel = function()
         UpdateRemoveProfilesDropdown();
     end,
     hideOnEscape = true,
-	whileDead = 1,
-	preferredIndex = STATICPOPUPS_NUMDIALOGS,
+    whileDead = 1,
+    preferredIndex = STATICPOPUPS_NUMDIALOGS,
 };
 
 panel.ImportExportFrame = Mixin(CreateFrame('Frame', nil, panel, 'BackdropTemplate'), E.PixelPerfectMixin);
@@ -491,9 +491,9 @@ panel.Load = function(self)
 
             -- encodeVersion
             -- 1 - Full profile
-            local _, _, encodeVersion, encoded = importString:find('^(!S:%d+!)(.+)$');
+            local _, _, encodeVersion, encoded = string.find(importString, '^(!S:%d+!)(.+)$');
             if encodeVersion then
-                encodeVersion = tonumber(encodeVersion:match('%d+'));
+                encodeVersion = tonumber(string.match(encodeVersion, '%d+'));
             end
 
             if not encodeVersion then

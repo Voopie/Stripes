@@ -46,17 +46,17 @@ panel.Load = function(self)
 
     local animation = self.heart:CreateAnimationGroup();
 
-	local scale = animation:CreateAnimation('Scale');
-	scale:SetOrder(1);
+    local scale = animation:CreateAnimation('Scale');
+    scale:SetOrder(1);
     scale:SetDuration(0.1);
-	scale:SetScale(1.8, 1.8);
+    scale:SetScale(1.8, 1.8);
 
-	local scale2 = animation:CreateAnimation('Scale');
-	scale2:SetOrder(2);
-	scale2:SetDuration(0.5);
-	scale2:SetScale(0.5, 0.5);
+    local scale2 = animation:CreateAnimation('Scale');
+    scale2:SetOrder(2);
+    scale2:SetDuration(0.5);
+    scale2:SetScale(0.5, 0.5);
 
-	animation:SetLooping('REPEAT');
+    animation:SetLooping('REPEAT');
 
     animation:Play();
 end
