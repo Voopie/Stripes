@@ -457,14 +457,16 @@ panel.Load = function(self)
     self.BlackListButton:SetPosition('LEFT', self.auras_blacklist_enabled.Label, 'RIGHT', 16, 0);
     self.BlackListButton:SetScale(0.8);
     self.BlackListButton:SetHighlightColor('111111');
-    self.BlackListButton:SetLabel(L['OPTIONS_AURAS_BLACKLIST_BUTTON']);
+    self.BlackListButton:SetLabel(L['OPTIONS_AURAS_BLACKLIST_BUTTON_OPEN']);
     self.BlackListButton:SetScript('OnClick', function(self)
         panel.BlackList:SetShown(not panel.BlackList:IsShown());
 
         if panel.BlackList:IsShown() then
             self:LockHighlight();
+            self:SetLabel(L['OPTIONS_AURAS_BLACKLIST_BUTTON_CLOSE']);
         else
             self:UnlockHighlight();
+            self:SetLabel(L['OPTIONS_AURAS_BLACKLIST_BUTTON_OPEN']);
         end
     end);
 

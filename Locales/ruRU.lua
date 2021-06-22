@@ -558,7 +558,8 @@ L['OPTIONS_AURAS_EXPIRE_GLOW_PERCENT_TOOLTIP'] = 'Оставшееся врем�
 L['OPTIONS_AURAS_EXPIRE_GLOW_COLOR_TOOLTIP'] = 'Цвет свечения истекающих аур';
 L['OPTIONS_AURAS_BLACKLIST_ENABLED'] = 'Использовать чёрный список';
 L['OPTIONS_AURAS_BLACKLIST_ENABLED_TOOLTIP'] = 'Использовать чёрный список аур, которые не будут отслеживаться';
-L['OPTIONS_AURAS_BLACKLIST_BUTTON'] = 'Открыть чёрный список';
+L['OPTIONS_AURAS_BLACKLIST_BUTTON_OPEN'] = 'Открыть чёрный список';
+L['OPTIONS_AURAS_BLACKLIST_BUTTON_CLOSE'] = 'Закрыть чёрный список';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';
