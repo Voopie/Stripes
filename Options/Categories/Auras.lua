@@ -282,6 +282,146 @@ panel.UpdateProfilesDropdown = function(self)
     end
 end
 
+local DataBlackListRows = {};
+
+local function AddBlackListAura(id)
+    if O.db.auras_blacklist[id] then
+        return;
+    end
+
+    O.db.auras_blacklist[id] = {
+        id      = id,
+        enabled = true,
+    };
+end
+
+local function CreateBlackListRow(frame)
+    frame:SetBackdrop(BACKDROP);
+    frame.backgroundColor = frame.backgroundColor or {};
+
+    frame.EnableCheckBox = E.CreateCheckButton(frame);
+    frame.EnableCheckBox:SetPosition('LEFT', frame, 'LEFT', 8, 0);
+    frame.EnableCheckBox.Callback = function(self)
+        O.db.auras_blacklist[self:GetParent().id].enabled = self:GetChecked();
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end
+    frame.EnableCheckBox:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+
+    frame.EnableCheckBox:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+    end);
+
+    frame.Icon = frame:CreateTexture(nil, 'ARTWORK');
+    frame.Icon:SetPoint('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
+    frame.Icon:SetSize(ROW_HEIGHT - 10, ROW_HEIGHT - 10);
+    frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+
+    frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
+    frame.NameText:SetSize(150, ROW_HEIGHT);
+
+    frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
+    frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
+    frame.RemoveButton:SetSize(14, 14);
+    frame.RemoveButton:SetNormalTexture(S.Media.Icons.TEXTURE);
+    frame.RemoveButton:GetNormalTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
+    frame.RemoveButton:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7, 1);
+    frame.RemoveButton:SetHighlightTexture(S.Media.Icons.TEXTURE, 'BLEND');
+    frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
+    frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
+    frame.RemoveButton:SetScript('OnClick', function(self)
+        if O.db.auras_blacklist[tonumber(self:GetParent().id)] then
+            O.db.auras_blacklist[tonumber(self:GetParent().id)] = nil;
+
+            panel:UpdateBlackListScroll();
+            S:GetNameplateModule('Handler'):UpdateAll();
+        end
+    end);
+    frame.RemoveButton:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+
+    frame.RemoveButton:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
+    end);
+
+    frame:HookScript('OnEnter', function(self)
+        self:SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+
+    frame:HookScript('OnLeave', function(self)
+        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+    end);
+
+    frame:HookScript('OnEnter', function(self)
+        if self.id then
+            GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
+            GameTooltip:SetHyperlink('spell:' .. self.id);
+            GameTooltip:Show();
+        end
+    end);
+
+    frame:HookScript('OnLeave', GameTooltip_Hide);
+end
+
+local function UpdateBlackListRow(frame)
+    if frame.index == 1 then
+        PixelUtil.SetPoint(frame, 'TOPLEFT', panel.BlackListScrollArea.scrollChild, 'TOPLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', panel.BlackListScrollArea.scrollChild, 'TOPRIGHT', 0, 0);
+    else
+        PixelUtil.SetPoint(frame, 'TOPLEFT', DataBlackListRows[frame.index - 1], 'BOTTOMLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', DataBlackListRows[frame.index - 1], 'BOTTOMRIGHT', 0, 0);
+    end
+
+    frame:SetSize(frame:GetParent():GetWidth(), ROW_HEIGHT);
+
+    if frame.index % 2 == 0 then
+        frame:SetBackdropColor(0.15, 0.15, 0.15, 1);
+        frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.15, 0.15, 0.15, 1;
+    else
+        frame:SetBackdropColor(0.075, 0.075, 0.075, 1);
+        frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
+    end
+
+    local name, _, icon = GetSpellInfo(frame.id);
+
+    frame.EnableCheckBox:SetChecked(frame.enabled);
+    frame.Icon:SetTexture(icon);
+    frame.NameText:SetText(name);
+end
+
+panel.UpdateBlackListScroll = function()
+    wipe(DataBlackListRows);
+    panel.BlackListButtonPool:ReleaseAll();
+
+    local index = 0;
+    local frame, isNew;
+
+    for id, data in pairs(O.db.auras_blacklist) do
+        index = index + 1;
+
+        frame, isNew = panel.BlackListButtonPool:Acquire();
+
+        table.insert(DataBlackListRows, frame);
+
+        if isNew then
+            CreateBlackListRow(frame);
+        end
+
+        frame.index   = index;
+        frame.id      = id;
+        frame.enabled = data.enabled;
+
+        UpdateBlackListRow(frame);
+
+        frame:SetShown(true);
+    end
+
+    PixelUtil.SetSize(panel.BlackListScrollArea.scrollChild, panel.BlackListScroll:GetWidth(), panel.BlackListScroll:GetHeight() - (panel.BlackListScroll:GetHeight() % ROW_HEIGHT));
+end
+
 panel.Load = function(self)
     local Handler = S:GetNameplateModule('Handler');
 
@@ -301,6 +441,85 @@ panel.Load = function(self)
         O.db.auras_filter_player_enabled = self:GetChecked();
         Handler:UpdateAll();
     end
+
+    self.auras_blacklist_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_blacklist_enabled:SetPosition('LEFT', self.auras_filter_player_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_blacklist_enabled:SetLabel(L['OPTIONS_AURAS_BLACKLIST_ENABLED']);
+    self.auras_blacklist_enabled:SetTooltip(L['OPTIONS_AURAS_BLACKLIST_ENABLED_TOOLTIP']);
+    self.auras_blacklist_enabled:AddToSearch(button, L['OPTIONS_AURAS_BLACKLIST_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.auras_blacklist_enabled:SetChecked(O.db.auras_blacklist_enabled);
+    self.auras_blacklist_enabled.Callback = function(self)
+        O.db.auras_blacklist_enabled = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.BlackListButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.BlackListButton:SetPosition('LEFT', self.auras_blacklist_enabled.Label, 'RIGHT', 16, 0);
+    self.BlackListButton:SetScale(0.8);
+    self.BlackListButton:SetHighlightColor('111111');
+    self.BlackListButton:SetLabel(L['OPTIONS_AURAS_BLACKLIST_BUTTON']);
+    self.BlackListButton:SetScript('OnClick', function(self)
+        panel.BlackList:SetShown(not panel.BlackList:IsShown());
+
+        if panel.BlackList:IsShown() then
+            self:LockHighlight();
+        else
+            self:UnlockHighlight();
+        end
+    end);
+
+    self.BlackList = Mixin(CreateFrame('Frame', nil, self.TabsFrames['CommonTab'].Content, 'BackdropTemplate'), E.PixelPerfectMixin);
+    self.BlackList:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
+    self.BlackList:SetPosition('BOTTOMLEFT', O.frame, 'BOTTOMRIGHT', 0, 0);
+    self.BlackList:SetWidth(250);
+    self.BlackList:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
+    self.BlackList:SetBackdropColor(0.1, 0.1, 0.1, 1);
+    self.BlackList:SetShown(false);
+
+    self.BlackListEditbox = E.CreateEditBox(self.BlackList);
+    self.BlackListEditbox:SetPosition('TOP', self.BlackList, 'TOP', 0, -10);
+    self.BlackListEditbox:SetSize(228, 20);
+    self.BlackListEditbox.useLastValue = false;
+    self.BlackListEditbox:SetInstruction(L['OPTIONS_AURAS_CUSTOM_EDITBOX_ENTER_ID']);
+    self.BlackListEditbox:SetScript('OnEnterPressed', function(self)
+        local text = strtrim(self:GetText());
+        local saveId;
+        local id = tonumber(text);
+
+        if id and id ~= 0 and GetSpellInfo(id) then
+            saveId = id;
+        else
+            saveId = tonumber(select(7, GetSpellInfo(text)) or '');
+        end
+
+        if not saveId then
+            self:SetText('');
+            self:ClearFocus();
+            return;
+        end
+
+        AddBlackListAura(tonumber(saveId));
+
+        panel:UpdateBlackListScroll();
+        self:SetText('');
+
+        Handler:UpdateAll();
+    end);
+
+    self.BlackListScroll = Mixin(CreateFrame('Frame', nil, self.BlackList, 'BackdropTemplate'), E.PixelPerfectMixin);
+    self.BlackListScroll:SetPoint('TOPLEFT', self.BlackList , 'TOPLEFT', 6, -40);
+    self.BlackListScroll:SetPoint('BOTTOMRIGHT', self.BlackList, 'BOTTOMRIGHT', -6, 6);
+    self.BlackListScroll:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
+    self.BlackListScroll:SetBackdropColor(0.15, 0.15, 0.15, 1);
+
+    self.BlackListScrollChild, self.BlackListScrollArea = E.CreateScrollFrame(self.BlackListScroll, ROW_HEIGHT);
+
+    PixelUtil.SetPoint(self.BlackListScrollArea.ScrollBar, 'TOPLEFT', self.BlackListScrollArea, 'TOPRIGHT', -8, 0);
+    PixelUtil.SetPoint(self.BlackListScrollArea.ScrollBar, 'BOTTOMLEFT', self.BlackListScrollArea, 'BOTTOMRIGHT', -8, 0);
+
+    self.BlackListButtonPool = CreateFramePool('Button', self.BlackListScrollChild, 'BackdropTemplate');
+
+    self:UpdateBlackListScroll();
 
     self.auras_pandemic_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.auras_pandemic_enabled:SetPosition('TOPLEFT', self.auras_filter_player_enabled, 'BOTTOMLEFT', 0, -8);

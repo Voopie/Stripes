@@ -56,7 +56,6 @@ local function UpdateAnchor(unitframe)
     end
 end
 
-
 local function Update(unitframe)
     if not ENABLED or unitframe.data.unitType == 'SELF' then
         unitframe.AurasCustom:SetShown(false);

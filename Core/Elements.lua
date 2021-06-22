@@ -1596,7 +1596,7 @@ end
 -- https://github.com/Phanx/PhanxConfig-ColorPicker
 local ColorPickerButtons, CreateColorButton, LastUsedColorButton;
 local NewColorPicker do
-    local NORMAL_FONT_COLOR, HIGHLIGHT_FONT_COLOR, GRAY_FONT_COLOR = _G.NORMAL_FONT_COLOR, _G.HIGHLIGHT_FONT_COLOR, _G.GRAY_FONT_COLOR;
+    local NORMAL_FONT_COLOR, HIGHLIGHT_FONT_COLOR, GRAY_FONT_COLOR = NORMAL_FONT_COLOR, HIGHLIGHT_FONT_COLOR, GRAY_FONT_COLOR;
 
     ColorPickerButtons = Mixin(CreateFrame('Frame', nil, ColorPickerFrame, 'BackdropTemplate'), E.PixelPerfectMixin);
     ColorPickerButtons:SetPosition('TOPRIGHT', ColorPickerFrame, 'TOPLEFT', 0, -6);

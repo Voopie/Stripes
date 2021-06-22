@@ -556,6 +556,9 @@ L['OPTIONS_AURAS_EXPIRE_GLOW_ENABLED_TOOLTIP'] = 'Показывать свеч�
 L['OPTIONS_AURAS_EXPIRE_GLOW_TYPE_TOOLTIP'] = 'Тип свечения истекающих аур';
 L['OPTIONS_AURAS_EXPIRE_GLOW_PERCENT_TOOLTIP'] = 'Оставшееся время в процентах, при котором будет появляться свечение';
 L['OPTIONS_AURAS_EXPIRE_GLOW_COLOR_TOOLTIP'] = 'Цвет свечения истекающих аур';
+L['OPTIONS_AURAS_BLACKLIST_ENABLED'] = 'Использовать чёрный список';
+L['OPTIONS_AURAS_BLACKLIST_ENABLED_TOOLTIP'] = 'Использовать чёрный список аур, которые не будут отслеживаться';
+L['OPTIONS_AURAS_BLACKLIST_BUTTON'] = 'Открыть чёрный список';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';

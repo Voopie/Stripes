@@ -33,8 +33,8 @@ O.Lists = {
     },
 
     motion = {
-        [1] = _G.UNIT_NAMEPLATES_TYPE_1,
-        [2] = _G.UNIT_NAMEPLATES_TYPE_2,
+        [1] = UNIT_NAMEPLATES_TYPE_1,
+        [2] = UNIT_NAMEPLATES_TYPE_2,
     },
 
     name_position = {
@@ -458,6 +458,7 @@ O.DefaultValues = {
 
     -- Auras
     auras_filter_player_enabled    = true,
+    auras_blacklist_enabled        = false,
     auras_blacklist                = {},
     auras_border_color_enabled     = true,
     auras_show_debuffs_on_friendly = C_CVar.GetCVar('nameplateShowDebuffsOnFriendly') == '1',

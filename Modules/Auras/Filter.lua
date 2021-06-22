@@ -1,8 +1,14 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Auras_Filter');
 
+-- Lua API
+local select = select;
+
+-- WoW API
+local GetSpellInfo = GetSpellInfo;
+
 -- Local Config
-local ENABLED;
+local ENABLED, BLACKLIST_ENABLED;
 
 local units = {
     ['player']  = true,
@@ -13,6 +19,14 @@ local units = {
 local function FilterShouldShowBuff(self, name, caster, nameplateShowPersonal, nameplateShowAll)
     if not name then
         return false;
+    end
+
+    if BLACKLIST_ENABLED then
+        local spellId = select(7, GetSpellInfo(name));
+
+        if spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
+            return false;
+        end
     end
 
     if ENABLED and self:GetParent().data.unitType ~= 'SELF' then
@@ -39,7 +53,8 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    ENABLED = O.db.auras_filter_player_enabled;
+    ENABLED           = O.db.auras_filter_player_enabled;
+    BLACKLIST_ENABLED = O.db.auras_blacklist_enabled;
 end
 
 function Module:StartUp()

@@ -556,6 +556,9 @@ L['OPTIONS_AURAS_EXPIRE_GLOW_ENABLED_TOOLTIP'] = 'Show glow on auras, the timer 
 L['OPTIONS_AURAS_EXPIRE_GLOW_TYPE_TOOLTIP'] = 'Type of expiring auras glow';
 L['OPTIONS_AURAS_EXPIRE_GLOW_PERCENT_TOOLTIP'] = 'Remaining time in percent at which the glow will appear';
 L['OPTIONS_AURAS_EXPIRE_GLOW_COLOR_TOOLTIP'] = 'Color of the glow of expiring auras';
+L['OPTIONS_AURAS_BLACKLIST_ENABLED'] = 'Use a blacklist';
+L['OPTIONS_AURAS_BLACKLIST_ENABLED_TOOLTIP'] = 'Use a black list of auras that will not be tracked';
+L['OPTIONS_AURAS_BLACKLIST_BUTTON'] = 'Open the blacklist';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Show auras that can be dispelled';
