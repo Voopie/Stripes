@@ -56,13 +56,13 @@ local NP = AddOn.NamePlates;
 local UF = AddOn.UnitFrames;
 
 AddOn.Libraries = {
-    CH  = _G.LibStub('CallbackHandler-1.0'),
-    LSM = _G.LibStub('LibSharedMedia-3.0'),
-    LCG = _G.LibStub('LibCustomGlow-1.0'),
-    LPS = _G.LibStub('LibPlayerSpells-1.0'),
+    CH  = LibStub('CallbackHandler-1.0'),
+    LSM = LibStub('LibSharedMedia-3.0'),
+    LCG = LibStub('LibCustomGlow-1.0'),
+    LPS = LibStub('LibPlayerSpells-1.0'),
 
-    LibSerialize = _G.LibStub('LibSerialize'),
-    LibDeflate   = _G.LibStub('LibDeflate'),
+    LibSerialize = LibStub('LibSerialize'),
+    LibDeflate   = LibStub('LibDeflate'),
 };
 
 local Eventer = {};
@@ -475,8 +475,8 @@ function AddOn:ForAllNameplateModules(event, ...)
 end
 
 local MinimapButton = {};
-local LDB = _G.LibStub('LibDataBroker-1.1', true);
-local LDBIcon = LDB and _G.LibStub('LibDBIcon-1.0', true);
+local LDB = LibStub('LibDataBroker-1.1', true);
+local LDBIcon = LDB and LibStub('LibDBIcon-1.0', true);
 
 do
     local defaultCoords  = { 0, 1, 0, 1 };
@@ -565,6 +565,19 @@ function AddOn:ADDON_LOADED(addonName)
         if input then
             if string.find(input, 'minimap') then
                 MinimapButton:ToggleShown();
+
+                return;
+            elseif string.find(input, 'profile') then
+                local _, profileName1, profileName2, profileName3 = strsplit(' ', input);
+                local profileName = strtrim(string.format('%s %s %s', profileName1 or '', profileName2 or '', profileName3 or ''));
+
+                if not profileName or profileName == '' then
+                    NAMESPACE[4].Print(L['OPTIONS_PROFILES_PROFILE_CHANGED_NO_INPUT']);
+                    return;
+                end
+
+                local success = NAMESPACE[1]:GetModule('Options_Categories_Profiles').ChooseProfileByName(profileName);
+                NAMESPACE[4].Print(string.format(success and L['OPTIONS_PROFILES_PROFILE_CHANGED_SUCCESS'] or L['OPTIONS_PROFILES_PROFILE_CHANGED_FAILED'], profileName));
 
                 return;
             end

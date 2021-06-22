@@ -106,6 +106,9 @@ L['OPTIONS_PROFILES_IMPORT_FAILED_DECOMPRESSION'] = 'Failed decompression when i
 L['OPTIONS_PROFILES_IMPORT_FAILED_DESERIALIZATION'] = 'Failed deserialization when importing the profile!';
 L['OPTIONS_PROFILES_RESET_PROFILE_TO_DEFAULT_PROMPT'] = 'Reset all profile settings to their default values?';
 L['OPTIONS_PROFILES_RESET_PROFILE_BUTTON'] = 'Reset profile';
+L['OPTIONS_PROFILES_PROFILE_CHANGED_SUCCESS'] = 'Profile selected: «%s»';
+L['OPTIONS_PROFILES_PROFILE_CHANGED_FAILED'] = 'Something went wrong when switching profile to «%s»';
+L['OPTIONS_PROFILES_PROFILE_CHANGED_NO_INPUT'] = 'You forgot to enter the profile name';
 
 L['OPTIONS_SHOW'] = 'Show';
 L['OPTIONS_TEXTURE'] = 'Texture';

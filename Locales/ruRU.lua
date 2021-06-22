@@ -106,6 +106,9 @@ L['OPTIONS_PROFILES_IMPORT_FAILED_DECOMPRESSION'] = 'Неудачная деко
 L['OPTIONS_PROFILES_IMPORT_FAILED_DESERIALIZATION'] = 'Неудачная десериализация при импорте профиля!';
 L['OPTIONS_PROFILES_RESET_PROFILE_TO_DEFAULT_PROMPT'] = 'Сбросить все настройки профиля на значения по умолчанию?';
 L['OPTIONS_PROFILES_RESET_PROFILE_BUTTON'] = 'Сбросить профиль';
+L['OPTIONS_PROFILES_PROFILE_CHANGED_SUCCESS'] = 'Выбран профиль: «%s»';
+L['OPTIONS_PROFILES_PROFILE_CHANGED_FAILED'] = 'Что-то пошло не так при переключении профиля на «%s»';
+L['OPTIONS_PROFILES_PROFILE_CHANGED_NO_INPUT'] = 'Вы забыли ввести название профиля';
 
 L['OPTIONS_SHOW'] = 'Показать';
 L['OPTIONS_TEXTURE'] = 'Текстура';

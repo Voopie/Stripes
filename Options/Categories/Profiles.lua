@@ -222,7 +222,7 @@ local function ImportProfile(name, data)
     O.frame.TopBar.CurrentProfileName:SetText(O.activeProfileName);
 end
 
-local function ChooseProfileByName(name)
+Module.ChooseProfileByName = function(name)
     if not name then
         return false;
     end
@@ -252,6 +252,8 @@ local function ChooseProfileByName(name)
     S:GetNameplateModule('Handler'):UpdateAll();
 
     O.frame.TopBar.CurrentProfileName:SetText(O.activeProfileName);
+
+    return true;
 end
 
 local function RemoveProfileByName(name)
@@ -438,7 +440,7 @@ panel.Load = function(self)
     self.ProfilesDropdown:SetSize(200, 20);
     UpdateProfilesDropdown();
     self.ProfilesDropdown.OnValueChangedCallback = function(_, _, name)
-        ChooseProfileByName(name);
+        Module.ChooseProfileByName(name);
     end
 
     local Delimiter = E.CreateDelimiter(self);
