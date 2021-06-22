@@ -1488,6 +1488,7 @@ end
 
 panel.Update = function(self)
     self:UpdateScroll();
+    self:UpdateBlackListScroll();
 end
 
 function Module:MODIFIER_STATE_CHANGED(key, down)
