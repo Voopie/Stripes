@@ -438,13 +438,16 @@ local function ResetNameplateData(unitframe)
 
     unitframe.data.subLabel = nil;
     unitframe.data.guild = nil;
-    unitframe.data.namePVP = nil;
-    unitframe.data.nameWoRealm = nil;
     unitframe.data.realm = nil;
 
     unitframe.data.className = nil;
 
     unitframe.data.nameAbbr = '';
+    unitframe.data.namePVP = nil;
+    unitframe.data.nameWoRealm = nil;
+    unitframe.data.nameTranslit        = nil;
+    unitframe.data.nameTranslitWoRealm = nil;
+    unitframe.data.nameTranslitPVP     = nil;
 end
 
 function Module:NAME_PLATE_UNIT_ADDED(unit)
