@@ -169,6 +169,8 @@ L['OPTIONS_NAME_TEXT_SHOW_ARENAID_SOLO'] = 'Only «Arena ID»';
 L['OPTIONS_NAME_TEXT_SHOW_ARENAID_SOLO_TOOLTIP'] = 'Show only the ID of the opponents in the arena (without names)';
 L['OPTIONS_NAME_WITHOUT_REALM'] = 'Without realm';
 L['OPTIONS_NAME_WITHOUT_REALM_TOOLTIP'] = 'Show player names without realm name';
+L['OPTIONS_NAME_TEXT_TRANSLIT'] = 'Transliteration';
+L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP'] = 'Transliteration of player names with Cyrillic letters';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Show health text';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Hide full';

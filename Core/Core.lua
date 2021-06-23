@@ -60,6 +60,7 @@ AddOn.Libraries = {
     LSM = LibStub('LibSharedMedia-3.0'),
     LCG = LibStub('LibCustomGlow-1.0'),
     LPS = LibStub('LibPlayerSpells-1.0'),
+    LT  = LibStub('LibTranslit-1.0'),
 
     LibSerialize = LibStub('LibSerialize'),
     LibDeflate   = LibStub('LibDeflate'),

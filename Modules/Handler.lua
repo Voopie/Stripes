@@ -21,6 +21,8 @@ local LSM = S.Libraries.LSM;
 local LSM_MEDIATYPE_FONT = LSM.MediaType.FONT;
 local LIST_FONT_FLAGS = O.Lists.font_flags;
 
+local LT = S.Libraries.LT;
+
 -- Nameplates
 local NP = S.NamePlates;
 
@@ -441,6 +443,8 @@ local function ResetNameplateData(unitframe)
     unitframe.data.realm = nil;
 
     unitframe.data.className = nil;
+
+    unitframe.data.nameAbbr = '';
 end
 
 function Module:NAME_PLATE_UNIT_ADDED(unit)
@@ -517,6 +521,16 @@ function Module:NAME_PLATE_UNIT_ADDED(unit)
         NP[nameplate].data.guild   = UnitInGuild(unit);
         NP[nameplate].data.nameWoRealm, NP[nameplate].data.realm = UnitName(unit);
         NP[nameplate].data.namePVP = UnitPVPName(unit);
+    end
+
+    if NP[nameplate].data.unitType == 'ENEMY_PLAYER' then
+        NP[nameplate].data.nameWoRealm, NP[nameplate].data.realm = UnitName(unit);
+    end
+
+    if NP[nameplate].data.commonUnitType == 'PLAYER' then
+        NP[nameplate].data.nameTranslit        = LT:Transliterate(NP[nameplate].data.name);
+        NP[nameplate].data.nameTranslitWoRealm = LT:Transliterate(NP[nameplate].data.nameWoRealm);
+        NP[nameplate].data.nameTranslitPVP     = LT:Transliterate(NP[nameplate].data.namePVP);
     end
 
     if NP[nameplate].data.widgetsOnly then

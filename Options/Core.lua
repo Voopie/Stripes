@@ -218,6 +218,7 @@ O.DefaultValues = {
     name_text_show_arenaid_solo      = false,
     name_text_custom_color           = { 1, 0.85, 0, 1},
     name_without_realm               = false,
+    name_text_translit               = false,
 
     health_text_enabled      = true,
     health_text_hide_full    = false,

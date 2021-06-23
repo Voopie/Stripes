@@ -169,6 +169,8 @@ L['OPTIONS_NAME_TEXT_SHOW_ARENAID_SOLO'] = 'Только «Арена ID»';
 L['OPTIONS_NAME_TEXT_SHOW_ARENAID_SOLO_TOOLTIP'] = 'Показывать только ID оппонентов на арене (без имён)';
 L['OPTIONS_NAME_WITHOUT_REALM'] = 'Без сервера';
 L['OPTIONS_NAME_WITHOUT_REALM_TOOLTIP'] = 'Показывать имена игроков без названия сервера';
+L['OPTIONS_NAME_TEXT_TRANSLIT'] = 'Транслитерация';
+L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP'] = 'Транслитерация имён игроков с кириллическими буквами';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Показывать здоровье текстом';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Скрывать полное';

@@ -53,6 +53,17 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.name_text_translit = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.name_text_translit:SetPosition('LEFT', self.name_without_realm.Label, 'RIGHT', 12, 0);
+    self.name_text_translit:SetLabel(L['OPTIONS_NAME_TEXT_TRANSLIT']);
+    self.name_text_translit:SetChecked(O.db.name_text_translit);
+    self.name_text_translit:SetTooltip(L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP']);
+    self.name_text_translit:AddToSearch(button, L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP'], self.Tabs[1]);
+    self.name_text_translit.Callback = function(self)
+        O.db.name_text_translit = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     self.name_text_font_value = E.CreateDropdown('font', self.TabsFrames['NameTab'].Content);
     self.name_text_font_value:SetPosition('TOPLEFT', self.name_text_enabled, 'BOTTOMLEFT', 0, -12);
     self.name_text_font_value:SetSize(160, 20);

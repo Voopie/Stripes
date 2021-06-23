@@ -13,11 +13,13 @@ local utf8sub = U.UTF8SUB;
 local GetUnitArenaId = U.GetUnitArenaId;
 local PlayerState = D.Player.State;
 local UnitIsTapped = U.UnitIsTapped;
-
 local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
 local IsNameOnlyMode = S:GetNameplateModule('Handler').IsNameOnlyMode;
 local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyModeAndFriendly;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+
+-- Libraries
+local LT = S.Libraries.LT;
 
 -- Local Config
 local POSITION, POSITION_V, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE, COLORING_MODE_NPC;
@@ -25,6 +27,7 @@ local NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS
 local NAME_PVP, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
 local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
+local NAME_TRANSLIT;
 
 local StripesNameFont      = CreateFont('StripesNameFont');
 local StripesGuildNameFont = CreateFont('StripesGuildNameFont');
@@ -37,6 +40,82 @@ local GREY_COLOR_START = '|cff666666';
 
 local function UpdateFont(unitframe)
     unitframe.name:SetFontObject(StripesNameFont);
+end
+
+local function GetName(unitframe)
+    local name;
+
+    if NAME_WITHOUT_REALM then
+        name = NAME_TRANSLIT and unitframe.data.nameTranslitWoRealm or unitframe.data.nameWoRealm;
+    end
+
+    if not name or name == '' then
+        name = NAME_TRANSLIT and unitframe.data.nameTranslit or unitframe.data.name;
+    end
+
+    return name;
+end
+
+local function AbbrSub(t)
+    return utf8sub(t, 1, 1) .. '.';
+end
+
+local function AbbrSubSpace(t)
+    return utf8sub(t, 1, 1) .. '. ';
+end
+
+local function AbbrLast(name)
+    for n in string_gmatch(name, ABBR_LAST_FORMAT) do
+        name = n;
+    end
+
+    return name;
+end
+
+
+local GetAbbreviatedName = {
+    [1] = function(name)
+        return string_gsub(name, ABBR_FORMAT, AbbrSub);
+    end,
+
+    [2] = function(name)
+        return string_gsub(name, ABBR_FORMAT, AbbrSubSpace);
+    end,
+
+    [3] = function(name)
+        return AbbrLast(name);
+    end,
+};
+
+local function UpdateName(unitframe)
+    if ABBR_ENABLED and unitframe.data.commonUnitType == 'NPC' then
+        local name = unitframe.data.name;
+        if name then
+            unitframe.name:SetText(GetAbbreviatedName[ABBR_MODE](name));
+            unitframe.data.nameAbbr = unitframe.name:GetText();
+        end
+    end
+
+    if PlayerState.inArena then
+        if SHOW_ARENA_ID and unitframe.data.unitType == 'ENEMY_PLAYER' then
+            local arenaId = GetUnitArenaId(unitframe.data.unit);
+            if not arenaId then
+                return;
+            end
+
+            if SHOW_ARENA_ID_SOLO then
+                unitframe.name:SetText(arenaId);
+            else
+                unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, GetName(unitframe)));
+            end
+
+            return;
+        end
+    end
+
+    if unitframe.data.unitType == 'ENEMY_PLAYER' then
+        unitframe.name:SetText(GetName(unitframe));
+    end
 end
 
 local function DefaultColor(frame)
@@ -126,65 +205,6 @@ local function UpdateAnchor(unitframe)
     end
 
     PixelUtil.SetHeight(unitframe.name, unitframe.name:GetLineHeight() + 1);
-end
-
-local function AbbrSub(t)
-    return utf8sub(t, 1, 1) .. '.';
-end
-
-local function AbbrSubSpace(t)
-    return utf8sub(t, 1, 1) .. '. ';
-end
-
-local function AbbrLast(name)
-    for n in string_gmatch(name, ABBR_LAST_FORMAT) do
-        name = n;
-    end
-
-    return name;
-end
-
-local GetAbbreviatedName = {
-    [1] = function(name)
-        return string_gsub(name, ABBR_FORMAT, AbbrSub);
-    end,
-
-    [2] = function(name)
-        return string_gsub(name, ABBR_FORMAT, AbbrSubSpace);
-    end,
-
-    [3] = function(name)
-        return AbbrLast(name);
-    end,
-};
-
-local function UpdateAbbreviated(unitframe)
-    if not ABBR_ENABLED then
-        return;
-    end
-
-    if unitframe.data.commonUnitType == 'NPC' then
-        local name = unitframe.data.name;
-        if name then
-            unitframe.name:SetText(GetAbbreviatedName[ABBR_MODE](name));
-            unitframe.data.nameAbbr = unitframe.name:GetText();
-        end
-    end
-end
-
-local function UpdateArenaId(unitframe)
-    if not SHOW_ARENA_ID or not PlayerState.inArena then
-        unitframe.name:SetText((ABBR_ENABLED and unitframe.data.nameAbbr ~= '') and unitframe.data.nameAbbr or unitframe.data.name);
-        return;
-    end
-
-    local arenaId = GetUnitArenaId(unitframe.data.unit);
-
-    if SHOW_ARENA_ID_SOLO then
-        unitframe.name:SetText(arenaId);
-    else
-        unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, unitframe.data.name));
-    end
 end
 
 local function UpdateColor(unitframe)
@@ -277,20 +297,30 @@ local function NameOnly_UpdateHealthBar(unitframe)
     end
 end
 
-local function NameOnly_UpdateHealth(unitframe)
-    if IsNameOnlyMode() and NAME_ONLY_COLOR_HEALTH then
+local function NameOnly_GetName(unitframe)
+    local name;
+    if NAME_PVP then
+        name = NAME_TRANSLIT and unitframe.data.nameTranslitPVP or unitframe.data.namePVP;
+    elseif NAME_WITHOUT_REALM then
+        name = NAME_TRANSLIT and unitframe.data.nameTranslitWoRealm or unitframe.data.nameWoRealm;
+    end
+
+    if not name or name == '' then
+        name = NAME_TRANSLIT and unitframe.data.nameTranslit or unitframe.data.name;
+    end
+
+    return name;
+end
+
+local function NameOnly_UpdateNameHealth(unitframe)
+    if not IsNameOnlyMode() then
+        return;
+    end
+
+    if NAME_ONLY_COLOR_HEALTH then
         if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
             if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
-                local name;
-                if NAME_PVP then
-                    name = unitframe.data.namePVP;
-                elseif NAME_WITHOUT_REALM then
-                    name = unitframe.data.nameWoRealm;
-                end
-
-                if not name then
-                    name = unitframe.data.name;
-                end
+                local name = NameOnly_GetName(unitframe);
 
                 local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
                 unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
@@ -349,14 +379,13 @@ local function NameOnly_UpdateGuildName(unitframe)
 end
 
 function Module:UnitAdded(unitframe)
-    UpdateFont(unitframe)
-    UpdateAbbreviated(unitframe);
-    UpdateArenaId(unitframe)
+    UpdateFont(unitframe);
+    UpdateName(unitframe);
     UpdateColor(unitframe);
     UpdateNameVisibility(unitframe);
 
     NameOnly_UpdateHealthBar(unitframe);
-    NameOnly_UpdateHealth(unitframe);
+    NameOnly_UpdateNameHealth(unitframe);
     NameOnly_CreateGuildName(unitframe);
     NameOnly_UpdateGuildName(unitframe);
 
@@ -373,13 +402,12 @@ end
 
 function Module:Update(unitframe)
     UpdateFont(unitframe)
-    UpdateAbbreviated(unitframe);
-    UpdateArenaId(unitframe);
+    UpdateName(unitframe);
     UpdateColor(unitframe);
     UpdateNameVisibility(unitframe);
 
     NameOnly_UpdateHealthBar(unitframe);
-    NameOnly_UpdateHealth(unitframe);
+    NameOnly_UpdateNameHealth(unitframe);
     NameOnly_CreateGuildName(unitframe);
     NameOnly_UpdateGuildName(unitframe);
 
@@ -426,6 +454,8 @@ function Module:UpdateLocalConfig()
 
     NAME_TEXT_ENABLED = O.db.name_text_enabled;
 
+    NAME_TRANSLIT = O.db.name_text_translit;
+
     RAID_TARGET_ICON_SHOW              = O.db.raid_target_icon_show;
     RAID_TARGET_ICON_SCALE             = O.db.raid_target_icon_scale;
     RAID_TARGET_ICON_FRAME_STRATA      = O.db.raid_target_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.raid_target_icon_frame_strata] or 1;
@@ -444,18 +474,15 @@ end
 function Module:StartUp()
     self:UpdateLocalConfig();
 
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', function(unitframe)
-        NameOnly_UpdateHealth(unitframe);
-    end);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', NameOnly_UpdateNameHealth);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
-        UpdateAbbreviated(unitframe);
-        UpdateArenaId(unitframe);
+        UpdateName(unitframe);
         UpdateColor(unitframe);
         UpdateNameVisibility(unitframe);
 
         NameOnly_UpdateHealthBar(unitframe);
-        NameOnly_UpdateHealth(unitframe);
+        NameOnly_UpdateNameHealth(unitframe);
 
         UpdateAnchor(unitframe);
     end);
