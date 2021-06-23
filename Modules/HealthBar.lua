@@ -11,6 +11,7 @@ local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = 
 
 -- Stripes API
 local UnitIsTapped, IsPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.IsPlayer, U.IsPlayerEffectivelyTank;
+local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -25,6 +26,9 @@ local EXECUTION_ENABLED, EXECUTION_COLOR, EXECUTION_GLOW, EXECUTION_LOW_PERCENT,
 local HEALTH_BAR_CLASS_COLOR_ENEMY, HEALTH_BAR_CLASS_COLOR_FRIENDLY;
 local HEALTH_BAR_TEXTURE, BORDER_HIDE, BORDER_THIN;
 local SHOW_CLICKABLE_AREA, ENEMY_MINUS_HEIGHT, ENEMY_HEIGHT, FRIENDLY_HEIGHT, PLAYER_HEIGHT;
+local TP_ENABLED, TP_COLORING, TP_POINT, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y;
+
+local StripesThreatPercentageFont = CreateFont('StripesThreatPercentageFont');
 
 local DEFAULT_STATUSBAR_TEXTURE = 'Interface\\TargetingFrame\\UI-TargetingFrame-BarFill';
 
@@ -138,6 +142,41 @@ local function CustomHealthBar_UpdateColor(unitframe)
 end
 
 -- Threat
+local function CreateThreatPercentage(unitframe)
+    if unitframe.ThreatPercentage then
+        return;
+    end
+
+    local frame = CreateFrame('Frame', '$parentThreatPercentage', unitframe);
+    frame:SetAllPoints(unitframe.healthBar);
+
+    frame.text = frame:CreateFontString(nil, 'BACKGROUND', 'StripesThreatPercentageFont');
+    PixelUtil.SetPoint(frame.text, TP_POINT, frame, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y);
+    frame.text:SetTextColor(1, 1, 1, 1);
+
+    unitframe.ThreatPercentage = frame;
+end
+
+local function UpdateThreatPercentage(unitframe, value, r, g, b, a)
+    if not TP_ENABLED or not value then
+        unitframe.ThreatPercentage.text:SetText('');
+        return;
+    end
+
+    unitframe.ThreatPercentage.text:SetText(string.format('%s%%', value));
+
+    if TP_COLORING then
+        unitframe.ThreatPercentage.text:SetTextColor(r, g, b, a or 1);
+    else
+        unitframe.ThreatPercentage.text:SetTextColor(1, 1, 1, 1);
+    end
+end
+
+local function UpdateThreatPercentagePosition(unitframe)
+    unitframe.ThreatPercentage.text:ClearAllPoints();
+    PixelUtil.SetPoint(unitframe.ThreatPercentage.text, TP_POINT, unitframe.ThreatPercentage, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y);
+end
+
 local function Threat_GetThreatSituationStatus(unit)
     local isTanking, status, threatpct = UnitDetailedThreatSituation(PLAYER_UNIT, unit);
     local display = threatpct;
@@ -174,6 +213,8 @@ local function Threat_UpdateColor(unitframe)
         else
             unitframe.healthBar:SetStatusBarColor(unpack((PLAYER_IS_TANK and offTank) and offTankColor or statusColors[status]));
         end
+
+        UpdateThreatPercentage(unitframe, display, unpack((PLAYER_IS_TANK and offTank) and offTankColor or statusColors[status]));
     end
 end
 
@@ -334,6 +375,9 @@ function Module:UnitAdded(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
     unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
 
+    CreateThreatPercentage(unitframe);
+    UpdateThreatPercentage(unitframe);
+
     Update(unitframe);
     UpdateTexture(unitframe);
     UpdateSizes(unitframe);
@@ -343,6 +387,8 @@ end
 function Module:Update(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
     unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
+
+    UpdateThreatPercentagePosition(unitframe);
 
     Update(unitframe);
     UpdateTexture(unitframe);
@@ -370,6 +416,14 @@ function Module:UpdateLocalConfig()
     offTankColor[3] = O.db.threat_color_offtank[3];
     offTankColor[4] = O.db.threat_color_offtank[4] or 1;
 
+    TP_ENABLED        = O.db.threat_percentage_enabled;
+    TP_COLORING       = O.db.threat_percentage_coloring;
+    TP_POINT          = O.Lists.frame_points[O.db.threat_percentage_point] or 'TOPLEFT';
+    TP_RELATIVE_POINT = O.Lists.frame_points[O.db.threat_percentage_relative_point] or 'BOTTOMLEFT';
+    TP_OFFSET_X       = O.db.threat_percentage_offset_x;
+    TP_OFFSET_Y       = O.db.threat_percentage_offset_y;
+    UpdateFontObject(StripesThreatPercentageFont, O.db.threat_percentage_font_value, O.db.threat_percentage_font_size, O.db.threat_percentage_font_flag, O.db.threat_percentage_font_shadow);
+
     CUSTOM_HP_ENABLED = O.db.custom_color_enabled;
     CUSTOM_HP_DATA    = O.db.custom_color_data;
 
@@ -393,7 +447,6 @@ function Module:UpdateLocalConfig()
     BORDER_THIN = O.db.health_bar_border_thin;
 
     SHOW_CLICKABLE_AREA = O.db.size_clickable_area_show;
-
 
     ENEMY_MINUS_HEIGHT = O.db.size_enemy_minus_height;
     ENEMY_HEIGHT       = O.db.size_enemy_height;

@@ -21,6 +21,8 @@ L['FONT_FLAG_MONOCHROME'] = 'Монохромный';
 L['FONT_FLAG_OUTLINE_MONOCHROME'] = 'Монохромный + контур';
 L['FONT_FLAG_THICKOUTLINE_MONOCHROME'] = 'Монохромный + жирный контур';
 
+L['POSITION'] = 'Позиция';
+
 L['POSITION_TOP'] = 'Сверху';
 L['POSITION_BOTTOM'] = 'Снизу';
 L['POSITION_LEFT'] = 'Слева';
@@ -240,6 +242,18 @@ L['OPTIONS_THREAT_COLOR_STATUS_3_TOOLTIP'] = 'Надежно, самая выс�
 L['OPTIONS_THREAT_COLOR_OFFTANK_TOOLTIP'] = 'Оффтанк';
 L['OPTIONS_RESET_THREAT_COLORS'] = 'Сбросить цвета';
 L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'] = 'Сбросить цвета угрозы на значения по умолчанию';
+L['OPTIONS_THREAT_PERCENTAGE_ENABLED'] = 'Показывать проценты';
+L['OPTIONS_THREAT_PERCENTAGE_ENABLED_TOOLTIP'] = 'Показывать в процентах текущую угрозу';
+L['OPTIONS_THREAT_PERCENTAGE_COLORING'] = 'Окрашивать';
+L['OPTIONS_THREAT_PERCENTAGE_COLORING_TOOLTIP'] = 'Окрашивать проценты в зависимости от текущей угрозы';
+L['OPTIONS_THREAT_PERCENTAGE_POINT_TOOLTIP'] = 'Точка крепления процентов угрозы'
+L['OPTIONS_THREAT_PERCENTAGE_RELATIVE_POINT_TOOLTIP'] = 'К какой точке полосы здоровья прикрепить проценты угрозы';
+L['OPTIONS_THREAT_PERCENTAGE_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение процентов угрозы';
+L['OPTIONS_THREAT_PERCENTAGE_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение процентов угрозы';
+L['OPTIONS_THREAT_PERCENTAGE_FONT_VALUE_TOOLTIP'] = 'Шрифт процентов угрозы';
+L['OPTIONS_THREAT_PERCENTAGE_FONT_SIZE_TOOLTIP'] = 'Размер шрифта процентов угрозы';
+L['OPTIONS_THREAT_PERCENTAGE_FONT_FLAG_TOOLTIP'] = 'Контур шрифта процентов угрозы';
+L['OPTIONS_THREAT_PERCENTAGE_FONT_SHADOW_TOOLTIP'] = 'Тень шрифта процентов угрозы';
 L['OPTIONS_TARGET_INDICATOR_ENABLED'] = 'Включить';
 L['OPTIONS_TARGET_INDICATOR_ENABLED_TOOLTIP'] = 'Показывать индикатор цели на текущем неймплейте';
 L['OPTIONS_TARGET_INDICATOR_COLOR_TOOLTIP'] = 'Цвет значка индикатора текущей цели';
@@ -520,7 +534,6 @@ L['OPTIONS_COMBAT_INDICATOR_COLOR_TOOLTIP'] = 'Цвет индикатора б�
 L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение значка индикатора боя';
 L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение значка индикатора боя';
 L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP'] = 'Размер значка индикатора боя';
-L['OPTIONS_COMBAT_INDICATOR_POSITION'] = 'Позиция';
 L['OPTIONS_COMBAT_INDICATOR_POINT_TOOLTIP'] = 'Точка крепления значка индикатора боя';
 L['OPTIONS_COMBAT_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'К какой точке полосы здоровья прикрепить значок индикатора боя';
 

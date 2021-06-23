@@ -21,6 +21,8 @@ L['FONT_FLAG_MONOCHROME'] = 'Monochrome';
 L['FONT_FLAG_OUTLINE_MONOCHROME'] = 'Monochrome + outline';
 L['FONT_FLAG_THICKOUTLINE_MONOCHROME'] = 'Monochrome + thick outline';
 
+L['POSITION'] = 'Position';
+
 L['POSITION_TOP'] = 'Top';
 L['POSITION_BOTTOM'] = 'Bottom';
 L['POSITION_LEFT'] = 'Left';
@@ -240,6 +242,18 @@ L['OPTIONS_THREAT_COLOR_STATUS_3_TOOLTIP'] = 'Securely tanking, highest threat';
 L['OPTIONS_THREAT_COLOR_OFFTANK_TOOLTIP'] = 'Offtank';
 L['OPTIONS_RESET_THREAT_COLORS'] = 'Reset colors';
 L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'] = 'Reset threat colors to default values';
+L['OPTIONS_THREAT_PERCENTAGE_ENABLED'] = 'Show percentages';
+L['OPTIONS_THREAT_PERCENTAGE_ENABLED_TOOLTIP'] = 'Show the current threat as a percentage';
+L['OPTIONS_THREAT_PERCENTAGE_COLORING'] = 'Coloring';
+L['OPTIONS_THREAT_PERCENTAGE_COLORING_TOOLTIP'] = 'Color the percentages according to the current threat';
+L['OPTIONS_THREAT_PERCENTAGE_POINT_TOOLTIP'] = 'Point of attachment of threat percentages'
+L['OPTIONS_THREAT_PERCENTAGE_RELATIVE_POINT_TOOLTIP'] = 'To which point of the health bar attach the threat percentages';
+L['OPTIONS_THREAT_PERCENTAGE_OFFSET_X_TOOLTIP'] = 'Horizontal offset of threat percentages';
+L['OPTIONS_THREAT_PERCENTAGE_OFFSET_Y_TOOLTIP'] = 'Vertical offset of threat percentages';
+L['OPTIONS_THREAT_PERCENTAGE_FONT_VALUE_TOOLTIP'] = 'Threat percentages font';
+L['OPTIONS_THREAT_PERCENTAGE_FONT_SIZE_TOOLTIP'] = 'Threat percentages font size';
+L['OPTIONS_THREAT_PERCENTAGE_FONT_FLAG_TOOLTIP'] = 'Threat percentages font outline';
+L['OPTIONS_THREAT_PERCENTAGE_FONT_SHADOW_TOOLTIP'] = 'Threat percentages font shadow';
 L['OPTIONS_TARGET_INDICATOR_ENABLED'] = 'Enable';
 L['OPTIONS_TARGET_INDICATOR_ENABLED_TOOLTIP'] = 'Show indicator of the current target nameplate';
 L['OPTIONS_TARGET_INDICATOR_COLOR_TOOLTIP'] = 'Target indicator texture color';
@@ -520,7 +534,6 @@ L['OPTIONS_COMBAT_INDICATOR_COLOR_TOOLTIP'] = 'Color of combat indicator icon';
 L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP'] = 'Horizontal offset of combat indicator icon';
 L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of combat indicator icon';
 L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP'] = 'Size of combat indicator icon';
-L['OPTIONS_COMBAT_INDICATOR_POSITION'] = 'Position';
 L['OPTIONS_COMBAT_INDICATOR_POINT_TOOLTIP'] = 'Point of attachment of combat indicator icon';
 L['OPTIONS_COMBAT_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'To which point of the health bar attach the combat indicator icon';
 

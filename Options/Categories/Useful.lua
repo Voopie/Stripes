@@ -171,7 +171,7 @@ panel.Load = function(self)
     self.combat_indicator_point:SetSize(120, 20);
     self.combat_indicator_point:SetList(O.Lists.frame_points_localized);
     self.combat_indicator_point:SetValue(O.db.combat_indicator_point);
-    self.combat_indicator_point:SetLabel(L['OPTIONS_COMBAT_INDICATOR_POSITION']);
+    self.combat_indicator_point:SetLabel(L['POSITION']);
     self.combat_indicator_point:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_POINT_TOOLTIP']);
     self.combat_indicator_point:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_POINT_TOOLTIP'], self.Tabs[2]);
     self.combat_indicator_point.OnValueChangedCallback = function(_, value)

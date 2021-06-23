@@ -343,6 +343,124 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    local Delimiter = E.CreateDelimiter(self.TabsFrames['ThreatTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', ResetThreatColorsButton, 'BOTTOMLEFT', -4, -4);
+    Delimiter:SetW(self:GetWidth());
+
+    self.threat_percentage_enabled = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.threat_percentage_enabled:SetLabel(L['OPTIONS_THREAT_PERCENTAGE_ENABLED']);
+    self.threat_percentage_enabled:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_ENABLED_TOOLTIP']);
+    self.threat_percentage_enabled:SetChecked(O.db.threat_percentage_enabled);
+    self.threat_percentage_enabled:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_ENABLED_TOOLTIP'], self.Tabs[3]);
+    self.threat_percentage_enabled.Callback = function(self)
+        O.db.threat_percentage_enabled = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.threat_percentage_coloring = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_coloring:SetPosition('LEFT', self.threat_percentage_enabled.Label, 'RIGHT', 12, 0);
+    self.threat_percentage_coloring:SetLabel(L['OPTIONS_THREAT_PERCENTAGE_COLORING']);
+    self.threat_percentage_coloring:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_COLORING_TOOLTIP']);
+    self.threat_percentage_coloring:SetChecked(O.db.threat_percentage_coloring);
+    self.threat_percentage_coloring:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_COLORING_TOOLTIP'], self.Tabs[3]);
+    self.threat_percentage_coloring.Callback = function(self)
+        O.db.threat_percentage_coloring = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.threat_percentage_point = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_point:SetPosition('TOPLEFT', self.threat_percentage_enabled, 'BOTTOMLEFT', 0, -12);
+    self.threat_percentage_point:SetSize(120, 20);
+    self.threat_percentage_point:SetList(O.Lists.frame_points_localized);
+    self.threat_percentage_point:SetValue(O.db.threat_percentage_point);
+    self.threat_percentage_point:SetLabel(L['POSITION']);
+    self.threat_percentage_point:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_POINT_TOOLTIP']);
+    self.threat_percentage_point:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_POINT_TOOLTIP'], self.Tabs[3]);
+    self.threat_percentage_point.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_point = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.threat_percentage_relative_point = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_relative_point:SetPosition('LEFT', self.threat_percentage_point, 'RIGHT', 12, 0);
+    self.threat_percentage_relative_point:SetSize(120, 20);
+    self.threat_percentage_relative_point:SetList(O.Lists.frame_points_localized);
+    self.threat_percentage_relative_point:SetValue(O.db.threat_percentage_relative_point);
+    self.threat_percentage_relative_point:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_RELATIVE_POINT_TOOLTIP']);
+    self.threat_percentage_relative_point:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_RELATIVE_POINT_TOOLTIP'], self.Tabs[3]);
+    self.threat_percentage_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_relative_point = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.threat_percentage_offset_x = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_offset_x:SetPosition('LEFT', self.threat_percentage_relative_point, 'RIGHT', 8, 0);
+    self.threat_percentage_offset_x:SetSize(120, 18);
+    self.threat_percentage_offset_x:SetValues(O.db.threat_percentage_offset_x, -50, 50, 1);
+    self.threat_percentage_offset_x:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_OFFSET_X_TOOLTIP']);
+    self.threat_percentage_offset_x:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_OFFSET_X_TOOLTIP'], self.Tabs[3]);
+    self.threat_percentage_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_offset_x = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.threat_percentage_offset_y = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_offset_y:SetPosition('LEFT', self.threat_percentage_offset_x, 'RIGHT', 12, 0);
+    self.threat_percentage_offset_y:SetSize(120, 18);
+    self.threat_percentage_offset_y:SetValues(O.db.threat_percentage_offset_y, -50, 50, 1);
+    self.threat_percentage_offset_y:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_OFFSET_Y_TOOLTIP']);
+    self.threat_percentage_offset_y:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_OFFSET_Y_TOOLTIP'], self.Tabs[3]);
+    self.threat_percentage_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.threat_percentage_font_value = E.CreateDropdown('font', self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_font_value:SetPosition('TOPLEFT', self.threat_percentage_point, 'BOTTOMLEFT', 0, -16);
+    self.threat_percentage_font_value:SetSize(160, 20);
+    self.threat_percentage_font_value:SetList(LSM:HashTable('font'));
+    self.threat_percentage_font_value:SetValue(O.db.threat_percentage_font_value);
+    self.threat_percentage_font_value:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_FONT_VALUE_TOOLTIP']);
+    self.threat_percentage_font_value:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_VALUE_TOOLTIP'], self.Tabs[3]);
+    self.threat_percentage_font_value.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_font_value = value;
+        Handler:UpdateAll();
+    end
+
+    self.threat_percentage_font_size = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_font_size:SetPosition('LEFT', self.threat_percentage_font_value, 'RIGHT', 12, 0);
+    self.threat_percentage_font_size:SetValues(O.db.threat_percentage_font_size, 2, 28, 1);
+    self.threat_percentage_font_size:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_FONT_SIZE_TOOLTIP']);
+    self.threat_percentage_font_size:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_SIZE_TOOLTIP'], self.Tabs[3]);
+    self.threat_percentage_font_size.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_font_size = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.threat_percentage_font_flag = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_font_flag:SetPosition('LEFT', self.threat_percentage_font_size, 'RIGHT', 12, 0);
+    self.threat_percentage_font_flag:SetSize(160, 20);
+    self.threat_percentage_font_flag:SetList(O.Lists.font_flags_localized);
+    self.threat_percentage_font_flag:SetValue(O.db.threat_percentage_font_flag);
+    self.threat_percentage_font_flag:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_FONT_FLAG_TOOLTIP']);
+    self.threat_percentage_font_flag:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_FLAG_TOOLTIP'], self.Tabs[3]);
+    self.threat_percentage_font_flag.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_font_flag = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.threat_percentage_font_shadow = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_font_shadow:SetPosition('LEFT', self.threat_percentage_font_flag, 'RIGHT', 12, 0);
+    self.threat_percentage_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
+    self.threat_percentage_font_shadow:SetChecked(O.db.threat_percentage_font_shadow);
+    self.threat_percentage_font_shadow:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_FONT_SHADOW_TOOLTIP']);
+    self.threat_percentage_font_shadow:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_SHADOW_TOOLTIP'], self.Tabs[3]);
+    self.threat_percentage_font_shadow.Callback = function(self)
+        O.db.threat_percentage_font_shadow = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     -- Execution Tab -------------------------------------------------------------------------------------------------------------------

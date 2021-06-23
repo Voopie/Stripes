@@ -86,8 +86,8 @@ function Module:UpdateLocalConfig()
     COLOR[3] = O.db.combat_indicator_color[3];
     COLOR[4] = O.db.combat_indicator_color[4] or 1;
 
-    POINT          = O.Lists.frame_points[O.db.combat_indicator_point] or 'TOPLEFT';
-    RELATIVE_POINT = O.Lists.frame_points[O.db.combat_indicator_relative_point] or 'BOTTOMLEFT';
+    POINT          = O.Lists.frame_points[O.db.combat_indicator_point] or 'CENTER';
+    RELATIVE_POINT = O.Lists.frame_points[O.db.combat_indicator_relative_point] or 'BOTTOM';
 
     OFFSET_X = O.db.combat_indicator_offset_x;
     OFFSET_Y = O.db.combat_indicator_offset_y;

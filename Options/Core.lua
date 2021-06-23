@@ -277,7 +277,7 @@ O.DefaultValues = {
     threat_percentage_relative_point = 2, -- BOTTOMLEFT
     threat_percentage_offset_x       = 0,
     threat_percentage_offset_y       = 0,
-    threat_percentage_font_value     = 'BigNoodleToo Titling',
+    threat_percentage_font_value     = 'Expressway Bold',
     threat_percentage_font_size      = 8,
     threat_percentage_font_flag      = 1, -- NONE
     threat_percentage_font_shadow    = true,
@@ -413,7 +413,7 @@ O.DefaultValues = {
     -- Mythic plus
     mythic_plus_percentage_enabled     = true,
     mythic_plus_percentage_use_mode    = 1, -- EMBEDDED
-    mythic_plus_percentage_font_value  = 'BigNoodleToo Titling',
+    mythic_plus_percentage_font_value  = 'Expressway Bold',
     mythic_plus_percentage_font_size   = 8,
     mythic_plus_percentage_font_flag   = 1, -- NONE
     mythic_plus_percentage_font_shadow = true,
