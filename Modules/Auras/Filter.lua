@@ -16,15 +16,44 @@ local units = {
     ['vehicle'] = true,
 };
 
+local blacklistAurasNameCache = {};
+
+local function CacheFindAuraNameById(id)
+    for name, sid in pairs(blacklistAurasNameCache) do
+        if sid == id then
+            return name;
+        end
+    end
+end
+
+local function UpdateBlacklistCache()
+    local name;
+
+    for spellId, data in pairs(O.db.auras_blacklist) do
+        if not data.enabled then
+            name = CacheFindAuraNameById(spellId);
+
+            if name then
+                blacklistAurasNameCache[name] = nil;
+            end
+        end
+    end
+end
+
 local function FilterShouldShowBuff(self, name, caster, nameplateShowPersonal, nameplateShowAll)
     if not name then
         return false;
     end
 
     if BLACKLIST_ENABLED then
+        if blacklistAurasNameCache[name] then
+            return false;
+        end
+
         local spellId = select(7, GetSpellInfo(name));
 
         if spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
+            blacklistAurasNameCache[name] = spellId;
             return false;
         end
     end
@@ -55,6 +84,8 @@ end
 function Module:UpdateLocalConfig()
     ENABLED           = O.db.auras_filter_player_enabled;
     BLACKLIST_ENABLED = O.db.auras_blacklist_enabled;
+
+    UpdateBlacklistCache();
 end
 
 function Module:StartUp()
