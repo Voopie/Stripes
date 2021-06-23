@@ -6,7 +6,7 @@ local RGB2CFFHEX = U.RGB2CFFHEX;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
-local ENABLED, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
+local ENABLED, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
 
 local CLOSE_COLOR = '|r';
@@ -46,7 +46,11 @@ local function Update(unitframe)
 end
 
 local function UpdateShow(unitframe)
-    unitframe.LevelText:SetShown((ENABLED and unitframe.data.unitType ~= 'SELF'));
+    if HIDE_MAX then
+        unitframe.LevelText:SetShown(ENABLED and D.MaxLevel ~= unitframe.data.level);
+    else
+        unitframe.LevelText:SetShown(ENABLED and unitframe.data.unitType ~= 'SELF');
+    end
 end
 
 local function UpdateStyle(unitframe)
@@ -75,6 +79,7 @@ end
 
 function Module:UpdateLocalConfig()
     ENABLED        = O.db.level_text_enabled;
+    HIDE_MAX       = O.db.level_text_hide_max;
     USE_DIFF_COLOR = O.db.level_text_use_diff_color;
 
     TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.level_text_anchor];

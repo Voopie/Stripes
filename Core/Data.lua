@@ -16,6 +16,8 @@ D.Player = {
 
 D.Player.NameWithRealm = D.Player.Name .. '-' .. D.Player.RealmNormalized;
 
+D.MaxLevel = GetMaxLevelForLatestExpansion();
+
 D.Player.State = {
     inCombat            = false,
     inInstance          = false,
@@ -347,6 +349,8 @@ end
 
 function Data:PLAYER_LOGIN()
     UpdatePlayer();
+
+    D.MaxLevel = GetMaxLevelForLatestExpansion();
 end
 
 function Data:PLAYER_ENTERING_WORLD()
@@ -424,6 +428,10 @@ function Data:PLAYER_GUILD_UPDATE()
     D.Player.GuildName = U.UnitInGuild('player');
 end
 
+function Data:MAX_EXPANSION_LEVEL_UPDATED()
+    D.MaxLevel = GetMaxLevelForLatestExpansion();
+end
+
 function Data:StartUp()
     self:RegisterEvent('PLAYER_LOGIN');
     self:RegisterEvent('PLAYER_ENTERING_WORLD');
@@ -436,4 +444,5 @@ function Data:StartUp()
     self:RegisterEvent('PLAYER_REGEN_DISABLED');
     self:RegisterEvent('GUILD_ROSTER_UPDATE');
     self:RegisterEvent('PLAYER_GUILD_UPDATE');
+    self:RegisterEvent('MAX_EXPANSION_LEVEL_UPDATED');
 end

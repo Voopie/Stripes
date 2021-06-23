@@ -199,6 +199,8 @@ L['OPTIONS_HEALTH_TEXT_SINGLE_BLOCK'] = 'Single block';
 L['OPTIONS_HEALTH_TEXT_DOUBLE_BLOCK'] = 'Double block';
 
 L['OPTIONS_SHOW_LEVEL_TEXT'] = 'Show level text';
+L['OPTIONS_LEVEL_TEXT_HIDE_MAX'] = 'Hide max';
+L['OPTIONS_LEVEL_TEXT_HIDE_MAX_TOOLTIP'] = 'Hide max level';
 L['OPTIONS_LEVEL_TEXT_FONT_VALUE'] = 'Level text font';
 L['OPTIONS_LEVEL_TEXT_FONT_SIZE'] = 'Level text font size';
 L['OPTIONS_LEVEL_TEXT_FONT_FLAG'] = 'Level text font outline';

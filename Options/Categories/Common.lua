@@ -601,6 +601,21 @@ panel.Load = function(self)
     self.level_text_enabled:AddToSearch(button, L['OPTIONS_SHOW_LEVEL_TEXT'], self.Tabs[3]);
     self.level_text_enabled.Callback = function(self)
         O.db.level_text_enabled = self:GetChecked();
+
+        panel.level_text_hide_max:SetEnabled(O.db.level_text_enabled);
+
+        Handler:UpdateAll();
+    end
+
+    self.level_text_hide_max = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_hide_max:SetPosition('LEFT', self.level_text_enabled.Label, 'RIGHT', 12, 0);
+    self.level_text_hide_max:SetLabel(L['OPTIONS_LEVEL_TEXT_HIDE_MAX']);
+    self.level_text_hide_max:SetTooltip(L['OPTIONS_LEVEL_TEXT_HIDE_MAX_TOOLTIP'] .. ' (' .. GetMaxLevelForLatestExpansion() .. ')');
+    self.level_text_hide_max:SetChecked(O.db.level_text_hide_max);
+    self.level_text_hide_max:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_HIDE_MAX_TOOLTIP'], self.Tabs[3]);
+    self.level_text_hide_max:SetEnabled(O.db.level_text_enabled);
+    self.level_text_hide_max.Callback = function(self)
+        O.db.level_text_hide_max = self:GetChecked();
         Handler:UpdateAll();
     end
 
