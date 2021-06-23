@@ -125,7 +125,7 @@ local function Update(unitframe)
                     StopExpireGlow(self:GetParent());
                 end);
 
-                aura.Cooldown.OnUpdateHooked = true;
+                aura.OnUpdateHooked = true;
             end
         end
     end
