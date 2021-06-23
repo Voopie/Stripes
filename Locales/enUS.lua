@@ -487,6 +487,8 @@ L['OPTIONS_SPITEFUL_ICON'] = '«The Spiteful Shade» icon';
 L['OPTIONS_SPITEFUL_ICON_TOOLTIP'] = 'Show icon above «The Spiteful Shade» nameplate';
 L['OPTIONS_MYTHIC_PLUS_AUTO_SLOT_KEYSTONE'] = 'Auto-keystone';
 L['OPTIONS_MYTHIC_PLUS_AUTO_SLOT_KEYSTONE_TOOLTIP'] = 'Insert keystones automatically';
+L['OPTIONS_MYTHIC_PLUS_QUESTUNWATCH_ENABLED'] = 'Auto-unwatch quests';
+L['OPTIONS_MYTHIC_PLUS_QUESTUNWATCH_ENABLED_TOOLTIP'] = 'Automatically cancels quest tracking during mythic+ dungeons.|n|nAfter completing a dungeon, quests will automatically be tracked again';
 
 L['OPTIONS_USEFUL_TAB_COMMON'] = 'Common';
 L['OPTIONS_USEFUL_TAB_COMBAT_INDICATOR'] = 'Combat indicator';

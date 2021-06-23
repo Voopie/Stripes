@@ -161,6 +161,17 @@ panel.Load = function(self)
         O.db.spiteful_enabled = self:GetChecked();
         Handler:UpdateAll();
     end
+
+    self.mythic_plus_questunwatch_enabled = E.CreateCheckButton(self);
+    self.mythic_plus_questunwatch_enabled:SetPosition('TOPLEFT', self.spiteful_enabled, 'BOTTOMLEFT', 0, -8);
+    self.mythic_plus_questunwatch_enabled:SetLabel(L['OPTIONS_MYTHIC_PLUS_QUESTUNWATCH_ENABLED']);
+    self.mythic_plus_questunwatch_enabled:SetTooltip(L['OPTIONS_MYTHIC_PLUS_QUESTUNWATCH_ENABLED_TOOLTIP']);
+    self.mythic_plus_questunwatch_enabled:AddToSearch(button);
+    self.mythic_plus_questunwatch_enabled:SetChecked(O.db.mythic_plus_questunwatch_enabled);
+    self.mythic_plus_questunwatch_enabled.Callback = function(self)
+        O.db.mythic_plus_questunwatch_enabled = self:GetChecked();
+        Handler:UpdateAll();
+    end
 end
 
 function Module:MythicDungeonTools()

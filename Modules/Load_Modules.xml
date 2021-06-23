@@ -22,6 +22,7 @@
     <Script file="MythicPlusPercentage.lua" />
     <Script file="MythicPlusExplosiveOrbs.lua" />
     <Script file="MythicPlusSpiteful.lua" />
+    <Script file="MythicPlusQuestUnwatch.lua" />
     <Script file="PvEHealersIndicator.lua" />
     <Script file="PvPHealersIndicator.lua" />
     <Script file="QuestIndicator.lua" />

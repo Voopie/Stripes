@@ -365,19 +365,19 @@ O.DefaultValues = {
 
     show_friendly                = C_CVar.GetCVar('nameplateShowFriends') == '1',
     show_friendly_only_in_combat = false,
-    show_friendly_minions   = C_CVar.GetCVar('nameplateShowFriendlyMinions') == '1',
-    show_friendly_guardians = C_CVar.GetCVar('nameplateShowFriendlyGuardians') == '1',
-    show_friendly_npcs      = C_CVar.GetCVar('nameplateShowFriendlyNPCs') == '1',
-    show_friendly_pets      = C_CVar.GetCVar('nameplateShowFriendlyPets') == '1',
-    show_friendly_totems    = C_CVar.GetCVar('nameplateShowFriendlyTotems') == '1',
+    show_friendly_minions        = C_CVar.GetCVar('nameplateShowFriendlyMinions') == '1',
+    show_friendly_guardians      = C_CVar.GetCVar('nameplateShowFriendlyGuardians') == '1',
+    show_friendly_npcs           = C_CVar.GetCVar('nameplateShowFriendlyNPCs') == '1',
+    show_friendly_pets           = C_CVar.GetCVar('nameplateShowFriendlyPets') == '1',
+    show_friendly_totems         = C_CVar.GetCVar('nameplateShowFriendlyTotems') == '1',
 
     show_enemy                = C_CVar.GetCVar('nameplateShowEnemies') == '1';
     show_enemy_only_in_combat = false,
-    show_enemy_minions   = C_CVar.GetCVar('nameplateShowEnemyMinions') == '1',
-    show_enemy_guardians = C_CVar.GetCVar('nameplateShowEnemyGuardians') == '1',
-    show_enemy_minus     = C_CVar.GetCVar('nameplateShowEnemyMinus') == '1',
-    show_enemy_pets      = C_CVar.GetCVar('nameplateShowEnemyPets') == '1',
-    show_enemy_totems    = C_CVar.GetCVar('nameplateShowEnemyTotems') == '1',
+    show_enemy_minions        = C_CVar.GetCVar('nameplateShowEnemyMinions') == '1',
+    show_enemy_guardians      = C_CVar.GetCVar('nameplateShowEnemyGuardians') == '1',
+    show_enemy_minus          = C_CVar.GetCVar('nameplateShowEnemyMinus') == '1',
+    show_enemy_pets           = C_CVar.GetCVar('nameplateShowEnemyPets') == '1',
+    show_enemy_totems         = C_CVar.GetCVar('nameplateShowEnemyTotems') == '1',
 
     show_personal                   = false,
     show_personal_always            = false,
@@ -427,6 +427,9 @@ O.DefaultValues = {
     spiteful_enabled = true,
 
     mythic_plus_auto_slot_keystone = true,
+
+    mythic_plus_questunwatch_enabled = true,
+    mythic_plus_questunwatch_data    = {},
 
     -- Useful
     quest_indicator_enabled  = true,

@@ -487,6 +487,8 @@ L['OPTIONS_SPITEFUL_ICON'] = 'Иконка «Злопамятной тени»';
 L['OPTIONS_SPITEFUL_ICON_TOOLTIP'] = 'Показать иконку над неймплейтом «Злопамятной тени»';
 L['OPTIONS_MYTHIC_PLUS_AUTO_SLOT_KEYSTONE'] = 'Авто-вставка ключа';
 L['OPTIONS_MYTHIC_PLUS_AUTO_SLOT_KEYSTONE_TOOLTIP'] = 'Автоматически вставлять эпохальные ключи';
+L['OPTIONS_MYTHIC_PLUS_QUESTUNWATCH_ENABLED'] = 'Авто-скрытие квестов';
+L['OPTIONS_MYTHIC_PLUS_QUESTUNWATCH_ENABLED_TOOLTIP'] = 'Автоматическая отмена отслеживания квестов во время прохождения эпохальных+ подземелий.|n|nКвесты автоматически будут опять отслеживаться после прохождения подземелья';
 
 L['OPTIONS_USEFUL_TAB_COMMON'] = 'Основное';
 L['OPTIONS_USEFUL_TAB_COMBAT_INDICATOR'] = 'Индикатор боя';
