@@ -271,6 +271,17 @@ O.DefaultValues = {
     threat_color_status_3 = { 0.15, 0.75, 0.15 },
     threat_color_offtank  = { 0.60, 0.00, 0.85 },
 
+    threat_percentage_enabled        = false,
+    threat_percentage_coloring       = true,
+    threat_percentage_point          = 8, -- TOPLEFT
+    threat_percentage_relative_point = 2, -- BOTTOMLEFT
+    threat_percentage_offset_x       = 0,
+    threat_percentage_offset_y       = 0,
+    threat_percentage_font_value     = 'BigNoodleToo Titling',
+    threat_percentage_font_size      = 8,
+    threat_percentage_font_flag      = 1, -- NONE
+    threat_percentage_font_shadow    = true,
+
     target_indicator_enabled  = true,
     target_indicator_color    = { 1, 1, 1 },
     target_indicator_texture  = 3,
