@@ -47,7 +47,7 @@ end
 
 local function UpdateShow(unitframe)
     if HIDE_MAX then
-        unitframe.LevelText:SetShown(ENABLED and D.MaxLevel ~= unitframe.data.level);
+        unitframe.LevelText:SetShown(ENABLED and D.MaxLevel ~= unitframe.data.level and unitframe.data.unitType ~= 'SELF');
     else
         unitframe.LevelText:SetShown(ENABLED and unitframe.data.unitType ~= 'SELF');
     end
