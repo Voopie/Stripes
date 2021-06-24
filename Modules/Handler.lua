@@ -163,6 +163,16 @@ local function UpdateStatus(unitframe)
         unitframe.data.nameWoRealm, unitframe.data.realm = UnitName(unit);
         unitframe.data.namePVP = UnitPVPName(unit);
     end
+
+    if unitframe.data.unitType == 'ENEMY_PLAYER' then
+        unitframe.data.nameWoRealm, unitframe.data.realm = UnitName(unit);
+    end
+
+    if unitframe.data.commonUnitType == 'PLAYER' then
+        unitframe.data.nameTranslit        = LT:Transliterate(unitframe.data.name);
+        unitframe.data.nameTranslitWoRealm = LT:Transliterate(unitframe.data.nameWoRealm);
+        unitframe.data.nameTranslitPVP     = LT:Transliterate(unitframe.data.namePVP);
+    end
 end
 
 local function UpdateWidgetStatus(unitframe)
