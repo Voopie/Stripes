@@ -121,31 +121,9 @@ local function UpdateName(unitframe)
         return;
     end
 
-    if IsNameOnlyMode() and NAME_ONLY_COLOR_HEALTH then
-        if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
-            if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
-                local name = FriendlyGetName(unitframe);
-
-                local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
-                unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
-            end
-
-            return;
-        elseif not NAME_ONLY_FRIENDLY_PLAYERS_ONLY and unitframe.data.unitType == 'FRIENDLY_NPC' then
-            local name = (ABBR_ENABLED and unitframe.data.nameAbbr ~= '') and unitframe.data.nameAbbr or unitframe.data.name;
-
-            if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
-                local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
-                unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
-            end
-
-            return;
-        end
-    end
-
     if unitframe.data.unitType == 'ENEMY_PLAYER' then
         unitframe.name:SetText(EnemyGetName(unitframe));
-    elseif unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+    elseif unitframe.data.unitType == 'FRIENDLY_PLAYER' and not (IsNameOnlyMode() and NAME_ONLY_COLOR_HEALTH) then
         unitframe.name:SetText(FriendlyGetName(unitframe));
     end
 end
