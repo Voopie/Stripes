@@ -15,7 +15,7 @@ local GetUnitColor = U.GetUnitColor;
 local NP = S.NamePlates;
 
 -- Local Config
-local ENABLED, ONLY_ENEMY;
+local ENABLED, ONLY_ENEMY, NOT_ME;
 
 local PlayerName = D.Player.Name;
 local YOU = YOU;
@@ -31,8 +31,12 @@ local function TargetChanged(unitframe)
 
     if unitframe.TargetName.targetName then
         if unitframe.TargetName.targetName == PlayerName then
-            unitframe.TargetName.text:SetText('»  ' .. YOU);
-            unitframe.TargetName.text:SetTextColor(1, 0.2, 0.2);
+            if NOT_ME then
+                unitframe.TargetName.text:SetText('');
+            else
+                unitframe.TargetName.text:SetText('»  ' .. YOU);
+                unitframe.TargetName.text:SetTextColor(1, 0.2, 0.2);
+            end
         else
             unitframe.TargetName.text:SetText('»  ' .. unitframe.TargetName.targetName);
             unitframe.TargetName.text:SetTextColor(GetUnitColor(unitframe.data.unit .. 'target', 2));
@@ -103,6 +107,7 @@ end
 function Module:UpdateLocalConfig()
     ENABLED    = O.db.target_name_enabled;
     ONLY_ENEMY = O.db.target_name_only_enemy;
+    NOT_ME     = O.db.target_name_not_me;
 
     Module.Updater:SetScript('OnUpdate', ENABLED and OnUpdate or nil);
 end

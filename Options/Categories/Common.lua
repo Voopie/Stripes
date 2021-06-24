@@ -263,6 +263,7 @@ panel.Load = function(self)
         O.db.target_name_enabled = self:GetChecked();
 
         panel.target_name_only_enemy:SetEnabled(O.db.target_name_enabled);
+        panel.target_name_not_me:SetEnabled(O.db.target_name_enabled);
 
         Handler:UpdateAll();
     end
@@ -276,6 +277,18 @@ panel.Load = function(self)
     self.target_name_only_enemy:SetEnabled(O.db.target_name_enabled);
     self.target_name_only_enemy.Callback = function(self)
         O.db.target_name_only_enemy = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.target_name_not_me = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.target_name_not_me:SetPosition('LEFT', self.target_name_only_enemy.Label, 'RIGHT', 12, 0);
+    self.target_name_not_me:SetLabel(L['OPTIONS_TARGET_NAME_NOT_ME']);
+    self.target_name_not_me:SetTooltip(L['OPTIONS_TARGET_NAME_NOT_ME_TOOLTIP']);
+    self.target_name_not_me:SetChecked(O.db.target_name_not_me);
+    self.target_name_not_me:AddToSearch(button, L['OPTIONS_TARGET_NAME_NOT_ME_TOOLTIP'], self.Tabs[1]);
+    self.target_name_not_me:SetEnabled(O.db.target_name_enabled);
+    self.target_name_not_me.Callback = function(self)
+        O.db.target_name_not_me = self:GetChecked();
         Handler:UpdateAll();
     end
 
