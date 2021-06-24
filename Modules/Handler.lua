@@ -131,7 +131,7 @@ local function UpdateStatus(unitframe)
     local unit = unitframe.data.unit;
 
     unitframe.data.name         = GetUnitName(unit, true);
-    unitframe.data.reaction     = UnitReaction(PLAYER_UNIT, unit) or UnitReaction(unit, PLAYER_UNIT);
+    unitframe.data.reaction     = UnitReaction(PLAYER_UNIT, unit);
     unitframe.data.factionGroup = UnitFactionGroup(unit);
     unitframe.data.isPlayer     = UnitIsPlayer(unit);
 
@@ -497,7 +497,7 @@ function Module:NAME_PLATE_UNIT_ADDED(unit)
     NP[nameplate].data.level, NP[nameplate].data.classification, NP[nameplate].data.diff = GetUnitLevel(unit);
     NP[nameplate].data.colorR, NP[nameplate].data.colorG, NP[nameplate].data.colorB      = GetUnitColor(unit, 2);
 
-    NP[nameplate].data.reaction     = UnitReaction(PLAYER_UNIT, unit) or UnitReaction(unit, PLAYER_UNIT);
+    NP[nameplate].data.reaction     = UnitReaction(PLAYER_UNIT, unit);
     NP[nameplate].data.factionGroup = UnitFactionGroup(unit);
 
     NP[nameplate].data.minus = UnitClassification(unit) == 'minus';
