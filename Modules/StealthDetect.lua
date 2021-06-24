@@ -33,6 +33,7 @@ local auras = {
     [311928] = true, -- Sight Beyond Sight
     [319629] = true, -- Sight Beyond Sight
 
+    [203761] = true, -- Detector
     [230368] = true, -- Detector
     [248705] = true, -- Detector
     [276675] = true, -- Detector
