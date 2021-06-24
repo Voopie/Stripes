@@ -5,8 +5,8 @@ local Module = S:NewNameplateModule('Handler');
 local string_find, string_lower, math_ceil, math_max = string.find, string.lower, math.ceil, math.max;
 
 -- WoW API
-local UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsFriend, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
-      UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsFriend, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
+local UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
+      UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
 local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack = UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack;
 local UnitInGuild = U.UnitInGuild;
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
@@ -132,8 +132,9 @@ local function UpdateStatus(unitframe)
     local unit = unitframe.data.unit;
 
     unitframe.data.name         = GetUnitName(unit, true);
-    unitframe.data.reaction     = UnitReaction(PLAYER_UNIT, unit);
+    unitframe.data.reaction     = UnitReaction(PLAYER_UNIT, unit) or UnitReaction(unit, PLAYER_UNIT);
     unitframe.data.factionGroup = UnitFactionGroup(unit);
+    unitframe.data.isPlayer     = UnitIsPlayer(unit);
 
     unitframe.data.canAttack = UnitCanAttack(PLAYER_UNIT, unit);
 
@@ -141,21 +142,17 @@ local function UpdateStatus(unitframe)
         unitframe.data.unitType = 'SELF';
         unitframe.data.commonUnitType = 'SELF';
         unitframe.data.commonReaction = 'FRIENDLY';
-    elseif UnitIsPVPSanctuary(unit) or (unitframe.data.isPlayer and UnitIsFriend(PLAYER_UNIT, unit) and unitframe.data.reaction and unitframe.data.reaction >= 5) then
+    elseif UnitIsPVPSanctuary(unit) then
         unitframe.data.unitType = 'FRIENDLY_PLAYER';
         unitframe.data.commonUnitType = 'PLAYER';
         unitframe.data.commonReaction = 'FRIENDLY';
-    elseif not unitframe.data.isPlayer and (unitframe.data.reaction and unitframe.data.reaction >= 5) or unitframe.data.factionGroup == 'Neutral' then
-        unitframe.data.unitType = 'FRIENDLY_NPC';
-        unitframe.data.commonUnitType = 'NPC';
+    elseif not UnitIsEnemy(PLAYER_UNIT, unit) and (not unitframe.data.reaction or unitframe.data.reaction > 4) then
+        unitframe.data.unitType = (unitframe.data.isPlayer and 'FRIENDLY_PLAYER') or 'FRIENDLY_NPC';
+        unitframe.data.commonUnitType = (unitframe.data.isPlayer and 'PLAYER') or 'NPC';
         unitframe.data.commonReaction = 'FRIENDLY';
-    elseif not unitframe.data.isPlayer and (unitframe.data.reaction and unitframe.data.reaction <= 4) then
-        unitframe.data.unitType = 'ENEMY_NPC';
-        unitframe.data.commonUnitType = 'NPC';
-        unitframe.data.commonReaction = 'ENEMY';
     else
-        unitframe.data.unitType = 'ENEMY_PLAYER';
-        unitframe.data.commonUnitType = 'PLAYER';
+        unitframe.data.unitType = (unitframe.data.isPlayer and 'ENEMY_PLAYER') or 'ENEMY_NPC';
+        unitframe.data.commonUnitType = (unitframe.data.isPlayer and 'PLAYER') or 'NPC';
         unitframe.data.commonReaction = 'ENEMY';
     end
 
@@ -439,6 +436,8 @@ end
 local function ResetNameplateData(unitframe)
     unitframe.data.healthCurrent = 0;
 
+    unitframe.data.reaction = nil;
+
     unitframe.data.unitType = nil;
     unitframe.data.commonUnitType = nil;
     unitframe.data.commonReaction = nil;
@@ -499,7 +498,7 @@ function Module:NAME_PLATE_UNIT_ADDED(unit)
     NP[nameplate].data.level, NP[nameplate].data.classification, NP[nameplate].data.diff = GetUnitLevel(unit);
     NP[nameplate].data.colorR, NP[nameplate].data.colorG, NP[nameplate].data.colorB      = GetUnitColor(unit, 2);
 
-    NP[nameplate].data.reaction     = UnitReaction(PLAYER_UNIT, unit);
+    NP[nameplate].data.reaction     = UnitReaction(PLAYER_UNIT, unit) or UnitReaction(unit, PLAYER_UNIT);
     NP[nameplate].data.factionGroup = UnitFactionGroup(unit);
 
     NP[nameplate].data.minus = UnitClassification(unit) == 'minus';
@@ -512,21 +511,17 @@ function Module:NAME_PLATE_UNIT_ADDED(unit)
         NP[nameplate].data.unitType = 'SELF';
         NP[nameplate].data.commonUnitType = 'SELF';
         NP[nameplate].data.commonReaction = 'FRIENDLY';
-    elseif UnitIsPVPSanctuary(unit) or (NP[nameplate].data.isPlayer and UnitIsFriend(PLAYER_UNIT, unit) and NP[nameplate].data.reaction and NP[nameplate].data.reaction >= 5) then
+    elseif UnitIsPVPSanctuary(unit) then
         NP[nameplate].data.unitType = 'FRIENDLY_PLAYER';
         NP[nameplate].data.commonUnitType = 'PLAYER';
         NP[nameplate].data.commonReaction = 'FRIENDLY';
-    elseif not NP[nameplate].data.isPlayer and (NP[nameplate].data.reaction and NP[nameplate].data.reaction >= 5) or NP[nameplate].data.factionGroup == 'Neutral' then
-        NP[nameplate].data.unitType = 'FRIENDLY_NPC';
-        NP[nameplate].data.commonUnitType = 'NPC';
+    elseif not UnitIsEnemy(PLAYER_UNIT, unit) and (not NP[nameplate].data.reaction or NP[nameplate].data.reaction > 4) then
+        NP[nameplate].data.unitType = (NP[nameplate].data.isPlayer and 'FRIENDLY_PLAYER') or 'FRIENDLY_NPC';
+        NP[nameplate].data.commonUnitType = (NP[nameplate].data.isPlayer and 'PLAYER') or 'NPC';
         NP[nameplate].data.commonReaction = 'FRIENDLY';
-    elseif not NP[nameplate].data.isPlayer and (NP[nameplate].data.reaction and NP[nameplate].data.reaction <= 4) then
-        NP[nameplate].data.unitType = 'ENEMY_NPC';
-        NP[nameplate].data.commonUnitType = 'NPC';
-        NP[nameplate].data.commonReaction = 'ENEMY';
     else
-        NP[nameplate].data.unitType = 'ENEMY_PLAYER';
-        NP[nameplate].data.commonUnitType = 'PLAYER';
+        NP[nameplate].data.unitType = (NP[nameplate].data.isPlayer and 'ENEMY_PLAYER') or 'ENEMY_NPC';
+        NP[nameplate].data.commonUnitType = (NP[nameplate].data.isPlayer and 'PLAYER') or 'NPC';
         NP[nameplate].data.commonReaction = 'ENEMY';
     end
 
@@ -552,9 +547,11 @@ function Module:NAME_PLATE_UNIT_ADDED(unit)
         NP[nameplate].data.previousType = NP[nameplate].data.unitType;
     end
 
+    NP[nameplate].isActive = true;
     S:ForAllNameplateModules('UnitAdded', NP[nameplate]);
 
     if NP[nameplate].data.widgetsOnly then
+        NP[nameplate].isActive = false;
         ResetNameplateData(NP[nameplate]);
         S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
     end
@@ -567,6 +564,7 @@ function Module:NAME_PLATE_UNIT_REMOVED(unit)
         return;
     end
 
+    NP[nameplate].isActive = false;
     ResetNameplateData(NP[nameplate]);
     S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
 end

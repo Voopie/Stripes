@@ -72,7 +72,6 @@ local function AbbrLast(name)
     return name;
 end
 
-
 local GetAbbreviatedName = {
     [1] = function(name)
         return string_gsub(name, ABBR_FORMAT, AbbrSub);
@@ -113,7 +112,7 @@ local function UpdateName(unitframe)
         end
     end
 
-    if unitframe.data.unitType == 'ENEMY_PLAYER' then
+    if unitframe.data.unitType == 'ENEMY_PLAYER' or (unitframe.data.unitType == 'FRIENDLY_PLAYER' and not IsNameOnlyModeAndFriendly()) then
         unitframe.name:SetText(GetName(unitframe));
     end
 end

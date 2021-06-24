@@ -352,7 +352,7 @@ end
 
 function ModulePrototype:CheckUnitFrame(unitframe)
     for _, frame in pairs(NP) do
-        if frame == unitframe then
+        if frame == unitframe and frame.isActive then
             return true;
         end
     end
@@ -362,7 +362,7 @@ end
 
 function ModulePrototype:GetUnitFrame(unitframe)
     for _, frame in pairs(NP) do
-        if frame == unitframe then
+        if frame == unitframe and frame.isActive then
             return frame;
         end
     end
