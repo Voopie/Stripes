@@ -42,18 +42,32 @@ local function UpdateFont(unitframe)
     unitframe.name:SetFontObject(StripesNameFont);
 end
 
-local function GetName(unitframe)
-    local name;
-
-    if NAME_WITHOUT_REALM then
-        name = NAME_TRANSLIT and unitframe.data.nameTranslitWoRealm or unitframe.data.nameWoRealm;
+local function EnemyGetName(unitframe)
+    if NAME_TRANSLIT then
+        return LT:Transliterate(NAME_WITHOUT_REALM and unitframe.data.nameWoRealm or unitframe.data.name);
+    else
+        return NAME_WITHOUT_REALM and unitframe.data.nameWoRealm or unitframe.data.name;
     end
+end
 
-    if not name or name == '' then
-        name = NAME_TRANSLIT and unitframe.data.nameTranslit or unitframe.data.name;
+local function FriendlyGetName(unitframe)
+    if NAME_TRANSLIT then
+        if NAME_PVP then
+            return LT:Transliterate(unitframe.data.namePVP or unitframe.data.name);
+        elseif NAME_WITHOUT_REALM then
+            return LT:Transliterate(unitframe.data.nameWoRealm or unitframe.data.name);
+        end
+
+        return LT:Transliterate(unitframe.data.name);
+    else
+        if NAME_PVP then
+            return unitframe.data.namePVP or unitframe.data.name;
+        elseif NAME_WITHOUT_REALM then
+            return unitframe.data.nameWoRealm or unitframe.data.name;
+        end
+
+        return unitframe.data.name;
     end
-
-    return name;
 end
 
 local function AbbrSub(t)
@@ -74,46 +88,65 @@ end
 
 local GetAbbreviatedName = {
     [1] = function(name)
-        return string_gsub(name, ABBR_FORMAT, AbbrSub);
+        return string_gsub(name or '', ABBR_FORMAT, AbbrSub);
     end,
 
     [2] = function(name)
-        return string_gsub(name, ABBR_FORMAT, AbbrSubSpace);
+        return string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace);
     end,
 
     [3] = function(name)
-        return AbbrLast(name);
+        return AbbrLast(name or '');
     end,
 };
 
 local function UpdateName(unitframe)
     if ABBR_ENABLED and unitframe.data.commonUnitType == 'NPC' then
-        local name = unitframe.data.name;
-        if name then
-            unitframe.name:SetText(GetAbbreviatedName[ABBR_MODE](name));
-            unitframe.data.nameAbbr = unitframe.name:GetText();
-        end
+        unitframe.name:SetText(GetAbbreviatedName[ABBR_MODE](unitframe.data.name));
+        unitframe.data.nameAbbr = unitframe.name:GetText();
     end
 
-    if PlayerState.inArena then
-        if SHOW_ARENA_ID and unitframe.data.unitType == 'ENEMY_PLAYER' then
-            local arenaId = GetUnitArenaId(unitframe.data.unit);
-            if not arenaId then
-                return;
+    if PlayerState.inArena and SHOW_ARENA_ID and unitframe.data.unitType == 'ENEMY_PLAYER' then
+        local arenaId = GetUnitArenaId(unitframe.data.unit);
+        if not arenaId then
+            return;
+        end
+
+        if SHOW_ARENA_ID_SOLO then
+            unitframe.name:SetText(arenaId);
+        else
+            unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, EnemyGetName(unitframe)));
+        end
+
+        return;
+    end
+
+    if IsNameOnlyMode() and NAME_ONLY_COLOR_HEALTH then
+        if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+            if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
+                local name = FriendlyGetName(unitframe);
+
+                local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
+                unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
             end
 
-            if SHOW_ARENA_ID_SOLO then
-                unitframe.name:SetText(arenaId);
-            else
-                unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, GetName(unitframe)));
+            return;
+        elseif not NAME_ONLY_FRIENDLY_PLAYERS_ONLY and unitframe.data.unitType == 'FRIENDLY_NPC' then
+            local name = (ABBR_ENABLED and unitframe.data.nameAbbr ~= '') and unitframe.data.nameAbbr or unitframe.data.name;
+
+            if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
+                local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
+                unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
             end
 
             return;
         end
     end
 
-    if unitframe.data.unitType == 'ENEMY_PLAYER' or (not IsNameOnlyMode() and unitframe.data.unitType == 'FRIENDLY_PLAYER') then
-        unitframe.name:SetText(GetName(unitframe));
+    if unitframe.data.unitType == 'ENEMY_PLAYER' then
+        unitframe.name:SetText(EnemyGetName(unitframe));
+    elseif unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+        unitframe.name:SetText(FriendlyGetName(unitframe));
     end
 end
 
@@ -296,22 +329,6 @@ local function NameOnly_UpdateHealthBar(unitframe)
     end
 end
 
-local function NameOnly_GetName(unitframe)
-    local name;
-
-    if NAME_PVP then
-        name = NAME_TRANSLIT and unitframe.data.nameTranslitPVP or unitframe.data.namePVP;
-    elseif NAME_WITHOUT_REALM then
-        name = NAME_TRANSLIT and unitframe.data.nameTranslitWoRealm or unitframe.data.nameWoRealm;
-    end
-
-    if not name or name == '' then
-        name = NAME_TRANSLIT and unitframe.data.nameTranslit or unitframe.data.name;
-    end
-
-    return name;
-end
-
 local function NameOnly_UpdateNameHealth(unitframe)
     if not IsNameOnlyMode() then
         return;
@@ -320,7 +337,7 @@ local function NameOnly_UpdateNameHealth(unitframe)
     if NAME_ONLY_COLOR_HEALTH then
         if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
             if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
-                local name = NameOnly_GetName(unitframe);
+                local name = FriendlyGetName(unitframe);
 
                 local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
                 unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
@@ -448,7 +465,7 @@ function Module:UpdateLocalConfig()
 
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
 
-    NAME_PVP = O.db.name_only_friendly_name_pvp;
+    NAME_PVP = O.db.name_text_with_title;
 
     NAME_WITHOUT_REALM = O.db.name_without_realm;
 

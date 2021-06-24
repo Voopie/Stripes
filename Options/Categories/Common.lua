@@ -53,8 +53,19 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.name_text_with_title = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.name_text_with_title:SetPosition('LEFT', self.name_without_realm.Label, 'RIGHT', 12, 0);
+    self.name_text_with_title:SetLabel(L['OPTIONS_NAME_TEXT_WITH_TITLE']);
+    self.name_text_with_title:SetTooltip(L['OPTIONS_NAME_TEXT_WITH_TITLE_TOOLTIP']);
+    self.name_text_with_title:AddToSearch(button, L['OPTIONS_NAME_TEXT_WITH_TITLE_TOOLTIP'], self.Tabs[1]);
+    self.name_text_with_title:SetChecked(O.db.name_text_with_title);
+    self.name_text_with_title.Callback = function(self)
+        O.db.name_text_with_title = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     self.name_text_translit = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_translit:SetPosition('LEFT', self.name_without_realm.Label, 'RIGHT', 12, 0);
+    self.name_text_translit:SetPosition('LEFT', self.name_text_with_title.Label, 'RIGHT', 12, 0);
     self.name_text_translit:SetLabel(L['OPTIONS_NAME_TEXT_TRANSLIT']);
     self.name_text_translit:SetChecked(O.db.name_text_translit);
     self.name_text_translit:SetTooltip(L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP']);

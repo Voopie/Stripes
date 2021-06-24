@@ -220,6 +220,7 @@ O.DefaultValues = {
     name_text_custom_color           = { 1, 0.85, 0, 1},
     name_without_realm               = false,
     name_text_translit               = false,
+    name_text_with_title             = false,
 
     health_text_enabled      = true,
     health_text_hide_full    = false,
@@ -403,7 +404,6 @@ O.DefaultValues = {
     name_only_friendly_guild_name_same_color = { 0.15, 0.85, 0.35, 1 },
     name_only_friendly_y_offset              = 0,
     name_only_friendly_players_only          = false,
-    name_only_friendly_name_pvp              = false,
     name_only_friendly_stacking              = false,
 
     selected_alpha      = tonumber(C_CVar.GetCVar('nameplateSelectedAlpha')), -- 1

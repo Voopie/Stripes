@@ -173,6 +173,8 @@ L['OPTIONS_NAME_WITHOUT_REALM'] = 'Without realm';
 L['OPTIONS_NAME_WITHOUT_REALM_TOOLTIP'] = 'Show player names without realm name';
 L['OPTIONS_NAME_TEXT_TRANSLIT'] = 'Transliteration';
 L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP'] = 'Transliteration of player names with Cyrillic letters';
+L['OPTIONS_NAME_TEXT_WITH_TITLE'] = 'With title';
+L['OPTIONS_NAME_TEXT_WITH_TITLE_TOOLTIP'] = 'Show the name along with the title (for friendly players)';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Show health text';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Hide full';
@@ -426,8 +428,6 @@ L['OPTIONS_VISIBILITY_NAME_ONLY_Y_OFFSET'] = 'Vertical offset';
 L['OPTIONS_VISIBILITY_NAME_ONLY_Y_OFFSET_TOOLTIP'] = 'Vertical offset of the name in the «Name Only» mode|n|n|cffff6666Only in open world|r';
 L['OPTIONS_VISIBILITY_NAME_ONLY_PLAYERS_ONLY'] = 'Players only';
 L['OPTIONS_VISIBILITY_NAME_ONLY_PLAYERS_ONLY_TOOLTIP'] = 'Show only players in the «Name Only» mode|n|n|cffff6666Only in open world|r';
-L['OPTIONS_VISIBILITY_NAME_ONLY_NAME_PVP'] = 'Name with title';
-L['OPTIONS_VISIBILITY_NAME_ONLY_NAME_PVP_TOOLTIP'] = 'Show the name along with the title in the «Name Only» mode|n|n|cffff6666Only in open world|r';
 L['OPTIONS_VISIBILITY_NAME_ONLY_STACKING'] = 'Stacking';
 L['OPTIONS_VISIBILITY_NAME_ONLY_STACKING_TOOLTIP'] = 'Overlap friendly nameplates in «Name Only» mode';
 L['OPTIONS_VISIBILITY_SHOW_ENEMY'] = 'Show';

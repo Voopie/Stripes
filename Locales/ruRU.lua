@@ -173,6 +173,8 @@ L['OPTIONS_NAME_WITHOUT_REALM'] = 'Без сервера';
 L['OPTIONS_NAME_WITHOUT_REALM_TOOLTIP'] = 'Показывать имена игроков без названия сервера';
 L['OPTIONS_NAME_TEXT_TRANSLIT'] = 'Транслитерация';
 L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP'] = 'Транслитерация имён игроков с кириллическими буквами';
+L['OPTIONS_NAME_TEXT_WITH_TITLE'] = 'Со званием';
+L['OPTIONS_NAME_TEXT_WITH_TITLE_TOOLTIP'] = 'Показывать имя вместе со званием (для дружественных игроков)';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Показывать здоровье текстом';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Скрывать полное';
@@ -426,8 +428,6 @@ L['OPTIONS_VISIBILITY_NAME_ONLY_Y_OFFSET'] = 'Смещение имени по �
 L['OPTIONS_VISIBILITY_NAME_ONLY_Y_OFFSET_TOOLTIP'] = 'Смещение имени по вертикали в режиме «Только имя»|n|n|cffff6666Только в открытом мире|r';
 L['OPTIONS_VISIBILITY_NAME_ONLY_PLAYERS_ONLY'] = 'Только игроки';
 L['OPTIONS_VISIBILITY_NAME_ONLY_PLAYERS_ONLY_TOOLTIP'] = 'Показывать только игроков в режиме «Только имя»|n|n|cffff6666Только в открытом мире|r';
-L['OPTIONS_VISIBILITY_NAME_ONLY_NAME_PVP'] = 'Имя со званием';
-L['OPTIONS_VISIBILITY_NAME_ONLY_NAME_PVP_TOOLTIP'] = 'Показывать имя вместе со званием в режиме «Только имя»|n|n|cffff6666Только в открытом мире|r';
 L['OPTIONS_VISIBILITY_NAME_ONLY_STACKING'] = 'Наложение';
 L['OPTIONS_VISIBILITY_NAME_ONLY_STACKING_TOOLTIP'] = 'Накладывать друг на друга дружественные неймплейты в режиме «Только имя»';
 L['OPTIONS_VISIBILITY_SHOW_ENEMY'] = 'Показывать';
