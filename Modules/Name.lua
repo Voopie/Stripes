@@ -112,7 +112,7 @@ local function UpdateName(unitframe)
         end
     end
 
-    if unitframe.data.unitType == 'ENEMY_PLAYER' or (unitframe.data.unitType == 'FRIENDLY_PLAYER' and not IsNameOnlyModeAndFriendly()) then
+    if unitframe.data.unitType == 'ENEMY_PLAYER' or (unitframe.data.unitType == 'FRIENDLY_PLAYER' and not IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack)) then
         unitframe.name:SetText(GetName(unitframe));
     end
 end
