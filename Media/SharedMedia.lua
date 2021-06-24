@@ -195,7 +195,7 @@ S.Media.Fonts = {
         LIGHTITALIC  = M .. 'Fonts\\gotham-pro-light-italic.otf',
         MEDIUM       = M .. 'Fonts\\gotham-pro-medium.otf',
         MEDIUMITALIC = M .. 'Fonts\\gotham-pro-medium-italic.otf',
-        NARROW       = M .. 'Fonts\\gotham-pro-narrow.otf',
+        NARROWMEDIUM = M .. 'Fonts\\gotham-pro-narrow-medium.otf',
         NARROWBOLD   = M .. 'Fonts\\gotham-pro-narrow-bold.otf',
     },
 
@@ -284,7 +284,7 @@ LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Light', S.Media.Fonts.GOTHAMPRO.LIG
 LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Light Italic', S.Media.Fonts.GOTHAMPRO.LIGHTITALIC, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Medium', S.Media.Fonts.GOTHAMPRO.MEDIUM, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Medium Italic', S.Media.Fonts.GOTHAMPRO.MEDIUMITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Narrow', S.Media.Fonts.GOTHAMPRO.NARROW, LOCALE_WEST_AND_RU);
+LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Narrow Medium', S.Media.Fonts.GOTHAMPRO.NARROWMEDIUM, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Narrow Bold', S.Media.Fonts.GOTHAMPRO.NARROWBOLD, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Oswald Regular', S.Media.Fonts.OSWALD.REGULAR, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Oswald Regular Italic', S.Media.Fonts.OSWALD.REGULARITALIC, LOCALE_WEST_AND_RU);
