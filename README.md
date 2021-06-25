@@ -13,6 +13,7 @@
 ### ***Chat commands:***
 - /stripes - to toggle options
 - /stripes minimap - to toggle visibility of the minimap button
+- /stripes profile PROFILENAME - to change profile
 ---
 
 ## Copyright
