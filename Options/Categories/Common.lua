@@ -61,11 +61,27 @@ panel.Load = function(self)
     self.name_text_with_title:SetChecked(O.db.name_text_with_title);
     self.name_text_with_title.Callback = function(self)
         O.db.name_text_with_title = self:GetChecked();
+
+        panel.name_text_with_title_mode:SetEnabled(O.db.name_text_with_title);
+
+        Handler:UpdateAll();
+    end
+
+    self.name_text_with_title_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_with_title_mode:SetPosition('LEFT', self.name_text_with_title.Label, 'RIGHT', 12, 0);
+    self.name_text_with_title_mode:SetSize(170, 20);
+    self.name_text_with_title_mode:SetList(O.Lists.name_text_with_title_mode);
+    self.name_text_with_title_mode:SetValue(O.db.name_text_with_title_mode);
+    self.name_text_with_title_mode:SetTooltip(L['OPTIONS_NAME_TEXT_WITH_TITLE_MODE_TOOLTIP']);
+    self.name_text_with_title_mode:AddToSearch(button, L['OPTIONS_NAME_TEXT_WITH_TITLE_MODE_TOOLTIP'], self.Tabs[1]);
+    self.name_text_with_title_mode:SetEnabled(O.db.name_text_with_title);
+    self.name_text_with_title_mode.OnValueChangedCallback = function(_, value)
+        O.db.name_text_with_title_mode = tonumber(value);
         Handler:UpdateAll();
     end
 
     self.name_text_translit = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_translit:SetPosition('LEFT', self.name_text_with_title.Label, 'RIGHT', 12, 0);
+    self.name_text_translit:SetPosition('TOPLEFT', self.name_text_enabled, 'BOTTOMLEFT', 0, -8);
     self.name_text_translit:SetLabel(L['OPTIONS_NAME_TEXT_TRANSLIT']);
     self.name_text_translit:SetChecked(O.db.name_text_translit);
     self.name_text_translit:SetTooltip(L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP']);
@@ -75,8 +91,19 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.name_text_replace_diacritics = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.name_text_replace_diacritics:SetPosition('LEFT', self.name_text_translit.Label, 'RIGHT', 12, 0);
+    self.name_text_replace_diacritics:SetLabel(L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS']);
+    self.name_text_replace_diacritics:SetChecked(O.db.name_text_replace_diacritics);
+    self.name_text_replace_diacritics:SetTooltip(L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS_TOOLTIP']);
+    self.name_text_replace_diacritics:AddToSearch(button, L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS_TOOLTIP'], self.Tabs[1]);
+    self.name_text_replace_diacritics.Callback = function(self)
+        O.db.name_text_replace_diacritics = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     self.name_text_font_value = E.CreateDropdown('font', self.TabsFrames['NameTab'].Content);
-    self.name_text_font_value:SetPosition('TOPLEFT', self.name_text_enabled, 'BOTTOMLEFT', 0, -12);
+    self.name_text_font_value:SetPosition('TOPLEFT', self.name_text_translit, 'BOTTOMLEFT', 0, -12);
     self.name_text_font_value:SetSize(160, 20);
     self.name_text_font_value:SetList(LSM:HashTable('font'));
     self.name_text_font_value:SetValue(O.db.name_text_font_value);

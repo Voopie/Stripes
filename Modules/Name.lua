@@ -20,14 +20,15 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Libraries
 local LT = S.Libraries.LT;
+local LDC = S.Libraries.LDC;
 
 -- Local Config
 local POSITION, POSITION_V, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE, COLORING_MODE_NPC;
 local NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
-local NAME_PVP, NAME_WITHOUT_REALM;
+local NAME_WITH_TITLE_ENABLED, NAME_WITH_TITLE_UNIT_TYPE, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
 local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
-local NAME_TRANSLIT;
+local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 
 local StripesNameFont      = CreateFont('StripesNameFont');
 local StripesGuildNameFont = CreateFont('StripesGuildNameFont');
@@ -38,27 +39,53 @@ local ARENAID_STRING_FORMAT = '%s  %s';
 local GUILD_NAME_FORMAT = '«%s»';
 local GREY_COLOR_START = '|cff666666';
 
+local NAME_WITH_TITLE_MODES = {
+    [1] = 'ALL',
+    [2] = 'FRIENDLY_PLAYER',
+    [3] = 'ENEMY_PLAYER',
+};
+
 local function UpdateFont(unitframe)
     unitframe.name:SetFontObject(StripesNameFont);
 end
 
-local function GetName(unitframe)
+local function GetPlayerName(unitframe)
     if NAME_TRANSLIT then
-        if NAME_PVP then
-            return LT:Transliterate(unitframe.data.namePVP or unitframe.data.name);
+        if NAME_WITH_TITLE_ENABLED then
+            if unitframe.data.unitType == NAME_WITH_TITLE_UNIT_TYPE or NAME_WITH_TITLE_UNIT_TYPE == 'ALL' then
+                if NAME_REPLACE_DIACRITICS then
+                    return LDC:Replace(LT:Transliterate(unitframe.data.namePVP or unitframe.data.name));
+                else
+                    return LT:Transliterate(unitframe.data.namePVP or unitframe.data.name);
+                end
+            end
         elseif NAME_WITHOUT_REALM then
-            return LT:Transliterate(unitframe.data.nameWoRealm or unitframe.data.name);
+            if NAME_REPLACE_DIACRITICS then
+                return LDC:Replace(LT:Transliterate(unitframe.data.nameWoRealm or unitframe.data.name));
+            else
+                return LT:Transliterate(unitframe.data.nameWoRealm or unitframe.data.name);
+            end
         end
 
-        return LT:Transliterate(unitframe.data.name);
+        return NAME_REPLACE_DIACRITICS and LDC:Replace(LT:Transliterate(unitframe.data.name)) or LT:Transliterate(unitframe.data.name);
     else
-        if NAME_PVP then
-            return unitframe.data.namePVP or unitframe.data.name;
+        if NAME_WITH_TITLE_ENABLED then
+            if unitframe.data.unitType == NAME_WITH_TITLE_UNIT_TYPE or NAME_WITH_TITLE_UNIT_TYPE == 'ALL' then
+                if NAME_REPLACE_DIACRITICS then
+                    return LDC:Replace(unitframe.data.namePVP or unitframe.data.name);
+                else
+                    return unitframe.data.namePVP or unitframe.data.name;
+                end
+            end
         elseif NAME_WITHOUT_REALM then
-            return unitframe.data.nameWoRealm or unitframe.data.name;
+            if NAME_REPLACE_DIACRITICS then
+                return LDC:Replace(unitframe.data.nameWoRealm or unitframe.data.name);
+            else
+                return unitframe.data.nameWoRealm or unitframe.data.name;
+            end
         end
 
-        return unitframe.data.name;
+        return NAME_REPLACE_DIACRITICS and LDC:Replace(unitframe.data.name) or unitframe.data.name;
     end
 end
 
@@ -107,16 +134,14 @@ local function UpdateName(unitframe)
         if SHOW_ARENA_ID_SOLO then
             unitframe.name:SetText(arenaId);
         else
-            unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, GetName(unitframe)));
+            unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, GetPlayerName(unitframe)));
         end
 
         return;
     end
 
-    if unitframe.data.unitType == 'ENEMY_PLAYER' then
-        unitframe.name:SetText(GetName(unitframe));
-    elseif unitframe.data.unitType == 'FRIENDLY_PLAYER' and not (IsNameOnlyMode() and NAME_ONLY_COLOR_HEALTH) then
-        unitframe.name:SetText(GetName(unitframe));
+    if unitframe.data.unitType == 'ENEMY_PLAYER' or (unitframe.data.unitType == 'FRIENDLY_PLAYER' and not (IsNameOnlyMode() and NAME_ONLY_COLOR_HEALTH)) then
+        unitframe.name:SetText(GetPlayerName(unitframe));
     end
 end
 
@@ -306,11 +331,15 @@ local function NameOnly_UpdateNameHealth(unitframe)
 
     if NAME_ONLY_COLOR_HEALTH then
         if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
-            if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
-                local name = GetName(unitframe);
+            if unitframe.data.isConnected then
+                if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
+                    local name = GetPlayerName(unitframe);
 
-                local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
-                unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
+                    local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
+                    unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
+                end
+            else
+                unitframe.name:SetText(GREY_COLOR_START .. GetPlayerName(unitframe));
             end
         elseif not NAME_ONLY_FRIENDLY_PLAYERS_ONLY and unitframe.data.unitType == 'FRIENDLY_NPC' then
             local name = (ABBR_ENABLED and unitframe.data.nameAbbr ~= '') and unitframe.data.nameAbbr or unitframe.data.name;
@@ -435,13 +464,15 @@ function Module:UpdateLocalConfig()
 
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
 
-    NAME_PVP = O.db.name_text_with_title;
+    NAME_WITH_TITLE_ENABLED = O.db.name_text_with_title;
+    NAME_WITH_TITLE_UNIT_TYPE = NAME_WITH_TITLE_MODES[O.db.name_text_with_title_mode];
 
     NAME_WITHOUT_REALM = O.db.name_without_realm;
 
     NAME_TEXT_ENABLED = O.db.name_text_enabled;
 
     NAME_TRANSLIT = O.db.name_text_translit;
+    NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
 
     RAID_TARGET_ICON_SHOW              = O.db.raid_target_icon_show;
     RAID_TARGET_ICON_SCALE             = O.db.raid_target_icon_scale;
@@ -462,6 +493,7 @@ function Module:StartUp()
     self:UpdateLocalConfig();
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', NameOnly_UpdateNameHealth);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', NameOnly_UpdateNameHealth);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
         UpdateName(unitframe);

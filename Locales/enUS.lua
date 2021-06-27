@@ -175,6 +175,12 @@ L['OPTIONS_NAME_TEXT_TRANSLIT'] = 'Transliteration';
 L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP'] = 'Transliteration of player names with Cyrillic letters';
 L['OPTIONS_NAME_TEXT_WITH_TITLE'] = 'With title';
 L['OPTIONS_NAME_TEXT_WITH_TITLE_TOOLTIP'] = 'Show the name along with the title';
+L['OPTIONS_NAME_TEXT_WITH_TITLE_MODE_TOOLTIP'] = 'Name with title display mode';
+L['OPTIONS_NAME_WITH_TITLE_MODE_ALL'] = 'All';
+L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_FRIENDLY'] = 'Only friendly';
+L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_ENEMY'] = 'Only enemy';
+L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS'] = 'Replace diacritics';
+L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS_TOOLTIP'] = 'Replace diacritical signs in the name with regular letters (for example, Æ » AE, ð » eth)';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Show health text';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Hide full';

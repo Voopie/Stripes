@@ -5,8 +5,8 @@ local Module = S:NewNameplateModule('Handler');
 local string_find, string_lower, math_ceil, math_max = string.find, string.lower, math.ceil, math.max;
 
 -- WoW API
-local UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
-      UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
+local UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
+      UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
 local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack = UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack;
 local UnitInGuild = U.UnitInGuild;
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
@@ -47,6 +47,7 @@ Module.UpdateAll = function()
             CompactUnitFrame_UpdateHealthBorder(unitframe);
             CompactUnitFrame_UpdateHealPrediction(unitframe);
             CompactUnitFrame_UpdateWidgetsOnlyMode(unitframe);
+            CompactUnitFrame_UpdateStatusText(unitframe);
         end
 
         S:ForAllNameplateModules('Update', unitframe);
@@ -177,6 +178,10 @@ end
 
 local function UpdateClassification(unitframe)
     unitframe.data.level, unitframe.data.classification, unitframe.data.diff = GetUnitLevel(unitframe.data.unit);
+end
+
+local function UpdateConnection(unitframe)
+    unitframe.data.isConnected = UnitIsConnected(unitframe.data.unit);
 end
 
 local function CVarsReset()
@@ -506,6 +511,8 @@ function Module:NAME_PLATE_UNIT_ADDED(unit)
 
     NP[nameplate].data.canAttack = UnitCanAttack(PLAYER_UNIT, unit);
 
+    NP[nameplate].data.isConnected = UnitIsConnected(unit);
+
     if UnitIsUnit(unit, PLAYER_UNIT) then
         NP[nameplate].data.unitType = 'SELF';
         NP[nameplate].data.commonUnitType = 'SELF';
@@ -617,6 +624,7 @@ function Module:StartUp()
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', UpdateStatus);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateWidgetsOnlyMode', UpdateWidgetStatus);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateClassificationIndicator', UpdateClassification);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', UpdateConnection);
 
     self:RegisterEvent('PLAYER_LOGIN');
     self:RegisterEvent('PLAYER_ENTERING_WORLD');

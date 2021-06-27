@@ -175,6 +175,12 @@ L['OPTIONS_NAME_TEXT_TRANSLIT'] = 'Транслитерация';
 L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP'] = 'Транслитерация имён игроков с кириллическими буквами';
 L['OPTIONS_NAME_TEXT_WITH_TITLE'] = 'Со званием';
 L['OPTIONS_NAME_TEXT_WITH_TITLE_TOOLTIP'] = 'Показывать имя вместе со званием';
+L['OPTIONS_NAME_TEXT_WITH_TITLE_MODE_TOOLTIP'] = 'Режим отображения имени со званием';
+L['OPTIONS_NAME_WITH_TITLE_MODE_ALL'] = 'У всех';
+L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_FRIENDLY'] = 'Только дружественные';
+L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_ENEMY'] = 'Только враждебные';
+L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS'] = 'Замена диакритических знаков';
+L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS_TOOLTIP'] = 'Заменять в имени диакритические знаки на обычные буквы (например, Æ » AE, ð » eth)';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Показывать здоровье текстом';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Скрывать полное';

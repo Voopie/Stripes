@@ -192,6 +192,12 @@ O.Lists = {
         [2] = L['GLOW_TYPE_AUTOCAST'],
         [3] = L['GLOW_TYPE_BUTTON'],
     },
+
+    name_text_with_title_mode = {
+        [1] = L['OPTIONS_NAME_WITH_TITLE_MODE_ALL'],
+        [2] = L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_FRIENDLY'],
+        [3] = L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_ENEMY'],
+    },
 };
 
 O.DefaultValues = {
@@ -221,6 +227,8 @@ O.DefaultValues = {
     name_without_realm               = false,
     name_text_translit               = false,
     name_text_with_title             = false,
+    name_text_with_title_mode        = 1, -- ALL
+    name_text_replace_diacritics     = false,
 
     health_text_enabled      = true,
     health_text_hide_full    = false,

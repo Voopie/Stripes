@@ -14,5 +14,6 @@
     <Script file="LibSerialize\LibSerialize.lua" />
     <Script file="LibDeflate.lua" />
     <Script file="LibTranslit-1.0.lua" />
+    <Script file="LibDiacritics.lua" />
     <Include file="LibPlayerSpells-1.0\lib.xml" />
 </Ui>
