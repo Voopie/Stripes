@@ -144,22 +144,30 @@ local function UpdateStatus(unitframe)
         unitframe.data.commonUnitType = 'PLAYER';
         unitframe.data.commonReaction = 'FRIENDLY';
     elseif not UnitIsEnemy(PLAYER_UNIT, unit) and (not unitframe.data.reaction or unitframe.data.reaction > 4) then
-        unitframe.data.unitType = (unitframe.data.isPlayer and 'FRIENDLY_PLAYER') or 'FRIENDLY_NPC';
-        unitframe.data.commonUnitType = (unitframe.data.isPlayer and 'PLAYER') or 'NPC';
+        if unitframe.data.isPlayer then
+            unitframe.data.unitType = 'FRIENDLY_PLAYER';
+            unitframe.data.commonUnitType = 'PLAYER';
+        else
+            unitframe.data.unitType = 'FRIENDLY_NPC';
+            unitframe.data.commonUnitType = 'NPC';
+        end
+
         unitframe.data.commonReaction = 'FRIENDLY';
     else
-        unitframe.data.unitType = (unitframe.data.isPlayer and 'ENEMY_PLAYER') or 'ENEMY_NPC';
-        unitframe.data.commonUnitType = (unitframe.data.isPlayer and 'PLAYER') or 'NPC';
+        if unitframe.data.isPlayer then
+            unitframe.data.unitType = 'ENEMY_PLAYER';
+            unitframe.data.commonUnitType = 'PLAYER';
+        else
+            unitframe.data.unitType = 'ENEMY_NPC';
+            unitframe.data.commonUnitType = 'NPC';
+        end
+
         unitframe.data.commonReaction = 'ENEMY';
     end
 
-    if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+    if unitframe.data.commonUnitType == 'PLAYER' then
         unitframe.data.nameWoRealm, unitframe.data.realm = UnitName(unit);
         unitframe.data.namePVP = UnitPVPName(unit);
-    end
-
-    if unitframe.data.unitType == 'ENEMY_PLAYER' then
-        unitframe.data.nameWoRealm, unitframe.data.realm = UnitName(unit);
     end
 end
 
@@ -507,23 +515,34 @@ function Module:NAME_PLATE_UNIT_ADDED(unit)
         NP[nameplate].data.commonUnitType = 'PLAYER';
         NP[nameplate].data.commonReaction = 'FRIENDLY';
     elseif not UnitIsEnemy(PLAYER_UNIT, unit) and (not NP[nameplate].data.reaction or NP[nameplate].data.reaction > 4) then
-        NP[nameplate].data.unitType = (NP[nameplate].data.isPlayer and 'FRIENDLY_PLAYER') or 'FRIENDLY_NPC';
-        NP[nameplate].data.commonUnitType = (NP[nameplate].data.isPlayer and 'PLAYER') or 'NPC';
+        if NP[nameplate].data.isPlayer then
+            NP[nameplate].data.unitType = 'FRIENDLY_PLAYER';
+            NP[nameplate].data.commonUnitType = 'PLAYER';
+        else
+            NP[nameplate].data.unitType = 'FRIENDLY_NPC';
+            NP[nameplate].data.commonUnitType = 'NPC';
+        end
+
         NP[nameplate].data.commonReaction = 'FRIENDLY';
     else
-        NP[nameplate].data.unitType = (NP[nameplate].data.isPlayer and 'ENEMY_PLAYER') or 'ENEMY_NPC';
-        NP[nameplate].data.commonUnitType = (NP[nameplate].data.isPlayer and 'PLAYER') or 'NPC';
+        if NP[nameplate].data.isPlayer then
+            NP[nameplate].data.unitType = 'ENEMY_PLAYER';
+            NP[nameplate].data.commonUnitType = 'PLAYER';
+        else
+            NP[nameplate].data.unitType = 'ENEMY_NPC';
+            NP[nameplate].data.commonUnitType = 'NPC';
+        end
+
         NP[nameplate].data.commonReaction = 'ENEMY';
+    end
+
+    if unitframe.data.commonUnitType == 'PLAYER' then
+        unitframe.data.nameWoRealm, unitframe.data.realm = UnitName(unit);
+        unitframe.data.namePVP = UnitPVPName(unit);
     end
 
     if NP[nameplate].data.unitType == 'FRIENDLY_PLAYER' then
         NP[nameplate].data.guild   = UnitInGuild(unit);
-        NP[nameplate].data.nameWoRealm, NP[nameplate].data.realm = UnitName(unit);
-        NP[nameplate].data.namePVP = UnitPVPName(unit);
-    end
-
-    if NP[nameplate].data.unitType == 'ENEMY_PLAYER' then
-        NP[nameplate].data.nameWoRealm, NP[nameplate].data.realm = UnitName(unit);
     end
 
     if NP[nameplate].data.widgetsOnly then

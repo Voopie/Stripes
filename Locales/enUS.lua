@@ -174,7 +174,7 @@ L['OPTIONS_NAME_WITHOUT_REALM_TOOLTIP'] = 'Show player names without realm name'
 L['OPTIONS_NAME_TEXT_TRANSLIT'] = 'Transliteration';
 L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP'] = 'Transliteration of player names with Cyrillic letters';
 L['OPTIONS_NAME_TEXT_WITH_TITLE'] = 'With title';
-L['OPTIONS_NAME_TEXT_WITH_TITLE_TOOLTIP'] = 'Show the name along with the title (for friendly players)';
+L['OPTIONS_NAME_TEXT_WITH_TITLE_TOOLTIP'] = 'Show the name along with the title';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Show health text';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Hide full';

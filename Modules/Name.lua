@@ -42,15 +42,7 @@ local function UpdateFont(unitframe)
     unitframe.name:SetFontObject(StripesNameFont);
 end
 
-local function EnemyGetName(unitframe)
-    if NAME_TRANSLIT then
-        return LT:Transliterate(NAME_WITHOUT_REALM and unitframe.data.nameWoRealm or unitframe.data.name);
-    else
-        return NAME_WITHOUT_REALM and unitframe.data.nameWoRealm or unitframe.data.name;
-    end
-end
-
-local function FriendlyGetName(unitframe)
+local function GetName(unitframe)
     if NAME_TRANSLIT then
         if NAME_PVP then
             return LT:Transliterate(unitframe.data.namePVP or unitframe.data.name);
@@ -115,16 +107,16 @@ local function UpdateName(unitframe)
         if SHOW_ARENA_ID_SOLO then
             unitframe.name:SetText(arenaId);
         else
-            unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, EnemyGetName(unitframe)));
+            unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, GetName(unitframe)));
         end
 
         return;
     end
 
     if unitframe.data.unitType == 'ENEMY_PLAYER' then
-        unitframe.name:SetText(EnemyGetName(unitframe));
+        unitframe.name:SetText(GetName(unitframe));
     elseif unitframe.data.unitType == 'FRIENDLY_PLAYER' and not (IsNameOnlyMode() and NAME_ONLY_COLOR_HEALTH) then
-        unitframe.name:SetText(FriendlyGetName(unitframe));
+        unitframe.name:SetText(GetName(unitframe));
     end
 end
 
@@ -315,7 +307,7 @@ local function NameOnly_UpdateNameHealth(unitframe)
     if NAME_ONLY_COLOR_HEALTH then
         if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
             if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
-                local name = FriendlyGetName(unitframe);
+                local name = GetName(unitframe);
 
                 local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
                 unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
