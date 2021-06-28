@@ -258,6 +258,10 @@ local function CreateListRow(b)
     E.CreateTooltip(b, nil, nil, true);
 
     b:HookScript('OnEnter', function(self)
+        if self.name == UNKNOWN then
+            return;
+        end
+
         if modelBlacklist[self.npc_id] then
             return;
         end
