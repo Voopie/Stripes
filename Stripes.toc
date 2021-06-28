@@ -1,4 +1,4 @@
-## Interface: 90005
+## Interface: 90100
 ## Author: Voopie
 ## Title: Stripes
 ## Notes: Yet another nameplates customization addon
