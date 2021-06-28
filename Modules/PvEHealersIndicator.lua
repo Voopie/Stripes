@@ -74,9 +74,9 @@ local mobsIDs = {
 
     [165529] = true, -- Halls of Atonement: Depraved Collector
 
-    -- [177817] = true, -- Tazavesh (Lower): Support Officer
-    -- [178141] = true, -- Tazavesh (Upper): Murkbrine Scalebinder
-    -- [180432] = true, -- Tazavesh (Upper): Devoted Accomplice
+    [177817] = true, -- Tazavesh (Lower): Support Officer
+    [178141] = true, -- Tazavesh (Upper): Murkbrine Scalebinder
+    [180432] = true, -- Tazavesh (Upper): Devoted Accomplice
 };
 
 local function Create(unitframe)

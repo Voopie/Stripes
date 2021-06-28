@@ -150,9 +150,9 @@ O.Lists = {
         [7]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_SD'],
         [8]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_SOA'],
         [9]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_TOP'],
-        -- [x]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_TTVM'],
-        [10] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_CN'],
-        -- [x]  = S.Media.RAID_ICON_INLINE .. L['RAID_SL_SOD'],
+        [10] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_TTVM'],
+        [11] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_CN'],
+        [12] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOD'],
     },
 
     quest_indicator_position = {
