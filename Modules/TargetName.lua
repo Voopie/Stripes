@@ -25,26 +25,26 @@ local elapsed = 0;
 
 local function TargetChanged(unitframe)
     if unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
-        unitframe.TargetName.text:SetShown(false);
+        unitframe.TargetName:SetShown(false);
         return;
     end
 
-    if unitframe.TargetName.targetName then
-        if unitframe.TargetName.targetName == PlayerName then
+    if unitframe.data.targetName then
+        if unitframe.data.targetName == PlayerName then
             if NOT_ME then
-                unitframe.TargetName.text:SetText('');
+                unitframe.TargetName:SetText('');
             else
-                unitframe.TargetName.text:SetText('»  ' .. YOU);
-                unitframe.TargetName.text:SetTextColor(1, 0.2, 0.2);
+                unitframe.TargetName:SetText('»  ' .. YOU);
+                unitframe.TargetName:SetTextColor(1, 0.2, 0.2);
             end
         else
-            unitframe.TargetName.text:SetText('»  ' .. unitframe.TargetName.targetName);
-            unitframe.TargetName.text:SetTextColor(GetUnitColor(unitframe.data.unit .. 'target', 2));
+            unitframe.TargetName:SetText('»  ' .. unitframe.data.targetName);
+            unitframe.TargetName:SetTextColor(GetUnitColor(unitframe.data.unit .. 'target', 2));
         end
 
-        unitframe.TargetName.text:SetShown(true);
+        unitframe.TargetName:SetShown(true);
     else
-        unitframe.TargetName.text:SetShown(false);
+        unitframe.TargetName:SetShown(false);
     end
 end
 
@@ -58,8 +58,8 @@ local function OnUpdate(_, elap)
             if unitframe:IsShown() then
                 local name = UnitName(unitframe.data.unit .. 'target');
 
-                if unitframe.TargetName.targetName ~= name then
-                    unitframe.TargetName.targetName = name;
+                if unitframe.data.targetName ~= name then
+                    unitframe.data.targetName = name;
                     TargetChanged(unitframe);
                 end
             end
@@ -72,20 +72,15 @@ local function Create(unitframe)
         return;
     end
 
-    local text = unitframe:CreateFontString(nil, 'OVERLAY', 'StripesNameFont');
-    PixelUtil.SetPoint(text, 'LEFT', unitframe.name, 'RIGHT', 2, 0);
-    text:SetTextColor(1, 1, 1);
-
-    unitframe.TargetName = {
-        text       = text,
-        targetName = UnitName(unitframe.data.unit .. 'target'),
-    };
+    unitframe.TargetName = unitframe:CreateFontString(nil, 'OVERLAY', 'StripesNameFont');
+    PixelUtil.SetPoint(unitframe.TargetName, 'LEFT', unitframe.name, 'RIGHT', 2, 0);
+    unitframe.TargetName:SetTextColor(1, 1, 1, 1);
+    unitframe.TargetName:SetShown(false);
 end
 
 local function Reset(unitframe)
     if unitframe.TargetName then
-        unitframe.TargetName.text:SetText('');
-        unitframe.TargetName.targetName = nil;
+        unitframe.TargetName:SetText('');
     end
 end
 
@@ -114,8 +109,5 @@ end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
-        TargetChanged(unitframe);
-    end);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', TargetChanged);
 end

@@ -433,7 +433,10 @@ O.DefaultValues = {
     explosive_orbs_counter   = false,
     explosive_orbs_glow      = true,
 
-    spiteful_enabled = true,
+    spiteful_enabled         = true,
+    spiteful_show_only_on_me = true,
+    spiteful_glow            = true,
+    spiteful_glow_color      = { 1, 0.35, 0, 1},
 
     mythic_plus_auto_slot_keystone = true,
 

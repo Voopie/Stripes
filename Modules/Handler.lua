@@ -461,6 +461,8 @@ local function ResetNameplateData(unitframe)
     unitframe.data.nameTranslit        = nil;
     unitframe.data.nameTranslitWoRealm = nil;
     unitframe.data.nameTranslitPVP     = nil;
+
+    unitframe.data.targetName = nil;
 end
 
 function Module:NAME_PLATE_UNIT_ADDED(unit)
@@ -512,6 +514,8 @@ function Module:NAME_PLATE_UNIT_ADDED(unit)
     NP[nameplate].data.canAttack = UnitCanAttack(PLAYER_UNIT, unit);
 
     NP[nameplate].data.isConnected = UnitIsConnected(unit);
+
+    NP[nameplate].data.targetName = UnitName(unit .. 'target');
 
     if UnitIsUnit(unit, PLAYER_UNIT) then
         NP[nameplate].data.unitType = 'SELF';

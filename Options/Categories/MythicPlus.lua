@@ -159,6 +159,50 @@ panel.Load = function(self)
     self.spiteful_enabled:SetChecked(O.db.spiteful_enabled);
     self.spiteful_enabled.Callback = function(self)
         O.db.spiteful_enabled = self:GetChecked();
+
+        panel.spiteful_show_only_on_me:SetEnabled(O.db.spiteful_enabled);
+        panel.spiteful_glow:SetEnabled(O.db.spiteful_enabled);
+        panel.spiteful_glow_color:SetEnabled(O.db.spiteful_enabled);
+
+        Handler:UpdateAll();
+    end
+
+    self.spiteful_show_only_on_me = E.CreateCheckButton(self);
+    self.spiteful_show_only_on_me:SetPosition('LEFT', self.spiteful_enabled.Label, 'RIGHT', 12, 0);
+    self.spiteful_show_only_on_me:SetLabel(L['OPTIONS_SPITEFUL_SHOW_ONLY_ON_ME']);
+    self.spiteful_show_only_on_me:SetTooltip(L['OPTIONS_SPITEFUL_SHOW_ONLY_ON_ME_TOOLTIP']);
+    self.spiteful_show_only_on_me:AddToSearch(button, L['OPTIONS_SPITEFUL_SHOW_ONLY_ON_ME_TOOLTIP']);
+    self.spiteful_show_only_on_me:SetChecked(O.db.spiteful_show_only_on_me);
+    self.spiteful_show_only_on_me:SetEnabled(O.db.spiteful_enabled);
+    self.spiteful_show_only_on_me.Callback = function(self)
+        O.db.spiteful_show_only_on_me = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.spiteful_glow = E.CreateCheckButton(self);
+    self.spiteful_glow:SetPosition('LEFT', self.spiteful_show_only_on_me.Label, 'RIGHT', 12, 0);
+    self.spiteful_glow:SetLabel(L['OPTIONS_SPITEFUL_GLOW']);
+    self.spiteful_glow:SetTooltip(L['OPTIONS_SPITEFUL_GLOW_TOOLTIP']);
+    self.spiteful_glow:AddToSearch(button, L['OPTIONS_SPITEFUL_GLOW_TOOLTIP']);
+    self.spiteful_glow:SetChecked(O.db.spiteful_glow);
+    self.spiteful_glow:SetEnabled(O.db.spiteful_enabled);
+    self.spiteful_glow.Callback = function(self)
+        O.db.spiteful_glow = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.spiteful_glow_color = E.CreateColorPicker(self);
+    self.spiteful_glow_color:SetPosition('LEFT', self.spiteful_glow.Label, 'RIGHT', 12, 0);
+    self.spiteful_glow_color:SetTooltip(L['OPTIONS_SPITEFUL_GLOW_COLOR_TOOLTIP']);
+    self.spiteful_glow_color:AddToSearch(button, L['OPTIONS_SPITEFUL_GLOW_COLOR_TOOLTIP']);
+    self.spiteful_glow_color:SetValue(unpack(O.db.spiteful_glow_color));
+    self.spiteful_glow_color:SetEnabled(O.db.spiteful_enabled);
+    self.spiteful_glow_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.spiteful_glow_color[1] = r;
+        O.db.spiteful_glow_color[2] = g;
+        O.db.spiteful_glow_color[3] = b;
+        O.db.spiteful_glow_color[4] = a or 1;
+
         Handler:UpdateAll();
     end
 

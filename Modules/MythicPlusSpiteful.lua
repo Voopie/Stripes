@@ -2,14 +2,15 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('MythicPlusSpiteful');
 
 local LCG = S.Libraries.LCG;
-local LCG_PixelGlow_Start, LCG_PixelGlow_Stop = LCG.PixelGlow_Start, LCG.PixelGlow_Stop;
+local LCG_ButtonGlow_Start, LCG_ButtonGlow_Stop = LCG.ButtonGlow_Start, LCG.ButtonGlow_Stop;
 
 -- Local config
-local ENABLED;
+local ENABLED, ONLY_ON_ME, GLOW, GLOW_COLOR;
 
-local SPITEFUL_NPC_ID  = 174773;
+local PlayerName = D.Player.Name;
+
+local SPITEFUL_NPC_ID  = 154586; -- 174773;
 local SPITEFUL_TEXTURE = 135945;
-local LCG_SUFFIX = 'S_SPITEFUL';
 
 local function Create(unitframe)
     if unitframe.Spiteful then
@@ -39,10 +40,30 @@ local function Update(unitframe)
 
     if unitframe:IsShown() then
         if ENABLED and unitframe.data.npcId == SPITEFUL_NPC_ID then
-            LCG_PixelGlow_Start(unitframe.Spiteful, nil, 16, nil, 6, nil, 1, 1, nil, LCG_SUFFIX);
-            unitframe.Spiteful:SetShown(true);
+            if ONLY_ON_ME then
+                if unitframe.data.targetName == PlayerName then
+                    if GLOW then
+                        LCG_ButtonGlow_Start(unitframe.Spiteful, GLOW_COLOR);
+                    else
+                        LCG_ButtonGlow_Stop(unitframe.Spiteful);
+                    end
+
+                    unitframe.Spiteful:SetShown(true);
+                else
+                    LCG_ButtonGlow_Stop(unitframe.Spiteful);
+                    unitframe.Spiteful:SetShown(false);
+                end
+            else
+                if GLOW then
+                    LCG_ButtonGlow_Start(unitframe.Spiteful, GLOW_COLOR);
+                else
+                    LCG_ButtonGlow_Stop(unitframe.Spiteful);
+                end
+
+                unitframe.Spiteful:SetShown(true);
+            end
         else
-            LCG_PixelGlow_Stop(unitframe.Spiteful, LCG_SUFFIX);
+            LCG_ButtonGlow_Stop(unitframe.Spiteful);
             unitframe.Spiteful:SetShown(false);
         end
     end
@@ -55,7 +76,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.Spiteful then
-        LCG_PixelGlow_Stop(unitframe.Spiteful, LCG_SUFFIX);
+        LCG_ButtonGlow_Stop(unitframe.Spiteful);
         unitframe.Spiteful:SetShown(false);
     end
 end
@@ -65,7 +86,14 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    ENABLED = O.db.spiteful_enabled;
+    ENABLED    = O.db.spiteful_enabled;
+    ONLY_ON_ME = O.db.spiteful_show_only_on_me;
+    GLOW       = O.db.spiteful_glow;
+    GLOW_COLOR = GLOW_COLOR or {};
+    GLOW_COLOR[1] = O.db.spiteful_glow_color[1];
+    GLOW_COLOR[2] = O.db.spiteful_glow_color[2];
+    GLOW_COLOR[3] = O.db.spiteful_glow_color[3];
+    GLOW_COLOR[4] = O.db.spiteful_glow_color[4] or 1;
 end
 
 function Module:StartUp()
