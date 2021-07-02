@@ -81,6 +81,7 @@ local units = {
     [173138] = true, -- Mawsworn Outrider
     [175700] = true, -- Mawsworn Eviscerator
     [176002] = true, -- Stygian Goliath
+    [177132] = true, -- Helsworn Soulseeker
 
     -- Torghast
     [152708] = true, -- Mawsworn Seeker
