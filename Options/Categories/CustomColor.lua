@@ -304,12 +304,9 @@ panel.UpdateListScroll = function(id)
     wipe(DataListRows);
     panel.ListButtonPool:ReleaseAll();
 
-    local index = 0;
     local b, isNew;
 
-    for _, npc_id in pairs(D.NPCs[id]) do
-        index = index + 1;
-
+    for index, npc_id in pairs(D.NPCs[id]) do
         b, isNew = panel.ListButtonPool:Acquire();
 
         table.insert(DataListRows, b);
