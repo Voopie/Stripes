@@ -488,13 +488,6 @@ panel.Load = function(self)
 
     self.ListButtonPool = CreateFramePool('Button', self.ListScrollChild, 'BackdropTemplate');
 
-    for i = 1, #O.Lists.custom_color_npcs do
-        self.UpdateListScroll(i);
-        self.UpdateListScroll(i);
-    end
-
-    self.UpdateListScroll(DEFAULT_LIST_VALUE);
-
     self.ProfilesDropdown = E.CreateDropdown('plain', self);
     self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.CustomColorEditFrame, 'TOPRIGHT', 0, 8);
     self.ProfilesDropdown:SetSize(157, 22);
@@ -526,6 +519,15 @@ panel.OnShow = function(self)
     Module:RegisterEvent('MODIFIER_STATE_CHANGED');
 
     self:UpdateProfilesDropdown();
+end
+
+panel.OnShowOnce = function(self)
+    for i = 1, #O.Lists.custom_color_npcs do
+        self.UpdateListScroll(i);
+        self.UpdateListScroll(i);
+    end
+
+    self.UpdateListScroll(DEFAULT_LIST_VALUE);
 end
 
 panel.OnHide = function()

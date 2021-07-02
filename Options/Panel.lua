@@ -423,6 +423,11 @@ O.ShowRightPanel = function(panel)
         if panel.OnShow then
             panel:OnShow();
         end
+
+        if not panel.wasShowedOnce and panel.OnShowOnce then
+            panel:OnShowOnce();
+            panel.wasShowedOnce = true;
+        end
     end
 end
 
