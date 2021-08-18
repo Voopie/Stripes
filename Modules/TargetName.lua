@@ -6,7 +6,7 @@ Module.Updater = CreateFrame('Frame');
 local pairs = pairs;
 
 -- WoW API
-local UnitName = UnitName;
+local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitGroupRolesAssigned;
 
 -- Stripes API
 local GetUnitColor = U.GetUnitColor;
@@ -15,10 +15,12 @@ local GetUnitColor = U.GetUnitColor;
 local NP = S.NamePlates;
 
 -- Local Config
-local ENABLED, ONLY_ENEMY, NOT_ME;
+local ENABLED, ONLY_ENEMY, NOT_ME, ROLE_ICON;
 
 local PlayerName = D.Player.Name;
 local YOU = YOU;
+
+local partyCache = {};
 
 local UPDATE_INTERVAL = 0.2;
 local elapsed = 0;
@@ -34,11 +36,21 @@ local function TargetChanged(unitframe)
             if NOT_ME then
                 unitframe.TargetName:SetText('');
             else
-                unitframe.TargetName:SetText('»  ' .. YOU);
+                if ROLE_ICON and partyCache[PlayerName] then
+                    unitframe.TargetName:SetText('» ' .. partyCache[PlayerName] .. ' ' .. YOU);
+                else
+                    unitframe.TargetName:SetText('» ' .. YOU);
+                end
+
                 unitframe.TargetName:SetTextColor(1, 0.2, 0.2);
             end
         else
-            unitframe.TargetName:SetText('»  ' .. unitframe.data.targetName);
+            if ROLE_ICON and partyCache[unitframe.data.targetName] then
+                unitframe.TargetName:SetText('» ' .. partyCache[unitframe.data.targetName] .. ' '.. unitframe.data.targetName);
+            else
+                unitframe.TargetName:SetText('» ' .. unitframe.data.targetName);
+            end
+
             unitframe.TargetName:SetTextColor(GetUnitColor(unitframe.data.unit .. 'target', 2));
         end
 
@@ -103,11 +115,66 @@ function Module:UpdateLocalConfig()
     ENABLED    = O.db.target_name_enabled;
     ONLY_ENEMY = O.db.target_name_only_enemy;
     NOT_ME     = O.db.target_name_not_me;
+    ROLE_ICON  = O.db.target_name_role_icon;
 
     Module.Updater:SetScript('OnUpdate', ENABLED and OnUpdate or nil);
 end
 
+function Module:UpdatePartyCache()
+    wipe(partyCache);
+
+    -- Player role
+    local spec = GetSpecialization();
+    local role = spec and GetSpecializationRole(spec) or '';
+    partyCache[PlayerName] = _G['INLINE_' .. role .. '_ICON'] or '';
+
+    local unit;
+
+    -- Party roles
+    if not IsInRaid() and IsInGroup() then
+        for i = 1, GetNumGroupMembers() do
+            unit = 'party' .. i;
+
+            if UnitExists(unit) then
+                partyCache[UnitName(unit)] = _G['INLINE_' .. (UnitGroupRolesAssigned(unit) or '') .. '_ICON'] or '';
+            end
+        end
+    end
+
+    -- Raid roles
+    if IsInRaid() then
+        for i = 1, GetNumGroupMembers() do
+            unit = 'raid' .. i;
+
+            if UnitExists(unit) then
+                partyCache[UnitName(unit)] = _G['INLINE_' .. (UnitGroupRolesAssigned(unit) or '') .. '_ICON'] or '';
+            end
+        end
+    end
+end
+
+function Module:PLAYER_LOGIN()
+    self:UpdatePartyCache();
+end
+
+function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
+    if unit ~= 'player' then
+        return;
+    end
+
+    local spec = GetSpecialization();
+    local role = spec and GetSpecializationRole(spec);
+    partyCache[UnitName(unit)] = _G['INLINE_' .. role .. '_ICON'] or '';
+end
+
+function Module:GROUP_ROSTER_UPDATE()
+    self:UpdatePartyCache();
+end
+
 function Module:StartUp()
     self:UpdateLocalConfig();
+    self:RegisterEvent('PLAYER_LOGIN');
+    self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED');
+    self:RegisterEvent('GROUP_ROSTER_UPDATE');
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', TargetChanged);
 end

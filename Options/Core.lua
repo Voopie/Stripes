@@ -221,6 +221,7 @@ O.DefaultValues = {
     target_name_enabled              = true,
     target_name_only_enemy           = true,
     target_name_not_me               = false,
+    target_name_role_icon            = true,
     name_text_show_arenaid           = false,
     name_text_show_arenaid_solo      = false,
     name_text_custom_color           = { 1, 0.85, 0, 1},
