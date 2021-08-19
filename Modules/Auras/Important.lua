@@ -22,6 +22,8 @@ local CROWD_CTRL = LPS.constants.CROWD_CTRL;
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED, CASTER_NAME_SHOW;
 local SUPPRESS_OMNICC;
+local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
+local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 
 local StripesAurasImportantCooldownFont = CreateFont('StripesAurasImportantCooldownFont');
 local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCountFont');
@@ -97,12 +99,14 @@ local function Update(unitframe)
 
                 aura.Cooldown:SetFrameStrata('HIGH');
                 aura.Cooldown:GetRegions():ClearAllPoints();
-                aura.Cooldown:GetRegions():SetPoint('TOPLEFT', -2, 4);
+                aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
                 aura.Cooldown:GetRegions():SetFontObject(StripesAurasImportantCooldownFont);
                 aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
                 aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
                 aura.CountFrame:SetFrameStrata('HIGH');
+                aura.CountFrame.Count:ClearAllPoints();
+                aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
                 aura.CountFrame.Count:SetFontObject(StripesAurasImportantCountFont);
 
                 aura.CasterName = aura:CreateFontString(nil, 'ARTWORK');
@@ -185,6 +189,12 @@ local function UpdateStyle(unitframe)
         aura:SetScale(O.db.auras_important_scale);
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+
+        aura.Cooldown:GetRegions():ClearAllPoints();
+        aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+
+        aura.CountFrame.Count:ClearAllPoints();
+        aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
     end
 end
 
@@ -213,6 +223,16 @@ function Module:UpdateLocalConfig()
     COUNTDOWN_ENABLED = O.db.auras_important_countdown_enabled;
     CASTER_NAME_SHOW  = O.db.auras_important_castername_show;
     SUPPRESS_OMNICC   = O.db.auras_omnicc_suppress;
+
+    COUNTDOWN_POINT          = O.Lists.frame_points[O.db.auras_important_cooldown_point] or 'TOPLEFT';
+    COUNTDOWN_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_important_cooldown_relative_point] or 'TOPLEFT';
+    COUNTDOWN_OFFSET_X       = O.db.auras_important_cooldown_offset_x;
+    COUNTDOWN_OFFSET_Y       = O.db.auras_important_cooldown_offset_y;
+
+    COUNT_POINT          = O.Lists.frame_points[O.db.auras_important_count_point] or 'BOTTOMRIGHT';
+    COUNT_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_important_count_relative_point] or 'BOTTOMRIGHT';
+    COUNT_OFFSET_X       = O.db.auras_important_count_offset_x;
+    COUNT_OFFSET_Y       = O.db.auras_important_count_offset_y;
 
     UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
     UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);
