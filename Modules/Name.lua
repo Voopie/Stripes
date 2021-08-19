@@ -372,7 +372,17 @@ end
 local function NameOnly_UpdateGuildName(unitframe)
     if IsNameOnlyMode() and NAME_ONLY_GUILD_NAME then
         if unitframe.data.guild and unitframe.data.unitType == 'FRIENDLY_PLAYER' then
-            unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, unitframe.data.guild));
+            local guild = unitframe.data.guild;
+
+            if NAME_TRANSLIT then
+                guild = LT:Transliterate(guild);
+            end
+
+            if NAME_REPLACE_DIACRITICS then
+                guild = LDC:Replace(guild);
+            end
+
+            unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, guild));
 
             if D.Player.GuildName == unitframe.data.guild then
                 unitframe.GuildName.text:SetTextColor(unpack(NAME_ONLY_GUILD_NAME_SAME_COLOR));
