@@ -707,6 +707,8 @@ L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE_SHIFT'] = 'Replace from profile';
 L['OPTIONS_AURAS_CUSTOM_HELPFUL'] = 'buff (HELPFUL)';
 L['OPTIONS_AURAS_CUSTOM_HELPFUL_TOOLTIP'] = 'Add an aura as buff (HELPFUL)';
 L['OPTIONS_AURAS_CUSTOM_BORDER_COLOR_TOOLTIP'] = 'Border color of custom auras';
+L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_OWN'] = 'Switch to your own only';
+L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_ALL'] = 'Switch to all';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Enable';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Enable custom health bar colors';

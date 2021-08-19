@@ -707,6 +707,8 @@ L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE_SHIFT'] = 'Заменить из пр�
 L['OPTIONS_AURAS_CUSTOM_HELPFUL'] = 'Бафф (HELPFUL)';
 L['OPTIONS_AURAS_CUSTOM_HELPFUL_TOOLTIP'] = 'Добавить ауру как бафф (HELPFUL)';
 L['OPTIONS_AURAS_CUSTOM_BORDER_COLOR_TOOLTIP'] = 'Цвет границ пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_OWN'] = 'Переключить на только свои';
+L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_ALL'] = 'Переключить на все';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';

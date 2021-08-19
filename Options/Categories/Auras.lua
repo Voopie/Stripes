@@ -35,7 +35,7 @@ panel.TabsData = {
     },
 };
 
-local function FilterToggleTooltip_Show(self)
+local function ToggleTooltip_Show(self)
     if not self.tooltip then
         return;
     end
@@ -51,9 +51,10 @@ local function AddCustomAura(id)
     end
 
     O.db.auras_custom_data[id] = {
-        id      = id,
-        filter  = O.db.auras_custom_helpful and 'HELPFUL' or 'HARMFUL',
-        enabled = true,
+        id       = id,
+        filter   = O.db.auras_custom_helpful and 'HELPFUL' or 'HARMFUL',
+        enabled  = true,
+        own_only = true,
     };
 end
 
@@ -77,8 +78,49 @@ local function CreateCustomAuraRow(frame)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
 
+    frame.OwnToggleButton = CreateFrame('Button', nil, frame);
+    frame.OwnToggleButton:SetPoint('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
+    frame.OwnToggleButton:SetSize(ROW_HEIGHT, ROW_HEIGHT);
+    frame.OwnToggleButton.texture = frame.OwnToggleButton:CreateTexture(nil, 'ARTWORK');
+    frame.OwnToggleButton.texture:SetPoint('TOPLEFT', 6, -6);
+    frame.OwnToggleButton.texture:SetPoint('BOTTOMRIGHT', -6, 6);
+    frame.OwnToggleButton:SetScript('OnClick', function(self)
+        if O.db.auras_custom_data[self:GetParent().id].own_only then
+            O.db.auras_custom_data[self:GetParent().id].own_only = false;
+            self.texture:SetColorTexture(0.4, 0.4, 1);
+
+            self.text:SetText('A');
+
+            self.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_OWN'];
+            ToggleTooltip_Show(self);
+        else
+            O.db.auras_custom_data[self:GetParent().id].own_only = true;
+            self.texture:SetColorTexture(1, 0.4, 0);
+
+            self.text:SetText('O');
+
+            self.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_ALL'];
+            ToggleTooltip_Show(self);
+        end
+
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end);
+
+    frame.OwnToggleButton.text = frame.OwnToggleButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.OwnToggleButton.text:SetAllPoints(frame.OwnToggleButton.texture);
+    frame.OwnToggleButton.text:SetJustifyH('CENTER');
+
+    frame.OwnToggleButton:HookScript('OnEnter', ToggleTooltip_Show);
+    frame.OwnToggleButton:HookScript('OnLeave', GameTooltip_Hide);
+    frame.OwnToggleButton:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+    frame.OwnToggleButton:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+    end);
+
     frame.FilterToggleButton = CreateFrame('Button', nil, frame);
-    frame.FilterToggleButton:SetPoint('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
+    frame.FilterToggleButton:SetPoint('LEFT', frame.OwnToggleButton, 'RIGHT', 0, 0);
     frame.FilterToggleButton:SetSize(ROW_HEIGHT, ROW_HEIGHT);
     frame.FilterToggleButton.texture = frame.FilterToggleButton:CreateTexture(nil, 'ARTWORK');
     frame.FilterToggleButton.texture:SetPoint('TOPLEFT', 6, -6);
@@ -91,7 +133,7 @@ local function CreateCustomAuraRow(frame)
             self.text:SetText('D');
 
             self.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'];
-            FilterToggleTooltip_Show(self);
+            ToggleTooltip_Show(self);
         else
             O.db.auras_custom_data[self:GetParent().id].filter = 'HELPFUL';
             self.texture:SetColorTexture(0.4, 0.85, 0.4);
@@ -99,7 +141,7 @@ local function CreateCustomAuraRow(frame)
             self.text:SetText('B');
 
             self.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'];
-            FilterToggleTooltip_Show(self);
+            ToggleTooltip_Show(self);
         end
 
         S:GetNameplateModule('Handler'):UpdateAll();
@@ -109,7 +151,7 @@ local function CreateCustomAuraRow(frame)
     frame.FilterToggleButton.text:SetAllPoints(frame.FilterToggleButton.texture);
     frame.FilterToggleButton.text:SetJustifyH('CENTER');
 
-    frame.FilterToggleButton:HookScript('OnEnter', FilterToggleTooltip_Show);
+    frame.FilterToggleButton:HookScript('OnEnter', ToggleTooltip_Show);
     frame.FilterToggleButton:HookScript('OnLeave', GameTooltip_Hide);
     frame.FilterToggleButton:HookScript('OnEnter', function(self)
         self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
@@ -204,16 +246,22 @@ local function UpdateCustomAuraRow(frame)
 
     if frame.filter == 'HELPFUL' then
         frame.FilterToggleButton.texture:SetColorTexture(0.4, 0.85, 0.4);
-
         frame.FilterToggleButton.text:SetText('B');
-
         frame.FilterToggleButton.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'];
     else
         frame.FilterToggleButton.texture:SetColorTexture(1, 0.4, 0.4);
-
         frame.FilterToggleButton.text:SetText('D');
-
         frame.FilterToggleButton.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'];
+    end
+
+    if frame.own_only then
+        frame.OwnToggleButton.texture:SetColorTexture(1, 0.4, 0);
+        frame.OwnToggleButton.text:SetText('O');
+        frame.OwnToggleButton.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_ALL'];
+    else
+        frame.OwnToggleButton.texture:SetColorTexture(0.4, 0.4, 1);
+        frame.OwnToggleButton.text:SetText('A');
+        frame.OwnToggleButton.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_OWN'];
     end
 end
 
@@ -235,10 +283,11 @@ panel.UpdateScroll = function()
             CreateCustomAuraRow(frame);
         end
 
-        frame.index   = index;
-        frame.id      = id;
-        frame.filter  = data.filter;
-        frame.enabled = data.enabled;
+        frame.index    = index;
+        frame.id       = id;
+        frame.filter   = data.filter;
+        frame.enabled  = data.enabled;
+        frame.own_only = data.own_only;
 
         UpdateCustomAuraRow(frame);
 
