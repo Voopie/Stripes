@@ -11,11 +11,16 @@ local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitG
 -- Stripes API
 local GetUnitColor = U.GetUnitColor;
 
+-- Libraries
+local LT = S.Libraries.LT;
+local LDC = S.Libraries.LDC;
+
 -- Nameplates
 local NP = S.NamePlates;
 
 -- Local Config
 local ENABLED, ONLY_ENEMY, NOT_ME, ROLE_ICON;
+local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 
 local PlayerName = D.Player.Name;
 local YOU = YOU;
@@ -45,10 +50,20 @@ local function TargetChanged(unitframe)
                 unitframe.TargetName:SetTextColor(1, 0.2, 0.2);
             end
         else
+            local targetName = unitframe.data.targetName;
+
+            if NAME_TRANSLIT then
+                targetName = LT:Transliterate(targetName);
+            end
+
+            if NAME_REPLACE_DIACRITICS then
+                targetName = LDC:Replace(targetName);
+            end
+
             if ROLE_ICON and partyCache[unitframe.data.targetName] then
-                unitframe.TargetName:SetText('» ' .. partyCache[unitframe.data.targetName] .. ' '.. unitframe.data.targetName);
+                unitframe.TargetName:SetText('» ' .. partyCache[unitframe.data.targetName] .. ' '.. targetName);
             else
-                unitframe.TargetName:SetText('» ' .. unitframe.data.targetName);
+                unitframe.TargetName:SetText('» ' .. targetName);
             end
 
             unitframe.TargetName:SetTextColor(GetUnitColor(unitframe.data.unit .. 'target', 2));
@@ -116,6 +131,9 @@ function Module:UpdateLocalConfig()
     ONLY_ENEMY = O.db.target_name_only_enemy;
     NOT_ME     = O.db.target_name_not_me;
     ROLE_ICON  = O.db.target_name_role_icon;
+
+    NAME_TRANSLIT           = O.db.name_text_translit;
+    NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
 
     Module.Updater:SetScript('OnUpdate', ENABLED and OnUpdate or nil);
 end
