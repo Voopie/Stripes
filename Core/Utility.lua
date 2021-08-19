@@ -24,7 +24,7 @@ local EMPTY_STRING = '';
 local PLAYER_UNIT = 'player';
 local PET_UNIT    = 'pet';
 
-U.TooltipScanner = CreateFrame('GameTooltip', 'Stripes_TooltipScanner', nil, 'GameTooltipTemplate');
+U.TooltipScanner = CreateFrame('GameTooltip', 'Stripes_TooltipScanner', nil, 'SharedTooltipTemplate');
 U.TooltipScanner.Name = 'Stripes_TooltipScanner';
 U.TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
 U.TooltipScanner:SetScript('OnTooltipAddMoney', nil);
