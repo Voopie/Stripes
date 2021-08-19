@@ -24,6 +24,7 @@ local ENABLED, COUNTDOWN_ENABLED, CASTER_NAME_SHOW;
 local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
+local SQUARE;
 
 local StripesAurasImportantCooldownFont = CreateFont('StripesAurasImportantCooldownFont');
 local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCountFont');
@@ -94,6 +95,12 @@ local function Update(unitframe)
                 aura = CreateFrame('Frame', nil, unitframe.ImportantAuras, 'NameplateBuffButtonTemplate');
                 aura:SetMouseClickEnabled(false);
                 aura.layoutIndex = buffIndex;
+
+                if SQUARE then
+                    aura:SetSize(20, 20);
+                    aura.Icon:SetSize(18, 18);
+                    aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+                end
 
                 aura:SetScale(O.db.auras_important_scale);
 
@@ -186,7 +193,18 @@ end
 
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.ImportantAuras.buffList) do
+        if SQUARE then
+            aura:SetSize(20, 20);
+            aura.Icon:SetSize(18, 18);
+            aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+        else
+            aura:SetSize(20, 14);
+            aura.Icon:SetSize(18, 12);
+            aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
+        end
+
         aura:SetScale(O.db.auras_important_scale);
+
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
@@ -233,6 +251,8 @@ function Module:UpdateLocalConfig()
     COUNT_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_important_count_relative_point] or 'BOTTOMRIGHT';
     COUNT_OFFSET_X       = O.db.auras_important_count_offset_x;
     COUNT_OFFSET_Y       = O.db.auras_important_count_offset_y;
+
+    SQUARE = O.db.auras_square;
 
     UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
     UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);

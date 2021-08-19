@@ -500,6 +500,7 @@ O.DefaultValues = {
     auras_expire_glow_percent      = 20,
     auras_expire_glow_color        = { 1, 0.85, 0, 1},
     auras_expire_glow_type         = 1, -- PIXEL
+    auras_square                   = false,
 
     auras_countdown_enabled     = true,
     auras_cooldown_font_value   = 'BigNoodleToo Titling',

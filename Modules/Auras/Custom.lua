@@ -17,6 +17,7 @@ local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
 local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
+local SQUARE;
 
 local StripesAurasCustomCooldownFont = CreateFont('StripesAurasCustomCooldownFont');
 local StripesAurasCustomCountFont    = CreateFont('StripesAurasCustomCountFont');
@@ -42,18 +43,18 @@ local function CreateAnchor(unitframe)
 end
 
 local function UpdateAnchor(unitframe)
-    local unit = unitframe.data.unit;
-    local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
-
     if unitframe.AurasMythicPlus and unitframe.AurasMythicPlus:IsShown() then
         PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.AurasMythicPlus, 'TOP', 0, 4);
     else
+        local unit = unitframe.data.unit;
+
         if unit and ShouldShowName(unitframe) then
+            local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
             local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + NAME_TEXT_OFFSET_Y + showMechanicOnTarget) or showMechanicOnTarget;
-            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset);
+            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0));
         else
             local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
-            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset);
+            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0));
         end
     end
 end
@@ -136,6 +137,12 @@ local function Update(unitframe)
             aura:SetMouseClickEnabled(false);
             aura.layoutIndex = buffIndex;
 
+            if SQUARE then
+                aura:SetSize(20, 20);
+                aura.Icon:SetSize(18, 18);
+                aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+            end
+
             aura.Cooldown:GetRegions():ClearAllPoints();
             aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
             aura.Cooldown:GetRegions():SetFontObject(StripesAurasCustomCooldownFont);
@@ -195,6 +202,16 @@ end
 
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.AurasCustom.buffList) do
+        if SQUARE then
+            aura:SetSize(20, 20);
+            aura.Icon:SetSize(18, 18);
+            aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+        else
+            aura:SetSize(20, 14);
+            aura.Icon:SetSize(18, 12);
+            aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
+        end
+
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
         aura.Border:SetColorTexture(unpack(O.db.auras_custom_border_color));
@@ -243,6 +260,8 @@ function Module:UpdateLocalConfig()
     COUNT_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_custom_count_relative_point] or 'BOTTOMRIGHT';
     COUNT_OFFSET_X       = O.db.auras_custom_count_offset_x;
     COUNT_OFFSET_Y       = O.db.auras_custom_count_offset_y;
+
+    SQUARE = O.db.auras_square;
 
     UpdateFontObject(StripesAurasCustomCooldownFont, O.db.auras_custom_cooldown_font_value, O.db.auras_custom_cooldown_font_size, O.db.auras_custom_cooldown_font_flag, O.db.auras_custom_cooldown_font_shadow);
     UpdateFontObject(StripesAurasCustomCountFont, O.db.auras_custom_count_font_value, O.db.auras_custom_count_font_size, O.db.auras_custom_count_font_flag, O.db.auras_custom_count_font_shadow);

@@ -606,6 +606,8 @@ L['OPTIONS_AURAS_BLACKLIST_ENABLED'] = 'Использовать чёрный с
 L['OPTIONS_AURAS_BLACKLIST_ENABLED_TOOLTIP'] = 'Использовать чёрный список аур, которые не будут отслеживаться';
 L['OPTIONS_AURAS_BLACKLIST_BUTTON_OPEN'] = 'Открыть чёрный список';
 L['OPTIONS_AURAS_BLACKLIST_BUTTON_CLOSE'] = 'Закрыть чёрный список';
+L['OPTIONS_AURAS_SQUARE'] = 'Квадратные';
+L['OPTIONS_AURAS_SQUARE_TOOLTIP'] = 'Отображать ауры квадратными, а не прямоугольными';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';
