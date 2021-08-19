@@ -15,6 +15,8 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local ENABLED, COUNTDOWN_ENABLED;
 local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
 local SUPPRESS_OMNICC;
+local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
+local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 
 local StripesAurasMythicPlusCooldownFont = CreateFont('StripesAurasMythicPlusCooldownFont');
 local StripesAurasMythicPlusCountFont    = CreateFont('StripesAurasMythicPlusCountFont');
@@ -116,11 +118,13 @@ local function Update(unitframe)
             aura.layoutIndex = buffIndex;
 
             aura.Cooldown:GetRegions():ClearAllPoints();
-            aura.Cooldown:GetRegions():SetPoint('TOPLEFT', -2, 4);
+            aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
             aura.Cooldown:GetRegions():SetFontObject(StripesAurasMythicPlusCooldownFont);
             aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
             aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
+            aura.CountFrame.Count:ClearAllPoints();
+            aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
             aura.CountFrame.Count:SetFontObject(StripesAurasMythicPlusCountFont);
 
             aura.Border:SetColorTexture(0.80, 0.05, 0.05, 1);
@@ -174,6 +178,12 @@ local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.ImportantAuras.buffList) do
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+
+        aura.Cooldown:GetRegions():ClearAllPoints();
+        aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+
+        aura.CountFrame.Count:ClearAllPoints();
+        aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
     end
 end
 
@@ -203,6 +213,16 @@ function Module:UpdateLocalConfig()
     NAME_TEXT_POSITION_V = O.db.name_text_position_v;
     NAME_TEXT_OFFSET_Y   = O.db.name_text_offset_y;
     SUPPRESS_OMNICC      = O.db.auras_omnicc_suppress;
+
+    COUNTDOWN_POINT          = O.Lists.frame_points[O.db.auras_mythicplus_cooldown_point] or 'TOPLEFT';
+    COUNTDOWN_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_mythicplus_cooldown_relative_point] or 'TOPLEFT';
+    COUNTDOWN_OFFSET_X       = O.db.auras_mythicplus_cooldown_offset_x;
+    COUNTDOWN_OFFSET_Y       = O.db.auras_mythicplus_cooldown_offset_y;
+
+    COUNT_POINT          = O.Lists.frame_points[O.db.auras_mythicplus_count_point] or 'BOTTOMRIGHT';
+    COUNT_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_mythicplus_count_relative_point] or 'BOTTOMRIGHT';
+    COUNT_OFFSET_X       = O.db.auras_mythicplus_count_offset_x;
+    COUNT_OFFSET_Y       = O.db.auras_mythicplus_count_offset_y;
 
     UpdateFontObject(StripesAurasMythicPlusCooldownFont, O.db.auras_mythicplus_cooldown_font_value, O.db.auras_mythicplus_cooldown_font_size, O.db.auras_mythicplus_cooldown_font_flag, O.db.auras_mythicplus_cooldown_font_shadow);
     UpdateFontObject(StripesAurasMythicPlusCountFont, O.db.auras_mythicplus_count_font_value, O.db.auras_mythicplus_count_font_size, O.db.auras_mythicplus_count_font_flag, O.db.auras_mythicplus_count_font_shadow);

@@ -23,7 +23,7 @@ panel.TabsData = {
     },
     [3] = {
         name  = 'MythicPlusTab',
-        title = string.upper(L['OPTIONS_AURAS_TAB_MYTHICPLUS']),
+        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_AURAS_TAB_MYTHICPLUS']),
     },
     [4] = {
         name  = 'ImportantTab',
@@ -704,7 +704,6 @@ panel.Load = function(self)
     self.auras_cooldown_offset_x:SetSize(120, 18);
     self.auras_cooldown_offset_x:SetValues(O.db.auras_cooldown_offset_x, -50, 50, 1);
     self.auras_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_OFFSET_X_TOOLTIP']);
-    self.auras_cooldown_offset_x:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_OFFSET_X_TOOLTIP'], self.Tabs[1]);
     self.auras_cooldown_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_offset_x = tonumber(value);
         Handler:UpdateAll();
@@ -715,7 +714,6 @@ panel.Load = function(self)
     self.auras_cooldown_offset_y:SetSize(120, 18);
     self.auras_cooldown_offset_y:SetValues(O.db.auras_cooldown_offset_y, -50, 50, 1);
     self.auras_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_OFFSET_Y_TOOLTIP']);
-    self.auras_cooldown_offset_y:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
     self.auras_cooldown_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_offset_y = tonumber(value);
         Handler:UpdateAll();
@@ -1139,7 +1137,7 @@ panel.Load = function(self)
     end
 
     self.auras_mythicplus_countdown_text = E.CreateFontString(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_countdown_text:SetPosition('TOPLEFT', self.auras_mythicplus_countdown_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_mythicplus_countdown_text:SetPosition('TOPLEFT', self.auras_mythicplus_countdown_enabled, 'BOTTOMLEFT', 0, -16);
     self.auras_mythicplus_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_mythicplus_cooldown_font_value = E.CreateDropdown('font', self.TabsFrames['MythicPlusTab'].Content);
@@ -1187,8 +1185,53 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_mythicplus_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_cooldown_point:SetPosition('TOPLEFT', self.auras_mythicplus_cooldown_font_value, 'BOTTOMLEFT', 0, -12);
+    self.auras_mythicplus_cooldown_point:SetSize(120, 20);
+    self.auras_mythicplus_cooldown_point:SetList(O.Lists.frame_points_localized);
+    self.auras_mythicplus_cooldown_point:SetValue(O.db.auras_mythicplus_cooldown_point);
+    self.auras_mythicplus_cooldown_point:SetLabel(L['POSITION']);
+    self.auras_mythicplus_cooldown_point:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_POINT_TOOLTIP']);
+    self.auras_mythicplus_cooldown_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_POINT_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_cooldown_point.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_cooldown_point = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_mythicplus_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_cooldown_relative_point:SetPosition('LEFT', self.auras_mythicplus_cooldown_point, 'RIGHT', 12, 0);
+    self.auras_mythicplus_cooldown_relative_point:SetSize(120, 20);
+    self.auras_mythicplus_cooldown_relative_point:SetList(O.Lists.frame_points_localized);
+    self.auras_mythicplus_cooldown_relative_point:SetValue(O.db.auras_mythicplus_cooldown_relative_point);
+    self.auras_mythicplus_cooldown_relative_point:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_RELATIVE_POINT_TOOLTIP']);
+    self.auras_mythicplus_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_cooldown_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_cooldown_relative_point = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_mythicplus_cooldown_offset_x = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_cooldown_offset_x:SetPosition('LEFT', self.auras_mythicplus_cooldown_relative_point, 'RIGHT', 8, 0);
+    self.auras_mythicplus_cooldown_offset_x:SetSize(120, 18);
+    self.auras_mythicplus_cooldown_offset_x:SetValues(O.db.auras_mythicplus_cooldown_offset_x, -50, 50, 1);
+    self.auras_mythicplus_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_OFFSET_X_TOOLTIP']);
+    self.auras_mythicplus_cooldown_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_cooldown_offset_x = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_mythicplus_cooldown_offset_y = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_cooldown_offset_y:SetPosition('LEFT', self.auras_mythicplus_cooldown_offset_x, 'RIGHT', 12, 0);
+    self.auras_mythicplus_cooldown_offset_y:SetSize(120, 18);
+    self.auras_mythicplus_cooldown_offset_y:SetValues(O.db.auras_mythicplus_cooldown_offset_y, -50, 50, 1);
+    self.auras_mythicplus_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_OFFSET_Y_TOOLTIP']);
+    self.auras_mythicplus_cooldown_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_cooldown_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     self.auras_mythicplus_count_text = E.CreateFontString(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_text:SetPosition('TOPLEFT', self.auras_mythicplus_cooldown_font_value, 'BOTTOMLEFT', 0, -8);
+    self.auras_mythicplus_count_text:SetPosition('TOPLEFT', self.auras_mythicplus_cooldown_point, 'BOTTOMLEFT', 0, -16);
     self.auras_mythicplus_count_text:SetText(L['OPTIONS_AURAS_COUNT_TEXT']);
 
     self.auras_mythicplus_count_font_value = E.CreateDropdown('font', self.TabsFrames['MythicPlusTab'].Content);
@@ -1235,6 +1278,52 @@ panel.Load = function(self)
         O.db.auras_mythicplus_count_font_shadow = self:GetChecked();
         Handler:UpdateAll();
     end
+
+    self.auras_mythicplus_count_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_count_point:SetPosition('TOPLEFT', self.auras_mythicplus_count_font_value, 'BOTTOMLEFT', 0, -12);
+    self.auras_mythicplus_count_point:SetSize(120, 20);
+    self.auras_mythicplus_count_point:SetList(O.Lists.frame_points_localized);
+    self.auras_mythicplus_count_point:SetValue(O.db.auras_mythicplus_count_point);
+    self.auras_mythicplus_count_point:SetLabel(L['POSITION']);
+    self.auras_mythicplus_count_point:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_POINT_TOOLTIP']);
+    self.auras_mythicplus_count_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_POINT_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_count_point.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_count_point = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_mythicplus_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_count_relative_point:SetPosition('LEFT', self.auras_mythicplus_count_point, 'RIGHT', 12, 0);
+    self.auras_mythicplus_count_relative_point:SetSize(120, 20);
+    self.auras_mythicplus_count_relative_point:SetList(O.Lists.frame_points_localized);
+    self.auras_mythicplus_count_relative_point:SetValue(O.db.auras_mythicplus_count_relative_point);
+    self.auras_mythicplus_count_relative_point:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_RELATIVE_POINT_TOOLTIP']);
+    self.auras_mythicplus_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_count_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.auras_count_relative_point = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_mythicplus_count_offset_x = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_count_offset_x:SetPosition('LEFT', self.auras_mythicplus_count_relative_point, 'RIGHT', 8, 0);
+    self.auras_mythicplus_count_offset_x:SetSize(120, 18);
+    self.auras_mythicplus_count_offset_x:SetValues(O.db.auras_mythicplus_count_offset_x, -50, 50, 1);
+    self.auras_mythicplus_count_offset_x:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_X_TOOLTIP']);
+    self.auras_mythicplus_count_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_count_offset_x = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_mythicplus_count_offset_y = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_count_offset_y:SetPosition('LEFT', self.auras_mythicplus_count_offset_x, 'RIGHT', 12, 0);
+    self.auras_mythicplus_count_offset_y:SetSize(120, 18);
+    self.auras_mythicplus_count_offset_y:SetValues(O.db.auras_mythicplus_count_offset_y, -50, 50, 1);
+    self.auras_mythicplus_count_offset_y:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_Y_TOOLTIP']);
+    self.auras_mythicplus_count_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_count_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
