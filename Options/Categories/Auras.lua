@@ -15,19 +15,19 @@ local NAME_WIDTH = 380;
 panel.TabsData = {
     [1] = {
         name  = 'CommonTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_AURAS_TAB_COMMON']),
+        title = string.upper(L['OPTIONS_AURAS_TAB_COMMON']),
     },
     [2] = {
         name  = 'SpellstealTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_AURAS_TAB_SPELLSTEAL']),
+        title = string.upper(L['OPTIONS_AURAS_TAB_SPELLSTEAL']),
     },
     [3] = {
         name  = 'MythicPlusTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_AURAS_TAB_MYTHICPLUS']),
+        title = string.upper(L['OPTIONS_AURAS_TAB_MYTHICPLUS']),
     },
     [4] = {
         name  = 'ImportantTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_AURAS_TAB_IMPORTANT']),
+        title = string.upper(L['OPTIONS_AURAS_TAB_IMPORTANT']),
     },
     [5] = {
         name  = 'CustomTab',
