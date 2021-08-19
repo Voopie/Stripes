@@ -15,6 +15,8 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local ENABLED, COUNTDOWN_ENABLED;
 local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
 local SUPPRESS_OMNICC;
+local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
+local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 
 local StripesAurasCustomCooldownFont = CreateFont('StripesAurasCustomCooldownFont');
 local StripesAurasCustomCountFont    = CreateFont('StripesAurasCustomCountFont');
@@ -135,11 +137,13 @@ local function Update(unitframe)
             aura.layoutIndex = buffIndex;
 
             aura.Cooldown:GetRegions():ClearAllPoints();
-            aura.Cooldown:GetRegions():SetPoint('TOPLEFT', -2, 4);
+            aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
             aura.Cooldown:GetRegions():SetFontObject(StripesAurasCustomCooldownFont);
             aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
             aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
+            aura.CountFrame.Count:ClearAllPoints();
+            aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
             aura.CountFrame.Count:SetFontObject(StripesAurasCustomCountFont);
 
             aura.Border:SetColorTexture(unpack(O.db.auras_custom_border_color));
@@ -194,6 +198,12 @@ local function UpdateStyle(unitframe)
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
         aura.Border:SetColorTexture(unpack(O.db.auras_custom_border_color));
+
+        aura.Cooldown:GetRegions():ClearAllPoints();
+        aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+
+        aura.CountFrame.Count:ClearAllPoints();
+        aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
     end
 end
 
@@ -223,6 +233,16 @@ function Module:UpdateLocalConfig()
     NAME_TEXT_POSITION_V = O.db.name_text_position_v;
     NAME_TEXT_OFFSET_Y   = O.db.name_text_offset_y;
     SUPPRESS_OMNICC      = O.db.auras_omnicc_suppress;
+
+    COUNTDOWN_POINT          = O.Lists.frame_points[O.db.auras_custom_cooldown_point] or 'TOPLEFT';
+    COUNTDOWN_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_custom_cooldown_relative_point] or 'TOPLEFT';
+    COUNTDOWN_OFFSET_X       = O.db.auras_custom_cooldown_offset_x;
+    COUNTDOWN_OFFSET_Y       = O.db.auras_custom_cooldown_offset_y;
+
+    COUNT_POINT          = O.Lists.frame_points[O.db.auras_custom_count_point] or 'BOTTOMRIGHT';
+    COUNT_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_custom_count_relative_point] or 'BOTTOMRIGHT';
+    COUNT_OFFSET_X       = O.db.auras_custom_count_offset_x;
+    COUNT_OFFSET_Y       = O.db.auras_custom_count_offset_y;
 
     UpdateFontObject(StripesAurasCustomCooldownFont, O.db.auras_custom_cooldown_font_value, O.db.auras_custom_cooldown_font_size, O.db.auras_custom_cooldown_font_flag, O.db.auras_custom_cooldown_font_shadow);
     UpdateFontObject(StripesAurasCustomCountFont, O.db.auras_custom_count_font_value, O.db.auras_custom_count_font_size, O.db.auras_custom_count_font_flag, O.db.auras_custom_count_font_shadow);

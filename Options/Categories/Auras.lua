@@ -1654,7 +1654,7 @@ panel.Load = function(self)
     end
 
     self.auras_custom_countdown_text = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_countdown_text:SetPosition('TOPLEFT', self.auras_custom_countdown_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_custom_countdown_text:SetPosition('TOPLEFT', self.auras_custom_countdown_enabled, 'BOTTOMLEFT', 0, -16);
     self.auras_custom_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_custom_cooldown_font_value = E.CreateDropdown('font', self.TabsFrames['CustomTab'].Content);
@@ -1702,8 +1702,53 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_custom_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_cooldown_point:SetPosition('TOPLEFT', self.auras_custom_cooldown_font_value, 'BOTTOMLEFT', 0, -12);
+    self.auras_custom_cooldown_point:SetSize(120, 20);
+    self.auras_custom_cooldown_point:SetList(O.Lists.frame_points_localized);
+    self.auras_custom_cooldown_point:SetValue(O.db.auras_custom_cooldown_point);
+    self.auras_custom_cooldown_point:SetLabel(L['POSITION']);
+    self.auras_custom_cooldown_point:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_POINT_TOOLTIP']);
+    self.auras_custom_cooldown_point:AddToSearch(button, L['OPTIONS_CUSTOM_AURAS_COOLDOWN_POINT_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_cooldown_point.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_cooldown_point = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_custom_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_cooldown_relative_point:SetPosition('LEFT', self.auras_custom_cooldown_point, 'RIGHT', 12, 0);
+    self.auras_custom_cooldown_relative_point:SetSize(120, 20);
+    self.auras_custom_cooldown_relative_point:SetList(O.Lists.frame_points_localized);
+    self.auras_custom_cooldown_relative_point:SetValue(O.db.auras_custom_cooldown_relative_point);
+    self.auras_custom_cooldown_relative_point:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_RELATIVE_POINT_TOOLTIP']);
+    self.auras_custom_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_cooldown_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_cooldown_relative_point = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_custom_cooldown_offset_x = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_cooldown_offset_x:SetPosition('LEFT', self.auras_custom_cooldown_relative_point, 'RIGHT', 8, 0);
+    self.auras_custom_cooldown_offset_x:SetSize(120, 18);
+    self.auras_custom_cooldown_offset_x:SetValues(O.db.auras_custom_cooldown_offset_x, -50, 50, 1);
+    self.auras_custom_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_OFFSET_X_TOOLTIP']);
+    self.auras_custom_cooldown_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_cooldown_offset_x = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_custom_cooldown_offset_y = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_cooldown_offset_y:SetPosition('LEFT', self.auras_custom_cooldown_offset_x, 'RIGHT', 12, 0);
+    self.auras_custom_cooldown_offset_y:SetSize(120, 18);
+    self.auras_custom_cooldown_offset_y:SetValues(O.db.auras_custom_cooldown_offset_y, -50, 50, 1);
+    self.auras_custom_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_OFFSET_Y_TOOLTIP']);
+    self.auras_custom_cooldown_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_cooldown_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     self.auras_custom_count_text = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_text:SetPosition('TOPLEFT', self.auras_custom_cooldown_font_value, 'BOTTOMLEFT', 0, -8);
+    self.auras_custom_count_text:SetPosition('TOPLEFT', self.auras_custom_cooldown_point, 'BOTTOMLEFT', 0, -16);
     self.auras_custom_count_text:SetText(L['OPTIONS_AURAS_COUNT_TEXT']);
 
     self.auras_custom_count_font_value = E.CreateDropdown('font', self.TabsFrames['CustomTab'].Content);
@@ -1751,8 +1796,53 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_custom_count_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_count_point:SetPosition('TOPLEFT', self.auras_custom_count_font_value, 'BOTTOMLEFT', 0, -12);
+    self.auras_custom_count_point:SetSize(120, 20);
+    self.auras_custom_count_point:SetList(O.Lists.frame_points_localized);
+    self.auras_custom_count_point:SetValue(O.db.auras_custom_count_point);
+    self.auras_custom_count_point:SetLabel(L['POSITION']);
+    self.auras_custom_count_point:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_POINT_TOOLTIP']);
+    self.auras_custom_count_point:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_POINT_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_count_point.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_count_point = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_custom_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_count_relative_point:SetPosition('LEFT', self.auras_custom_count_point, 'RIGHT', 12, 0);
+    self.auras_custom_count_relative_point:SetSize(120, 20);
+    self.auras_custom_count_relative_point:SetList(O.Lists.frame_points_localized);
+    self.auras_custom_count_relative_point:SetValue(O.db.auras_custom_count_relative_point);
+    self.auras_custom_count_relative_point:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_RELATIVE_POINT_TOOLTIP']);
+    self.auras_custom_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_count_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_count_relative_point = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_custom_count_offset_x = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_count_offset_x:SetPosition('LEFT', self.auras_custom_count_relative_point, 'RIGHT', 8, 0);
+    self.auras_custom_count_offset_x:SetSize(120, 18);
+    self.auras_custom_count_offset_x:SetValues(O.db.auras_custom_count_offset_x, -50, 50, 1);
+    self.auras_custom_count_offset_x:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_OFFSET_X_TOOLTIP']);
+    self.auras_custom_count_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_count_offset_x = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_custom_count_offset_y = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_count_offset_y:SetPosition('LEFT', self.auras_custom_count_offset_x, 'RIGHT', 12, 0);
+    self.auras_custom_count_offset_y:SetSize(120, 18);
+    self.auras_custom_count_offset_y:SetValues(O.db.auras_custom_count_offset_y, -50, 50, 1);
+    self.auras_custom_count_offset_y:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_OFFSET_Y_TOOLTIP']);
+    self.auras_custom_count_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_count_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_custom_count_font_value, 'BOTTOMLEFT', 0, -8);
+    Delimiter:SetPosition('TOPLEFT', self.auras_custom_count_point, 'BOTTOMLEFT', 0, -8);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_custom_editbox = E.CreateEditBox(self.TabsFrames['CustomTab'].Content);
