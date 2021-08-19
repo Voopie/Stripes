@@ -37,7 +37,7 @@ local pixelGlowColor = { 1, 0.3, 0, 1 };
 
 local additionalAuras = {
     -- Druid
-    [81261]  = true, -- Solar Beam
+    [81261] = true, -- Solar Beam
 };
 
 local function CreateAnchor(unitframe)
@@ -54,7 +54,7 @@ local function CreateAnchor(unitframe)
 end
 
 local function UpdateAnchor(unitframe)
-    unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.BuffFrame, 'TOPLEFT', 0, 4);
+    unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.BuffFrame, 'TOPLEFT', 0, 4 + (SQUARE and 6 or 0));
     unitframe.ImportantAuras:SetWidth(unitframe.healthBar:GetWidth());
 end
 

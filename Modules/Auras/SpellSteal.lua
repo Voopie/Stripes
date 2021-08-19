@@ -14,7 +14,7 @@ local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
 local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
-local SQUARE;
+local SCALE, SQUARE, BUFFFRAME_OFFSET_Y;
 
 local StripesAurasSpellStealCooldownFont = CreateFont('StripesAurasSpellStealCooldownFont');
 local StripesAurasSpellStealCountFont    = CreateFont('StripesAurasSpellStealCountFont');
@@ -44,10 +44,10 @@ local function UpdateAnchor(unitframe)
 
         if ShouldShowName(unitframe) then
             local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + NAME_TEXT_OFFSET_Y + showMechanicOnTarget) or showMechanicOnTarget;
-            PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0));
+            PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
         else
             local offset = unitframe.BuffFrame:GetBaseYOffset() + (UnitIsUnit(unitframe.data.unit, 'target') and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
-            PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0));
+            PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
         end
     else
         unitframe.AurasSpellSteal:SetPoint('BOTTOM', unitframe.BuffFrame, 'TOP', 0, 4);
@@ -79,6 +79,8 @@ local function Update(unitframe)
                 aura = CreateFrame('Frame', nil, unitframe.AurasSpellSteal, 'NameplateBuffButtonTemplate');
                 aura:SetMouseClickEnabled(false);
                 aura.layoutIndex = buffIndex;
+
+                aura:SetScale(SCALE);
 
                 if SQUARE then
                     aura:SetSize(20, 20);
@@ -155,6 +157,8 @@ end
 
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.AurasSpellSteal.buffList) do
+        aura:SetScale(SCALE);
+
         if SQUARE then
             aura:SetSize(20, 20);
             aura.Icon:SetSize(18, 18);
@@ -213,7 +217,10 @@ function Module:UpdateLocalConfig()
     COUNT_OFFSET_X       = O.db.auras_spellsteal_count_offset_x;
     COUNT_OFFSET_Y       = O.db.auras_spellsteal_count_offset_y;
 
+    SCALE  = O.db.auras_scale;
     SQUARE = O.db.auras_square;
+
+    BUFFFRAME_OFFSET_Y = O.db.auras_offset_y;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);

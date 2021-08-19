@@ -608,6 +608,10 @@ L['OPTIONS_AURAS_BLACKLIST_BUTTON_OPEN'] = 'Open the blacklist';
 L['OPTIONS_AURAS_BLACKLIST_BUTTON_CLOSE'] = 'Close the blacklist';
 L['OPTIONS_AURAS_SQUARE'] = 'Square';
 L['OPTIONS_AURAS_SQUARE_TOOLTIP'] = 'Display auras as square, not rectangular';
+L['OPTIONS_AURAS_SCALE'] = 'Scale';
+L['OPTIONS_AURAS_SCALE_TOOLTIP'] = 'Scale of auras';
+L['OPTIONS_AURAS_OFFSET_Y'] = 'Vert. offset';
+L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP'] = 'Vertical offset of auras';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Show auras that can be dispelled';

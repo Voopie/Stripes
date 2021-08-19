@@ -608,6 +608,10 @@ L['OPTIONS_AURAS_BLACKLIST_BUTTON_OPEN'] = 'Открыть чёрный спис
 L['OPTIONS_AURAS_BLACKLIST_BUTTON_CLOSE'] = 'Закрыть чёрный список';
 L['OPTIONS_AURAS_SQUARE'] = 'Квадратные';
 L['OPTIONS_AURAS_SQUARE_TOOLTIP'] = 'Отображать ауры квадратными, а не прямоугольными';
+L['OPTIONS_AURAS_SCALE'] = 'Масштаб';
+L['OPTIONS_AURAS_SCALE_TOOLTIP'] = 'Масштаб аур';
+L['OPTIONS_AURAS_OFFSET_Y'] = 'Верт. смещение';
+L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение аур';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';

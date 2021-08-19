@@ -18,7 +18,7 @@ local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
 local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
-local SQUARE;
+local SCALE, SQUARE, BUFFFRAME_OFFSET_Y;
 
 local DebuffTypeColor = DebuffTypeColor;
 
@@ -30,37 +30,39 @@ local StripesAurasModCountFont    = CreateFont('StripesAurasModCountFont');
 local function UpdateBuffs(unitframe)
     local debuffType;
 
-    for _, buff in ipairs(unitframe.BuffFrame.buffList) do
+    for _, aura in ipairs(unitframe.BuffFrame.buffList) do
         if BORDER_COLOR_ENABLED then
-            debuffType = select(4, UnitAura(unitframe.BuffFrame.unit, buff:GetID(), unitframe.BuffFrame.filter));
+            debuffType = select(4, UnitAura(unitframe.BuffFrame.unit, aura:GetID(), unitframe.BuffFrame.filter));
             if debuffType then
-                buff.Border:SetColorTexture(DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b, 1);
+                aura.Border:SetColorTexture(DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b, 1);
             else
-                buff.Border:SetColorTexture(0, 0, 0, 1);
+                aura.Border:SetColorTexture(0, 0, 0, 1);
             end
         else
-            buff.Border:SetColorTexture(0, 0, 0, 1);
+            aura.Border:SetColorTexture(0, 0, 0, 1);
         end
 
-        if not buff.Cooldown.__styled then
+        if not aura.Cooldown.__styled then
+            aura:SetScale(SCALE);
+
             if SQUARE then
-                buff:SetSize(20, 20);
-                buff.Icon:SetSize(18, 18);
-                buff.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+                aura:SetSize(20, 20);
+                aura.Icon:SetSize(18, 18);
+                aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
             end
 
-            buff.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-            buff.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+            aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+            aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
-            buff.Cooldown:GetRegions():ClearAllPoints();
-            buff.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, buff.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-            buff.Cooldown:GetRegions():SetFontObject(StripesAurasModCooldownFont);
+            aura.Cooldown:GetRegions():ClearAllPoints();
+            aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+            aura.Cooldown:GetRegions():SetFontObject(StripesAurasModCooldownFont);
 
-            buff.CountFrame.Count:ClearAllPoints();
-            buff.CountFrame.Count:SetPoint(COUNT_POINT, buff.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
-            buff.CountFrame.Count:SetFontObject(StripesAurasModCountFont);
+            aura.CountFrame.Count:ClearAllPoints();
+            aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+            aura.CountFrame.Count:SetFontObject(StripesAurasModCountFont);
 
-            buff.Cooldown.__styled = true;
+            aura.Cooldown.__styled = true;
         end
     end
 end
@@ -71,15 +73,17 @@ local function UpdateAnchor(unitframe)
 
     if unit and ShouldShowName(unitframe) then
         local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + NAME_TEXT_OFFSET_Y + showMechanicOnTarget) or showMechanicOnTarget;
-        PixelUtil.SetPoint(unitframe.BuffFrame, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0));
+        PixelUtil.SetPoint(unitframe.BuffFrame, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     else
         local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
-        PixelUtil.SetPoint(unitframe.BuffFrame, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0));
+        PixelUtil.SetPoint(unitframe.BuffFrame, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     end
 end
 
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.BuffFrame.buffList) do
+        aura:SetScale(SCALE);
+
         if SQUARE then
             aura:SetSize(20, 20);
             aura.Icon:SetSize(18, 18);
@@ -137,7 +141,10 @@ function Module:UpdateLocalConfig()
     COUNT_OFFSET_X       = O.db.auras_count_offset_x;
     COUNT_OFFSET_Y       = O.db.auras_count_offset_y;
 
+    SCALE  = O.db.auras_scale;
     SQUARE = O.db.auras_square;
+
+    BUFFFRAME_OFFSET_Y = O.db.auras_offset_y;
 
     UpdateFontObject(StripesAurasModCooldownFont, O.db.auras_cooldown_font_value, O.db.auras_cooldown_font_size, O.db.auras_cooldown_font_flag, O.db.auras_cooldown_font_shadow);
     UpdateFontObject(StripesAurasModCountFont, O.db.auras_count_font_value, O.db.auras_count_font_size, O.db.auras_count_font_flag, O.db.auras_count_font_shadow);

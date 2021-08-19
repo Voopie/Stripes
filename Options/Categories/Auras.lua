@@ -663,6 +663,32 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.auras_sort_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.auras_scale = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.auras_scale:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_scale:SetValues(O.db.auras_scale, 0.25, 3, 0.05);
+    self.auras_scale:SetLabel(L['OPTIONS_AURAS_SCALE']);
+    self.auras_scale:SetTooltip(L['OPTIONS_AURAS_SCALE_TOOLTIP']);
+    self.auras_scale:AddToSearch(button, L['OPTIONS_AURAS_SCALE_TOOLTIP'], self.Tabs[1]);
+    self.auras_scale.OnValueChangedCallback = function(_, value)
+        O.db.auras_scale = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.auras_offset_y:SetPosition('LEFT', self.auras_scale, 'RIGHT', 16, 0);
+    self.auras_offset_y:SetValues(O.db.auras_offset_y, -50, 50, 1);
+    self.auras_offset_y:SetLabel(L['OPTIONS_AURAS_OFFSET_Y']);
+    self.auras_offset_y:SetTooltip(L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP']);
+    self.auras_offset_y:AddToSearch(button, L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
+    self.auras_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.auras_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_scale, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.auras_countdown_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.auras_countdown_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.auras_countdown_enabled:SetLabel(L['OPTIONS_AURAS_COUNTDOWN_ENABLED']);
