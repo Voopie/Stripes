@@ -25,7 +25,13 @@ local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local PlayerName = D.Player.Name;
 local YOU = YOU;
 
-local partyCache = {};
+local partyRolesCache = {};
+local ROLE_ICONS = {
+    ['TANK']    = INLINE_TANK_ICON,
+    ['DAMAGER'] = INLINE_DAMAGER_ICON,
+    ['HEALER']  = INLINE_HEALER_ICON,
+    ['NONE']    = ''
+};
 
 local UPDATE_INTERVAL = 0.2;
 local elapsed = 0;
@@ -41,8 +47,8 @@ local function TargetChanged(unitframe)
             if NOT_ME then
                 unitframe.TargetName:SetText('');
             else
-                if ROLE_ICON and partyCache[PlayerName] then
-                    unitframe.TargetName:SetText('» ' .. partyCache[PlayerName] .. ' ' .. YOU);
+                if ROLE_ICON and partyRolesCache[PlayerName] then
+                    unitframe.TargetName:SetText('» ' .. partyRolesCache[PlayerName] .. ' ' .. YOU);
                 else
                     unitframe.TargetName:SetText('» ' .. YOU);
                 end
@@ -60,8 +66,8 @@ local function TargetChanged(unitframe)
                 targetName = LDC:Replace(targetName);
             end
 
-            if ROLE_ICON and partyCache[unitframe.data.targetName] then
-                unitframe.TargetName:SetText('» ' .. partyCache[unitframe.data.targetName] .. ' '.. targetName);
+            if ROLE_ICON and partyRolesCache[unitframe.data.targetName] then
+                unitframe.TargetName:SetText('» ' .. partyRolesCache[unitframe.data.targetName] .. ' '.. targetName);
             else
                 unitframe.TargetName:SetText('» ' .. targetName);
             end
@@ -139,12 +145,12 @@ function Module:UpdateLocalConfig()
 end
 
 function Module:UpdatePartyCache()
-    wipe(partyCache);
+    wipe(partyRolesCache);
 
     -- Player role
     local spec = GetSpecialization();
     local role = spec and GetSpecializationRole(spec) or '';
-    partyCache[PlayerName] = _G['INLINE_' .. role .. '_ICON'] or '';
+    partyRolesCache[PlayerName] = ROLE_ICONS[role] or '';
 
     local unit;
 
@@ -154,7 +160,7 @@ function Module:UpdatePartyCache()
             unit = 'party' .. i;
 
             if UnitExists(unit) then
-                partyCache[UnitName(unit)] = _G['INLINE_' .. (UnitGroupRolesAssigned(unit) or '') .. '_ICON'] or '';
+                partyRolesCache[UnitName(unit)] = ROLE_ICONS[UnitGroupRolesAssigned(unit) or ''] or '';
             end
         end
     end
@@ -165,7 +171,7 @@ function Module:UpdatePartyCache()
             unit = 'raid' .. i;
 
             if UnitExists(unit) then
-                partyCache[UnitName(unit)] = _G['INLINE_' .. (UnitGroupRolesAssigned(unit) or '') .. '_ICON'] or '';
+                partyRolesCache[UnitName(unit)] = ROLE_ICONS[UnitGroupRolesAssigned(unit) or ''] or '';
             end
         end
     end
@@ -182,7 +188,7 @@ function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
 
     local spec = GetSpecialization();
     local role = spec and GetSpecializationRole(spec);
-    partyCache[UnitName(unit)] = _G['INLINE_' .. role .. '_ICON'] or '';
+    partyRolesCache[UnitName(unit)] = ROLE_ICONS[role] or '';
 end
 
 function Module:GROUP_ROSTER_UPDATE()
