@@ -256,6 +256,7 @@ L['OPTIONS_THREAT_COLOR_STATUS_1_TOOLTIP'] = 'Not tanking, higher threat than ta
 L['OPTIONS_THREAT_COLOR_STATUS_2_TOOLTIP'] = 'Insecurely tanking, another unit have higher threat but not tanking';
 L['OPTIONS_THREAT_COLOR_STATUS_3_TOOLTIP'] = 'Securely tanking, highest threat';
 L['OPTIONS_THREAT_COLOR_OFFTANK_TOOLTIP'] = 'Offtank';
+L['OPTIONS_THREAT_COLOR_PET_TOOLTIP'] = 'Pet';
 L['OPTIONS_RESET_THREAT_COLORS'] = 'Reset colors';
 L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'] = 'Reset threat colors to default values';
 L['OPTIONS_THREAT_PERCENTAGE_ENABLED'] = 'Show percentages';

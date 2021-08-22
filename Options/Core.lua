@@ -283,6 +283,7 @@ O.DefaultValues = {
     threat_color_status_2 = { 1.00, 0.35, 0.10 },
     threat_color_status_3 = { 0.15, 0.75, 0.15 },
     threat_color_offtank  = { 0.60, 0.00, 0.85 },
+    threat_color_pet      = { 0.00, 0.44, 1.00 },
 
     threat_percentage_enabled        = false,
     threat_percentage_coloring       = true,
