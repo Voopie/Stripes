@@ -471,6 +471,167 @@ panel.UpdateBlackListScroll = function()
     PixelUtil.SetSize(panel.BlackListScrollArea.scrollChild, panel.BlackListScroll:GetWidth(), panel.BlackListScroll:GetHeight() - (panel.BlackListScroll:GetHeight() % ROW_HEIGHT));
 end
 
+local DataHPBarColorRows = {};
+
+local function AddHPBarColorAura(id)
+    if O.db.auras_hpbar_color_data[id] then
+        return;
+    end
+
+    O.db.auras_hpbar_color_data[id] = {
+        id      = id,
+        enabled = true,
+        color   = { 0.15, 0.95, 0, 1 };
+    };
+end
+
+local function CreateHPBarColorRow(frame)
+    frame:SetBackdrop(BACKDROP);
+    frame.backgroundColor = frame.backgroundColor or {};
+
+    frame.EnableCheckBox = E.CreateCheckButton(frame);
+    frame.EnableCheckBox:SetPosition('LEFT', frame, 'LEFT', 8, 0);
+    frame.EnableCheckBox.Callback = function(self)
+        O.db.auras_hpbar_color_data[self:GetParent().id].enabled = self:GetChecked();
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end
+    frame.EnableCheckBox:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+
+    frame.EnableCheckBox:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+    end);
+
+    frame.Icon = frame:CreateTexture(nil, 'ARTWORK');
+    frame.Icon:SetPoint('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
+    frame.Icon:SetSize(ROW_HEIGHT - 10, ROW_HEIGHT - 10);
+    frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+
+    frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
+    frame.NameText:SetSize(150, ROW_HEIGHT);
+
+    frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
+    frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
+    frame.RemoveButton:SetSize(14, 14);
+    frame.RemoveButton:SetNormalTexture(S.Media.Icons.TEXTURE);
+    frame.RemoveButton:GetNormalTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
+    frame.RemoveButton:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7, 1);
+    frame.RemoveButton:SetHighlightTexture(S.Media.Icons.TEXTURE, 'BLEND');
+    frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
+    frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
+    frame.RemoveButton:SetScript('OnClick', function(self)
+        if O.db.auras_hpbar_color_data[tonumber(self:GetParent().id)] then
+            O.db.auras_hpbar_color_data[tonumber(self:GetParent().id)] = nil;
+
+            panel:UpdateHPBarColorScroll();
+            S:GetNameplateModule('Handler'):UpdateAll();
+        end
+    end);
+    frame.RemoveButton:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+
+    frame.RemoveButton:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
+    end);
+
+    frame.ColorPicker = E.CreateColorPicker(frame);
+    frame.ColorPicker:SetPosition('RIGHT', frame.RemoveButton, 'LEFT', -4, 0);
+    frame.ColorPicker.OnValueChanged = function(self, r, g, b, a)
+        O.db.auras_hpbar_color_data[self:GetParent().id].color[1] = r;
+        O.db.auras_hpbar_color_data[self:GetParent().id].color[2] = g;
+        O.db.auras_hpbar_color_data[self:GetParent().id].color[3] = b;
+        O.db.auras_hpbar_color_data[self:GetParent().id].color[4] = a or 1;
+
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end
+    frame.ColorPicker:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+
+    frame.ColorPicker:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+    end);
+
+    frame:HookScript('OnEnter', function(self)
+        self:SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+
+    frame:HookScript('OnLeave', function(self)
+        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+    end);
+
+    frame:HookScript('OnEnter', function(self)
+        if self.id then
+            GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
+            GameTooltip:SetHyperlink('spell:' .. self.id);
+            GameTooltip:Show();
+        end
+    end);
+
+    frame:HookScript('OnLeave', GameTooltip_Hide);
+end
+
+local function UpdateHPBarColorRow(frame)
+    if frame.index == 1 then
+        PixelUtil.SetPoint(frame, 'TOPLEFT', panel.BlackListScrollArea.scrollChild, 'TOPLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', panel.BlackListScrollArea.scrollChild, 'TOPRIGHT', 0, 0);
+    else
+        PixelUtil.SetPoint(frame, 'TOPLEFT', DataBlackListRows[frame.index - 1], 'BOTTOMLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', DataBlackListRows[frame.index - 1], 'BOTTOMRIGHT', 0, 0);
+    end
+
+    frame:SetSize(frame:GetParent():GetWidth(), ROW_HEIGHT);
+
+    if frame.index % 2 == 0 then
+        frame:SetBackdropColor(0.15, 0.15, 0.15, 1);
+        frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.15, 0.15, 0.15, 1;
+    else
+        frame:SetBackdropColor(0.075, 0.075, 0.075, 1);
+        frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
+    end
+
+    local name, _, icon = GetSpellInfo(frame.id);
+
+    frame.EnableCheckBox:SetChecked(frame.enabled);
+    frame.Icon:SetTexture(icon);
+    frame.NameText:SetText(name);
+    frame.ColorPicker:SetValue(unpack(frame.color));
+end
+
+panel.UpdateHPBarColorScroll = function()
+    wipe(DataHPBarColorRows);
+    panel.HPBarColorButtonPool:ReleaseAll();
+
+    local index = 0;
+    local frame, isNew;
+
+    for id, data in pairs(O.db.auras_hpbar_color_data) do
+        index = index + 1;
+
+        frame, isNew = panel.HPBarColorButtonPool:Acquire();
+
+        table.insert(DataHPBarColorRows, frame);
+
+        if isNew then
+            CreateHPBarColorRow(frame);
+        end
+
+        frame.index   = index;
+        frame.id      = id;
+        frame.enabled = data.enabled;
+        frame.color   = data.color;
+
+        UpdateHPBarColorRow(frame);
+
+        frame:SetShown(true);
+    end
+
+    PixelUtil.SetSize(panel.HPBarColorListScrollArea.scrollChild, panel.HPBarColorListScroll:GetWidth(), panel.HPBarColorListScroll:GetHeight() - (panel.HPBarColorListScroll:GetHeight() % ROW_HEIGHT));
+end
+
 panel.Load = function(self)
     local Handler = S:GetNameplateModule('Handler');
 
@@ -517,6 +678,10 @@ panel.Load = function(self)
             self:UnlockHighlight();
             self:SetLabel(L['OPTIONS_AURAS_BLACKLIST_BUTTON_OPEN']);
         end
+
+        panel.HPBarColorList:SetShown(false);
+        panel.HPBarColorListButton:UnlockHighlight();
+        panel.HPBarColorListButton:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_OPEN']);
     end);
 
     self.BlackList = Mixin(CreateFrame('Frame', nil, self.TabsFrames['CommonTab'].Content, 'BackdropTemplate'), E.PixelPerfectMixin);
@@ -659,8 +824,93 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_hpbar_color_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_hpbar_color_enabled:SetPosition('TOPLEFT', self.auras_sort_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_hpbar_color_enabled:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED']);
+    self.auras_hpbar_color_enabled:SetTooltip(L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP']);
+    self.auras_hpbar_color_enabled:AddToSearch(button, nil, self.Tabs[1]);
+    self.auras_hpbar_color_enabled:SetChecked(O.db.auras_hpbar_color_enabled);
+    self.auras_hpbar_color_enabled.Callback = function(self)
+        O.db.auras_hpbar_color_enabled = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.HPBarColorListButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.HPBarColorListButton:SetPosition('LEFT', self.auras_hpbar_color_enabled.Label, 'RIGHT', 16, 0);
+    self.HPBarColorListButton:SetScale(0.8);
+    self.HPBarColorListButton:SetHighlightColor('ffa033');
+    self.HPBarColorListButton:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_OPEN']);
+    self.HPBarColorListButton:SetScript('OnClick', function(self)
+        panel.HPBarColorList:SetShown(not panel.HPBarColorList:IsShown());
+
+        if panel.HPBarColorList:IsShown() then
+            self:LockHighlight();
+            self:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_CLOSE']);
+        else
+            self:UnlockHighlight();
+            self:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_OPEN']);
+        end
+
+        panel.BlackList:SetShown(false);
+        panel.BlackListButton:UnlockHighlight();
+        panel.BlackListButton:SetLabel(L['OPTIONS_AURAS_BLACKLIST_BUTTON_OPEN']);
+    end);
+
+    self.HPBarColorList = Mixin(CreateFrame('Frame', nil, self.TabsFrames['CommonTab'].Content, 'BackdropTemplate'), E.PixelPerfectMixin);
+    self.HPBarColorList:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
+    self.HPBarColorList:SetPosition('BOTTOMLEFT', O.frame, 'BOTTOMRIGHT', 0, 0);
+    self.HPBarColorList:SetWidth(250);
+    self.HPBarColorList:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
+    self.HPBarColorList:SetBackdropColor(0.1, 0.1, 0.1, 1);
+    self.HPBarColorList:SetShown(false);
+
+    self.HPBarColorListEditbox = E.CreateEditBox(self.HPBarColorList);
+    self.HPBarColorListEditbox:SetPosition('TOP', self.HPBarColorList, 'TOP', 0, -10);
+    self.HPBarColorListEditbox:SetSize(228, 20);
+    self.HPBarColorListEditbox.useLastValue = false;
+    self.HPBarColorListEditbox:SetInstruction(L['OPTIONS_AURAS_CUSTOM_EDITBOX_ENTER_ID']);
+    self.HPBarColorListEditbox:SetScript('OnEnterPressed', function(self)
+        local text = strtrim(self:GetText());
+        local saveId;
+        local id = tonumber(text);
+
+        if id and id ~= 0 and GetSpellInfo(id) then
+            saveId = id;
+        else
+            saveId = tonumber(select(7, GetSpellInfo(text)) or '');
+        end
+
+        if not saveId then
+            self:SetText('');
+            self:ClearFocus();
+            return;
+        end
+
+        AddHPBarColorAura(tonumber(saveId));
+
+        panel:UpdateHPBarColorScroll();
+        self:SetText('');
+
+        Handler:UpdateAll();
+    end);
+
+    self.HPBarColorListScroll = Mixin(CreateFrame('Frame', nil, self.HPBarColorList, 'BackdropTemplate'), E.PixelPerfectMixin);
+    self.HPBarColorListScroll:SetPoint('TOPLEFT', self.HPBarColorList , 'TOPLEFT', 6, -40);
+    self.HPBarColorListScroll:SetPoint('BOTTOMRIGHT', self.HPBarColorList, 'BOTTOMRIGHT', -6, 6);
+    self.HPBarColorListScroll:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
+    self.HPBarColorListScroll:SetBackdropColor(0.15, 0.15, 0.15, 1);
+
+    self.HPBarColorListScrollChild, self.HPBarColorListScrollArea = E.CreateScrollFrame(self.HPBarColorListScroll, ROW_HEIGHT);
+
+    PixelUtil.SetPoint(self.HPBarColorListScrollArea.ScrollBar, 'TOPLEFT', self.HPBarColorListScrollArea, 'TOPRIGHT', -8, 0);
+    PixelUtil.SetPoint(self.HPBarColorListScrollArea.ScrollBar, 'BOTTOMLEFT', self.HPBarColorListScrollArea, 'BOTTOMRIGHT', -8, 0);
+
+    self.HPBarColorButtonPool = CreateFramePool('Button', self.HPBarColorListScrollChild, 'BackdropTemplate');
+
+    self:UpdateHPBarColorScroll();
+
     local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_sort_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_hpbar_color_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_scale = E.CreateSlider(self.TabsFrames['CommonTab'].Content);

@@ -504,6 +504,8 @@ O.DefaultValues = {
     auras_square                   = false,
     auras_scale                    = 1,
     auras_offset_y                 = 0,
+    auras_hpbar_color_enabled      = false,
+    auras_hpbar_color_data         = {},
 
     auras_countdown_enabled     = true,
     auras_cooldown_font_value   = 'BigNoodleToo Titling',

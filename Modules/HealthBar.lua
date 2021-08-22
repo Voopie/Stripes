@@ -21,6 +21,7 @@ local LSM = S.Libraries.LSM;
 local LSM_MEDIATYPE_STATUSBAR = LSM.MediaType.STATUSBAR;
 
 -- Local Config
+local AURAS_HPBAR_COLOR_ENABLED;
 local THREAT_ENABLED, CUSTOM_HP_ENABLED, CUSTOM_HP_DATA;
 local EXECUTION_ENABLED, EXECUTION_COLOR, EXECUTION_GLOW, EXECUTION_LOW_PERCENT, EXECUTION_HIGH_ENABLED, EXECUTION_HIGH_PERCENT;
 local HEALTH_BAR_CLASS_COLOR_ENEMY, HEALTH_BAR_CLASS_COLOR_FRIENDLY;
@@ -231,6 +232,40 @@ local function Threat_UpdateColor(unitframe)
     end
 end
 
+local function GetAuraColor(unit)
+    local spellId;
+
+    for i = 1, BUFF_MAX_DISPLAY do
+        spellId = select(10, UnitAura(unit, i, 'PLAYER HARMFUL'));
+
+        if not spellId then
+            return false;
+        end
+
+        if O.db.auras_hpbar_color_data[spellId] and O.db.auras_hpbar_color_data[spellId].enabled then
+            return unpack(O.db.auras_hpbar_color_data[spellId].color);
+        end
+    end
+
+    return false;
+end
+
+local function Auras_UpdateColor(unitframe)
+    if not AURAS_HPBAR_COLOR_ENABLED then
+        return;
+    end
+
+    local r, g, b, a = GetAuraColor(unitframe.data.unit);
+
+    if not r then
+        return;
+    end
+
+    unitframe.healthBar:SetStatusBarColor(r, g, b, a or 1);
+
+    return true;
+end
+
 local function Update(unitframe)
     if unitframe.data.unitType == 'SELF' then
         return;
@@ -239,6 +274,10 @@ local function Update(unitframe)
     if unitframe:IsShown() then
         UpdateHealthColor(unitframe);
         Execution_Stop(unitframe);
+
+        if Auras_UpdateColor(unitframe) then
+            return;
+        end
 
         if EXECUTION_ENABLED and (unitframe.data.healthPer <= EXECUTION_LOW_PERCENT or (EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= EXECUTION_HIGH_PERCENT)) then
             Execution_Start(unitframe);
@@ -410,6 +449,8 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
+    AURAS_HPBAR_COLOR_ENABLED = O.db.auras_hpbar_color_enabled;
+
     THREAT_ENABLED = O.db.threat_color_enabled;
 
     if not O.db.threat_color_reversed then

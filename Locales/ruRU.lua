@@ -613,6 +613,10 @@ L['OPTIONS_AURAS_SCALE'] = 'Масштаб';
 L['OPTIONS_AURAS_SCALE_TOOLTIP'] = 'Масштаб аур';
 L['OPTIONS_AURAS_OFFSET_Y'] = 'Верт. смещение';
 L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение аур';
+L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED'] = 'Окрашивание по ауре';
+L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP'] = 'Включить окрашивание полосы здоровья в зависимости от наличия заданной ауры';
+L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_OPEN'] = 'Открыть список';
+L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_CLOSE'] = 'Закрыть список';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';

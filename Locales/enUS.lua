@@ -613,6 +613,10 @@ L['OPTIONS_AURAS_SCALE'] = 'Scale';
 L['OPTIONS_AURAS_SCALE_TOOLTIP'] = 'Scale of auras';
 L['OPTIONS_AURAS_OFFSET_Y'] = 'Vert. offset';
 L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP'] = 'Vertical offset of auras';
+L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED'] = 'Coloring by aura';
+L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP'] = 'Turn on the coloring of the health bar depending on the presence of a given aura';
+L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_OPEN'] = 'Open list';
+L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_CLOSE'] = 'Close list';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Show auras that can be dispelled';
