@@ -572,8 +572,30 @@ panel.Load = function(self)
 
     self:UpdateBlackListScroll();
 
+    self.auras_square = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_square:SetPosition('TOPLEFT', self.auras_filter_player_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_square:SetLabel(L['OPTIONS_AURAS_SQUARE']);
+    self.auras_square:SetTooltip(L['OPTIONS_AURAS_SQUARE_TOOLTIP']);
+    self.auras_square:AddToSearch(button, L['OPTIONS_AURAS_SQUARE'], self.Tabs[1]);
+    self.auras_square:SetChecked(O.db.auras_square);
+    self.auras_square.Callback = function(self)
+        O.db.auras_square = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.auras_border_color_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_border_color_enabled:SetPosition('LEFT', self.auras_square.Label, 'RIGHT', 12, 0);
+    self.auras_border_color_enabled:SetLabel(L['OPTIONS_AURAS_BORDER_COLOR_ENABLED']);
+    self.auras_border_color_enabled:SetTooltip(L['OPTIONS_AURAS_BORDER_COLOR_ENABLED_TOOLTIP']);
+    self.auras_border_color_enabled:AddToSearch(button, L['OPTIONS_AURAS_BORDER_COLOR_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.auras_border_color_enabled:SetChecked(O.db.auras_border_color_enabled);
+    self.auras_border_color_enabled.Callback = function(self)
+        O.db.auras_border_color_enabled = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     self.auras_pandemic_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_pandemic_enabled:SetPosition('TOPLEFT', self.auras_filter_player_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_pandemic_enabled:SetPosition('TOPLEFT', self.auras_square, 'BOTTOMLEFT', 0, -8);
     self.auras_pandemic_enabled:SetLabel(L['OPTIONS_AURAS_PANDEMIC_ENABLED']);
     self.auras_pandemic_enabled:SetTooltip(L['OPTIONS_AURAS_PANDEMIC_ENABLED_TOOLTIP']);
     self.auras_pandemic_enabled:AddToSearch(button, L['OPTIONS_AURAS_PANDEMIC_ENABLED'], self.Tabs[1]);
@@ -597,30 +619,8 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.auras_square = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_square:SetPosition('TOPLEFT', self.auras_pandemic_enabled, 'BOTTOMLEFT', 0, -8);
-    self.auras_square:SetLabel(L['OPTIONS_AURAS_SQUARE']);
-    self.auras_square:SetTooltip(L['OPTIONS_AURAS_SQUARE_TOOLTIP']);
-    self.auras_square:AddToSearch(button, L['OPTIONS_AURAS_SQUARE'], self.Tabs[1]);
-    self.auras_square:SetChecked(O.db.auras_square);
-    self.auras_square.Callback = function(self)
-        O.db.auras_square = self:GetChecked();
-        Handler:UpdateAll();
-    end
-
-    self.auras_border_color_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_border_color_enabled:SetPosition('TOPLEFT', self.auras_square, 'BOTTOMLEFT', 0, -8);
-    self.auras_border_color_enabled:SetLabel(L['OPTIONS_AURAS_BORDER_COLOR_ENABLED']);
-    self.auras_border_color_enabled:SetTooltip(L['OPTIONS_AURAS_BORDER_COLOR_ENABLED_TOOLTIP']);
-    self.auras_border_color_enabled:AddToSearch(button, L['OPTIONS_AURAS_BORDER_COLOR_ENABLED_TOOLTIP'], self.Tabs[1]);
-    self.auras_border_color_enabled:SetChecked(O.db.auras_border_color_enabled);
-    self.auras_border_color_enabled.Callback = function(self)
-        O.db.auras_border_color_enabled = self:GetChecked();
-        Handler:UpdateAll();
-    end
-
     self.auras_show_debuffs_on_friendly = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_show_debuffs_on_friendly:SetPosition('TOPLEFT', self.auras_border_color_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_show_debuffs_on_friendly:SetPosition('TOPLEFT', self.auras_pandemic_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_show_debuffs_on_friendly:SetLabel(L['OPTIONS_AURAS_SHOW_DEBUFFS_ON_FRIENDLY']);
     self.auras_show_debuffs_on_friendly:AddToSearch(button, nil, self.Tabs[1]);
     self.auras_show_debuffs_on_friendly:SetChecked(O.db.auras_show_debuffs_on_friendly);
