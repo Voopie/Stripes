@@ -576,11 +576,11 @@ end
 
 local function UpdateHPBarColorRow(frame)
     if frame.index == 1 then
-        PixelUtil.SetPoint(frame, 'TOPLEFT', panel.BlackListScrollArea.scrollChild, 'TOPLEFT', 0, 0);
-        PixelUtil.SetPoint(frame, 'TOPRIGHT', panel.BlackListScrollArea.scrollChild, 'TOPRIGHT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPLEFT', panel.HPBarColorListScrollArea.scrollChild, 'TOPLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', panel.HPBarColorListScrollArea.scrollChild, 'TOPRIGHT', 0, 0);
     else
-        PixelUtil.SetPoint(frame, 'TOPLEFT', DataBlackListRows[frame.index - 1], 'BOTTOMLEFT', 0, 0);
-        PixelUtil.SetPoint(frame, 'TOPRIGHT', DataBlackListRows[frame.index - 1], 'BOTTOMRIGHT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPLEFT', DataHPBarColorRows[frame.index - 1], 'BOTTOMLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', DataHPBarColorRows[frame.index - 1], 'BOTTOMRIGHT', 0, 0);
     end
 
     frame:SetSize(frame:GetParent():GetWidth(), ROW_HEIGHT);
