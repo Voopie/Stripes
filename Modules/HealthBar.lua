@@ -49,7 +49,7 @@ local statusColors = {
 };
 
 local offTankColor = { 0.60, 0.00, 0.85 };
-local petColor = { 0.00, 0.44, 1.00 };
+local petTankColor = { 0.00, 0.44, 1.00 };
 
 local PLAYER_IS_TANK = false;
 
@@ -196,16 +196,17 @@ local function Threat_UpdateColor(unitframe)
     end
 
     local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
-    local offTank, pet = false, false;
+    local offTank, petTank = false, false;
 
     if not status or status < 3 then
         local tank_unit = unitframe.data.unit .. 'target';
         if UnitExists(tank_unit) and not UnitIsUnit(tank_unit, PLAYER_UNIT) then
-            if ((UnitInParty(tank_unit) or UnitInRaid(tank_unit)) and UnitGroupRolesAssigned(tank_unit) == 'TANK') then
-                -- unit is attacking another group tank or a player controlled npc (pet, vehicle, totem)
+            if (UnitInParty(tank_unit) or UnitInRaid(tank_unit)) and UnitGroupRolesAssigned(tank_unit) == 'TANK' then
+                -- group tank
                 offTank = true;
             elseif not UnitIsPlayer(tank_unit) and UnitPlayerControlled(tank_unit) then
-                pet = true;
+                -- player controlled npc (pet, vehicle, totem)
+                petTank = true;
             end
         end
     end
@@ -214,8 +215,8 @@ local function Threat_UpdateColor(unitframe)
         local r, g, b, a;
         if PLAYER_IS_TANK and offTank then
             r, g, b, a = unpack(offTankColor);
-        elseif pet then
-            r, g, b, a = unpack(petColor);
+        elseif petTank then
+            r, g, b, a = unpack(petTankColor);
         else
             r, g, b, a = unpack(statusColors[status]);
         end
@@ -428,10 +429,10 @@ function Module:UpdateLocalConfig()
     offTankColor[3] = O.db.threat_color_offtank[3];
     offTankColor[4] = O.db.threat_color_offtank[4] or 1;
 
-    petColor[1] = O.db.threat_color_pet[1];
-    petColor[2] = O.db.threat_color_pet[2];
-    petColor[3] = O.db.threat_color_pet[3];
-    petColor[4] = O.db.threat_color_pet[4] or 1;
+    petTankColor[1] = O.db.threat_color_pettank[1];
+    petTankColor[2] = O.db.threat_color_pettank[2];
+    petTankColor[3] = O.db.threat_color_pettank[3];
+    petTankColor[4] = O.db.threat_color_pettank[4] or 1;
 
     TP_ENABLED        = O.db.threat_percentage_enabled;
     TP_COLORING       = O.db.threat_percentage_coloring;

@@ -329,22 +329,22 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.threat_color_pet = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
-    self.threat_color_pet:SetPosition('LEFT', self.threat_color_status_3, 'RIGHT', 12, 0);
-    self.threat_color_pet:SetTooltip(L['OPTIONS_THREAT_COLOR_PET_TOOLTIP']);
-    self.threat_color_pet:AddToSearch(button, L['OPTIONS_THREAT_COLOR_PET_TOOLTIP'], self.Tabs[3]);
-    self.threat_color_pet:SetValue(unpack(O.db.threat_color_pet));
-    self.threat_color_pet.OnValueChanged = function(_, r, g, b, a)
-        O.db.threat_color_pet[1] = r;
-        O.db.threat_color_pet[2] = g;
-        O.db.threat_color_pet[3] = b;
-        O.db.threat_color_pet[4] = a or 1;
+    self.threat_color_pettank = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
+    self.threat_color_pettank:SetPosition('LEFT', self.threat_color_status_3, 'RIGHT', 12, 0);
+    self.threat_color_pettank:SetTooltip(L['OPTIONS_THREAT_COLOR_PETTANK_TOOLTIP']);
+    self.threat_color_pettank:AddToSearch(button, L['OPTIONS_THREAT_COLOR_PETTANK_TOOLTIP'], self.Tabs[3]);
+    self.threat_color_pettank:SetValue(unpack(O.db.threat_color_pettank));
+    self.threat_color_pettank.OnValueChanged = function(_, r, g, b, a)
+        O.db.threat_color_pettank[1] = r;
+        O.db.threat_color_pettank[2] = g;
+        O.db.threat_color_pettank[3] = b;
+        O.db.threat_color_pettank[4] = a or 1;
 
         Handler:UpdateAll();
     end
 
     self.threat_color_offtank = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
-    self.threat_color_offtank:SetPosition('LEFT', self.threat_color_pet, 'RIGHT', 12, 0);
+    self.threat_color_offtank:SetPosition('LEFT', self.threat_color_pettank, 'RIGHT', 12, 0);
     self.threat_color_offtank:SetTooltip(L['OPTIONS_THREAT_COLOR_OFFTANK_TOOLTIP']);
     self.threat_color_offtank:AddToSearch(button, L['OPTIONS_THREAT_COLOR_OFFTANK_TOOLTIP'], self.Tabs[3]);
     self.threat_color_offtank:SetValue(unpack(O.db.threat_color_offtank));
