@@ -53,7 +53,6 @@ local offTankColor = { 0.60, 0.00, 0.85 };
 local petTankColor = { 0.00, 0.44, 1.00 };
 
 local PLAYER_IS_TANK = false;
-
 local PLAYER_UNIT = 'player';
 
 local function IsUseClassColor(unitframe)
@@ -252,16 +251,17 @@ end
 
 local function Auras_UpdateColor(unitframe)
     if not AURAS_HPBAR_COLOR_ENABLED then
-        return;
+        return false;
     end
 
     local r, g, b, a = GetAuraColor(unitframe.data.unit);
 
     if not r then
-        return;
+        return false;
     end
 
     unitframe.healthBar:SetStatusBarColor(r, g, b, a or 1);
+    unitframe.data.wasAuraColored = true;
 
     return true;
 end
@@ -272,12 +272,12 @@ local function Update(unitframe)
     end
 
     if unitframe:IsShown() then
-        UpdateHealthColor(unitframe);
-        Execution_Stop(unitframe);
-
-        if Auras_UpdateColor(unitframe) then
+        if unitframe.data.auraColored then
             return;
         end
+
+        UpdateHealthColor(unitframe);
+        Execution_Stop(unitframe);
 
         if EXECUTION_ENABLED and (unitframe.data.healthPer <= EXECUTION_LOW_PERCENT or (EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= EXECUTION_HIGH_PERCENT)) then
             Execution_Start(unitframe);
@@ -430,10 +430,26 @@ function Module:UnitAdded(unitframe)
     CreateThreatPercentage(unitframe);
     UpdateThreatPercentage(unitframe);
 
+    unitframe.data.auraColored = Auras_UpdateColor(unitframe);
+
     Update(unitframe);
     UpdateTexture(unitframe);
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
+end
+
+function Module:UnitRemoved(unitframe)
+    unitframe.data.auraColored = nil;
+    unitframe.data.wasAuraColored = nil;
+end
+
+function Module:UnitAura(unitframe)
+    unitframe.data.auraColored = Auras_UpdateColor(unitframe);
+
+    if not unitframe.data.auraColored and unitframe.data.wasAuraColored then
+        Update(unitframe);
+        unitframe.data.wasAuraColored = nil;
+    end
 end
 
 function Module:Update(unitframe)
@@ -441,6 +457,8 @@ function Module:Update(unitframe)
     unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
 
     UpdateThreatPercentagePosition(unitframe);
+
+    unitframe.data.auraColored = Auras_UpdateColor(unitframe);
 
     Update(unitframe);
     UpdateTexture(unitframe);
