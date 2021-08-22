@@ -510,7 +510,7 @@ local function CreateHPBarColorRow(frame)
 
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
-    frame.NameText:SetSize(150, ROW_HEIGHT);
+    frame.NameText:SetSize(120, ROW_HEIGHT);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
     frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
