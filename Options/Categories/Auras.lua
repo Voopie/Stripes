@@ -828,7 +828,7 @@ panel.Load = function(self)
     self.auras_hpbar_color_enabled:SetPosition('TOPLEFT', self.auras_sort_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_hpbar_color_enabled:SetLabel(S.Media.INLINE_NEW_ICON .. L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED']);
     self.auras_hpbar_color_enabled:SetTooltip(L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP']);
-    self.auras_hpbar_color_enabled:AddToSearch(button, nil, self.Tabs[1]);
+    self.auras_hpbar_color_enabled:AddToSearch(button, L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP'], self.Tabs[1]);
     self.auras_hpbar_color_enabled:SetChecked(O.db.auras_hpbar_color_enabled);
     self.auras_hpbar_color_enabled.Callback = function(self)
         O.db.auras_hpbar_color_enabled = self:GetChecked();
