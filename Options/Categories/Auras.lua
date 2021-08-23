@@ -739,9 +739,9 @@ panel.Load = function(self)
 
     self.auras_square = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.auras_square:SetPosition('TOPLEFT', self.auras_filter_player_enabled, 'BOTTOMLEFT', 0, -8);
-    self.auras_square:SetLabel(L['OPTIONS_AURAS_SQUARE']);
+    self.auras_square:SetLabel(S.Media.INLINE_NEW_ICON .. L['OPTIONS_AURAS_SQUARE']);
     self.auras_square:SetTooltip(L['OPTIONS_AURAS_SQUARE_TOOLTIP']);
-    self.auras_square:AddToSearch(button, L['OPTIONS_AURAS_SQUARE'], self.Tabs[1]);
+    self.auras_square:AddToSearch(button, L['OPTIONS_AURAS_SQUARE_TOOLTIP'], self.Tabs[1]);
     self.auras_square:SetChecked(O.db.auras_square);
     self.auras_square.Callback = function(self)
         O.db.auras_square = self:GetChecked();
@@ -826,7 +826,7 @@ panel.Load = function(self)
 
     self.auras_hpbar_color_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.auras_hpbar_color_enabled:SetPosition('TOPLEFT', self.auras_sort_enabled, 'BOTTOMLEFT', 0, -8);
-    self.auras_hpbar_color_enabled:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED']);
+    self.auras_hpbar_color_enabled:SetLabel(S.Media.INLINE_NEW_ICON .. L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED']);
     self.auras_hpbar_color_enabled:SetTooltip(L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP']);
     self.auras_hpbar_color_enabled:AddToSearch(button, nil, self.Tabs[1]);
     self.auras_hpbar_color_enabled:SetChecked(O.db.auras_hpbar_color_enabled);

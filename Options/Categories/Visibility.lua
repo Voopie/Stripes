@@ -1,7 +1,7 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_Visibility');
 
-O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);
+O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);
 local button = O.frame.Left.Visibility;
 local panel = O.frame.Right.Visibility;
 
@@ -347,7 +347,7 @@ panel.Load = function(self)
 
     self.raid_target_hpbar_coloring = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.raid_target_hpbar_coloring:SetPosition('TOPLEFT', self.raid_target_icon_position, 'BOTTOMLEFT', 0, -12);
-    self.raid_target_hpbar_coloring:SetLabel(L['OPTIONS_RAID_TARGET_HPBAR_COLORING']);
+    self.raid_target_hpbar_coloring:SetLabel(S.Media.INLINE_NEW_ICON .. L['OPTIONS_RAID_TARGET_HPBAR_COLORING']);
     self.raid_target_hpbar_coloring:SetTooltip(L['OPTIONS_RAID_TARGET_HPBAR_COLORING_TOOLTIP']);
     self.raid_target_hpbar_coloring:AddToSearch(button, L['OPTIONS_RAID_TARGET_HPBAR_COLORING_TOOLTIP'], self.Tabs[1]);
     self.raid_target_hpbar_coloring:SetChecked(O.db.raid_target_hpbar_coloring);
