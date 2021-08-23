@@ -405,6 +405,7 @@ O.DefaultValues = {
     raid_target_icon_position          = 1, -- LEFT
     raid_target_icon_position_offset_x = -4,
     raid_target_icon_position_offset_y = 0,
+    raid_target_hpbar_coloring         = false,
 
     name_only_friendly_enabled               = C_CVar.GetCVar('nameplateShowOnlyNames') == '1',
     name_only_friendly_color_name_by_health  = true,

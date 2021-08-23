@@ -345,6 +345,18 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.raid_target_hpbar_coloring = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.raid_target_hpbar_coloring:SetPosition('TOPLEFT', self.raid_target_icon_position, 'BOTTOMLEFT', 0, -12);
+    self.raid_target_hpbar_coloring:SetLabel(L['OPTIONS_RAID_TARGET_HPBAR_COLORING']);
+    self.raid_target_hpbar_coloring:SetTooltip(L['OPTIONS_RAID_TARGET_HPBAR_COLORING_TOOLTIP']);
+    self.raid_target_hpbar_coloring:AddToSearch(button, L['OPTIONS_RAID_TARGET_HPBAR_COLORING_TOOLTIP'], self.Tabs[1]);
+    self.raid_target_hpbar_coloring:SetChecked(O.db.raid_target_hpbar_coloring);
+    self.raid_target_hpbar_coloring.Callback = function(self)
+        O.db.raid_target_hpbar_coloring = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     -- Enemy Tab ----------------------------------------------------------------------------------------------------------------------

@@ -8,6 +8,7 @@ local unpack = unpack;
 local UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
       UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer;
+local GetRaidTargetIndex = GetRaidTargetIndex;
 
 -- Stripes API
 local UnitIsTapped, IsPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.IsPlayer, U.IsPlayerEffectivelyTank;
@@ -20,8 +21,11 @@ local LCG_PixelGlow_Start, LCG_PixelGlow_Stop = LCG.PixelGlow_Start, LCG.PixelGl
 local LSM = S.Libraries.LSM;
 local LSM_MEDIATYPE_STATUSBAR = LSM.MediaType.STATUSBAR;
 
+-- Nameplates frames
+local NP = S.NamePlates;
+
 -- Local Config
-local AURAS_HPBAR_COLOR_ENABLED;
+local RAID_TARGET_HPBAR_COLORING, AURAS_HPBAR_COLORING;
 local THREAT_ENABLED, CUSTOM_HP_ENABLED, CUSTOM_HP_DATA;
 local EXECUTION_ENABLED, EXECUTION_COLOR, EXECUTION_GLOW, EXECUTION_LOW_PERCENT, EXECUTION_HIGH_ENABLED, EXECUTION_HIGH_PERCENT;
 local HEALTH_BAR_CLASS_COLOR_ENEMY, HEALTH_BAR_CLASS_COLOR_FRIENDLY;
@@ -54,6 +58,26 @@ local petTankColor = { 0.00, 0.44, 1.00 };
 
 local PLAYER_IS_TANK = false;
 local PLAYER_UNIT = 'player';
+
+local RAID_TARGET_COLORS = {
+    [1] = {    1,    1,  0.2 }, -- YELLOW (STAR)
+    [2] = {    1,  0.5,  0.2 }, -- ORANGE (CIRCLE)
+    [3] = {  0.8,  0.2,    1 }, -- PURPLE (DIAMOND)
+    [4] = {  0.2,    1, 0.25 }, -- GREEN  (TRIANGLE)
+    [5] = { 0.75, 0.85,  0.9 }, -- SILVER (MOON)
+    [6] = {  0.2,  0.5,    1 }, -- BLUE   (SQUARE)
+    [7] = {    1,  0.2, 0.25 }, -- RED    (CROSS)
+    [8] = {    1,    1,    1 }, -- WHITE  (SKULL)
+};
+
+--[[
+    Coloring prio:
+    1) Raid target
+    2) Aura
+    3) Execution
+    4) Custom
+    5) Threat
+]]
 
 local function IsUseClassColor(unitframe)
     if unitframe.data.unitType == 'ENEMY_PLAYER' and HEALTH_BAR_CLASS_COLOR_ENEMY then
@@ -250,7 +274,11 @@ local function GetAuraColor(unit)
 end
 
 local function Auras_UpdateColor(unitframe)
-    if not AURAS_HPBAR_COLOR_ENABLED then
+    if not AURAS_HPBAR_COLORING then
+        return false;
+    end
+
+    if RAID_TARGET_HPBAR_COLORING and unitframe.data.raidIndex then
         return false;
     end
 
@@ -266,12 +294,40 @@ local function Auras_UpdateColor(unitframe)
     return true;
 end
 
+local function UpdateRaidTargetColor(unitframe)
+    if not RAID_TARGET_HPBAR_COLORING then
+        unitframe.data.raidIndex = nil;
+        return false;
+    end
+
+    local raidIndex = GetRaidTargetIndex(unitframe.data.unit);
+
+    if unitframe.data.raidIndex ~= nil and unitframe.data.raidIndex == raidIndex then
+        return true;
+    end
+
+    if RAID_TARGET_COLORS[raidIndex] then
+        unitframe.healthBar:SetStatusBarColor(unpack(RAID_TARGET_COLORS[raidIndex]));
+        unitframe.data.raidIndex = raidIndex;
+
+        return true;
+    end
+
+    return false;
+end
+
 local function Update(unitframe)
     if unitframe.data.unitType == 'SELF' then
         return;
     end
 
     if unitframe:IsShown() then
+        if UpdateRaidTargetColor(unitframe) then
+            return;
+        end
+
+        unitframe.data.auraColored = Auras_UpdateColor(unitframe);
+
         if unitframe.data.auraColored then
             return;
         end
@@ -430,8 +486,6 @@ function Module:UnitAdded(unitframe)
     CreateThreatPercentage(unitframe);
     UpdateThreatPercentage(unitframe);
 
-    unitframe.data.auraColored = Auras_UpdateColor(unitframe);
-
     Update(unitframe);
     UpdateTexture(unitframe);
     UpdateSizes(unitframe);
@@ -441,6 +495,7 @@ end
 function Module:UnitRemoved(unitframe)
     unitframe.data.auraColored = nil;
     unitframe.data.wasAuraColored = nil;
+    unitframe.data.raidIndex = nil;
 end
 
 function Module:UnitAura(unitframe)
@@ -458,8 +513,6 @@ function Module:Update(unitframe)
 
     UpdateThreatPercentagePosition(unitframe);
 
-    unitframe.data.auraColored = Auras_UpdateColor(unitframe);
-
     Update(unitframe);
     UpdateTexture(unitframe);
     UpdateSizes(unitframe);
@@ -467,7 +520,8 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    AURAS_HPBAR_COLOR_ENABLED = O.db.auras_hpbar_color_enabled;
+    RAID_TARGET_HPBAR_COLORING = O.db.raid_target_hpbar_coloring;
+    AURAS_HPBAR_COLORING = O.db.auras_hpbar_color_enabled;
 
     THREAT_ENABLED = O.db.threat_color_enabled;
 
@@ -555,6 +609,14 @@ function Module:PLAYER_ROLES_ASSIGNED()
     PLAYER_IS_TANK = IsPlayerEffectivelyTank();
 end
 
+function Module:RAID_TARGET_UPDATE()
+    for _, unitframe in pairs(NP) do
+        if unitframe:IsShown() then
+            UpdateRaidTargetColor(unitframe);
+        end
+    end
+end
+
 function Module:StartUp()
     self:UpdateLocalConfig();
 
@@ -562,6 +624,8 @@ function Module:StartUp()
     self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED');
     self:RegisterEvent('ROLE_CHANGED_INFORM');
     self:RegisterEvent('PLAYER_ROLES_ASSIGNED'); -- Just to be sure...
+
+    self:RegisterEvent('RAID_TARGET_UPDATE');
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', Update);
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
