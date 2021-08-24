@@ -3,7 +3,7 @@ local Module = S:NewModule('Options_Categories_HealthBar');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.HealthBar, O.frame.Right.HealthBar = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_HEALTHBAR']), 'healthbar', 4);
+O.frame.Left.HealthBar, O.frame.Right.HealthBar = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_HEALTHBAR']), 'healthbar', 4);
 local button = O.frame.Left.HealthBar;
 local panel = O.frame.Right.HealthBar;
 
@@ -14,7 +14,7 @@ panel.TabsData = {
     },
     [2] = {
         name  = 'TargetIndicatorTab',
-        title = string.upper(L['OPTIONS_HEALTHBAR_TAB_TARGET_INDICATOR']),
+        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_HEALTHBAR_TAB_TARGET_INDICATOR']),
     },
     [3] = {
         name  = 'ThreatTab',
@@ -194,8 +194,19 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.target_highlight = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.target_highlight:SetPosition('TOPLEFT', self.target_indicator_size, 'BOTTOMLEFT', 0, -8);
+    self.target_highlight:SetLabel(S.Media.INLINE_NEW_ICON .. L['OPTIONS_TARGET_HIGHLIGHT']);
+    self.target_highlight:SetTooltip(L['OPTIONS_TARGET_HIGHLIGHT_TOOLTIP']);
+    self.target_highlight:SetChecked(O.db.target_highlight);
+    self.target_highlight:AddToSearch(button, L['OPTIONS_TARGET_HIGHLIGHT_TOOLTIP'], self.Tabs[2]);
+    self.target_highlight.Callback = function(self)
+        O.db.target_highlight = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     self.target_glow_enabled = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
-    self.target_glow_enabled:SetPosition('TOPLEFT', self.target_indicator_size, 'BOTTOMLEFT', 0, -12);
+    self.target_glow_enabled:SetPosition('TOPLEFT', self.target_highlight, 'BOTTOMLEFT', 0, -12);
     self.target_glow_enabled:SetLabel(L['OPTIONS_TARGET_GLOW_ENABLED']);
     self.target_glow_enabled:SetTooltip(L['OPTIONS_TARGET_GLOW_ENABLED_TOOLTIP']);
     self.target_glow_enabled:AddToSearch(button, nil, self.Tabs[2]);

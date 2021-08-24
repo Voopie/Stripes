@@ -306,6 +306,7 @@ O.DefaultValues = {
     target_glow_enabled       = true,
     target_glow_color         = { 1, 1, 1 },
     hover_glow_enabled        = true,
+    target_highlight          = true,
 
     execution_enabled      = false,
     execution_low_percent  = 30,
