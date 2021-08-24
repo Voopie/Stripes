@@ -302,6 +302,11 @@ local function UpdateRaidTargetColor(unitframe)
 
     local raidIndex = GetRaidTargetIndex(unitframe.data.unit);
 
+    if not raidIndex then
+        unitframe.data.raidIndex = nil;
+        return false;
+    end
+
     if unitframe.data.raidIndex ~= nil and unitframe.data.raidIndex == raidIndex then
         return true;
     end
@@ -612,7 +617,9 @@ end
 function Module:RAID_TARGET_UPDATE()
     for _, unitframe in pairs(NP) do
         if unitframe:IsShown() then
-            UpdateRaidTargetColor(unitframe);
+            if not UpdateRaidTargetColor(unitframe) then
+                Update(unitframe);
+            end
         end
     end
 end
