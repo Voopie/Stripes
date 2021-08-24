@@ -17,7 +17,7 @@ local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
 local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
-local SCALE, SQUARE, BUFFFRAME_OFFSET_Y;
+local SCALE, SQUARE, OFFSET_Y, BUFFFRAME_OFFSET_Y;
 
 local StripesAurasCustomCooldownFont = CreateFont('StripesAurasCustomCooldownFont');
 local StripesAurasCustomCountFont    = CreateFont('StripesAurasCustomCountFont');
@@ -51,10 +51,10 @@ local function UpdateAnchor(unitframe)
         if unit and ShouldShowName(unitframe) then
             local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
             local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + NAME_TEXT_OFFSET_Y + showMechanicOnTarget) or showMechanicOnTarget;
-            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
+            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
         else
             local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
-            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
+            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
         end
     end
 end
@@ -265,9 +265,9 @@ function Module:UpdateLocalConfig()
     COUNT_OFFSET_X       = O.db.auras_custom_count_offset_x;
     COUNT_OFFSET_Y       = O.db.auras_custom_count_offset_y;
 
-    SCALE  = O.db.auras_scale;
+    SCALE  = O.db.auras_custom_scale;
     SQUARE = O.db.auras_square;
-
+    OFFSET_Y = O.db.auras_custom_offset_y;
     BUFFFRAME_OFFSET_Y = O.db.auras_offset_y;
 
     UpdateFontObject(StripesAurasCustomCooldownFont, O.db.auras_custom_cooldown_font_value, O.db.auras_custom_cooldown_font_size, O.db.auras_custom_cooldown_font_flag, O.db.auras_custom_cooldown_font_shadow);

@@ -701,6 +701,8 @@ L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW'] = 'Player name font shadow o
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Show custom auras';
+L['OPTIONS_AURAS_CUSTOM_SCALE'] = 'Scale';
+L['OPTIONS_AURAS_CUSTOM_SCALE_TOOLTIP'] = 'Scale of custom auras';
 L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED'] = 'Show countdown';
 L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED_TOOLTIP'] = 'Show countdown timers on custom auras';
 L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_VALUE'] = 'Countdown font of custom auras';

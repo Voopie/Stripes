@@ -1989,8 +1989,30 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_custom_scale = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_scale:SetPosition('TOPLEFT', self.auras_custom_countdown_enabled, 'BOTTOMLEFT', 0, -28);
+    self.auras_custom_scale:SetValues(O.db.auras_custom_scale, 0.25, 4, 0.05);
+    self.auras_custom_scale:SetLabel(L['OPTIONS_AURAS_CUSTOM_SCALE']);
+    self.auras_custom_scale:SetTooltip(L['OPTIONS_AURAS_CUSTOM_SCALE_TOOLTIP']);
+    self.auras_custom_scale:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_SCALE_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_scale.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_scale = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.auras_custom_offset_y = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_offset_y:SetPosition('LEFT', self.auras_custom_scale, 'RIGHT', 16, 0);
+    self.auras_custom_offset_y:SetValues(O.db.auras_custom_offset_y, -50, 50, 1);
+    self.auras_custom_offset_y:SetLabel(L['OPTIONS_AURAS_CUSTOM_OFFSET_Y']);
+    self.auras_custom_offset_y:SetTooltip(L['OPTIONS_AURAS_CUSTOM_OFFSET_Y_TOOLTIP']);
+    self.auras_custom_offset_y:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_OFFSET_Y_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     self.auras_custom_countdown_text = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_countdown_text:SetPosition('TOPLEFT', self.auras_custom_countdown_enabled, 'BOTTOMLEFT', 0, -16);
+    self.auras_custom_countdown_text:SetPosition('TOPLEFT', self.auras_custom_scale, 'BOTTOMLEFT', 0, -16);
     self.auras_custom_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_custom_cooldown_font_value = E.CreateDropdown('font', self.TabsFrames['CustomTab'].Content);

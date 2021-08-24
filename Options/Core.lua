@@ -593,6 +593,8 @@ O.DefaultValues = {
     auras_important_castername_font_shadow = true,
 
     auras_custom_enabled              = true,
+    auras_custom_scale                = 1,
+    auras_custom_offset_y             = 0,
     auras_custom_countdown_enabled    = true,
     auras_custom_cooldown_font_value  = 'BigNoodleToo Titling',
     auras_custom_cooldown_font_size   = 14,

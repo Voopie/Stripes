@@ -701,6 +701,10 @@ L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW'] = 'Тень шрифта и�
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Показывать пользовательские ауры';
+L['OPTIONS_AURAS_CUSTOM_SCALE'] = 'Масштаб';
+L['OPTIONS_AURAS_CUSTOM_SCALE_TOOLTIP'] = 'Масштаб пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_OFFSET_Y'] = 'Верт. смещение';
+L['OPTIONS_AURAS_CUSTOM_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение пользовательских аур';
 L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED'] = 'Оставшееся время';
 L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED_TOOLTIP'] = 'Показывать оставшееся время пользовательских аур';
 L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_VALUE'] = 'Шрифт таймера пользовательских аур';
