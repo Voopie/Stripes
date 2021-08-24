@@ -38,13 +38,13 @@ local function SortBuffs(unitframe)
     end
 
     local expirationTime;
-    for i, buff in ipairs(unitframe.BuffFrame.buffList) do
-        if unitframe.BuffFrame.buffList[i] and unitframe.BuffFrame.buffList[i]:IsShown() then
-            expirationTime = select(6, UnitAura(unitframe.BuffFrame.unit, buff:GetID(), unitframe.BuffFrame.filter));
+    for buffIndex, aura in ipairs(unitframe.BuffFrame.buffList) do
+        if unitframe.BuffFrame.buffList[buffIndex]:IsShown() then
+            expirationTime = select(6, UnitAura(unitframe.BuffFrame.unit, aura:GetID(), unitframe.BuffFrame.filter));
 
-            unitframe.SortBuffs[i]         = unitframe.SortBuffs[i] or {};
-            unitframe.SortBuffs[i].id      = buff:GetID();
-            unitframe.SortBuffs[i].expires = tonumber(expirationTime);
+            unitframe.SortBuffs[buffIndex]           = unitframe.SortBuffs[buffIndex] or {};
+            unitframe.SortBuffs[buffIndex].buffIndex = buffIndex;
+            unitframe.SortBuffs[buffIndex].expires   = tonumber(expirationTime) or 0;
         end
     end
 
@@ -52,8 +52,8 @@ local function SortBuffs(unitframe)
         table_sort(unitframe.SortBuffs, SortMethodFunction);
 
         for i, data in ipairs(unitframe.SortBuffs) do
-            if unitframe.BuffFrame.buffList[data.id] then
-                unitframe.BuffFrame.buffList[data.id]:SetPoint('TOPLEFT', (i - 1) * 24, 0);
+            if unitframe.BuffFrame.buffList[data.buffIndex] then
+                unitframe.BuffFrame.buffList[data.buffIndex]:SetPoint('TOPLEFT', (i - 1) * 24, 0);
             end
         end
     end
