@@ -27,6 +27,12 @@ local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 local filterHelpful = 'HELPFUL';
 local filterHarmful = 'HARMFUL';
 
+local playerUnits = {
+    ['player']  = true,
+    ['pet']     = true,
+    ['vehicle'] = true,
+};
+
 local function CreateAnchor(unitframe)
     if unitframe.AurasCustom then
         return;
@@ -77,7 +83,7 @@ local function Update(unitframe)
     AuraUtil_ForEachAura(unitframe.AurasCustom.unit, filterHelpful, BUFF_MAX_DISPLAY, function(...)
         buffName, texture, count, _, duration, expirationTime, source, _, _, spellId = ...;
 
-        if O.db.auras_custom_data[spellId] and O.db.auras_custom_data[spellId].enabled and (not O.db.auras_custom_data[spellId].own_only or (source == 'player' and O.db.auras_custom_data[spellId].own_only)) then
+        if O.db.auras_custom_data[spellId] and O.db.auras_custom_data[spellId].enabled and (not O.db.auras_custom_data[spellId].own_only or (playerUnits[source] and O.db.auras_custom_data[spellId].own_only)) then
             local cCount = count == 0 and 1 or count;
 
             if not unitframe.AurasCustom.buffCompact[spellId] then
@@ -104,7 +110,7 @@ local function Update(unitframe)
     AuraUtil_ForEachAura(unitframe.AurasCustom.unit, filterHarmful, BUFF_MAX_DISPLAY, function(...)
         buffName, texture, count, _, duration, expirationTime, source, _, _, spellId = ...;
 
-        if O.db.auras_custom_data[spellId] and O.db.auras_custom_data[spellId].enabled and (not O.db.auras_custom_data[spellId].own_only or (source == 'player' and O.db.auras_custom_data[spellId].own_only)) then
+        if O.db.auras_custom_data[spellId] and O.db.auras_custom_data[spellId].enabled and (not O.db.auras_custom_data[spellId].own_only or (playerUnits[source] and O.db.auras_custom_data[spellId].own_only)) then
             local cCount = count == 0 and 1 or count;
 
             if not unitframe.AurasCustom.buffCompact[spellId] then
