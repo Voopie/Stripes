@@ -56,6 +56,17 @@ local function AddCustomAura(id)
         enabled  = true,
         own_only = true,
     };
+
+    if O.db.auras_custom_to_blacklist then
+        if O.db.auras_blacklist[id] then
+            O.db.auras_blacklist[id].enabled = true;
+        else
+            O.db.auras_blacklist[id] = {
+                id      = id,
+                enabled = true,
+            };
+        end
+    end
 end
 
 local DataCustomAuraRows = {};
@@ -160,8 +171,62 @@ local function CreateCustomAuraRow(frame)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
 
+    frame.BlacklistButton = CreateFrame('Button', nil, frame);
+    frame.BlacklistButton:SetPoint('LEFT', frame.FilterToggleButton, 'RIGHT', 0, 0);
+    frame.BlacklistButton:SetSize(ROW_HEIGHT, ROW_HEIGHT);
+    frame.BlacklistButton.texture = frame.BlacklistButton:CreateTexture(nil, 'ARTWORK');
+    frame.BlacklistButton.texture:SetPoint('TOPLEFT', 6, -6);
+    frame.BlacklistButton.texture:SetPoint('BOTTOMRIGHT', -6, 6);
+    frame.BlacklistButton:SetScript('OnClick', function(self)
+        local id = self:GetParent().id;
+
+        if not id then
+            return;
+        end
+
+        if O.db.auras_blacklist[id] then
+            O.db.auras_blacklist[id] = nil;
+            self.texture:SetColorTexture(0.8, 0.8, 0.8);
+
+            self.text:SetText('W');
+
+            self.tooltip = L['OPTIONS_AURAS_CUSTOM_ADD_TO_BLACKLIST'];
+            ToggleTooltip_Show(self);
+        else
+            O.db.auras_blacklist[id] = {
+                id      = id,
+                enabled = true,
+            };
+
+            self.texture:SetColorTexture(0, 0, 0);
+
+            self.text:SetText('B');
+
+            self.tooltip = L['OPTIONS_AURAS_CUSTOM_REMOVE_FROM_BLACKLIST'];
+            ToggleTooltip_Show(self);
+        end
+
+        panel:UpdateScroll();
+        panel:UpdateBlackListScroll();
+
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end);
+
+    frame.BlacklistButton.text = frame.BlacklistButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.BlacklistButton.text:SetAllPoints(frame.BlacklistButton.texture);
+    frame.BlacklistButton.text:SetJustifyH('CENTER');
+
+    frame.BlacklistButton:HookScript('OnEnter', ToggleTooltip_Show);
+    frame.BlacklistButton:HookScript('OnLeave', GameTooltip_Hide);
+    frame.BlacklistButton:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+    frame.BlacklistButton:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+    end);
+
     frame.Icon = frame:CreateTexture(nil, 'ARTWORK');
-    frame.Icon:SetPoint('LEFT', frame.FilterToggleButton, 'RIGHT', 8, 0);
+    frame.Icon:SetPoint('LEFT', frame.BlacklistButton, 'RIGHT', 8, 0);
     frame.Icon:SetSize(ROW_HEIGHT - 8, ROW_HEIGHT - 8);
     frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
 
@@ -263,6 +328,16 @@ local function UpdateCustomAuraRow(frame)
         frame.OwnToggleButton.text:SetText('A');
         frame.OwnToggleButton.tooltip = L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_OWN'];
     end
+
+    if frame.isBlacklisted then
+        frame.BlacklistButton.texture:SetColorTexture(0, 0, 0);
+        frame.BlacklistButton.text:SetText('B');
+        frame.BlacklistButton.tooltip = L['OPTIONS_AURAS_CUSTOM_REMOVE_FROM_BLACKLIST'];
+    else
+        frame.BlacklistButton.texture:SetColorTexture(0.8, 0.8, 0.8);
+        frame.BlacklistButton.text:SetText('W');
+        frame.BlacklistButton.tooltip = L['OPTIONS_AURAS_CUSTOM_ADD_TO_BLACKLIST'];
+    end
 end
 
 panel.UpdateScroll = function()
@@ -283,11 +358,12 @@ panel.UpdateScroll = function()
             CreateCustomAuraRow(frame);
         end
 
-        frame.index    = index;
-        frame.id       = id;
-        frame.filter   = data.filter;
-        frame.enabled  = data.enabled;
-        frame.own_only = data.own_only;
+        frame.index         = index;
+        frame.id            = id;
+        frame.filter        = data.filter;
+        frame.enabled       = data.enabled;
+        frame.own_only      = data.own_only;
+        frame.isBlacklisted = O.db.auras_blacklist[id] and true or false;
 
         UpdateCustomAuraRow(frame);
 
@@ -384,7 +460,9 @@ local function CreateBlackListRow(frame)
         if O.db.auras_blacklist[tonumber(self:GetParent().id)] then
             O.db.auras_blacklist[tonumber(self:GetParent().id)] = nil;
 
+            panel:UpdateScroll();
             panel:UpdateBlackListScroll();
+
             S:GetNameplateModule('Handler'):UpdateAll();
         end
     end);
@@ -2243,6 +2321,16 @@ panel.Load = function(self)
         O.db.auras_custom_helpful = self:GetChecked();
     end
 
+    self.auras_custom_to_blacklist = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_to_blacklist:SetPosition('LEFT', self.auras_custom_helpful.Label, 'RIGHT', 16, 0);
+    self.auras_custom_to_blacklist:SetLabel(L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST']);
+    self.auras_custom_to_blacklist:SetChecked(O.db.auras_custom_to_blacklist);
+    self.auras_custom_to_blacklist:SetTooltip(L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST_TOOLTIP']);
+    self.auras_custom_to_blacklist:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_to_blacklist.Callback = function(self)
+        O.db.auras_custom_to_blacklist = self:GetChecked();
+    end
+
     self.auras_custom_editframe = CreateFrame('Frame', nil, self.TabsFrames['CustomTab'].Content, 'BackdropTemplate');
     self.auras_custom_editframe:SetPoint('TOPLEFT', self.auras_custom_editbox, 'BOTTOMLEFT', -5, -8);
     self.auras_custom_editframe:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 0, 0);
@@ -2297,6 +2385,7 @@ end
 panel.Update = function(self)
     self:UpdateScroll();
     self:UpdateBlackListScroll();
+    self:UpdateHPBarColorScroll();
 end
 
 function Module:MODIFIER_STATE_CHANGED(key, down)

@@ -728,11 +728,15 @@ L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'] = 'Переключить на де�
 L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'] = 'Переключить на бафф (HELPFUL)';
 L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE'] = 'Копировать из профиля';
 L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE_SHIFT'] = 'Заменить из профиля';
-L['OPTIONS_AURAS_CUSTOM_HELPFUL'] = 'Бафф (HELPFUL)';
+L['OPTIONS_AURAS_CUSTOM_HELPFUL'] = 'Бафф';
 L['OPTIONS_AURAS_CUSTOM_HELPFUL_TOOLTIP'] = 'Добавить ауру как бафф (HELPFUL)';
 L['OPTIONS_AURAS_CUSTOM_BORDER_COLOR_TOOLTIP'] = 'Цвет границ пользовательских аур';
 L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_OWN'] = 'Переключить на только свои';
 L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_ALL'] = 'Переключить на все';
+L['OPTIONS_AURAS_CUSTOM_ADD_TO_BLACKLIST'] = 'Добавить в чёрный список';
+L['OPTIONS_AURAS_CUSTOM_REMOVE_FROM_BLACKLIST'] = 'Удалить из чёрного списка';
+L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST'] = 'В ЧС';
+L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST_TOOLTIP'] = 'Добавить ауру сразу в чёрный список';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';

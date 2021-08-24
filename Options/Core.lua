@@ -614,7 +614,8 @@ O.DefaultValues = {
     auras_custom_count_offset_y         = -2,
     auras_custom_border_color         = { 0.80, 0.05, 0.05, 1 },
     auras_custom_data                 = {},
-    auras_custom_helpful              = true,
+    auras_custom_helpful              = false,
+    auras_custom_to_blacklist         = true,
 
     custom_color_enabled = true,
     custom_color_data    = {},
