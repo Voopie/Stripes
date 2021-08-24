@@ -184,6 +184,15 @@ S.Media.Fonts = {
         BOLDOBLIQUE   = M .. 'Fonts\\futura-pt-bold-oblique.ttf',
     },
 
+    GOOGLESANS = {
+        REGULAR      = M .. 'Fonts\\googlesans-regular.ttf',
+        ITALIC       = M .. 'Fonts\\googlesans-italic.ttf',
+        MEDIUM       = M .. 'Fonts\\googlesans-medium.ttf',
+        MEDIUMITALIC = M .. 'Fonts\\googlesans-mediumitalic.ttf',
+        BOLD         = M .. 'Fonts\\googlesans-bold.ttf',
+        BOLDITALIC   = M .. 'Fonts\\googlesans-bolditalic.ttf',
+    },
+
     GOTHAMPRO = {
         REGULAR      = M .. 'Fonts\\gotham-pro-reg.otf',
         ITALIC       = M .. 'Fonts\\gotham-pro-italic.otf',
@@ -274,6 +283,12 @@ LSM:Register(LSM.MediaType.FONT, 'Futura PT Demi', S.Media.Fonts.FUTURAPT.DEMI, 
 LSM:Register(LSM.MediaType.FONT, 'Futura PT Demi Oblique', S.Media.Fonts.FUTURAPT.DEMIOBLIQUE, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Futura PT Bold', S.Media.Fonts.FUTURAPT.BOLD, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Futura PT Bold Oblique', S.Media.Fonts.FUTURAPT.BOLDOBLIQUE, LOCALE_WEST_AND_RU);
+LSM:Register(LSM.MediaType.FONT, 'Google Sans Regular', S.Media.Fonts.GOOGLESANS.REGULAR, LOCALE_WEST_AND_RU);
+LSM:Register(LSM.MediaType.FONT, 'Google Sans Italic', S.Media.Fonts.GOOGLESANS.ITALIC, LOCALE_WEST_AND_RU);
+LSM:Register(LSM.MediaType.FONT, 'Google Sans Medium', S.Media.Fonts.GOOGLESANS.MEDIUM, LOCALE_WEST_AND_RU);
+LSM:Register(LSM.MediaType.FONT, 'Google Sans Medium Italic', S.Media.Fonts.GOOGLESANS.MEDIUMITALIC, LOCALE_WEST_AND_RU);
+LSM:Register(LSM.MediaType.FONT, 'Google Sans Bold', S.Media.Fonts.GOOGLESANS.BOLD, LOCALE_WEST_AND_RU);
+LSM:Register(LSM.MediaType.FONT, 'Google Sans Bold Italic', S.Media.Fonts.GOOGLESANS.BOLDITALIC, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Regular', S.Media.Fonts.GOTHAMPRO.REGULAR, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Italic', S.Media.Fonts.GOTHAMPRO.ITALIC, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Black', S.Media.Fonts.GOTHAMPRO.BLACK, LOCALE_WEST_AND_RU);
