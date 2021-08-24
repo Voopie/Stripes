@@ -378,7 +378,7 @@ panel.UpdateScroll = function()
         frame:SetShown(true);
     end
 
-    PixelUtil.SetSize(panel.auras_custom_scrollchild, panel.auras_custom_editframe:GetWidth(), panel.auras_custom_editframe:GetHeight() - (panel.auras_custom_editframe:GetHeight() % ROW_HEIGHT));
+    PixelUtil.SetSize(panel.auras_custom_scrollchild, panel.auras_custom_editframe:GetWidth(), panel.auras_custom_editframe:GetHeight() - (panel.auras_custom_editframe:GetHeight() % ROW_HEIGHT + 8));
 end
 
 local profilesList = {};
