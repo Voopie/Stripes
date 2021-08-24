@@ -58,14 +58,10 @@ local function AddCustomAura(id)
     };
 
     if O.db.auras_custom_to_blacklist then
-        if O.db.auras_blacklist[id] then
-            O.db.auras_blacklist[id].enabled = true;
-        else
-            O.db.auras_blacklist[id] = {
-                id      = id,
-                enabled = true,
-            };
-        end
+        O.db.auras_blacklist[id] = {
+            id      = id,
+            enabled = true,
+        };
     end
 end
 
@@ -2318,6 +2314,8 @@ panel.Load = function(self)
         AddCustomAura(tonumber(saveId));
 
         panel:UpdateScroll();
+        panel:UpdateBlackListScroll();
+
         self:SetText('');
 
         Handler:UpdateAll();
