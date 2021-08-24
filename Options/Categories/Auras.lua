@@ -178,7 +178,7 @@ local function CreateCustomAuraRow(frame)
     frame.BlacklistButton.texture:SetPoint('TOPLEFT', 6, -6);
     frame.BlacklistButton.texture:SetPoint('BOTTOMRIGHT', -6, 6);
     frame.BlacklistButton:SetScript('OnClick', function(self)
-        local id = self:GetParent().id;
+        local id = tonumber(self:GetParent().id);
 
         if not id then
             return;
@@ -249,10 +249,22 @@ local function CreateCustomAuraRow(frame)
     frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
     frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     frame.RemoveButton:SetScript('OnClick', function(self)
-        if O.db.auras_custom_data[tonumber(self:GetParent().id)] then
-            O.db.auras_custom_data[tonumber(self:GetParent().id)] = nil;
+        local id = tonumber(self:GetParent().id);
+
+        if not id then
+            return;
+        end
+
+        if O.db.auras_custom_data[id] then
+            O.db.auras_custom_data[id] = nil;
+
+            if O.db.auras_blacklist[id] then
+                O.db.auras_blacklist[id] = nil;
+            end
 
             panel:UpdateScroll();
+            panel:UpdateBlackListScroll();
+
             S:GetNameplateModule('Handler'):UpdateAll();
         end
     end);
