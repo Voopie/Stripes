@@ -615,6 +615,15 @@ O.DefaultValues = {
 
     custom_color_enabled = true,
     custom_color_data    = {},
+
+    use_global_font_value  = false,
+    use_global_font_size   = false,
+    use_global_font_flag   = false,
+    use_global_font_shadow = false,
+    global_font_value  = 'BigNoodleToo Titling',
+    global_font_size   = 11,
+    global_font_flag   = 1, -- NONE
+    global_font_shadow = true,
 };
 
 local PROFILE_DEFAULT_ID = '1';

@@ -138,7 +138,7 @@ panel.Load = function(self)
 
     self.name_text_font_shadow = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
     self.name_text_font_shadow:SetPosition('LEFT', self.name_text_font_flag, 'RIGHT', 12, 0);
-    self.name_text_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
+    self.name_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.name_text_font_shadow:SetChecked(O.db.name_text_font_shadow);
     self.name_text_font_shadow:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_SHADOW']);
     self.name_text_font_shadow:AddToSearch(button, L['OPTIONS_NAME_TEXT_FONT_SHADOW'], self.Tabs[1]);
@@ -459,7 +459,7 @@ panel.Load = function(self)
 
     self.health_text_font_shadow = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
     self.health_text_font_shadow:SetPosition('LEFT', self.health_text_font_flag, 'RIGHT', 12, 0);
-    self.health_text_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
+    self.health_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.health_text_font_shadow:SetChecked(O.db.health_text_font_shadow);
     self.health_text_font_shadow:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_SHADOW']);
     self.health_text_font_shadow:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FONT_SHADOW'], self.Tabs[2]);
@@ -759,7 +759,7 @@ panel.Load = function(self)
 
     self.level_text_font_shadow = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
     self.level_text_font_shadow:SetPosition('LEFT', self.level_text_font_flag, 'RIGHT', 12, 0);
-    self.level_text_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
+    self.level_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.level_text_font_shadow:SetChecked(O.db.level_text_font_shadow);
     self.level_text_font_shadow:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_SHADOW']);
     self.level_text_font_shadow:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FONT_SHADOW'], self.Tabs[3]);

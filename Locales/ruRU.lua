@@ -13,6 +13,15 @@ local L = NAMESPACE[2]['ruRU'];
 
 L['RENAME'] = 'Переименовать';
 L['SAVE'] = 'Сохранить';
+L['USE'] = 'Использовать';
+
+L['FONT_VALUE'] = 'Шрифт';
+L['FONT_SIZE'] = 'Размер шрифта';
+L['FONT_SIZE_SHORT'] = 'Размер';
+L['FONT_FLAG'] = 'Контур шрифта';
+L['FONT_FLAG_SHORT'] = 'Контур';
+L['FONT_SHADOW'] = 'Тень шрифта';
+L['FONT_SHADOW_SHORT'] = 'Тень';
 
 L['FONT_FLAG_NONE'] = 'Нет';
 L['FONT_FLAG_OUTLINE'] = 'Контур';
@@ -86,6 +95,7 @@ L['OPTIONS_CATEGORY_MYTHIC_PLUS'] = 'Эпохальные ключи';
 L['OPTIONS_CATEGORY_USEFUL'] = 'Полезное';
 L['OPTIONS_CATEGORY_PROFILES'] = 'Профили';
 L['OPTIONS_CATEGORY_INFO'] = 'Инфо';
+L['OPTIONS_CATEGORY_GLOBAL'] = 'Глобальное';
 
 L['OPTIONS_INFO_VERSION'] = 'Версия';
 
@@ -119,11 +129,6 @@ L['OPTIONS_COMMON'] = 'Основное';
 L['OPTIONS_OK'] = 'Хорошо';
 L['OPTIONS_CLOSE'] = 'Закрыть';
 L['OPTIONS_RESET'] = 'Сбросить';
-
-L['OPTIONS_FONT_VALUE'] = 'Шрифт';
-L['OPTIONS_FONT_SIZE'] = 'Размер';
-L['OPTIONS_FONT_FLAG'] = 'Контур';
-L['OPTIONS_FONT_SHADOW'] = 'Тень';
 
 L['OPTIONS_COMMON_TAB_NAME'] = 'Имя';
 L['OPTIONS_COMMON_TAB_HEALTHTEXT'] = 'Здоровье';
@@ -730,3 +735,9 @@ L['OPTIONS_CUSTOM_COLOR_ADD_FROM_TARGET'] = 'Из цели';
 L['OPTIONS_CUSTOM_COLOR_ADD_FROM_LIST'] = 'Из списка';
 L['OPTIONS_CUSTOM_COLOR_COPY_FROM_PROFILE'] = 'Копировать из профиля';
 L['OPTIONS_CUSTOM_COLOR_COPY_FROM_PROFILE_SHIFT'] = 'Заменить из профиля';
+
+L['OPTIONS_GLOBAL_FONT_HEADER'] = 'Настройки шрифта';
+L['OPTIONS_USE_GLOBAL_FONT_VALUE_TOOLTIP'] = 'Использовать глобальные настройки шрифта';
+L['OPTIONS_USE_GLOBAL_FONT_SIZE_TOOLTIP'] = 'Использовать глобальные настройки размера шрифта';
+L['OPTIONS_USE_GLOBAL_FONT_FLAG_TOOLTIP'] = 'Использовать глобальные настройки контура шрифта';
+L['OPTIONS_USE_GLOBAL_FONT_SHADOW_TOOLTIP'] = 'Использовать глобальные настройки тени шрифта';

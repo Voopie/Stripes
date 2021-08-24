@@ -84,7 +84,7 @@ panel.Load = function(self)
 
     self.mythic_plus_percentage_font_shadow = E.CreateCheckButton(self);
     self.mythic_plus_percentage_font_shadow:SetPosition('LEFT', self.mythic_plus_percentage_font_flag, 'RIGHT', 12, 0);
-    self.mythic_plus_percentage_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
+    self.mythic_plus_percentage_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.mythic_plus_percentage_font_shadow:SetChecked(O.db.mythic_plus_percentage_font_shadow);
     self.mythic_plus_percentage_font_shadow:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SHADOW']);
     self.mythic_plus_percentage_font_shadow:AddToSearch(button, L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SHADOW']);

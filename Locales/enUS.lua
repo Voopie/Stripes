@@ -13,6 +13,15 @@ local L = NAMESPACE[2]['enUS'];
 
 L['RENAME'] = 'Rename';
 L['SAVE'] = 'Save';
+L['USE'] = 'Использовать';
+
+L['FONT_VALUE'] = 'Font';
+L['FONT_SIZE'] = 'Font size';
+L['FONT_SIZE_SHORT'] = 'size';
+L['FONT_FLAG'] = 'Font outline';
+L['FONT_FLAG_SHORT'] = 'Outline';
+L['FONT_SHADOW'] = 'Font shadow';
+L['FONT_SHADOW_SHORT'] = 'Shadow';
 
 L['FONT_FLAG_NONE'] = 'None';
 L['FONT_FLAG_OUTLINE'] = 'Outline';
@@ -86,6 +95,7 @@ L['OPTIONS_CATEGORY_MYTHIC_PLUS'] = 'Mythic+';
 L['OPTIONS_CATEGORY_USEFUL'] = 'Useful';
 L['OPTIONS_CATEGORY_PROFILES'] = 'Profiles';
 L['OPTIONS_CATEGORY_INFO'] = 'Info';
+L['OPTIONS_CATEGORY_GLOBAL'] = 'Global';
 
 L['OPTIONS_INFO_VERSION'] = 'Version';
 
@@ -119,11 +129,6 @@ L['OPTIONS_COMMON'] = 'Common';
 L['OPTIONS_OK'] = 'Ok';
 L['OPTIONS_CLOSE'] = 'Close';
 L['OPTIONS_RESET'] = 'Reset';
-
-L['OPTIONS_FONT_VALUE'] = 'Font';
-L['OPTIONS_FONT_SIZE'] = 'Size';
-L['OPTIONS_FONT_FLAG'] = 'Outline';
-L['OPTIONS_FONT_SHADOW'] = 'Shadow';
 
 L['OPTIONS_COMMON_TAB_NAME'] = 'Name';
 L['OPTIONS_COMMON_TAB_HEALTHTEXT'] = 'Health';
@@ -730,3 +735,9 @@ L['OPTIONS_CUSTOM_COLOR_ADD_FROM_TARGET'] = 'From target';
 L['OPTIONS_CUSTOM_COLOR_ADD_FROM_LIST'] = 'From list';
 L['OPTIONS_CUSTOM_COLOR_COPY_FROM_PROFILE'] = 'Copy from profile';
 L['OPTIONS_CUSTOM_COLOR_COPY_FROM_PROFILE_SHIFT'] = 'Replace from profile';
+
+L['OPTIONS_GLOBAL_FONT_HEADER'] = 'Font settings';
+L['OPTIONS_USE_GLOBAL_FONT_VALUE_TOOLTIP'] = 'Use global font settings';
+L['OPTIONS_USE_GLOBAL_FONT_SIZE_TOOLTIP'] = 'Use global font size settings';
+L['OPTIONS_USE_GLOBAL_FONT_FLAG_TOOLTIP'] = 'Use global font outline settings';
+L['OPTIONS_USE_GLOBAL_FONT_SHADOW_TOOLTIP'] = 'Use global font shadow settings';

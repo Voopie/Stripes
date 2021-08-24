@@ -55,8 +55,14 @@ Module.UpdateAll = function()
 end
 
 Module.UpdateFontObject = function(fontObject, fontValue, fontSize, fontFlag, fontShadow)
-    fontObject:SetFont(LSM:Fetch(LSM_MEDIATYPE_FONT, fontValue), fontSize, LIST_FONT_FLAGS[fontFlag]);
-    fontObject:SetShadowOffset(fontShadow and 1 or 0, fontShadow and -1 or 0);
+    fontObject:SetFont(LSM:Fetch(LSM_MEDIATYPE_FONT, O.db.use_global_font_value and O.db.global_font_value or fontValue), O.db.use_global_font_size and O.db.global_font_size or fontSize, LIST_FONT_FLAGS[O.db.use_global_font_flag and O.db.global_font_flag or fontFlag]);
+
+    if O.db.use_global_font_shadow then
+        fontObject:SetShadowOffset(O.db.global_font_shadow and 1 or 0, O.db.global_font_shadow and -1 or 0);
+    else
+        fontObject:SetShadowOffset(fontShadow and 1 or 0, fontShadow and -1 or 0);
+    end
+
     fontObject:SetShadowColor(0, 0, 0);
 end
 

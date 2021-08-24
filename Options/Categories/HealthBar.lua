@@ -466,7 +466,7 @@ panel.Load = function(self)
 
     self.threat_percentage_font_shadow = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
     self.threat_percentage_font_shadow:SetPosition('LEFT', self.threat_percentage_font_flag, 'RIGHT', 12, 0);
-    self.threat_percentage_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
+    self.threat_percentage_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.threat_percentage_font_shadow:SetChecked(O.db.threat_percentage_font_shadow);
     self.threat_percentage_font_shadow:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_FONT_SHADOW_TOOLTIP']);
     self.threat_percentage_font_shadow:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_SHADOW_TOOLTIP'], self.Tabs[3]);

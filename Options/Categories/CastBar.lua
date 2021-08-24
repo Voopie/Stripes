@@ -59,7 +59,7 @@ panel.Load = function(self)
 
     self.castbar_text_font_shadow = E.CreateCheckButton(self);
     self.castbar_text_font_shadow:SetPosition('LEFT', self.castbar_text_font_flag, 'RIGHT', 12, 0);
-    self.castbar_text_font_shadow:SetLabel(L['OPTIONS_FONT_SHADOW']);
+    self.castbar_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.castbar_text_font_shadow:SetChecked(O.db.castbar_text_font_shadow);
     self.castbar_text_font_shadow:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_FONT_SHADOW']);
     self.castbar_text_font_shadow:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_FONT_SHADOW']);
