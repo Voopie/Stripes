@@ -51,11 +51,11 @@ local UpdateHealthTextFormat = {
     end,
 
     [5] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%s [%d%%]' or '%s / [%.1f%%]', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%s [%d%%]' or '%s  [%.1f%%]', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
     end,
 
     [6] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%s (%d%%)' or '%s / (%.1f%%)', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%s (%d%%)' or '%s  (%.1f%%)', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
     end,
 
     [7] = function(unitframe, fontObject)
