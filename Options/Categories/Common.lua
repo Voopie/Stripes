@@ -3,14 +3,14 @@ local Module = S:NewModule('Options_Categories_Common');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.Common, O.frame.Right.Common = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_COMMON']), 'common', 1);
+O.frame.Left.Common, O.frame.Right.Common = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_COMMON']), 'common', 1);
 local button = O.frame.Left.Common;
 local panel  = O.frame.Right.Common;
 
 panel.TabsData = {
     [1] = {
         name  = 'NameTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_COMMON_TAB_NAME']),
+        title = string.upper(L['OPTIONS_COMMON_TAB_NAME']),
     },
     [2] = {
         name  = 'HealthTextTab',
@@ -333,7 +333,7 @@ panel.Load = function(self)
 
     self.target_name_role_icon = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
     self.target_name_role_icon:SetPosition('LEFT', self.target_name_not_me.Label, 'RIGHT', 12, 0);
-    self.target_name_role_icon:SetLabel(S.Media.INLINE_NEW_ICON .. L['OPTIONS_TARGET_NAME_ROLE_ICON']);
+    self.target_name_role_icon:SetLabel(L['OPTIONS_TARGET_NAME_ROLE_ICON']);
     self.target_name_role_icon:SetTooltip(L['OPTIONS_TARGET_NAME_ROLE_ICON_TOOLTIP']);
     self.target_name_role_icon:SetChecked(O.db.target_name_role_icon);
     self.target_name_role_icon:AddToSearch(button, L['OPTIONS_TARGET_NAME_ROLE_ICON_TOOLTIP'], self.Tabs[1]);

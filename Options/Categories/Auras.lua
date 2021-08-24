@@ -3,7 +3,7 @@ local Module = S:NewModule('Options_Categories_Auras');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.Auras, O.frame.Right.Auras = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_AURAS']), 'auras', 6);
+O.frame.Left.Auras, O.frame.Right.Auras = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_AURAS']), 'auras', 6);
 local button = O.frame.Left.Auras;
 local panel = O.frame.Right.Auras;
 
@@ -739,7 +739,7 @@ panel.Load = function(self)
 
     self.auras_square = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.auras_square:SetPosition('TOPLEFT', self.auras_filter_player_enabled, 'BOTTOMLEFT', 0, -8);
-    self.auras_square:SetLabel(S.Media.INLINE_NEW_ICON .. L['OPTIONS_AURAS_SQUARE']);
+    self.auras_square:SetLabel(L['OPTIONS_AURAS_SQUARE']);
     self.auras_square:SetTooltip(L['OPTIONS_AURAS_SQUARE_TOOLTIP']);
     self.auras_square:AddToSearch(button, L['OPTIONS_AURAS_SQUARE_TOOLTIP'], self.Tabs[1]);
     self.auras_square:SetChecked(O.db.auras_square);
@@ -826,7 +826,7 @@ panel.Load = function(self)
 
     self.auras_hpbar_color_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.auras_hpbar_color_enabled:SetPosition('TOPLEFT', self.auras_sort_enabled, 'BOTTOMLEFT', 0, -8);
-    self.auras_hpbar_color_enabled:SetLabel(S.Media.INLINE_NEW_ICON .. L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED']);
+    self.auras_hpbar_color_enabled:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED']);
     self.auras_hpbar_color_enabled:SetTooltip(L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP']);
     self.auras_hpbar_color_enabled:AddToSearch(button, L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP'], self.Tabs[1]);
     self.auras_hpbar_color_enabled:SetChecked(O.db.auras_hpbar_color_enabled);
