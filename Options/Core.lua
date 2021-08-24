@@ -30,6 +30,7 @@ O.Lists = {
         [23] = S.Media.Path .. 'Textures\\Arrow\\meorawr_64',
         [24] = S.Media.Path .. 'Textures\\Arrow\\semlar_64',
         [25] = S.Media.Path .. 'Textures\\Arrow\\gregory_64',
+        [26] = S.Media.Path .. 'Textures\\Arrow\\composite_right_64',
     },
 
     motion = {

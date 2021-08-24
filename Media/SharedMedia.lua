@@ -146,6 +146,7 @@ S.Media.Textures = {
         MIDIGLO = M .. 'Textures\\StatusBar\\midiglo.blp',
         SIDY    = M .. 'Textures\\StatusBar\\sidy.blp',
         UPLI    = M .. 'Textures\\StatusBar\\upli.blp',
+        SKULLFLOWERNEON = M .. 'Textures\\StatusBar\\skullflower_neon.blp',
     },
 };
 
@@ -260,6 +261,7 @@ LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Mida', S.Media.Textures.StatusBar
 LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Midiglo', S.Media.Textures.StatusBar.MIDIGLO);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Sidy', S.Media.Textures.StatusBar.SIDY);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Upli', S.Media.Textures.StatusBar.UPLI);
+LSM:Register(LSM.MediaType.STATUSBAR, 'Skullflower Neon', S.Media.Textures.StatusBar.SKULLFLOWERNEON);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Blizzard Glow', [[Interface\TargetingFrame\UI-StatusBar-Glow]]);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Blizzard Bar Fill', [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]]);
 
