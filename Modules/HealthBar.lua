@@ -45,7 +45,7 @@ Module.defaultStatusColors = {
     [3] = { 0.15, 0.75, 0.15, 1 },  -- securely tanking, highest threat (green)
 };
 
-Module.defaultOffTankColor = { 0.60, 0.00, 0.85 };
+Module.defaultOffTankColor = { 0.60, 0.00, 0.85, 1 };
 
 local statusColors = {
     [0] = { 1.00, 0.00, 0.00, 1 },  -- not tanking, lower threat than tank. (red)
@@ -54,21 +54,21 @@ local statusColors = {
     [3] = { 0.15, 0.75, 0.15, 1 },  -- securely tanking, highest threat (green)
 };
 
-local offTankColor = { 0.60, 0.00, 0.85 };
-local petTankColor = { 0.00, 0.44, 1.00 };
+local offTankColor = { 0.60, 0.00, 0.85, 1 };
+local petTankColor = { 0.00, 0.44, 1.00, 1 };
 
 local PLAYER_IS_TANK = false;
 local PLAYER_UNIT = 'player';
 
 local RAID_TARGET_COLORS = {
-    [1] = {    1,    1,  0.2 }, -- YELLOW (STAR)
-    [2] = {    1,  0.5,  0.2 }, -- ORANGE (CIRCLE)
-    [3] = {  0.8,  0.2,    1 }, -- PURPLE (DIAMOND)
-    [4] = {  0.2,    1, 0.25 }, -- GREEN  (TRIANGLE)
-    [5] = { 0.75, 0.85,  0.9 }, -- SILVER (MOON)
-    [6] = {  0.2,  0.5,    1 }, -- BLUE   (SQUARE)
-    [7] = {    1,  0.2, 0.25 }, -- RED    (CROSS)
-    [8] = {    1,    1,    1 }, -- WHITE  (SKULL)
+    [1] = {    1,    1,  0.2, 1 }, -- YELLOW (STAR)
+    [2] = {    1,  0.5,  0.2, 1 }, -- ORANGE (CIRCLE)
+    [3] = {  0.8,  0.2,    1, 1 }, -- PURPLE (DIAMOND)
+    [4] = {  0.2,    1, 0.25, 1 }, -- GREEN  (TRIANGLE)
+    [5] = { 0.75, 0.85,  0.9, 1 }, -- SILVER (MOON)
+    [6] = {  0.2,  0.5,    1, 1 }, -- BLUE   (SQUARE)
+    [7] = {    1,  0.2, 0.25, 1 }, -- RED    (CROSS)
+    [8] = {    1,    1,    1, 1 }, -- WHITE  (SKULL)
 };
 
 --[[
@@ -249,12 +249,13 @@ local function Threat_UpdateColor(unitframe)
 
     if display and not IsPlayer(unitframe.data.unit) then
         local r, g, b, a;
+
         if PLAYER_IS_TANK and offTank then
-            r, g, b, a = unpack(offTankColor);
+            r, g, b, a = offTankColor[1], offTankColor[2], offTankColor[3], offTankColor[4];
         elseif petTank then
-            r, g, b, a = unpack(petTankColor);
+            r, g, b, a = petTankColor[1], petTankColor[2], petTankColor[3], petTankColor[4];
         else
-            r, g, b, a = unpack(statusColors[status]);
+            r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
         end
 
         if UnitIsTapped(unitframe.data.unit) then
