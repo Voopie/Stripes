@@ -22,11 +22,14 @@ local StripesSpellInterruptedCasterFont   = CreateFont('StripesSpellInterruptedC
 
 local durations = {
     [ 47528] = 4, -- Death Knight -- Mind Freeze
-    [ 47476] = 3, -- Death Knight (Blood) -- Strangulate
-    [183752] = 3, -- Demon Hunter (Disrupt)
+    [ 47476] = 3, -- Death Knight (Blood) -- Strangulate (PvP talent)
+    [183752] = 3, -- Demon Hunter -- Disrupt
+    [204490] = 6, -- Demon Hunter (Vengeance) -- Sigil of Silence
+    [ 32737] = 3, -- Demon Hunter (Vengeance) -- Sigil of Silence (hmmm... Arcane Torrent?)
     [106839] = 4, -- Druid (Feral/Guardian) -- Skull bash
     [ 78675] = 5, -- Druid (Balance) -- Solar beam
     [147362] = 3, -- Hunter -- Counter shot
+    [187707] = 3, -- Hunter (Survival) -- Muzzle
     [  2139] = 6, -- Mage -- Counterspell
     [116705] = 4, -- Monk -- Spear Hand Strike
     [ 31935] = 3, -- Paladin (Protection) -- Avenger's Shield
@@ -104,6 +107,8 @@ local function OnInterrupt(unitframe, spellId, sourceName, sourceGUID, destGUID)
         unitframe.SpellInterrupted:SetShown(false);
         return;
     end
+
+    print(spellId)
 
     local duration = durations[spellId] or DEFAULT_DURATION;
 
