@@ -274,6 +274,14 @@ O.DefaultValues = {
     health_bar_class_color_friendly = C_CVar.GetCVar('ShowClassColorInFriendlyNameplate') == '1',
     health_bar_class_color_enemy    = C_CVar.GetCVar('ShowClassColorInNameplate') == '1',
 
+    health_bar_color_dc              = { 0.5, 0.5, 0.5, 1 },
+    health_bar_color_tapped          = { 0.9, 0.9, 0.9, 1 },
+    health_bar_color_friendly_player = { 0.667, 0.667, 1, 1 },
+    health_bar_color_friendly_npc    = { 0, 1, 0, 1 },
+    health_bar_color_enemy_player    = { 1, 0, 0, 1 },
+    health_bar_color_enemy_npc       = { 1, 0, 0, 1 },
+    health_bar_color_neutral_npc     = { 1, 1, 0, 1 },
+
     absorb_bar_enabled = true,
     absorb_bar_at_top  = false,
 

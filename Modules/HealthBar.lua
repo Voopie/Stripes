@@ -5,8 +5,8 @@ local Module = S:NewNameplateModule('HealthBar');
 local unpack = unpack;
 
 -- WoW API
-local UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
-      UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
+local UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
+      UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer;
 local GetRaidTargetIndex = GetRaidTargetIndex;
 
@@ -32,6 +32,7 @@ local HEALTH_BAR_CLASS_COLOR_ENEMY, HEALTH_BAR_CLASS_COLOR_FRIENDLY;
 local HEALTH_BAR_TEXTURE, BORDER_HIDE, BORDER_THIN;
 local SHOW_CLICKABLE_AREA, ENEMY_MINUS_HEIGHT, ENEMY_HEIGHT, FRIENDLY_HEIGHT, PLAYER_HEIGHT;
 local TP_ENABLED, TP_COLORING, TP_POINT, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y;
+local HPBAR_COLOR_DC, HPBAR_COLOR_TAPPED, HPBAR_COLOR_ENEMY_NPC, HPBAR_COLOR_ENEMY_PLAYER, HPBAR_COLOR_FRIENDLY_NPC, HPBAR_COLOR_FRIENDLY_PLAYER, HPBAR_COLOR_NEUTRAL;
 
 local StripesThreatPercentageFont = CreateFont('StripesThreatPercentageFont');
 
@@ -92,40 +93,51 @@ local function IsUseClassColor(unitframe)
 end
 
 local function UpdateHealthColor(frame)
-    local r, g, b;
+    local r, g, b, a;
 
     if not UnitIsConnected(frame.displayedUnit) then
-        r, g, b = 0.5, 0.5, 0.5;
+        r, g, b, a = HPBAR_COLOR_DC[1], HPBAR_COLOR_DC[2], HPBAR_COLOR_DC[3], HPBAR_COLOR_DC[4];
     else
         if frame.optionTable.healthBarColorOverride then
             local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
-            r, g, b = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b;
+            r, g, b, a = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b, healthBarColorOverride.a or 1;
         else
             local _, englishClass = UnitClass(frame.displayedUnit);
             local classColor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[englishClass];
             if (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.displayedUnit) or UnitTreatAsPlayerForDisplay(frame.displayedUnit)) and classColor and frame.optionTable.useClassColors and IsUseClassColor(frame) then
                 r, g, b = classColor.r, classColor.g, classColor.b;
             elseif CompactUnitFrame_IsTapDenied(frame) then
-                r, g, b = 0.9, 0.9, 0.9;
+                r, g, b, a = HPBAR_COLOR_TAPPED[1], HPBAR_COLOR_TAPPED[2], HPBAR_COLOR_TAPPED[3], HPBAR_COLOR_TAPPED[4];
             elseif frame.optionTable.colorHealthBySelection then
                 if frame.optionTable.considerSelectionInCombatAsHostile and CompactUnitFrame_IsOnThreatListWithPlayer(frame.displayedUnit) then
-                    r, g, b = 1.0, 0.0, 0.0;
+                    r, g, b, a = HPBAR_COLOR_ENEMY_NPC[1], HPBAR_COLOR_ENEMY_NPC[2], HPBAR_COLOR_ENEMY_NPC[3], HPBAR_COLOR_ENEMY_NPC[4];
                 elseif UnitIsPlayer(frame.displayedUnit) and UnitIsFriend(PLAYER_UNIT, frame.displayedUnit) then
-                    r, g, b = 0.667, 0.667, 1.0;
+                    r, g, b, a = HPBAR_COLOR_FRIENDLY_PLAYER[1], HPBAR_COLOR_FRIENDLY_PLAYER[2], HPBAR_COLOR_FRIENDLY_PLAYER[3], HPBAR_COLOR_FRIENDLY_PLAYER[4];
                 else
-                    r, g, b = UnitSelectionColor(frame.displayedUnit, frame.optionTable.colorHealthWithExtendedColors);
+                    local selectionType = UnitSelectionType(frame.displayedUnit, frame.optionTable.colorHealthWithExtendedColors);
+                    if selectionType == 2 then
+                        r, g, b, a = HPBAR_COLOR_NEUTRAL[1], HPBAR_COLOR_NEUTRAL[2], HPBAR_COLOR_NEUTRAL[3], HPBAR_COLOR_NEUTRAL[4];
+                    else
+                        if frame.data.unitType == 'ENEMY_PLAYER' then
+                            r, g, b, a = HPBAR_COLOR_ENEMY_PLAYER[1], HPBAR_COLOR_ENEMY_PLAYER[2], HPBAR_COLOR_ENEMY_PLAYER[3], HPBAR_COLOR_ENEMY_PLAYER[4];
+                        elseif frame.data.unitType == 'ENEMY_NPC' then
+                            r, g, b, a = HPBAR_COLOR_ENEMY_NPC[1], HPBAR_COLOR_ENEMY_NPC[2], HPBAR_COLOR_ENEMY_NPC[3], HPBAR_COLOR_ENEMY_NPC[4];
+                        else
+                            r, g, b, a = UnitSelectionColor(frame.displayedUnit, frame.optionTable.colorHealthWithExtendedColors);
+                        end
+                    end
                 end
             elseif UnitIsFriend(PLAYER_UNIT, frame.displayedUnit) then
-                r, g, b = 0.0, 1.0, 0.0;
+                r, g, b, a = HPBAR_COLOR_FRIENDLY_NPC[1], HPBAR_COLOR_FRIENDLY_NPC[2], HPBAR_COLOR_FRIENDLY_NPC[3], HPBAR_COLOR_FRIENDLY_NPC[4];
             else
-                r, g, b = 1.0, 0.0, 0.0;
+                r, g, b, a = HPBAR_COLOR_ENEMY_NPC[1], HPBAR_COLOR_ENEMY_NPC[2], HPBAR_COLOR_ENEMY_NPC[3], HPBAR_COLOR_ENEMY_NPC[4];
             end
         end
     end
 
-    local cR, cG, cB = frame.healthBar:GetStatusBarColor();
-    if ( r ~= cR or g ~= cG or b ~= cB ) then
-        frame.healthBar:SetStatusBarColor(r, g, b);
+    local cR, cG, cB, cA = frame.healthBar:GetStatusBarColor();
+    if ( r ~= cR or g ~= cG or b ~= cB or a ~= cA ) then
+        frame.healthBar:SetStatusBarColor(r, g, b, a);
 
         if frame.optionTable.colorHealthWithExtendedColors then
             frame.selectionHighlight:SetVertexColor(r, g, b);
@@ -588,6 +600,48 @@ function Module:UpdateLocalConfig()
     ENEMY_HEIGHT       = O.db.size_enemy_height;
     FRIENDLY_HEIGHT    = O.db.size_friendly_height;
     PLAYER_HEIGHT      = O.db.size_self_height;
+
+    HPBAR_COLOR_DC    = HPBAR_COLOR_DC or {};
+    HPBAR_COLOR_DC[1] = O.db.health_bar_color_dc[1];
+    HPBAR_COLOR_DC[2] = O.db.health_bar_color_dc[2];
+    HPBAR_COLOR_DC[3] = O.db.health_bar_color_dc[3];
+    HPBAR_COLOR_DC[4] = O.db.health_bar_color_dc[4] or 1;
+
+    HPBAR_COLOR_TAPPED    = HPBAR_COLOR_TAPPED or {};
+    HPBAR_COLOR_TAPPED[1] = O.db.health_bar_color_tapped[1];
+    HPBAR_COLOR_TAPPED[2] = O.db.health_bar_color_tapped[2];
+    HPBAR_COLOR_TAPPED[3] = O.db.health_bar_color_tapped[3];
+    HPBAR_COLOR_TAPPED[4] = O.db.health_bar_color_tapped[4] or 1;
+
+    HPBAR_COLOR_ENEMY_NPC    = HPBAR_COLOR_ENEMY_NPC or {};
+    HPBAR_COLOR_ENEMY_NPC[1] = O.db.health_bar_color_enemy_npc[1];
+    HPBAR_COLOR_ENEMY_NPC[2] = O.db.health_bar_color_enemy_npc[2];
+    HPBAR_COLOR_ENEMY_NPC[3] = O.db.health_bar_color_enemy_npc[3];
+    HPBAR_COLOR_ENEMY_NPC[4] = O.db.health_bar_color_enemy_npc[4] or 1;
+
+    HPBAR_COLOR_ENEMY_PLAYER    = HPBAR_COLOR_ENEMY_PLAYER or {};
+    HPBAR_COLOR_ENEMY_PLAYER[1] = O.db.health_bar_color_enemy_player[1];
+    HPBAR_COLOR_ENEMY_PLAYER[2] = O.db.health_bar_color_enemy_player[2];
+    HPBAR_COLOR_ENEMY_PLAYER[3] = O.db.health_bar_color_enemy_player[3];
+    HPBAR_COLOR_ENEMY_PLAYER[4] = O.db.health_bar_color_enemy_player[4] or 1;
+
+    HPBAR_COLOR_FRIENDLY_NPC    = HPBAR_COLOR_FRIENDLY_NPC or {};
+    HPBAR_COLOR_FRIENDLY_NPC[1] = O.db.health_bar_color_friendly_npc[1];
+    HPBAR_COLOR_FRIENDLY_NPC[2] = O.db.health_bar_color_friendly_npc[2];
+    HPBAR_COLOR_FRIENDLY_NPC[3] = O.db.health_bar_color_friendly_npc[3];
+    HPBAR_COLOR_FRIENDLY_NPC[4] = O.db.health_bar_color_friendly_npc[4] or 1;
+
+    HPBAR_COLOR_FRIENDLY_PLAYER    = HPBAR_COLOR_FRIENDLY_PLAYER or {};
+    HPBAR_COLOR_FRIENDLY_PLAYER[1] = O.db.health_bar_color_friendly_player[1];
+    HPBAR_COLOR_FRIENDLY_PLAYER[2] = O.db.health_bar_color_friendly_player[2];
+    HPBAR_COLOR_FRIENDLY_PLAYER[3] = O.db.health_bar_color_friendly_player[3];
+    HPBAR_COLOR_FRIENDLY_PLAYER[4] = O.db.health_bar_color_friendly_player[4] or 1;
+
+    HPBAR_COLOR_NEUTRAL    = HPBAR_COLOR_NEUTRAL or {};
+    HPBAR_COLOR_NEUTRAL[1] = O.db.health_bar_color_neutral_npc[1];
+    HPBAR_COLOR_NEUTRAL[2] = O.db.health_bar_color_neutral_npc[2];
+    HPBAR_COLOR_NEUTRAL[3] = O.db.health_bar_color_neutral_npc[3];
+    HPBAR_COLOR_NEUTRAL[4] = O.db.health_bar_color_neutral_npc[4] or 1;
 end
 
 function Module:PLAYER_LOGIN()
