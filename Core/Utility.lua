@@ -16,6 +16,7 @@ local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
 local GetQuestDifficultyColor = GetQuestDifficultyColor;
 local IsInGuild, GetGuildInfo = IsInGuild, GetGuildInfo;
 local IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map_GetBestMapForUnit = IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map.GetBestMapForUnit
+local GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell = GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell;
 
 -- WoW C API
 local C_MythicPlus_GetCurrentAffixes, C_ChallengeMode_GetActiveKeystoneInfo = C_MythicPlus.GetCurrentAffixes, C_ChallengeMode.GetActiveKeystoneInfo;
@@ -270,6 +271,19 @@ U.IsAffixActive = function(affixID)
     end
 
     return false;
+end
+
+U.IsSpellKnown = function(spellId)
+    return IsSpellKnown(spellId) or IsSpellKnownOrOverridesKnown(spellId) or IsPlayerSpell(spellId);
+end
+
+--[[
+    IsPlayerSpell(spellId), IsSpellKnown(spellId), IsSpellKnownOrOverridesKnown(spellId)
+    Incorrectly returned false for some spells
+]]
+
+U.GetTrulySpellId = function(spellId)
+    return select(7, GetSpellInfo(GetSpellInfo(spellId))); -- here we extract the spell name and then get needed spellId by spell name
 end
 
 -- Colors

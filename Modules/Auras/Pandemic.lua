@@ -5,7 +5,10 @@ local Module = S:NewNameplateModule('Auras_Pandemic');
 local select, ipairs, table_wipe, bit_band = select, ipairs, wipe, bit.band;
 
 -- WoW API
-local UnitAura, GetSpellInfo, IsSpellKnown = UnitAura, GetSpellInfo, IsSpellKnown;
+local UnitAura = UnitAura;
+
+-- Stripes API
+local GetTrulySpellId, S_IsSpellKnown = U.GetTrulySpellId, U.IsSpellKnown;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED, PANDEMIC_COLOR;
@@ -23,15 +26,6 @@ local PANDEMIC_PERCENT = 30;
 local knownSpells = {};
 
 local UPDATE_INTERVAL = 0.33;
-
---[[
-    IsPlayerSpell(spellId), IsSpellKnown(spellId), IsSpellKnownOrOverridesKnown(spellId)
-    Incorrectly returned false for some spells
-]]
-
-local function GetTrulySpellId(spellId)
-    return select(7, GetSpellInfo(GetSpellInfo(spellId))); -- here we extract the spell name and then get needed spellId by spell name
-end
 
 local function IsOnPandemic(aura)
     if not ENABLED or not COUNTDOWN_ENABLED then
@@ -100,7 +94,7 @@ local function Update(unitframe)
                         if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
                             self.spellId = GetTrulySpellId(self.spellId);
 
-                            if self.spellId and (knownSpells[self.spellId] or IsSpellKnown(self.spellId)) then
+                            if self.spellId and (knownSpells[self.spellId] or S_IsSpellKnown(self.spellId)) then
                                 self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
 
                                 if not knownSpells[self.spellId] then
