@@ -108,17 +108,17 @@ local function Update(unitframe)
 end
 
 local function FindAura(unit)
-    local spellId, duration, source;
+    local spellId, expirationTime, source;
 
     for i = 1, BUFF_MAX_DISPLAY do
-        duration, _, _, source, _, _, spellId = select(5, UnitAura(unit, i, 'HARMFULL'));
+        expirationTime, source, _, _, spellId = select(6, UnitAura(unit, i, 'HARMFUL'));
 
         if not spellId then
             return false;
         end
 
         if SigilOfSilenceAuras[spellId] then
-            return spellId, duration, source;
+            return spellId, expirationTime - GetTime(), source;
         end
     end
 
