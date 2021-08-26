@@ -5,10 +5,11 @@ local Module = S:NewNameplateModule('SpellInterrupted');
 local pairs = pairs;
 
 -- WoW API
-local CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture = CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture;
+local UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture = UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture;
 
 -- Stripes API
 local GetClassColorByGUID = U.GetClassColorByGUID;
+local GetUnitColor = U.GetUnitColor;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Nameplates
@@ -42,6 +43,12 @@ local durations = {
     [132409] = 6, -- Warlock -- Spell Lock NOTE: Command Demon when felhunter sacrificed
     [212619] = 6, -- Warlock -- Call Felhunter (Demonology honor talent)
     [  6552] = 4, -- Warrior -- Pummel
+};
+
+local SigilOfSilenceAuras = {
+    [204490] = true,
+    [202137] = true,
+    [207682] = true,
 };
 
 local DEFAULT_DURATION = 4;
@@ -100,6 +107,51 @@ local function Update(unitframe)
     end
 end
 
+local function FindAura(unit)
+    local spellId, duration, source;
+
+    for i = 1, BUFF_MAX_DISPLAY do
+        duration, _, _, source, _, _, spellId = select(5, UnitAura(unit, i, 'HARMFULL'));
+
+        if not spellId then
+            return false;
+        end
+
+        if SigilOfSilenceAuras[spellId] then
+            return spellId, duration, source;
+        end
+    end
+
+    return false;
+end
+
+local function UpdateByAura(unitframe)
+    if not ENABLED then
+        return;
+    end
+
+    local spellId, duration, source = FindAura(unitframe.data.unit);
+
+    if not spellId then
+        return;
+    end
+
+    unitframe.SpellInterrupted.icon:SetTexture(GetSpellTexture(spellId));
+    CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, GetTime(), duration, duration > 0, true);
+
+    unitframe.SpellInterrupted.expTime  = GetTime() + duration;
+
+    if CASTER_NAME_SHOW and source then
+        unitframe.SpellInterrupted.casterName:SetText(UnitName(source));
+        unitframe.SpellInterrupted.casterName:SetTextColor(GetUnitColor(source, 2));
+        unitframe.SpellInterrupted.casterName:SetShown(true);
+    else
+        unitframe.SpellInterrupted.casterName:SetShown(false);
+    end
+
+    unitframe.SpellInterrupted:SetShown(true);
+end
+
 local function OnInterrupt(unitframe, spellId, sourceName, sourceGUID, destGUID)
     if not spellId then
         unitframe.SpellInterrupted.expTime  = 0;
@@ -107,8 +159,6 @@ local function OnInterrupt(unitframe, spellId, sourceName, sourceGUID, destGUID)
         unitframe.SpellInterrupted:SetShown(false);
         return;
     end
-
-    print(spellId)
 
     local duration = durations[spellId] or DEFAULT_DURATION;
 
@@ -150,6 +200,10 @@ function Module:UnitRemoved(unitframe)
     if unitframe.SpellInterrupted then
         unitframe.SpellInterrupted:SetShown(false);
     end
+end
+
+function Module:UnitAura(unitframe)
+    UpdateByAura(unitframe);
 end
 
 function Module:Update(unitframe)
