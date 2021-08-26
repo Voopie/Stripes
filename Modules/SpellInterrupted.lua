@@ -195,6 +195,7 @@ end
 function Module:UnitAdded(unitframe)
     Create(unitframe);
     Update(unitframe);
+    UpdateByAura(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
@@ -209,6 +210,7 @@ end
 
 function Module:Update(unitframe)
     Update(unitframe);
+    UpdateByAura(unitframe);
 end
 
 function Module:UpdateLocalConfig()
