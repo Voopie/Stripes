@@ -200,7 +200,7 @@ local function UpdateThreatPercentage(unitframe, value, r, g, b, a)
         return;
     end
 
-    unitframe.ThreatPercentage.text:SetText(string.format('%s%%', value));
+    unitframe.ThreatPercentage.text:SetText(string.format('%.0f%%', value));
 
     if TP_COLORING then
         unitframe.ThreatPercentage.text:SetTextColor(r, g, b, a or 1);
