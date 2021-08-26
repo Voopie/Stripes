@@ -700,14 +700,15 @@ do
 
         local plusButton = Mixin(CreateFrame('Button', '$parentPlusButton', slider), E.PixelPerfectMixin);
         plusButton:SetPosition('RIGHT', slider, 'RIGHT', 4, 0);
-        plusButton:SetSize(14, 14);
+        plusButton:SetSize(12, 12);
         plusButton:SetFrameLevel(slider:GetFrameLevel() + 10);
+        plusButton:SetShown(false);
         plusButton.Text = Mixin(plusButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
-        plusButton.Text:SetPosition('CENTER', plusButton, 'CENTER', 0, 0);
+        plusButton.Text:SetPosition('CENTER', plusButton, 'CENTER', 1, 0);
         plusButton.Text:SetText('+');
         plusButton.Background = Mixin(CreateFrame('Frame', '$parentBackground', plusButton, 'BackdropTemplate'), E.PixelPerfectMixin);
         plusButton.Background:SetPosition('TOPLEFT', plusButton, 'TOPLEFT', 0, 0);
-        plusButton.Background:SetSize(14, 14);
+        plusButton.Background:SetSize(12, 12);
         plusButton.Background:SetFrameLevel(plusButton:GetFrameLevel() - 1);
         plusButton.Background:SetBackdrop(SLIDER_EDITBOX_BACKGROUND_BACKDROP);
         plusButton.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
@@ -724,17 +725,24 @@ do
 
             self:GetParent():SetValue(value);
         end);
+        plusButton:HookScript('OnEnter', function(self)
+            self.Background:SetBackdropColor(0.5, 0.5, 0.5, 1);
+        end);
+        plusButton:HookScript('OnLeave', function(self)
+            self.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
+        end);
 
         local minusButton = Mixin(CreateFrame('Button', '$parentMinusButton', slider), E.PixelPerfectMixin);
         minusButton:SetPosition('LEFT', slider, 'LEFT', -4, 0);
-        minusButton:SetSize(14, 14);
+        minusButton:SetSize(12, 12);
         minusButton:SetFrameLevel(slider:GetFrameLevel() + 10);
+        minusButton:SetShown(false);
         minusButton.Text = Mixin(minusButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
         minusButton.Text:SetPosition('CENTER', minusButton, 'CENTER', 0, 1);
         minusButton.Text:SetText('-');
         minusButton.Background = Mixin(CreateFrame('Frame', '$parentBackground', minusButton, 'BackdropTemplate'), E.PixelPerfectMixin);
         minusButton.Background:SetPosition('TOPLEFT', minusButton, 'TOPLEFT', 0, 0);
-        minusButton.Background:SetSize(14, 14);
+        minusButton.Background:SetSize(12, 12);
         minusButton.Background:SetFrameLevel(minusButton:GetFrameLevel() - 1);
         minusButton.Background:SetBackdrop(SLIDER_EDITBOX_BACKGROUND_BACKDROP);
         minusButton.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
@@ -751,8 +759,28 @@ do
 
             self:GetParent():SetValue(value);
         end);
+        minusButton:HookScript('OnEnter', function(self)
+            self.Background:SetBackdropColor(0.5, 0.5, 0.5, 1);
+        end);
+        minusButton:HookScript('OnLeave', function(self)
+            self.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
+        end);
 
-        slider.editbox = editbox;
+        slider:HookScript('OnEnter', function(self)
+            self.plusButton:SetShown(true);
+            self.minusButton:SetShown(true);
+        end);
+
+        slider:HookScript('OnLeave', function(self)
+            if not (self.plusButton:IsMouseOver() or self.minusButton:IsMouseOver()) then
+                self.plusButton:SetShown(false);
+                self.minusButton:SetShown(false);
+            end
+        end);
+
+        slider.editbox     = editbox;
+        slider.plusButton  = plusButton;
+        slider.minusButton = minusButton;
 
         E.CreateTooltip(slider);
 
