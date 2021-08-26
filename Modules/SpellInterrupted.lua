@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('SpellInterrupted');
 local pairs = pairs;
 
 -- WoW API
-local UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture = UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture;
+local UnitName, UnitAura, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture = UnitName, UnitAura, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture;
 
 -- Stripes API
 local GetClassColorByGUID = U.GetClassColorByGUID;
@@ -108,17 +108,17 @@ local function Update(unitframe)
 end
 
 local function FindAura(unit)
-    local spellId, expirationTime, source;
+    local _, spellId, texture, duration, expirationTime, source;
 
     for i = 1, BUFF_MAX_DISPLAY do
-        expirationTime, source, _, _, spellId = select(6, UnitAura(unit, i, 'HARMFUL'));
+        _, texture, _, _, duration, expirationTime, source, _, _, spellId = UnitAura(unit, i, 'HARMFUL');
 
         if not spellId then
             return false;
         end
 
         if SigilOfSilenceAuras[spellId] then
-            return spellId, expirationTime - GetTime(), source;
+            return texture, duration, expirationTime, source;
         end
     end
 
@@ -130,17 +130,17 @@ local function UpdateByAura(unitframe)
         return;
     end
 
-    local spellId, duration, source = FindAura(unitframe.data.unit);
+    local texture, duration, expirationTime, source = FindAura(unitframe.data.unit);
 
-    if not spellId then
+    if not texture then
         return;
     end
 
-    unitframe.SpellInterrupted.icon:SetTexture(GetSpellTexture(spellId));
-    CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, GetTime(), duration, duration > 0, true);
+    unitframe.SpellInterrupted.icon:SetTexture(texture);
+    CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, expirationTime - duration, duration, duration > 0, true);
 
-    unitframe.SpellInterrupted.expTime  = GetTime() + duration;
-    unitframe.SpellInterrupted.destGUID = nil;
+    unitframe.SpellInterrupted.expTime  = expirationTime;
+    unitframe.SpellInterrupted.destGUID = unitframe.data.unitGUID;
 
     if CASTER_NAME_SHOW and source then
         unitframe.SpellInterrupted.casterName:SetText(UnitName(source));
