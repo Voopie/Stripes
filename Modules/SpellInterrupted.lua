@@ -140,6 +140,7 @@ local function UpdateByAura(unitframe)
     CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, GetTime(), duration, duration > 0, true);
 
     unitframe.SpellInterrupted.expTime  = GetTime() + duration;
+    unitframe.SpellInterrupted.destGUID = nil;
 
     if CASTER_NAME_SHOW and source then
         unitframe.SpellInterrupted.casterName:SetText(UnitName(source));
