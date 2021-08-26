@@ -730,6 +730,11 @@ do
         end);
         plusButton:HookScript('OnLeave', function(self)
             self.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
+
+            if not self:GetParent():IsMouseOver() then
+                self:SetShown(false);
+                self:GetParent().minusButton:SetShown(false);
+            end
         end);
 
         local minusButton = Mixin(CreateFrame('Button', '$parentMinusButton', slider), E.PixelPerfectMixin);
@@ -764,6 +769,11 @@ do
         end);
         minusButton:HookScript('OnLeave', function(self)
             self.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
+
+            if not self:GetParent():IsMouseOver() then
+                self:SetShown(false);
+                self:GetParent().plusButton:SetShown(false);
+            end
         end);
 
         slider:HookScript('OnEnter', function(self)
