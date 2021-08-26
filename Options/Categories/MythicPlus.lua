@@ -62,7 +62,7 @@ panel.Load = function(self)
 
     self.mythic_plus_percentage_font_size = E.CreateSlider(self);
     self.mythic_plus_percentage_font_size:SetPosition('LEFT', self.mythic_plus_percentage_font_value, 'RIGHT', 12, 0);
-    self.mythic_plus_percentage_font_size:SetValues(O.db.mythic_plus_percentage_font_size, 2, 28, 1);
+    self.mythic_plus_percentage_font_size:SetValues(O.db.mythic_plus_percentage_font_size, 3, 28, 1);
     self.mythic_plus_percentage_font_size:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SIZE']);
     self.mythic_plus_percentage_font_size:AddToSearch(button, L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SIZE']);
     self.mythic_plus_percentage_font_size.OnValueChangedCallback = function(_, value)

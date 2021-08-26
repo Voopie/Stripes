@@ -698,6 +698,60 @@ do
             GameTooltip_Hide();
         end);
 
+        local plusButton = Mixin(CreateFrame('Button', '$parentPlusButton', slider), E.PixelPerfectMixin);
+        plusButton:SetPosition('RIGHT', slider, 'RIGHT', 4, 0);
+        plusButton:SetSize(14, 14);
+        plusButton:SetFrameLevel(slider:GetFrameLevel() + 10);
+        plusButton.Text = Mixin(plusButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
+        plusButton.Text:SetPosition('CENTER', plusButton, 'CENTER', 0, 0);
+        plusButton.Text:SetText('+');
+        plusButton.Background = Mixin(CreateFrame('Frame', '$parentBackground', plusButton, 'BackdropTemplate'), E.PixelPerfectMixin);
+        plusButton.Background:SetPosition('TOPLEFT', plusButton, 'TOPLEFT', 0, 0);
+        plusButton.Background:SetSize(14, 14);
+        plusButton.Background:SetFrameLevel(plusButton:GetFrameLevel() - 1);
+        plusButton.Background:SetBackdrop(SLIDER_EDITBOX_BACKGROUND_BACKDROP);
+        plusButton.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
+        plusButton.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+        plusButton:SetScript('OnClick', function(self)
+            local value = self:GetParent().currentValue + self:GetParent().stepValue;
+
+            if value then
+                value = math.min(value, self:GetParent().maxValue);
+                value = math.max(value, self:GetParent().minValue);
+            else
+                value = self:GetParent().currentValue;
+            end
+
+            self:GetParent():SetValue(value);
+        end);
+
+        local minusButton = Mixin(CreateFrame('Button', '$parentMinusButton', slider), E.PixelPerfectMixin);
+        minusButton:SetPosition('LEFT', slider, 'LEFT', -4, 0);
+        minusButton:SetSize(14, 14);
+        minusButton:SetFrameLevel(slider:GetFrameLevel() + 10);
+        minusButton.Text = Mixin(minusButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
+        minusButton.Text:SetPosition('CENTER', minusButton, 'CENTER', 0, 1);
+        minusButton.Text:SetText('-');
+        minusButton.Background = Mixin(CreateFrame('Frame', '$parentBackground', minusButton, 'BackdropTemplate'), E.PixelPerfectMixin);
+        minusButton.Background:SetPosition('TOPLEFT', minusButton, 'TOPLEFT', 0, 0);
+        minusButton.Background:SetSize(14, 14);
+        minusButton.Background:SetFrameLevel(minusButton:GetFrameLevel() - 1);
+        minusButton.Background:SetBackdrop(SLIDER_EDITBOX_BACKGROUND_BACKDROP);
+        minusButton.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
+        minusButton.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+        minusButton:SetScript('OnClick', function(self)
+            local value = self:GetParent().currentValue - self:GetParent().stepValue;
+
+            if value then
+                value = math.min(value, self:GetParent().maxValue);
+                value = math.max(value, self:GetParent().minValue);
+            else
+                value = self:GetParent().currentValue;
+            end
+
+            self:GetParent():SetValue(value);
+        end);
+
         slider.editbox = editbox;
 
         E.CreateTooltip(slider);
@@ -718,7 +772,6 @@ do
 
         return slider;
     end
-
 
     E.CreateEditBox = function(parent)
         local editbox = Mixin(CreateFrame('EditBox', nil, parent, 'InputBoxTemplate'), E.PixelPerfectMixin);

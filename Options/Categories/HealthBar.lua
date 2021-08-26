@@ -584,7 +584,7 @@ panel.Load = function(self)
 
     self.threat_percentage_font_size = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
     self.threat_percentage_font_size:SetPosition('LEFT', self.threat_percentage_font_value, 'RIGHT', 12, 0);
-    self.threat_percentage_font_size:SetValues(O.db.threat_percentage_font_size, 2, 28, 1);
+    self.threat_percentage_font_size:SetValues(O.db.threat_percentage_font_size, 3, 28, 1);
     self.threat_percentage_font_size:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_FONT_SIZE_TOOLTIP']);
     self.threat_percentage_font_size:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_SIZE_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_font_size.OnValueChangedCallback = function(_, value)

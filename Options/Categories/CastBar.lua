@@ -37,7 +37,7 @@ panel.Load = function(self)
 
     self.castbar_text_font_size = E.CreateSlider(self);
     self.castbar_text_font_size:SetPosition('LEFT', self.castbar_text_font_value, 'RIGHT', 12, 0);
-    self.castbar_text_font_size:SetValues(O.db.castbar_text_font_size, 2, 28, 1);
+    self.castbar_text_font_size:SetValues(O.db.castbar_text_font_size, 3, 28, 1);
     self.castbar_text_font_size:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_FONT_SIZE']);
     self.castbar_text_font_size:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_FONT_SIZE']);
     self.castbar_text_font_size.OnValueChangedCallback = function(_, value)

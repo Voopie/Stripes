@@ -116,7 +116,7 @@ panel.Load = function(self)
 
     self.name_text_font_size = E.CreateSlider(self.TabsFrames['NameTab'].Content);
     self.name_text_font_size:SetPosition('LEFT', self.name_text_font_value, 'RIGHT', 12, 0);
-    self.name_text_font_size:SetValues(O.db.name_text_font_size, 2, 28, 1);
+    self.name_text_font_size:SetValues(O.db.name_text_font_size, 3, 28, 1);
     self.name_text_font_size:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_SIZE']);
     self.name_text_font_size:AddToSearch(button, L['OPTIONS_NAME_TEXT_FONT_SIZE'], self.Tabs[1]);
     self.name_text_font_size.OnValueChangedCallback = function(_, value)
@@ -437,7 +437,7 @@ panel.Load = function(self)
 
     self.health_text_font_size = E.CreateSlider(self.TabsFrames['HealthTextTab'].Content);
     self.health_text_font_size:SetPosition('LEFT', self.health_text_font_value, 'RIGHT', 12, 0);
-    self.health_text_font_size:SetValues(O.db.health_text_font_size, 2, 28, 1);
+    self.health_text_font_size:SetValues(O.db.health_text_font_size, 3, 28, 1);
     self.health_text_font_size:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_SIZE']);
     self.health_text_font_size:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FONT_SIZE'], self.Tabs[2]);
     self.health_text_font_size.OnValueChangedCallback = function(_, value)
@@ -737,7 +737,7 @@ panel.Load = function(self)
 
     self.level_text_font_size = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
     self.level_text_font_size:SetPosition('LEFT', self.level_text_font_value, 'RIGHT', 12, 0);
-    self.level_text_font_size:SetValues(O.db.level_text_font_size, 2, 28, 1);
+    self.level_text_font_size:SetValues(O.db.level_text_font_size, 3, 28, 1);
     self.level_text_font_size:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_SIZE']);
     self.level_text_font_size:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FONT_SIZE'], self.Tabs[3]);
     self.level_text_font_size.OnValueChangedCallback = function(_, value)

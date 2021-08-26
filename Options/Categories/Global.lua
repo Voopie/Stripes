@@ -50,7 +50,7 @@ panel.Load = function(self)
     self.global_font_size = E.CreateSlider(self);
     self.global_font_size:SetPosition('LEFT', self.use_global_font_size.Label, 'RIGHT', 16, 0);
     self.global_font_size:SetW(162);
-    self.global_font_size:SetValues(O.db.global_font_size, 2, 28, 1);
+    self.global_font_size:SetValues(O.db.global_font_size, 3, 28, 1);
     self.global_font_size:SetTooltip(L['FONT_SIZE']);
     self.global_font_size.OnValueChangedCallback = function(_, value)
         O.db.global_font_size = tonumber(value);

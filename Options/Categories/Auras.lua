@@ -1065,7 +1065,7 @@ panel.Load = function(self)
 
     self.auras_cooldown_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.auras_cooldown_font_size:SetPosition('LEFT', self.auras_cooldown_font_value, 'RIGHT', 12, 0);
-    self.auras_cooldown_font_size:SetValues(O.db.auras_cooldown_font_size, 2, 28, 1);
+    self.auras_cooldown_font_size:SetValues(O.db.auras_cooldown_font_size, 3, 28, 1);
     self.auras_cooldown_font_size:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_FONT_SIZE']);
     self.auras_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_FONT_SIZE'], self.Tabs[1]);
     self.auras_cooldown_font_size.OnValueChangedCallback = function(_, value)
@@ -1159,7 +1159,7 @@ panel.Load = function(self)
 
     self.auras_count_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.auras_count_font_size:SetPosition('LEFT', self.auras_count_font_value, 'RIGHT', 12, 0);
-    self.auras_count_font_size:SetValues(O.db.auras_count_font_size, 2, 28, 1);
+    self.auras_count_font_size:SetValues(O.db.auras_count_font_size, 3, 28, 1);
     self.auras_count_font_size:SetTooltip(L['OPTIONS_AURAS_COUNT_FONT_SIZE']);
     self.auras_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_COUNT_FONT_SIZE'], self.Tabs[1]);
     self.auras_count_font_size.OnValueChangedCallback = function(_, value)
@@ -1360,7 +1360,7 @@ panel.Load = function(self)
 
     self.auras_spellsteal_cooldown_font_size = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
     self.auras_spellsteal_cooldown_font_size:SetPosition('LEFT', self.auras_spellsteal_cooldown_font_value, 'RIGHT', 12, 0);
-    self.auras_spellsteal_cooldown_font_size:SetValues(O.db.auras_spellsteal_cooldown_font_size, 2, 28, 1);
+    self.auras_spellsteal_cooldown_font_size:SetValues(O.db.auras_spellsteal_cooldown_font_size, 3, 28, 1);
     self.auras_spellsteal_cooldown_font_size:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_SIZE']);
     self.auras_spellsteal_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_SIZE'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_font_size.OnValueChangedCallback = function(_, value)
@@ -1454,7 +1454,7 @@ panel.Load = function(self)
 
     self.auras_spellsteal_count_font_size = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
     self.auras_spellsteal_count_font_size:SetPosition('LEFT', self.auras_spellsteal_count_font_value, 'RIGHT', 12, 0);
-    self.auras_spellsteal_count_font_size:SetValues(O.db.auras_spellsteal_count_font_size, 2, 28, 1);
+    self.auras_spellsteal_count_font_size:SetValues(O.db.auras_spellsteal_count_font_size, 3, 28, 1);
     self.auras_spellsteal_count_font_size:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_SIZE']);
     self.auras_spellsteal_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_SIZE'], self.Tabs[2]);
     self.auras_spellsteal_count_font_size.OnValueChangedCallback = function(_, value)
@@ -1576,7 +1576,7 @@ panel.Load = function(self)
 
     self.auras_mythicplus_cooldown_font_size = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
     self.auras_mythicplus_cooldown_font_size:SetPosition('LEFT', self.auras_mythicplus_cooldown_font_value, 'RIGHT', 12, 0);
-    self.auras_mythicplus_cooldown_font_size:SetValues(O.db.auras_mythicplus_cooldown_font_size, 2, 28, 1);
+    self.auras_mythicplus_cooldown_font_size:SetValues(O.db.auras_mythicplus_cooldown_font_size, 3, 28, 1);
     self.auras_mythicplus_cooldown_font_size:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_SIZE']);
     self.auras_mythicplus_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_SIZE'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_font_size.OnValueChangedCallback = function(_, value)
@@ -1670,7 +1670,7 @@ panel.Load = function(self)
 
     self.auras_mythicplus_count_font_size = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
     self.auras_mythicplus_count_font_size:SetPosition('LEFT', self.auras_mythicplus_count_font_value, 'RIGHT', 12, 0);
-    self.auras_mythicplus_count_font_size:SetValues(O.db.auras_mythicplus_count_font_size, 2, 28, 1);
+    self.auras_mythicplus_count_font_size:SetValues(O.db.auras_mythicplus_count_font_size, 3, 28, 1);
     self.auras_mythicplus_count_font_size:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_SIZE']);
     self.auras_mythicplus_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_SIZE'], self.Tabs[3]);
     self.auras_mythicplus_count_font_size.OnValueChangedCallback = function(_, value)
@@ -1803,7 +1803,7 @@ panel.Load = function(self)
 
     self.auras_important_cooldown_font_size = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
     self.auras_important_cooldown_font_size:SetPosition('LEFT', self.auras_important_cooldown_font_value, 'RIGHT', 12, 0);
-    self.auras_important_cooldown_font_size:SetValues(O.db.auras_important_cooldown_font_size, 2, 28, 1);
+    self.auras_important_cooldown_font_size:SetValues(O.db.auras_important_cooldown_font_size, 3, 28, 1);
     self.auras_important_cooldown_font_size:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_SIZE']);
     self.auras_important_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_SIZE'], self.Tabs[4]);
     self.auras_important_cooldown_font_size.OnValueChangedCallback = function(_, value)
@@ -1897,7 +1897,7 @@ panel.Load = function(self)
 
     self.auras_important_count_font_size = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
     self.auras_important_count_font_size:SetPosition('LEFT', self.auras_important_count_font_value, 'RIGHT', 12, 0);
-    self.auras_important_count_font_size:SetValues(O.db.auras_important_count_font_size, 2, 28, 1);
+    self.auras_important_count_font_size:SetValues(O.db.auras_important_count_font_size, 3, 28, 1);
     self.auras_important_count_font_size:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_SIZE']);
     self.auras_important_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_SIZE'], self.Tabs[4]);
     self.auras_important_count_font_size.OnValueChangedCallback = function(_, value)
@@ -2002,7 +2002,7 @@ panel.Load = function(self)
 
     self.auras_important_castername_font_size = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
     self.auras_important_castername_font_size:SetPosition('LEFT', self.auras_important_castername_font_value, 'RIGHT', 12, 0);
-    self.auras_important_castername_font_size:SetValues(O.db.auras_important_castername_font_size, 2, 28, 1);
+    self.auras_important_castername_font_size:SetValues(O.db.auras_important_castername_font_size, 3, 28, 1);
     self.auras_important_castername_font_size:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SIZE']);
     self.auras_important_castername_font_size:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SIZE'], self.Tabs[4]);
     self.auras_important_castername_font_size.OnValueChangedCallback = function(_, value)
@@ -2115,7 +2115,7 @@ panel.Load = function(self)
 
     self.auras_custom_cooldown_font_size = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
     self.auras_custom_cooldown_font_size:SetPosition('LEFT', self.auras_custom_cooldown_font_value, 'RIGHT', 12, 0);
-    self.auras_custom_cooldown_font_size:SetValues(O.db.auras_custom_cooldown_font_size, 2, 28, 1);
+    self.auras_custom_cooldown_font_size:SetValues(O.db.auras_custom_cooldown_font_size, 3, 28, 1);
     self.auras_custom_cooldown_font_size:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SIZE']);
     self.auras_custom_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SIZE'], self.Tabs[5]);
     self.auras_custom_cooldown_font_size.OnValueChangedCallback = function(_, value)
@@ -2209,7 +2209,7 @@ panel.Load = function(self)
 
     self.auras_custom_count_font_size = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
     self.auras_custom_count_font_size:SetPosition('LEFT', self.auras_custom_count_font_value, 'RIGHT', 12, 0);
-    self.auras_custom_count_font_size:SetValues(O.db.auras_custom_count_font_size, 2, 28, 1);
+    self.auras_custom_count_font_size:SetValues(O.db.auras_custom_count_font_size, 3, 28, 1);
     self.auras_custom_count_font_size:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SIZE']);
     self.auras_custom_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SIZE'], self.Tabs[5]);
     self.auras_custom_count_font_size.OnValueChangedCallback = function(_, value)

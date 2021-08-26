@@ -271,7 +271,7 @@ panel.Load = function(self)
 
     self.spell_interrupted_icon_countdown_font_size = E.CreateSlider(self.TabsFrames['SpellInterruptedTab'].Content);
     self.spell_interrupted_icon_countdown_font_size:SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_value, 'RIGHT', 12, 0);
-    self.spell_interrupted_icon_countdown_font_size:SetValues(O.db.spell_interrupted_icon_countdown_font_size, 2, 28, 1);
+    self.spell_interrupted_icon_countdown_font_size:SetValues(O.db.spell_interrupted_icon_countdown_font_size, 3, 28, 1);
     self.spell_interrupted_icon_countdown_font_size:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_SIZE']);
     self.spell_interrupted_icon_countdown_font_size:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_SIZE'], self.Tabs[3]);
     self.spell_interrupted_icon_countdown_font_size.OnValueChangedCallback = function(_, value)
@@ -327,7 +327,7 @@ panel.Load = function(self)
 
     self.spell_interrupted_icon_caster_name_font_size = E.CreateSlider(self.TabsFrames['SpellInterruptedTab'].Content);
     self.spell_interrupted_icon_caster_name_font_size:SetPosition('LEFT', self.spell_interrupted_icon_caster_name_font_value, 'RIGHT', 12, 0);
-    self.spell_interrupted_icon_caster_name_font_size:SetValues(O.db.spell_interrupted_icon_caster_name_font_size, 2, 28, 1);
+    self.spell_interrupted_icon_caster_name_font_size:SetValues(O.db.spell_interrupted_icon_caster_name_font_size, 3, 28, 1);
     self.spell_interrupted_icon_caster_name_font_size:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_FONT_SIZE']);
     self.spell_interrupted_icon_caster_name_font_size:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_FONT_SIZE'], self.Tabs[3]);
     self.spell_interrupted_icon_caster_name_font_size.OnValueChangedCallback = function(_, value)
