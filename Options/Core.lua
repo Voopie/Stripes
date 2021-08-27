@@ -181,6 +181,7 @@ O.Lists = {
         [1] = L['OPTIONS_NAME_TEXT_ABBREVIATED_WITHOUT_SPACE'],
         [2] = L['OPTIONS_NAME_TEXT_ABBREVIATED_WITH_SPACE'],
         [3] = L['OPTIONS_NAME_TEXT_ABBREVIATED_LAST_WORD'],
+        [4] = L['OPTIONS_NAME_TEXT_ABBREVIATED_FIRST_WORD'],
     },
 
     health_text_block_mode = {

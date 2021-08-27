@@ -105,6 +105,14 @@ local function AbbrLast(name)
     return name;
 end
 
+local function AbbrFirst(name)
+    for n in string_gmatch(name, ABBR_LAST_FORMAT) do
+        return n;
+    end
+
+    return name;
+end
+
 local GetAbbreviatedName = {
     [1] = function(name)
         return string_gsub(name or '', ABBR_FORMAT, AbbrSub);
@@ -116,6 +124,10 @@ local GetAbbreviatedName = {
 
     [3] = function(name)
         return AbbrLast(name or '');
+    end,
+
+    [4] = function(name)
+        return AbbrFirst(name or '');
     end,
 };
 
