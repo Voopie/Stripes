@@ -2379,7 +2379,7 @@ panel.Load = function(self)
 
     self.CopyFromProfileText = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
     self.CopyFromProfileText:SetPosition('BOTTOMLEFT', self.ProfilesDropdown, 'TOPLEFT', 0, 0);
-    self.CopyFromProfileText:SetText(L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE']);
+    self.CopyFromProfileText:SetText(L['OPTIONS_COPY_FROM_PROFILE']);
 end
 
 panel.OnShow = function(self)
@@ -2400,8 +2400,8 @@ end
 
 function Module:MODIFIER_STATE_CHANGED(key, down)
     if down == 1 and (key == 'LSHIFT' or key == 'RSHIFT') then
-        panel.CopyFromProfileText:SetText(L['OPTIONS_CUSTOM_COLOR_COPY_FROM_PROFILE_SHIFT']);
+        panel.CopyFromProfileText:SetText(L['OPTIONS_REPLACE_FROM_PROFILE']);
     else
-        panel.CopyFromProfileText:SetText(L['OPTIONS_CUSTOM_COLOR_COPY_FROM_PROFILE']);
+        panel.CopyFromProfileText:SetText(L['OPTIONS_COPY_FROM_PROFILE']);
     end
 end

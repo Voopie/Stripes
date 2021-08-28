@@ -84,6 +84,9 @@ L['OPTIONS_NEED_RELOAD'] = 'You must reload the interface to apply the settings.
 L['OPTIONS_HIDED_IN_COMBAT'] = 'The settings were hidden for the duration of the combat and will be automatically opened after the end of the combat';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'The settings will be opened after the combat';
 
+L['OPTIONS_COPY_FROM_PROFILE'] = 'Copy from profile';
+L['OPTIONS_REPLACE_FROM_PROFILE'] = 'Replace from profile';
+
 L['OPTIONS_CATEGORY_COMMON'] = 'General';
 L['OPTIONS_CATEGORY_SIZES'] = 'Sizes';
 L['OPTIONS_CATEGORY_VISIBILITY'] = 'Visibility';
@@ -91,6 +94,7 @@ L['OPTIONS_CATEGORY_HEALTHBAR'] = 'Health bar';
 L['OPTIONS_CATEGORY_CASTBAR'] = 'Cast bar';
 L['OPTIONS_CATEGORY_AURAS'] = 'Auras';
 L['OPTIONS_CATEGORY_CUSTOMCOLOR'] = 'Custom HP bar colors';
+L['OPTIONS_CATEGORY_CUSTOMNAME'] = 'Custom names';
 L['OPTIONS_CATEGORY_MYTHIC_PLUS'] = 'Mythic+';
 L['OPTIONS_CATEGORY_USEFUL'] = 'Useful';
 L['OPTIONS_CATEGORY_PROFILES'] = 'Profiles';
@@ -741,8 +745,6 @@ L['OPTIONS_AURAS_CUSTOM_COUNT_OFFSET_Y_TOOLTIP'] = 'Vertical offset of count tex
 L['OPTIONS_AURAS_CUSTOM_EDITBOX_ENTER_ID'] = 'Enter the name or ID of the aura';
 L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'] = 'Switch to debuff (HARMFUL)';
 L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'] = 'Switch to buff (HELPFUL)';
-L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE'] = 'Copy from profile';
-L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE_SHIFT'] = 'Replace from profile';
 L['OPTIONS_AURAS_CUSTOM_HELPFUL'] = 'Buff';
 L['OPTIONS_AURAS_CUSTOM_HELPFUL_TOOLTIP'] = 'Add an aura as buff (HELPFUL)';
 L['OPTIONS_AURAS_CUSTOM_BORDER_COLOR_TOOLTIP'] = 'Border color of custom auras';
@@ -758,11 +760,15 @@ L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Enable custom health bar colors';
 L['OPTIONS_CUSTOM_COLOR_EDITBOX_ENTER_ID'] = 'Enter the ID of the NPC';
 L['OPTIONS_CUSTOM_COLOR_ADD_FROM_TARGET'] = 'From target';
 L['OPTIONS_CUSTOM_COLOR_ADD_FROM_LIST'] = 'From list';
-L['OPTIONS_CUSTOM_COLOR_COPY_FROM_PROFILE'] = 'Copy from profile';
-L['OPTIONS_CUSTOM_COLOR_COPY_FROM_PROFILE_SHIFT'] = 'Replace from profile';
 
 L['OPTIONS_GLOBAL_FONT_HEADER'] = 'Font settings';
 L['OPTIONS_USE_GLOBAL_FONT_VALUE_TOOLTIP'] = 'Use global font settings';
 L['OPTIONS_USE_GLOBAL_FONT_SIZE_TOOLTIP'] = 'Use global font size settings';
 L['OPTIONS_USE_GLOBAL_FONT_FLAG_TOOLTIP'] = 'Use global font outline settings';
 L['OPTIONS_USE_GLOBAL_FONT_SHADOW_TOOLTIP'] = 'Use global font shadow settings';
+
+L['OPTIONS_CUSTOM_NAME_ENABLED'] = 'Enable';
+L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP'] = 'Enable custom names';
+L['OPTIONS_CUSTOM_NAME_EDITBOX_ENTER_ID'] = 'Enter the ID of the NPC';
+L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'From target';
+L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'From list';

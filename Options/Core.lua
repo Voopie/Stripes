@@ -626,7 +626,7 @@ O.DefaultValues = {
     auras_custom_helpful              = false,
     auras_custom_to_blacklist         = true,
 
-    custom_color_enabled = true,
+    custom_color_enabled = false,
     custom_color_data    = {},
 
     use_global_font_value  = false,
@@ -637,6 +637,9 @@ O.DefaultValues = {
     global_font_size   = 11,
     global_font_flag   = 1, -- NONE
     global_font_shadow = true,
+
+    custom_name_enabled = false,
+    custom_name_data    = {},
 };
 
 local PROFILE_DEFAULT_ID = '1';

@@ -29,6 +29,7 @@ local NAME_WITH_TITLE_ENABLED, NAME_WITH_TITLE_UNIT_TYPE, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
 local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
+local CUSTOM_NAME_ENABLED;
 
 local StripesNameFont      = CreateFont('StripesNameFont');
 local StripesGuildNameFont = CreateFont('StripesGuildNameFont');
@@ -131,10 +132,22 @@ local GetAbbreviatedName = {
     end,
 };
 
+local function GetCustomName(npcId)
+    if npcId and O.db.custom_name_data[npcId] then
+        return O.db.custom_name_data[npcId].new_name;
+    end
+end
+
 local function UpdateName(unitframe)
-    if ABBR_ENABLED and unitframe.data.commonUnitType == 'NPC' then
-        unitframe.name:SetText(GetAbbreviatedName[ABBR_MODE](unitframe.data.name));
-        unitframe.data.nameAbbr = unitframe.name:GetText();
+    if unitframe.data.commonUnitType == 'NPC' then
+        local customName = CUSTOM_NAME_ENABLED and GetCustomName(unitframe.data.npcId);
+
+        if customName then
+            unitframe.name:SetText(customName);
+        elseif ABBR_ENABLED then
+            unitframe.name:SetText(GetAbbreviatedName[ABBR_MODE](unitframe.data.name));
+            unitframe.data.nameAbbr = unitframe.name:GetText();
+        end
     end
 
     if PlayerState.inArena and SHOW_ARENA_ID and unitframe.data.unitType == 'ENEMY_PLAYER' then
@@ -455,6 +468,8 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
+    CUSTOM_NAME_ENABLED = O.db.custom_name_enabled;
+
     POSITION               = O.db.name_text_position;
     POSITION_V             = O.db.name_text_position_v;
     OFFSET_Y               = O.db.name_text_offset_y;

@@ -3,7 +3,7 @@ local Module = S:NewModule('Options_Categories_Useful');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.Useful, O.frame.Right.Useful = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_USEFUL']), 'useful', 9);
+O.frame.Left.Useful, O.frame.Right.Useful = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_USEFUL']), 'useful', 10);
 local button = O.frame.Left.Useful;
 local panel = O.frame.Right.Useful;
 

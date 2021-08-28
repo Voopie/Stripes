@@ -1,9 +1,9 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
-local Module = S:NewModule('Options_Categories_CustomColor');
+local Module = S:NewModule('Options_Categories_CustomName');
 
-O.frame.Left.CustomColor, O.frame.Right.CustomColor = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_CUSTOMCOLOR']), 'customcolor', 7);
-local button = O.frame.Left.CustomColor;
-local panel = O.frame.Right.CustomColor;
+O.frame.Left.CustomName, O.frame.Right.CustomName = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_CUSTOMNAME']), 'customname', 8);
+local button = O.frame.Left.CustomName;
+local panel = O.frame.Right.CustomName;
 
 local framePool;
 local ROW_HEIGHT = 28;
@@ -36,21 +36,43 @@ local ModelFrame = CreateFrame('PlayerModel', nil, HolderModelFrame);
 ModelFrame:SetPoint('CENTER', HolderModelFrame, 'CENTER', 0, 0);
 ModelFrame:SetSize(150, 300);
 
-
-local function Add(id, name)
-    if O.db.custom_color_data[id] then
-        O.db.custom_color_data[id].npc_name = name;
+local function Add(id, name, new_name)
+    if O.db.custom_name_data[id] then
+        O.db.custom_name_data[id].npc_name = name;
     else
-        O.db.custom_color_data[id] = {
+        O.db.custom_name_data[id] = {
             npc_id   = id,
             npc_name = name,
+            new_name = new_name or name,
             enabled  = true,
-            color    = { 0.45, 0, 1, 1 };
         };
     end
 end
 
 local DataRows = {};
+
+local function UpdateNewName(editbox, npcId, oldName, newName)
+    newName = strtrim(newName);
+
+    if not newName or newName == '' then
+        return editbox:SetShown(false);
+    end
+
+    if not npcId or not O.db.custom_name_data[npcId] then
+        return editbox:SetShown(false);
+    end
+
+    if oldName == newName then
+        return editbox:SetShown(false);
+    end
+
+    O.db.custom_name_data[npcId].new_name = newName;
+
+    panel:UpdateScroll();
+    S:GetNameplateModule('Handler'):UpdateAll();
+
+    editbox:SetShown(false);
+end
 
 local function CreateRow(frame)
     frame:SetBackdrop(BACKDROP);
@@ -59,7 +81,7 @@ local function CreateRow(frame)
     frame.EnableCheckBox = E.CreateCheckButton(frame);
     frame.EnableCheckBox:SetPosition('LEFT', frame, 'LEFT', 8, 0);
     frame.EnableCheckBox.Callback = function(self)
-        O.db.custom_color_data[self:GetParent().npc_id].enabled = self:GetChecked();
+        O.db.custom_name_data[self:GetParent().npc_id].enabled = self:GetChecked();
         S:GetNameplateModule('Handler'):UpdateAll();
     end
     frame.EnableCheckBox:HookScript('OnEnter', function(self)
@@ -70,32 +92,26 @@ local function CreateRow(frame)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
 
-    frame.ColorPicker = E.CreateColorPicker(frame);
-    frame.ColorPicker:SetPosition('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
-    frame.ColorPicker.OnValueChanged = function(self, r, g, b, a)
-        O.db.custom_color_data[self:GetParent().npc_id].color[1] = r;
-        O.db.custom_color_data[self:GetParent().npc_id].color[2] = g;
-        O.db.custom_color_data[self:GetParent().npc_id].color[3] = b;
-        O.db.custom_color_data[self:GetParent().npc_id].color[4] = a or 1;
-
-        S:GetNameplateModule('Handler'):UpdateAll();
-    end
-    frame.ColorPicker:HookScript('OnEnter', function(self)
-        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
-    end);
-
-    frame.ColorPicker:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
-    end);
-
     frame.IdText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.IdText:SetPoint('LEFT', frame.ColorPicker, 'RIGHT', 8, 0);
+    frame.IdText:SetPoint('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
     frame.IdText:SetSize(60, ROW_HEIGHT);
     frame.IdText:SetTextColor(0.67, 0.67, 0.67);
 
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.IdText, 'RIGHT', 4, 0);
     frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
+
+    frame.EditBox = E.CreateEditBox(frame);
+    frame.EditBox:SetPosition('LEFT', frame.IdText, 'RIGHT', 4, 0);
+    frame.EditBox:SetFrameLevel(frame.EditBox:GetFrameLevel() + 10);
+    frame.EditBox:SetSize(NAME_WIDTH, ROW_HEIGHT);
+    frame.EditBox:SetShown(false);
+    frame.EditBox:SetScript('OnEnterPressed', function(self)
+        UpdateNewName(self, self:GetParent().npc_id, self:GetParent().npc_name, self:GetText());
+    end);
+    frame.EditBox.FocusLostCallback = function(self)
+        self:SetShown(false);
+    end
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
     frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -16, 0);
@@ -107,10 +123,10 @@ local function CreateRow(frame)
     frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
     frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     frame.RemoveButton:SetScript('OnClick', function(self)
-        if O.db.custom_color_data[tonumber(self:GetParent().npc_id)] then
-            O.db.custom_color_data[tonumber(self:GetParent().npc_id)] = nil;
+        if O.db.custom_name_data[tonumber(self:GetParent().npc_id)] then
+            O.db.custom_name_data[tonumber(self:GetParent().npc_id)] = nil;
 
-            panel.UpdateScroll();
+            panel:UpdateScroll();
             S:GetNameplateModule('Handler'):UpdateAll();
         end
     end);
@@ -120,6 +136,30 @@ local function CreateRow(frame)
 
     frame.RemoveButton:HookScript('OnLeave', function(self)
         self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
+    end);
+
+    frame.EditButton = E.CreateTextureButton(frame, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.PENCIL_WHITE);
+    frame.EditButton:SetPosition('RIGHT', frame.RemoveButton, 'LEFT', -8, 0);
+    frame.EditButton:SetSize(14, 14);
+    frame.EditButton:SetScript('OnClick', function(self)
+        self:GetParent().EditBox:SetText(self:GetParent().new_name);
+        self:GetParent().EditBox:SetShown(true);
+        self:GetParent().EditBox:SetFocus();
+        self:GetParent().EditBox:SetCursorPosition(0);
+    end);
+    frame.EditButton:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+
+    frame.EditButton:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
+    end);
+
+    frame:HookScript('OnDoubleClick', function(self)
+        self.EditBox:SetText(self.new_name);
+        self.EditBox:SetShown(true);
+        self.EditBox:SetFocus();
+        self.EditBox:SetCursorPosition(0);
     end);
 
     frame:HookScript('OnEnter', function(self)
@@ -144,13 +184,12 @@ local function CreateRow(frame)
         ModelFrame:SetSize(GameTooltip:GetWidth() - 3, GameTooltip:GetWidth() * 2 - 3);
         ModelFrame:SetCamDistanceScale(1.2);
     end);
-
 end
 
 local function UpdateRow(frame)
     if frame.index == 1 then
-        PixelUtil.SetPoint(frame, 'TOPLEFT', panel.CustomColorScrollArea.scrollChild, 'TOPLEFT', 0, 0);
-        PixelUtil.SetPoint(frame, 'TOPRIGHT', panel.CustomColorScrollArea.scrollChild, 'TOPRIGHT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPLEFT', panel.CustomNameScrollArea.scrollChild, 'TOPLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', panel.CustomNameScrollArea.scrollChild, 'TOPRIGHT', 0, 0);
     else
         PixelUtil.SetPoint(frame, 'TOPLEFT', DataRows[frame.index - 1], 'BOTTOMLEFT', 0, 0);
         PixelUtil.SetPoint(frame, 'TOPRIGHT', DataRows[frame.index - 1], 'BOTTOMRIGHT', 0, 0);
@@ -168,10 +207,14 @@ local function UpdateRow(frame)
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
     frame.IdText:SetText(frame.npc_id);
-    frame.NameText:SetText(frame.name);
-    frame.ColorPicker:SetValue(unpack(frame.color));
 
-    frame.tooltip = string.format(LIST_TOOLTIP_PATTERN, frame.name, frame.npc_id);
+    if frame.npc_name == frame.new_name then
+        frame.NameText:SetText(frame.npc_name);
+    else
+        frame.NameText:SetText(frame.new_name .. ' |cffaaaaaa[' .. frame.npc_name .. ']|r');
+    end
+
+    frame.tooltip = string.format(LIST_TOOLTIP_PATTERN, frame.npc_name, frame.npc_id);
 end
 
 panel.UpdateScroll = function()
@@ -181,7 +224,7 @@ panel.UpdateScroll = function()
     local index = 0;
     local frame, isNew;
 
-    for npc_id, data in pairs(O.db.custom_color_data) do
+    for npc_id, data in pairs(O.db.custom_name_data) do
         index = index + 1;
 
         frame, isNew = framePool:Acquire();
@@ -192,18 +235,18 @@ panel.UpdateScroll = function()
             CreateRow(frame);
         end
 
-        frame.index   = index;
-        frame.npc_id  = npc_id;
-        frame.name    = data.npc_name;
-        frame.enabled = data.enabled;
-        frame.color   = data.color;
+        frame.index    = index;
+        frame.npc_id   = npc_id;
+        frame.npc_name = data.npc_name;
+        frame.new_name = data.new_name;
+        frame.enabled  = data.enabled;
 
         UpdateRow(frame);
 
         frame:SetShown(true);
     end
 
-    PixelUtil.SetSize(panel.CustomColorScrollArea.scrollChild, panel.CustomColorEditFrame:GetWidth(), panel.CustomColorEditFrame:GetHeight() - (panel.CustomColorEditFrame:GetHeight() % ROW_HEIGHT));
+    PixelUtil.SetSize(panel.CustomNameScrollArea.scrollChild, panel.CustomNameEditFrame:GetWidth(), panel.CustomNameEditFrame:GetHeight() - (panel.CustomNameEditFrame:GetHeight() % ROW_HEIGHT));
 end
 
 local DataListRows = {};
@@ -225,7 +268,7 @@ local function CreateListRow(b)
     b.NameText:SetH(ROW_HEIGHT / 2);
 
     b:SetScript('OnClick', function(self)
-        Add(self.npc_id, self.name);
+        Add(self.npc_id, self.npc_name);
 
         panel.UpdateScroll();
         S:GetNameplateModule('Handler'):UpdateAll();
@@ -235,11 +278,11 @@ local function CreateListRow(b)
         self:SetBackdropColor(0.3, 0.3, 0.3, 1);
         self.PlusSign:SetShown(true);
 
-        if self.name == UNKNOWN then
-            self.name = U.GetNpcNameByID(self.npc_id);
-            self.tooltip = string.format(LIST_TOOLTIP_PATTERN, self.name, self.npc_id);
+        if self.npc_name == UNKNOWN then
+            self.npc_name = U.GetNpcNameByID(self.npc_id);
+            self.tooltip = string.format(LIST_TOOLTIP_PATTERN, self.npc_name, self.npc_id);
 
-            self.NameText:SetText(self.name);
+            self.NameText:SetText(self.npc_name);
         end
     end);
 
@@ -247,18 +290,18 @@ local function CreateListRow(b)
         self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
         self.PlusSign:SetShown(false);
 
-        if self.name == UNKNOWN then
-            self.name = U.GetNpcNameByID(self.npc_id);
-            self.tooltip = string.format(LIST_TOOLTIP_PATTERN, self.name, self.npc_id);
+        if self.npc_name == UNKNOWN then
+            self.npc_name = U.GetNpcNameByID(self.npc_id);
+            self.tooltip = string.format(LIST_TOOLTIP_PATTERN, self.npc_name, self.npc_id);
 
-            self.NameText:SetText(self.name);
+            self.NameText:SetText(self.npc_name);
         end
     end);
 
     E.CreateTooltip(b, nil, nil, true);
 
     b:HookScript('OnEnter', function(self)
-        if self.name == UNKNOWN then
+        if self.npc_name == UNKNOWN then
             return;
         end
 
@@ -294,10 +337,10 @@ local function UpdateListRow(b)
         b.backgroundColor[1], b.backgroundColor[2], b.backgroundColor[3], b.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
     end
 
-    b.name = U.GetNpcNameByID(b.npc_id);
-    b.tooltip = string.format(LIST_TOOLTIP_PATTERN, b.name, b.npc_id);
+    b.npc_name = U.GetNpcNameByID(b.npc_id);
+    b.tooltip = string.format(LIST_TOOLTIP_PATTERN, b.npc_name, b.npc_id);
 
-    b.NameText:SetText(b.name);
+    b.NameText:SetText(b.npc_name);
 end
 
 panel.UpdateListScroll = function(id)
@@ -363,22 +406,22 @@ end
 panel.Load = function(self)
     local Handler = S:GetNameplateModule('Handler');
 
-    self.custom_color_enabled = E.CreateCheckButton(self);
-    self.custom_color_enabled:SetPosition('TOPLEFT', self, 'TOPLEFT', 0, 0);
-    self.custom_color_enabled:SetLabel(L['OPTIONS_CUSTOM_COLOR_ENABLED']);
-    self.custom_color_enabled:SetTooltip(L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP']);
-    self.custom_color_enabled:AddToSearch(button, L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP']);
-    self.custom_color_enabled:SetChecked(O.db.custom_color_enabled);
-    self.custom_color_enabled.Callback = function(self)
-        O.db.custom_color_enabled = self:GetChecked();
+    self.custom_name_enabled = E.CreateCheckButton(self);
+    self.custom_name_enabled:SetPosition('TOPLEFT', self, 'TOPLEFT', 0, 0);
+    self.custom_name_enabled:SetLabel(L['OPTIONS_CUSTOM_NAME_ENABLED']);
+    self.custom_name_enabled:SetTooltip(L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP']);
+    self.custom_name_enabled:AddToSearch(button, L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP']);
+    self.custom_name_enabled:SetChecked(O.db.custom_name_enabled);
+    self.custom_name_enabled.Callback = function(self)
+        O.db.custom_name_enabled = self:GetChecked();
         Handler:UpdateAll();
     end
 
     local EditBox = E.CreateEditBox(self);
-    EditBox:SetPosition('TOPLEFT', self.custom_color_enabled, 'BOTTOMLEFT', 5, -8);
+    EditBox:SetPosition('TOPLEFT', self.custom_name_enabled, 'BOTTOMLEFT', 5, -8);
     EditBox:SetSize(160, 22);
     EditBox.useLastValue = false;
-    EditBox:SetInstruction(L['OPTIONS_CUSTOM_COLOR_EDITBOX_ENTER_ID']);
+    EditBox:SetInstruction(L['OPTIONS_CUSTOM_NAME_EDITBOX_ENTER_ID']);
     EditBox:SetScript('OnEnterPressed', function(self)
         local unitID = tonumber(strtrim(self:GetText()));
 
@@ -403,7 +446,7 @@ panel.Load = function(self)
 
     local AddFromTargetButton = E.CreateButton(self);
     AddFromTargetButton:SetPosition('LEFT', EditBox, 'RIGHT', 12, 0);
-    AddFromTargetButton:SetLabel(L['OPTIONS_CUSTOM_COLOR_ADD_FROM_TARGET']);
+    AddFromTargetButton:SetLabel(L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET']);
     AddFromTargetButton:SetScript('OnClick', function()
         if not UnitExists('target') or UnitIsPlayer('target') then
             return;
@@ -428,7 +471,7 @@ panel.Load = function(self)
 
     local AddFromList = E.CreateButton(self);
     AddFromList:SetPosition('LEFT', AddFromTargetButton, 'RIGHT', 8, 0);
-    AddFromList:SetLabel(L['OPTIONS_CUSTOM_COLOR_ADD_FROM_LIST']);
+    AddFromList:SetLabel(L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST']);
     AddFromList:SetScript('OnClick', function(self)
         panel.List:SetShown(not panel.List:IsShown());
 
@@ -439,20 +482,20 @@ panel.Load = function(self)
         end
     end);
 
-    self.CustomColorEditFrame = CreateFrame('Frame', nil, self, 'BackdropTemplate');
-    self.CustomColorEditFrame:SetPoint('TOPLEFT', EditBox, 'BOTTOMLEFT', -5, -8);
-    self.CustomColorEditFrame:SetPoint('BOTTOMRIGHT', O.frame.Right.CustomColor, 'BOTTOMRIGHT', 0, 0);
-    self.CustomColorEditFrame:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
-    self.CustomColorEditFrame:SetBackdropColor(0.15, 0.15, 0.15, 1);
+    self.CustomNameEditFrame = CreateFrame('Frame', nil, self, 'BackdropTemplate');
+    self.CustomNameEditFrame:SetPoint('TOPLEFT', EditBox, 'BOTTOMLEFT', -5, -8);
+    self.CustomNameEditFrame:SetPoint('BOTTOMRIGHT', O.frame.Right.CustomName, 'BOTTOMRIGHT', 0, 0);
+    self.CustomNameEditFrame:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
+    self.CustomNameEditFrame:SetBackdropColor(0.15, 0.15, 0.15, 1);
 
-    self.CustomColorScrollChild, self.CustomColorScrollArea = E.CreateScrollFrame(self.CustomColorEditFrame, ROW_HEIGHT);
+    self.CustomNameScrollChild, self.CustomNameScrollArea = E.CreateScrollFrame(self.CustomNameEditFrame, ROW_HEIGHT);
 
-    PixelUtil.SetPoint(self.CustomColorScrollArea.ScrollBar, 'TOPLEFT', self.CustomColorScrollArea, 'TOPRIGHT', -8, 0);
-    PixelUtil.SetPoint(self.CustomColorScrollArea.ScrollBar, 'BOTTOMLEFT', self.CustomColorScrollArea, 'BOTTOMRIGHT', -8, 0);
+    PixelUtil.SetPoint(self.CustomNameScrollArea.ScrollBar, 'TOPLEFT', self.CustomNameScrollArea, 'TOPRIGHT', -8, 0);
+    PixelUtil.SetPoint(self.CustomNameScrollArea.ScrollBar, 'BOTTOMLEFT', self.CustomNameScrollArea, 'BOTTOMRIGHT', -8, 0);
 
-    framePool = CreateFramePool('Frame', self.CustomColorScrollChild, 'BackdropTemplate');
+    framePool = CreateFramePool('Button', self.CustomNameScrollChild, 'BackdropTemplate');
 
-    self.UpdateScroll();
+    self:UpdateScroll();
 
     self.List = Mixin(CreateFrame('Frame', nil, self, 'BackdropTemplate'), E.PixelPerfectMixin);
     self.List:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
@@ -486,7 +529,7 @@ panel.Load = function(self)
     self.ListButtonPool = CreateFramePool('Button', self.ListScrollChild, 'BackdropTemplate');
 
     self.ProfilesDropdown = E.CreateDropdown('plain', self);
-    self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.CustomColorEditFrame, 'TOPRIGHT', 0, 8);
+    self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.CustomNameEditFrame, 'TOPRIGHT', 0, 8);
     self.ProfilesDropdown:SetSize(157, 22);
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
         local index = S:GetModule('Options'):FindIndexByName(name);
@@ -496,15 +539,15 @@ panel.Load = function(self)
         end
 
         if isShiftKeyDown then
-            wipe(StripesDB.profiles[O.activeProfileId].custom_color_data);
-            StripesDB.profiles[O.activeProfileId].custom_color_data = U.DeepCopy(StripesDB.profiles[index].custom_color_data);
+            wipe(StripesDB.profiles[O.activeProfileId].custom_name_data);
+            StripesDB.profiles[O.activeProfileId].custom_name_data = U.DeepCopy(StripesDB.profiles[index].custom_name_data);
         else
-            StripesDB.profiles[O.activeProfileId].custom_color_data = U.Merge(StripesDB.profiles[index].custom_color_data, StripesDB.profiles[O.activeProfileId].custom_color_data);
+            StripesDB.profiles[O.activeProfileId].custom_name_data = U.Merge(StripesDB.profiles[index].custom_name_data, StripesDB.profiles[O.activeProfileId].custom_name_data);
         end
 
         self:SetValue(0);
 
-        panel.UpdateScroll();
+        panel:UpdateScroll();
     end
 
     self.CopyFromProfileText = E.CreateFontString(self);

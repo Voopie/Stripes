@@ -84,6 +84,9 @@ L['OPTIONS_NEED_RELOAD'] = 'Необходимо перезагрузить ин
 L['OPTIONS_HIDED_IN_COMBAT'] = 'Настройки были скрыты на время боя и будут автоматически открыты после завершения боя';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'Настройки будут открыты после боя';
 
+L['OPTIONS_COPY_FROM_PROFILE'] = 'Копировать из профиля';
+L['OPTIONS_REPLACE_FROM_PROFILE'] = 'Заменить из профиля';
+
 L['OPTIONS_CATEGORY_COMMON'] = 'Основное';
 L['OPTIONS_CATEGORY_SIZES'] = 'Размеры';
 L['OPTIONS_CATEGORY_VISIBILITY'] = 'Видимость';
@@ -91,6 +94,7 @@ L['OPTIONS_CATEGORY_HEALTHBAR'] = 'Полоса здоровья';
 L['OPTIONS_CATEGORY_CASTBAR'] = 'Полоса заклинания';
 L['OPTIONS_CATEGORY_AURAS'] = 'Ауры';
 L['OPTIONS_CATEGORY_CUSTOMCOLOR'] = 'Особый цвет здоровья';
+L['OPTIONS_CATEGORY_CUSTOMNAME'] = 'Особые имена';
 L['OPTIONS_CATEGORY_MYTHIC_PLUS'] = 'Эпохальные ключи';
 L['OPTIONS_CATEGORY_USEFUL'] = 'Полезное';
 L['OPTIONS_CATEGORY_PROFILES'] = 'Профили';
@@ -744,8 +748,6 @@ L['OPTIONS_AURAS_CUSTOM_COUNT_OFFSET_Y_TOOLTIP'] = 'Вертикальное с�
 L['OPTIONS_AURAS_CUSTOM_EDITBOX_ENTER_ID'] = 'Введите название или ID ауры';
 L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HARMFUL'] = 'Переключить на дебафф (HARMFUL)';
 L['OPTIONS_AURAS_CUSTOM_SWITCH_TO_HELPFUL'] = 'Переключить на бафф (HELPFUL)';
-L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE'] = 'Копировать из профиля';
-L['OPTIONS_AURAS_CUSTOM_COPY_FROM_PROFILE_SHIFT'] = 'Заменить из профиля';
 L['OPTIONS_AURAS_CUSTOM_HELPFUL'] = 'Бафф';
 L['OPTIONS_AURAS_CUSTOM_HELPFUL_TOOLTIP'] = 'Добавить ауру как бафф (HELPFUL)';
 L['OPTIONS_AURAS_CUSTOM_BORDER_COLOR_TOOLTIP'] = 'Цвет границ пользовательских аур';
@@ -761,11 +763,15 @@ L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цв�
 L['OPTIONS_CUSTOM_COLOR_EDITBOX_ENTER_ID'] = 'Введите номер NPC';
 L['OPTIONS_CUSTOM_COLOR_ADD_FROM_TARGET'] = 'Из цели';
 L['OPTIONS_CUSTOM_COLOR_ADD_FROM_LIST'] = 'Из списка';
-L['OPTIONS_CUSTOM_COLOR_COPY_FROM_PROFILE'] = 'Копировать из профиля';
-L['OPTIONS_CUSTOM_COLOR_COPY_FROM_PROFILE_SHIFT'] = 'Заменить из профиля';
 
 L['OPTIONS_GLOBAL_FONT_HEADER'] = 'Настройки шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_VALUE_TOOLTIP'] = 'Использовать глобальные настройки шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_SIZE_TOOLTIP'] = 'Использовать глобальные настройки размера шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_FLAG_TOOLTIP'] = 'Использовать глобальные настройки контура шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_SHADOW_TOOLTIP'] = 'Использовать глобальные настройки тени шрифта';
+
+L['OPTIONS_CUSTOM_NAME_ENABLED'] = 'Включить';
+L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP'] = 'Включить особые имена';
+L['OPTIONS_CUSTOM_NAME_EDITBOX_ENTER_ID'] = 'Введите номер NPC';
+L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'Из цели';
+L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'Из списка';

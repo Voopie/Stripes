@@ -3,7 +3,7 @@ local Module = S:NewModule('Options_Categories_MythicPlus');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.MythicPlus, O.frame.Right.MythicPlus = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_MYTHIC_PLUS']), 'mythicplus', 8);
+O.frame.Left.MythicPlus, O.frame.Right.MythicPlus = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_MYTHIC_PLUS']), 'mythicplus', 9);
 local button = O.frame.Left.MythicPlus;
 local panel  = O.frame.Right.MythicPlus;
 
