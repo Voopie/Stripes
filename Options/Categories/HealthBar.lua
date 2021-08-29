@@ -3,7 +3,7 @@ local Module = S:NewModule('Options_Categories_HealthBar');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.HealthBar, O.frame.Right.HealthBar = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_HEALTHBAR']), 'healthbar', 4);
+O.frame.Left.HealthBar, O.frame.Right.HealthBar = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_HEALTHBAR']), 'healthbar', 4);
 local button = O.frame.Left.HealthBar;
 local panel = O.frame.Right.HealthBar;
 
@@ -14,11 +14,11 @@ panel.TabsData = {
     },
     [2] = {
         name = 'ColorsTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_HEALTHBAR_TAB_COLORS']),
+        title = string.upper(L['OPTIONS_HEALTHBAR_TAB_COLORS']),
     },
     [3] = {
         name  = 'TargetIndicatorTab',
-        title = S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_HEALTHBAR_TAB_TARGET_INDICATOR']),
+        title = string.upper(L['OPTIONS_HEALTHBAR_TAB_TARGET_INDICATOR']),
     },
     [4] = {
         name  = 'ThreatTab',
@@ -325,7 +325,7 @@ panel.Load = function(self)
 
     self.target_highlight = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
     self.target_highlight:SetPosition('TOPLEFT', self.target_indicator_size, 'BOTTOMLEFT', 0, -12);
-    self.target_highlight:SetLabel(S.Media.INLINE_NEW_ICON .. L['OPTIONS_TARGET_HIGHLIGHT']);
+    self.target_highlight:SetLabel(L['OPTIONS_TARGET_HIGHLIGHT']);
     self.target_highlight:SetTooltip(L['OPTIONS_TARGET_HIGHLIGHT_TOOLTIP']);
     self.target_highlight:SetChecked(O.db.target_highlight);
     self.target_highlight:AddToSearch(button, L['OPTIONS_TARGET_HIGHLIGHT_TOOLTIP'], self.Tabs[3]);
