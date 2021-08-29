@@ -356,6 +356,12 @@ L['OPTIONS_CAST_BAR_SHOW_SHIELD'] = 'Щит';
 L['OPTIONS_CAST_BAR_SHOW_SHIELD_TOOLTIP'] = 'Показывать иконку щита для непрерываемых заклинаний';
 L['OPTIONS_CAST_BAR_SHOW_ICON_NOTINTERRUPTIBLE'] = 'Иконка для непрерываемых заклинаний';
 L['OPTIONS_CAST_BAR_SHOW_ICON_NOTINTERRUPTIBLE_TOOLTIP'] = 'Показывать иконку заклинания для непрерываемых заклинаний';
+L['OPTIONS_CAST_BAR_USE_INTERRUPT_READY_COLOR_TOOLTIP'] = 'Использовать цвет «Готово к прерыванию»';
+L['OPTIONS_CAST_BAR_INTERRUPT_READY_COLOR'] = 'Готово к прерыванию';
+L['OPTIONS_CAST_BAR_INTERRUPT_READY_COLOR_TOOLTIP'] = 'Полоса заклинания изменит свой цвет на выбранный, когда Ваша способность прерывания заклинания будет готова';
+L['OPTIONS_CAST_BAR_SHOW_INTERRUPT_READY_TICK'] = 'Вертикальная линия';
+L['OPTIONS_CAST_BAR_SHOW_INTERRUPT_READY_TICK_TOOLTIP'] = 'Показывать вертикальную линию, которая отображает Вашу возможность прервать заклинание';
+L['OPTIONS_CAST_BAR_INTERRUPT_READY_TICK_COLOR_TOOLTIP'] = 'Цвет вертикальной линии';
 
 L['OPTIONS_SIZES_TAB_ENEMY'] = 'Враждебные';
 L['OPTIONS_SIZES_TAB_FRIENDLY'] = 'Дружественные';

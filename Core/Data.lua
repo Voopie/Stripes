@@ -8,7 +8,8 @@ D.Player = {
     Realm           = GetRealmName(),
     RealmNormalized = GetNormalizedRealmName() or GetRealmName():gsub('[%s%-]', ''),
 
-    Class           = select(2, UnitClass('player')),
+    Class           = UnitClassBase('player'),
+    ClassId         = select(2, UnitClassBase('player')),
     ClassColor      = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[select(2, UnitClass('player'))] or CreateColor(1, 1, 1),
 
     GuildName = '';
@@ -341,10 +342,28 @@ D.NPCs = {
     },
 };
 
+D.KickByClassId = {
+    -- [classId] = { [specIndex], ... }
+    [1]  = { [1] = 6552,   [2] = 6552,   [3] = 6552 },              -- Warrior
+    [2]  = { [1] = nil,    [2] = 96231,  [3] = 96231 },             -- Paladin
+    [3]  = { [1] = 147362, [2] = 147362, [3] = 187707 },            -- Hunter
+    [4]  = { [1] = 1766,   [2] = 1766,   [3] = 1766 },              -- Rogue
+    [5]  = { [1] = nil,    [2] = nil,    [3] = 15487 },             -- Priest
+    [6]  = { [1] = 47528,  [2] = 47528,  [3] = 47528 },             -- Death Knight
+    [7]  = { [1] = 57994,  [2] = 57994,  [3] = 57994 },             -- Shaman
+    [8]  = { [1] = 2139,   [2] = 2139,   [3] = 2139 },              -- Mage
+    [10] = { [1] = 116705, [2] = nil,    [3] = 116705 },            -- Monk
+    [11] = { [1] = 78675,  [2] = 106839, [3] = 106839, [4] = nil }, -- Druid
+    [12] = { [1] = 183752, [2] = 183752 },                          -- Demon Hunter
+};
+
 local function UpdatePlayer()
     D.Player.Name, D.Player.RealmNormalized = UnitFullName('player');
     D.Player.NameWithRealm                  = D.Player.Name .. '-' .. D.Player.RealmNormalized;
     D.Player.Realm                          = GetRealmName();
+
+    D.Player.SpecIndex = GetSpecialization();
+    D.Player.SpecId    = GetSpecializationInfo(D.Player.SpecIndex);
 end
 
 function Data:PLAYER_LOGIN()
@@ -432,6 +451,13 @@ function Data:MAX_EXPANSION_LEVEL_UPDATED()
     D.MaxLevel = GetMaxLevelForLatestExpansion();
 end
 
+function Data:PLAYER_SPECIALIZATION_CHANGED(unit)
+    if unit ~= 'player' then
+        D.Player.SpecIndex = GetSpecialization();
+        D.Player.SpecId = GetSpecializationInfo(D.Player.SpecIndex);
+    end
+end
+
 function Data:StartUp()
     self:RegisterEvent('PLAYER_LOGIN');
     self:RegisterEvent('PLAYER_ENTERING_WORLD');
@@ -445,4 +471,5 @@ function Data:StartUp()
     self:RegisterEvent('GUILD_ROSTER_UPDATE');
     self:RegisterEvent('PLAYER_GUILD_UPDATE');
     self:RegisterEvent('MAX_EXPANSION_LEVEL_UPDATED');
+    self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED');
 end

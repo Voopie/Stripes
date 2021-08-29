@@ -1,5 +1,10 @@
+local S, L, O, U, D, E = unpack(select(2, ...));
+
+-- WoW API
+local GetSpellCooldown, UnitCanAttack = GetSpellCooldown, UnitCanAttack;
+local GetTime = GetTime;
+
 -- In fact, this is a copy paste from Blizzard/CastingBarFrame.lua
--- With a few minor changes
 
 local FAILED = FAILED;
 local INTERRUPTED = INTERRUPTED;
@@ -8,12 +13,72 @@ local CASTING_BAR_ALPHA_STEP = 0.05;
 local CASTING_BAR_FLASH_STEP = 0.2;
 local CASTING_BAR_HOLD_TIME = 1;
 
+local GetInterruptSpellId = U.GetInterruptSpellId;
+
+local function GetInterruptReadyTickPosition(self)
+    local intCD, intStart, intDuration = 0, 0, 0;
+    local intReadyInTime, intReady;
+
+    if self.InterruptSpellId then
+        local cdStart, cdDur = GetSpellCooldown(self.InterruptSpellId);
+        local tmpIntCD = (cdStart > 0 and cdDur - (GetTime() - cdStart)) or 0;
+
+        if intCD == 0 or (tmpIntCD < intCD) then
+            intCD       = tmpIntCD;
+            intDuration = cdDur;
+            intStart    = cdStart;
+        end
+
+        intReady = cdStart == 0;
+    end
+
+    if self.channeling then
+        intReadyInTime = intCD < self.value;
+    else
+        intReadyInTime = intCD < (self.maxValue - self.value);
+    end
+
+    local sparkPosition = 0;
+
+    if intCD > 0 and intReadyInTime then
+        sparkPosition = (intStart + intDuration - (self.startTime / 1000)) / self.maxValue;
+
+        if self.channeling then
+            sparkPosition = 1 - sparkPosition;
+        end
+    end
+
+    return sparkPosition, intReady;
+end
+
+local function UpdateInterruptReadyColorAndTick(self)
+    if self.InterruptReadyTick then
+        if self.notInterruptible or not UnitCanAttack('player', self.unit) then
+            self.InterruptReadyTick:Hide();
+        else
+            local InterruptReadyTickPosition, intReady = GetInterruptReadyTickPosition(self);
+
+            if intReady and self.useInterruptReadyColor then
+                self:SetStatusBarColor(self.interruptReadyColor:GetRGB());
+            end
+
+            if InterruptReadyTickPosition == 0 or not self.showInterruptReadyTick then
+                self.InterruptReadyTick:Hide();
+            else
+                self.InterruptReadyTick:SetPoint('CENTER', self, InterruptReadyTickPosition < 0 and 'RIGHT' or 'LEFT', self:GetWidth() * InterruptReadyTickPosition, 0);
+                self.InterruptReadyTick:Show();
+            end
+        end
+    end
+end
+
 function StripesCastingBar_OnLoad(self, unit, showTradeSkills, showShield)
     StripesCastingBar_SetStartCastColor(self, 1.0, 0.7, 0.0);
     StripesCastingBar_SetStartChannelColor(self, 0.0, 1.0, 0.0);
     StripesCastingBar_SetFinishedCastColor(self, 0.0, 1.0, 0.0);
     StripesCastingBar_SetNonInterruptibleCastColor(self, 0.7, 0.7, 0.7);
     StripesCastingBar_SetFailedCastColor(self, 1.0, 0.0, 0.0);
+    StripesCastingBar_SetInterruptReadyCastColor(self, 0, 0.65, 0);
     StripesCastingBar_SetUseStartColorForFinished(self, true);
     StripesCastingBar_SetUseStartColorForFlash(self, true);
     StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield);
@@ -48,6 +113,10 @@ function StripesCastingBar_SetNonInterruptibleCastColor(self, r, g, b)
     self.nonInterruptibleColor = CreateColor(r, g, b);
 end
 
+function StripesCastingBar_SetInterruptReadyCastColor(self, r, g, b)
+    self.interruptReadyColor = CreateColor(r, g, b);
+end
+
 function StripesCastingBar_SetUseStartColorForFinished(self, finishedColorSameAsStart)
     self.finishedColorSameAsStart = finishedColorSameAsStart;
 end
@@ -75,6 +144,11 @@ function StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield)
         self.holdTime = 0;
         self.fadeOut = nil;
 
+        self.InterruptSpellId = nil;
+        self.startTime = nil;
+        self.endTime = nil;
+        self.notInterruptible = nil;
+
         if unit then
             self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED');
             self:RegisterEvent('UNIT_SPELLCAST_DELAYED');
@@ -88,7 +162,9 @@ function StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield)
             self:RegisterUnitEvent('UNIT_SPELLCAST_STOP', unit);
             self:RegisterUnitEvent('UNIT_SPELLCAST_FAILED', unit);
 
-            StripesCastingBar_OnEvent(self, 'PLAYER_ENTERING_WORLD')
+            self.InterruptSpellId = GetInterruptSpellId();
+
+            StripesCastingBar_OnEvent(self, 'PLAYER_ENTERING_WORLD');
         else
             self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED');
             self:UnregisterEvent('UNIT_SPELLCAST_DELAYED');
@@ -200,6 +276,12 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.channeling = nil;
         self.fadeOut = nil;
 
+        self.notInterruptible = notInterruptible;
+        self.startTime = startTime;
+        self.endTime   = endTime;
+
+        UpdateInterruptReadyColorAndTick(self);
+
         if self.BorderShield then
             if self.showShield and notInterruptible then
                 self.BorderShield:Show();
@@ -232,6 +314,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
                 self.Flash:Show();
             end
 
+            if self.InterruptReadyTick then
+                self.InterruptReadyTick:Hide();
+            end
+
             self:SetValue(self.maxValue);
 
             if event == 'UNIT_SPELLCAST_STOP' then
@@ -256,6 +342,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
                 self.Spark:Hide();
             end
 
+            if self.InterruptReadyTick then
+                self.InterruptReadyTick:Hide();
+            end
+
             if self.Text then
                 if event == 'UNIT_SPELLCAST_FAILED' then
                     self.Text:SetText(FAILED);
@@ -268,6 +358,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self.channeling = nil;
             self.fadeOut = true;
             self.holdTime = GetTime() + CASTING_BAR_HOLD_TIME;
+            self.notInterruptible = nil;
         end
     elseif event == 'UNIT_SPELLCAST_DELAYED' then
         if self:IsShown() then
@@ -298,7 +389,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
                 self.channeling = nil;
                 self.flash = nil;
                 self.fadeOut = nil;
+                self.notInterruptible = nil;
             end
+
+            self.notInterruptible = notInterruptible;
         end
     elseif event == 'UNIT_SPELLCAST_CHANNEL_START' then
         local name, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unit);
@@ -340,6 +434,12 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.channeling = true;
         self.fadeOut = nil;
 
+        self.notInterruptible = notInterruptible;
+        self.startTime = startTime;
+        self.endTime   = endTime;
+
+        UpdateInterruptReadyColorAndTick(self);
+
         if self.BorderShield then
             if self.showShield and notInterruptible then
                 self.BorderShield:Show();
@@ -361,6 +461,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
     elseif event == 'UNIT_SPELLCAST_CHANNEL_UPDATE' then
         if self:IsShown() then
             local name, _, _, startTime, endTime, isTradeSkill = UnitChannelInfo(unit);
+
             if not name or (not self.showTradeSkills and isTradeSkill) then
                 -- if there is no name, there is no bar
                 self:Hide();
@@ -371,6 +472,9 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self.maxValue = (endTime - startTime) / 1000;
             self:SetMinMaxValues(0, self.maxValue);
             self:SetValue(self.value);
+
+            self.startTime = startTime;
+            self.endTime   = endTime;
         end
     elseif event == 'UNIT_SPELLCAST_INTERRUPTIBLE' or event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE' then
         StripesCastingBar_UpdateInterruptibleState(self, event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE');
@@ -379,6 +483,8 @@ end
 
 function StripesCastingBar_UpdateInterruptibleState(self, notInterruptible)
     if self.casting or self.channeling then
+        self.notInterruptible = notInterruptible;
+
         local startColor = StripesCastingBar_GetEffectiveStartColor(self, self.channeling, notInterruptible);
         self:SetStatusBarColor(startColor:GetRGB());
 
@@ -409,6 +515,20 @@ function StripesCastingBar_UpdateInterruptibleState(self, notInterruptible)
                 self.Icon:SetShown(true);
             end
         end
+
+        if self.InterruptReadyTick then
+            if notInterruptible or not self.showInterruptReadyTick then
+                self.InterruptReadyTick:SetShown(false);
+            else
+                local InterruptReadyTickPosition = GetInterruptReadyTickPosition(self);
+                if InterruptReadyTickPosition == 0 then
+                    self.InterruptReadyTick:SetShown(false);
+                else
+                    self.InterruptReadyTick:SetPoint('CENTER', self, 'LEFT', self:GetWidth() * InterruptReadyTickPosition, 0);
+                    self.InterruptReadyTick:SetShown(true);
+                end
+            end
+        end
     end
 end
 
@@ -432,6 +552,8 @@ function StripesCastingBar_OnUpdate(self, elapsed)
             local sparkPosition = (self.value / self.maxValue) * self:GetWidth();
             self.Spark:SetPoint('CENTER', self, 'LEFT', sparkPosition, self.Spark.offsetY or 2);
         end
+
+        UpdateInterruptReadyColorAndTick(self);
     elseif self.channeling then
         self.value = self.value - elapsed;
 
@@ -445,6 +567,8 @@ function StripesCastingBar_OnUpdate(self, elapsed)
         if self.Flash then
             self.Flash:Hide();
         end
+
+        UpdateInterruptReadyColorAndTick(self);
     elseif GetTime() < self.holdTime then
         return;
     elseif self.flash then

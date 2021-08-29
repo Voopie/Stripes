@@ -338,9 +338,13 @@ O.DefaultValues = {
     castbar_start_channel_color    = { 0, 1, 0 },
     castbar_noninterruptible_color = { 0.7, 0.7, 0.7 },
     castbar_failed_cast_color      = { 1, 0, 0 },
+    castbar_interrupt_ready_color  = { 0, 0.7, 0 },
+    castbar_use_interrupt_ready_color  = true,
     castbar_show_tradeskills           = false,
     castbar_show_shield                = true,
     castbar_show_icon_notinterruptible = true,
+    castbar_show_interrupt_ready_tick  = true,
+    castbar_interrupt_ready_tick_color = { 0.1, 0.1, 0.1, 1 },
 
     who_interrupted_enabled = true,
 

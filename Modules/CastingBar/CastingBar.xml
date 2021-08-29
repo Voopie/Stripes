@@ -11,7 +11,7 @@
                     <Color r="0.2" g="0.2" b="0.2" a="0.85"/>
                 </Texture>
             </Layer>
-            <Layer level="OVERLAY" textureSubLevel="1">
+            <Layer level="ARTWORK" textureSubLevel="1">
                 <FontString parentKey="Text" inherits="SystemFont_Shadow_Small">
                     <Size x="0" y="16" />
                     <Anchors>
@@ -36,7 +36,7 @@
                     </Anchors>
                 </Texture>
             </Layer>
-            <Layer level="OVERLAY" textureSubLevel="2">
+            <Layer level="ARTWORK" textureSubLevel="2">
                 <Texture parentKey="BorderShield" atlas="nameplates-InterruptShield" hidden="true" ignoreParentAlpha="true">
                     <Size x="12" y="12" />
                     <Anchors>
@@ -44,7 +44,7 @@
                     </Anchors>
                 </Texture>
             </Layer>
-            <Layer level="OVERLAY">
+            <Layer level="ARTWORK">
                 <Texture parentKey="Spark" file="Interface\CastingBar\UI-CastingBar-Spark" alphaMode="ADD">
                     <Size x="16" y="16" />
                     <Anchors>
@@ -52,6 +52,15 @@
                     </Anchors>
                 </Texture>
                 <Texture parentKey="Flash" file="Interface\TargetingFrame\UI-TargetingFrame-BarFill" alphaMode="ADD" />
+            </Layer>
+            <Layer level="OVERLAY" textureSubLevel="7">
+                <Texture parentKey="InterruptReadyTick" file="Interface\AddOns\Stripes\Media\Textures\Assets\vertical-line-white" hidden="true" alphaMode="BLEND">
+                    <Size x="12" y="12" />
+                    <Anchors>
+                        <Anchor point="CENTER" x="0" y="0"/>
+                    </Anchors>
+                    <Color r="0.1" g="0.1" b="0.1" />
+                </Texture>
             </Layer>
         </Layers>
         <Scripts>

@@ -17,11 +17,13 @@ local LIST_FONT_FLAGS = O.Lists.font_flags;
 
 -- Local config
 local TIMER_ENABLED, ON_HP_BAR, ICON_LARGE, ICON_RIGHT_SIDE;
-local START_CAST_COLOR, START_CHANNEL_COLOR, NONINTERRUPTIBLE_COLOR, FAILED_CAST_COLOR;
+local START_CAST_COLOR, START_CHANNEL_COLOR, NONINTERRUPTIBLE_COLOR, FAILED_CAST_COLOR, INTERRUPT_READY_COLOR;
+local USE_INTERRUPT_READY_COLOR;
 local FONT_VALUE, FONT_SIZE, FONT_FLAG, FONT_SHADOW;
 local STATUSBAR_TEXTURE;
 local ENEMY_WIDTH, FRIENDLY_WIDTH, PLAYER_WIDTH;
 local SHOW_TRADE_SKILLS, SHOW_SHIELD, SHOW_ICON_NOTINTERRUPTIBLE;
+local SHOW_INTERRUPT_READY_TICK, INTERRUPT_READY_TICK_COLOR;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 
@@ -160,6 +162,11 @@ local function CreateTimer(unitframe)
     StripesCastingBar_SetStartChannelColor(unitframe.castingBar, unpack(START_CHANNEL_COLOR));
     StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, unpack(NONINTERRUPTIBLE_COLOR));
     StripesCastingBar_SetFailedCastColor(unitframe.castingBar, unpack(FAILED_CAST_COLOR));
+    StripesCastingBar_SetInterruptReadyCastColor(unitframe.castingBar, unpack(INTERRUPT_READY_COLOR));
+
+    if unitframe.castingBar.InterruptReadyTick then
+        unitframe.castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
+    end
 end
 
 local function UpdateColors(unitframe)
@@ -171,6 +178,11 @@ local function UpdateColors(unitframe)
     StripesCastingBar_SetStartChannelColor(unitframe.castingBar, unpack(START_CHANNEL_COLOR));
     StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, unpack(NONINTERRUPTIBLE_COLOR));
     StripesCastingBar_SetFailedCastColor(unitframe.castingBar, unpack(FAILED_CAST_COLOR));
+    StripesCastingBar_SetInterruptReadyCastColor(unitframe.castingBar, unpack(INTERRUPT_READY_COLOR));
+
+    if unitframe.castingBar.InterruptReadyTick then
+        unitframe.castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
+    end
 end
 
 local function UpdateVisibility(unitframe)
@@ -191,6 +203,8 @@ local function UpdateVisibility(unitframe)
         end
 
         unitframe.castingBar.iconWhenNoninterruptible = SHOW_ICON_NOTINTERRUPTIBLE;
+        unitframe.castingBar.showInterruptReadyTick   = SHOW_INTERRUPT_READY_TICK;
+        unitframe.castingBar.useInterruptReadyColor   = USE_INTERRUPT_READY_COLOR;
     end
 end
 
@@ -229,6 +243,19 @@ function Module:UpdateLocalConfig()
     NONINTERRUPTIBLE_COLOR = O.db.castbar_noninterruptible_color;
     FAILED_CAST_COLOR      = O.db.castbar_failed_cast_color;
 
+    USE_INTERRUPT_READY_COLOR = O.db.castbar_use_interrupt_ready_color;
+    INTERRUPT_READY_COLOR = INTERRUPT_READY_COLOR or {};
+    INTERRUPT_READY_COLOR[1] = O.db.castbar_interrupt_ready_color[1];
+    INTERRUPT_READY_COLOR[2] = O.db.castbar_interrupt_ready_color[2];
+    INTERRUPT_READY_COLOR[3] = O.db.castbar_interrupt_ready_color[3];
+    INTERRUPT_READY_COLOR[4] = O.db.castbar_interrupt_ready_color[4] or 1;
+
+    INTERRUPT_READY_TICK_COLOR = INTERRUPT_READY_TICK_COLOR or {};
+    INTERRUPT_READY_TICK_COLOR[1] = O.db.castbar_interrupt_ready_tick_color[1];
+    INTERRUPT_READY_TICK_COLOR[2] = O.db.castbar_interrupt_ready_tick_color[2];
+    INTERRUPT_READY_TICK_COLOR[3] = O.db.castbar_interrupt_ready_tick_color[3];
+    INTERRUPT_READY_TICK_COLOR[4] = O.db.castbar_interrupt_ready_tick_color[4] or 1;
+
     STATUSBAR_TEXTURE = O.db.castbar_texture_value;
 
     FONT_VALUE  = O.db.castbar_text_font_value;
@@ -244,6 +271,8 @@ function Module:UpdateLocalConfig()
 
     SHOW_SHIELD                = O.db.castbar_show_shield;
     SHOW_ICON_NOTINTERRUPTIBLE = O.db.castbar_show_icon_notinterruptible;
+
+    SHOW_INTERRUPT_READY_TICK = O.db.castbar_show_interrupt_ready_tick;
 
     UpdateFontObject(StripesCastBarFont, FONT_VALUE, FONT_SIZE, FONT_FLAG, FONT_SHADOW);
 end

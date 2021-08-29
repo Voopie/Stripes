@@ -280,10 +280,36 @@ end
 --[[
     IsPlayerSpell(spellId), IsSpellKnown(spellId), IsSpellKnownOrOverridesKnown(spellId)
     Incorrectly returned false for some spells
+    FindSpellOverrideByID, FindBaseSpellByID -- to not forget
 ]]
 
 U.GetTrulySpellId = function(spellId)
     return select(7, GetSpellInfo(GetSpellInfo(spellId))); -- here we extract the spell name and then get needed spellId by spell name
+end
+
+U.GetInterruptSpellId = function()
+    if D.KickByClassId[D.Player.ClassId] then
+        return D.KickByClassId[D.Player.ClassId][D.Player.SpecIndex];
+    end
+
+    -- Warlock logic
+    local spellId;
+
+    if D.Player.SpecIndex == 1 or D.Player.SpecIndex == 3 then -- Aff & Destro
+        if IsSpellKnown(19647, true) then -- Felhunter
+            spellId = 119910;
+        elseif IsPlayerSpell(108503) then
+            spellId = 132409;
+        end
+    elseif D.Player.SpecIndex == 2 then -- Demo
+        if IsSpellKnown(89766, true) then -- Felguard
+            spellId = 119914;
+        elseif IsSpellKnown(19647, true) then -- Felhunter
+            spellId = 119910;
+        end
+    end
+
+    return spellId;
 end
 
 -- Colors
