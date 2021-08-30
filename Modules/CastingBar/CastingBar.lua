@@ -15,40 +15,43 @@ local CASTING_BAR_HOLD_TIME = 1;
 
 local GetInterruptSpellId = U.GetInterruptSpellId;
 
+-- Based on Plater mod (Interrupt not ready Cast Color + Custom Cast Color) by Continuity
 local function GetInterruptReadyTickPosition(self)
-    local intCD, intStart, intDuration = 0, 0, 0;
-    local intReadyInTime, intReady;
-
-    if self.InterruptSpellId then
-        local cdStart, cdDur = GetSpellCooldown(self.InterruptSpellId);
-        local tmpIntCD = (cdStart > 0 and cdDur - (GetTime() - cdStart)) or 0;
-
-        if intCD == 0 or (tmpIntCD < intCD) then
-            intCD       = tmpIntCD;
-            intDuration = cdDur;
-            intStart    = cdStart;
-        end
-
-        intReady = cdStart == 0;
+    if not self.interruptSpellId then
+        return 0, false;
     end
+
+    local interruptCD, interruptStart, interruptDuration = 0, 0, 0;
+    local interruptReadyInTime, interruptReady;
+
+    local cooldownStart, cooldownDuration = GetSpellCooldown(self.interruptSpellId);
+    local tmpInterruptCD = (cooldownStart > 0 and cooldownDuration - (GetTime() - cooldownStart)) or 0;
+
+    if interruptCD == 0 or (tmpInterruptCD < interruptCD) then
+        interruptCD       = tmpInterruptCD;
+        interruptDuration = cooldownDuration;
+        interruptStart    = cooldownStart;
+    end
+
+    interruptReady = cooldownStart == 0;
 
     if self.channeling then
-        intReadyInTime = intCD < self.value;
+        interruptReadyInTime = interruptCD < self.value;
     else
-        intReadyInTime = intCD < (self.maxValue - self.value);
+        interruptReadyInTime = interruptCD < (self.maxValue - self.value);
     end
 
-    local sparkPosition = 0;
+    local tickPosition = 0;
 
-    if intCD > 0 and intReadyInTime then
-        sparkPosition = (intStart + intDuration - (self.startTime / 1000)) / self.maxValue;
+    if interruptCD > 0 and interruptReadyInTime then
+        tickPosition = (interruptStart + interruptDuration - (self.startTime / 1000)) / self.maxValue;
 
         if self.channeling then
-            sparkPosition = 1 - sparkPosition;
+            tickPosition = 1 - tickPosition;
         end
     end
 
-    return sparkPosition, intReady;
+    return tickPosition, interruptReady;
 end
 
 local function UpdateInterruptReadyColorAndTick(self)
@@ -144,7 +147,7 @@ function StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield)
         self.holdTime = 0;
         self.fadeOut = nil;
 
-        self.InterruptSpellId = nil;
+        self.interruptSpellId = nil;
         self.startTime = nil;
         self.endTime = nil;
         self.notInterruptible = nil;
@@ -162,7 +165,7 @@ function StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield)
             self:RegisterUnitEvent('UNIT_SPELLCAST_STOP', unit);
             self:RegisterUnitEvent('UNIT_SPELLCAST_FAILED', unit);
 
-            self.InterruptSpellId = GetInterruptSpellId();
+            self.interruptSpellId = GetInterruptSpellId();
 
             StripesCastingBar_OnEvent(self, 'PLAYER_ENTERING_WORLD');
         else
