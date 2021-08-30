@@ -62,7 +62,7 @@ local function UpdateInterruptReadyColorAndTick(self)
             local InterruptReadyTickPosition, intReady = GetInterruptReadyTickPosition(self);
 
             if intReady and self.useInterruptReadyColor then
-                self:SetStatusBarColor(self.interruptReadyColor:GetRGB());
+                self:SetStatusBarColor(self.interruptReadyColor:GetRGBA());
             end
 
             if InterruptReadyTickPosition == 0 or not self.showInterruptReadyTick then
@@ -76,12 +76,12 @@ local function UpdateInterruptReadyColorAndTick(self)
 end
 
 function StripesCastingBar_OnLoad(self, unit, showTradeSkills, showShield)
-    StripesCastingBar_SetStartCastColor(self, 1.0, 0.7, 0.0);
-    StripesCastingBar_SetStartChannelColor(self, 0.0, 1.0, 0.0);
-    StripesCastingBar_SetFinishedCastColor(self, 0.0, 1.0, 0.0);
-    StripesCastingBar_SetNonInterruptibleCastColor(self, 0.7, 0.7, 0.7);
-    StripesCastingBar_SetFailedCastColor(self, 1.0, 0.0, 0.0);
-    StripesCastingBar_SetInterruptReadyCastColor(self, 0, 0.65, 0);
+    StripesCastingBar_SetStartCastColor(self, 1.0, 0.7, 0.0, 1);
+    StripesCastingBar_SetStartChannelColor(self, 0.0, 1.0, 0.0, 1);
+    StripesCastingBar_SetFinishedCastColor(self, 0.0, 1.0, 0.0, 1);
+    StripesCastingBar_SetNonInterruptibleCastColor(self, 0.7, 0.7, 0.7, 1);
+    StripesCastingBar_SetFailedCastColor(self, 1.0, 0.0, 0.0, 1);
+    StripesCastingBar_SetInterruptReadyCastColor(self, 0, 0.65, 0, 1);
     StripesCastingBar_SetUseStartColorForFinished(self, true);
     StripesCastingBar_SetUseStartColorForFlash(self, true);
     StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield);
@@ -96,28 +96,28 @@ function StripesCastingBar_OnLoad(self, unit, showTradeSkills, showShield)
     PixelUtil.SetHeight(self, 12);
 end
 
-function StripesCastingBar_SetStartCastColor(self, r, g, b)
-    self.startCastColor = CreateColor(r, g, b);
+function StripesCastingBar_SetStartCastColor(self, r, g, b, a)
+    self.startCastColor = CreateColor(r, g, b, a or 1);
 end
 
-function StripesCastingBar_SetStartChannelColor(self, r, g, b)
-    self.startChannelColor = CreateColor(r, g, b);
+function StripesCastingBar_SetStartChannelColor(self, r, g, b, a)
+    self.startChannelColor = CreateColor(r, g, b, a or 1);
 end
 
-function StripesCastingBar_SetFinishedCastColor(self, r, g, b)
-    self.finishedCastColor = CreateColor(r, g, b);
+function StripesCastingBar_SetFinishedCastColor(self, r, g, b, a)
+    self.finishedCastColor = CreateColor(r, g, b, a or 1);
 end
 
-function StripesCastingBar_SetFailedCastColor(self, r, g, b)
-    self.failedCastColor = CreateColor(r, g, b);
+function StripesCastingBar_SetFailedCastColor(self, r, g, b, a)
+    self.failedCastColor = CreateColor(r, g, b, a or 1);
 end
 
-function StripesCastingBar_SetNonInterruptibleCastColor(self, r, g, b)
-    self.nonInterruptibleColor = CreateColor(r, g, b);
+function StripesCastingBar_SetNonInterruptibleCastColor(self, r, g, b, a)
+    self.nonInterruptibleColor = CreateColor(r, g, b, a or 1);
 end
 
-function StripesCastingBar_SetInterruptReadyCastColor(self, r, g, b)
-    self.interruptReadyColor = CreateColor(r, g, b);
+function StripesCastingBar_SetInterruptReadyCastColor(self, r, g, b, a)
+    self.interruptReadyColor = CreateColor(r, g, b, a or 1);
 end
 
 function StripesCastingBar_SetUseStartColorForFinished(self, finishedColorSameAsStart)
@@ -241,7 +241,8 @@ function StripesCastingBar_OnEvent(self, event, ...)
         end
 
         local startColor = StripesCastingBar_GetEffectiveStartColor(self, false, notInterruptible);
-        self:SetStatusBarColor(startColor:GetRGB());
+        self:SetStatusBarColor(startColor:GetRGBA());
+
         if self.flashColorSameAsStart then
             self.Flash:SetVertexColor(startColor:GetRGB());
         else
@@ -339,7 +340,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
     elseif event == 'UNIT_SPELLCAST_FAILED' or event == 'UNIT_SPELLCAST_INTERRUPTED' then
         if self:IsShown() and (self.casting and select(2, ...) == self.castID) and not self.fadeOut then
             self:SetValue(self.maxValue);
-            self:SetStatusBarColor(self.failedCastColor:GetRGB());
+            self:SetStatusBarColor(self.failedCastColor:GetRGBA());
 
             if self.Spark then
                 self.Spark:Hide();
@@ -377,7 +378,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self:SetMinMaxValues(0, self.maxValue);
 
             if not self.casting then
-                self:SetStatusBarColor(StripesCastingBar_GetEffectiveStartColor(self, false, notInterruptible):GetRGB());
+                self:SetStatusBarColor(StripesCastingBar_GetEffectiveStartColor(self, false, notInterruptible):GetRGBA());
 
                 if self.Spark then
                     self.Spark:Show();
@@ -412,7 +413,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self.Flash:SetVertexColor(1, 1, 1);
         end
 
-        self:SetStatusBarColor(startColor:GetRGB());
+        self:SetStatusBarColor(startColor:GetRGBA());
         self.value = (endTime / 1000) - GetTime();
         self.maxValue = (endTime - startTime) / 1000;
         self:SetMinMaxValues(0, self.maxValue);
@@ -489,7 +490,7 @@ function StripesCastingBar_UpdateInterruptibleState(self, notInterruptible)
         self.notInterruptible = notInterruptible;
 
         local startColor = StripesCastingBar_GetEffectiveStartColor(self, self.channeling, notInterruptible);
-        self:SetStatusBarColor(startColor:GetRGB());
+        self:SetStatusBarColor(startColor:GetRGBA());
 
         if self.flashColorSameAsStart then
             self.Flash:SetVertexColor(startColor:GetRGB());

@@ -158,11 +158,11 @@ local function CreateTimer(unitframe)
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.BorderShield);
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.Timer);
 
-    StripesCastingBar_SetStartCastColor(unitframe.castingBar, unpack(START_CAST_COLOR));
-    StripesCastingBar_SetStartChannelColor(unitframe.castingBar, unpack(START_CHANNEL_COLOR));
-    StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, unpack(NONINTERRUPTIBLE_COLOR));
-    StripesCastingBar_SetFailedCastColor(unitframe.castingBar, unpack(FAILED_CAST_COLOR));
-    StripesCastingBar_SetInterruptReadyCastColor(unitframe.castingBar, unpack(INTERRUPT_READY_COLOR));
+    StripesCastingBar_SetStartCastColor(unitframe.castingBar, START_CAST_COLOR[1], START_CAST_COLOR[2], START_CAST_COLOR[3], START_CAST_COLOR[4]);
+    StripesCastingBar_SetStartChannelColor(unitframe.castingBar, START_CHANNEL_COLOR[1], START_CHANNEL_COLOR[2], START_CHANNEL_COLOR[3], START_CHANNEL_COLOR[4]);
+    StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, NONINTERRUPTIBLE_COLOR[1], NONINTERRUPTIBLE_COLOR[2], NONINTERRUPTIBLE_COLOR[3], NONINTERRUPTIBLE_COLOR[4]);
+    StripesCastingBar_SetFailedCastColor(unitframe.castingBar, FAILED_CAST_COLOR[1], FAILED_CAST_COLOR[2], FAILED_CAST_COLOR[3], FAILED_CAST_COLOR[4]);
+    StripesCastingBar_SetInterruptReadyCastColor(unitframe.castingBar, INTERRUPT_READY_COLOR[1], INTERRUPT_READY_COLOR[2], INTERRUPT_READY_COLOR[3], INTERRUPT_READY_COLOR[4]);
 
     if unitframe.castingBar.InterruptReadyTick then
         unitframe.castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
@@ -174,11 +174,11 @@ local function UpdateColors(unitframe)
         return;
     end
 
-    StripesCastingBar_SetStartCastColor(unitframe.castingBar, unpack(START_CAST_COLOR));
-    StripesCastingBar_SetStartChannelColor(unitframe.castingBar, unpack(START_CHANNEL_COLOR));
-    StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, unpack(NONINTERRUPTIBLE_COLOR));
-    StripesCastingBar_SetFailedCastColor(unitframe.castingBar, unpack(FAILED_CAST_COLOR));
-    StripesCastingBar_SetInterruptReadyCastColor(unitframe.castingBar, unpack(INTERRUPT_READY_COLOR));
+    StripesCastingBar_SetStartCastColor(unitframe.castingBar, START_CAST_COLOR[1], START_CAST_COLOR[2], START_CAST_COLOR[3], START_CAST_COLOR[4]);
+    StripesCastingBar_SetStartChannelColor(unitframe.castingBar, START_CHANNEL_COLOR[1], START_CHANNEL_COLOR[2], START_CHANNEL_COLOR[3], START_CHANNEL_COLOR[4]);
+    StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, NONINTERRUPTIBLE_COLOR[1], NONINTERRUPTIBLE_COLOR[2], NONINTERRUPTIBLE_COLOR[3], NONINTERRUPTIBLE_COLOR[4]);
+    StripesCastingBar_SetFailedCastColor(unitframe.castingBar, FAILED_CAST_COLOR[1], FAILED_CAST_COLOR[2], FAILED_CAST_COLOR[3], FAILED_CAST_COLOR[4]);
+    StripesCastingBar_SetInterruptReadyCastColor(unitframe.castingBar, INTERRUPT_READY_COLOR[1], INTERRUPT_READY_COLOR[2], INTERRUPT_READY_COLOR[3], INTERRUPT_READY_COLOR[4]);
 
     if unitframe.castingBar.InterruptReadyTick then
         unitframe.castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
@@ -238,19 +238,38 @@ function Module:UpdateLocalConfig()
     ICON_LARGE      = O.db.castbar_icon_large;
     ICON_RIGHT_SIDE = O.db.castbar_icon_right_side;
 
-    START_CAST_COLOR       = O.db.castbar_start_cast_color;
-    START_CHANNEL_COLOR    = O.db.castbar_start_channel_color;
-    NONINTERRUPTIBLE_COLOR = O.db.castbar_noninterruptible_color;
-    FAILED_CAST_COLOR      = O.db.castbar_failed_cast_color;
+    START_CAST_COLOR    = START_CAST_COLOR or {};
+    START_CAST_COLOR[1] = O.db.castbar_start_cast_color[1];
+    START_CAST_COLOR[2] = O.db.castbar_start_cast_color[2];
+    START_CAST_COLOR[3] = O.db.castbar_start_cast_color[3];
+    START_CAST_COLOR[4] = O.db.castbar_start_cast_color[4] or 1;
+
+    START_CHANNEL_COLOR    = START_CHANNEL_COLOR or {};
+    START_CHANNEL_COLOR[1] = O.db.castbar_start_channel_color[1];
+    START_CHANNEL_COLOR[2] = O.db.castbar_start_channel_color[2];
+    START_CHANNEL_COLOR[3] = O.db.castbar_start_channel_color[3];
+    START_CHANNEL_COLOR[4] = O.db.castbar_start_channel_color[4] or 1;
+
+    NONINTERRUPTIBLE_COLOR    = NONINTERRUPTIBLE_COLOR or {};
+    NONINTERRUPTIBLE_COLOR[1] = O.db.castbar_noninterruptible_color[1];
+    NONINTERRUPTIBLE_COLOR[2] = O.db.castbar_noninterruptible_color[2];
+    NONINTERRUPTIBLE_COLOR[3] = O.db.castbar_noninterruptible_color[3];
+    NONINTERRUPTIBLE_COLOR[4] = O.db.castbar_noninterruptible_color[4] or 1;
+
+    FAILED_CAST_COLOR    = FAILED_CAST_COLOR or {};
+    FAILED_CAST_COLOR[1] = O.db.castbar_failed_cast_color[1];
+    FAILED_CAST_COLOR[2] = O.db.castbar_failed_cast_color[2];
+    FAILED_CAST_COLOR[3] = O.db.castbar_failed_cast_color[3];
+    FAILED_CAST_COLOR[4] = O.db.castbar_failed_cast_color[4] or 1;
 
     USE_INTERRUPT_READY_COLOR = O.db.castbar_use_interrupt_ready_color;
-    INTERRUPT_READY_COLOR = INTERRUPT_READY_COLOR or {};
+    INTERRUPT_READY_COLOR    = INTERRUPT_READY_COLOR or {};
     INTERRUPT_READY_COLOR[1] = O.db.castbar_interrupt_ready_color[1];
     INTERRUPT_READY_COLOR[2] = O.db.castbar_interrupt_ready_color[2];
     INTERRUPT_READY_COLOR[3] = O.db.castbar_interrupt_ready_color[3];
     INTERRUPT_READY_COLOR[4] = O.db.castbar_interrupt_ready_color[4] or 1;
 
-    INTERRUPT_READY_TICK_COLOR = INTERRUPT_READY_TICK_COLOR or {};
+    INTERRUPT_READY_TICK_COLOR    = INTERRUPT_READY_TICK_COLOR or {};
     INTERRUPT_READY_TICK_COLOR[1] = O.db.castbar_interrupt_ready_tick_color[1];
     INTERRUPT_READY_TICK_COLOR[2] = O.db.castbar_interrupt_ready_tick_color[2];
     INTERRUPT_READY_TICK_COLOR[3] = O.db.castbar_interrupt_ready_tick_color[3];
