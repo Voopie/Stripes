@@ -59,16 +59,16 @@ local function UpdateInterruptReadyColorAndTick(self)
         if self.notInterruptible or not UnitCanAttack('player', self.unit) then
             self.InterruptReadyTick:Hide();
         else
-            local InterruptReadyTickPosition, intReady = GetInterruptReadyTickPosition(self);
+            local tickPosition, interruptReady = GetInterruptReadyTickPosition(self);
 
-            if intReady and self.useInterruptReadyColor then
+            if interruptReady and self.useInterruptReadyColor then
                 self:SetStatusBarColor(self.interruptReadyColor:GetRGBA());
             end
 
-            if InterruptReadyTickPosition == 0 or not self.showInterruptReadyTick then
+            if tickPosition == 0 or not self.showInterruptReadyTick then
                 self.InterruptReadyTick:Hide();
             else
-                self.InterruptReadyTick:SetPoint('CENTER', self, InterruptReadyTickPosition < 0 and 'RIGHT' or 'LEFT', self:GetWidth() * InterruptReadyTickPosition, 0);
+                self.InterruptReadyTick:SetPoint('CENTER', self, tickPosition < 0 and 'RIGHT' or 'LEFT', self:GetWidth() * tickPosition, 0);
                 self.InterruptReadyTick:Show();
             end
         end
