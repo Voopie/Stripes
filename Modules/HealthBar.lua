@@ -321,10 +321,6 @@ local function UpdateRaidTargetColor(unitframe)
         return false;
     end
 
-    if unitframe.data.raidIndex ~= nil and unitframe.data.raidIndex == raidIndex then
-        return true;
-    end
-
     if RAID_TARGET_COLORS[raidIndex] then
         unitframe.healthBar:SetStatusBarColor(unpack(RAID_TARGET_COLORS[raidIndex]));
         unitframe.data.raidIndex = raidIndex;
