@@ -39,7 +39,6 @@ Module.UpdateAll = function()
 
     for _, unitframe in pairs(NP) do
         if unitframe.unit and UnitExists(unitframe.unit) then
-            CompactUnitFrame_UpdateMaxHealth(unitframe);
             CompactUnitFrame_UpdateHealth(unitframe);
             CompactUnitFrame_UpdateName(unitframe);
             CompactUnitFrame_UpdateSelectionHighlight(unitframe);
@@ -599,6 +598,26 @@ function Module:UNIT_AURA(unit)
     S:ForAllNameplateModules('UnitAura', NP[nameplate]);
 end
 
+function Module:UNIT_LEVEL(unit)
+    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
+
+    if not nameplate or not NP[nameplate] then
+        return;
+    end
+
+    UpdateLevel(NP[nameplate]);
+end
+
+function Module:UNIT_FACTION(unit)
+    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
+
+    if not nameplate or not NP[nameplate] then
+        return;
+    end
+
+    UpdateLevel(NP[nameplate]);
+end
+
 function Module:PLAYER_LOGIN()
     CVarsUpdate();
 
@@ -628,7 +647,6 @@ function Module:StartUp()
     self:UpdateLocalConfig();
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', UpdateHealth);
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateMaxHealth', UpdateLevel);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealPrediction', UpdateAbsorbs);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', UpdateStatus);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateWidgetsOnlyMode', UpdateWidgetStatus);
@@ -640,6 +658,8 @@ function Module:StartUp()
     self:RegisterEvent('NAME_PLATE_UNIT_ADDED');
     self:RegisterEvent('NAME_PLATE_UNIT_REMOVED');
     self:RegisterEvent('UNIT_AURA');
+    self:RegisterEvent('UNIT_LEVEL');
+    self:RegisterEvent('UNIT_FACTION');
 
     hooksecurefunc(C_CVar, 'SetCVar', HookSetCVar);
 
