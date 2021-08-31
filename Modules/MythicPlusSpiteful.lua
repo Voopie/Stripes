@@ -9,7 +9,7 @@ local ENABLED, ONLY_ON_ME, GLOW, GLOW_COLOR;
 
 local PlayerName = D.Player.Name;
 
-local SPITEFUL_NPC_ID  = 154586; -- 174773;
+local SPITEFUL_NPC_ID  = 174773;
 local SPITEFUL_TEXTURE = 135945;
 
 local function Create(unitframe)
