@@ -41,7 +41,6 @@ Module.UpdateAll = function()
         if unitframe.unit and UnitExists(unitframe.unit) then
             CompactUnitFrame_UpdateMaxHealth(unitframe);
             CompactUnitFrame_UpdateHealth(unitframe);
-            CompactUnitFrame_UpdateHealthColor(unitframe);
             CompactUnitFrame_UpdateName(unitframe);
             CompactUnitFrame_UpdateSelectionHighlight(unitframe);
             CompactUnitFrame_UpdateHealthBorder(unitframe);

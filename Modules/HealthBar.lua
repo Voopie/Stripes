@@ -9,6 +9,7 @@ local UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionType, UnitSelection
       UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer;
 local GetRaidTargetIndex = GetRaidTargetIndex;
+local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
 
 -- Stripes API
 local UnitIsTapped, IsPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.IsPlayer, U.IsPlayerEffectivelyTank;
@@ -679,6 +680,37 @@ function Module:RAID_TARGET_UPDATE()
     end
 end
 
+function Module:UNIT_NAME_UPDATE(unit)
+    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
+
+    if not nameplate or not NP[nameplate] then
+        return;
+    end
+
+    Update(NP[nameplate]);
+end
+
+
+function Module:UNIT_THREAT_LIST_UPDATE(unit)
+    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
+
+    if not nameplate or not NP[nameplate] then
+        return;
+    end
+
+    Update(NP[nameplate]);
+end
+
+function Module:UNIT_CONNECTION(unit)
+    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
+
+    if not nameplate or not NP[nameplate] then
+        return;
+    end
+
+    Update(NP[nameplate]);
+end
+
 function Module:StartUp()
     self:UpdateLocalConfig();
 
@@ -689,7 +721,10 @@ function Module:StartUp()
 
     self:RegisterEvent('RAID_TARGET_UPDATE');
 
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', Update);
+    self:RegisterEvent('UNIT_NAME_UPDATE');
+    self:RegisterEvent('UNIT_THREAT_LIST_UPDATE');
+    self:RegisterEvent('UNIT_CONNECTION');
+
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
