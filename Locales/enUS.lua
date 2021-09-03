@@ -13,7 +13,7 @@ local L = NAMESPACE[2]['enUS'];
 
 L['RENAME'] = 'Rename';
 L['SAVE'] = 'Save';
-L['USE'] = 'Использовать';
+L['USE'] = 'Use';
 
 L['FONT_VALUE'] = 'Font';
 L['FONT_SIZE'] = 'Font size';
