@@ -273,7 +273,6 @@ L['OPTIONS_HEALTH_BAR_COLOR_TAPPED_TOOLTIP'] = 'Цвет для юнитов, с
 L['OPTIONS_HEALTH_BAR_COLOR_DC'] = 'Отключенные';
 L['OPTIONS_HEALTH_BAR_COLOR_DC_TOOLTIP'] = 'Цвет для отключенных игроков';
 L['OPTIONS_HEALTH_BAR_COLORS_RESET_TOOLTIP'] = 'Сбросить цвета полосы здоровья на значения по умолчанию';
-
 L['OPTIONS_THREAT_COLOR_ENABLED'] = 'Цветовая угроза';
 L['OPTIONS_THREAT_COLOR_ENABLED_TOOLTIP'] = 'Менять цвет полосы здоровья в зависимости от количества угрозы';
 L['OPTIONS_THREAT_COLOR_REVERSED'] = 'Реверс';

@@ -3,7 +3,7 @@ local Module = S:NewModule('Options_Categories_CastBar');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.CastBar, O.frame.Right.CastBar = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_CASTBAR']), 'castbar', 5);
+O.frame.Left.CastBar, O.frame.Right.CastBar = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_CASTBAR']), 'castbar', 5);
 local button = O.frame.Left.CastBar;
 local panel = O.frame.Right.CastBar;
 
@@ -163,7 +163,6 @@ panel.Load = function(self)
 
     self.castbar_use_interrupt_ready_color = E.CreateCheckButton(self);
     self.castbar_use_interrupt_ready_color:SetPosition('RIGHT', self.castbar_interrupt_ready_color, 'LEFT', -14, 0);
-    self.castbar_use_interrupt_ready_color:SetLabel(S.Media.INLINE_NEW_ICON);
     self.castbar_use_interrupt_ready_color:SetTooltip(L['OPTIONS_CAST_BAR_USE_INTERRUPT_READY_COLOR_TOOLTIP']);
     self.castbar_use_interrupt_ready_color:AddToSearch(button, L['OPTIONS_CAST_BAR_USE_INTERRUPT_READY_COLOR_TOOLTIP']);
     self.castbar_use_interrupt_ready_color:SetChecked(O.db.castbar_use_interrupt_ready_color);

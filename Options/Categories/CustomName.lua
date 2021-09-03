@@ -1,7 +1,7 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_CustomName');
 
-O.frame.Left.CustomName, O.frame.Right.CustomName = O.CreateCategory(S.Media.INLINE_NEW_ICON .. string.upper(L['OPTIONS_CATEGORY_CUSTOMNAME']), 'customname', 8);
+O.frame.Left.CustomName, O.frame.Right.CustomName = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_CUSTOMNAME']), 'customname', 8);
 local button = O.frame.Left.CustomName;
 local panel = O.frame.Right.CustomName;
 
