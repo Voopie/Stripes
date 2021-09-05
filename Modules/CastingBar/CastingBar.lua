@@ -18,7 +18,7 @@ local GetInterruptSpellId = U.GetInterruptSpellId;
 -- Based on Plater mod (Interrupt not ready Cast Color + Custom Cast Color) by Continuity
 local function GetInterruptReadyTickPosition(self)
     if not self.interruptSpellId then
-        return 0, false;
+        return 0, false, false;
     end
 
     local interruptCD, interruptStart, interruptDuration = 0, 0, 0;
@@ -51,7 +51,7 @@ local function GetInterruptReadyTickPosition(self)
         end
     end
 
-    return tickPosition, interruptReady;
+    return tickPosition, interruptReady, interruptReadyInTime;
 end
 
 local function UpdateInterruptReadyColorAndTick(self)
@@ -59,10 +59,14 @@ local function UpdateInterruptReadyColorAndTick(self)
         if self.notInterruptible or not UnitCanAttack('player', self.unit) then
             self.InterruptReadyTick:Hide();
         else
-            local tickPosition, interruptReady = GetInterruptReadyTickPosition(self);
+            local tickPosition, interruptReady, interruptReadyInTime = GetInterruptReadyTickPosition(self);
 
-            if interruptReady and self.useInterruptReadyColor then
+            if self.useInterruptReadyColor and interruptReady then
                 self:SetStatusBarColor(self.interruptReadyColor:GetRGBA());
+            elseif self.useInterruptReadyInTimeColor and interruptReadyInTime then
+                self:SetStatusBarColor(self.interruptReadyInTimeColor:GetRGBA());
+            elseif self.useInterruptNotReadyColor and not interruptReady then
+                self:SetStatusBarColor(self.interruptNotReadyColor:GetRGBA());
             end
 
             if tickPosition == 0 or not self.showInterruptReadyTick then
@@ -118,6 +122,14 @@ end
 
 function StripesCastingBar_SetInterruptReadyCastColor(self, r, g, b, a)
     self.interruptReadyColor = CreateColor(r, g, b, a or 1);
+end
+
+function StripesCastingBar_SetInterruptReadyInTimeCastColor(self, r, g, b, a)
+    self.interruptReadyInTimeColor = CreateColor(r, g, b, a or 1);
+end
+
+function StripesCastingBar_SetInterruptNotReadyCastColor(self, r, g, b, a)
+    self.interruptNotReadyColor = CreateColor(r, g, b, a or 1);
 end
 
 function StripesCastingBar_SetUseStartColorForFinished(self, finishedColorSameAsStart)

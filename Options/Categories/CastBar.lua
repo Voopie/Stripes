@@ -174,6 +174,64 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.castbar_interrupt_ready_in_time_color = E.CreateColorPicker(self);
+    self.castbar_interrupt_ready_in_time_color:SetPosition('TOPLEFT', self.castbar_interrupt_ready_color, 'BOTTOMLEFT', 0, -8);
+    self.castbar_interrupt_ready_in_time_color:SetLabel(L['OPTIONS_CAST_BAR_INTERRUPT_READY_IN_TIME_COLOR']);
+    self.castbar_interrupt_ready_in_time_color:SetTooltip(L['OPTIONS_CAST_BAR_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP']);
+    self.castbar_interrupt_ready_in_time_color:AddToSearch(button, L['OPTIONS_CAST_BAR_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP']);
+    self.castbar_interrupt_ready_in_time_color:SetValue(unpack(O.db.castbar_interrupt_ready_in_time_color));
+    self.castbar_interrupt_ready_in_time_color:SetEnabled(O.db.castbar_use_interrupt_ready_in_time_color);
+    self.castbar_interrupt_ready_in_time_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_interrupt_ready_in_time_color[1] = r;
+        O.db.castbar_interrupt_ready_in_time_color[2] = g;
+        O.db.castbar_interrupt_ready_in_time_color[3] = b;
+        O.db.castbar_interrupt_ready_in_time_color[4] = a or 1;
+
+        Handler:UpdateAll();
+    end
+
+    self.castbar_use_interrupt_ready_in_time_color = E.CreateCheckButton(self);
+    self.castbar_use_interrupt_ready_in_time_color:SetPosition('RIGHT', self.castbar_interrupt_ready_in_time_color, 'LEFT', -14, 0);
+    self.castbar_use_interrupt_ready_in_time_color:SetTooltip(L['OPTIONS_CAST_BAR_USE_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP']);
+    self.castbar_use_interrupt_ready_in_time_color:AddToSearch(button, L['OPTIONS_CAST_BAR_USE_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP']);
+    self.castbar_use_interrupt_ready_in_time_color:SetChecked(O.db.castbar_use_interrupt_ready_in_time_color);
+    self.castbar_use_interrupt_ready_in_time_color.Callback = function(self)
+        O.db.castbar_use_interrupt_ready_in_time_color = self:GetChecked();
+
+        panel.castbar_interrupt_ready_in_time_color:SetEnabled(O.db.castbar_use_interrupt_ready_in_time_color);
+
+        Handler:UpdateAll();
+    end
+
+    self.castbar_interrupt_not_ready_color = E.CreateColorPicker(self);
+    self.castbar_interrupt_not_ready_color:SetPosition('TOPLEFT', self.castbar_interrupt_ready_in_time_color, 'BOTTOMLEFT', 0, -8);
+    self.castbar_interrupt_not_ready_color:SetLabel(L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR']);
+    self.castbar_interrupt_not_ready_color:SetTooltip(L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR_TOOLTIP']);
+    self.castbar_interrupt_not_ready_color:AddToSearch(button, L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR_TOOLTIP']);
+    self.castbar_interrupt_not_ready_color:SetValue(unpack(O.db.castbar_interrupt_not_ready_color));
+    self.castbar_interrupt_not_ready_color:SetEnabled(O.db.castbar_use_interrupt_not_ready_color);
+    self.castbar_interrupt_not_ready_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_interrupt_not_ready_color[1] = r;
+        O.db.castbar_interrupt_not_ready_color[2] = g;
+        O.db.castbar_interrupt_not_ready_color[3] = b;
+        O.db.castbar_interrupt_not_ready_color[4] = a or 1;
+
+        Handler:UpdateAll();
+    end
+
+    self.castbar_use_interrupt_not_ready_color = E.CreateCheckButton(self);
+    self.castbar_use_interrupt_not_ready_color:SetPosition('RIGHT', self.castbar_interrupt_not_ready_color, 'LEFT', -14, 0);
+    self.castbar_use_interrupt_not_ready_color:SetTooltip(L['OPTIONS_CAST_BAR_USE_INTERRUPT_NOT_READY_COLOR_TOOLTIP']);
+    self.castbar_use_interrupt_not_ready_color:AddToSearch(button, L['OPTIONS_CAST_BAR_USE_INTERRUPT_NOT_READY_COLOR_TOOLTIP']);
+    self.castbar_use_interrupt_not_ready_color:SetChecked(O.db.castbar_use_interrupt_not_ready_color);
+    self.castbar_use_interrupt_not_ready_color.Callback = function(self)
+        O.db.castbar_use_interrupt_not_ready_color = self:GetChecked();
+
+        panel.castbar_interrupt_not_ready_color:SetEnabled(O.db.castbar_use_interrupt_not_ready_color);
+
+        Handler:UpdateAll();
+    end
+
     self.castbar_show_interrupt_ready_tick = E.CreateCheckButton(self);
     self.castbar_show_interrupt_ready_tick:SetPosition('LEFT', self.castbar_interrupt_ready_color.Label, 'RIGHT', 12, 0);
     self.castbar_show_interrupt_ready_tick:SetLabel(L['OPTIONS_CAST_BAR_SHOW_INTERRUPT_READY_TICK']);
@@ -204,7 +262,7 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self);
-    Delimiter:SetPosition('TOPLEFT', ResetCastBarColorsButton, 'BOTTOMLEFT', -4, -40);
+    Delimiter:SetPosition('TOPLEFT', ResetCastBarColorsButton, 'BOTTOMLEFT', -4, -110);
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_on_hp_bar = E.CreateCheckButton(self);

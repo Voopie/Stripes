@@ -40,7 +40,7 @@ panel.Load = function(self)
     ------------------------------------------------------------------------------------------------------------------------------------
 
     self.health_bar_texture_value = E.CreateDropdown('statusbar', self.TabsFrames['CommonTab'].Content);
-    self.health_bar_texture_value:SetPosition('TOPLEFT', self.TabsFrames['CommonTab'].Content, 'TOPLEFT', 0, -4);
+    self.health_bar_texture_value:SetPosition('TOPLEFT', self.TabsFrames['CommonTab'].Content, 'TOPLEFT', 0, -8);
     self.health_bar_texture_value:SetSize(200, 20);
     self.health_bar_texture_value:SetList(LSM:HashTable('statusbar'));
     self.health_bar_texture_value:SetValue(O.db.health_bar_texture_value);
@@ -52,32 +52,42 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.health_bar_class_color_friendly = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.health_bar_class_color_friendly:SetPosition('TOPLEFT', self.health_bar_texture_value, 'BOTTOMLEFT', 0, -8);
-    self.health_bar_class_color_friendly:SetLabel(L['OPTIONS_HEALTH_BAR_CLASS_COLOR_FRIENDLY']);
-    self.health_bar_class_color_friendly:SetTooltip(L['OPTIONS_HEALTH_BAR_CLASS_COLOR_FRIENDLY_TOOLTIP']);
-    self.health_bar_class_color_friendly:SetChecked(O.db.health_bar_class_color_friendly);
-    self.health_bar_class_color_friendly:AddToSearch(button, nil, self.Tabs[1]);
-    self.health_bar_class_color_friendly.Callback = function(self)
-        O.db.health_bar_class_color_friendly = self:GetChecked();
-        C_CVar.SetCVar('ShowClassColorInFriendlyNameplate', O.db.health_bar_class_color_friendly and 1 or 0);
+    local BorderHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_BORDER']);
+    BorderHeader:SetPosition('TOPLEFT', self.health_bar_texture_value, 'BOTTOMLEFT', 0, -8);
+    BorderHeader:SetW(self:GetWidth());
+
+    self.health_bar_border_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_border_color:SetPosition('TOPLEFT', BorderHeader, 'BOTTOMLEFT', -5, -4);
+    self.health_bar_border_color:SetLabel(L['OPTIONS_HEALTH_BAR_BORDER_COLOR']);
+    self.health_bar_border_color:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_COLOR_TOOLTIP']);
+    self.health_bar_border_color:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BORDER_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_border_color:SetValue(unpack(O.db.health_bar_border_color));
+    self.health_bar_border_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_border_color[1] = r;
+        O.db.health_bar_border_color[2] = g;
+        O.db.health_bar_border_color[3] = b;
+        O.db.health_bar_border_color[4] = a or 1;
+
         Handler:UpdateAll();
     end
 
-    self.health_bar_class_color_enemy = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.health_bar_class_color_enemy:SetPosition('LEFT', self.health_bar_class_color_friendly.Label, 'RIGHT', 12, 0);
-    self.health_bar_class_color_enemy:SetLabel(L['OPTIONS_HEALTH_BAR_CLASS_COLOR_ENEMY']);
-    self.health_bar_class_color_enemy:SetTooltip(L['OPTIONS_HEALTH_BAR_CLASS_COLOR_ENEMY_TOOLTIP']);
-    self.health_bar_class_color_enemy:SetChecked(O.db.health_bar_class_color_enemy);
-    self.health_bar_class_color_enemy:AddToSearch(button, nil, self.Tabs[1]);
-    self.health_bar_class_color_enemy.Callback = function(self)
-        O.db.health_bar_class_color_enemy = self:GetChecked();
-        C_CVar.SetCVar('ShowClassColorInNameplate', O.db.health_bar_class_color_enemy and 1 or 0);
+    self.health_bar_border_selected_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_border_selected_color:SetPosition('LEFT', self.health_bar_border_color.Label, 'RIGHT', 12, 0);
+    self.health_bar_border_selected_color:SetLabel(L['OPTIONS_HEALTH_BAR_BORDER_SELECTED_COLOR']);
+    self.health_bar_border_selected_color:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_SELECTED_COLOR_TOOLTIP']);
+    self.health_bar_border_selected_color:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BORDER_SELECTED_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_border_selected_color:SetValue(unpack(O.db.health_bar_border_selected_color));
+    self.health_bar_border_selected_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_border_selected_color[1] = r;
+        O.db.health_bar_border_selected_color[2] = g;
+        O.db.health_bar_border_selected_color[3] = b;
+        O.db.health_bar_border_selected_color[4] = a or 1;
+
         Handler:UpdateAll();
     end
 
     self.health_bar_border_thin = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.health_bar_border_thin:SetPosition('TOPLEFT', self.health_bar_class_color_friendly, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_border_thin:SetPosition('TOPLEFT', self.health_bar_border_color, 'BOTTOMLEFT', 5, -8);
     self.health_bar_border_thin:SetLabel(L['OPTIONS_HEALTH_BAR_BORDER_THIN']);
     self.health_bar_border_thin:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_THIN_TOOLTIP']);
     self.health_bar_border_thin:SetChecked(O.db.health_bar_border_thin);
@@ -92,9 +102,20 @@ panel.Load = function(self)
     self.health_bar_border_hide:SetLabel(L['OPTIONS_HEALTH_BAR_BORDER_HIDE']);
     self.health_bar_border_hide:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_HIDE_TOOLTIP']);
     self.health_bar_border_hide:SetChecked(O.db.health_bar_border_hide);
-    self.health_bar_border_hide:AddToSearch(button, nil, self.Tabs[1]);
+    self.health_bar_border_hide:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BORDER_HIDE_TOOLTIP'], self.Tabs[1]);
     self.health_bar_border_hide.Callback = function(self)
         O.db.health_bar_border_hide = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.health_bar_border_same_color = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_border_same_color:SetPosition('LEFT', self.health_bar_border_hide.Label, 'RIGHT', 12, 0);
+    self.health_bar_border_same_color:SetLabel(L['OPTIONS_HEALTH_BAR_BORDER_SAME_COLOR']);
+    self.health_bar_border_same_color:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_SAME_COLOR_TOOLTIP']);
+    self.health_bar_border_same_color:SetChecked(O.db.health_bar_border_hide);
+    self.health_bar_border_same_color:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BORDER_SAME_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_border_same_color.Callback = function(self)
+        O.db.health_bar_border_same_color = self:GetChecked();
         Handler:UpdateAll();
     end
 
@@ -130,8 +151,32 @@ panel.Load = function(self)
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
 
+    self.health_bar_class_color_enemy = E.CreateCheckButton(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_class_color_enemy:SetPosition('TOPLEFT', self.TabsFrames['ColorsTab'].Content, 'TOPLEFT', 5, -4);
+    self.health_bar_class_color_enemy:SetLabel(L['OPTIONS_HEALTH_BAR_CLASS_COLOR_ENEMY']);
+    self.health_bar_class_color_enemy:SetTooltip(L['OPTIONS_HEALTH_BAR_CLASS_COLOR_ENEMY_TOOLTIP']);
+    self.health_bar_class_color_enemy:SetChecked(O.db.health_bar_class_color_enemy);
+    self.health_bar_class_color_enemy:AddToSearch(button, nil, self.Tabs[2]);
+    self.health_bar_class_color_enemy.Callback = function(self)
+        O.db.health_bar_class_color_enemy = self:GetChecked();
+        C_CVar.SetCVar('ShowClassColorInNameplate', O.db.health_bar_class_color_enemy and 1 or 0);
+        Handler:UpdateAll();
+    end
+
+    self.health_bar_class_color_friendly = E.CreateCheckButton(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_class_color_friendly:SetPosition('LEFT', self.health_bar_class_color_enemy.Label, 'RIGHT', 12, 0);
+    self.health_bar_class_color_friendly:SetLabel(L['OPTIONS_HEALTH_BAR_CLASS_COLOR_FRIENDLY']);
+    self.health_bar_class_color_friendly:SetTooltip(L['OPTIONS_HEALTH_BAR_CLASS_COLOR_FRIENDLY_TOOLTIP']);
+    self.health_bar_class_color_friendly:SetChecked(O.db.health_bar_class_color_friendly);
+    self.health_bar_class_color_friendly:AddToSearch(button, nil, self.Tabs[2]);
+    self.health_bar_class_color_friendly.Callback = function(self)
+        O.db.health_bar_class_color_friendly = self:GetChecked();
+        C_CVar.SetCVar('ShowClassColorInFriendlyNameplate', O.db.health_bar_class_color_friendly and 1 or 0);
+        Handler:UpdateAll();
+    end
+
     self.health_bar_color_enemy_npc = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
-    self.health_bar_color_enemy_npc:SetPosition('TOPLEFT', self.TabsFrames['TargetIndicatorTab'].Content, 'TOPLEFT', 0, -4);
+    self.health_bar_color_enemy_npc:SetPosition('TOPLEFT', self.health_bar_class_color_enemy, 'BOTTOMLEFT', -5, -8);
     self.health_bar_color_enemy_npc:SetLabel(L['OPTIONS_HEALTH_BAR_COLOR_ENEMY_NPC']);
     self.health_bar_color_enemy_npc:SetTooltip(L['OPTIONS_HEALTH_BAR_COLOR_ENEMY_NPC_TOOLTIP']);
     self.health_bar_color_enemy_npc:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLOR_ENEMY_NPC_TOOLTIP'], self.Tabs[2]);
@@ -395,6 +440,17 @@ panel.Load = function(self)
     self.threat_color_reversed:AddToSearch(button, L['OPTIONS_THREAT_COLOR_REVERSED_TOOLTIP'], self.Tabs[4]);
     self.threat_color_reversed.Callback = function(self)
         O.db.threat_color_reversed = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.threat_color_istapped_border = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
+    self.threat_color_istapped_border:SetPosition('LEFT', self.threat_color_reversed.Label, 'RIGHT', 12, 0);
+    self.threat_color_istapped_border:SetLabel(L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER']);
+    self.threat_color_istapped_border:SetTooltip(L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER_TOOLTIP']);
+    self.threat_color_istapped_border:SetChecked(O.db.threat_color_istapped_border);
+    self.threat_color_istapped_border:AddToSearch(button, L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER_TOOLTIP'], self.Tabs[4]);
+    self.threat_color_istapped_border.Callback = function(self)
+        O.db.threat_color_istapped_border = self:GetChecked();
         Handler:UpdateAll();
     end
 

@@ -27,10 +27,10 @@ local NP = S.NamePlates;
 
 -- Local Config
 local RAID_TARGET_HPBAR_COLORING, AURAS_HPBAR_COLORING;
-local THREAT_ENABLED, CUSTOM_HP_ENABLED, CUSTOM_HP_DATA;
+local THREAT_ENABLED, THREAT_COLOR_ISTAPPED_BORDER, CUSTOM_HP_ENABLED, CUSTOM_HP_DATA;
 local EXECUTION_ENABLED, EXECUTION_COLOR, EXECUTION_GLOW, EXECUTION_LOW_PERCENT, EXECUTION_HIGH_ENABLED, EXECUTION_HIGH_PERCENT;
 local HEALTH_BAR_CLASS_COLOR_ENEMY, HEALTH_BAR_CLASS_COLOR_FRIENDLY;
-local HEALTH_BAR_TEXTURE, BORDER_HIDE, BORDER_THIN;
+local HEALTH_BAR_TEXTURE, BORDER_HIDE, BORDER_THIN, BORDER_COLOR, BORDER_SELECTED_COLOR, SAME_BORDER_COLOR;
 local SHOW_CLICKABLE_AREA, ENEMY_MINUS_HEIGHT, ENEMY_HEIGHT, FRIENDLY_HEIGHT, PLAYER_HEIGHT;
 local TP_ENABLED, TP_COLORING, TP_POINT, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y;
 local HPBAR_COLOR_DC, HPBAR_COLOR_TAPPED, HPBAR_COLOR_ENEMY_NPC, HPBAR_COLOR_ENEMY_PLAYER, HPBAR_COLOR_FRIENDLY_NPC, HPBAR_COLOR_FRIENDLY_PLAYER, HPBAR_COLOR_NEUTRAL;
@@ -260,7 +260,9 @@ local function Threat_UpdateColor(unitframe)
         end
 
         if UnitIsTapped(unitframe.data.unit) then
-            unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+            if THREAT_COLOR_ISTAPPED_BORDER then
+                unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+            end
         else
             unitframe.healthBar:SetStatusBarColor(r, g, b, a);
         end
@@ -366,10 +368,27 @@ local function UpdateBorder(unitframe)
     if BORDER_HIDE then
         if unitframe.data.unitType == 'SELF' then
             unitframe.healthBar.border:SetVertexColor(0, 0, 0);
+            unitframe.healthBar.border:Show();
         else
-            unitframe.healthBar.border:SetVertexColor(unitframe.healthBar:GetStatusBarTexture():GetVertexColor());
+            unitframe.healthBar.border:Hide();
         end
+
+        return;
     end
+
+    unitframe.healthBar.border:Show();
+
+    if SAME_BORDER_COLOR then
+        unitframe.healthBar.border:SetVertexColor(unitframe.healthBar:GetStatusBarTexture():GetVertexColor());
+        return;
+    end
+
+    if UnitIsUnit(unitframe.data.unit, 'target') then
+        unitframe.healthBar.border:SetVertexColor(BORDER_SELECTED_COLOR[1], BORDER_SELECTED_COLOR[2], BORDER_SELECTED_COLOR[3], BORDER_SELECTED_COLOR[4]);
+        return
+    end
+
+    unitframe.healthBar.border:SetVertexColor(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
 end
 
 local function UpdateBorderSizes(unitframe)
@@ -540,6 +559,8 @@ function Module:UpdateLocalConfig()
 
     THREAT_ENABLED = O.db.threat_color_enabled;
 
+    THREAT_COLOR_ISTAPPED_BORDER = O.db.threat_color_istapped_border;
+
     if not O.db.threat_color_reversed then
         statusColors[0] = O.db.threat_color_status_0;
         statusColors[1] = O.db.threat_color_status_1;
@@ -591,6 +612,20 @@ function Module:UpdateLocalConfig()
 
     BORDER_HIDE = O.db.health_bar_border_hide;
     BORDER_THIN = O.db.health_bar_border_thin;
+
+    SAME_BORDER_COLOR = O.db.health_bar_border_same_color;
+
+    BORDER_COLOR    = BORDER_COLOR or {};
+    BORDER_COLOR[1] = O.db.health_bar_border_color[1];
+    BORDER_COLOR[2] = O.db.health_bar_border_color[2];
+    BORDER_COLOR[3] = O.db.health_bar_border_color[3];
+    BORDER_COLOR[4] = O.db.health_bar_border_color[4] or 1;
+
+    BORDER_SELECTED_COLOR    = BORDER_SELECTED_COLOR or {};
+    BORDER_SELECTED_COLOR[1] = O.db.health_bar_border_selected_color[1];
+    BORDER_SELECTED_COLOR[2] = O.db.health_bar_border_selected_color[2];
+    BORDER_SELECTED_COLOR[3] = O.db.health_bar_border_selected_color[3];
+    BORDER_SELECTED_COLOR[4] = O.db.health_bar_border_selected_color[4] or 1;
 
     SHOW_CLICKABLE_AREA = O.db.size_clickable_area_show;
 
