@@ -83,6 +83,8 @@ panel.Load = function(self)
         panel.castbar_failed_cast_color:SetValue(unpack(O.DefaultValues.castbar_failed_cast_color));
         panel.castbar_interrupt_ready_color:SetValue(unpack(O.DefaultValues.castbar_interrupt_ready_color));
         panel.castbar_interrupt_ready_tick_color:SetValue(unpack(O.DefaultValues.castbar_interrupt_ready_tick_color));
+        panel.castbar_interrupt_ready_in_time_color:SetValue(unpack(O.DefaultValues.castbar_interrupt_ready_in_time_color));
+        panel.castbar_interrupt_not_ready_color:SetValue(unpack(O.DefaultValues.castbar_interrupt_not_ready_color));
     end
 
     self.castbar_start_cast_color = E.CreateColorPicker(self);
