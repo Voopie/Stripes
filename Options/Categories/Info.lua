@@ -61,8 +61,8 @@ panel.Load = function(self)
     animation:Play();
 
     self.TranslationCreditText = Mixin(self:CreateFontString(nil, 'ARTWORK', 'StripesCategoryButtonNormalFont'), E.PixelPerfectMixin);
-    self.TranslationCreditText:SetPosition('TOP', self.heart, 'BOTTOM', 0, -100);
+    self.TranslationCreditText:SetPosition('BOTTOM', self, 'BOTTOM', 0, 16);
     self.TranslationCreditText:SetFont(self.TranslationCreditText:GetFont(), 16);
     self.TranslationCreditText:SetText(L['OPTIONS_INFO_TRANSLATED_BY']);
-    self.TranslationCreditText:SetShown(S.ClientLocale ~= 'ruRU');
+    --self.TranslationCreditText:SetShown(S.ClientLocale ~= 'ruRU');
 end
