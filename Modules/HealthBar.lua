@@ -123,6 +123,8 @@ local function UpdateHealthColor(frame)
                             r, g, b, a = HPBAR_COLOR_ENEMY_PLAYER[1], HPBAR_COLOR_ENEMY_PLAYER[2], HPBAR_COLOR_ENEMY_PLAYER[3], HPBAR_COLOR_ENEMY_PLAYER[4];
                         elseif frame.data.unitType == 'ENEMY_NPC' then
                             r, g, b, a = HPBAR_COLOR_ENEMY_NPC[1], HPBAR_COLOR_ENEMY_NPC[2], HPBAR_COLOR_ENEMY_NPC[3], HPBAR_COLOR_ENEMY_NPC[4];
+                        elseif frame.data.unitType == 'FRIENDLY_NPC' then
+                            r, g, b, a = HPBAR_COLOR_FRIENDLY_NPC[1], HPBAR_COLOR_FRIENDLY_NPC[2], HPBAR_COLOR_FRIENDLY_NPC[3], HPBAR_COLOR_FRIENDLY_NPC[4];
                         else
                             r, g, b, a = UnitSelectionColor(frame.displayedUnit, frame.optionTable.colorHealthWithExtendedColors);
                         end
@@ -385,7 +387,7 @@ local function UpdateBorder(unitframe)
 
     if UnitIsUnit(unitframe.data.unit, 'target') then
         unitframe.healthBar.border:SetVertexColor(BORDER_SELECTED_COLOR[1], BORDER_SELECTED_COLOR[2], BORDER_SELECTED_COLOR[3], BORDER_SELECTED_COLOR[4]);
-        return
+        return;
     end
 
     unitframe.healthBar.border:SetVertexColor(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
