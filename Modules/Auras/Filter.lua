@@ -40,7 +40,7 @@ local function UpdateBlacklistCache()
     end
 end
 
-local function FilterShouldShowBuff(self, name, caster, nameplateShowPersonal, nameplateShowAll)
+local function FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPersonal, nameplateShowAll)
     if not name then
         return false;
     end
@@ -49,8 +49,6 @@ local function FilterShouldShowBuff(self, name, caster, nameplateShowPersonal, n
         if blacklistAurasNameCache[name] then
             return false;
         end
-
-        local spellId = select(7, GetSpellInfo(name));
 
         if spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
             blacklistAurasNameCache[name] = spellId;
@@ -65,8 +63,82 @@ local function FilterShouldShowBuff(self, name, caster, nameplateShowPersonal, n
     end
 end
 
+local function UpdateBuffs(self, unit, filter, showAll)
+	if not self.isActive then
+		for i = 1, BUFF_MAX_DISPLAY do
+			if self.buffList[i] then
+				self.buffList[i]:Hide();
+			else
+				break;
+			end
+		end
+
+		return;
+	end
+
+	self.unit = unit;
+	self.filter = filter;
+	self:UpdateAnchor();
+
+	if filter == 'NONE' then
+		for _, buff in ipairs(self.buffList) do
+			buff:Hide();
+		end
+	else
+		local buffIndex = 1;
+		local index = 1;
+        local _, name, texture, count, duration, expirationTime, caster, nameplateShowPersonal, spellId, nameplateShowAll;
+
+		AuraUtil.ForEachAura(unit, filter, BUFF_MAX_DISPLAY, function(...)
+			name, texture, count, _, duration, expirationTime, caster, _, nameplateShowPersonal, spellId, _, _, _, nameplateShowAll = ...;
+
+			if FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPersonal, nameplateShowAll or showAll, duration) then
+				if not self.buffList[buffIndex] then
+					self.buffList[buffIndex] = CreateFrame('Frame', nil, self, 'NameplateBuffButtonTemplate');
+					self.buffList[buffIndex]:SetMouseClickEnabled(false);
+					self.buffList[buffIndex].layoutIndex = buffIndex;
+				end
+
+				local buff = self.buffList[buffIndex];
+
+				buff:SetID(index);
+
+				buff.Icon:SetTexture(texture);
+
+				if count > 1 then
+					buff.CountFrame.Count:SetText(count);
+					buff.CountFrame.Count:Show();
+				else
+					buff.CountFrame.Count:Hide();
+				end
+
+				CooldownFrame_Set(buff.Cooldown, expirationTime - duration, duration, duration > 0, true);
+
+				buff:Show();
+
+				buffIndex = buffIndex + 1;
+			end
+
+			index = index + 1;
+
+			return buffIndex > BUFF_MAX_DISPLAY;
+		end);
+
+		for i = buffIndex, BUFF_MAX_DISPLAY do
+			if self.buffList[i] then
+				self.buffList[i]:Hide();
+			else
+				break;
+			end
+		end
+	end
+
+	self:Layout();
+end
+
 local function Update(unitframe)
     unitframe.BuffFrame.ShouldShowBuff = FilterShouldShowBuff;
+    unitframe.BuffFrame.UpdateBuffs    = UpdateBuffs;
 
     if unitframe.BuffFrame.unit and unitframe.BuffFrame.filter then
         unitframe.BuffFrame:UpdateBuffs(unitframe.BuffFrame.unit, unitframe.BuffFrame.filter, unitframe.data.unitType == 'FRIENDLY_PLAYER');
