@@ -524,6 +524,7 @@ function Module:UnitAdded(unitframe)
 
     Update(unitframe);
     UpdateTexture(unitframe);
+    UpdateBorder(unitframe);
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
 end
@@ -551,6 +552,7 @@ function Module:Update(unitframe)
 
     Update(unitframe);
     UpdateTexture(unitframe);
+    UpdateBorder(unitframe);
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
 end
