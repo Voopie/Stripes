@@ -102,6 +102,7 @@ L['OPTIONS_CATEGORY_INFO'] = 'Info';
 L['OPTIONS_CATEGORY_GLOBAL'] = 'Global';
 
 L['OPTIONS_INFO_VERSION'] = 'Version';
+L['OPTIONS_INFO_TRANSLATED_BY'] = 'Translated into English: Рипна-Гордунни';
 
 L['OPTIONS_HOME_FREQUENTLY_USED_OPTIONS_TIP'] = 'Here will be links to the most frequently used options';
 L['OPTIONS_HOME_DELETE_TIP'] = 'Right-click to delete what you need';
