@@ -64,5 +64,5 @@ panel.Load = function(self)
     self.TranslationCreditText:SetPosition('BOTTOM', self, 'BOTTOM', 0, 16);
     self.TranslationCreditText:SetFont(self.TranslationCreditText:GetFont(), 16);
     self.TranslationCreditText:SetText(L['OPTIONS_INFO_TRANSLATED_BY']);
-    --self.TranslationCreditText:SetShown(S.ClientLocale ~= 'ruRU');
+    self.TranslationCreditText:SetShown(S.ClientLocale ~= 'ruRU');
 end
