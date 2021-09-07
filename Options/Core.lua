@@ -207,6 +207,7 @@ O.Lists = {
     },
 };
 
+-- ~389
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -440,7 +441,7 @@ O.DefaultValues = {
     raid_target_hpbar_coloring         = false,
 
     name_only_friendly_enabled               = C_CVar.GetCVar('nameplateShowOnlyNames') == '1',
-    name_only_friendly_mode                  = 1,
+    name_only_friendly_mode                  = C_CVar.GetCVar('nameplateShowOnlyNames') == '1' and 1 or 2,
     name_only_friendly_color_name_by_health  = true,
     name_only_friendly_color_name_by_class   = true,
     name_only_friendly_guild_name            = true,
