@@ -725,7 +725,6 @@ function Module:UNIT_NAME_UPDATE(unit)
     Update(NP[nameplate]);
 end
 
-
 function Module:UNIT_THREAT_LIST_UPDATE(unit)
     local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
 

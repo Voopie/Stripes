@@ -101,7 +101,11 @@ local function UpdateSizesSafe()
     if IsNameOnlyMode() and O.db.name_only_friendly_stacking then
         C_NamePlate.SetNamePlateFriendlySize(60, 1);
     else
-        C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+        if U.IsInInstance() then
+            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
+        else
+            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+        end
     end
 
     C_NamePlate.SetNamePlateSelfSize(O.db.size_self_width, O.db.size_self_height);
@@ -620,15 +624,13 @@ end
 
 function Module:PLAYER_LOGIN()
     CVarsUpdate();
-
-    C_Timer.After(0.25, function()
-        UpdateSizesSafe();
-        self:UpdateAll();
-    end);
 end
 
 function Module:PLAYER_ENTERING_WORLD()
-    self:UpdateAll();
+    C_Timer.After(0.1, function()
+        UpdateSizesSafe();
+        self:UpdateAll();
+    end);
 end
 
 function Module:PLAYER_REGEN_ENABLED()

@@ -368,6 +368,10 @@ O.DefaultValues = {
     size_friendly_clickable_width  = 132,
     size_friendly_clickable_height = 40,
     size_friendly_height           = 12,
+
+    size_friendly_instance_clickable_width  = 60,
+    size_friendly_instance_clickable_height = 30,
+
     size_friendly_click_through    = false,
 
     size_self_width         = 92,

@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Visibility');
+local Handler = S:GetNameplateModule('Handler');
 
 -- Local Config
 local SHOW_ALWAYS_INSTANCE, SHOW_ALWAYS_OPENWORLD, MAX_DISTANCE_INSTANCE, MAX_DISTANCE_OPENWORLD;
@@ -14,22 +15,38 @@ local function ZoneChanged()
         return;
     end
 
-    if IsInInstance() then
+    if U.IsInInstance() then
         C_CVar.SetCVar('nameplateShowAll', SHOW_ALWAYS_INSTANCE and 1 or 0);
         C_CVar.SetCVar('nameplateMaxDistance', MAX_DISTANCE_INSTANCE);
     else
         C_CVar.SetCVar('nameplateShowAll', SHOW_ALWAYS_OPENWORLD and 1 or 0);
         C_CVar.SetCVar('nameplateMaxDistance', MAX_DISTANCE_OPENWORLD);
     end
+
+    if Handler.IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+        C_NamePlate.SetNamePlateFriendlySize(60, 1);
+    else
+        if U.IsInInstance() then
+            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
+        else
+            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+        end
+    end
 end
 
 function Module:PLAYER_LOGIN()
     self:RegisterEvent('ZONE_CHANGED_NEW_AREA');
+    self:RegisterEvent('GARRISON_UPDATE');
+
     ZoneChanged();
 end
 
 function Module:ZONE_CHANGED_NEW_AREA()
-    C_Timer.After(0.5, ZoneChanged);
+    C_Timer.After(0.15, ZoneChanged);
+end
+
+function Module:GARRISON_UPDATE()
+    C_Timer.After(0.15, ZoneChanged);
 end
 
 function Module:PLAYER_REGEN_ENABLED()

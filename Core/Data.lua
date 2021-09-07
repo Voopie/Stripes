@@ -375,7 +375,7 @@ end
 function Data:PLAYER_ENTERING_WORLD()
     UpdatePlayer();
 
-    if IsInInstance() then
+    if U.IsInInstance() then
         D.Player.State.inInstance = true;
 
         local instanceType, difficulty = select(2, GetInstanceInfo());

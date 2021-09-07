@@ -50,8 +50,24 @@ panel.Load = function(self)
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
 
+    self.size_enemy_click_through = E.CreateCheckButton(self.TabsFrames['EnemyTab'].Content);
+    self.size_enemy_click_through:SetPosition('TOPLEFT', self.TabsFrames['EnemyTab'].Content, 'TOPLEFT', 0, -12);
+    self.size_enemy_click_through:SetLabel(L['OPTIONS_SIZES_ENEMY_CLICK_THROUGH']);
+    self.size_enemy_click_through:SetTooltip(L['OPTIONS_SIZES_ENEMY_CLICK_THROUGH_TOOLTIP']);
+    self.size_enemy_click_through:AddToSearch(button, L['OPTIONS_SIZES_ENEMY_CLICK_THROUGH_TOOLTIP'], self.Tabs[1]);
+    self.size_enemy_click_through:SetChecked(O.db.size_enemy_click_through);
+    self.size_enemy_click_through.Callback = function(self)
+        O.db.size_enemy_click_through = self:GetChecked();
+
+        C_NamePlate.SetNamePlateEnemyClickThrough(O.db.size_enemy_click_through);
+    end
+
+    local Delimiter = E.CreateDelimiter(self.TabsFrames['EnemyTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.size_enemy_click_through, 'BOTTOMLEFT', 0, -8);
+    Delimiter:SetW(self:GetWidth());
+
     self.size_enemy_clickable_width = E.CreateSlider(self.TabsFrames['EnemyTab'].Content);
-    self.size_enemy_clickable_width:SetPosition('TOPLEFT', self.TabsFrames['EnemyTab'].Content, 'TOPLEFT', 0, -20);
+    self.size_enemy_clickable_width:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -20);
     self.size_enemy_clickable_width:SetW(137);
     self.size_enemy_clickable_width:SetLabel(L['OPTIONS_SIZES_ENEMY_CLICKABLE_WIDTH']);
     self.size_enemy_clickable_width:SetTooltip(L['OPTIONS_SIZES_ENEMY_CLICKABLE_WIDTH_TOOLTIP']);
@@ -104,26 +120,31 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.size_enemy_click_through = E.CreateCheckButton(self.TabsFrames['EnemyTab'].Content);
-    self.size_enemy_click_through:SetPosition('TOPLEFT', self.size_enemy_clickable_width, 'BOTTOMLEFT', 0, -12);
-    self.size_enemy_click_through:SetLabel(L['OPTIONS_SIZES_ENEMY_CLICK_THROUGH']);
-    self.size_enemy_click_through:SetTooltip(L['OPTIONS_SIZES_ENEMY_CLICK_THROUGH_TOOLTIP']);
-    self.size_enemy_click_through:AddToSearch(button, L['OPTIONS_SIZES_ENEMY_CLICK_THROUGH_TOOLTIP'], self.Tabs[1]);
-    self.size_enemy_click_through:SetChecked(O.db.size_enemy_click_through);
-    self.size_enemy_click_through.Callback = function(self)
-        O.db.size_enemy_click_through = self:GetChecked();
-
-        C_NamePlate.SetNamePlateEnemyClickThrough(O.db.size_enemy_click_through);
-    end
-
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     -- Friendly Tab --------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
 
+    self.size_friendly_click_through = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
+    self.size_friendly_click_through:SetPosition('TOPLEFT', self.TabsFrames['FriendlyTab'].Content, 'TOPLEFT', 0, -12);
+    self.size_friendly_click_through:SetLabel(L['OPTIONS_SIZES_FRIENDLY_CLICK_THROUGH']);
+    self.size_friendly_click_through:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_CLICK_THROUGH_TOOLTIP']);
+    self.size_friendly_click_through:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_CLICK_THROUGH_TOOLTIP'], self.Tabs[2]);
+    self.size_friendly_click_through:SetChecked(O.db.size_friendly_click_through);
+    self.size_friendly_click_through.Callback = function(self)
+        O.db.size_friendly_click_through = self:GetChecked();
+
+        C_NamePlate.SetNamePlateFriendlyClickThrough(O.db.size_friendly_click_through);
+    end
+
+
+    local OpenWorldHeader = E.CreateHeader(self.TabsFrames['FriendlyTab'].Content, L['OPTIONS_SIZES_OPEN_WORLD_HEADER']);
+    OpenWorldHeader:SetPosition('TOPLEFT', self.size_friendly_click_through, 'BOTTOMLEFT', 0, -8);
+    OpenWorldHeader:SetW(self:GetWidth());
+
     self.size_friendly_clickable_width = E.CreateSlider(self.TabsFrames['FriendlyTab'].Content);
-    self.size_friendly_clickable_width:SetPosition('TOPLEFT', self.TabsFrames['FriendlyTab'].Content, 'TOPLEFT', 0, -20);
+    self.size_friendly_clickable_width:SetPosition('TOPLEFT', OpenWorldHeader, 'BOTTOMLEFT', 0, -20);
     self.size_friendly_clickable_width:SetW(137);
     self.size_friendly_clickable_width:SetLabel(L['OPTIONS_SIZES_FRIENDLY_CLICKABLE_WIDTH']);
     self.size_friendly_clickable_width:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_CLICKABLE_WIDTH_TOOLTIP']);
@@ -135,7 +156,9 @@ panel.Load = function(self)
         if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
             C_NamePlate.SetNamePlateFriendlySize(60, 1);
         else
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            if not U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            end
         end
 
         Handler:UpdateAll();
@@ -154,7 +177,9 @@ panel.Load = function(self)
         if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
             C_NamePlate.SetNamePlateFriendlySize(60, 1);
         else
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            if not U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            end
         end
 
         Handler:UpdateAll();
@@ -172,16 +197,50 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.size_friendly_click_through = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
-    self.size_friendly_click_through:SetPosition('TOPLEFT', self.size_friendly_clickable_width, 'BOTTOMLEFT', 0, -12);
-    self.size_friendly_click_through:SetLabel(L['OPTIONS_SIZES_FRIENDLY_CLICK_THROUGH']);
-    self.size_friendly_click_through:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_CLICK_THROUGH_TOOLTIP']);
-    self.size_friendly_click_through:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_CLICK_THROUGH_TOOLTIP'], self.Tabs[2]);
-    self.size_friendly_click_through:SetChecked(O.db.size_friendly_click_through);
-    self.size_friendly_click_through.Callback = function(self)
-        O.db.size_friendly_click_through = self:GetChecked();
+    local InstancesHeader = E.CreateHeader(self.TabsFrames['FriendlyTab'].Content, L['OPTIONS_SIZES_INSTANCES_HEADER']);
+    InstancesHeader:SetPosition('TOPLEFT', self.size_friendly_clickable_width, 'BOTTOMLEFT', 0, -8);
+    InstancesHeader:SetW(self:GetWidth());
 
-        C_NamePlate.SetNamePlateFriendlyClickThrough(O.db.size_friendly_click_through);
+    self.size_friendly_instance_clickable_width = E.CreateSlider(self.TabsFrames['FriendlyTab'].Content);
+    self.size_friendly_instance_clickable_width:SetPosition('TOPLEFT', InstancesHeader, 'BOTTOMLEFT', 0, -20);
+    self.size_friendly_instance_clickable_width:SetW(137);
+    self.size_friendly_instance_clickable_width:SetLabel(L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_WIDTH']);
+    self.size_friendly_instance_clickable_width:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_WIDTH_TOOLTIP']);
+    self.size_friendly_instance_clickable_width:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_WIDTH_TOOLTIP'], self.Tabs[2]);
+    self.size_friendly_instance_clickable_width:SetValues(O.db.size_friendly_instance_clickable_width, 40, 300, 1);
+    self.size_friendly_instance_clickable_width.OnValueChangedCallback = function(_, value)
+        O.db.size_friendly_instance_clickable_width = tonumber(value);
+
+        if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+            C_NamePlate.SetNamePlateFriendlySize(60, 1);
+        else
+            if U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
+            end
+        end
+
+        Handler:UpdateAll();
+    end
+
+    self.size_friendly_instance_clickable_height = E.CreateSlider(self.TabsFrames['FriendlyTab'].Content);
+    self.size_friendly_instance_clickable_height:SetPosition('LEFT', self.size_friendly_instance_clickable_width, 'RIGHT', 12, 0);
+    self.size_friendly_instance_clickable_height:SetW(137);
+    self.size_friendly_instance_clickable_height:SetValues(O.db.size_friendly_instance_clickable_height, 2, 300, 1);
+    self.size_friendly_instance_clickable_height:SetLabel(L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_HEIGHT']);
+    self.size_friendly_instance_clickable_height:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_HEIGHT_TOOLTIP']);
+    self.size_friendly_instance_clickable_height:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_HEIGHT_TOOLTIP'], self.Tabs[2]);
+    self.size_friendly_instance_clickable_height.OnValueChangedCallback = function(_, value)
+        O.db.size_friendly_instance_clickable_height = tonumber(value);
+
+        if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+            C_NamePlate.SetNamePlateFriendlySize(60, 1);
+        else
+            if U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
+            end
+        end
+
+        Handler:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -190,8 +249,25 @@ panel.Load = function(self)
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
 
+    self.size_self_click_through = E.CreateCheckButton(self.TabsFrames['SelfTab'].Content);
+    self.size_self_click_through:SetPosition('TOPLEFT', self.TabsFrames['SelfTab'].Content, 'TOPLEFT', 0, -12);
+    self.size_self_click_through:SetLabel(L['OPTIONS_SIZES_SELF_CLICK_THROUGH']);
+    self.size_self_click_through:SetTooltip(L['OPTIONS_SIZES_SELF_CLICK_THROUGH_TOOLTIP']);
+    self.size_self_click_through:AddToSearch(button, L['OPTIONS_SIZES_SELF_CLICK_THROUGH_TOOLTIP'], self.Tabs[3]);
+    self.size_self_click_through:SetChecked(O.db.size_self_click_through);
+    self.size_self_click_through.Callback = function(self)
+        O.db.size_self_click_through = self:GetChecked();
+
+        C_CVar.SetCVar('NameplatePersonalClickThrough', O.db.size_self_click_through and 1 or 0);
+        C_NamePlate.SetNamePlateSelfClickThrough(O.db.size_self_click_through);
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['SelfTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.size_self_click_through, 'BOTTOMLEFT', 0, -8);
+    Delimiter:SetW(self:GetWidth());
+
     self.size_self_width = E.CreateSlider(self.TabsFrames['SelfTab'].Content);
-    self.size_self_width:SetPosition('TOPLEFT', self.TabsFrames['SelfTab'].Content, 'TOPLEFT', 0, -20);
+    self.size_self_width:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -20);
     self.size_self_width:SetW(137);
     self.size_self_width:SetLabel(L['OPTIONS_SIZES_SELF_WIDTH']);
     self.size_self_width:SetTooltip(L['OPTIONS_SIZES_SELF_WIDTH_TOOLTIP']);
@@ -218,19 +294,6 @@ panel.Load = function(self)
         C_NamePlate.SetNamePlateSelfSize(O.db.size_self_width, O.db.size_self_height);
 
         Handler:UpdateAll();
-    end
-
-    self.size_self_click_through = E.CreateCheckButton(self.TabsFrames['SelfTab'].Content);
-    self.size_self_click_through:SetPosition('TOPLEFT', self.size_self_width, 'BOTTOMLEFT', 0, -12);
-    self.size_self_click_through:SetLabel(L['OPTIONS_SIZES_SELF_CLICK_THROUGH']);
-    self.size_self_click_through:SetTooltip(L['OPTIONS_SIZES_SELF_CLICK_THROUGH_TOOLTIP']);
-    self.size_self_click_through:AddToSearch(button, L['OPTIONS_SIZES_SELF_CLICK_THROUGH_TOOLTIP'], self.Tabs[3]);
-    self.size_self_click_through:SetChecked(O.db.size_self_click_through);
-    self.size_self_click_through.Callback = function(self)
-        O.db.size_self_click_through = self:GetChecked();
-
-        C_CVar.SetCVar('NameplatePersonalClickThrough', O.db.size_self_click_through and 1 or 0);
-        C_NamePlate.SetNamePlateSelfClickThrough(O.db.size_self_click_through);
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------

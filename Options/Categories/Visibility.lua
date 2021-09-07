@@ -71,7 +71,7 @@ panel.Load = function(self)
     self.show_always_openworld.Callback = function(self)
         O.db.show_always_openworld = self:GetChecked();
 
-        if not IsInInstance() then
+        if not U.IsInInstance() then
             C_CVar.SetCVar('nameplateShowAll', O.db.show_always_openworld and 1 or 0);
         end
 
@@ -87,7 +87,7 @@ panel.Load = function(self)
     self.show_always_instance.Callback = function(self)
         O.db.show_always_instance = self:GetChecked();
 
-        if IsInInstance() then
+        if U.IsInInstance() then
             C_CVar.SetCVar('nameplateShowAll', O.db.show_always_instance and 1 or 0);
         end
 
@@ -115,7 +115,7 @@ panel.Load = function(self)
         O.db.max_distance_openworld = number;
         self:SetText(number);
 
-        if not IsInInstance() then
+        if not U.IsInInstance() then
             C_CVar.SetCVar('nameplateMaxDistance', number);
         end
     end
@@ -141,7 +141,7 @@ panel.Load = function(self)
         O.db.max_distance_instance = number;
         self:SetText(number);
 
-        if IsInInstance() then
+        if U.IsInInstance() then
             C_CVar.SetCVar('nameplateMaxDistance', number);
         end
     end

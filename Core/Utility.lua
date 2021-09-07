@@ -312,6 +312,16 @@ U.GetInterruptSpellId = function()
     return spellId;
 end
 
+U.IsInInstance = function()
+    local inInstance, instanceType = IsInInstance();
+
+    if inInstance or not (instanceType == 'none') then
+        return true;
+    end
+
+    return false;
+end
+
 -- Colors
 U.RGB2HEX = function(r, g, b)
 	if type(r) == 'table' then
