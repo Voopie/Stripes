@@ -326,7 +326,7 @@ O.DefaultValues = {
     execution_low_percent  = 30,
     execution_high_enabled = false,
     execution_high_percent = 75,
-    execution_color        = { 1, 0.85, 0 },
+    execution_color        = { 1, 0.85, 0, 1 },
     execution_glow         = true,
 
     -- Cast bar
