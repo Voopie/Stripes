@@ -65,7 +65,7 @@ local function CreateButton(button)
     end);
 
     button:SetScript('OnLeave', function(self)
-        self:SetSize(math.min(panel:GetWidth() - 18, self.Text:GetStringWidth()), BUTTON_HEIGHT);
+        self:SetSize(math.min(panel:GetWidth() - 18, self.Text:GetStringWidth()) - 0.5, BUTTON_HEIGHT);
 
         self.Text:SetFontObject('StripesOptionsTabGreyedFont');
         self.Text:SetPosition('RIGHT', self, 'RIGHT', 0, 0);
@@ -96,7 +96,7 @@ local function UpdateButton(button)
     text = strsplit('|n', text);
 
     button.Text:SetText(text);
-    button:SetSize(math.min(panel:GetWidth() - 18, button.Text:GetStringWidth()), BUTTON_HEIGHT);
+    button:SetSize(math.min(panel:GetWidth() - 18, button.Text:GetStringWidth()) - 0.5, BUTTON_HEIGHT);
 end
 
 local sorted = {};
