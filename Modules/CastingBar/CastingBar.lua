@@ -22,7 +22,7 @@ local function GetInterruptReadyTickPosition(self)
     end
 
     local interruptCD, interruptStart, interruptDuration = 0, 0, 0;
-    local interruptReadyInTime, interruptReady;
+    local interruptWillBeReady, interruptReady;
 
     local cooldownStart, cooldownDuration = GetSpellCooldown(self.interruptSpellId);
     local tmpInterruptCD = (cooldownStart > 0 and cooldownDuration - (GetTime() - cooldownStart)) or 0;
@@ -36,14 +36,14 @@ local function GetInterruptReadyTickPosition(self)
     interruptReady = cooldownStart == 0;
 
     if self.channeling then
-        interruptReadyInTime = interruptCD < self.value;
+        interruptWillBeReady = interruptCD < self.value;
     else
-        interruptReadyInTime = interruptCD < (self.maxValue - self.value);
+        interruptWillBeReady = interruptCD < (self.maxValue - self.value);
     end
 
     local tickPosition = 0;
 
-    if interruptCD > 0 and interruptReadyInTime then
+    if interruptCD > 0 and interruptWillBeReady then
         tickPosition = (interruptStart + interruptDuration - (self.startTime / 1000)) / self.maxValue;
 
         if self.channeling then
@@ -51,7 +51,7 @@ local function GetInterruptReadyTickPosition(self)
         end
     end
 
-    return tickPosition, interruptReady, interruptReadyInTime;
+    return tickPosition, interruptReady, interruptWillBeReady;
 end
 
 local function UpdateInterruptReadyColorAndTick(self)
@@ -59,12 +59,14 @@ local function UpdateInterruptReadyColorAndTick(self)
         if self.notInterruptible or not UnitCanAttack('player', self.unit) then
             self.InterruptReadyTick:Hide();
         else
-            local tickPosition, interruptReady, interruptReadyInTime = GetInterruptReadyTickPosition(self);
+            local tickPosition, interruptReady, interruptWillBeReady = GetInterruptReadyTickPosition(self);
 
-            if self.useInterruptReadyInTimeColor and interruptReadyInTime then
-                self:SetStatusBarColor(self.interruptReadyInTimeColor:GetRGBA());
-            elseif self.useInterruptNotReadyColor and not interruptReady then
-                self:SetStatusBarColor(self.interruptNotReadyColor:GetRGBA());
+            if not interruptReady then
+                if self.useInterruptReadyInTimeColor and interruptWillBeReady then
+                    self:SetStatusBarColor(self.interruptReadyInTimeColor:GetRGBA());
+                elseif self.useInterruptNotReadyColor then
+                    self:SetStatusBarColor(self.interruptNotReadyColor:GetRGBA());
+                end
             end
 
             if tickPosition == 0 or not self.showInterruptReadyTick then
