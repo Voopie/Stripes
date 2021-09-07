@@ -157,10 +157,10 @@ S.Media.Fonts = {
     },
 
     BRUTALTYPE = {
-        REGULAR = M .. 'Fonts\\brutaltype.otf',
-        LIGHT   = M .. 'Fonts\\brutaltype-light.otf',
-        MEDIUM  = M .. 'Fonts\\brutaltype-medium.otf',
-        BOLD    = M .. 'Fonts\\brutaltype-bold.otf',
+        REGULAR = M .. 'Fonts\\brutaltype.ttf',
+        LIGHT   = M .. 'Fonts\\brutaltype-light.ttf',
+        MEDIUM  = M .. 'Fonts\\brutaltype-medium.ttf',
+        BOLD    = M .. 'Fonts\\brutaltype-bold.ttf',
     },
 
     CONVECTION = {
@@ -195,18 +195,18 @@ S.Media.Fonts = {
     },
 
     GOTHAMPRO = {
-        REGULAR      = M .. 'Fonts\\gotham-pro-reg.otf',
-        ITALIC       = M .. 'Fonts\\gotham-pro-italic.otf',
-        BLACK        = M .. 'Fonts\\gotham-pro-black.otf',
-        BLACKITALIC  = M .. 'Fonts\\gotham-pro-black-italic.otf',
-        BOLD         = M .. 'Fonts\\gotham-pro-bold.otf',
-        BOLDITALIC   = M .. 'Fonts\\gotham-pro-bold-italic.otf',
-        LIGHT        = M .. 'Fonts\\gotham-pro-light.otf',
-        LIGHTITALIC  = M .. 'Fonts\\gotham-pro-light-italic.otf',
-        MEDIUM       = M .. 'Fonts\\gotham-pro-medium.otf',
-        MEDIUMITALIC = M .. 'Fonts\\gotham-pro-medium-italic.otf',
-        NARROWMEDIUM = M .. 'Fonts\\gotham-pro-narrow-medium.otf',
-        NARROWBOLD   = M .. 'Fonts\\gotham-pro-narrow-bold.otf',
+        REGULAR      = M .. 'Fonts\\gotham-pro-reg.ttf',
+        ITALIC       = M .. 'Fonts\\gotham-pro-italic.ttf',
+        BLACK        = M .. 'Fonts\\gotham-pro-black.ttf',
+        BLACKITALIC  = M .. 'Fonts\\gotham-pro-black-italic.ttf',
+        BOLD         = M .. 'Fonts\\gotham-pro-bold.ttf',
+        BOLDITALIC   = M .. 'Fonts\\gotham-pro-bold-italic.ttf',
+        LIGHT        = M .. 'Fonts\\gotham-pro-light.ttf',
+        LIGHTITALIC  = M .. 'Fonts\\gotham-pro-light-italic.ttf',
+        MEDIUM       = M .. 'Fonts\\gotham-pro-medium.ttf',
+        MEDIUMITALIC = M .. 'Fonts\\gotham-pro-medium-italic.ttf',
+        NARROWMEDIUM = M .. 'Fonts\\gotham-pro-narrow-medium.ttf',
+        NARROWBOLD   = M .. 'Fonts\\gotham-pro-narrow-bold.ttf',
     },
 
     OSWALD = {
@@ -239,12 +239,12 @@ S.Media.Fonts = {
     },
 
     SYSTOPIE = {
-        REGULAR        = M .. 'Fonts\\systopie.otf',
-        REGULARITALIC  = M .. 'Fonts\\systopie-italic.otf',
-        SEMIBOLD       = M .. 'Fonts\\systopie-semi-bold.otf',
-        SEMIBOLDITALIC = M .. 'Fonts\\systopie-semi-bold-italic.otf',
-        BOLD           = M .. 'Fonts\\systopie-bold.otf',
-        BOLDITALIC     = M .. 'Fonts\\systopie-bold-italic.otf',
+        REGULAR        = M .. 'Fonts\\systopie.ttf',
+        REGULARITALIC  = M .. 'Fonts\\systopie-italic.ttf',
+        SEMIBOLD       = M .. 'Fonts\\systopie-semi-bold.ttf',
+        SEMIBOLDITALIC = M .. 'Fonts\\systopie-semi-bold-italic.ttf',
+        BOLD           = M .. 'Fonts\\systopie-bold.ttf',
+        BOLDITALIC     = M .. 'Fonts\\systopie-bold-italic.ttf',
     },
 
     TEEN = {
