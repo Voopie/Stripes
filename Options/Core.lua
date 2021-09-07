@@ -343,7 +343,6 @@ O.DefaultValues = {
     castbar_start_channel_color            = { 0, 1, 0 },
     castbar_noninterruptible_color         = { 0.7, 0.7, 0.7 },
     castbar_failed_cast_color              = { 1, 0, 0 },
-    castbar_interrupt_ready_color          = { 0, 0.7, 0, 1 },
     castbar_interrupt_ready_in_time_color  = { 0, 0.3, 0, 1 },
     castbar_interrupt_not_ready_color      = { 0.35, 0.35, 0.35, 1 },
     castbar_use_interrupt_ready_color          = false,

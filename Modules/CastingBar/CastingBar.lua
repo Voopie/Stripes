@@ -61,9 +61,7 @@ local function UpdateInterruptReadyColorAndTick(self)
         else
             local tickPosition, interruptReady, interruptReadyInTime = GetInterruptReadyTickPosition(self);
 
-            if self.useInterruptReadyColor and interruptReady then
-                self:SetStatusBarColor(self.interruptReadyColor:GetRGBA());
-            elseif self.useInterruptReadyInTimeColor and interruptReadyInTime then
+            if self.useInterruptReadyInTimeColor and interruptReadyInTime then
                 self:SetStatusBarColor(self.interruptReadyInTimeColor:GetRGBA());
             elseif self.useInterruptNotReadyColor and not interruptReady then
                 self:SetStatusBarColor(self.interruptNotReadyColor:GetRGBA());
@@ -85,7 +83,6 @@ function StripesCastingBar_OnLoad(self, unit, showTradeSkills, showShield)
     StripesCastingBar_SetFinishedCastColor(self, 0.0, 1.0, 0.0, 1);
     StripesCastingBar_SetNonInterruptibleCastColor(self, 0.7, 0.7, 0.7, 1);
     StripesCastingBar_SetFailedCastColor(self, 1.0, 0.0, 0.0, 1);
-    StripesCastingBar_SetInterruptReadyCastColor(self, 0, 0.65, 0, 1);
     StripesCastingBar_SetUseStartColorForFinished(self, true);
     StripesCastingBar_SetUseStartColorForFlash(self, true);
     StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield);
@@ -118,10 +115,6 @@ end
 
 function StripesCastingBar_SetNonInterruptibleCastColor(self, r, g, b, a)
     self.nonInterruptibleColor = CreateColor(r, g, b, a or 1);
-end
-
-function StripesCastingBar_SetInterruptReadyCastColor(self, r, g, b, a)
-    self.interruptReadyColor = CreateColor(r, g, b, a or 1);
 end
 
 function StripesCastingBar_SetInterruptReadyInTimeCastColor(self, r, g, b, a)
