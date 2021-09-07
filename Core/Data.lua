@@ -357,13 +357,18 @@ D.KickByClassId = {
     [12] = { [1] = 183752, [2] = 183752 },                          -- Demon Hunter
 };
 
+local function UpdateSpecialization()
+    D.Player.SpecIndex = GetSpecialization() or 0;
+    D.Player.SpecId    = GetSpecializationInfo(D.Player.SpecIndex) or 0;
+    D.Player.SpecRole  = GetSpecializationRole(D.Player.SpecIndex) or 'NONE';
+end
+
 local function UpdatePlayer()
     D.Player.Name, D.Player.RealmNormalized = UnitFullName('player');
     D.Player.NameWithRealm                  = D.Player.Name .. '-' .. D.Player.RealmNormalized;
     D.Player.Realm                          = GetRealmName();
 
-    D.Player.SpecIndex = GetSpecialization();
-    D.Player.SpecId    = GetSpecializationInfo(D.Player.SpecIndex);
+    UpdateSpecialization();
 end
 
 function Data:PLAYER_LOGIN()
@@ -453,9 +458,10 @@ end
 
 function Data:PLAYER_SPECIALIZATION_CHANGED(unit)
     if unit ~= 'player' then
-        D.Player.SpecIndex = GetSpecialization();
-        D.Player.SpecId = GetSpecializationInfo(D.Player.SpecIndex);
+        return;
     end
+
+    UpdateSpecialization();
 end
 
 function Data:StartUp()
