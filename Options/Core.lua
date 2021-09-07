@@ -200,6 +200,11 @@ O.Lists = {
         [2] = L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_FRIENDLY'],
         [3] = L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_ENEMY'],
     },
+
+    name_only_friendly_mode = {
+        [1] = L['OPTIONS_NAME_ONLY_FRIENDLY_MODE_ANYWHERE'],
+        [2] = L['OPTIONS_NAME_ONLY_FRIENDLY_MODE_ONLY_OPEN_WORLD'],
+    },
 };
 
 O.DefaultValues = {
@@ -435,6 +440,7 @@ O.DefaultValues = {
     raid_target_hpbar_coloring         = false,
 
     name_only_friendly_enabled               = C_CVar.GetCVar('nameplateShowOnlyNames') == '1',
+    name_only_friendly_mode                  = 1,
     name_only_friendly_color_name_by_health  = true,
     name_only_friendly_color_name_by_class   = true,
     name_only_friendly_guild_name            = true,

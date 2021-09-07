@@ -597,8 +597,7 @@ panel.Load = function(self)
 
         O.db.name_only_friendly_enabled = self:GetChecked();
 
-        C_CVar.SetCVar('nameplateShowOnlyNames', O.db.name_only_friendly_enabled and 1 or 0);
-
+        panel.name_only_friendly_mode:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_players_only:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_color_name_by_health:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_color_name_by_class:SetEnabled(O.db.name_only_friendly_enabled);
@@ -611,16 +610,47 @@ panel.Load = function(self)
         Handler:UpdateAll();
 
         if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
-            C_NamePlate.SetNamePlateFriendlySize(60, 1);
+            if U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
+            else
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
+            end
         else
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            if U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
+            else
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            end
+        end
+
+        Handler:UpdateAll();
+    end
+
+    local LAST_SESSION_name_only_friendly_mode = O.db.name_only_friendly_mode;
+    self.name_only_friendly_mode = E.CreateDropdown('plain', self.TabsFrames['FriendlyTab'].Content);
+    self.name_only_friendly_mode:SetPosition('LEFT', self.name_only_friendly_enabled.Label, 'RIGHT', 12, 0);
+    self.name_only_friendly_mode:SetSize(200, 20);
+    self.name_only_friendly_mode:SetList(O.Lists.name_only_friendly_mode);
+    self.name_only_friendly_mode:SetValue(O.db.name_only_friendly_mode);
+    self.name_only_friendly_mode:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_FRIENDLY_MODE_TOOLTIP']);
+    self.name_only_friendly_mode:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_FRIENDLY_MODE_TOOLTIP'], self.Tabs[3]);
+    self.name_only_friendly_mode:SetEnabled(O.db.name_only_friendly_enabled);
+    self.name_only_friendly_mode.OnValueChangedCallback = function(_, value)
+        O.NeedReload('name_only_friendly_mode', LAST_SESSION_name_only_friendly_mode ~= tonumber(value));
+
+        O.db.name_only_friendly_mode = tonumber(value);
+
+        if O.db.name_only_friendly_mode == 1 then -- Anywhere
+            C_CVar.SetCVar('nameplateShowOnlyNames', 1);
+        else
+            C_CVar.SetCVar('nameplateShowOnlyNames', 0);
         end
 
         Handler:UpdateAll();
     end
 
     self.name_only_friendly_players_only = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
-    self.name_only_friendly_players_only:SetPosition('LEFT', self.name_only_friendly_enabled.Label, 'RIGHT', 12, 0);
+    self.name_only_friendly_players_only:SetPosition('TOPLEFT', self.name_only_friendly_enabled, 'BOTTOMLEFT', 0, -8);
     self.name_only_friendly_players_only:SetLabel(L['OPTIONS_VISIBILITY_NAME_ONLY_PLAYERS_ONLY']);
     self.name_only_friendly_players_only:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_PLAYERS_ONLY_TOOLTIP']);
     self.name_only_friendly_players_only:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_PLAYERS_ONLY_TOOLTIP'], self.Tabs[3]);
@@ -632,9 +662,17 @@ panel.Load = function(self)
         panel.name_only_friendly_stacking:SetEnabled(O.db.name_only_friendly_enabled);
 
         if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
-            C_NamePlate.SetNamePlateFriendlySize(60, 1);
+            if U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
+            else
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
+            end
         else
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            if U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
+            else
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            end
         end
 
         Handler:UpdateAll();
@@ -651,16 +689,24 @@ panel.Load = function(self)
         O.db.name_only_friendly_stacking = self:GetChecked();
 
         if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
-            C_NamePlate.SetNamePlateFriendlySize(60, 1);
+            if U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
+            else
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
+            end
         else
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            if U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
+            else
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            end
         end
 
         Handler:UpdateAll();
     end
 
     self.name_only_friendly_color_name_by_health = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
-    self.name_only_friendly_color_name_by_health:SetPosition('TOPLEFT', self.name_only_friendly_enabled, 'BOTTOMLEFT', 0, -8);
+    self.name_only_friendly_color_name_by_health:SetPosition('TOPLEFT', self.name_only_friendly_players_only, 'BOTTOMLEFT', 0, -8);
     self.name_only_friendly_color_name_by_health:SetLabel(L['OPTIONS_VISIBILITY_NAME_ONLY_COLOR_NAME_BY_HEALTH']);
     self.name_only_friendly_color_name_by_health:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_COLOR_NAME_BY_HEALTH_TOOLTIP']);
     self.name_only_friendly_color_name_by_health:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_COLOR_NAME_BY_HEALTH_TOOLTIP'], self.Tabs[3]);

@@ -99,7 +99,11 @@ local function UpdateSizesSafe()
     C_NamePlate.SetNamePlateEnemySize(O.db.size_enemy_clickable_width, O.db.size_enemy_clickable_height);
 
     if IsNameOnlyMode() and O.db.name_only_friendly_stacking then
-        C_NamePlate.SetNamePlateFriendlySize(60, 1);
+        if U.IsInInstance() then
+            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
+        else
+            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
+        end
     else
         if U.IsInInstance() then
             C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
@@ -252,7 +256,7 @@ end
 Module.CVarsReset = CVarsReset;
 
 local function CVarsUpdate()
-    C_CVar.SetCVar('nameplateShowOnlyNames', O.db.name_only_friendly_enabled and 1 or 0);
+    C_CVar.SetCVar('nameplateShowOnlyNames', O.db.name_only_friendly_mode == 1 and 1 or 0);
 
     C_CVar.SetCVar('nameplateMotion', O.db.motion - 1);
     C_CVar.SetCVar('nameplateMotionSpeed', O.db.motion_speed);
@@ -415,8 +419,8 @@ local function HookSetCVar(name, value)
         O.frame.Right.Sizes.self_bottom_inset:SetValue(tonumber(value));
         O.db.self_bottom_inset = tonumber(value);
     elseif name == 'nameplateShowOnlyNames' then
-        O.frame.Right.Visibility.name_only_friendly_enabled:SetChecked(value == '1');
-        O.db.name_only_friendly_enabled = value == '1';
+        O.frame.Right.Visibility.name_only_friendly_mode:SetValue(value == '1' and 1 or 2);
+        O.db.name_only_friendly_mode = value == '1' and 1 or 2;
     elseif name == 'NameplatePersonalClickThrough' then
         O.frame.Right.Sizes.size_self_click_through:SetChecked(value == '1');
         O.db.size_self_click_through = value == '1';

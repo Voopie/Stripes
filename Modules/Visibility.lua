@@ -24,7 +24,11 @@ local function ZoneChanged()
     end
 
     if Handler.IsNameOnlyMode() and O.db.name_only_friendly_stacking then
-        C_NamePlate.SetNamePlateFriendlySize(60, 1);
+        if U.IsInInstance() then
+            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
+        else
+            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
+        end
     else
         if U.IsInInstance() then
             C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);

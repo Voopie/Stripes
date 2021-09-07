@@ -7,6 +7,7 @@ local string_format, math_max = string.format, math.max;
 -- Stripes API
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyModeAndFriendly;
+local PlayerState = D.Player.State;
 
 -- Libraries
 local LSM = S.Libraries.LSM;
@@ -24,6 +25,7 @@ local STATUSBAR_TEXTURE;
 local ENEMY_WIDTH, FRIENDLY_WIDTH, PLAYER_WIDTH;
 local SHOW_TRADE_SKILLS, SHOW_SHIELD, SHOW_ICON_NOTINTERRUPTIBLE;
 local SHOW_INTERRUPT_READY_TICK, INTERRUPT_READY_TICK_COLOR;
+local NAME_ONLY_MODE;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 
@@ -201,7 +203,7 @@ local function UpdateVisibility(unitframe)
         if unitframe.data.unitType == 'SELF' then
             StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
         else
-            if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+            if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
                 StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
             else
                 StripesCastingBar_SetUnit(unitframe.castingBar, unitframe.data.unit, SHOW_TRADE_SKILLS, SHOW_SHIELD);
@@ -244,6 +246,8 @@ function Module:UpdateLocalConfig()
     ON_HP_BAR       = O.db.castbar_on_hp_bar;
     ICON_LARGE      = O.db.castbar_icon_large;
     ICON_RIGHT_SIDE = O.db.castbar_icon_right_side;
+
+    NAME_ONLY_MODE = O.db.name_only_friendly_mode;
 
     START_CAST_COLOR    = START_CAST_COLOR or {};
     START_CAST_COLOR[1] = O.db.castbar_start_cast_color[1];

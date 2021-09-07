@@ -24,7 +24,7 @@ local LDC = S.Libraries.LDC;
 
 -- Local Config
 local POSITION, POSITION_V, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE, COLORING_MODE_NPC;
-local NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
+local NAME_ONLY_MODE, NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 local NAME_WITH_TITLE_ENABLED, NAME_WITH_TITLE_UNIT_TYPE, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
 local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
@@ -189,7 +189,7 @@ end
 local function UpdateAnchor(unitframe)
     unitframe.name:ClearAllPoints();
 
-    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
         unitframe.name:SetJustifyH('CENTER');
         PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, NAME_ONLY_OFFSET_Y);
 
@@ -289,7 +289,7 @@ local function UpdateColor(unitframe)
 end
 
 local function UpdateNameVisibility(unitframe)
-    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
         unitframe.name:SetShown(NAME_TEXT_ENABLED and not unitframe.data.widgetsOnly);
     else
         unitframe.name:SetShown(ShouldShowName(unitframe));
@@ -337,7 +337,7 @@ local function NameOnly_UpdateHealthBar(unitframe)
 
     unitframe.RaidTargetFrame:ClearAllPoints();
 
-    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
         PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.name, 'TOP', 0, 8);
 
         unitframe.healthBar:SetShown(false);
@@ -480,6 +480,8 @@ function Module:UpdateLocalConfig()
     SHOW_ARENA_ID_SOLO     = O.db.name_text_show_arenaid_solo;
     COLORING_MODE          = O.db.name_text_coloring_mode;
     COLORING_MODE_NPC      = O.db.name_text_coloring_mode_npc;
+
+    NAME_ONLY_MODE = O.db.name_only_friendly_mode;
 
     NAME_ONLY_OFFSET_Y     = O.db.name_only_friendly_y_offset;
 
