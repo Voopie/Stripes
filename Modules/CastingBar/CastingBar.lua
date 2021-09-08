@@ -67,6 +67,8 @@ local function UpdateInterruptReadyColorAndTick(self)
                 elseif self.useInterruptNotReadyColor then
                     self:SetStatusBarColor(self.interruptNotReadyColor:GetRGBA());
                 end
+            else
+                self:SetStatusBarColor(StripesCastingBar_GetEffectiveStartColor(self, self.channeling, self.notInterruptible):GetRGBA());
             end
 
             if tickPosition == 0 or not self.showInterruptReadyTick then
@@ -213,6 +215,7 @@ function StripesCastingBar_GetEffectiveStartColor(self, isChannel, notInterrupti
     if self.nonInterruptibleColor and notInterruptible then
         return self.nonInterruptibleColor;
     end
+
     return isChannel and self.startChannelColor or self.startCastColor;
 end
 
