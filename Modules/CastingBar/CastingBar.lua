@@ -1,8 +1,13 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
+local Module = S:NewModule('CastingBar');
 
 -- WoW API
 local GetSpellCooldown, UnitCanAttack = GetSpellCooldown, UnitCanAttack;
+local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
 local GetTime = GetTime;
+
+-- Libraries
+local LCG = S.Libraries.LCG;
 
 -- In fact, this is a copy paste from Blizzard/CastingBarFrame.lua
 
@@ -79,6 +84,46 @@ local function UpdateInterruptReadyColorAndTick(self)
             end
         end
     end
+end
+
+local CustomCastsData = {};
+
+local function UpdateCastBaGlow(self, glowType)
+    if glowType == 1 then
+        LCG.PixelGlow_Start(self);
+    elseif glowType == 2 then
+        LCG.AutoCastGlow_Start(self);
+    elseif glowType == 3 then
+        LCG.ButtonGlow_Start(self);
+    end
+end
+
+local function StopCastBarGlow(self)
+    LCG.PixelGlow_Stop(self);
+    LCG.AutoCastGlow_Stop(self);
+    LCG.ButtonGlow_Stop(self);
+end
+
+local function UpdateCustomCast(self)
+    local spellId = self.spellID;
+
+    if not spellId or not O.db.castbar_custom_casts_enabled or not CustomCastsData[spellId] or not CustomCastsData[spellId].enabled then
+        StopCastBarGlow(self);
+        return;
+    end
+
+    if CustomCastsData[spellId].color_enabled then
+        self:SetStatusBarColor(CustomCastsData[spellId].color[1], CustomCastsData[spellId].color[2], CustomCastsData[spellId].color[3], CustomCastsData[spellId].color[4] or 1);
+    end
+
+    if CustomCastsData[spellId].glow_enabled then
+        StopCastBarGlow(self);
+        UpdateCastBaGlow(self, CustomCastsData[spellId].glow_type);
+    end
+end
+
+function Module:StartUp()
+    CustomCastsData = O.db.castbar_custom_casts_data;
 end
 
 function StripesCastingBar_OnLoad(self, unit, showTradeSkills, showShield)
@@ -243,7 +288,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
     end
 
     if event == 'UNIT_SPELLCAST_START' then
-        local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit);
+        local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit);
 
         if not name or (not self.showTradeSkills and isTradeSkill) then
             self:Hide();
@@ -287,6 +332,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.holdTime = 0;
         self.casting = true;
         self.castID = castID;
+        self.spellID = spellID;
         self.channeling = nil;
         self.fadeOut = nil;
 
@@ -295,6 +341,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.endTime   = endTime;
 
         UpdateInterruptReadyColorAndTick(self);
+        UpdateCustomCast(self);
 
         if self.BorderShield then
             if self.showShield and notInterruptible then
@@ -409,7 +456,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self.notInterruptible = notInterruptible;
         end
     elseif event == 'UNIT_SPELLCAST_CHANNEL_START' then
-        local name, text, texture, startTime, endTime, isTradeSkill, notInterruptible = UnitChannelInfo(unit);
+        local name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit);
         if not name or (not self.showTradeSkills and isTradeSkill) then
             -- if there is no name, there is no bar
             self:Hide();
@@ -447,12 +494,14 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.casting = nil;
         self.channeling = true;
         self.fadeOut = nil;
+        self.spellID = spellID;
 
         self.notInterruptible = notInterruptible;
         self.startTime = startTime;
         self.endTime   = endTime;
 
         UpdateInterruptReadyColorAndTick(self);
+        UpdateCustomCast(self);
 
         if self.BorderShield then
             if self.showShield and notInterruptible then
@@ -530,19 +579,8 @@ function StripesCastingBar_UpdateInterruptibleState(self, notInterruptible)
             end
         end
 
-        if self.InterruptReadyTick then
-            if notInterruptible or not self.showInterruptReadyTick then
-                self.InterruptReadyTick:SetShown(false);
-            else
-                local InterruptReadyTickPosition = GetInterruptReadyTickPosition(self);
-                if InterruptReadyTickPosition == 0 then
-                    self.InterruptReadyTick:SetShown(false);
-                else
-                    self.InterruptReadyTick:SetPoint('CENTER', self, 'LEFT', self:GetWidth() * InterruptReadyTickPosition, 0);
-                    self.InterruptReadyTick:SetShown(true);
-                end
-            end
-        end
+        UpdateInterruptReadyColorAndTick(self);
+        UpdateCustomCast(self);
     end
 end
 
@@ -643,6 +681,7 @@ function StripesCastingBar_FinishSpell(self)
     self.fadeOut = true;
     self.casting = nil;
     self.channeling = nil;
+    self.spellID = nil;
 end
 
 function StripesCastingBar_UpdateIsShown(self)

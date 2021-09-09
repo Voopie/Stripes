@@ -80,6 +80,10 @@ L['GLOW_TYPE_PIXEL'] = 'Pixel glow';
 L['GLOW_TYPE_AUTOCAST'] = 'Autocast glow';
 L['GLOW_TYPE_BUTTON'] = 'Button glow';
 
+L['GLOW_TYPE_PIXEL_SHORT'] = 'Pixel';
+L['GLOW_TYPE_AUTOCAST_SHORT'] = 'Autocast';
+L['GLOW_TYPE_BUTTON_SHORT'] = 'Button';
+
 L['OPTIONS_NEED_RELOAD'] = 'You must reload the interface to apply the settings.\r\rReload now?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'The settings were hidden for the duration of the combat and will be automatically opened after the end of the combat';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'The settings will be opened after the combat';
@@ -334,6 +338,8 @@ L['OPTIONS_EXECUTION_HIGH_PERCENT_TOOLTIP'] = 'Percentage of higher health thres
 L['OPTIONS_EXECUTION_GLOW'] = 'Pixel glow';
 L['OPTIONS_EXECUTION_GLOW_TOOLTIP'] = 'Show pixel glow around health bar';
 
+L['OPTIONS_CAST_BAR_TAB_COMMON'] = 'General';
+L['OPTIONS_CAST_BAR_TAB_CUSTOMCASTS'] = 'Custom casts';
 L['OPTIONS_CAST_BAR_TEXTURE_VALUE_TOOLTIP'] = 'Cast bar texture';
 L['OPTIONS_CAST_BAR_TEXT_FONT_VALUE'] = 'Spell name font';
 L['OPTIONS_CAST_BAR_TEXT_FONT_SIZE'] = 'Spell name font size';
@@ -375,6 +381,9 @@ L['OPTIONS_CAST_BAR_USE_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP'] = 'Use «Will be
 L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR'] = 'Not ready to interrupt';
 L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR_TOOLTIP'] = 'The cast bar will change to the color of your choice if your interrupt ability is NOT ready';
 L['OPTIONS_CAST_BAR_USE_INTERRUPT_NOT_READY_COLOR_TOOLTIP'] = 'Use «Not ready to interrupt» cast bar color';
+L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED'] = 'Enable';
+L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED_TOOLTIP'] = 'Enable custom effects for specified spells';
+L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID'] = 'Enter the name or ID of the spell';
 
 L['OPTIONS_SIZES_TAB_ENEMY'] = 'Enemy';
 L['OPTIONS_SIZES_TAB_FRIENDLY'] = 'Friendly';

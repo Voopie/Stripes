@@ -1105,7 +1105,11 @@ do
                 PixelUtil.SetHeight(listFrame, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
                 PixelUtil.SetSize(holderButton.scrollChild, self.WidthValue, listFrame:GetHeight());
 
-                UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), self.HeightValue, itemCounter);
+                self.UpdateScrollArea = function()
+                    UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), container.HeightValue, itemCounter);
+                end
+
+                self:UpdateScrollArea();
             end,
 
             SetValue = function(self, value)
@@ -1216,7 +1220,11 @@ do
                 PixelUtil.SetHeight(listFrame, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
                 PixelUtil.SetSize(holderButton.scrollChild, self.WidthValue, listFrame:GetHeight());
 
-                UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), self.HeightValue, itemCounter);
+                self.UpdateScrollArea = function()
+                    UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), container.HeightValue, itemCounter);
+                end
+
+                self:UpdateScrollArea();
             end,
 
             SetValue = function(self, value)
@@ -1325,7 +1333,11 @@ do
                 PixelUtil.SetHeight(listFrame, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
                 PixelUtil.SetSize(holderButton.scrollChild, self.WidthValue, listFrame:GetHeight());
 
-                UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), self.HeightValue, itemCounter);
+                self.UpdateScrollArea = function()
+                    UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), container.HeightValue, itemCounter);
+                end
+
+                self:UpdateScrollArea();
 
                 wipe(sortedList);
             end,
@@ -1433,7 +1445,12 @@ do
                 PixelUtil.SetHeight(listFrame, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
                 PixelUtil.SetSize(holderButton.scrollChild, self.WidthValue, listFrame:GetHeight());
 
-                UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), self.HeightValue, itemCounter);
+                self.UpdateScrollArea = function()
+                    UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), container.HeightValue, itemCounter);
+                end
+
+                self:UpdateScrollArea();
+
                 wipe(sortedList);
             end,
 

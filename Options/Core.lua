@@ -195,6 +195,12 @@ O.Lists = {
         [3] = L['GLOW_TYPE_BUTTON'],
     },
 
+    glow_type_short = {
+        [1] = L['GLOW_TYPE_PIXEL_SHORT'],
+        [2] = L['GLOW_TYPE_AUTOCAST_SHORT'],
+        [3] = L['GLOW_TYPE_BUTTON_SHORT'],
+    },
+
     name_text_with_title_mode = {
         [1] = L['OPTIONS_NAME_WITH_TITLE_MODE_ALL'],
         [2] = L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_FRIENDLY'],
@@ -207,7 +213,7 @@ O.Lists = {
     },
 };
 
--- ~389
+-- ~390
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -361,6 +367,9 @@ O.DefaultValues = {
     castbar_interrupt_ready_tick_color = { 0.1, 0.1, 0.1, 1 },
 
     who_interrupted_enabled = true,
+
+    castbar_custom_casts_enabled = false,
+    castbar_custom_casts_data    = {},
 
     -- Sizes
     size_clickable_area_show   = false,
