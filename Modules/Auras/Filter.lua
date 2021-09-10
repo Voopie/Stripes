@@ -1,12 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Auras_Filter');
 
--- Lua API
-local select = select;
-
--- WoW API
-local GetSpellInfo = GetSpellInfo;
-
 -- Local Config
 local ENABLED, BLACKLIST_ENABLED;
 
