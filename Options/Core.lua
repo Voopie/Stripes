@@ -302,7 +302,7 @@ O.DefaultValues = {
     absorb_bar_enabled = true,
     absorb_bar_at_top  = false,
 
-    absorb_text_enabled     = false,
+    absorb_text_enabled     = true,
     absorb_text_color       = { 0, 0.9, 1, 1 },
     absorb_text_font_value  = 'BigNoodleToo Titling',
     absorb_text_font_size   = 11,
