@@ -302,6 +302,16 @@ O.DefaultValues = {
     absorb_bar_enabled = true,
     absorb_bar_at_top  = false,
 
+    absorb_text_enabled     = false,
+    absorb_text_color       = { 0, 0.9, 1, 1 },
+    absorb_text_font_value  = 'BigNoodleToo Titling',
+    absorb_text_font_size   = 11,
+    absorb_text_font_flag   = 1, -- NONE
+    absorb_text_font_shadow = true,
+    absorb_text_anchor      = 2, -- CENTER
+    absorb_text_x_offset    = 0,
+    absorb_text_y_offset    = 0,
+
     threat_color_enabled         = true,
     threat_color_istapped_border = true,
     threat_color_reversed        = false,

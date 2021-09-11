@@ -145,6 +145,131 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.absorb_text_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.absorb_text_enabled:SetPosition('TOPLEFT', self.absorb_bar_enabled, 'BOTTOMLEFT', 0, -8);
+    self.absorb_text_enabled:SetLabel(L['OPTIONS_ABSORB_TEXT_ENABLED']);
+    self.absorb_text_enabled:SetTooltip(L['OPTIONS_ABSORB_TEXT_ENABLED_TOOLTIP']);
+    self.absorb_text_enabled:SetChecked(O.db.absorb_text_enabled);
+    self.absorb_text_enabled:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.absorb_text_enabled.Callback = function(self)
+        O.db.absorb_text_enabled = self:GetChecked();
+
+        panel.absorb_text_color:SetEnabled(O.db.absorb_text_enabled);
+        panel.absorb_text_font_value:SetEnabled(O.db.absorb_text_enabled);
+        panel.absorb_text_font_size:SetEnabled(O.db.absorb_text_enabled);
+        panel.absorb_text_font_flag:SetEnabled(O.db.absorb_text_enabled);
+        panel.absorb_text_font_shadow:SetEnabled(O.db.absorb_text_enabled);
+        panel.absorb_text_anchor:SetEnabled(O.db.absorb_text_enabled);
+        panel.absorb_text_x_offset:SetEnabled(O.db.absorb_text_enabled);
+        panel.absorb_text_y_offset:SetEnabled(O.db.absorb_text_enabled);
+
+        Handler:UpdateAll();
+    end
+
+    self.absorb_text_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.absorb_text_color:SetPosition('LEFT', self.absorb_text_enabled.Label, 'RIGHT', 12, 0);
+    self.absorb_text_color:SetTooltip(L['OPTIONS_ABSORB_TEXT_COLOR_TOOLTIP']);
+    self.absorb_text_color:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.absorb_text_color:SetValue(unpack(O.db.absorb_text_color));
+    self.absorb_text_color:SetEnabled(O.db.absorb_text_enabled);
+    self.absorb_text_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.absorb_text_color[1] = r;
+        O.db.absorb_text_color[2] = g;
+        O.db.absorb_text_color[3] = b;
+        O.db.absorb_text_color[4] = a or 1;
+
+        Handler:UpdateAll();
+    end
+
+    self.absorb_text_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
+    self.absorb_text_font_value:SetPosition('TOPLEFT', self.absorb_text_enabled, 'BOTTOMLEFT', 0, -12);
+    self.absorb_text_font_value:SetSize(160, 20);
+    self.absorb_text_font_value:SetList(LSM:HashTable('font'));
+    self.absorb_text_font_value:SetValue(O.db.absorb_text_font_value);
+    self.absorb_text_font_value:SetTooltip(L['OPTIONS_ABSORB_TEXT_FONT_VALUE']);
+    self.absorb_text_font_value:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_FONT_VALUE'], self.Tabs[1]);
+    self.absorb_text_font_value:SetEnabled(O.db.absorb_text_enabled);
+    self.absorb_text_font_value.OnValueChangedCallback = function(_, value)
+        O.db.absorb_text_font_value = value;
+        Handler:UpdateAll();
+    end
+
+    self.absorb_text_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.absorb_text_font_size:SetPosition('LEFT', self.absorb_text_font_value, 'RIGHT', 12, 0);
+    self.absorb_text_font_size:SetValues(O.db.absorb_text_font_size, 3, 28, 1);
+    self.absorb_text_font_size:SetTooltip(L['OPTIONS_ABSORB_TEXT_FONT_SIZE']);
+    self.absorb_text_font_size:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_FONT_SIZE'], self.Tabs[1]);
+    self.absorb_text_font_size:SetEnabled(O.db.absorb_text_enabled);
+    self.absorb_text_font_size.OnValueChangedCallback = function(_, value)
+        O.db.absorb_text_font_size = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.absorb_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.absorb_text_font_flag:SetPosition('LEFT', self.absorb_text_font_size, 'RIGHT', 12, 0);
+    self.absorb_text_font_flag:SetSize(160, 20);
+    self.absorb_text_font_flag:SetList(O.Lists.font_flags_localized);
+    self.absorb_text_font_flag:SetValue(O.db.absorb_text_font_flag);
+    self.absorb_text_font_flag:SetTooltip(L['OPTIONS_ABSORB_TEXT_FONT_FLAG']);
+    self.absorb_text_font_flag:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_FONT_FLAG'], self.Tabs[1]);
+    self.absorb_text_font_flag:SetEnabled(O.db.absorb_text_enabled);
+    self.absorb_text_font_flag.OnValueChangedCallback = function(_, value)
+        O.db.absorb_text_font_flag = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.absorb_text_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.absorb_text_font_shadow:SetPosition('LEFT', self.absorb_text_font_flag, 'RIGHT', 12, 0);
+    self.absorb_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
+    self.absorb_text_font_shadow:SetChecked(O.db.absorb_text_font_shadow);
+    self.absorb_text_font_shadow:SetTooltip(L['OPTIONS_ABSORB_TEXT_FONT_SHADOW']);
+    self.absorb_text_font_shadow:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_FONT_SHADOW'], self.Tabs[1]);
+    self.absorb_text_font_shadow:SetEnabled(O.db.absorb_text_enabled);
+    self.absorb_text_font_shadow.Callback = function(self)
+        O.db.absorb_text_font_shadow = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.absorb_text_anchor = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.absorb_text_anchor:SetPosition('TOPLEFT', self.absorb_text_font_value, 'BOTTOMLEFT', 0, -24);
+    self.absorb_text_anchor:SetSize(120, 20);
+    self.absorb_text_anchor:SetList(O.Lists.frame_points_simple_localized);
+    self.absorb_text_anchor:SetValue(O.db.absorb_text_anchor);
+    self.absorb_text_anchor:SetLabel(L['OPTIONS_ABSORB_TEXT_ANCHOR']);
+    self.absorb_text_anchor:SetTooltip(L['OPTIONS_ABSORB_TEXT_ANCHOR_TOOLTIP']);
+    self.absorb_text_anchor:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_ANCHOR_TOOLTIP'], self.Tabs[1]);
+    self.absorb_text_anchor:SetEnabled(O.db.absorb_text_enabled);
+    self.absorb_text_anchor.OnValueChangedCallback = function(_, value)
+        O.db.absorb_text_anchor = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.absorb_text_x_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.absorb_text_x_offset:SetPosition('LEFT', self.absorb_text_anchor, 'RIGHT', 16, 0);
+    self.absorb_text_x_offset:SetW(137);
+    self.absorb_text_x_offset:SetLabel(L['OPTIONS_ABSORB_TEXT_X_OFFSET']);
+    self.absorb_text_x_offset:SetTooltip(L['OPTIONS_ABSORB_TEXT_X_OFFSET_TOOLTIP']);
+    self.absorb_text_x_offset:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_X_OFFSET_TOOLTIP'], self.Tabs[1]);
+    self.absorb_text_x_offset:SetValues(O.db.absorb_text_x_offset, -99, 100, 1);
+    self.absorb_text_x_offset:SetEnabled(O.db.absorb_text_enabled);
+    self.absorb_text_x_offset.OnValueChangedCallback = function(_, value)
+        O.db.absorb_text_x_offset = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.absorb_text_y_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.absorb_text_y_offset:SetPosition('LEFT', self.absorb_text_x_offset, 'RIGHT', 16, 0);
+    self.absorb_text_y_offset:SetW(137);
+    self.absorb_text_y_offset:SetLabel(L['OPTIONS_ABSORB_TEXT_Y_OFFSET']);
+    self.absorb_text_y_offset:SetTooltip(L['OPTIONS_ABSORB_TEXT_Y_OFFSET_TOOLTIP']);
+    self.absorb_text_y_offset:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_Y_OFFSET_TOOLTIP'], self.Tabs[1]);
+    self.absorb_text_y_offset:SetValues(O.db.absorb_text_y_offset, -99, 100, 1);
+    self.absorb_text_y_offset:SetEnabled(O.db.absorb_text_enabled);
+    self.absorb_text_y_offset.OnValueChangedCallback = function(_, value)
+        O.db.absorb_text_y_offset = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     -- Colors Tab ------------------------------------------------------------------------------------------------------------

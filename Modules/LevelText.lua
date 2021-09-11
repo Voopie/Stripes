@@ -92,13 +92,13 @@ function Module:UpdateLocalConfig()
     TEXT_X_OFFSET = O.db.level_text_x_offset;
     TEXT_Y_OFFSET = O.db.level_text_y_offset;
 
-    CUSTOM_COLOR_ENABLED    = O.db.level_text_custom_color_enabled;
+    CUSTOM_COLOR_ENABLED = O.db.level_text_custom_color_enabled;
 
-    CUSTOM_COLOR            = CUSTOM_COLOR or {};
-    CUSTOM_COLOR[1]         = O.db.level_text_custom_color[1];
-    CUSTOM_COLOR[2]         = O.db.level_text_custom_color[2];
-    CUSTOM_COLOR[3]         = O.db.level_text_custom_color[3];
-    CUSTOM_COLOR[4]         = O.db.level_text_custom_color[4] or 1;
+    CUSTOM_COLOR    = CUSTOM_COLOR or {};
+    CUSTOM_COLOR[1] = O.db.level_text_custom_color[1];
+    CUSTOM_COLOR[2] = O.db.level_text_custom_color[2];
+    CUSTOM_COLOR[3] = O.db.level_text_custom_color[3];
+    CUSTOM_COLOR[4] = O.db.level_text_custom_color[4] or 1;
 
     UpdateFontObject(StripesLevelTextFont, O.db.level_text_font_value, O.db.level_text_font_size, O.db.level_text_font_flag, O.db.level_text_font_shadow);
 end
