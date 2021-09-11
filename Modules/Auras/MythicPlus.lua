@@ -32,6 +32,7 @@ local whitelist = {
     [323059] = true, -- Mists of Tirna Scithe (Droman's Wrath)
     [333241] = true, -- Theater of Pain (Raging Tantrum)
     [331510] = true, -- Theater of Pain (Death Wish)
+    [333227] = true, -- De Other Side (Undying Rage)
 };
 
 local PlayerState = D.Player.State;
