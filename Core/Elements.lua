@@ -798,9 +798,13 @@ do
             if state then
                 self.CurrentValueBox.Text:SetFontObject('StripesOptionsNormalFont');
                 self.Text:SetFontObject('StripesOptionsHighlightFont');
+                self.plusButton:Enable();
+                self.minusButton:Enable();
             else
                 self.CurrentValueBox.Text:SetFontObject('StripesOptionsDisabledFont');
                 self.Text:SetFontObject('StripesOptionsDisabledFont');
+                self.plusButton:Disable();
+                self.minusButton:Disable();
             end
         end);
 
