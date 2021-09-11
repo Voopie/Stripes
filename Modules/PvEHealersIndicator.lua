@@ -56,6 +56,7 @@ local mobsIDs = {
 
     -- Shadowlands
     [164921] = true, -- Mists of Tirna Scithe: Drust Harvester
+    [166275] = true, -- Mists of Tirna Scithe: Mistveil Shaper
     [166299] = true, -- Mists of Tirna Scithe: Mistveil Tender
     [167111] = true, -- Mists of Tirna Scithe: Spinemaw Staghorn
 
