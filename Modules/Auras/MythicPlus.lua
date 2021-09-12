@@ -22,23 +22,31 @@ local SCALE, SQUARE, BUFFFRAME_OFFSET_Y;
 local StripesAurasMythicPlusCooldownFont = CreateFont('StripesAurasMythicPlusCooldownFont');
 local StripesAurasMythicPlusCountFont    = CreateFont('StripesAurasMythicPlusCountFont');
 
-local whitelist = {
+local HelpfulList = {
     [226510] = true, -- Mythic Plus Affix: Sanguine
     [209859] = true, -- Mythic Plus Affix: Bolstering
     [343502] = true, -- Mythic Plus Affix: Inspiring
     [228318] = true, -- Mythic Plus Affix: Raging
 
     -- Shadowlands
-    [323059] = true, -- Mists of Tirna Scithe (Droman's Wrath)
     [333241] = true, -- Theater of Pain (Raging Tantrum)
     [331510] = true, -- Theater of Pain (Death Wish)
     [333227] = true, -- De Other Side (Undying Rage)
+    [334800] = true, -- De Other Side (Enrage)
     [321220] = true, -- Sanguine Depths (Frenzy)
+    [322569] = true, -- Mists of Tirna Scithe (Hand of Thros)
+    [326450] = true, -- Halls of Atonement (Loyal Beasts)
+    [328015] = true, -- Plaguefall (Wonder Grow)
+};
+
+local HarmfulList = {
+    [323059] = true, -- Mists of Tirna Scithe (Droman's Wrath)
 };
 
 local PlayerState = D.Player.State;
 local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
-local filter = 'HELPFUL';
+local filterHelpful = 'HELPFUL';
+local filterHarmful = 'HARMFUL';
 local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 
 local function CreateAnchor(unitframe)
@@ -76,7 +84,7 @@ local function Update(unitframe)
     end
 
     unitframe.AurasMythicPlus.unit   = unitframe.data.unit;
-    unitframe.AurasMythicPlus.filter = filter;
+    unitframe.AurasMythicPlus.filter = filterHelpful;
 
     table_wipe(unitframe.AurasMythicPlus.buffCompact);
 
@@ -84,10 +92,37 @@ local function Update(unitframe)
     local index = 1;
 
     local _, buffName, texture, count, duration, expirationTime, spellId;
-    AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, unitframe.AurasMythicPlus.filter, BUFF_MAX_DISPLAY, function(...)
+    AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, filterHelpful, BUFF_MAX_DISPLAY, function(...)
         buffName, texture, count, _, duration, expirationTime, _, _, _, spellId = ...;
 
-        if whitelist[spellId] then
+        if HelpfulList[spellId] then
+            local cCount = count == 0 and 1 or count;
+
+            if not unitframe.AurasMythicPlus.buffCompact[spellId] then
+                unitframe.AurasMythicPlus.buffCompact[spellId] = {
+                    index          = index,
+                    buffName       = buffName,
+                    texture        = texture,
+                    count          = cCount,
+                    duration       = duration,
+                    expirationTime = expirationTime,
+                };
+            else
+                unitframe.AurasMythicPlus.buffCompact[spellId].count          = unitframe.AurasMythicPlus.buffCompact[spellId].count + cCount;
+                unitframe.AurasMythicPlus.buffCompact[spellId].duration       = duration;
+                unitframe.AurasMythicPlus.buffCompact[spellId].expirationTime = expirationTime;
+            end
+        end
+
+        index = index + 1;
+
+        return index > BUFF_MAX_DISPLAY;
+    end);
+
+    AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, filterHarmful, BUFF_MAX_DISPLAY, function(...)
+        buffName, texture, count, _, duration, expirationTime, _, _, _, spellId = ...;
+
+        if HarmfulList[spellId] then
             local cCount = count == 0 and 1 or count;
 
             if not unitframe.AurasMythicPlus.buffCompact[spellId] then
