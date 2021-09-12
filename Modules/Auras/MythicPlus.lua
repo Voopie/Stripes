@@ -33,6 +33,7 @@ local whitelist = {
     [333241] = true, -- Theater of Pain (Raging Tantrum)
     [331510] = true, -- Theater of Pain (Death Wish)
     [333227] = true, -- De Other Side (Undying Rage)
+    [321220] = true, -- Sanguine Depths (Frenzy)
 };
 
 local PlayerState = D.Player.State;
