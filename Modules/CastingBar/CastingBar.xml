@@ -1,10 +1,59 @@
 <Ui>
     <Script file="CastingBar.lua"/>
 
+    <Frame name="StripesFullBorderTemplate" mixin="StripesBorderTemplateMixin" ignoreParentScale="true" setAllPoints="true" useParentLevel="true" virtual="true">
+        <Layers>
+            <Layer level="BACKGROUND" textureSubLevel="-8">
+                <!-- Left -->
+                <Texture parentKey="Left" parentArray="Textures">
+                    <Size x="1.0" />
+                    <Anchors>
+                        <Anchor point="TOPRIGHT" relativePoint="TOPLEFT" x="0" y="1.0" />
+                        <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMLEFT" x="0" y="-1.0" />
+                    </Anchors>
+                    <Color r="1" g="1" b="1" a="1"/>
+                </Texture>
+        
+                <!-- Right -->
+                <Texture parentKey="Right" parentArray="Textures">
+                    <Size x="1.0" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="0" y="1.0" />
+                        <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT" x="0" y="-1.0" />
+                    </Anchors>
+                    <Color r="1" g="1" b="1" a="1"/>
+                </Texture>
+        
+                <!-- Bottom -->
+                <Texture parentKey="Bottom" parentArray="Textures">
+                    <Size y="1.0" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" />
+                        <Anchor point="TOPRIGHT" relativePoint="BOTTOMRIGHT" />
+                    </Anchors>
+                    <Color r="1" g="1" b="1" a="1"/>
+                </Texture>
+        
+                <!-- Top -->
+                <Texture parentKey="Top" parentArray="Textures">
+                    <Size y="1.0" />
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT" />
+                        <Anchor point="BOTTOMRIGHT" relativePoint="TOPRIGHT" />
+                    </Anchors>
+                    <Color r="1" g="1" b="1" a="1"/>
+                </Texture>
+            </Layer>
+        </Layers>
+    </Frame>
+
     <StatusBar name="StripesNameplateCastBarTemplate" frameLevel="100" virtual="true" hidden="true">
         <KeyValues>
             <KeyValue key="iconWhenNoninterruptible" value="true" type="boolean"/>
         </KeyValues>
+        <Frames>
+            <Frame parentKey="border" inherits="StripesFullBorderTemplate" />
+        </Frames>
         <Layers>
             <Layer level="BACKGROUND">
                 <Texture parentKey="background">
@@ -22,12 +71,6 @@
                         <Color r="0" g="0" b="0" />
                     </Shadow>
                 </FontString>
-                <Texture parentKey="BorderShield" atlas="nameplates-InterruptShield" hidden="true" ignoreParentAlpha="true">
-                    <Size x="12" y="12" />
-                    <Anchors>
-                        <Anchor point="CENTER" relativePoint="LEFT" x="0" y="0"/>
-                    </Anchors>
-                </Texture>
                 <Texture parentKey="Icon" hidden="true" ignoreParentAlpha="true">
                     <Size x="12" y="12" />
                     <TexCoords left="0.1" right="0.9" top="0.1" bottom="0.9" />  

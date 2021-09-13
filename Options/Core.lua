@@ -375,6 +375,9 @@ O.DefaultValues = {
     castbar_show_icon_notinterruptible = true,
     castbar_show_interrupt_ready_tick  = false,
     castbar_interrupt_ready_tick_color = { 0.1, 0.1, 0.1, 1 },
+    castbar_border_enabled = false,
+    castbar_border_size = 1,
+    castbar_border_color = { 0.1, 0.1, 0.1, 1 },
 
     who_interrupted_enabled = true,
 

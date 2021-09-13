@@ -343,8 +343,43 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.castbar_border_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.castbar_border_enabled:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -12);
+    self.castbar_border_enabled:SetLabel(L['OPTIONS_CAST_BAR_BORDER_ENABLED']);
+    self.castbar_border_enabled:SetChecked(O.db.castbar_border_enabled);
+    self.castbar_border_enabled:SetTooltip(L['OPTIONS_CAST_BAR_BORDER_ENABLED_TOOLTIP']);
+    self.castbar_border_enabled:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.castbar_border_enabled.Callback = function(self)
+        O.db.castbar_border_enabled = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.castbar_border_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.castbar_border_color:SetPosition('LEFT', self.castbar_border_enabled.Label, 'RIGHT', 12, 0);
+    self.castbar_border_color:SetTooltip(L['OPTIONS_CAST_BAR_BORDER_COLOR_TOOLTIP']);
+    self.castbar_border_color:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.castbar_border_color:SetValue(unpack(O.db.castbar_border_color));
+    self.castbar_border_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_border_color[1] = r;
+        O.db.castbar_border_color[2] = g;
+        O.db.castbar_border_color[3] = b;
+        O.db.castbar_border_color[4] = a or 1;
+
+        Handler:UpdateAll();
+    end
+
+    self.castbar_border_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_border_size:SetPosition('LEFT', self.castbar_border_color, 'RIGHT', 12, 0);
+    self.castbar_border_size:SetValues(O.db.castbar_border_size, 0.5, 10, 0.5);
+    self.castbar_border_size:SetTooltip(L['OPTIONS_CAST_BAR_BORDER_SIZE_TOOLTIP']);
+    self.castbar_border_size:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_SIZE_TOOLTIP'], self.Tabs[1]);
+    self.castbar_border_size.OnValueChangedCallback = function(_, value)
+        O.db.castbar_border_size = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -8);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_border_enabled, 'BOTTOMLEFT', 0, -6);
     Delimiter:SetW(self:GetWidth());
 
     local ResetCastBarColorsButton = E.CreateTextureButton(self.TabsFrames['CommonTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);

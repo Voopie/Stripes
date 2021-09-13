@@ -26,6 +26,7 @@ local ENEMY_WIDTH, FRIENDLY_WIDTH, PLAYER_WIDTH;
 local SHOW_TRADE_SKILLS, SHOW_SHIELD, SHOW_ICON_NOTINTERRUPTIBLE;
 local SHOW_INTERRUPT_READY_TICK, INTERRUPT_READY_TICK_COLOR;
 local NAME_ONLY_MODE;
+local BORDER_ENABLED, BORDER_COLOR, BORDER_SIZE;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 
@@ -214,6 +215,21 @@ local function UpdateVisibility(unitframe)
         unitframe.castingBar.showInterruptReadyTick       = SHOW_INTERRUPT_READY_TICK;
         unitframe.castingBar.useInterruptReadyInTimeColor = USE_INTERRUPT_READY_IN_TIME_COLOR;
         unitframe.castingBar.useInterruptNotReadyColor    = USE_INTERRUPT_NOT_READY_COLOR;
+
+        if BORDER_ENABLED then
+            unitframe.castingBar.border:SetVertexColor(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+            unitframe.castingBar.border:SetBorderSizes(BORDER_SIZE, BORDER_SIZE - 0.5);
+            unitframe.castingBar.border:UpdateSizes();
+            unitframe.castingBar.border:Show();
+        else
+            unitframe.castingBar.border:Hide();
+        end
+    end
+end
+
+local function UpdateBorderSizes(unitframe)
+    if BORDER_ENABLED and unitframe.castingBar then
+        unitframe.castingBar.border:UpdateSizes();
     end
 end
 
@@ -311,12 +327,25 @@ function Module:UpdateLocalConfig()
 
     SHOW_INTERRUPT_READY_TICK = O.db.castbar_show_interrupt_ready_tick;
 
+    BORDER_ENABLED = O.db.castbar_border_enabled;
+    BORDER_SIZE = O.db.castbar_border_size;
+    BORDER_COLOR = BORDER_COLOR or {};
+    BORDER_COLOR[1] = O.db.castbar_border_color[1];
+    BORDER_COLOR[2] = O.db.castbar_border_color[2];
+    BORDER_COLOR[3] = O.db.castbar_border_color[3];
+    BORDER_COLOR[4] = O.db.castbar_border_color[4] or 1;
+
     UpdateFontObject(StripesCastBarFont, FONT_VALUE, FONT_SIZE, FONT_FLAG, FONT_SHADOW);
 end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-    self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateStyle);
+
+    self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', function(unitframe)
+        UpdateStyle(unitframe);
+        UpdateBorderSizes(unitframe);
+    end);
+
     self:SecureUnitFrameHook('CompactUnitFrame_SetUnit', UpdateVisibility);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', UpdateVisibility); -- for duels, for example
 end
