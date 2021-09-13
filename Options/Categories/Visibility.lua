@@ -383,6 +383,8 @@ panel.Load = function(self)
         panel.show_enemy_totems:SetEnabled(O.db.show_enemy);
 
         C_CVar.SetCVar('nameplateShowEnemies', O.db.show_enemy and 1 or 0);
+
+        Handler:UpdateAll();
     end
 
     self.show_enemy_only_in_combat = E.CreateCheckButton(self.TabsFrames['EnemyTab'].Content);
@@ -402,6 +404,8 @@ panel.Load = function(self)
         end
 
         panel.show_enemy:SetEnabled(not O.db.show_enemy_only_in_combat);
+
+        Handler:UpdateAll();
     end
 
     self.show_enemy_minions = E.CreateCheckButton(self.TabsFrames['EnemyTab'].Content);
@@ -495,6 +499,8 @@ panel.Load = function(self)
         panel.show_friendly_totems:SetEnabled(O.db.show_friendly);
 
         C_CVar.SetCVar('nameplateShowFriends', O.db.show_friendly and 1 or 0);
+
+        Handler:UpdateAll();
     end
 
     self.show_friendly_only_in_combat = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
@@ -514,6 +520,8 @@ panel.Load = function(self)
         end
 
         panel.show_friendly:SetEnabled(not O.db.show_friendly_only_in_combat);
+
+        Handler:UpdateAll();
     end
 
     self.show_friendly_minions = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
