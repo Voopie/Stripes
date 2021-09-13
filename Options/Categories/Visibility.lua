@@ -686,11 +686,12 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    -- overlapping not stacking
     self.name_only_friendly_stacking = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
     self.name_only_friendly_stacking:SetPosition('LEFT', self.name_only_friendly_players_only.Label, 'RIGHT', 12, 0);
-    self.name_only_friendly_stacking:SetLabel(L['OPTIONS_VISIBILITY_NAME_ONLY_STACKING']);
-    self.name_only_friendly_stacking:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_STACKING_TOOLTIP']);
-    self.name_only_friendly_stacking:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_STACKING_TOOLTIP'], self.Tabs[3]);
+    self.name_only_friendly_stacking:SetLabel(L['OPTIONS_VISIBILITY_NAME_ONLY_OVERLAPPING']);
+    self.name_only_friendly_stacking:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_OVERLAPPING_TOOLTIP']);
+    self.name_only_friendly_stacking:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_OVERLAPPING_TOOLTIP'], self.Tabs[3]);
     self.name_only_friendly_stacking:SetChecked(O.db.name_only_friendly_stacking);
     self.name_only_friendly_stacking:SetEnabled(O.db.name_only_friendly_enabled);
     self.name_only_friendly_stacking.Callback = function(self)
