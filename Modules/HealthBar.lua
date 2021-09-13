@@ -291,7 +291,7 @@ local function GetAuraColor(unit)
     return false;
 end
 
-local function Auras_UpdateColor(unitframe)
+local function UpdateAurasColor(unitframe)
     if not AURAS_HPBAR_COLORING then
         return false;
     end
@@ -336,32 +336,30 @@ local function UpdateRaidTargetColor(unitframe)
 end
 
 local function Update(unitframe)
-    if unitframe.data.unitType == 'SELF' then
+    if not unitframe:IsShown() or unitframe.data.unitType == 'SELF' then
         return;
     end
 
-    if unitframe:IsShown() then
-        if UpdateRaidTargetColor(unitframe) then
-            return;
-        end
+    if UpdateRaidTargetColor(unitframe) then
+        return;
+    end
 
-        unitframe.data.auraColored = Auras_UpdateColor(unitframe);
+    unitframe.data.auraColored = UpdateAurasColor(unitframe);
 
-        if unitframe.data.auraColored then
-            return;
-        end
+    if unitframe.data.auraColored then
+        return;
+    end
 
-        UpdateHealthColor(unitframe);
-        Execution_Stop(unitframe);
+    UpdateHealthColor(unitframe);
+    Execution_Stop(unitframe);
 
-        if EXECUTION_ENABLED and (unitframe.data.healthPer <= EXECUTION_LOW_PERCENT or (EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= EXECUTION_HIGH_PERCENT)) then
-            Execution_Start(unitframe);
+    if EXECUTION_ENABLED and (unitframe.data.healthPer <= EXECUTION_LOW_PERCENT or (EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= EXECUTION_HIGH_PERCENT)) then
+        Execution_Start(unitframe);
+    else
+        if CustomHealthBar_CheckNPC(unitframe.data.npcId) then
+            CustomHealthBar_UpdateColor(unitframe);
         else
-            if CustomHealthBar_CheckNPC(unitframe.data.npcId) then
-                CustomHealthBar_UpdateColor(unitframe);
-            else
-                Threat_UpdateColor(unitframe);
-            end
+            Threat_UpdateColor(unitframe);
         end
     end
 end
@@ -534,7 +532,7 @@ function Module:UnitRemoved(unitframe)
 end
 
 function Module:UnitAura(unitframe)
-    unitframe.data.auraColored = Auras_UpdateColor(unitframe);
+    unitframe.data.auraColored = UpdateAurasColor(unitframe);
 
     if not unitframe.data.auraColored and unitframe.data.wasAuraColored then
         Update(unitframe);
