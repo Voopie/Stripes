@@ -84,6 +84,10 @@ L['GLOW_TYPE_PIXEL_SHORT'] = 'Пиксельное';
 L['GLOW_TYPE_AUTOCAST_SHORT'] = 'Автоприменение';
 L['GLOW_TYPE_BUTTON_SHORT'] = 'Действие';
 
+L['INTEGER'] = 'Целое число';
+L['FLOAT_1'] = 'Один знак после запятой';
+L['FLOAT_2'] = 'Два знака после запятой';
+
 L['OPTIONS_NEED_RELOAD'] = 'Необходимо перезагрузить интерфейс, чтобы применить настройки.\r\rПерезагрузить сейчас?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'Настройки были скрыты на время боя и будут автоматически открыты после завершения боя';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'Настройки будут открыты после боя';
@@ -369,6 +373,7 @@ L['OPTIONS_CAST_BAR_ICON_RIGHT_SIDE'] = 'Иконка: правая сторон
 L['OPTIONS_CAST_BAR_ICON_RIGHT_SIDE_TOOLTIP'] = 'Показывать иконку заклинания на правой стороне';
 L['OPTIONS_CAST_BAR_TIMER_ENABLED'] = 'Таймер';
 L['OPTIONS_CAST_BAR_TIMER_ENABLED_TOOLTIP'] = 'Показывать таймер рядом с полосой заклинания';
+L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP'] = 'Формат таймера полосы заклинания';
 L['OPTIONS_WHO_INTERRUPTED_ENABLED'] = 'Кто прервал заклинание';
 L['OPTIONS_WHO_INTERRUPTED_ENABLED_TOOLTIP'] = 'Показывать имя игрока, прервавшего заклинание';
 L['OPTIONS_CAST_BAR_START_CAST_COLOR'] = 'Обычные';

@@ -258,7 +258,10 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    TIMER_ENABLED   = O.db.castbar_timer_enabled;
+    TIMER_ENABLED = O.db.castbar_timer_enabled;
+    TIMER_FORMAT  = O.db.castbar_timer_format;
+    TIMER_FORMAT = '%.' .. TIMER_FORMAT - 1 .. 'f / %.' .. TIMER_FORMAT - 1 .. 'f';
+
     ON_HP_BAR       = O.db.castbar_on_hp_bar;
     ICON_LARGE      = O.db.castbar_icon_large;
     ICON_RIGHT_SIDE = O.db.castbar_icon_right_side;

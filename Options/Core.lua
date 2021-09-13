@@ -211,6 +211,12 @@ O.Lists = {
         [1] = L['OPTIONS_NAME_ONLY_FRIENDLY_MODE_ANYWHERE'],
         [2] = L['OPTIONS_NAME_ONLY_FRIENDLY_MODE_ONLY_OPEN_WORLD'],
     },
+
+    castbar_timer_format = {
+        [1] = L['INTEGER'],
+        [2] = L['FLOAT_1'],
+        [3] = L['FLOAT_2'],
+    }
 };
 
 -- ~399
@@ -353,6 +359,7 @@ O.DefaultValues = {
 
     -- Cast bar
     castbar_timer_enabled    = true,
+    castbar_timer_format     = 3,
     castbar_text_font_value  = 'BigNoodleToo Titling',
     castbar_text_font_size   = 11,
     castbar_text_font_flag   = 1, -- NONE

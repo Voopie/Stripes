@@ -84,6 +84,10 @@ L['GLOW_TYPE_PIXEL_SHORT'] = 'Pixel';
 L['GLOW_TYPE_AUTOCAST_SHORT'] = 'Autocast';
 L['GLOW_TYPE_BUTTON_SHORT'] = 'Button';
 
+L['INTEGER'] = 'Integer';
+L['FLOAT_1'] = 'One decimal place';
+L['FLOAT_2'] = 'Two decimal places';
+
 L['OPTIONS_NEED_RELOAD'] = 'You must reload the interface to apply the settings.\r\rReload now?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'The settings were hidden for the duration of the combat and will be automatically opened after the end of the combat';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'The settings will be opened after the combat';
@@ -369,6 +373,7 @@ L['OPTIONS_CAST_BAR_ICON_RIGHT_SIDE'] = 'Icon: right side';
 L['OPTIONS_CAST_BAR_ICON_RIGHT_SIDE_TOOLTIP'] = 'Show spell icon on the right side';
 L['OPTIONS_CAST_BAR_TIMER_ENABLED'] = 'Timer';
 L['OPTIONS_CAST_BAR_TIMER_ENABLED_TOOLTIP'] = 'Show a timer next to the cast bar';
+L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP'] = 'Cast bar timer format';
 L['OPTIONS_WHO_INTERRUPTED_ENABLED'] = 'Who interrupted';
 L['OPTIONS_WHO_INTERRUPTED_ENABLED_TOOLTIP'] = 'Show the name of the player who interrupted a spell';
 L['OPTIONS_CAST_BAR_START_CAST_COLOR'] = 'Normal';

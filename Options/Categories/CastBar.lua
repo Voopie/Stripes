@@ -614,6 +614,22 @@ panel.Load = function(self)
     self.castbar_timer_enabled:SetChecked(O.db.castbar_timer_enabled);
     self.castbar_timer_enabled.Callback = function(self)
         O.db.castbar_timer_enabled = self:GetChecked();
+
+        panel.castbar_timer_format:SetEnabled(O.db.castbar_timer_enabled);
+
+        Handler:UpdateAll();
+    end
+
+    self.castbar_timer_format = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.castbar_timer_format:SetPosition('LEFT', self.castbar_timer_enabled.Label, 'RIGHT', 12, 0);
+    self.castbar_timer_format:SetSize(200, 20);
+    self.castbar_timer_format:SetList(O.Lists.castbar_timer_format);
+    self.castbar_timer_format:SetValue(O.db.castbar_timer_format);
+    self.castbar_timer_format:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP']);
+    self.castbar_timer_format:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP'], self.Tabs[1]);
+    self.castbar_timer_format:SetEnabled(O.db.castbar_timer_enabled);
+    self.castbar_timer_format.OnValueChangedCallback = function(_, value)
+        O.db.castbar_timer_format = tonumber(value);
         Handler:UpdateAll();
     end
 
