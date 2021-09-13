@@ -30,7 +30,7 @@ local RAID_TARGET_HPBAR_COLORING, AURAS_HPBAR_COLORING;
 local THREAT_ENABLED, THREAT_COLOR_ISTAPPED_BORDER, CUSTOM_HP_ENABLED, CUSTOM_HP_DATA;
 local EXECUTION_ENABLED, EXECUTION_COLOR, EXECUTION_GLOW, EXECUTION_LOW_PERCENT, EXECUTION_HIGH_ENABLED, EXECUTION_HIGH_PERCENT;
 local HEALTH_BAR_CLASS_COLOR_ENEMY, HEALTH_BAR_CLASS_COLOR_FRIENDLY;
-local HEALTH_BAR_TEXTURE, BORDER_HIDE, BORDER_THIN, BORDER_COLOR, BORDER_SELECTED_COLOR, SAME_BORDER_COLOR;
+local HEALTH_BAR_TEXTURE, BORDER_SIZE, BORDER_HIDE, BORDER_COLOR, BORDER_SELECTED_COLOR, SAME_BORDER_COLOR;
 local SHOW_CLICKABLE_AREA, ENEMY_MINUS_HEIGHT, ENEMY_HEIGHT, FRIENDLY_HEIGHT, PLAYER_HEIGHT;
 local TP_ENABLED, TP_COLORING, TP_POINT, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y;
 local HPBAR_COLOR_DC, HPBAR_COLOR_TAPPED, HPBAR_COLOR_ENEMY_NPC, HPBAR_COLOR_ENEMY_PLAYER, HPBAR_COLOR_FRIENDLY_NPC, HPBAR_COLOR_FRIENDLY_PLAYER, HPBAR_COLOR_NEUTRAL;
@@ -394,11 +394,9 @@ local function UpdateBorder(unitframe)
 end
 
 local function UpdateBorderSizes(unitframe)
-    local borderSize, minPixels;
+    local borderSize, minPixels = BORDER_SIZE, BORDER_SIZE - 0.5;
 
-    if BORDER_THIN and unitframe.data.unitType ~= 'SELF' then
-        borderSize, minPixels = 1, 1;
-    else
+    if unitframe.data.unitType == 'SELF' then
         borderSize, minPixels = 1, 2;
     end
 
@@ -615,7 +613,7 @@ function Module:UpdateLocalConfig()
     HEALTH_BAR_TEXTURE = O.db.health_bar_texture_value;
 
     BORDER_HIDE = O.db.health_bar_border_hide;
-    BORDER_THIN = O.db.health_bar_border_thin;
+    BORDER_SIZE = O.db.health_bar_border_size;
 
     SAME_BORDER_COLOR = O.db.health_bar_border_same_color;
 

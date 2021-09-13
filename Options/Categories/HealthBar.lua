@@ -86,19 +86,8 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.health_bar_border_thin = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.health_bar_border_thin:SetPosition('TOPLEFT', self.health_bar_border_color, 'BOTTOMLEFT', 5, -8);
-    self.health_bar_border_thin:SetLabel(L['OPTIONS_HEALTH_BAR_BORDER_THIN']);
-    self.health_bar_border_thin:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_THIN_TOOLTIP']);
-    self.health_bar_border_thin:SetChecked(O.db.health_bar_border_thin);
-    self.health_bar_border_thin:AddToSearch(button, nil, self.Tabs[1]);
-    self.health_bar_border_thin.Callback = function(self)
-        O.db.health_bar_border_thin = self:GetChecked();
-        Handler:UpdateAll();
-    end
-
     self.health_bar_border_hide = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.health_bar_border_hide:SetPosition('LEFT', self.health_bar_border_thin.Label, 'RIGHT', 12, 0);
+    self.health_bar_border_hide:SetPosition('TOPLEFT', self.health_bar_border_color, 'BOTTOMLEFT', 5, -8);
     self.health_bar_border_hide:SetLabel(L['OPTIONS_HEALTH_BAR_BORDER_HIDE']);
     self.health_bar_border_hide:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_HIDE_TOOLTIP']);
     self.health_bar_border_hide:SetChecked(O.db.health_bar_border_hide);
@@ -119,8 +108,19 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.health_bar_border_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_border_size:SetPosition('TOPLEFT', self.health_bar_border_hide, 'BOTTOMLEFT', 0, -12);
+    self.health_bar_border_size:SetValues(O.db.health_bar_border_size, 0.5, 10, 0.5);
+    self.health_bar_border_size:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_SIZE_TOOLTIP']);
+    self.health_bar_border_size:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BORDER_SIZE_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_border_size:SetEnabled(O.db.absorb_text_enabled);
+    self.health_bar_border_size.OnValueChangedCallback = function(_, value)
+        O.db.health_bar_border_size = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     local AbsorbHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_ABSORB']);
-    AbsorbHeader:SetPosition('TOPLEFT', self.health_bar_border_thin, 'BOTTOMLEFT', 0, -4);
+    AbsorbHeader:SetPosition('TOPLEFT', self.health_bar_border_size, 'BOTTOMLEFT', 0, -4);
     AbsorbHeader:SetW(self:GetWidth());
 
     self.absorb_bar_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);

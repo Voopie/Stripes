@@ -283,10 +283,10 @@ O.DefaultValues = {
     -- Health bar
     health_bar_texture_value         = 'Stripes Flat';
     health_bar_border_hide           = false,
-    health_bar_border_thin           = true,
     health_bar_border_selected_color = { 1, 1, 1, 0.9},
     health_bar_border_color          = { 0, 0, 0, 1 },
     health_bar_border_same_color     = false,
+    health_bar_border_size           = 1,
 
     health_bar_class_color_friendly = C_CVar.GetCVar('ShowClassColorInFriendlyNameplate') == '1',
     health_bar_class_color_enemy    = C_CVar.GetCVar('ShowClassColorInNameplate') == '1',
