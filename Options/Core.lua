@@ -219,7 +219,7 @@ O.Lists = {
     }
 };
 
--- ~403
+-- ~405
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -591,6 +591,8 @@ O.DefaultValues = {
 
     auras_spellsteal_enabled              = true,
     auras_spellsteal_color                = { 1, 0.95, 0.35, 1 },
+    auras_spellsteal_glow_enabled         = false,
+    auras_spellsteal_glow_type            = 1,  -- PIXEL
     auras_spellsteal_countdown_enabled    = true,
     auras_spellsteal_cooldown_font_value  = 'BigNoodleToo Titling',
     auras_spellsteal_cooldown_font_size   = 14,

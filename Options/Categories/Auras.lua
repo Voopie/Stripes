@@ -1331,6 +1331,33 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_spellsteal_glow_enabled = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
+    self.auras_spellsteal_glow_enabled:SetPosition('LEFT', self.auras_spellsteal_color, 'RIGHT', 12, 0);
+    self.auras_spellsteal_glow_enabled:SetLabel(L['OPTIONS_AURAS_SPELLSTEAL_GLOW_ENABLED']);
+    self.auras_spellsteal_glow_enabled:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_GLOW_ENABLED_TOOLTIP']);
+    self.auras_spellsteal_glow_enabled:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_GLOW_ENABLED_TOOLTIP'], self.Tabs[2]);
+    self.auras_spellsteal_glow_enabled:SetChecked(O.db.auras_spellsteal_glow_enabled);
+    self.auras_spellsteal_glow_enabled.Callback = function(self)
+        O.db.auras_spellsteal_glow_enabled = self:GetChecked();
+
+        panel.auras_spellsteal_glow_type:SetEnabled(O.db.auras_spellsteal_glow_enabled);
+
+        Handler:UpdateAll();
+    end
+
+    self.auras_spellsteal_glow_type = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
+    self.auras_spellsteal_glow_type:SetPosition('LEFT', self.auras_spellsteal_glow_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_spellsteal_glow_type:SetSize(220, 20);
+    self.auras_spellsteal_glow_type:SetList(O.Lists.glow_type);
+    self.auras_spellsteal_glow_type:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_GLOW_TYPE_TOOLTIP']);
+    self.auras_spellsteal_glow_type:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_GLOW_TYPE_TOOLTIP'], self.Tabs[2]);
+    self.auras_spellsteal_glow_type:SetValue(O.db.auras_spellsteal_glow_type);
+    self.auras_spellsteal_glow_type:SetEnabled(O.db.auras_spellsteal_glow_enabled);
+    self.auras_spellsteal_glow_type.OnValueChangedCallback = function(_, value)
+        O.db.auras_spellsteal_glow_type = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     self.auras_spellsteal_countdown_enabled = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
     self.auras_spellsteal_countdown_enabled:SetPosition('TOPLEFT', self.auras_spellsteal_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_spellsteal_countdown_enabled:SetLabel(L['OPTIONS_AURAS_SPELLSTEAL_COUNTDOWN_ENABLED']);

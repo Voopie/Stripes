@@ -15,6 +15,10 @@ local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 local SCALE, SQUARE, BUFFFRAME_OFFSET_Y;
+local GLOW_ENABLED, GLOW_TYPE;
+
+-- Libraries
+local LCG = S.Libraries.LCG;
 
 local StripesAurasSpellStealCooldownFont = CreateFont('StripesAurasSpellStealCooldownFont');
 local StripesAurasSpellStealCountFont    = CreateFont('StripesAurasSpellStealCountFont');
@@ -52,6 +56,26 @@ local function UpdateAnchor(unitframe)
     else
         unitframe.AurasSpellSteal:SetPoint('BOTTOM', unitframe.BuffFrame, 'TOP', 0, 4);
     end
+end
+
+local function UpdateGlow(aura)
+    if not GLOW_ENABLED then
+        return;
+    end
+
+    if GLOW_TYPE == 1 then
+        LCG.PixelGlow_Start(aura);
+    elseif GLOW_TYPE == 2 then
+        LCG.AutoCastGlow_Start(aura);
+    elseif GLOW_TYPE == 3 then
+        LCG.ButtonGlow_Start(aura);
+    end
+end
+
+local function StopGlow(aura)
+    LCG.PixelGlow_Stop(aura);
+    LCG.AutoCastGlow_Stop(aura);
+    LCG.ButtonGlow_Stop(aura);
 end
 
 local function Update(unitframe)
@@ -124,6 +148,9 @@ local function Update(unitframe)
                 aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
             end
 
+            StopGlow(aura);
+            UpdateGlow(aura);
+
             aura:SetShown(true);
 
             buffIndex = buffIndex + 1;
@@ -177,6 +204,17 @@ local function UpdateStyle(unitframe)
 
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+
+        StopGlow(aura);
+        UpdateGlow(aura);
+    end
+end
+
+local function Reset(unitframe)
+    if unitframe.AurasSpellSteal and unitframe.AurasSpellSteal.buffList then
+        for _, aura in ipairs(unitframe.AurasSpellSteal.buffList) do
+            StopGlow(aura);
+        end
     end
 end
 
@@ -189,6 +227,8 @@ function Module:UnitRemoved(unitframe)
     if unitframe.AurasSpellSteal then
         unitframe.AurasSpellSteal:SetShown(false);
     end
+
+    Reset(unitframe);
 end
 
 function Module:UnitAura(unitframe)
@@ -221,6 +261,9 @@ function Module:UpdateLocalConfig()
     SQUARE = O.db.auras_square;
 
     BUFFFRAME_OFFSET_Y = O.db.auras_offset_y;
+
+    GLOW_ENABLED = O.db.auras_spellsteal_glow_enabled;
+    GLOW_TYPE    = O.db.auras_spellsteal_glow_type;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);
