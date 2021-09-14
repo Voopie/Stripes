@@ -72,7 +72,7 @@ panel.Load = function(self)
     self.size_enemy_clickable_width:SetLabel(L['OPTIONS_SIZES_ENEMY_CLICKABLE_WIDTH']);
     self.size_enemy_clickable_width:SetTooltip(L['OPTIONS_SIZES_ENEMY_CLICKABLE_WIDTH_TOOLTIP']);
     self.size_enemy_clickable_width:AddToSearch(button, L['OPTIONS_SIZES_ENEMY_CLICKABLE_WIDTH_TOOLTIP'], self.Tabs[1]);
-    self.size_enemy_clickable_width:SetValues(O.db.size_enemy_clickable_width, 40, 300, 1);
+    self.size_enemy_clickable_width:SetValues(O.db.size_enemy_clickable_width, 25, 300, 1);
     self.size_enemy_clickable_width.OnValueChangedCallback = function(_, value)
         O.db.size_enemy_clickable_width = tonumber(value);
 
@@ -84,7 +84,7 @@ panel.Load = function(self)
     self.size_enemy_clickable_height = E.CreateSlider(self.TabsFrames['EnemyTab'].Content);
     self.size_enemy_clickable_height:SetPosition('LEFT', self.size_enemy_clickable_width, 'RIGHT', 12, 0);
     self.size_enemy_clickable_height:SetW(137);
-    self.size_enemy_clickable_height:SetValues(O.db.size_enemy_clickable_height, 2, 300, 1);
+    self.size_enemy_clickable_height:SetValues(O.db.size_enemy_clickable_height, 1, 300, 1);
     self.size_enemy_clickable_height:SetLabel(L['OPTIONS_SIZES_ENEMY_CLICKABLE_HEIGHT']);
     self.size_enemy_clickable_height:SetTooltip(L['OPTIONS_SIZES_ENEMY_CLICKABLE_HEIGHT_TOOLTIP']);
     self.size_enemy_clickable_height:AddToSearch(button, L['OPTIONS_SIZES_ENEMY_CLICKABLE_HEIGHT_TOOLTIP'], self.Tabs[1]);
@@ -102,7 +102,7 @@ panel.Load = function(self)
     self.size_enemy_height:SetLabel(L['OPTIONS_SIZES_ENEMY_HEIGHT']);
     self.size_enemy_height:SetTooltip(L['OPTIONS_SIZES_ENEMY_HEIGHT_TOOLTIP']);
     self.size_enemy_height:AddToSearch(button, L['OPTIONS_SIZES_ENEMY_HEIGHT_TOOLTIP'], self.Tabs[1]);
-    self.size_enemy_height:SetValues(O.db.size_enemy_height, 2, 300, 1);
+    self.size_enemy_height:SetValues(O.db.size_enemy_height, 1, 300, 1);
     self.size_enemy_height.OnValueChangedCallback = function(_, value)
         O.db.size_enemy_height = tonumber(value);
         Handler:UpdateAll();
@@ -114,7 +114,7 @@ panel.Load = function(self)
     self.size_enemy_minus_height:SetLabel(L['OPTIONS_SIZES_ENEMY_MINUS_HEIGHT']);
     self.size_enemy_minus_height:SetTooltip(L['OPTIONS_SIZES_ENEMY_MINUS_HEIGHT_TOOLTIP']);
     self.size_enemy_minus_height:AddToSearch(button, L['OPTIONS_SIZES_ENEMY_MINUS_HEIGHT_TOOLTIP'], self.Tabs[1]);
-    self.size_enemy_minus_height:SetValues(O.db.size_enemy_minus_height, 2, 300, 1);
+    self.size_enemy_minus_height:SetValues(O.db.size_enemy_minus_height, 1, 300, 1);
     self.size_enemy_minus_height.OnValueChangedCallback = function(_, value)
         O.db.size_enemy_minus_height = tonumber(value);
         Handler:UpdateAll();
@@ -149,7 +149,7 @@ panel.Load = function(self)
     self.size_friendly_clickable_width:SetLabel(L['OPTIONS_SIZES_FRIENDLY_CLICKABLE_WIDTH']);
     self.size_friendly_clickable_width:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_CLICKABLE_WIDTH_TOOLTIP']);
     self.size_friendly_clickable_width:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_CLICKABLE_WIDTH_TOOLTIP'], self.Tabs[2]);
-    self.size_friendly_clickable_width:SetValues(O.db.size_friendly_clickable_width, 40, 300, 1);
+    self.size_friendly_clickable_width:SetValues(O.db.size_friendly_clickable_width, 25, 300, 1);
     self.size_friendly_clickable_width.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_clickable_width = tonumber(value);
 
@@ -171,7 +171,7 @@ panel.Load = function(self)
     self.size_friendly_clickable_height = E.CreateSlider(self.TabsFrames['FriendlyTab'].Content);
     self.size_friendly_clickable_height:SetPosition('LEFT', self.size_friendly_clickable_width, 'RIGHT', 12, 0);
     self.size_friendly_clickable_height:SetW(137);
-    self.size_friendly_clickable_height:SetValues(O.db.size_friendly_clickable_height, 2, 300, 1);
+    self.size_friendly_clickable_height:SetValues(O.db.size_friendly_clickable_height, 1, 300, 1);
     self.size_friendly_clickable_height:SetLabel(L['OPTIONS_SIZES_FRIENDLY_CLICKABLE_HEIGHT']);
     self.size_friendly_clickable_height:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_CLICKABLE_HEIGHT_TOOLTIP']);
     self.size_friendly_clickable_height:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_CLICKABLE_HEIGHT_TOOLTIP'], self.Tabs[2]);
@@ -199,7 +199,7 @@ panel.Load = function(self)
     self.size_friendly_height:SetLabel(L['OPTIONS_SIZES_FRIENDLY_HEIGHT']);
     self.size_friendly_height:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_HEIGHT_TOOLTIP']);
     self.size_friendly_height:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_HEIGHT_TOOLTIP'], self.Tabs[2]);
-    self.size_friendly_height:SetValues(O.db.size_friendly_height, 2, 300, 1);
+    self.size_friendly_height:SetValues(O.db.size_friendly_height, 1, 300, 1);
     self.size_friendly_height.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_height = tonumber(value);
         Handler:UpdateAll();
