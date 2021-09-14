@@ -28,6 +28,7 @@ D.Player.State = {
     inArena             = false,
     inPvPInstance       = false,
     inBossFight         = false,
+    inRaid              = false,
 };
 
 D.MythicPlusPercentage = {
@@ -377,6 +378,22 @@ function Data:PLAYER_LOGIN()
     D.MaxLevel = GetMaxLevelForLatestExpansion();
 end
 
+
+
+local raidDifficultyIDs = {
+    [1]  = true, -- PrimaryRaidNormal
+    [3]  = true, -- Raid10Normal
+    [4]  = true, -- Raid25Normal
+    [5]  = true, -- Raid10Heroic
+    [6]  = true, -- Raid25Heroic
+    [7]  = true, -- RaidLFR
+    [9]  = true, -- Raid40
+    [15] = true, -- PrimaryRaidHeroic
+    [16] = true, -- PrimaryRaidMythic
+    [17] = true, -- PrimaryRaidLFR
+    [33] = true, -- RaidTimewalker
+};
+
 function Data:PLAYER_ENTERING_WORLD()
     UpdatePlayer();
 
@@ -396,6 +413,10 @@ function Data:PLAYER_ENTERING_WORLD()
             D.Player.State.inMythicPlusTeeming = U.IsAffixCurrent(TEEMING_AFFIX_ID);
         end
 
+        if raidDifficultyIDs[difficulty] then
+            D.Player.State.inRaid = true;
+        end
+
         D.Player.State.inPvPInstance = (instanceType == 'pvp' or instanceType == 'arena') and true or false;
     else
         D.Player.State.inInstance          = false;
@@ -404,9 +425,12 @@ function Data:PLAYER_ENTERING_WORLD()
         D.Player.State.inMythicPlus        = false;
         D.Player.State.inMythicPlusTeeming = false;
         D.Player.State.inPvPInstance       = false;
+        D.Player.State.inRaid              = false;
     end
 
     D.Player.State.inArena = U.IsInArena();
+
+    print(D.Player.State.inRaid)
 end
 
 function Data:CHALLENGE_MODE_START()
