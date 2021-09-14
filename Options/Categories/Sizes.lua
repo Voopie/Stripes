@@ -215,7 +215,7 @@ panel.Load = function(self)
     self.size_friendly_instance_clickable_width:SetLabel(L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_WIDTH']);
     self.size_friendly_instance_clickable_width:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_WIDTH_TOOLTIP']);
     self.size_friendly_instance_clickable_width:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_WIDTH_TOOLTIP'], self.Tabs[2]);
-    self.size_friendly_instance_clickable_width:SetValues(O.db.size_friendly_instance_clickable_width, 40, 300, 1);
+    self.size_friendly_instance_clickable_width:SetValues(O.db.size_friendly_instance_clickable_width, 25, 300, 1);
     self.size_friendly_instance_clickable_width.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_instance_clickable_width = tonumber(value);
 
