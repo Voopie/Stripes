@@ -237,7 +237,7 @@ panel.Load = function(self)
     self.size_friendly_instance_clickable_height = E.CreateSlider(self.TabsFrames['FriendlyTab'].Content);
     self.size_friendly_instance_clickable_height:SetPosition('LEFT', self.size_friendly_instance_clickable_width, 'RIGHT', 12, 0);
     self.size_friendly_instance_clickable_height:SetW(137);
-    self.size_friendly_instance_clickable_height:SetValues(O.db.size_friendly_instance_clickable_height, 2, 300, 1);
+    self.size_friendly_instance_clickable_height:SetValues(O.db.size_friendly_instance_clickable_height, 1, 300, 1);
     self.size_friendly_instance_clickable_height:SetLabel(L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_HEIGHT']);
     self.size_friendly_instance_clickable_height:SetTooltip(L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_HEIGHT_TOOLTIP']);
     self.size_friendly_instance_clickable_height:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_HEIGHT_TOOLTIP'], self.Tabs[2]);
