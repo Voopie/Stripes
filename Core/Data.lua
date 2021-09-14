@@ -378,8 +378,6 @@ function Data:PLAYER_LOGIN()
     D.MaxLevel = GetMaxLevelForLatestExpansion();
 end
 
-
-
 local raidDifficultyIDs = {
     [1]  = true, -- PrimaryRaidNormal
     [3]  = true, -- Raid10Normal
