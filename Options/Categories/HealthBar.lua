@@ -134,7 +134,7 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.health_bar_custom_border_path = E.CreateEditBox(self);
+    self.health_bar_custom_border_path = E.CreateEditBox(self.TabsFrames['CommonTab'].Content);
     self.health_bar_custom_border_path:SetPosition('LEFT', self.health_bar_custom_border_enabled.Label, 'RIGHT', 24, 0);
     self.health_bar_custom_border_path:SetSize(320, 22);
     self.health_bar_custom_border_path:SetText(O.db.health_bar_custom_border_path);
