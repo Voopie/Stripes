@@ -34,6 +34,7 @@ local HEALTH_BAR_TEXTURE, BORDER_SIZE, BORDER_HIDE, BORDER_COLOR, BORDER_SELECTE
 local SHOW_CLICKABLE_AREA, ENEMY_MINUS_HEIGHT, ENEMY_HEIGHT, FRIENDLY_HEIGHT, PLAYER_HEIGHT;
 local TP_ENABLED, TP_COLORING, TP_POINT, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y;
 local HPBAR_COLOR_DC, HPBAR_COLOR_TAPPED, HPBAR_COLOR_ENEMY_NPC, HPBAR_COLOR_ENEMY_PLAYER, HPBAR_COLOR_FRIENDLY_NPC, HPBAR_COLOR_FRIENDLY_PLAYER, HPBAR_COLOR_NEUTRAL;
+local CUSTOM_BORDER_ENABLED, CUSTOM_BORDER_PATH, CUSTOM_BORDER_WIDTH, CUSTOM_BORDER_HEIGHT, CUSTOM_BORDER_HEIGHT_MINUS, CUSTOM_BORDER_X_OFFSET, CUSTOM_BORDER_Y_OFFSET;
 
 local StripesThreatPercentageFont = CreateFont('StripesThreatPercentageFont');
 
@@ -511,12 +512,36 @@ local function UpdateTexture(unitframe)
     end
 end
 
+local function CreateCustomBorder(unitframe)
+    if not unitframe.healthBar.CustomBorderTexture then
+        unitframe.healthBar.CustomBorderTexture = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
+    end
+end
+
+local function UpdateCustomBorder(unitframe)
+    if not unitframe.healthBar.CustomBorderTexture then
+        return;
+    end
+
+    if CUSTOM_BORDER_ENABLED then
+        unitframe.healthBar.CustomBorderTexture:SetTexture(CUSTOM_BORDER_PATH);
+        unitframe.healthBar.CustomBorderTexture:SetPoint('CENTER', CUSTOM_BORDER_X_OFFSET, CUSTOM_BORDER_Y_OFFSET);
+        unitframe.healthBar.CustomBorderTexture:SetSize(CUSTOM_BORDER_WIDTH, unitframe.data.minus and CUSTOM_BORDER_HEIGHT_MINUS or CUSTOM_BORDER_HEIGHT);
+        unitframe.healthBar.CustomBorderTexture:Show();
+    else
+        unitframe.healthBar.CustomBorderTexture:Hide();
+    end
+end
+
 function Module:UnitAdded(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
     unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
 
     CreateThreatPercentage(unitframe);
     UpdateThreatPercentage(unitframe);
+
+    CreateCustomBorder(unitframe);
+    UpdateCustomBorder(unitframe);
 
     Update(unitframe);
     UpdateTexture(unitframe);
@@ -545,6 +570,8 @@ function Module:Update(unitframe)
     unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
 
     UpdateThreatPercentagePosition(unitframe);
+
+    UpdateCustomBorder(unitframe);
 
     Update(unitframe);
     UpdateTexture(unitframe);
@@ -675,6 +702,14 @@ function Module:UpdateLocalConfig()
     HPBAR_COLOR_NEUTRAL[2] = O.db.health_bar_color_neutral_npc[2];
     HPBAR_COLOR_NEUTRAL[3] = O.db.health_bar_color_neutral_npc[3];
     HPBAR_COLOR_NEUTRAL[4] = O.db.health_bar_color_neutral_npc[4] or 1;
+
+    CUSTOM_BORDER_ENABLED      = O.db.health_bar_custom_border_enabled;
+    CUSTOM_BORDER_PATH         = O.db.health_bar_custom_border_path;
+    CUSTOM_BORDER_WIDTH        = O.db.health_bar_custom_border_width;
+    CUSTOM_BORDER_HEIGHT       = O.db.health_bar_custom_border_height;
+    CUSTOM_BORDER_HEIGHT_MINUS = O.db.health_bar_custom_border_height_minus;
+    CUSTOM_BORDER_X_OFFSET     = O.db.health_bar_custom_border_x_offset;
+    CUSTOM_BORDER_Y_OFFSET     = O.db.health_bar_custom_border_y_offset;
 end
 
 function Module:PLAYER_LOGIN()

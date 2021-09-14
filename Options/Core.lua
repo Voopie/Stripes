@@ -219,7 +219,7 @@ O.Lists = {
     }
 };
 
--- ~405
+-- ~412
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -293,6 +293,14 @@ O.DefaultValues = {
     health_bar_border_color          = { 0, 0, 0, 1 },
     health_bar_border_same_color     = false,
     health_bar_border_size           = 1,
+
+    health_bar_custom_border_enabled      = false,
+    health_bar_custom_border_path         = '',
+    health_bar_custom_border_width        = 132,
+    health_bar_custom_border_height       = 22,
+    health_bar_custom_border_height_minus = 10,
+    health_bar_custom_border_x_offset     = 0,
+    health_bar_custom_border_y_offset     = 0,
 
     health_bar_class_color_friendly = C_CVar.GetCVar('ShowClassColorInFriendlyNameplate') == '1',
     health_bar_class_color_enemy    = C_CVar.GetCVar('ShowClassColorInNameplate') == '1',

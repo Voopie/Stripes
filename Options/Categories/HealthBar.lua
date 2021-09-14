@@ -119,8 +119,99 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    local CustomBorderHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_CUSTOM_BORDER']);
+    CustomBorderHeader:SetPosition('TOPLEFT', self.health_bar_border_size, 'BOTTOMLEFT', 0, -4);
+    CustomBorderHeader:SetW(self:GetWidth());
+
+    self.health_bar_custom_border_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_custom_border_enabled:SetPosition('TOPLEFT', CustomBorderHeader, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_custom_border_enabled:SetLabel(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_ENABLED']);
+    self.health_bar_custom_border_enabled:SetTooltip(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_ENABLED_TOOLTIP']);
+    self.health_bar_custom_border_enabled:SetChecked(O.db.health_bar_custom_border_enabled);
+    self.health_bar_custom_border_enabled:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_custom_border_enabled.Callback = function(self)
+        O.db.health_bar_custom_border_enabled = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
+    self.health_bar_custom_border_path = E.CreateEditBox(self);
+    self.health_bar_custom_border_path:SetPosition('LEFT', self.health_bar_custom_border_enabled.Label, 'RIGHT', 24, 0);
+    self.health_bar_custom_border_path:SetSize(320, 22);
+    self.health_bar_custom_border_path:SetText(O.db.health_bar_custom_border_path);
+    self.health_bar_custom_border_path:SetInstruction(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_PATH']);
+    self.health_bar_custom_border_path:SetTooltip(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_PATH']);
+    self.health_bar_custom_border_path:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_PATH'], self.Tabs[1]);
+    self.health_bar_custom_border_path.Callback = function(self)
+        local path = strtrim(self:GetText());
+
+        if not path or path == '' then
+            path = O.DefaultValues.health_bar_custom_border_path;
+        end
+
+        O.db.health_bar_custom_border_path = path;
+
+        self:SetText(path);
+
+        Handler:UpdateAll();
+    end
+
+    self.health_bar_custom_border_width = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_custom_border_width:SetPosition('TOPLEFT', self.health_bar_custom_border_enabled, 'BOTTOMLEFT', 0, -28);
+    self.health_bar_custom_border_width:SetValues(O.db.health_bar_custom_border_width, 25, 300, 1);
+    self.health_bar_custom_border_width:SetLabel(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_WIDTH']);
+    self.health_bar_custom_border_width:SetTooltip(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_WIDTH_TOOLTIP']);
+    self.health_bar_custom_border_width:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_WIDTH_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_custom_border_width.OnValueChangedCallback = function(_, value)
+        O.db.health_bar_custom_border_width = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_bar_custom_border_height = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_custom_border_height:SetPosition('LEFT', self.health_bar_custom_border_width, 'RIGHT', 12, 0);
+    self.health_bar_custom_border_height:SetValues(O.db.health_bar_custom_border_height, 2, 300, 1);
+    self.health_bar_custom_border_height:SetLabel(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_HEIGHT']);
+    self.health_bar_custom_border_height:SetTooltip(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_HEIGHT_TOOLTIP']);
+    self.health_bar_custom_border_height:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_HEIGHT_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_custom_border_height.OnValueChangedCallback = function(_, value)
+        O.db.health_bar_custom_border_height = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_bar_custom_border_height_minus = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_custom_border_height_minus:SetPosition('LEFT', self.health_bar_custom_border_height, 'RIGHT', 12, 0);
+    self.health_bar_custom_border_height_minus:SetValues(O.db.health_bar_custom_border_height_minus, 2, 300, 1);
+    self.health_bar_custom_border_height_minus:SetLabel(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_HEIGHT_MINUS']);
+    self.health_bar_custom_border_height_minus:SetTooltip(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_HEIGHT_MINUS_TOOLTIP']);
+    self.health_bar_custom_border_height_minus:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_HEIGHT_MINUS_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_custom_border_height_minus.OnValueChangedCallback = function(_, value)
+        O.db.health_bar_custom_border_height_minus = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_bar_custom_border_x_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_custom_border_x_offset:SetPosition('TOPLEFT', self.health_bar_custom_border_width, 'BOTTOMLEFT', 0, -28);
+    self.health_bar_custom_border_x_offset:SetValues(O.db.health_bar_custom_border_x_offset, -50, 50, 1);
+    self.health_bar_custom_border_x_offset:SetLabel(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_X_OFFSET']);
+    self.health_bar_custom_border_x_offset:SetTooltip(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_X_OFFSET_TOOLTIP']);
+    self.health_bar_custom_border_x_offset:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_X_OFFSET_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_custom_border_x_offset.OnValueChangedCallback = function(_, value)
+        O.db.health_bar_custom_border_x_offset = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    self.health_bar_custom_border_y_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_custom_border_y_offset:SetPosition('LEFT', self.health_bar_custom_border_x_offset, 'RIGHT', 12, 0);
+    self.health_bar_custom_border_y_offset:SetValues(O.db.health_bar_custom_border_y_offset, -50, 50, 1);
+    self.health_bar_custom_border_y_offset:SetLabel(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_Y_OFFSET']);
+    self.health_bar_custom_border_y_offset:SetTooltip(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_Y_OFFSET_TOOLTIP']);
+    self.health_bar_custom_border_y_offset:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_Y_OFFSET_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_custom_border_y_offset.OnValueChangedCallback = function(_, value)
+        O.db.health_bar_custom_border_y_offset = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     local AbsorbHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_ABSORB']);
-    AbsorbHeader:SetPosition('TOPLEFT', self.health_bar_border_size, 'BOTTOMLEFT', 0, -4);
+    AbsorbHeader:SetPosition('TOPLEFT', self.health_bar_custom_border_x_offset, 'BOTTOMLEFT', 0, -8);
     AbsorbHeader:SetW(self:GetWidth());
 
     self.absorb_bar_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
