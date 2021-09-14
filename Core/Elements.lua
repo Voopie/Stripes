@@ -858,6 +858,7 @@ do
 
         editbox.SetInstruction = function(self, text)
             self.Instruction:SetText(text);
+            self.Instruction:SetShown(self:GetText() == '');
         end
 
         editbox.AddToSearch = AddToSearch;
@@ -938,6 +939,8 @@ do
         editbox.SetTooltip = function(self, tooltip)
             self.tooltip = tooltip;
         end
+
+        editbox.useLastValue = true;
 
         editbox.type = 'EditBox';
 
