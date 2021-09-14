@@ -427,8 +427,6 @@ function Data:PLAYER_ENTERING_WORLD()
     end
 
     D.Player.State.inArena = U.IsInArena();
-
-    print(D.Player.State.inRaid)
 end
 
 function Data:CHALLENGE_MODE_START()
