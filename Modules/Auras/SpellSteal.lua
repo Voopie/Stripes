@@ -112,11 +112,13 @@ local function Update(unitframe)
                     aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
                 end
 
+                aura.Cooldown:SetFrameStrata('HIGH');
                 aura.Cooldown:GetRegions():ClearAllPoints();
                 aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
                 aura.Cooldown:GetRegions():SetFontObject(StripesAurasSpellStealCooldownFont);
                 aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
+                aura.CountFrame:SetFrameStrata('HIGH');
                 aura.CountFrame.Count:ClearAllPoints();
                 aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
                 aura.CountFrame.Count:SetFontObject(StripesAurasSpellStealCountFont);
