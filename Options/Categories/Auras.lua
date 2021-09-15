@@ -1341,6 +1341,7 @@ panel.Load = function(self)
         O.db.auras_spellsteal_glow_enabled = self:GetChecked();
 
         panel.auras_spellsteal_glow_type:SetEnabled(O.db.auras_spellsteal_glow_enabled);
+        panel.auras_spellsteal_glow_color:SetEnabled(O.db.auras_spellsteal_glow_enabled);
 
         Handler:UpdateAll();
     end
@@ -1363,6 +1364,7 @@ panel.Load = function(self)
     self.auras_spellsteal_glow_color:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_GLOW_COLOR_TOOLTIP']);
     self.auras_spellsteal_glow_color:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_GLOW_COLOR_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_glow_color:SetValue(unpack(O.db.auras_spellsteal_glow_color));
+    self.auras_spellsteal_glow_color:SetEnabled(O.db.auras_spellsteal_glow_enabled);
     self.auras_spellsteal_glow_color.OnValueChanged = function(_, r, g, b, a)
         O.db.auras_spellsteal_glow_color[1] = r;
         O.db.auras_spellsteal_glow_color[2] = g;
