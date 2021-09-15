@@ -727,6 +727,7 @@ L['OPTIONS_AURAS_SPELLSTEAL_COLOR_TOOLTIP'] = 'Цвет границ разве�
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_ENABLED'] = 'Свечение';
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_ENABLED_TOOLTIP'] = 'Включить свечение развеиваемых аур';
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_TYPE_TOOLTIP'] = 'Тип свечения развеиваемых аур';
+L['OPTIONS_AURAS_SPELLSTEAL_GLOW_COLOR_TOOLTIP'] = 'Цвет свечения развеиваемых аур';
 L['OPTIONS_AURAS_SPELLSTEAL_COUNTDOWN_ENABLED'] = 'Оставшееся время';
 L['OPTIONS_AURAS_SPELLSTEAL_COUNTDOWN_ENABLED_TOOLTIP'] = 'Показывать оставшееся время развеиваемых аур';
 L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_VALUE'] = 'Шрифт таймера развеиваемых аур';

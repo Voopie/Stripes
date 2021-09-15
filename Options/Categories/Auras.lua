@@ -1358,6 +1358,20 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_spellsteal_glow_color = E.CreateColorPicker(self.TabsFrames['SpellstealTab'].Content);
+    self.auras_spellsteal_glow_color:SetPosition('LEFT', self.auras_spellsteal_glow_type, 'RIGHT', 12, 0);
+    self.auras_spellsteal_glow_color:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_GLOW_COLOR_TOOLTIP']);
+    self.auras_spellsteal_glow_color:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_GLOW_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.auras_spellsteal_glow_color:SetValue(unpack(O.db.auras_spellsteal_glow_color));
+    self.auras_spellsteal_glow_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.auras_spellsteal_glow_color[1] = r;
+        O.db.auras_spellsteal_glow_color[2] = g;
+        O.db.auras_spellsteal_glow_color[3] = b;
+        O.db.auras_spellsteal_glow_color[4] = a or 1;
+
+        Handler:UpdateAll();
+    end
+
     self.auras_spellsteal_countdown_enabled = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
     self.auras_spellsteal_countdown_enabled:SetPosition('TOPLEFT', self.auras_spellsteal_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_spellsteal_countdown_enabled:SetLabel(L['OPTIONS_AURAS_SPELLSTEAL_COUNTDOWN_ENABLED']);

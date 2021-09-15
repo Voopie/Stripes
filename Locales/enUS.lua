@@ -727,6 +727,7 @@ L['OPTIONS_AURAS_SPELLSTEAL_COLOR_TOOLTIP'] = 'Border color of dispellable auras
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_ENABLED'] = 'Glow';
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_ENABLED_TOOLTIP'] = 'Show glow on dispellable auras';
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_TYPE_TOOLTIP'] = 'Type of dispellable auras glow';
+L['OPTIONS_AURAS_SPELLSTEAL_GLOW_COLOR_TOOLTIP'] = 'Color of dispellable auras glow';
 L['OPTIONS_AURAS_SPELLSTEAL_COUNTDOWN_ENABLED'] = 'Show countdown';
 L['OPTIONS_AURAS_SPELLSTEAL_COUNTDOWN_ENABLED_TOOLTIP'] = 'Show countdown timers on dispellable auras';
 L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_VALUE'] = 'Countdown font of dispellable auras';

@@ -16,7 +16,7 @@ local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 local SCALE, SQUARE, BUFFFRAME_OFFSET_Y;
-local GLOW_ENABLED, GLOW_TYPE;
+local GLOW_ENABLED, GLOW_TYPE, GLOW_COLOR;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -65,11 +65,11 @@ local function UpdateGlow(aura)
     end
 
     if GLOW_TYPE == 1 then
-        LCG.PixelGlow_Start(aura);
+        LCG.PixelGlow_Start(aura, GLOW_COLOR);
     elseif GLOW_TYPE == 2 then
-        LCG.AutoCastGlow_Start(aura);
+        LCG.AutoCastGlow_Start(aura, GLOW_COLOR);
     elseif GLOW_TYPE == 3 then
-        LCG.ButtonGlow_Start(aura);
+        LCG.ButtonGlow_Start(aura, GLOW_COLOR);
     end
 end
 
@@ -267,6 +267,11 @@ function Module:UpdateLocalConfig()
 
     GLOW_ENABLED = O.db.auras_spellsteal_glow_enabled;
     GLOW_TYPE    = O.db.auras_spellsteal_glow_type;
+    GLOW_COLOR = GLOW_COLOR or {};
+    GLOW_COLOR[1] = O.db.auras_spellsteal_glow_color;
+    GLOW_COLOR[2] = O.db.auras_spellsteal_glow_color;
+    GLOW_COLOR[3] = O.db.auras_spellsteal_glow_color;
+    GLOW_COLOR[4] = O.db.auras_spellsteal_glow_color or 1;
 
     BORDER_COLOR = BORDER_COLOR or {};
     BORDER_COLOR[1] = O.db.auras_spellsteal_color;
