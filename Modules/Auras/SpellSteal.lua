@@ -267,17 +267,17 @@ function Module:UpdateLocalConfig()
 
     GLOW_ENABLED = O.db.auras_spellsteal_glow_enabled;
     GLOW_TYPE    = O.db.auras_spellsteal_glow_type;
-    GLOW_COLOR = GLOW_COLOR or {};
-    GLOW_COLOR[1] = O.db.auras_spellsteal_glow_color;
-    GLOW_COLOR[2] = O.db.auras_spellsteal_glow_color;
-    GLOW_COLOR[3] = O.db.auras_spellsteal_glow_color;
-    GLOW_COLOR[4] = O.db.auras_spellsteal_glow_color or 1;
+    GLOW_COLOR    = GLOW_COLOR or {};
+    GLOW_COLOR[1] = O.db.auras_spellsteal_glow_color[1];
+    GLOW_COLOR[2] = O.db.auras_spellsteal_glow_color[2];
+    GLOW_COLOR[3] = O.db.auras_spellsteal_glow_color[3];
+    GLOW_COLOR[4] = O.db.auras_spellsteal_glow_color[4] or 1;
 
-    BORDER_COLOR = BORDER_COLOR or {};
-    BORDER_COLOR[1] = O.db.auras_spellsteal_color;
-    BORDER_COLOR[2] = O.db.auras_spellsteal_color;
-    BORDER_COLOR[3] = O.db.auras_spellsteal_color;
-    BORDER_COLOR[4] = O.db.auras_spellsteal_color or 1;
+    BORDER_COLOR    = BORDER_COLOR or {};
+    BORDER_COLOR[1] = O.db.auras_spellsteal_color[1];
+    BORDER_COLOR[2] = O.db.auras_spellsteal_color[2];
+    BORDER_COLOR[3] = O.db.auras_spellsteal_color[3];
+    BORDER_COLOR[4] = O.db.auras_spellsteal_color[4] or 1;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);
