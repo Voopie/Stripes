@@ -10,6 +10,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED;
+local BORDER_COLOR;
 local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
 local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
@@ -123,7 +124,7 @@ local function Update(unitframe)
                 aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
                 aura.CountFrame.Count:SetFontObject(StripesAurasSpellStealCountFont);
 
-                aura.Border:SetColorTexture(unpack(O.db.auras_spellsteal_color));
+                aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
 
                 unitframe.AurasSpellSteal.buffList[buffIndex] = aura;
             end
@@ -266,6 +267,12 @@ function Module:UpdateLocalConfig()
 
     GLOW_ENABLED = O.db.auras_spellsteal_glow_enabled;
     GLOW_TYPE    = O.db.auras_spellsteal_glow_type;
+
+    BORDER_COLOR = BORDER_COLOR or {};
+    BORDER_COLOR[1] = O.db.auras_spellsteal_color;
+    BORDER_COLOR[2] = O.db.auras_spellsteal_color;
+    BORDER_COLOR[3] = O.db.auras_spellsteal_color;
+    BORDER_COLOR[4] = O.db.auras_spellsteal_color or 1;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);
