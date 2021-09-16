@@ -113,7 +113,6 @@ panel.Load = function(self)
     self.health_bar_border_size:SetValues(O.db.health_bar_border_size, 0.5, 10, 0.5);
     self.health_bar_border_size:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_SIZE_TOOLTIP']);
     self.health_bar_border_size:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BORDER_SIZE_TOOLTIP'], self.Tabs[1]);
-    self.health_bar_border_size:SetEnabled(O.db.absorb_text_enabled);
     self.health_bar_border_size.OnValueChangedCallback = function(_, value)
         O.db.health_bar_border_size = tonumber(value);
         Handler:UpdateAll();
