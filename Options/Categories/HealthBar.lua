@@ -190,7 +190,7 @@ panel.Load = function(self)
     self.health_bar_custom_border_x_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.health_bar_custom_border_x_offset:SetPosition('TOPLEFT', self.health_bar_custom_border_width, 'BOTTOMLEFT', 0, -28);
     self.health_bar_custom_border_x_offset:SetValues(O.db.health_bar_custom_border_x_offset, -50, 50, 1);
-    self.health_bar_custom_border_x_offset:SetLabel(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_X_OFFSET']);
+    self.health_bar_custom_border_x_offset:SetLabel(L['OFFSET_X_SHORT']);
     self.health_bar_custom_border_x_offset:SetTooltip(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_X_OFFSET_TOOLTIP']);
     self.health_bar_custom_border_x_offset:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_X_OFFSET_TOOLTIP'], self.Tabs[1]);
     self.health_bar_custom_border_x_offset.OnValueChangedCallback = function(_, value)
@@ -201,7 +201,7 @@ panel.Load = function(self)
     self.health_bar_custom_border_y_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.health_bar_custom_border_y_offset:SetPosition('LEFT', self.health_bar_custom_border_x_offset, 'RIGHT', 12, 0);
     self.health_bar_custom_border_y_offset:SetValues(O.db.health_bar_custom_border_y_offset, -50, 50, 1);
-    self.health_bar_custom_border_y_offset:SetLabel(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_Y_OFFSET']);
+    self.health_bar_custom_border_y_offset:SetLabel(L['OFFSET_Y_SHORT']);
     self.health_bar_custom_border_y_offset:SetTooltip(L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_Y_OFFSET_TOOLTIP']);
     self.health_bar_custom_border_y_offset:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_Y_OFFSET_TOOLTIP'], self.Tabs[1]);
     self.health_bar_custom_border_y_offset.OnValueChangedCallback = function(_, value)
@@ -337,7 +337,7 @@ panel.Load = function(self)
     self.absorb_text_x_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.absorb_text_x_offset:SetPosition('LEFT', self.absorb_text_anchor, 'RIGHT', 16, 0);
     self.absorb_text_x_offset:SetW(137);
-    self.absorb_text_x_offset:SetLabel(L['OPTIONS_ABSORB_TEXT_X_OFFSET']);
+    self.absorb_text_x_offset:SetLabel(L['OFFSET_X_SHORT']);
     self.absorb_text_x_offset:SetTooltip(L['OPTIONS_ABSORB_TEXT_X_OFFSET_TOOLTIP']);
     self.absorb_text_x_offset:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_X_OFFSET_TOOLTIP'], self.Tabs[1]);
     self.absorb_text_x_offset:SetValues(O.db.absorb_text_x_offset, -99, 100, 1);
@@ -350,7 +350,7 @@ panel.Load = function(self)
     self.absorb_text_y_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.absorb_text_y_offset:SetPosition('LEFT', self.absorb_text_x_offset, 'RIGHT', 16, 0);
     self.absorb_text_y_offset:SetW(137);
-    self.absorb_text_y_offset:SetLabel(L['OPTIONS_ABSORB_TEXT_Y_OFFSET']);
+    self.absorb_text_y_offset:SetLabel(L['OFFSET_Y_SHORT']);
     self.absorb_text_y_offset:SetTooltip(L['OPTIONS_ABSORB_TEXT_Y_OFFSET_TOOLTIP']);
     self.absorb_text_y_offset:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_Y_OFFSET_TOOLTIP'], self.Tabs[1]);
     self.absorb_text_y_offset:SetValues(O.db.absorb_text_y_offset, -99, 100, 1);

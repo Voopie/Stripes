@@ -1013,7 +1013,7 @@ panel.Load = function(self)
     self.auras_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.auras_offset_y:SetPosition('LEFT', self.auras_scale, 'RIGHT', 16, 0);
     self.auras_offset_y:SetValues(O.db.auras_offset_y, -50, 50, 1);
-    self.auras_offset_y:SetLabel(L['OPTIONS_AURAS_OFFSET_Y']);
+    self.auras_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_offset_y:SetTooltip(L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP']);
     self.auras_offset_y:AddToSearch(button, L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
     self.auras_offset_y.OnValueChangedCallback = function(_, value)
@@ -1374,8 +1374,27 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['SpellstealTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
+    self.auras_spellsteal_offset_y = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
+    self.auras_spellsteal_offset_y:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_spellsteal_offset_y:SetValues(O.db.auras_spellsteal_offset_y, -50, 50, 1);
+    self.auras_spellsteal_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
+    self.auras_spellsteal_offset_y:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_Y_TOOLTIP']);
+    self.auras_spellsteal_offset_y:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_Y_TOOLTIP'], self.Tabs[2]);
+    self.auras_spellsteal_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.auras_spellsteal_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['SpellstealTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_offset_y, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.auras_spellsteal_countdown_enabled = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_countdown_enabled:SetPosition('TOPLEFT', self.auras_spellsteal_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_spellsteal_countdown_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.auras_spellsteal_countdown_enabled:SetLabel(L['OPTIONS_AURAS_SPELLSTEAL_COUNTDOWN_ENABLED']);
     self.auras_spellsteal_countdown_enabled:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNTDOWN_ENABLED_TOOLTIP']);
     self.auras_spellsteal_countdown_enabled:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNTDOWN_ENABLED_TOOLTIP'], self.Tabs[2]);
@@ -1590,8 +1609,27 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
+    self.auras_mythicplus_offset_y = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_offset_y:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_mythicplus_offset_y:SetValues(O.db.auras_mythicplus_offset_y, -50, 50, 1);
+    self.auras_mythicplus_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
+    self.auras_mythicplus_offset_y:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_Y_TOOLTIP']);
+    self.auras_mythicplus_offset_y:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_Y_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_offset_y, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.auras_mythicplus_countdown_enabled = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_countdown_enabled:SetPosition('TOPLEFT', self.auras_mythicplus_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_mythicplus_countdown_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.auras_mythicplus_countdown_enabled:SetLabel(L['OPTIONS_AURAS_MYTHICPLUS_COUNTDOWN_ENABLED']);
     self.auras_mythicplus_countdown_enabled:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNTDOWN_ENABLED_TOOLTIP']);
     self.auras_mythicplus_countdown_enabled:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNTDOWN_ENABLED_TOOLTIP'], self.Tabs[3]);
@@ -1806,19 +1844,12 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.auras_important_countdown_enabled = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_countdown_enabled:SetPosition('TOPLEFT', self.auras_important_enabled, 'BOTTOMLEFT', 0, -8);
-    self.auras_important_countdown_enabled:SetLabel(L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED']);
-    self.auras_important_countdown_enabled:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED_TOOLTIP']);
-    self.auras_important_countdown_enabled:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED_TOOLTIP'], self.Tabs[4]);
-    self.auras_important_countdown_enabled:SetChecked(O.db.auras_important_countdown_enabled);
-    self.auras_important_countdown_enabled.Callback = function(self)
-        O.db.auras_important_countdown_enabled = self:GetChecked();
-        Handler:UpdateAll();
-    end
+    Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_important_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
 
     self.auras_important_scale = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_scale:SetPosition('TOPLEFT', self.auras_important_countdown_enabled, 'BOTTOMLEFT', 0, -28);
+    self.auras_important_scale:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
     self.auras_important_scale:SetValues(O.db.auras_important_scale, 0.25, 4, 0.05);
     self.auras_important_scale:SetLabel(L['OPTIONS_AURAS_IMPORTANT_SCALE']);
     self.auras_important_scale:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_SCALE_TOOLTIP']);
@@ -1828,8 +1859,23 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_important_scale, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
+    self.auras_important_countdown_enabled = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_countdown_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.auras_important_countdown_enabled:SetLabel(L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED']);
+    self.auras_important_countdown_enabled:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED_TOOLTIP']);
+    self.auras_important_countdown_enabled:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED_TOOLTIP'], self.Tabs[4]);
+    self.auras_important_countdown_enabled:SetChecked(O.db.auras_important_countdown_enabled);
+    self.auras_important_countdown_enabled.Callback = function(self)
+        O.db.auras_important_countdown_enabled = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     self.auras_important_countdown_text = E.CreateFontString(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_countdown_text:SetPosition('TOPLEFT', self.auras_important_scale, 'BOTTOMLEFT', 0, -16);
+    self.auras_important_countdown_text:SetPosition('TOPLEFT', self.auras_important_countdown_enabled, 'BOTTOMLEFT', 0, -16);
     self.auras_important_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_important_cooldown_font_value = E.CreateDropdown('font', self.TabsFrames['ImportantTab'].Content);
@@ -2107,19 +2153,12 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
-    self.auras_custom_countdown_enabled = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_countdown_enabled:SetPosition('TOPLEFT', self.auras_custom_enabled, 'BOTTOMLEFT', 0, -8);
-    self.auras_custom_countdown_enabled:SetLabel(L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED']);
-    self.auras_custom_countdown_enabled:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED_TOOLTIP']);
-    self.auras_custom_countdown_enabled:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED_TOOLTIP'], self.Tabs[5]);
-    self.auras_custom_countdown_enabled:SetChecked(O.db.auras_custom_countdown_enabled);
-    self.auras_custom_countdown_enabled.Callback = function(self)
-        O.db.auras_custom_countdown_enabled = self:GetChecked();
-        Handler:UpdateAll();
-    end
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_custom_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
 
     self.auras_custom_scale = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_scale:SetPosition('TOPLEFT', self.auras_custom_countdown_enabled, 'BOTTOMLEFT', 0, -28);
+    self.auras_custom_scale:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
     self.auras_custom_scale:SetValues(O.db.auras_custom_scale, 0.25, 4, 0.05);
     self.auras_custom_scale:SetLabel(L['OPTIONS_AURAS_CUSTOM_SCALE']);
     self.auras_custom_scale:SetTooltip(L['OPTIONS_AURAS_CUSTOM_SCALE_TOOLTIP']);
@@ -2132,7 +2171,7 @@ panel.Load = function(self)
     self.auras_custom_offset_y = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
     self.auras_custom_offset_y:SetPosition('LEFT', self.auras_custom_scale, 'RIGHT', 16, 0);
     self.auras_custom_offset_y:SetValues(O.db.auras_custom_offset_y, -50, 50, 1);
-    self.auras_custom_offset_y:SetLabel(L['OPTIONS_AURAS_CUSTOM_OFFSET_Y']);
+    self.auras_custom_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_custom_offset_y:SetTooltip(L['OPTIONS_AURAS_CUSTOM_OFFSET_Y_TOOLTIP']);
     self.auras_custom_offset_y:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_OFFSET_Y_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_offset_y.OnValueChangedCallback = function(_, value)
@@ -2140,8 +2179,23 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_custom_scale, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
+    self.auras_custom_countdown_enabled = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_countdown_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.auras_custom_countdown_enabled:SetLabel(L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED']);
+    self.auras_custom_countdown_enabled:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED_TOOLTIP']);
+    self.auras_custom_countdown_enabled:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_countdown_enabled:SetChecked(O.db.auras_custom_countdown_enabled);
+    self.auras_custom_countdown_enabled.Callback = function(self)
+        O.db.auras_custom_countdown_enabled = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     self.auras_custom_countdown_text = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_countdown_text:SetPosition('TOPLEFT', self.auras_custom_scale, 'BOTTOMLEFT', 0, -16);
+    self.auras_custom_countdown_text:SetPosition('TOPLEFT', self.auras_custom_countdown_enabled, 'BOTTOMLEFT', 0, -16);
     self.auras_custom_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_custom_cooldown_font_value = E.CreateDropdown('font', self.TabsFrames['CustomTab'].Content);

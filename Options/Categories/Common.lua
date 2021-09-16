@@ -531,7 +531,7 @@ panel.Load = function(self)
     self.health_text_x_offset = E.CreateSlider(self.SingleBlockHolder);
     self.health_text_x_offset:SetPosition('LEFT', self.health_text_anchor, 'RIGHT', 16, 0);
     self.health_text_x_offset:SetW(137);
-    self.health_text_x_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_X_OFFSET']);
+    self.health_text_x_offset:SetLabel(L['OFFSET_X_SHORT']);
     self.health_text_x_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_X_OFFSET_TOOLTIP']);
     self.health_text_x_offset:SetValues(O.db.health_text_x_offset, -99, 100, 1);
     self.health_text_x_offset.OnValueChangedCallback = function(_, value)
@@ -542,7 +542,7 @@ panel.Load = function(self)
     self.health_text_y_offset = E.CreateSlider(self.SingleBlockHolder);
     self.health_text_y_offset:SetPosition('LEFT', self.health_text_x_offset, 'RIGHT', 16, 0);
     self.health_text_y_offset:SetW(137);
-    self.health_text_y_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_Y_OFFSET']);
+    self.health_text_y_offset:SetLabel(L['OFFSET_Y_SHORT']);
     self.health_text_y_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_Y_OFFSET_TOOLTIP']);
     self.health_text_y_offset:SetValues(O.db.health_text_y_offset, -99, 100, 1);
     self.health_text_y_offset.OnValueChangedCallback = function(_, value)
@@ -581,7 +581,7 @@ panel.Load = function(self)
     self.health_text_block_1_x_offset = E.CreateSlider(self.DoubleBlockHolder);
     self.health_text_block_1_x_offset:SetPosition('LEFT', self.health_text_block_1_anchor, 'RIGHT', 16, 0);
     self.health_text_block_1_x_offset:SetW(137);
-    self.health_text_block_1_x_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_X_OFFSET']);
+    self.health_text_block_1_x_offset:SetLabel(L['OFFSET_X_SHORT']);
     self.health_text_block_1_x_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_X_OFFSET_TOOLTIP']);
     self.health_text_block_1_x_offset:SetValues(O.db.health_text_block_1_x_offset, -99, 100, 1);
     self.health_text_block_1_x_offset.OnValueChangedCallback = function(_, value)
@@ -592,7 +592,7 @@ panel.Load = function(self)
     self.health_text_block_1_y_offset = E.CreateSlider(self.DoubleBlockHolder);
     self.health_text_block_1_y_offset:SetPosition('LEFT', self.health_text_block_1_x_offset, 'RIGHT', 16, 0);
     self.health_text_block_1_y_offset:SetW(137);
-    self.health_text_block_1_y_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_Y_OFFSET']);
+    self.health_text_block_1_y_offset:SetLabel(L['OFFSET_Y_SHORT']);
     self.health_text_block_1_y_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_Y_OFFSET_TOOLTIP']);
     self.health_text_block_1_y_offset:SetValues(O.db.health_text_block_1_y_offset, -99, 100, 1);
     self.health_text_block_1_y_offset.OnValueChangedCallback = function(_, value)
@@ -631,7 +631,7 @@ panel.Load = function(self)
     self.health_text_block_2_x_offset = E.CreateSlider(self.DoubleBlockHolder);
     self.health_text_block_2_x_offset:SetPosition('LEFT', self.health_text_block_2_anchor, 'RIGHT', 16, 0);
     self.health_text_block_2_x_offset:SetW(137);
-    self.health_text_block_2_x_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_X_OFFSET']);
+    self.health_text_block_2_x_offset:SetLabel(L['OFFSET_X_SHORT']);
     self.health_text_block_2_x_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_X_OFFSET_TOOLTIP']);
     self.health_text_block_2_x_offset:SetValues(O.db.health_text_block_2_x_offset, -99, 100, 1);
     self.health_text_block_2_x_offset.OnValueChangedCallback = function(_, value)
@@ -642,7 +642,7 @@ panel.Load = function(self)
     self.health_text_block_2_y_offset = E.CreateSlider(self.DoubleBlockHolder);
     self.health_text_block_2_y_offset:SetPosition('LEFT', self.health_text_block_2_x_offset, 'RIGHT', 16, 0);
     self.health_text_block_2_y_offset:SetW(137);
-    self.health_text_block_2_y_offset:SetLabel(L['OPTIONS_HEALTH_TEXT_Y_OFFSET']);
+    self.health_text_block_2_y_offset:SetLabel(L['OFFSET_Y_SHORT']);
     self.health_text_block_2_y_offset:SetTooltip(L['OPTIONS_HEALTH_TEXT_Y_OFFSET_TOOLTIP']);
     self.health_text_block_2_y_offset:SetValues(O.db.health_text_block_2_y_offset, -99, 100, 1);
     self.health_text_block_2_y_offset.OnValueChangedCallback = function(_, value)
@@ -788,7 +788,7 @@ panel.Load = function(self)
     self.level_text_x_offset = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
     self.level_text_x_offset:SetPosition('LEFT', self.level_text_anchor, 'RIGHT', 16, 0);
     self.level_text_x_offset:SetW(137);
-    self.level_text_x_offset:SetLabel(L['OPTIONS_LEVEL_TEXT_X_OFFSET']);
+    self.level_text_x_offset:SetLabel(L['OFFSET_X_SHORT']);
     self.level_text_x_offset:SetTooltip(L['OPTIONS_LEVEL_TEXT_X_OFFSET_TOOLTIP']);
     self.level_text_x_offset:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_X_OFFSET_TOOLTIP'], self.Tabs[3]);
     self.level_text_x_offset:SetValues(O.db.level_text_x_offset, -99, 100, 1);
@@ -800,7 +800,7 @@ panel.Load = function(self)
     self.level_text_y_offset = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
     self.level_text_y_offset:SetPosition('LEFT', self.level_text_x_offset, 'RIGHT', 16, 0);
     self.level_text_y_offset:SetW(137);
-    self.level_text_y_offset:SetLabel(L['OPTIONS_LEVEL_TEXT_Y_OFFSET']);
+    self.level_text_y_offset:SetLabel(L['OFFSET_Y_SHORT']);
     self.level_text_y_offset:SetTooltip(L['OPTIONS_LEVEL_TEXT_Y_OFFSET_TOOLTIP']);
     self.level_text_y_offset:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_Y_OFFSET_TOOLTIP'], self.Tabs[3]);
     self.level_text_y_offset:SetValues(O.db.level_text_y_offset, -99, 100, 1);
