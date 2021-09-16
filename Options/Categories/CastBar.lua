@@ -343,8 +343,19 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.castbar_height = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_height:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -28);
+    self.castbar_height:SetLabel(L['OPTIONS_CAST_BAR_HEIGHT']);
+    self.castbar_height:SetTooltip(L['OPTIONS_CAST_BAR_HEIGHT_TOOLTIP']);
+    self.castbar_height:AddToSearch(button, L['OPTIONS_CAST_BAR_HEIGHT_TOOLTIP'], self.Tabs[1]);
+    self.castbar_height:SetValues(O.db.castbar_height, 1, 40, 1);
+    self.castbar_height.OnValueChangedCallback = function(_, value)
+        O.db.castbar_height = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     self.castbar_border_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_border_enabled:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -12);
+    self.castbar_border_enabled:SetPosition('LEFT', self.castbar_height, 'RIGHT', 20, 0);
     self.castbar_border_enabled:SetLabel(L['OPTIONS_CAST_BAR_BORDER_ENABLED']);
     self.castbar_border_enabled:SetChecked(O.db.castbar_border_enabled);
     self.castbar_border_enabled:SetTooltip(L['OPTIONS_CAST_BAR_BORDER_ENABLED_TOOLTIP']);
@@ -379,7 +390,7 @@ panel.Load = function(self)
     end
 
     local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_border_enabled, 'BOTTOMLEFT', 0, -6);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_height, 'BOTTOMLEFT', 0, -6);
     Delimiter:SetW(self:GetWidth());
 
     local ResetCastBarColorsButton = E.CreateTextureButton(self.TabsFrames['CommonTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);

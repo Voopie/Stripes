@@ -219,7 +219,7 @@ O.Lists = {
     }
 };
 
--- ~413
+-- ~414
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -393,6 +393,7 @@ O.DefaultValues = {
     castbar_border_enabled = false,
     castbar_border_size = 1,
     castbar_border_color = { 0, 0, 0, 1 },
+    castbar_height = 12,
 
     who_interrupted_enabled = true,
 

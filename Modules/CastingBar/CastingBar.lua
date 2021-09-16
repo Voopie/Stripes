@@ -180,8 +180,6 @@ function StripesCastingBar_OnLoad(self, unit, showTradeSkills, showShield)
     if point == 'CENTER' then
         self.Spark.offsetY = offsetY;
     end
-
-    PixelUtil.SetHeight(self, 12);
 end
 
 function StripesCastingBar_SetStartCastColor(self, r, g, b, a)

@@ -27,6 +27,7 @@ local SHOW_TRADE_SKILLS, SHOW_SHIELD, SHOW_ICON_NOTINTERRUPTIBLE;
 local SHOW_INTERRUPT_READY_TICK, INTERRUPT_READY_TICK_COLOR;
 local NAME_ONLY_MODE;
 local BORDER_ENABLED, BORDER_COLOR, BORDER_SIZE;
+local BAR_HEIGHT;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 
@@ -74,7 +75,8 @@ local function UpdateStyle(unitframe)
     unitframe.healthBar:ClearAllPoints();
 
     if ON_HP_BAR then
-        PixelUtil.SetPoint(unitframe.healthBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6 + 2 + 12);
+        PixelUtil.SetHeight(unitframe.castingBar, unitframe.healthBar.sHeight or 12);
+        PixelUtil.SetPoint(unitframe.healthBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6 + 2 + BAR_HEIGHT);
 
         if unitframe.data.unitType == 'SELF' then
             PixelUtil.SetWidth(unitframe.healthBar, PLAYER_WIDTH - WIDTH_OFFSET);
@@ -84,8 +86,8 @@ local function UpdateStyle(unitframe)
             PixelUtil.SetWidth(unitframe.healthBar, FRIENDLY_WIDTH - WIDTH_OFFSET);
         end
 
-        PixelUtil.SetPoint(unitframe.castingBar, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', 0, -12);
-        PixelUtil.SetPoint(unitframe.castingBar, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, -12);
+        PixelUtil.SetPoint(unitframe.castingBar, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', 0, -(unitframe.healthBar.sHeight or 12));
+        PixelUtil.SetPoint(unitframe.castingBar, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, -(unitframe.healthBar.sHeight or 12));
 
         if ICON_RIGHT_SIDE then
             PixelUtil.SetPoint(unitframe.castingBar.Icon, 'LEFT', unitframe.castingBar, 'RIGHT', 0, 0);
@@ -93,10 +95,11 @@ local function UpdateStyle(unitframe)
             PixelUtil.SetPoint(unitframe.castingBar.Icon, 'RIGHT', unitframe.castingBar, 'LEFT', 0, 0);
         end
 
-        PixelUtil.SetSize(unitframe.castingBar.Icon, 12, 12);
+        PixelUtil.SetSize(unitframe.castingBar.Icon, unitframe.healthBar.sHeight or 12, unitframe.healthBar.sHeight or 12);
 
         PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'CENTER', 0, 0);
     else
+        PixelUtil.SetHeight(unitframe.castingBar, BAR_HEIGHT);
         PixelUtil.SetPoint(unitframe.castingBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6);
 
         if unitframe.data.unitType == 'SELF' then
@@ -114,12 +117,12 @@ local function UpdateStyle(unitframe)
             if ICON_LARGE then
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'TOPLEFT', unitframe.healthBar, 'TOPRIGHT', 1, 0.5);
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'BOTTOMLEFT', unitframe.castingBar, 'BOTTOMRIGHT', 0, 0);
-                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + 12 + 2);
+                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + BAR_HEIGHT + 2);
 
                 PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'BOTTOM', 0, 0);
             else
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'LEFT', unitframe.castingBar, 'RIGHT', 0, 0);
-                PixelUtil.SetSize(unitframe.castingBar.Icon, 12, 12);
+                PixelUtil.SetSize(unitframe.castingBar.Icon, BAR_HEIGHT, BAR_HEIGHT);
 
                 PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'CENTER', 0, 0);
             end
@@ -127,12 +130,12 @@ local function UpdateStyle(unitframe)
             if ICON_LARGE then
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'TOPRIGHT', unitframe.healthBar, 'TOPLEFT', -1, 0.5);
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'BOTTOMRIGHT', unitframe.castingBar, 'BOTTOMLEFT', 0, 0);
-                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + 12 + 2);
+                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + BAR_HEIGHT + 2);
 
                 PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'BOTTOM', 0, 0);
             else
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'RIGHT', unitframe.castingBar, 'LEFT', 0, 0);
-                PixelUtil.SetSize(unitframe.castingBar.Icon, 12, 12);
+                PixelUtil.SetSize(unitframe.castingBar.Icon, BAR_HEIGHT, BAR_HEIGHT);
 
                 PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'CENTER', 0, 0);
             end
@@ -258,6 +261,8 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
+    BAR_HEIGHT = O.db.castbar_height;
+
     TIMER_ENABLED = O.db.castbar_timer_enabled;
     TIMER_FORMAT  = O.db.castbar_timer_format;
     TIMER_FORMAT = '%.' .. TIMER_FORMAT - 1 .. 'f / %.' .. TIMER_FORMAT - 1 .. 'f';
