@@ -126,6 +126,8 @@ local function Update(unitframe)
 
                 aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
 
+                UpdateGlow(aura);
+
                 unitframe.AurasSpellSteal.buffList[buffIndex] = aura;
             end
 
@@ -150,9 +152,6 @@ local function Update(unitframe)
             else
                 aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
             end
-
-            StopGlow(aura);
-            UpdateGlow(aura);
 
             aura:SetShown(true);
 
