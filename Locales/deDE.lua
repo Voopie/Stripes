@@ -88,10 +88,10 @@ L['INTEGER'] = 'Integer';
 L['FLOAT_1'] = 'One decimal place';
 L['FLOAT_2'] = 'Two decimal places';
 
-L['OFFSET_X'] = 'Горизонтальное смещение';
-L['OFFSET_X_SHORT'] = 'Гор. смещение';
-L['OFFSET_Y'] = 'Вертикальное смещение';
-L['OFFSET_Y_SHORT'] = 'Верт. смещение';
+L['OFFSET_X'] = 'Horizontal offset';
+L['OFFSET_X_SHORT'] = 'Hor. offset';
+L['OFFSET_Y'] = 'Vertical offset';
+L['OFFSET_Y_SHORT'] = 'Vert. offset';
 
 L['OPTIONS_NEED_RELOAD'] = 'You must reload the interface to apply the settings.\r\rReload now?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'The settings were hidden for the duration of the combat and will be automatically opened after the end of the combat';
