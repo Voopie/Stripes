@@ -213,14 +213,6 @@ local function UpdateStyle(unitframe)
     end
 end
 
-local function Reset(unitframe)
-    if unitframe.AurasSpellSteal and unitframe.AurasSpellSteal.buffList then
-        for _, aura in ipairs(unitframe.AurasSpellSteal.buffList) do
-            StopGlow(aura);
-        end
-    end
-end
-
 function Module:UnitAdded(unitframe)
     CreateAnchor(unitframe);
     Update(unitframe);
@@ -230,8 +222,6 @@ function Module:UnitRemoved(unitframe)
     if unitframe.AurasSpellSteal then
         unitframe.AurasSpellSteal:SetShown(false);
     end
-
-    Reset(unitframe);
 end
 
 function Module:UnitAura(unitframe)
