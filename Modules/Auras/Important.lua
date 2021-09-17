@@ -25,6 +25,7 @@ local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 local SQUARE;
+local OFFSET_Y;
 
 local StripesAurasImportantCooldownFont = CreateFont('StripesAurasImportantCooldownFont');
 local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCountFont');
@@ -54,7 +55,7 @@ local function CreateAnchor(unitframe)
 end
 
 local function UpdateAnchor(unitframe)
-    unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.BuffFrame, 'TOPLEFT', 0, 4 + (SQUARE and 6 or 0));
+    unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.BuffFrame, 'TOPLEFT', 0, 4 + (SQUARE and 6 or 0) + OFFSET_Y);
     unitframe.ImportantAuras:SetWidth(unitframe.healthBar:GetWidth());
 end
 
@@ -253,6 +254,8 @@ function Module:UpdateLocalConfig()
     COUNT_OFFSET_Y       = O.db.auras_important_count_offset_y;
 
     SQUARE = O.db.auras_square;
+
+    OFFSET_Y = O.db.auras_important_offset_y;
 
     UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
     UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);

@@ -1859,6 +1859,17 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_important_offset_y = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_offset_y:SetPosition('LEFT', self.auras_important_scale, 'RIGHT', 16, 0);
+    self.auras_important_offset_y:SetValues(O.db.auras_important_offset_y, -50, 50, 1);
+    self.auras_important_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
+    self.auras_important_offset_y:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_OFFSET_Y_TOOLTIP']);
+    self.auras_important_offset_y:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_OFFSET_Y_TOOLTIP'], self.Tabs[4]);
+    self.auras_important_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.auras_important_offset_y = tonumber(value);
+        Handler:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.auras_important_scale, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());

@@ -772,6 +772,7 @@ L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Показывать важные ауры (оглушения, контроль и т.п.)';
 L['OPTIONS_AURAS_IMPORTANT_SCALE'] = 'Масштаб';
 L['OPTIONS_AURAS_IMPORTANT_SCALE_TOOLTIP'] = 'Масштаб важных аур';
+L['OPTIONS_AURAS_IMPORTANT_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение важных аур';
 L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED'] = 'Оставшееся время';
 L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED_TOOLTIP'] = 'Показывать оставшееся время важных аур';
 L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_VALUE'] = 'Шрифт таймера важных аур';

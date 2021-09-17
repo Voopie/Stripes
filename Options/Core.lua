@@ -219,7 +219,7 @@ O.Lists = {
     }
 };
 
--- ~416
+-- ~417
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -644,6 +644,7 @@ O.DefaultValues = {
 
     auras_important_enabled                = true,
     auras_important_scale                  = 1.3,
+    auras_important_offset_y               = 0,
     auras_important_countdown_enabled      = true,
     auras_important_cooldown_font_value    = 'BigNoodleToo Titling',
     auras_important_cooldown_font_size     = 12,
