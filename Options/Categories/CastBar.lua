@@ -685,7 +685,7 @@ panel.Load = function(self)
 
     self.castbar_custom_casts_editbox = E.CreateEditBox(self.TabsFrames['CustomCastsTab'].Content);
     self.castbar_custom_casts_editbox:SetPosition('TOPLEFT', self.castbar_custom_casts_enabled, 'BOTTOMLEFT', 5, -8);
-    self.castbar_custom_casts_editbox:SetSize(220, 22);
+    self.castbar_custom_casts_editbox:SetSize(280, 22);
     self.castbar_custom_casts_editbox.useLastValue = false;
     self.castbar_custom_casts_editbox:SetInstruction(L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID']);
     self.castbar_custom_casts_editbox:SetScript('OnEnterPressed', function(self)
