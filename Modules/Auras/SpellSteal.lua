@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Auras_SpellSteal');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- WoW API
 local CooldownFrame_Set, GetCVarBool, UnitIsUnit, GetTime, AuraUtil_ForEachAura = CooldownFrame_Set, GetCVarBool, UnitIsUnit, GetTime, AuraUtil.ForEachAura;
@@ -18,6 +19,8 @@ local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 local SCALE, SQUARE, BUFFFRAME_OFFSET_Y;
 local OFFSET_Y;
 local GLOW_ENABLED, GLOW_TYPE, GLOW_COLOR;
+local BORDER_HIDE;
+local MASQUE_SUPPORT;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -107,6 +110,11 @@ local function Update(unitframe)
 
                 aura:SetScale(SCALE);
 
+                if MASQUE_SUPPORT and Stripes.Masque then
+                    Stripes.MasqueAuraGroup:AddButton(aura);
+                    Stripes.MasqueAuraGroup:ReSkin(aura);
+                end
+
                 if SQUARE then
                     aura:SetSize(20, 20);
                     aura.Icon:SetSize(18, 18);
@@ -124,7 +132,12 @@ local function Update(unitframe)
                 aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
                 aura.CountFrame.Count:SetFontObject(StripesAurasSpellStealCountFont);
 
-                aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+                if BORDER_HIDE then
+                    aura.Border:Hide();
+                else
+                    aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+                    aura.Border:Show();
+                end
 
                 UpdateGlow(aura);
 
@@ -188,6 +201,15 @@ local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.AurasSpellSteal.buffList) do
         aura:SetScale(SCALE);
 
+        if Stripes.Masque then
+            if MASQUE_SUPPORT then
+                Stripes.MasqueAuraGroup:AddButton(aura);
+                Stripes.MasqueAuraGroup:ReSkin(aura);
+            else
+                Stripes.MasqueAuraGroup:RemoveButton(aura);
+            end
+        end
+
         if SQUARE then
             aura:SetSize(20, 20);
             aura.Icon:SetSize(18, 18);
@@ -198,8 +220,14 @@ local function UpdateStyle(unitframe)
             aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
         end
 
+        if BORDER_HIDE then
+            aura.Border:Hide();
+        else
+            aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+            aura.Border:Show();
+        end
+
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
-        aura.Border:SetColorTexture(unpack(O.db.auras_spellsteal_color));
 
         aura.Cooldown:GetRegions():ClearAllPoints();
         aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
@@ -233,11 +261,15 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
+    MASQUE_SUPPORT = O.db.auras_masque_support;
+
     ENABLED              = O.db.auras_spellsteal_enabled;
     COUNTDOWN_ENABLED    = O.db.auras_spellsteal_countdown_enabled;
     NAME_TEXT_POSITION_V = O.db.name_text_position_v;
     NAME_TEXT_OFFSET_Y   = O.db.name_text_offset_y;
     SUPPRESS_OMNICC      = O.db.auras_omnicc_suppress;
+
+    BORDER_HIDE = O.db.auras_border_hide;
 
     COUNTDOWN_POINT          = O.Lists.frame_points[O.db.auras_spellsteal_cooldown_point] or 'TOPLEFT';
     COUNTDOWN_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_spellsteal_cooldown_relative_point] or 'TOPLEFT';

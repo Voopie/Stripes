@@ -21,6 +21,13 @@ local LSM = S.Libraries.LSM;
 local LSM_MEDIATYPE_FONT = LSM.MediaType.FONT;
 local LIST_FONT_FLAGS = O.Lists.font_flags;
 
+local Masque = LibStub('Masque', true);
+Module.Masque = Masque;
+
+if Masque then
+    Module.MasqueAuraGroup = Masque:Group(S.AddonName, 'Auras');
+end
+
 -- Nameplates
 local NP = S.NamePlates;
 

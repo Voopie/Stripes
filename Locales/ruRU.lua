@@ -722,6 +722,10 @@ L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED'] = 'Окрашивание по ауре';
 L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP'] = 'Включить окрашивание полосы здоровья в зависимости от наличия заданной ауры';
 L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_OPEN'] = 'Открыть список';
 L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_CLOSE'] = 'Закрыть список';
+L['OPTIONS_AURAS_MASQUE_SUPPORT'] = 'Поддержка Masque';
+L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'] = 'Включить поддержку кастомизации внешнего вида аур через Masque';
+L['OPTIONS_AURAS_BORDER_HIDE'] = 'Скрыть рамку';
+L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP'] = 'Скрыть рамку вокруг аур';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';
@@ -857,4 +861,4 @@ L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'Из цели';
 L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'Из списка';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Введите имя и нажмите Enter';
-L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Открыть ассоциированный список цветов';
+L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Открыть ассоциативный список цветов';

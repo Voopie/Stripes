@@ -846,6 +846,17 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_border_hide = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_border_hide:SetPosition('LEFT', self.auras_border_color_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_border_hide:SetLabel(L['OPTIONS_AURAS_BORDER_HIDE']);
+    self.auras_border_hide:SetTooltip(L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP']);
+    self.auras_border_hide:AddToSearch(button, L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP'], self.Tabs[1]);
+    self.auras_border_hide:SetChecked(O.db.auras_masque_support);
+    self.auras_border_hide.Callback = function(self)
+        O.db.auras_border_hide = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     self.auras_pandemic_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.auras_pandemic_enabled:SetPosition('TOPLEFT', self.auras_square, 'BOTTOMLEFT', 0, -8);
     self.auras_pandemic_enabled:SetLabel(L['OPTIONS_AURAS_PANDEMIC_ENABLED']);
@@ -997,8 +1008,19 @@ panel.Load = function(self)
 
     self:UpdateHPBarColorScroll();
 
+    self.auras_masque_support = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_masque_support:SetPosition('TOPLEFT', self.auras_hpbar_color_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_masque_support:SetLabel(L['OPTIONS_AURAS_MASQUE_SUPPORT']);
+    self.auras_masque_support:SetTooltip(L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP']);
+    self.auras_masque_support:AddToSearch(button, L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'], self.Tabs[1]);
+    self.auras_masque_support:SetChecked(O.db.auras_masque_support);
+    self.auras_masque_support.Callback = function(self)
+        O.db.auras_masque_support = self:GetChecked();
+        Handler:UpdateAll();
+    end
+
     local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_hpbar_color_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_masque_support, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_scale = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -1258,8 +1280,23 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end
 
+    self.auras_expire_glow_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.auras_expire_glow_color:SetPosition('LEFT', self.auras_expire_glow_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_expire_glow_color:SetTooltip(L['OPTIONS_AURAS_EXPIRE_GLOW_COLOR_TOOLTIP']);
+    self.auras_expire_glow_color:AddToSearch(button, L['OPTIONS_AURAS_EXPIRE_GLOW_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.auras_expire_glow_color:SetValue(unpack(O.db.auras_expire_glow_color));
+    self.auras_expire_glow_color:SetEnabled(O.db.auras_expire_glow_enabled);
+    self.auras_expire_glow_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.auras_expire_glow_color[1] = r;
+        O.db.auras_expire_glow_color[2] = g;
+        O.db.auras_expire_glow_color[3] = b;
+        O.db.auras_expire_glow_color[4] = a or 1;
+
+        Handler:UpdateAll();
+    end
+
     self.auras_expire_glow_type = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.auras_expire_glow_type:SetPosition('LEFT', self.auras_expire_glow_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_expire_glow_type:SetPosition('LEFT', self.auras_expire_glow_color, 'RIGHT', 12, 0);
     self.auras_expire_glow_type:SetSize(220, 20);
     self.auras_expire_glow_type:SetList(O.Lists.glow_type);
     self.auras_expire_glow_type:SetTooltip(L['OPTIONS_AURAS_EXPIRE_GLOW_TYPE_TOOLTIP']);
@@ -1272,7 +1309,8 @@ panel.Load = function(self)
     end
 
     self.auras_expire_glow_percent = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.auras_expire_glow_percent:SetPosition('TOPLEFT', self.auras_expire_glow_enabled, 'BOTTOMLEFT', 0, -16);
+    self.auras_expire_glow_percent:SetPosition('LEFT', self.auras_expire_glow_type, 'RIGHT', 12, 0);
+    self.auras_expire_glow_percent:SetW(100);
     self.auras_expire_glow_percent:SetValues(O.db.auras_expire_glow_percent, 1, 100, 1);
     self.auras_expire_glow_percent:SetTooltip(L['OPTIONS_AURAS_EXPIRE_GLOW_PERCENT_TOOLTIP']);
     self.auras_expire_glow_percent:AddToSearch(button, L['OPTIONS_AURAS_EXPIRE_GLOW_PERCENT_TOOLTIP'], self.Tabs[1]);
@@ -1286,21 +1324,6 @@ panel.Load = function(self)
     self.auras_expire_glow_percent_sign:SetPosition('LEFT', self.auras_expire_glow_percent, 'RIGHT', 2, 0);
     self.auras_expire_glow_percent_sign:SetText('%');
     self.auras_expire_glow_percent_sign:SetFontObject(O.db.auras_expire_glow_enabled and 'StripesOptionsHighlightFont' or 'StripesOptionsDisabledFont');
-
-    self.auras_expire_glow_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.auras_expire_glow_color:SetPosition('LEFT', self.auras_expire_glow_percent_sign, 'RIGHT', 12, 0);
-    self.auras_expire_glow_color:SetTooltip(L['OPTIONS_AURAS_EXPIRE_GLOW_COLOR_TOOLTIP']);
-    self.auras_expire_glow_color:AddToSearch(button, L['OPTIONS_AURAS_EXPIRE_GLOW_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.auras_expire_glow_color:SetValue(unpack(O.db.auras_expire_glow_color));
-    self.auras_expire_glow_color:SetEnabled(O.db.auras_expire_glow_enabled);
-    self.auras_expire_glow_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.auras_expire_glow_color[1] = r;
-        O.db.auras_expire_glow_color[2] = g;
-        O.db.auras_expire_glow_color[3] = b;
-        O.db.auras_expire_glow_color[4] = a or 1;
-
-        Handler:UpdateAll();
-    end
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------

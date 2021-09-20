@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Auras_Important');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
 local bit_band = bit.band;
@@ -26,6 +27,8 @@ local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_O
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 local SQUARE;
 local OFFSET_Y;
+local BORDER_HIDE;
+local MASQUE_SUPPORT;
 
 local StripesAurasImportantCooldownFont = CreateFont('StripesAurasImportantCooldownFont');
 local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCountFont');
@@ -97,6 +100,11 @@ local function Update(unitframe)
                 aura:SetMouseClickEnabled(false);
                 aura.layoutIndex = buffIndex;
 
+                if MASQUE_SUPPORT and Stripes.Masque then
+                    Stripes.MasqueAuraGroup:AddButton(aura);
+                    Stripes.MasqueAuraGroup:ReSkin(aura);
+                end
+
                 if SQUARE then
                     aura:SetSize(20, 20);
                     aura.Icon:SetSize(18, 18);
@@ -104,6 +112,8 @@ local function Update(unitframe)
                 end
 
                 aura:SetScale(O.db.auras_important_scale);
+
+                aura.Border:SetShown(not BORDER_HIDE);
 
                 aura.Cooldown:SetFrameStrata('HIGH');
                 aura.Cooldown:GetRegions():ClearAllPoints();
@@ -194,6 +204,17 @@ end
 
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.ImportantAuras.buffList) do
+        aura:SetScale(O.db.auras_important_scale);
+
+        if Stripes.Masque then
+            if MASQUE_SUPPORT then
+                Stripes.MasqueAuraGroup:AddButton(aura);
+                Stripes.MasqueAuraGroup:ReSkin(aura);
+            else
+                Stripes.MasqueAuraGroup:RemoveButton(aura);
+            end
+        end
+
         if SQUARE then
             aura:SetSize(20, 20);
             aura.Icon:SetSize(18, 18);
@@ -204,7 +225,7 @@ local function UpdateStyle(unitframe)
             aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
         end
 
-        aura:SetScale(O.db.auras_important_scale);
+        aura.Border:SetShown(not BORDER_HIDE);
 
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
@@ -238,10 +259,14 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
+    MASQUE_SUPPORT = O.db.auras_masque_support;
+
     ENABLED           = O.db.auras_important_enabled;
     COUNTDOWN_ENABLED = O.db.auras_important_countdown_enabled;
     CASTER_NAME_SHOW  = O.db.auras_important_castername_show;
     SUPPRESS_OMNICC   = O.db.auras_omnicc_suppress;
+
+    BORDER_HIDE = O.db.auras_border_hide;
 
     COUNTDOWN_POINT          = O.Lists.frame_points[O.db.auras_important_cooldown_point] or 'TOPLEFT';
     COUNTDOWN_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_important_cooldown_relative_point] or 'TOPLEFT';

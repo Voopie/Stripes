@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Auras_Mod');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
 local select, ipairs = select, ipairs;
@@ -19,6 +20,8 @@ local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 local SCALE, SQUARE, BUFFFRAME_OFFSET_Y;
+local BORDER_HIDE;
+local MASQUE_SUPPORT;
 
 local DebuffTypeColor = DebuffTypeColor;
 
@@ -31,18 +34,29 @@ local function UpdateBuffs(unitframe)
     local debuffType;
 
     for _, aura in ipairs(unitframe.BuffFrame.buffList) do
-        if BORDER_COLOR_ENABLED then
-            debuffType = select(4, UnitAura(unitframe.BuffFrame.unit, aura:GetID(), unitframe.BuffFrame.filter));
-            if debuffType then
-                aura.Border:SetColorTexture(DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b, 1);
+        if BORDER_HIDE then
+            aura.Border:Hide();
+        else
+            if BORDER_COLOR_ENABLED then
+                debuffType = select(4, UnitAura(unitframe.BuffFrame.unit, aura:GetID(), unitframe.BuffFrame.filter));
+                if debuffType then
+                    aura.Border:SetColorTexture(DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b, 1);
+                else
+                    aura.Border:SetColorTexture(0, 0, 0, 1);
+                end
             else
                 aura.Border:SetColorTexture(0, 0, 0, 1);
             end
-        else
-            aura.Border:SetColorTexture(0, 0, 0, 1);
+
+            aura.Border:Show();
         end
 
-        if not aura.Cooldown.__styled then
+        if not aura.__stripesStyled then
+            if MASQUE_SUPPORT and Stripes.Masque then
+                Stripes.MasqueAuraGroup:AddButton(aura);
+                Stripes.MasqueAuraGroup:ReSkin(aura);
+            end
+
             aura:SetScale(SCALE);
 
             if SQUARE then
@@ -62,7 +76,7 @@ local function UpdateBuffs(unitframe)
             aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
             aura.CountFrame.Count:SetFontObject(StripesAurasModCountFont);
 
-            aura.Cooldown.__styled = true;
+            aura.__stripesStyled = true;
         end
     end
 end
@@ -83,6 +97,17 @@ end
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.BuffFrame.buffList) do
         aura:SetScale(SCALE);
+
+        if Stripes.Masque then
+            if MASQUE_SUPPORT then
+                Stripes.MasqueAuraGroup:AddButton(aura);
+                Stripes.MasqueAuraGroup:ReSkin(aura);
+            else
+                Stripes.MasqueAuraGroup:RemoveButton(aura);
+            end
+        end
+
+        aura.Border:SetShown(not BORDER_HIDE);
 
         if SQUARE then
             aura:SetSize(20, 20);
@@ -125,6 +150,9 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
+    MASQUE_SUPPORT = O.db.auras_masque_support;
+
+    BORDER_HIDE          = O.db.auras_border_hide;
     BORDER_COLOR_ENABLED = O.db.auras_border_color_enabled;
     COUNTDOWN_ENABLED    = O.db.auras_countdown_enabled;
     NAME_TEXT_POSITION_V = O.db.name_text_position_v;
