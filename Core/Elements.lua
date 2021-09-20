@@ -1129,7 +1129,7 @@ do
             end,
 
             SetValue = function(self, value)
-                if value == 0 then
+                if not value then
                     self.holderButton.Text:SetText('');
 
                     for button, _ in self.holderButton.buttonPool:EnumerateActive() do

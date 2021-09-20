@@ -66,7 +66,7 @@ panel.UpdateProfilesDropdown = function(self)
     if self.ProfilesDropdown then
         self.ProfilesDropdown:SetEnabled(#profilesList > 1);
         self.ProfilesDropdown:SetList(profilesList);
-        self.ProfilesDropdown:SetValue(0);
+        self.ProfilesDropdown:SetValue(nil);
     end
 end
 
@@ -134,26 +134,16 @@ local function CreateCustomCastRow(frame)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
 
-    frame.GlowEnabled = E.CreateCheckButton(frame);
-    frame.GlowEnabled:SetPosition('LEFT', frame.ColorPicker, 'RIGHT', 8, 0);
-    frame.GlowEnabled.Callback = function(self)
-        O.db.castbar_custom_casts_data[self:GetParent().id].glow_enabled = self:GetChecked();
-        frame.GlowType:SetEnabled(self:GetChecked());
-        S:GetNameplateModule('Handler'):UpdateAll();
-    end
-    frame.GlowEnabled:HookScript('OnEnter', function(self)
-        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
-    end);
-    frame.GlowEnabled:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
-    end);
-
     frame.GlowType = E.CreateDropdown('plain', frame);
-    frame.GlowType:SetPosition('LEFT', frame.GlowEnabled, 'RIGHT', 4, 0);
+    frame.GlowType:SetPosition('LEFT', frame.ColorPicker, 'RIGHT', 8, 0);
     frame.GlowType:SetSize(130, 20);
-    frame.GlowType:SetList(O.Lists.glow_type_short);
+    frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
     frame.GlowType.OnValueChangedCallback = function(self, value)
-        O.db.castbar_custom_casts_data[self:GetParent().id].glow_type = tonumber(value);
+        value = tonumber(value);
+
+        O.db.castbar_custom_casts_data[self:GetParent().id].glow_enabled = value ~= 0;
+        O.db.castbar_custom_casts_data[self:GetParent().id].glow_type = value;
+
         S:GetNameplateModule('Handler'):UpdateAll();
     end
 
@@ -236,8 +226,6 @@ local function UpdateCustomCastRow(frame)
     frame.ColorEnabled:SetChecked(frame.color_enabled);
     frame.ColorPicker:SetValue(unpack(frame.color));
     frame.ColorPicker:SetEnabled(frame.color_enabled);
-    frame.GlowEnabled:SetChecked(frame.glow_enabled);
-    frame.GlowType:SetEnabled(frame.glow_enabled);
     frame.GlowType:SetValue(frame.glow_type);
     frame.GlowType:UpdateScrollArea();
 end
@@ -734,7 +722,7 @@ panel.Load = function(self)
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
         local index = S:GetModule('Options'):FindIndexByName(name);
         if not index then
-            self:SetValue(0);
+            self:SetValue(nil);
             return;
         end
 
@@ -745,7 +733,7 @@ panel.Load = function(self)
             StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data = U.Merge(StripesDB.profiles[index].castbar_custom_casts_data, StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data);
         end
 
-        self:SetValue(0);
+        self:SetValue(nil);
 
         panel:UpdateCustomCastsScroll();
     end

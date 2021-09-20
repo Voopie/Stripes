@@ -14,6 +14,7 @@ local L = NAMESPACE[2]['enUS'];
 L['RENAME'] = 'Rename';
 L['SAVE'] = 'Save';
 L['USE'] = 'Use';
+L['NO'] = 'No';
 
 L['FONT_VALUE'] = 'Font';
 L['FONT_SIZE'] = 'Font size';

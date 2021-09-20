@@ -411,7 +411,7 @@ panel.UpdateProfilesDropdown = function(self)
     if self.ProfilesDropdown then
         self.ProfilesDropdown:SetEnabled(#profilesList > 1);
         self.ProfilesDropdown:SetList(profilesList);
-        self.ProfilesDropdown:SetValue(0);
+        self.ProfilesDropdown:SetValue(nil);
     end
 end
 
@@ -2469,7 +2469,7 @@ panel.Load = function(self)
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
         local index = S:GetModule('Options'):FindIndexByName(name);
         if not index then
-            self:SetValue(0);
+            self:SetValue(nil);
             return;
         end
 
@@ -2480,7 +2480,7 @@ panel.Load = function(self)
             StripesDB.profiles[O.activeProfileId].auras_custom_data = U.Merge(StripesDB.profiles[index].auras_custom_data, StripesDB.profiles[O.activeProfileId].auras_custom_data);
         end
 
-        self:SetValue(0);
+        self:SetValue(nil);
 
         panel:UpdateScroll();
     end

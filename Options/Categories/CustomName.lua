@@ -399,7 +399,7 @@ panel.UpdateProfilesDropdown = function(self)
     if self.ProfilesDropdown then
         self.ProfilesDropdown:SetEnabled(#profilesList > 1);
         self.ProfilesDropdown:SetList(profilesList);
-        self.ProfilesDropdown:SetValue(0);
+        self.ProfilesDropdown:SetValue(nil);
     end
 end
 
@@ -512,7 +512,7 @@ panel.Load = function(self)
     self.ListDropdown:SetValue(DEFAULT_LIST_VALUE);
     self.ListDropdown.OnValueChangedCallback = function(_, value)
         panel.UpdateListScroll(value);
-        panel.ListScrollArea.ScrollBar:SetValue(0);
+        panel.ListScrollArea.ScrollBar:SetValue(nil);
     end
 
     self.ListScroll = Mixin(CreateFrame('Frame', nil, self.List, 'BackdropTemplate'), E.PixelPerfectMixin);
@@ -534,7 +534,7 @@ panel.Load = function(self)
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
         local index = S:GetModule('Options'):FindIndexByName(name);
         if not index then
-            self:SetValue(0);
+            self:SetValue(nil);
             return;
         end
 
@@ -545,7 +545,7 @@ panel.Load = function(self)
             StripesDB.profiles[O.activeProfileId].custom_name_data = U.Merge(StripesDB.profiles[index].custom_name_data, StripesDB.profiles[O.activeProfileId].custom_name_data);
         end
 
-        self:SetValue(0);
+        self:SetValue(nil);
 
         panel:UpdateScroll();
     end

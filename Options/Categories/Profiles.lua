@@ -56,7 +56,7 @@ local function UpdateRemoveProfilesDropdown()
 
     panel.RemoveProfilesDropdown:SetEnabled(#removeProfilesList > 0);
     panel.RemoveProfilesDropdown:SetList(removeProfilesList);
-    panel.RemoveProfilesDropdown:SetValue(0);
+    panel.RemoveProfilesDropdown:SetValue(nil);
 end
 
 local function UpdateProfilesDropdown()

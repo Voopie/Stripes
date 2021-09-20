@@ -201,6 +201,13 @@ O.Lists = {
         [3] = L['GLOW_TYPE_BUTTON_SHORT'],
     },
 
+    glow_type_short_with_none = {
+        [0] = L['NO'],
+        [1] = L['GLOW_TYPE_PIXEL_SHORT'],
+        [2] = L['GLOW_TYPE_AUTOCAST_SHORT'],
+        [3] = L['GLOW_TYPE_BUTTON_SHORT'],
+    },
+
     name_text_with_title_mode = {
         [1] = L['OPTIONS_NAME_WITH_TITLE_MODE_ALL'],
         [2] = L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_FRIENDLY'],

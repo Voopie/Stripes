@@ -14,6 +14,7 @@ local L = NAMESPACE[2]['ruRU'];
 L['RENAME'] = 'Переименовать';
 L['SAVE'] = 'Сохранить';
 L['USE'] = 'Использовать';
+L['NO'] = 'Нет';
 
 L['FONT_VALUE'] = 'Шрифт';
 L['FONT_SIZE'] = 'Размер шрифта';
