@@ -95,7 +95,7 @@ local function CreateCustomCastRow(frame)
     frame.IdText:SetTextColor(0.67, 0.67, 0.67);
 
     frame.Icon = frame:CreateTexture(nil, 'ARTWORK');
-    frame.Icon:SetPoint('LEFT', frame.IdText, 'RIGHT', 2, 0);
+    frame.Icon:SetPoint('LEFT', frame.IdText, 'RIGHT', 0, 0);
     frame.Icon:SetSize(ROW_HEIGHT - 8, ROW_HEIGHT - 8);
     frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
 
@@ -134,19 +134,6 @@ local function CreateCustomCastRow(frame)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
 
-    frame.GlowType = E.CreateDropdown('plain', frame);
-    frame.GlowType:SetPosition('LEFT', frame.ColorPicker, 'RIGHT', 8, 0);
-    frame.GlowType:SetSize(130, 20);
-    frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
-    frame.GlowType.OnValueChangedCallback = function(self, value)
-        value = tonumber(value);
-
-        O.db.castbar_custom_casts_data[self:GetParent().id].glow_enabled = value ~= 0;
-        O.db.castbar_custom_casts_data[self:GetParent().id].glow_type = value;
-
-        S:GetNameplateModule('Handler'):UpdateAll();
-    end
-
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
     frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -16, 0);
     frame.RemoveButton:SetSize(14, 14);
@@ -179,15 +166,23 @@ local function CreateCustomCastRow(frame)
         self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
     end);
 
+    frame.GlowType = E.CreateDropdown('plain', frame);
+    frame.GlowType:SetPosition('RIGHT', frame.RemoveButton, 'LEFT', -16, 0);
+    frame.GlowType:SetSize(130, 20);
+    frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
+    frame.GlowType:SetTooltip(L['GLOW']);
+    frame.GlowType.OnValueChangedCallback = function(self, value)
+        value = tonumber(value);
+
+        O.db.castbar_custom_casts_data[self:GetParent().id].glow_enabled = value ~= 0;
+        O.db.castbar_custom_casts_data[self:GetParent().id].glow_type = value;
+
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end
+
     frame:HookScript('OnEnter', function(self)
         self:SetBackdropColor(0.3, 0.3, 0.3, 1);
-    end);
 
-    frame:HookScript('OnLeave', function(self)
-        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
-    end);
-
-    frame:HookScript('OnEnter', function(self)
         if self.id then
             GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
             GameTooltip:SetHyperlink('spell:' .. self.id);
@@ -195,7 +190,11 @@ local function CreateCustomCastRow(frame)
         end
     end);
 
-    frame:HookScript('OnLeave', GameTooltip_Hide);
+    frame:HookScript('OnLeave', function(self)
+        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+
+        GameTooltip_Hide();
+    end);
 end
 
 local function UpdateCustomCastRow(frame)

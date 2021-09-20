@@ -780,6 +780,7 @@ panel.Load = function(self)
 
     self.BlackListEditbox = E.CreateEditBox(self.BlackList);
     self.BlackListEditbox:SetPosition('TOP', self.BlackList, 'TOP', 0, -10);
+    self.BlackListEditbox:SetFrameLevel(self.BlackList:GetFrameLevel() + 10);
     self.BlackListEditbox:SetSize(228, 20);
     self.BlackListEditbox.useLastValue = false;
     self.BlackListEditbox:SetInstruction(L['OPTIONS_AURAS_CUSTOM_EDITBOX_ENTER_ID']);
@@ -952,6 +953,7 @@ panel.Load = function(self)
 
     self.HPBarColorListEditbox = E.CreateEditBox(self.HPBarColorList);
     self.HPBarColorListEditbox:SetPosition('TOP', self.HPBarColorList, 'TOP', 0, -10);
+    self.HPBarColorListEditbox:SetFrameLevel(self.HPBarColorList:GetFrameLevel() + 10);
     self.HPBarColorListEditbox:SetSize(228, 20);
     self.HPBarColorListEditbox.useLastValue = false;
     self.HPBarColorListEditbox:SetInstruction(L['OPTIONS_AURAS_CUSTOM_EDITBOX_ENTER_ID']);

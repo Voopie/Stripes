@@ -506,8 +506,8 @@ panel.Load = function(self)
     self.List:SetShown(false);
 
     self.ListDropdown = E.CreateDropdown('plain', self.List);
-    self.ListDropdown:SetPosition('TOP', self.List, 'TOP', 4, -10);
-    self.ListDropdown:SetSize(234, 20);
+    self.ListDropdown:SetPosition('TOP', self.List, 'TOP', 0, -10);
+    self.ListDropdown:SetSize(228, 20);
     self.ListDropdown:SetList(O.Lists.custom_color_npcs);
     self.ListDropdown:SetValue(DEFAULT_LIST_VALUE);
     self.ListDropdown.OnValueChangedCallback = function(_, value)
