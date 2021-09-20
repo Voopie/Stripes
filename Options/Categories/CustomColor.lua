@@ -469,7 +469,7 @@ panel.Load = function(self)
     self.ListDropdown:SetValue(DEFAULT_LIST_VALUE);
     self.ListDropdown.OnValueChangedCallback = function(_, value)
         panel.UpdateListScroll(value);
-        panel.ListScrollArea.ScrollBar:SetValue(nil);
+        panel.ListScrollArea.ScrollBar:SetValue(0);
     end
 
     self.ListScroll = Mixin(CreateFrame('Frame', nil, self.List, 'BackdropTemplate'), E.PixelPerfectMixin);
