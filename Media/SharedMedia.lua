@@ -52,7 +52,7 @@ S.Media.Icons = {
         GEAR_WHITE        = {  0, 1/4, 0, 1/4},
         CROSS_WHITE       = {1/4, 2/4, 0, 1/4},
         FULL_CIRCLE_WHITE = {2/4, 3/4, 0, 1/4},
-        ARROW_DOWN_WHITE  = {3/4, 4/4, 0, 1/4},
+        ARROW_DOWN_WHITE  = {3/4 + 0.01, 4/4, 0, 1/4},
 
         -- 2nd row
         INFINITY_WHITE    = {  0, 1/4, 1/4, 2/4},
@@ -87,6 +87,7 @@ S.Media.Icons2 = {
         -- 2nd row
         REFRESH_WHITE      = {  0, 1/4, 1/4, 2/4},
         CROSS_SWORDS_WHITE = {1/4, 2/4, 1/4, 2/4},
+        PALETTE_COLOR      = {2/4, 3/4, 1/4, 2/4},
     },
 };
 

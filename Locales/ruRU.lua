@@ -15,6 +15,7 @@ L['RENAME'] = 'Переименовать';
 L['SAVE'] = 'Сохранить';
 L['USE'] = 'Использовать';
 L['NO'] = 'Нет';
+L['COLOR'] = 'Цвет';
 
 L['FONT_VALUE'] = 'Шрифт';
 L['FONT_SIZE'] = 'Размер шрифта';
@@ -77,12 +78,14 @@ L['RAID_SL_SOD'] = 'Святилище Господства';
 
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C для копирования';
 
+L['GLOW'] = 'Свечение';
+
 L['GLOW_TYPE_PIXEL'] = 'Пиксельное свечение';
 L['GLOW_TYPE_AUTOCAST'] = 'Свечение при автоприменении';
 L['GLOW_TYPE_BUTTON'] = 'Свечение кнопки действия';
 
-L['GLOW_TYPE_PIXEL_SHORT'] = 'Пиксельное';
-L['GLOW_TYPE_AUTOCAST_SHORT'] = 'Автоприменение';
+L['GLOW_TYPE_PIXEL_SHORT'] = 'Пиксель';
+L['GLOW_TYPE_AUTOCAST_SHORT'] = 'Авто-каст';
 L['GLOW_TYPE_BUTTON_SHORT'] = 'Действие';
 
 L['INTEGER'] = 'Целое число';
@@ -852,3 +855,6 @@ L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP'] = 'Включить особые име
 L['OPTIONS_CUSTOM_NAME_EDITBOX_ENTER_ID'] = 'Введите номер NPC';
 L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'Из цели';
 L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'Из списка';
+
+L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Введите имя и нажмите Enter';
+L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Открыть ассоциированный список цветов';

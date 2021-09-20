@@ -714,6 +714,8 @@ O.DefaultValues = {
 
     custom_name_enabled = false,
     custom_name_data    = {},
+
+    color_category_data = {},
 };
 
 local PROFILE_DEFAULT_ID = '1';

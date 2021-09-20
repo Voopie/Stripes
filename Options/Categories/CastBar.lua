@@ -28,12 +28,13 @@ local function AddCustomCast(spellId)
     end
 
     O.db.castbar_custom_casts_data[spellId] = {
-        id            = spellId,
-        enabled       = true,
-        color_enabled = false,
-        color         = { 0, 0.9, 1, 1 },
-        glow_enabled  = true,
-        glow_type     = 1,
+        id             = spellId,
+        enabled        = true,
+        color_enabled  = false,
+        color_category = 0,
+        color          = { 0.1, 0.1, 0.1, 1 },
+        glow_enabled   = true,
+        glow_type      = 1,
     };
 end
 
@@ -103,37 +104,6 @@ local function CreateCustomCastRow(frame)
     frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
     frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
 
-    frame.ColorEnabled = E.CreateCheckButton(frame);
-    frame.ColorEnabled:SetPosition('LEFT', frame.NameText, 'RIGHT', 4, 0);
-    frame.ColorEnabled.Callback = function(self)
-        O.db.castbar_custom_casts_data[self:GetParent().id].color_enabled = self:GetChecked();
-        frame.ColorPicker:SetEnabled(self:GetChecked());
-        S:GetNameplateModule('Handler'):UpdateAll();
-    end
-    frame.ColorEnabled:HookScript('OnEnter', function(self)
-        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
-    end);
-    frame.ColorEnabled:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
-    end);
-
-    frame.ColorPicker = E.CreateColorPicker(frame);
-    frame.ColorPicker:SetPosition('LEFT', frame.ColorEnabled, 'RIGHT', 2, 0);
-    frame.ColorPicker.OnValueChanged = function(self, r, g, b, a)
-        O.db.castbar_custom_casts_data[self:GetParent().id].color[1] = r;
-        O.db.castbar_custom_casts_data[self:GetParent().id].color[2] = g;
-        O.db.castbar_custom_casts_data[self:GetParent().id].color[3] = b;
-        O.db.castbar_custom_casts_data[self:GetParent().id].color[4] = a or 1;
-
-        S:GetNameplateModule('Handler'):UpdateAll();
-    end
-    frame.ColorPicker:HookScript('OnEnter', function(self)
-        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
-    end);
-    frame.ColorPicker:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
-    end);
-
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
     frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -16, 0);
     frame.RemoveButton:SetSize(14, 14);
@@ -168,7 +138,7 @@ local function CreateCustomCastRow(frame)
 
     frame.GlowType = E.CreateDropdown('plain', frame);
     frame.GlowType:SetPosition('RIGHT', frame.RemoveButton, 'LEFT', -16, 0);
-    frame.GlowType:SetSize(130, 20);
+    frame.GlowType:SetSize(100, 20);
     frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
     frame.GlowType:SetTooltip(L['GLOW']);
     frame.GlowType.OnValueChangedCallback = function(self, value)
@@ -179,6 +149,35 @@ local function CreateCustomCastRow(frame)
 
         S:GetNameplateModule('Handler'):UpdateAll();
     end
+
+    frame.ColorCategory = E.CreateDropdown('plain', frame);
+    frame.ColorCategory:SetPosition('RIGHT', frame.GlowType, 'LEFT', -8, 0);
+    frame.ColorCategory:SetSize(100, 20);
+    frame.ColorCategory:SetTooltip(L['COLOR']);
+    frame.ColorCategory.OnValueChangedCallback = function(self, value)
+        value = tonumber(value);
+
+        O.db.castbar_custom_casts_data[self:GetParent().id].color_enabled  = value ~= 0;
+        O.db.castbar_custom_casts_data[self:GetParent().id].color_category = value;
+
+        if O.db.color_category_data[value] then
+            O.db.castbar_custom_casts_data[self:GetParent().id].color[1] = O.db.color_category_data[value].color[1];
+            O.db.castbar_custom_casts_data[self:GetParent().id].color[2] = O.db.color_category_data[value].color[2];
+            O.db.castbar_custom_casts_data[self:GetParent().id].color[3] = O.db.color_category_data[value].color[3];
+            O.db.castbar_custom_casts_data[self:GetParent().id].color[4] = O.db.color_category_data[value].color[4] or 1;
+        else
+            O.db.castbar_custom_casts_data[self:GetParent().id].color[1] = 0.1;
+            O.db.castbar_custom_casts_data[self:GetParent().id].color[2] = 0.1;
+            O.db.castbar_custom_casts_data[self:GetParent().id].color[3] = 0.1;
+            O.db.castbar_custom_casts_data[self:GetParent().id].color[4] = 1;
+        end
+
+        self:GetParent().ColorPicker:SetValue(unpack(O.db.castbar_custom_casts_data[self:GetParent().id].color));
+    end
+
+    frame.ColorPicker = E.CreateColorPicker(frame);
+    frame.ColorPicker:SetPosition('RIGHT', frame.ColorCategory, 'LEFT', 0, 0);
+    frame.ColorPicker:SetEnabled(false);
 
     frame:HookScript('OnEnter', function(self)
         self:SetBackdropColor(0.3, 0.3, 0.3, 1);
@@ -222,9 +221,9 @@ local function UpdateCustomCastRow(frame)
     frame.Icon:SetTexture(icon);
     frame.IdText:SetText(frame.id);
     frame.NameText:SetText(name);
-    frame.ColorEnabled:SetChecked(frame.color_enabled);
     frame.ColorPicker:SetValue(unpack(frame.color));
-    frame.ColorPicker:SetEnabled(frame.color_enabled);
+    frame.ColorCategory:SetList(frame.list);
+    frame.ColorCategory:SetValue(frame.color_category);
     frame.GlowType:SetValue(frame.glow_type);
     frame.GlowType:UpdateScrollArea();
 end
@@ -247,13 +246,34 @@ panel.UpdateCustomCastsScroll = function()
             CreateCustomCastRow(frame);
         end
 
-        frame.index         = index;
-        frame.id            = id;
-        frame.enabled       = data.enabled;
-        frame.glow_enabled  = data.glow_enabled;
-        frame.glow_type     = data.glow_type;
-        frame.color_enabled = data.color_enabled;
-        frame.color         = data.color;
+        frame.index          = index;
+        frame.id             = id;
+        frame.enabled        = data.enabled;
+        frame.glow_enabled   = data.glow_type ~= 0;
+        frame.glow_type      = data.glow_type;
+
+        if O.db.color_category_data[data.color_category] then
+            data.color_enabled  = true;
+            data.color_category = data.color_category;
+
+            data.color[1] = O.db.color_category_data[data.color_category].color[1];
+            data.color[2] = O.db.color_category_data[data.color_category].color[2];
+            data.color[3] = O.db.color_category_data[data.color_category].color[3];
+            data.color[4] = O.db.color_category_data[data.color_category].color[4] or 1;
+        else
+            data.color_enabled  = false;
+            data.color_category = 0;
+
+            data.color[1] = 0.1;
+            data.color[2] = 0.1;
+            data.color[3] = 0.1;
+            data.color[4] = 1;
+        end
+
+        frame.color_enabled  = data.color_enabled;
+        frame.color_category = data.color_category;
+        frame.color = O.db.castbar_custom_casts_data[id].color;
+        frame.list  = S:GetModule('Options_ColorCategory'):GetDropdwonList();
 
         UpdateCustomCastRow(frame);
 
@@ -700,6 +720,14 @@ panel.Load = function(self)
 
         Handler:UpdateAll();
     end);
+
+    self.ColorCategoryToggleButton = E.CreateTextureButton(self.TabsFrames['CustomCastsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.PALETTE_COLOR);
+    self.ColorCategoryToggleButton:SetPosition('LEFT', self.castbar_custom_casts_editbox, 'RIGHT', 60, 0);
+    self.ColorCategoryToggleButton:SetTooltip(L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME']);
+    self.ColorCategoryToggleButton:SetSize(24, 24);
+    self.ColorCategoryToggleButton.Callback = function()
+        S:GetModule('Options_ColorCategory'):ToggleListFrame();
+    end
 
     self.castbar_custom_casts_editframe = CreateFrame('Frame', nil, self.TabsFrames['CustomCastsTab'].Content, 'BackdropTemplate');
     self.castbar_custom_casts_editframe:SetPoint('TOPLEFT', self.castbar_custom_casts_editbox, 'BOTTOMLEFT', -5, -8);

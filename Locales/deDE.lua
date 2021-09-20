@@ -15,6 +15,7 @@ L['RENAME'] = 'Rename';
 L['SAVE'] = 'Save';
 L['USE'] = 'Use';
 L['NO'] = 'No';
+L['COLOR'] = 'Color';
 
 L['FONT_VALUE'] = 'Font';
 L['FONT_SIZE'] = 'Font size';
@@ -76,6 +77,8 @@ L['RAID_SL_CN'] = 'Castle Nathria';
 L['RAID_SL_SOD'] = 'Sanctum of Domination';
 
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C to copy';
+
+L['GLOW'] = 'Glow';
 
 L['GLOW_TYPE_PIXEL'] = 'Pixel glow';
 L['GLOW_TYPE_AUTOCAST'] = 'Autocast glow';
@@ -852,3 +855,6 @@ L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP'] = 'Enable custom names';
 L['OPTIONS_CUSTOM_NAME_EDITBOX_ENTER_ID'] = 'Enter the ID of the NPC';
 L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'From target';
 L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'From list';
+
+L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Type a name and press Enter';
+L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Open the associated list of colors';

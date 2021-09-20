@@ -2,6 +2,7 @@
     <Script file="Core.lua" />
     <Script file="Search.lua" />
     <Script file="Panel.lua" />
+    <Script file="ColorCategory.lua" />
 
     <Include file="Categories\Load_Categories.xml" />
 </Ui>

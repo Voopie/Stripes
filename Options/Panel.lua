@@ -127,6 +127,8 @@ O.CloseOptions = function()
         else
             StaticPopup_Hide('STRIPES_OPTIONS_NEED_RELOAD');
         end
+
+        S:GetModule('Options_ColorCategory'):HideListFrame();
     end
 end
 
@@ -205,6 +207,8 @@ local function ToggleMinimizedOptions()
     if O.frame.isMin then
         O.frame:SetH(40);
         O.frame.Main:SetShown(false);
+
+        S:GetModule('Options_ColorCategory'):HideListFrame();
     else
         O.frame:SetH(600);
         O.frame.Main:SetShown(true);
@@ -369,6 +373,8 @@ O.CreateTab = function(parentPanel, name, text, callback)
         self.Content:SetShown(true);
 
         parentPanel.tabClicked = true;
+
+        S:GetModule('Options_ColorCategory'):HideListFrame();
     end);
 
     if callback then
@@ -489,6 +495,8 @@ O.CreateLeftButton = function(text, name, order, panel, hideButton)
         end
 
         O.ShowRightPanel(panel);
+
+        S:GetModule('Options_ColorCategory'):HideListFrame();
 
         if self.Callback then
             self:Callback();
