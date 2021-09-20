@@ -1036,6 +1036,15 @@ do
         ['plain'] = {
             SetList = function(self, itemsTable)
                 self.itemsTable = itemsTable;
+                self.tKeys = self.tKeys or {};
+
+                wipe(self.tKeys);
+
+                for k in pairs(self.itemsTable) do
+                    table.insert(self.tKeys, k);
+                end
+
+                table.sort(self.tKeys);
 
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
@@ -1048,7 +1057,7 @@ do
 
                 holderButton.buttonPool:ReleaseAll();
 
-                for key, value in ipairs(itemsTable) do
+                for _, key in pairs(self.tKeys) do
                     itemCounter = itemCounter + 1;
                     itemButton, isNew = holderButton.buttonPool:Acquire();
 
@@ -1101,10 +1110,10 @@ do
 
                     PixelUtil.SetHeight(itemButton, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
-                    itemButton.Text:SetText(value);
+                    itemButton.Text:SetText(self.itemsTable[key]);
 
                     itemButton.Key   = key;
-                    itemButton.Value = value;
+                    itemButton.Value = self.itemsTable[key];
 
                     itemButton:SetShown(true);
                 end
