@@ -148,11 +148,6 @@ local function Update(unitframe)
 
             aura:SetScale(SCALE);
 
-            if MASQUE_SUPPORT and Stripes.Masque then
-                Stripes.MasqueAurasCustomGroup:AddButton(aura);
-                Stripes.MasqueAurasCustomGroup:ReSkin(aura);
-            end
-
             if SQUARE then
                 aura:SetSize(20, 20);
                 aura.Icon:SetSize(18, 18);
@@ -169,11 +164,12 @@ local function Update(unitframe)
             aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
             aura.CountFrame.Count:SetFontObject(StripesAurasCustomCountFont);
 
-            if BORDER_HIDE then
-                aura.Border:Hide();
-            else
-                aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
-                aura.Border:Show();
+            aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+            aura.Border:SetShown(not BORDER_HIDE);
+
+            if MASQUE_SUPPORT and Stripes.Masque then
+                Stripes.MasqueAurasCustomGroup:RemoveButton(aura);
+                Stripes.MasqueAurasCustomGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
             end
 
             unitframe.AurasCustom.buffList[buffIndex] = aura;
@@ -225,15 +221,6 @@ local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.AurasCustom.buffList) do
         aura:SetScale(SCALE);
 
-        if Stripes.Masque then
-            if MASQUE_SUPPORT then
-                Stripes.MasqueAurasCustomGroup:AddButton(aura);
-                Stripes.MasqueAurasCustomGroup:ReSkin(aura);
-            else
-                Stripes.MasqueAurasCustomGroup:RemoveButton(aura);
-            end
-        end
-
         if SQUARE then
             aura:SetSize(20, 20);
             aura.Icon:SetSize(18, 18);
@@ -244,12 +231,8 @@ local function UpdateStyle(unitframe)
             aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
         end
 
-        if BORDER_HIDE then
-            aura.Border:Hide();
-        else
-            aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
-            aura.Border:Show();
-        end
+        aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+        aura.Border:SetShown(not BORDER_HIDE);
 
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
@@ -259,7 +242,18 @@ local function UpdateStyle(unitframe)
 
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+
+        if Stripes.Masque then
+            if MASQUE_SUPPORT then
+                Stripes.MasqueAurasCustomGroup:RemoveButton(aura);
+                Stripes.MasqueAurasCustomGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+            else
+                Stripes.MasqueAurasCustomGroup:RemoveButton(aura);
+            end
+        end
     end
+
+    Stripes.MasqueAurasCustomGroup:ReSkin();
 end
 
 function Module:UnitAdded(unitframe)

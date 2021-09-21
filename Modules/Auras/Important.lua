@@ -100,11 +100,6 @@ local function Update(unitframe)
                 aura:SetMouseClickEnabled(false);
                 aura.layoutIndex = buffIndex;
 
-                if MASQUE_SUPPORT and Stripes.Masque then
-                    Stripes.MasqueAurasImportantGroup:AddButton(aura);
-                    Stripes.MasqueAurasImportantGroup:ReSkin(aura);
-                end
-
                 if SQUARE then
                     aura:SetSize(20, 20);
                     aura.Icon:SetSize(18, 18);
@@ -130,6 +125,11 @@ local function Update(unitframe)
                 aura.CasterName = aura:CreateFontString(nil, 'ARTWORK');
                 PixelUtil.SetPoint(aura.CasterName, 'BOTTOM', aura, 'TOP', 0, 2);
                 aura.CasterName:SetFontObject(StripesAurasImportantCasterFont);
+
+                if MASQUE_SUPPORT and Stripes.Masque then
+                    Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
+                    Stripes.MasqueAurasImportantGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+                end
 
                 unitframe.ImportantAuras.buffList[buffIndex] = aura;
             end
@@ -206,15 +206,6 @@ local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.ImportantAuras.buffList) do
         aura:SetScale(O.db.auras_important_scale);
 
-        if Stripes.Masque then
-            if MASQUE_SUPPORT then
-                Stripes.MasqueAurasImportantGroup:AddButton(aura);
-                Stripes.MasqueAurasImportantGroup:ReSkin(aura);
-            else
-                Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
-            end
-        end
-
         if SQUARE then
             aura:SetSize(20, 20);
             aura.Icon:SetSize(18, 18);
@@ -235,7 +226,18 @@ local function UpdateStyle(unitframe)
 
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+
+        if Stripes.Masque then
+            if MASQUE_SUPPORT then
+                Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
+                Stripes.MasqueAurasImportantGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+            else
+                Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
+            end
+        end
     end
+
+    Stripes.MasqueAurasImportantGroup:ReSkin();
 end
 
 function Module:UnitAdded(unitframe)

@@ -161,11 +161,6 @@ local function Update(unitframe)
 
             aura:SetScale(SCALE);
 
-            if MASQUE_SUPPORT and Stripes.Masque then
-                Stripes.MasqueAurasMythicGroup:AddButton(aura);
-                Stripes.MasqueAurasMythicGroup:ReSkin(aura);
-            end
-
             if SQUARE then
                 aura:SetSize(20, 20);
                 aura.Icon:SetSize(18, 18);
@@ -184,6 +179,11 @@ local function Update(unitframe)
 
             aura.Border:SetColorTexture(0.80, 0.05, 0.05, 1);
             aura.Border:SetShown(not BORDER_HIDE);
+
+            if MASQUE_SUPPORT and Stripes.Masque then
+                Stripes.MasqueAurasMythicGroup:RemoveButton(aura);
+                Stripes.MasqueAurasMythicGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+            end
 
             unitframe.AurasMythicPlus.buffList[buffIndex] = aura;
         end
@@ -234,15 +234,6 @@ local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.ImportantAuras.buffList) do
         aura:SetScale(SCALE);
 
-        if Stripes.Masque then
-            if MASQUE_SUPPORT then
-                Stripes.MasqueAurasMythicGroup:AddButton(aura);
-                Stripes.MasqueAurasMythicGroup:ReSkin(aura);
-            else
-                Stripes.MasqueAurasMythicGroup:RemoveButton(aura);
-            end
-        end
-
         if SQUARE then
             aura:SetSize(20, 20);
             aura.Icon:SetSize(18, 18);
@@ -263,7 +254,18 @@ local function UpdateStyle(unitframe)
 
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+
+        if Stripes.Masque then
+            if MASQUE_SUPPORT then
+                Stripes.MasqueAurasMythicGroup:RemoveButton(aura);
+                Stripes.MasqueAurasMythicGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+            else
+                Stripes.MasqueAurasMythicGroup:RemoveButton(aura);
+            end
+        end
     end
+
+    Stripes.MasqueAurasMythicGroup:ReSkin();
 end
 
 function Module:UnitAdded(unitframe)
