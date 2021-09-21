@@ -1593,9 +1593,10 @@ do
             GameTooltip:Hide();
         end);
 
-        local list = CreateFrame('Frame', 'Stripes_DDList_' .. (#activeLists + 1), holderButton, 'BackdropTemplate');
+        local list = CreateFrame('Frame', 'Stripes_DDList_' .. (#activeLists + 1), UIParent, 'BackdropTemplate');
         PixelUtil.SetPoint(list, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
         PixelUtil.SetPoint(list, 'TOPRIGHT', holderButton, 'TOPRIGHT', 0, 0);
+        list:SetFrameStrata(holderButton:GetFrameStrata());
         list:SetFrameLevel(arrowButton:GetFrameLevel() + 1);
         list:SetClampedToScreen(true);
         list:SetBackdrop(DROPDOWN_LIST_BACKDROP);
