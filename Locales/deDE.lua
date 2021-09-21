@@ -97,6 +97,12 @@ L['OFFSET_X_SHORT'] = 'Hor. offset';
 L['OFFSET_Y'] = 'Vertical offset';
 L['OFFSET_Y_SHORT'] = 'Vert. offset';
 
+L['MASQUE_AURAS'] = 'Auras';
+L['MASQUE_DISPELLABLE_AURAS'] = 'Dispellable auras';
+L['MASQUE_MYTHIC_AURAS'] = 'Mythic auras';
+L['MASQUE_IMPORTANT_AURAS'] = 'Important auras';
+L['MASQUE_CUSTOM_AURAS'] = 'Custom auras';
+
 L['OPTIONS_NEED_RELOAD'] = 'You must reload the interface to apply the settings.\r\rReload now?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'The settings were hidden for the duration of the combat and will be automatically opened after the end of the combat';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'The settings will be opened after the combat';

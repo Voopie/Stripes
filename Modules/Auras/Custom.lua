@@ -149,8 +149,8 @@ local function Update(unitframe)
             aura:SetScale(SCALE);
 
             if MASQUE_SUPPORT and Stripes.Masque then
-                Stripes.MasqueAuraGroup:AddButton(aura);
-                Stripes.MasqueAuraGroup:ReSkin(aura);
+                Stripes.MasqueAurasCustomGroup:AddButton(aura);
+                Stripes.MasqueAurasCustomGroup:ReSkin(aura);
             end
 
             if SQUARE then
@@ -227,10 +227,10 @@ local function UpdateStyle(unitframe)
 
         if Stripes.Masque then
             if MASQUE_SUPPORT then
-                Stripes.MasqueAuraGroup:AddButton(aura);
-                Stripes.MasqueAuraGroup:ReSkin(aura);
+                Stripes.MasqueAurasCustomGroup:AddButton(aura);
+                Stripes.MasqueAurasCustomGroup:ReSkin(aura);
             else
-                Stripes.MasqueAuraGroup:RemoveButton(aura);
+                Stripes.MasqueAurasCustomGroup:RemoveButton(aura);
             end
         end
 

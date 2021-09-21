@@ -25,7 +25,11 @@ local Masque = LibStub('Masque', true);
 Module.Masque = Masque;
 
 if Masque then
-    Module.MasqueAuraGroup = Masque:Group(S.AddonName, 'Auras');
+    Module.MasqueAurasGroup           = Masque:Group(S.AddonName, L['MASQUE_AURAS']);
+    Module.MasqueAurasSpellstealGroup = Masque:Group(S.AddonName, L['MASQUE_DISPELLABLE_AURAS']);
+    Module.MasqueAurasMythicGroup     = Masque:Group(S.AddonName, L['MASQUE_MYTHIC_AURAS']);
+    Module.MasqueAurasImportantGroup  = Masque:Group(S.AddonName, L['MASQUE_IMPORTANT_AURAS']);
+    Module.MasqueAurasCustomGroup     = Masque:Group(S.AddonName, L['MASQUE_CUSTOM_AURAS']);
 end
 
 -- Nameplates

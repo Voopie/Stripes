@@ -53,8 +53,8 @@ local function UpdateBuffs(unitframe)
 
         if not aura.__stripesStyled then
             if MASQUE_SUPPORT and Stripes.Masque then
-                Stripes.MasqueAuraGroup:AddButton(aura);
-                Stripes.MasqueAuraGroup:ReSkin(aura);
+                Stripes.MasqueAurasGroup:AddButton(aura);
+                Stripes.MasqueAurasGroup:ReSkin(aura);
             end
 
             aura:SetScale(SCALE);
@@ -100,10 +100,10 @@ local function UpdateStyle(unitframe)
 
         if Stripes.Masque then
             if MASQUE_SUPPORT then
-                Stripes.MasqueAuraGroup:AddButton(aura);
-                Stripes.MasqueAuraGroup:ReSkin(aura);
+                Stripes.MasqueAurasGroup:AddButton(aura);
+                Stripes.MasqueAurasGroup:ReSkin(aura);
             else
-                Stripes.MasqueAuraGroup:RemoveButton(aura);
+                Stripes.MasqueAurasGroup:RemoveButton(aura);
             end
         end
 

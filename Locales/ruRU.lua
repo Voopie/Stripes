@@ -97,6 +97,12 @@ L['OFFSET_X_SHORT'] = 'Гор. смещение';
 L['OFFSET_Y'] = 'Вертикальное смещение';
 L['OFFSET_Y_SHORT'] = 'Верт. смещение';
 
+L['MASQUE_AURAS'] = 'Ауры';
+L['MASQUE_DISPELLABLE_AURAS'] = 'Развеиваемые ауры';
+L['MASQUE_MYTHIC_AURAS'] = 'Эпохальные ауры';
+L['MASQUE_IMPORTANT_AURAS'] = 'Важные ауры';
+L['MASQUE_CUSTOM_AURAS'] = 'Пользовательские ауры';
+
 L['OPTIONS_NEED_RELOAD'] = 'Необходимо перезагрузить интерфейс, чтобы применить настройки.\r\rПерезагрузить сейчас?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'Настройки были скрыты на время боя и будут автоматически открыты после завершения боя';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'Настройки будут открыты после боя';
