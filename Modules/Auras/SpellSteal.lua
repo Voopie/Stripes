@@ -231,7 +231,9 @@ local function UpdateStyle(unitframe)
         end
     end
 
-    Stripes.MasqueAurasSpellstealGroup:ReSkin();
+    if Stripes.Masque and MASQUE_SUPPORT then
+        Stripes.MasqueAurasSpellstealGroup:ReSkin();
+    end
 end
 
 function Module:UnitAdded(unitframe)

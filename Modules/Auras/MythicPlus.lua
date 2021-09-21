@@ -265,7 +265,9 @@ local function UpdateStyle(unitframe)
         end
     end
 
-    Stripes.MasqueAurasMythicGroup:ReSkin();
+    if Stripes.Masque and MASQUE_SUPPORT then
+        Stripes.MasqueAurasMythicGroup:ReSkin();
+    end
 end
 
 function Module:UnitAdded(unitframe)
