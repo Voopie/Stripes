@@ -721,10 +721,10 @@ panel.Load = function(self)
         Handler:UpdateAll();
     end);
 
-    self.ColorCategoryToggleButton = E.CreateTextureButton(self.TabsFrames['CustomCastsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.PALETTE_COLOR);
-    self.ColorCategoryToggleButton:SetPosition('LEFT', self.castbar_custom_casts_editbox, 'RIGHT', 60, 0);
+    self.ColorCategoryToggleButton = E.CreateTextureButton(self.TabsFrames['CustomCastsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.PALETTE_COLOR, { 1, 1, 1, 1 }, { 1, 1, 0.5, 1 });
+    self.ColorCategoryToggleButton:SetPosition('LEFT', self.castbar_custom_casts_editbox, 'RIGHT', 60, 4);
     self.ColorCategoryToggleButton:SetTooltip(L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME']);
-    self.ColorCategoryToggleButton:SetSize(24, 24);
+    self.ColorCategoryToggleButton:SetSize(29, 28);
     self.ColorCategoryToggleButton.Callback = function()
         S:GetModule('Options_ColorCategory'):ToggleListFrame();
     end

@@ -322,15 +322,26 @@ E.CreateCheckButton = function(parent)
     return b;
 end
 
-E.CreateTextureButton = function(parent, texturePath, textureCoord)
+E.CreateTextureButton = function(parent, texturePath, textureCoord, normalColor, highlightColor)
     local b = Mixin(CreateFrame('Button', nil, parent), E.PixelPerfectMixin);
 
     b:SetSize(16, 16);
 
     b:SetNormalTexture(texturePath);
-    b:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7, 1);
+
+    if normalColor then
+        b:GetNormalTexture():SetVertexColor(unpack(normalColor));
+    else
+        b:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7, 1);
+    end
+
     b:SetHighlightTexture(texturePath, 'BLEND')
-    b:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
+
+    if highlightColor then
+        b:GetHighlightTexture():SetVertexColor(unpack(highlightColor));
+    else
+        b:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
+    end
 
     if textureCoord then
         b:GetNormalTexture():SetTexCoord(unpack(textureCoord));

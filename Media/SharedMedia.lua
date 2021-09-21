@@ -87,7 +87,8 @@ S.Media.Icons2 = {
         -- 2nd row
         REFRESH_WHITE      = {  0, 1/4, 1/4, 2/4},
         CROSS_SWORDS_WHITE = {1/4, 2/4, 1/4, 2/4},
-        PALETTE_COLOR      = {2/4, 3/4, 1/4, 2/4},
+
+        PALETTE_COLOR      = {0.71875, 1, 0.734375, 1},
     },
 };
 
