@@ -1,5 +1,5 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
-local Module = S:NewNameplateModule('Handler');
+local Stripes = S:NewNameplateModule('Handler');
 
 -- Lua API
 local string_find, string_lower, math_ceil, math_max = string.find, string.lower, math.ceil, math.max;
@@ -22,14 +22,14 @@ local LSM_MEDIATYPE_FONT = LSM.MediaType.FONT;
 local LIST_FONT_FLAGS = O.Lists.font_flags;
 
 local Masque = LibStub('Masque', true);
-Module.Masque = Masque;
+Stripes.Masque = Masque;
 
 if Masque then
-    Module.MasqueAurasGroup           = Masque:Group(S.AddonName, L['MASQUE_AURAS']);
-    Module.MasqueAurasSpellstealGroup = Masque:Group(S.AddonName, L['MASQUE_DISPELLABLE_AURAS']);
-    Module.MasqueAurasMythicGroup     = Masque:Group(S.AddonName, L['MASQUE_MYTHIC_AURAS']);
-    Module.MasqueAurasImportantGroup  = Masque:Group(S.AddonName, L['MASQUE_IMPORTANT_AURAS']);
-    Module.MasqueAurasCustomGroup     = Masque:Group(S.AddonName, L['MASQUE_CUSTOM_AURAS']);
+    Stripes.MasqueAurasGroup           = Masque:Group(S.AddonName, L['MASQUE_AURAS']);
+    Stripes.MasqueAurasSpellstealGroup = Masque:Group(S.AddonName, L['MASQUE_DISPELLABLE_AURAS']);
+    Stripes.MasqueAurasMythicGroup     = Masque:Group(S.AddonName, L['MASQUE_MYTHIC_AURAS']);
+    Stripes.MasqueAurasImportantGroup  = Masque:Group(S.AddonName, L['MASQUE_IMPORTANT_AURAS']);
+    Stripes.MasqueAurasCustomGroup     = Masque:Group(S.AddonName, L['MASQUE_CUSTOM_AURAS']);
 end
 
 -- Nameplates
@@ -45,7 +45,7 @@ local NAME_ONLY_FRIENDLY_UNIT_TYPES = {
     ['FRIENDLY_NPC']    = true,
 };
 
-Module.UpdateAll = function()
+Stripes.UpdateAll = function()
     S:ForAllNameplateModules('UpdateLocalConfig');
 
     for _, unitframe in pairs(NP) do
@@ -63,7 +63,7 @@ Module.UpdateAll = function()
     end
 end
 
-Module.UpdateFontObject = function(fontObject, fontValue, fontSize, fontFlag, fontShadow)
+Stripes.UpdateFontObject = function(fontObject, fontValue, fontSize, fontFlag, fontShadow)
     fontObject:SetFont(LSM:Fetch(LSM_MEDIATYPE_FONT, O.db.use_global_font_value and O.db.global_font_value or fontValue), math.max(3, O.db.use_global_font_size and O.db.global_font_size or fontSize), LIST_FONT_FLAGS[O.db.use_global_font_flag and O.db.global_font_flag or fontFlag]);
 
     if O.db.use_global_font_shadow then
@@ -80,7 +80,7 @@ local function ShouldShowName(unitframe)
     return NAME_TEXT_ENABLED and (unitframe.unit and SSN(unitframe));
 end
 
-Module.ShouldShowName = ShouldShowName;
+Stripes.ShouldShowName = ShouldShowName;
 
 local function IsNameOnlyMode()
     return NAME_ONLY_FRIENDLY_ENABLED;
@@ -98,12 +98,12 @@ local function IsNameOnlyModeAndFriendly(unitType, canAttack)
     end
 end
 
-Module.IsNameOnlyMode            = IsNameOnlyMode;
-Module.IsNameOnlyModeAndFriendly = IsNameOnlyModeAndFriendly;
+Stripes.IsNameOnlyMode            = IsNameOnlyMode;
+Stripes.IsNameOnlyModeAndFriendly = IsNameOnlyModeAndFriendly;
 
 local function UpdateSizesSafe()
     if U.PlayerInCombat() then
-        Module:RegisterEvent('PLAYER_REGEN_ENABLED');
+        Stripes:RegisterEvent('PLAYER_REGEN_ENABLED');
         return;
     end
 
@@ -132,7 +132,7 @@ local function UpdateSizesSafe()
     C_NamePlate.SetNamePlateSelfClickThrough(O.db.size_self_click_through);
 end
 
-Module.UpdateSizesSafe = UpdateSizesSafe;
+Stripes.UpdateSizesSafe = UpdateSizesSafe;
 
 local function UpdateHealth(unitframe)
     unitframe.data.healthCurrent = UnitHealth(unitframe.data.unit) or 0;
@@ -264,7 +264,7 @@ local function CVarsReset()
     C_CVar.SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'));
 end
 
-Module.CVarsReset = CVarsReset;
+Stripes.CVarsReset = CVarsReset;
 
 local function CVarsUpdate()
     C_CVar.SetCVar('nameplateShowOnlyNames', O.db.name_only_friendly_mode == 1 and 1 or 0);
@@ -323,7 +323,7 @@ local function CVarsUpdate()
     C_CVar.SetCVar('nameplateOccludedAlphaMult', O.db.occluded_alpha_mult);
 end
 
-Module.CVarsUpdate = CVarsUpdate;
+Stripes.CVarsUpdate = CVarsUpdate;
 
 local neededStr = 'nameplate';
 local function HookSetCVar(name, value)
@@ -488,7 +488,7 @@ local function ResetNameplateData(unitframe)
     unitframe.data.targetName = nil;
 end
 
-function Module:NAME_PLATE_UNIT_ADDED(unit)
+function Stripes:NAME_PLATE_UNIT_ADDED(unit)
     local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
     local unitframe = nameplate and nameplate.UnitFrame;
 
@@ -595,7 +595,7 @@ function Module:NAME_PLATE_UNIT_ADDED(unit)
     end
 end
 
-function Module:NAME_PLATE_UNIT_REMOVED(unit)
+function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
     local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
 
     if not nameplate or not NP[nameplate] then
@@ -607,7 +607,7 @@ function Module:NAME_PLATE_UNIT_REMOVED(unit)
     S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
 end
 
-function Module:UNIT_AURA(unit)
+function Stripes:UNIT_AURA(unit)
     local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
 
     if not nameplate or not NP[nameplate] then
@@ -617,7 +617,7 @@ function Module:UNIT_AURA(unit)
     S:ForAllNameplateModules('UnitAura', NP[nameplate]);
 end
 
-function Module:UNIT_LEVEL(unit)
+function Stripes:UNIT_LEVEL(unit)
     local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
 
     if not nameplate or not NP[nameplate] then
@@ -627,7 +627,7 @@ function Module:UNIT_LEVEL(unit)
     UpdateLevel(NP[nameplate]);
 end
 
-function Module:UNIT_FACTION(unit)
+function Stripes:UNIT_FACTION(unit)
     local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
 
     if not nameplate or not NP[nameplate] then
@@ -637,30 +637,30 @@ function Module:UNIT_FACTION(unit)
     UpdateLevel(NP[nameplate]);
 end
 
-function Module:PLAYER_LOGIN()
+function Stripes:PLAYER_LOGIN()
     CVarsUpdate();
 end
 
-function Module:PLAYER_ENTERING_WORLD()
+function Stripes:PLAYER_ENTERING_WORLD()
     C_Timer.After(0.1, function()
         UpdateSizesSafe();
         self:UpdateAll();
     end);
 end
 
-function Module:PLAYER_REGEN_ENABLED()
+function Stripes:PLAYER_REGEN_ENABLED()
     self:UnregisterEvent('PLAYER_REGEN_ENABLED');
 
     UpdateSizesSafe();
 end
 
-function Module:UpdateLocalConfig()
+function Stripes:UpdateLocalConfig()
     NAME_TEXT_ENABLED               = O.db.name_text_enabled;
     NAME_ONLY_FRIENDLY_ENABLED      = O.db.name_only_friendly_enabled;
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
 end
 
-function Module:StartUp()
+function Stripes:StartUp()
     self:UpdateLocalConfig();
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', UpdateHealth);

@@ -1,6 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Visibility');
-local Handler = S:GetNameplateModule('Handler');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- Local Config
 local SHOW_ALWAYS_INSTANCE, SHOW_ALWAYS_OPENWORLD, MAX_DISTANCE_INSTANCE, MAX_DISTANCE_OPENWORLD;
@@ -23,7 +23,7 @@ local function ZoneChanged()
         C_CVar.SetCVar('nameplateMaxDistance', MAX_DISTANCE_OPENWORLD);
     end
 
-    if Handler.IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+    if Stripes.IsNameOnlyMode() and O.db.name_only_friendly_stacking then
         if U.IsInInstance() then
             C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
         else

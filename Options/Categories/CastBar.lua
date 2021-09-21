@@ -284,7 +284,7 @@ panel.UpdateCustomCastsScroll = function()
 end
 
 panel.Load = function(self)
-    local Handler = S:GetNameplateModule('Handler');
+    local Stripes = S:GetNameplateModule('Handler');
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -302,7 +302,7 @@ panel.Load = function(self)
     self.castbar_texture_value:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXTURE_VALUE_TOOLTIP'], self.Tabs[1]);
     self.castbar_texture_value.OnValueChangedCallback = function(_, value)
         O.db.castbar_texture_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_text_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
@@ -314,7 +314,7 @@ panel.Load = function(self)
     self.castbar_text_font_value:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_FONT_VALUE'], self.Tabs[1]);
     self.castbar_text_font_value.OnValueChangedCallback = function(_, value)
         O.db.castbar_text_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_text_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -324,7 +324,7 @@ panel.Load = function(self)
     self.castbar_text_font_size:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_FONT_SIZE'], self.Tabs[1]);
     self.castbar_text_font_size.OnValueChangedCallback = function(_, value)
         O.db.castbar_text_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -336,7 +336,7 @@ panel.Load = function(self)
     self.castbar_text_font_flag:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_FONT_FLAG'], self.Tabs[1]);
     self.castbar_text_font_flag.OnValueChangedCallback = function(_, value)
         O.db.castbar_text_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_text_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -347,7 +347,7 @@ panel.Load = function(self)
     self.castbar_text_font_shadow:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_FONT_SHADOW'], self.Tabs[1]);
     self.castbar_text_font_shadow.Callback = function(self)
         O.db.castbar_text_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_height = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -358,7 +358,7 @@ panel.Load = function(self)
     self.castbar_height:SetValues(O.db.castbar_height, 1, 40, 1);
     self.castbar_height.OnValueChangedCallback = function(_, value)
         O.db.castbar_height = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_border_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -369,7 +369,7 @@ panel.Load = function(self)
     self.castbar_border_enabled:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_ENABLED_TOOLTIP'], self.Tabs[1]);
     self.castbar_border_enabled.Callback = function(self)
         O.db.castbar_border_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_border_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -383,7 +383,7 @@ panel.Load = function(self)
         O.db.castbar_border_color[3] = b;
         O.db.castbar_border_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_border_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -393,7 +393,7 @@ panel.Load = function(self)
     self.castbar_border_size:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_SIZE_TOOLTIP'], self.Tabs[1]);
     self.castbar_border_size.OnValueChangedCallback = function(_, value)
         O.db.castbar_border_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
@@ -426,7 +426,7 @@ panel.Load = function(self)
         O.db.castbar_start_cast_color[3] = b;
         O.db.castbar_start_cast_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_start_channel_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -441,7 +441,7 @@ panel.Load = function(self)
         O.db.castbar_start_channel_color[3] = b;
         O.db.castbar_start_channel_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_noninterruptible_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -456,7 +456,7 @@ panel.Load = function(self)
         O.db.castbar_noninterruptible_color[3] = b;
         O.db.castbar_noninterruptible_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_failed_cast_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -471,7 +471,7 @@ panel.Load = function(self)
         O.db.castbar_failed_cast_color[3] = b;
         O.db.castbar_failed_cast_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_show_interrupt_ready_tick = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -484,7 +484,7 @@ panel.Load = function(self)
 
         panel.castbar_interrupt_ready_tick_color:SetEnabled(O.db.castbar_show_interrupt_ready_tick);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_interrupt_ready_tick_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -500,7 +500,7 @@ panel.Load = function(self)
         O.db.castbar_interrupt_ready_tick_color[3] = b;
         O.db.castbar_interrupt_ready_tick_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_use_interrupt_ready_in_time_color = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -513,7 +513,7 @@ panel.Load = function(self)
 
         panel.castbar_interrupt_ready_in_time_color:SetEnabled(O.db.castbar_use_interrupt_ready_in_time_color);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_interrupt_ready_in_time_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -529,7 +529,7 @@ panel.Load = function(self)
         O.db.castbar_interrupt_ready_in_time_color[3] = b;
         O.db.castbar_interrupt_ready_in_time_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_use_interrupt_not_ready_color = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -542,7 +542,7 @@ panel.Load = function(self)
 
         panel.castbar_interrupt_not_ready_color:SetEnabled(O.db.castbar_use_interrupt_not_ready_color);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_interrupt_not_ready_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -558,7 +558,7 @@ panel.Load = function(self)
         O.db.castbar_interrupt_not_ready_color[3] = b;
         O.db.castbar_interrupt_not_ready_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
@@ -576,7 +576,7 @@ panel.Load = function(self)
 
         panel.castbar_icon_large:SetEnabled(not O.db.castbar_on_hp_bar);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_icon_large = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -588,7 +588,7 @@ panel.Load = function(self)
     self.castbar_icon_large:SetEnabled(not O.db.castbar_on_hp_bar);
     self.castbar_icon_large.Callback = function(self)
         O.db.castbar_icon_large = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_icon_right_side = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -599,7 +599,7 @@ panel.Load = function(self)
     self.castbar_icon_right_side:SetChecked(O.db.castbar_icon_right_side);
     self.castbar_icon_right_side.Callback = function(self)
         O.db.castbar_icon_right_side = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_show_icon_notinterruptible = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -610,7 +610,7 @@ panel.Load = function(self)
     self.castbar_show_icon_notinterruptible:SetChecked(O.db.castbar_show_icon_notinterruptible);
     self.castbar_show_icon_notinterruptible.Callback = function(self)
         O.db.castbar_show_icon_notinterruptible = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_show_shield = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -621,7 +621,7 @@ panel.Load = function(self)
     self.castbar_show_shield:SetChecked(O.db.castbar_show_shield);
     self.castbar_show_shield.Callback = function(self)
         O.db.castbar_show_shield = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_timer_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -635,7 +635,7 @@ panel.Load = function(self)
 
         panel.castbar_timer_format:SetEnabled(O.db.castbar_timer_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_timer_format = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -648,7 +648,7 @@ panel.Load = function(self)
     self.castbar_timer_format:SetEnabled(O.db.castbar_timer_enabled);
     self.castbar_timer_format.OnValueChangedCallback = function(_, value)
         O.db.castbar_timer_format = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.who_interrupted_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -659,7 +659,7 @@ panel.Load = function(self)
     self.who_interrupted_enabled:SetChecked(O.db.who_interrupted_enabled);
     self.who_interrupted_enabled.Callback = function(self)
         O.db.who_interrupted_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_show_tradeskills = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -670,7 +670,7 @@ panel.Load = function(self)
     self.castbar_show_tradeskills:SetChecked(O.db.castbar_show_tradeskills);
     self.castbar_show_tradeskills.Callback = function(self)
         O.db.castbar_show_tradeskills = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -687,7 +687,7 @@ panel.Load = function(self)
     self.castbar_custom_casts_enabled:SetChecked(O.db.castbar_custom_casts_enabled);
     self.castbar_custom_casts_enabled.Callback = function(self)
         O.db.castbar_custom_casts_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.castbar_custom_casts_editbox = E.CreateEditBox(self.TabsFrames['CustomCastsTab'].Content);
@@ -718,7 +718,7 @@ panel.Load = function(self)
 
         self:SetText('');
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end);
 
     self.ColorCategoryToggleButton = E.CreateTextureButton(self.TabsFrames['CustomCastsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.PALETTE_COLOR, { 1, 1, 1, 1 }, { 1, 1, 0.5, 1 });

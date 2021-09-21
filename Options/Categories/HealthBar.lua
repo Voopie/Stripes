@@ -31,7 +31,7 @@ panel.TabsData = {
 };
 
 panel.Load = function(self)
-    local Handler = S:GetNameplateModule('Handler');
+    local Stripes = S:GetNameplateModule('Handler');
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ panel.Load = function(self)
     self.health_bar_texture_value:AddToSearch(button, L['OPTIONS_HEALTH_BAR_TEXTURE_VALUE_TOOLTIP'], self.Tabs[1]);
     self.health_bar_texture_value.OnValueChangedCallback = function(_, value)
         O.db.health_bar_texture_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local BorderHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_BORDER']);
@@ -68,7 +68,7 @@ panel.Load = function(self)
         O.db.health_bar_border_color[3] = b;
         O.db.health_bar_border_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_border_selected_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -83,7 +83,7 @@ panel.Load = function(self)
         O.db.health_bar_border_selected_color[3] = b;
         O.db.health_bar_border_selected_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_border_hide = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -94,7 +94,7 @@ panel.Load = function(self)
     self.health_bar_border_hide:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BORDER_HIDE_TOOLTIP'], self.Tabs[1]);
     self.health_bar_border_hide.Callback = function(self)
         O.db.health_bar_border_hide = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_border_same_color = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -105,7 +105,7 @@ panel.Load = function(self)
     self.health_bar_border_same_color:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BORDER_SAME_COLOR_TOOLTIP'], self.Tabs[1]);
     self.health_bar_border_same_color.Callback = function(self)
         O.db.health_bar_border_same_color = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_border_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -115,7 +115,7 @@ panel.Load = function(self)
     self.health_bar_border_size:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BORDER_SIZE_TOOLTIP'], self.Tabs[1]);
     self.health_bar_border_size.OnValueChangedCallback = function(_, value)
         O.db.health_bar_border_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local CustomBorderHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_CUSTOM_BORDER']);
@@ -130,7 +130,7 @@ panel.Load = function(self)
     self.health_bar_custom_border_enabled:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_ENABLED_TOOLTIP'], self.Tabs[1]);
     self.health_bar_custom_border_enabled.Callback = function(self)
         O.db.health_bar_custom_border_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_custom_border_path = E.CreateEditBox(self.TabsFrames['CommonTab'].Content);
@@ -151,7 +151,7 @@ panel.Load = function(self)
 
         self:SetText(path);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_custom_border_width = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -162,7 +162,7 @@ panel.Load = function(self)
     self.health_bar_custom_border_width:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_WIDTH_TOOLTIP'], self.Tabs[1]);
     self.health_bar_custom_border_width.OnValueChangedCallback = function(_, value)
         O.db.health_bar_custom_border_width = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_custom_border_height = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -173,7 +173,7 @@ panel.Load = function(self)
     self.health_bar_custom_border_height:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_HEIGHT_TOOLTIP'], self.Tabs[1]);
     self.health_bar_custom_border_height.OnValueChangedCallback = function(_, value)
         O.db.health_bar_custom_border_height = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_custom_border_height_minus = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -184,7 +184,7 @@ panel.Load = function(self)
     self.health_bar_custom_border_height_minus:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_HEIGHT_MINUS_TOOLTIP'], self.Tabs[1]);
     self.health_bar_custom_border_height_minus.OnValueChangedCallback = function(_, value)
         O.db.health_bar_custom_border_height_minus = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_custom_border_x_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -195,7 +195,7 @@ panel.Load = function(self)
     self.health_bar_custom_border_x_offset:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_X_OFFSET_TOOLTIP'], self.Tabs[1]);
     self.health_bar_custom_border_x_offset.OnValueChangedCallback = function(_, value)
         O.db.health_bar_custom_border_x_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_custom_border_y_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -206,7 +206,7 @@ panel.Load = function(self)
     self.health_bar_custom_border_y_offset:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CUSTOM_BORDER_Y_OFFSET_TOOLTIP'], self.Tabs[1]);
     self.health_bar_custom_border_y_offset.OnValueChangedCallback = function(_, value)
         O.db.health_bar_custom_border_y_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local AbsorbHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_ABSORB']);
@@ -221,7 +221,7 @@ panel.Load = function(self)
     self.absorb_bar_enabled:AddToSearch(button, L['OPTIONS_ABSORB_BAR_ENABLED_TOOLTIP'], self.Tabs[1]);
     self.absorb_bar_enabled.Callback = function(self)
         O.db.absorb_bar_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.absorb_bar_at_top = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -232,7 +232,7 @@ panel.Load = function(self)
     self.absorb_bar_at_top:AddToSearch(button, L['OPTIONS_ABSORB_BAR_AT_TOP_TOOLTIP'], self.Tabs[1]);
     self.absorb_bar_at_top.Callback = function(self)
         O.db.absorb_bar_at_top = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.absorb_text_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -253,7 +253,7 @@ panel.Load = function(self)
         panel.absorb_text_x_offset:SetEnabled(O.db.absorb_text_enabled);
         panel.absorb_text_y_offset:SetEnabled(O.db.absorb_text_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.absorb_text_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -268,7 +268,7 @@ panel.Load = function(self)
         O.db.absorb_text_color[3] = b;
         O.db.absorb_text_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.absorb_text_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
@@ -281,7 +281,7 @@ panel.Load = function(self)
     self.absorb_text_font_value:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_font_value.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.absorb_text_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -292,7 +292,7 @@ panel.Load = function(self)
     self.absorb_text_font_size:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_font_size.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.absorb_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -305,7 +305,7 @@ panel.Load = function(self)
     self.absorb_text_font_flag:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_font_flag.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.absorb_text_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -317,7 +317,7 @@ panel.Load = function(self)
     self.absorb_text_font_shadow:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_font_shadow.Callback = function(self)
         O.db.absorb_text_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.absorb_text_anchor = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -331,7 +331,7 @@ panel.Load = function(self)
     self.absorb_text_anchor:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_anchor.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_anchor = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.absorb_text_x_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -344,7 +344,7 @@ panel.Load = function(self)
     self.absorb_text_x_offset:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_x_offset.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_x_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.absorb_text_y_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -357,7 +357,7 @@ panel.Load = function(self)
     self.absorb_text_y_offset:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_y_offset.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_y_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -375,7 +375,7 @@ panel.Load = function(self)
     self.health_bar_class_color_enemy.Callback = function(self)
         O.db.health_bar_class_color_enemy = self:GetChecked();
         C_CVar.SetCVar('ShowClassColorInNameplate', O.db.health_bar_class_color_enemy and 1 or 0);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_class_color_friendly = E.CreateCheckButton(self.TabsFrames['ColorsTab'].Content);
@@ -387,7 +387,7 @@ panel.Load = function(self)
     self.health_bar_class_color_friendly.Callback = function(self)
         O.db.health_bar_class_color_friendly = self:GetChecked();
         C_CVar.SetCVar('ShowClassColorInFriendlyNameplate', O.db.health_bar_class_color_friendly and 1 or 0);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_color_enemy_npc = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
@@ -402,7 +402,7 @@ panel.Load = function(self)
         O.db.health_bar_color_enemy_npc[3] = b;
         O.db.health_bar_color_enemy_npc[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_color_enemy_player = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
@@ -417,7 +417,7 @@ panel.Load = function(self)
         O.db.health_bar_color_enemy_player[3] = b;
         O.db.health_bar_color_enemy_player[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_color_friendly_npc = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
@@ -432,7 +432,7 @@ panel.Load = function(self)
         O.db.health_bar_color_friendly_npc[3] = b;
         O.db.health_bar_color_friendly_npc[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_color_friendly_player = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
@@ -447,7 +447,7 @@ panel.Load = function(self)
         O.db.health_bar_color_friendly_player[3] = b;
         O.db.health_bar_color_friendly_player[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_color_neutral_npc = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
@@ -462,7 +462,7 @@ panel.Load = function(self)
         O.db.health_bar_color_neutral_npc[3] = b;
         O.db.health_bar_color_neutral_npc[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_color_tapped = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
@@ -477,7 +477,7 @@ panel.Load = function(self)
         O.db.health_bar_color_tapped[3] = b;
         O.db.health_bar_color_tapped[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_bar_color_dc = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
@@ -492,7 +492,7 @@ panel.Load = function(self)
         O.db.health_bar_color_dc[3] = b;
         O.db.health_bar_color_dc[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local ResetHealthBarColorsButton = E.CreateTextureButton(self.TabsFrames['ColorsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);
@@ -523,7 +523,7 @@ panel.Load = function(self)
     self.target_indicator_enabled:SetChecked(O.db.target_indicator_enabled);
     self.target_indicator_enabled.Callback = function(self)
         O.db.target_indicator_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_indicator_texture = E.CreateDropdown('texture', self.TabsFrames['TargetIndicatorTab'].Content);
@@ -536,7 +536,7 @@ panel.Load = function(self)
     self.target_indicator_texture:SetValue(O.db.target_indicator_texture);
     self.target_indicator_texture.OnValueChangedCallback = function(_, value)
         O.db.target_indicator_texture = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_indicator_color = E.CreateColorPicker(self.TabsFrames['TargetIndicatorTab'].Content);
@@ -550,7 +550,7 @@ panel.Load = function(self)
         O.db.target_indicator_color[3] = b;
         O.db.target_indicator_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_indicator_size = E.CreateSlider(self.TabsFrames['TargetIndicatorTab'].Content);
@@ -560,7 +560,7 @@ panel.Load = function(self)
     self.target_indicator_size:AddToSearch(button, L['OPTIONS_TARGET_INDICATOR_SIZE_TOOLTIP'], self.Tabs[3]);
     self.target_indicator_size.OnValueChangedCallback = function(_, value)
         O.db.target_indicator_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_indicator_x_offset = E.CreateSlider(self.TabsFrames['TargetIndicatorTab'].Content);
@@ -570,7 +570,7 @@ panel.Load = function(self)
     self.target_indicator_x_offset:AddToSearch(button, L['OPTIONS_TARGET_INDICATOR_X_OFFSET_TOOLTIP'], self.Tabs[3]);
     self.target_indicator_x_offset.OnValueChangedCallback = function(_, value)
         O.db.target_indicator_x_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_indicator_y_offset = E.CreateSlider(self.TabsFrames['TargetIndicatorTab'].Content);
@@ -580,7 +580,7 @@ panel.Load = function(self)
     self.target_indicator_y_offset:AddToSearch(button, L['OPTIONS_TARGET_INDICATOR_Y_OFFSET_TOOLTIP'], self.Tabs[3]);
     self.target_indicator_y_offset.OnValueChangedCallback = function(_, value)
         O.db.target_indicator_y_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_highlight = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
@@ -591,7 +591,7 @@ panel.Load = function(self)
     self.target_highlight:AddToSearch(button, L['OPTIONS_TARGET_HIGHLIGHT_TOOLTIP'], self.Tabs[3]);
     self.target_highlight.Callback = function(self)
         O.db.target_highlight = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_glow_enabled = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
@@ -602,7 +602,7 @@ panel.Load = function(self)
     self.target_glow_enabled:SetChecked(O.db.target_glow_enabled);
     self.target_glow_enabled.Callback = function(self)
         O.db.target_glow_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.hover_glow_enabled = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
@@ -613,7 +613,7 @@ panel.Load = function(self)
     self.hover_glow_enabled:SetChecked(O.db.hover_glow_enabled);
     self.hover_glow_enabled.Callback = function(self)
         O.db.hover_glow_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_glow_color = E.CreateColorPicker(self.TabsFrames['TargetIndicatorTab'].Content);
@@ -627,7 +627,7 @@ panel.Load = function(self)
         O.db.target_glow_color[3] = b;
         O.db.target_glow_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -644,7 +644,7 @@ panel.Load = function(self)
     self.threat_color_enabled:AddToSearch(button, nil, self.Tabs[4]);
     self.threat_color_enabled.Callback = function(self)
         O.db.threat_color_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_color_reversed = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
@@ -655,7 +655,7 @@ panel.Load = function(self)
     self.threat_color_reversed:AddToSearch(button, L['OPTIONS_THREAT_COLOR_REVERSED_TOOLTIP'], self.Tabs[4]);
     self.threat_color_reversed.Callback = function(self)
         O.db.threat_color_reversed = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_color_istapped_border = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
@@ -666,7 +666,7 @@ panel.Load = function(self)
     self.threat_color_istapped_border:AddToSearch(button, L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER_TOOLTIP'], self.Tabs[4]);
     self.threat_color_istapped_border.Callback = function(self)
         O.db.threat_color_istapped_border = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local ResetThreatColorsButton = E.CreateTextureButton(self.TabsFrames['ThreatTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);
@@ -695,7 +695,7 @@ panel.Load = function(self)
         O.db.threat_color_status_0[3] = b;
         O.db.threat_color_status_0[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_color_status_1 = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
@@ -709,7 +709,7 @@ panel.Load = function(self)
         O.db.threat_color_status_1[3] = b;
         O.db.threat_color_status_1[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_color_status_2 = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
@@ -723,7 +723,7 @@ panel.Load = function(self)
         O.db.threat_color_status_2[3] = b;
         O.db.threat_color_status_2[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_color_status_3 = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
@@ -737,7 +737,7 @@ panel.Load = function(self)
         O.db.threat_color_status_3[3] = b;
         O.db.threat_color_status_3[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_color_pettank = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
@@ -751,7 +751,7 @@ panel.Load = function(self)
         O.db.threat_color_pettank[3] = b;
         O.db.threat_color_pettank[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_color_offtank = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
@@ -765,7 +765,7 @@ panel.Load = function(self)
         O.db.threat_color_offtank[3] = b;
         O.db.threat_color_offtank[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local Delimiter = E.CreateDelimiter(self.TabsFrames['ThreatTab'].Content);
@@ -780,7 +780,7 @@ panel.Load = function(self)
     self.threat_percentage_enabled:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_ENABLED_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_enabled.Callback = function(self)
         O.db.threat_percentage_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_percentage_coloring = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
@@ -791,7 +791,7 @@ panel.Load = function(self)
     self.threat_percentage_coloring:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_COLORING_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_coloring.Callback = function(self)
         O.db.threat_percentage_coloring = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_percentage_point = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
@@ -804,7 +804,7 @@ panel.Load = function(self)
     self.threat_percentage_point:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_POINT_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_point.OnValueChangedCallback = function(_, value)
         O.db.threat_percentage_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_percentage_relative_point = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
@@ -816,7 +816,7 @@ panel.Load = function(self)
     self.threat_percentage_relative_point:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_RELATIVE_POINT_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_relative_point.OnValueChangedCallback = function(_, value)
         O.db.threat_percentage_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_percentage_offset_x = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
@@ -827,7 +827,7 @@ panel.Load = function(self)
     self.threat_percentage_offset_x:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_OFFSET_X_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_offset_x.OnValueChangedCallback = function(_, value)
         O.db.threat_percentage_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_percentage_offset_y = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
@@ -838,7 +838,7 @@ panel.Load = function(self)
     self.threat_percentage_offset_y:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_OFFSET_Y_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_offset_y.OnValueChangedCallback = function(_, value)
         O.db.threat_percentage_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_percentage_font_value = E.CreateDropdown('font', self.TabsFrames['ThreatTab'].Content);
@@ -850,7 +850,7 @@ panel.Load = function(self)
     self.threat_percentage_font_value:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_VALUE_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_font_value.OnValueChangedCallback = function(_, value)
         O.db.threat_percentage_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_percentage_font_size = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
@@ -860,7 +860,7 @@ panel.Load = function(self)
     self.threat_percentage_font_size:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_SIZE_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_font_size.OnValueChangedCallback = function(_, value)
         O.db.threat_percentage_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_percentage_font_flag = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
@@ -872,7 +872,7 @@ panel.Load = function(self)
     self.threat_percentage_font_flag:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_FLAG_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_font_flag.OnValueChangedCallback = function(_, value)
         O.db.threat_percentage_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.threat_percentage_font_shadow = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
@@ -883,7 +883,7 @@ panel.Load = function(self)
     self.threat_percentage_font_shadow:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_SHADOW_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_font_shadow.Callback = function(self)
         O.db.threat_percentage_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -900,7 +900,7 @@ panel.Load = function(self)
     self.execution_enabled:AddToSearch(button, L['OPTIONS_EXECUTION_ENABLED_TOOLTIP'], self.Tabs[5]);
     self.execution_enabled.Callback = function(self)
         O.db.execution_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.execution_color = E.CreateColorPicker(self.TabsFrames['ExecutionTab'].Content);
@@ -914,7 +914,7 @@ panel.Load = function(self)
         O.db.execution_color[3] = b;
         O.db.execution_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.execution_glow = E.CreateCheckButton(self.TabsFrames['ExecutionTab'].Content);
@@ -925,7 +925,7 @@ panel.Load = function(self)
     self.execution_glow:AddToSearch(button, L['OPTIONS_EXECUTION_GLOW_TOOLTIP'], self.Tabs[5]);
     self.execution_glow.Callback = function(self)
         O.db.execution_glow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.execution_high_enabled = E.CreateCheckButton(self.TabsFrames['ExecutionTab'].Content);
@@ -947,7 +947,7 @@ panel.Load = function(self)
             panel.execution_high_percent:SetEnabled(true);
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.execution_low_text = E.CreateFontString(self.TabsFrames['ExecutionTab'].Content);
@@ -961,7 +961,7 @@ panel.Load = function(self)
     self.execution_low_percent:AddToSearch(button, L['OPTIONS_EXECUTION_LOW_PERCENT_TOOLTIP'], self.Tabs[5]);
     self.execution_low_percent.OnValueChangedCallback = function(_, value)
         O.db.execution_low_percent = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.execution_low_percent_sign = E.CreateFontString(self.TabsFrames['ExecutionTab'].Content);
@@ -981,7 +981,7 @@ panel.Load = function(self)
     self.execution_high_percent:SetEnabled(O.db.execution_high_enabled);
     self.execution_high_percent.OnValueChangedCallback = function(_, value)
         O.db.execution_high_percent = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.execution_high_percent_sign = E.CreateFontString(self.TabsFrames['ExecutionTab'].Content);

@@ -28,7 +28,7 @@ panel.TabsData = {
 };
 
 panel.Load = function(self)
-    local Handler = S:GetNameplateModule('Handler');
+    local Stripes = S:GetNameplateModule('Handler');
 
     self.TabsHolder:SetPosition('TOPLEFT', self, 'TOPLEFT', 0, -28);
     self.TabsHolder:SetPosition('TOPRIGHT', self, 'TOPRIGHT', 0, -28);
@@ -41,7 +41,7 @@ panel.Load = function(self)
     self.size_clickable_area_show:SetChecked(O.db.size_clickable_area_show);
     self.size_clickable_area_show.Callback = function(self)
         O.db.size_clickable_area_show = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ panel.Load = function(self)
 
         C_NamePlate.SetNamePlateEnemySize(O.db.size_enemy_clickable_width, O.db.size_enemy_clickable_height);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.size_enemy_clickable_height = E.CreateSlider(self.TabsFrames['EnemyTab'].Content);
@@ -93,7 +93,7 @@ panel.Load = function(self)
 
         C_NamePlate.SetNamePlateEnemySize(O.db.size_enemy_clickable_width, O.db.size_enemy_clickable_height);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.size_enemy_height = E.CreateSlider(self.TabsFrames['EnemyTab'].Content);
@@ -105,7 +105,7 @@ panel.Load = function(self)
     self.size_enemy_height:SetValues(O.db.size_enemy_height, 1, 300, 1);
     self.size_enemy_height.OnValueChangedCallback = function(_, value)
         O.db.size_enemy_height = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.size_enemy_minus_height = E.CreateSlider(self.TabsFrames['EnemyTab'].Content);
@@ -117,7 +117,7 @@ panel.Load = function(self)
     self.size_enemy_minus_height:SetValues(O.db.size_enemy_minus_height, 1, 300, 1);
     self.size_enemy_minus_height.OnValueChangedCallback = function(_, value)
         O.db.size_enemy_minus_height = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -153,7 +153,7 @@ panel.Load = function(self)
     self.size_friendly_clickable_width.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_clickable_width = tonumber(value);
 
-        if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+        if Stripes:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
             if U.IsInInstance() then
                 C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
             else
@@ -165,7 +165,7 @@ panel.Load = function(self)
             end
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.size_friendly_clickable_height = E.CreateSlider(self.TabsFrames['FriendlyTab'].Content);
@@ -178,7 +178,7 @@ panel.Load = function(self)
     self.size_friendly_clickable_height.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_clickable_height = tonumber(value);
 
-        if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+        if Stripes:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
             if U.IsInInstance() then
                 C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
             else
@@ -190,7 +190,7 @@ panel.Load = function(self)
             end
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.size_friendly_height = E.CreateSlider(self.TabsFrames['FriendlyTab'].Content);
@@ -202,7 +202,7 @@ panel.Load = function(self)
     self.size_friendly_height:SetValues(O.db.size_friendly_height, 1, 300, 1);
     self.size_friendly_height.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_height = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local InstancesHeader = E.CreateHeader(self.TabsFrames['FriendlyTab'].Content, L['OPTIONS_SIZES_INSTANCES_HEADER']);
@@ -219,7 +219,7 @@ panel.Load = function(self)
     self.size_friendly_instance_clickable_width.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_instance_clickable_width = tonumber(value);
 
-        if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+        if Stripes:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
             if U.IsInInstance() then
                 C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
             else
@@ -231,7 +231,7 @@ panel.Load = function(self)
             end
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.size_friendly_instance_clickable_height = E.CreateSlider(self.TabsFrames['FriendlyTab'].Content);
@@ -244,7 +244,7 @@ panel.Load = function(self)
     self.size_friendly_instance_clickable_height.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_instance_clickable_height = tonumber(value);
 
-        if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+        if Stripes:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
             if U.IsInInstance() then
                 C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
             else
@@ -256,7 +256,7 @@ panel.Load = function(self)
             end
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -294,7 +294,7 @@ panel.Load = function(self)
 
         C_NamePlate.SetNamePlateSelfSize(O.db.size_self_width, O.db.size_self_height);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.size_self_height = E.CreateSlider(self.TabsFrames['SelfTab'].Content);
@@ -309,7 +309,7 @@ panel.Load = function(self)
 
         C_NamePlate.SetNamePlateSelfSize(O.db.size_self_width, O.db.size_self_height);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -330,7 +330,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateLargerScale', O.db.scale_large);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.scale_global = E.CreateSlider(self.TabsFrames['OtherTab'].Content);
@@ -345,7 +345,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateGlobalScale', O.db.scale_global);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.scale_selected = E.CreateSlider(self.TabsFrames['OtherTab'].Content);
@@ -360,7 +360,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateSelectedScale', O.db.scale_selected);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.scale_self = E.CreateSlider(self.TabsFrames['OtherTab'].Content);
@@ -375,7 +375,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateSelfScale', O.db.scale_self);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local Delimiter = E.CreateDelimiter(self.TabsFrames['OtherTab'].Content);
@@ -394,7 +394,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateOverlapH', O.db.overlap_h);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.overlap_v = E.CreateSlider(self.TabsFrames['OtherTab'].Content);
@@ -409,7 +409,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateOverlapV', O.db.overlap_v);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['OtherTab'].Content);

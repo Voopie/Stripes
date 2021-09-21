@@ -10,7 +10,7 @@ local panel  = O.frame.Right.MythicPlus;
 local isMDTLoaded = false;
 
 panel.Load = function(self)
-    local Handler = S:GetNameplateModule('Handler');
+    local Stripes = S:GetNameplateModule('Handler');
 
     local PercentHeader = E.CreateHeader(self, L['OPTIONS_HEADER_PERCENTAGE']);
     PercentHeader:SetPosition('TOPLEFT', self, 'TOPLEFT', 0, 0);
@@ -27,7 +27,7 @@ panel.Load = function(self)
 
         panel.mythic_plus_percentage_use_mode:SetEnabled(O.db.mythic_plus_percentage_enabled and isMDTLoaded);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.mythic_plus_percentage_use_mode = E.CreateDropdown('plain', self);
@@ -40,7 +40,7 @@ panel.Load = function(self)
     self.mythic_plus_percentage_use_mode:SetEnabled(O.db.mythic_plus_percentage_enabled);
     self.mythic_plus_percentage_use_mode.OnValueChangedCallback = function(_, value)
         O.db.mythic_plus_percentage_use_mode = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     if not isMDTLoaded then
@@ -57,7 +57,7 @@ panel.Load = function(self)
     self.mythic_plus_percentage_font_value:AddToSearch(button, L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_VALUE']);
     self.mythic_plus_percentage_font_value.OnValueChangedCallback = function(_, value)
         O.db.mythic_plus_percentage_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.mythic_plus_percentage_font_size = E.CreateSlider(self);
@@ -67,7 +67,7 @@ panel.Load = function(self)
     self.mythic_plus_percentage_font_size:AddToSearch(button, L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SIZE']);
     self.mythic_plus_percentage_font_size.OnValueChangedCallback = function(_, value)
         O.db.mythic_plus_percentage_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.mythic_plus_percentage_font_flag = E.CreateDropdown('plain', self);
@@ -79,7 +79,7 @@ panel.Load = function(self)
     self.mythic_plus_percentage_font_flag:AddToSearch(button, L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_FLAG']);
     self.mythic_plus_percentage_font_flag.OnValueChangedCallback = function(_, value)
         O.db.mythic_plus_percentage_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.mythic_plus_percentage_font_shadow = E.CreateCheckButton(self);
@@ -90,7 +90,7 @@ panel.Load = function(self)
     self.mythic_plus_percentage_font_shadow:AddToSearch(button, L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SHADOW']);
     self.mythic_plus_percentage_font_shadow.Callback = function(self)
         O.db.mythic_plus_percentage_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local ExplosiveOrbsHeader = E.CreateHeader(self, L['OPTIONS_HEADER_EXPLOSIVE_ORBS']);
@@ -105,7 +105,7 @@ panel.Load = function(self)
     self.explosive_orbs_crosshair:SetChecked(O.db.explosive_orbs_crosshair);
     self.explosive_orbs_crosshair.Callback = function(self)
         O.db.explosive_orbs_crosshair = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.explosive_orbs_glow = E.CreateCheckButton(self);
@@ -116,7 +116,7 @@ panel.Load = function(self)
     self.explosive_orbs_glow:SetChecked(O.db.explosive_orbs_glow);
     self.explosive_orbs_glow.Callback = function(self)
         O.db.explosive_orbs_glow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.explosive_orbs_counter = E.CreateCheckButton(self);
@@ -134,7 +134,7 @@ panel.Load = function(self)
             S:GetNameplateModule('MythicPlusExplosiveOrbs').OrbsCounter:Hide();
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local OtherHeader = E.CreateHeader(self, L['OPTIONS_OTHER']);
@@ -164,7 +164,7 @@ panel.Load = function(self)
         panel.spiteful_glow:SetEnabled(O.db.spiteful_enabled);
         panel.spiteful_glow_color:SetEnabled(O.db.spiteful_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spiteful_show_only_on_me = E.CreateCheckButton(self);
@@ -176,7 +176,7 @@ panel.Load = function(self)
     self.spiteful_show_only_on_me:SetEnabled(O.db.spiteful_enabled);
     self.spiteful_show_only_on_me.Callback = function(self)
         O.db.spiteful_show_only_on_me = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spiteful_glow = E.CreateCheckButton(self);
@@ -188,7 +188,7 @@ panel.Load = function(self)
     self.spiteful_glow:SetEnabled(O.db.spiteful_enabled);
     self.spiteful_glow.Callback = function(self)
         O.db.spiteful_glow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spiteful_glow_color = E.CreateColorPicker(self);
@@ -203,7 +203,7 @@ panel.Load = function(self)
         O.db.spiteful_glow_color[3] = b;
         O.db.spiteful_glow_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.mythic_plus_questunwatch_enabled = E.CreateCheckButton(self);
@@ -214,7 +214,7 @@ panel.Load = function(self)
     self.mythic_plus_questunwatch_enabled:SetChecked(O.db.mythic_plus_questunwatch_enabled);
     self.mythic_plus_questunwatch_enabled.Callback = function(self)
         O.db.mythic_plus_questunwatch_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 end
 

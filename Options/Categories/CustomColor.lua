@@ -361,7 +361,7 @@ panel.UpdateProfilesDropdown = function(self)
 end
 
 panel.Load = function(self)
-    local Handler = S:GetNameplateModule('Handler');
+    local Stripes = S:GetNameplateModule('Handler');
 
     self.custom_color_enabled = E.CreateCheckButton(self);
     self.custom_color_enabled:SetPosition('TOPLEFT', self, 'TOPLEFT', 0, 0);
@@ -371,7 +371,7 @@ panel.Load = function(self)
     self.custom_color_enabled:SetChecked(O.db.custom_color_enabled);
     self.custom_color_enabled.Callback = function(self)
         O.db.custom_color_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local EditBox = E.CreateEditBox(self);
@@ -397,7 +397,7 @@ panel.Load = function(self)
             panel.UpdateScroll();
             self:SetText('');
 
-            Handler:UpdateAll();
+            Stripes:UpdateAll();
         end);
     end);
 
@@ -423,7 +423,7 @@ panel.Load = function(self)
         panel.UpdateScroll();
         EditBox:SetText('');
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end);
 
     local AddFromList = E.CreateButton(self);

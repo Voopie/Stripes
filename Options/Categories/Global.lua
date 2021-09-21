@@ -8,7 +8,7 @@ local button = O.frame.Left.Global;
 local panel = O.frame.Right.Global;
 
 panel.Load = function(self)
-    local Handler = S:GetNameplateModule('Handler');
+    local Stripes = S:GetNameplateModule('Handler');
 
     local FontHeader = E.CreateHeader(self, L['OPTIONS_GLOBAL_FONT_HEADER']);
     FontHeader:SetPosition('TOPLEFT', self, 'TOPLEFT', 0, 0);
@@ -22,7 +22,7 @@ panel.Load = function(self)
     self.use_global_font_value:AddToSearch(button, L['OPTIONS_USE_GLOBAL_FONT_VALUE_TOOLTIP']);
     self.use_global_font_value.Callback = function(self)
         O.db.use_global_font_value = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.global_font_value = E.CreateDropdown('font', self);
@@ -33,7 +33,7 @@ panel.Load = function(self)
     self.global_font_value:SetTooltip(L['FONT_VALUE']);
     self.global_font_value.OnValueChangedCallback = function(_, value)
         O.db.global_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.use_global_font_size = E.CreateCheckButton(self);
@@ -44,7 +44,7 @@ panel.Load = function(self)
     self.use_global_font_size:AddToSearch(button, L['OPTIONS_USE_GLOBAL_FONT_SIZE_TOOLTIP']);
     self.use_global_font_size.Callback = function(self)
         O.db.use_global_font_size = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.global_font_size = E.CreateSlider(self);
@@ -54,7 +54,7 @@ panel.Load = function(self)
     self.global_font_size:SetTooltip(L['FONT_SIZE']);
     self.global_font_size.OnValueChangedCallback = function(_, value)
         O.db.global_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.use_global_font_flag = E.CreateCheckButton(self);
@@ -65,7 +65,7 @@ panel.Load = function(self)
     self.use_global_font_flag:AddToSearch(button, L['OPTIONS_USE_GLOBAL_FONT_FLAG_TOOLTIP']);
     self.use_global_font_flag.Callback = function(self)
         O.db.use_global_font_flag = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.global_font_flag = E.CreateDropdown('plain', self);
@@ -76,7 +76,7 @@ panel.Load = function(self)
     self.global_font_flag:SetTooltip(L['FONT_FLAG']);
     self.global_font_flag.OnValueChangedCallback = function(_, value)
         O.db.global_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.use_global_font_shadow = E.CreateCheckButton(self);
@@ -87,7 +87,7 @@ panel.Load = function(self)
     self.use_global_font_shadow:AddToSearch(button, L['OPTIONS_USE_GLOBAL_FONT_SHADOW_TOOLTIP']);
     self.use_global_font_shadow.Callback = function(self)
         O.db.use_global_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.global_font_shadow = E.CreateCheckButton(self);
@@ -97,6 +97,6 @@ panel.Load = function(self)
     self.global_font_shadow:SetTooltip(L['FONT_SHADOW']);
     self.global_font_shadow.Callback = function(self)
         O.db.global_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 end

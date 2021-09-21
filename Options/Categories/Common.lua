@@ -23,7 +23,7 @@ panel.TabsData = {
 };
 
 panel.Load = function(self)
-    local Handler = S:GetNameplateModule('Handler');
+    local Stripes = S:GetNameplateModule('Handler');
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ panel.Load = function(self)
     self.name_text_enabled:AddToSearch(button, L['OPTIONS_NAME_TEXT_SHOW'], self.Tabs[1]);
     self.name_text_enabled.Callback = function(self)
         O.db.name_text_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_without_realm = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -50,7 +50,7 @@ panel.Load = function(self)
     self.name_without_realm:AddToSearch(button, L['OPTIONS_NAME_WITHOUT_REALM_TOOLTIP'], self.Tabs[1]);
     self.name_without_realm.Callback = function(self)
         O.db.name_without_realm = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_with_title = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -64,7 +64,7 @@ panel.Load = function(self)
 
         panel.name_text_with_title_mode:SetEnabled(O.db.name_text_with_title);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_with_title_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
@@ -77,7 +77,7 @@ panel.Load = function(self)
     self.name_text_with_title_mode:SetEnabled(O.db.name_text_with_title);
     self.name_text_with_title_mode.OnValueChangedCallback = function(_, value)
         O.db.name_text_with_title_mode = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_translit = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -88,7 +88,7 @@ panel.Load = function(self)
     self.name_text_translit:AddToSearch(button, L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP'], self.Tabs[1]);
     self.name_text_translit.Callback = function(self)
         O.db.name_text_translit = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_replace_diacritics = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -99,7 +99,7 @@ panel.Load = function(self)
     self.name_text_replace_diacritics:AddToSearch(button, L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS_TOOLTIP'], self.Tabs[1]);
     self.name_text_replace_diacritics.Callback = function(self)
         O.db.name_text_replace_diacritics = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_font_value = E.CreateDropdown('font', self.TabsFrames['NameTab'].Content);
@@ -111,7 +111,7 @@ panel.Load = function(self)
     self.name_text_font_value:AddToSearch(button, L['OPTIONS_NAME_TEXT_FONT_VALUE'], self.Tabs[1]);
     self.name_text_font_value.OnValueChangedCallback = function(_, value)
         O.db.name_text_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_font_size = E.CreateSlider(self.TabsFrames['NameTab'].Content);
@@ -121,7 +121,7 @@ panel.Load = function(self)
     self.name_text_font_size:AddToSearch(button, L['OPTIONS_NAME_TEXT_FONT_SIZE'], self.Tabs[1]);
     self.name_text_font_size.OnValueChangedCallback = function(_, value)
         O.db.name_text_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
@@ -133,7 +133,7 @@ panel.Load = function(self)
     self.name_text_font_flag:AddToSearch(button, L['OPTIONS_NAME_TEXT_FONT_FLAG'], self.Tabs[1]);
     self.name_text_font_flag.OnValueChangedCallback = function(_, value)
         O.db.name_text_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_font_shadow = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -144,7 +144,7 @@ panel.Load = function(self)
     self.name_text_font_shadow:AddToSearch(button, L['OPTIONS_NAME_TEXT_FONT_SHADOW'], self.Tabs[1]);
     self.name_text_font_shadow.Callback = function(self)
         O.db.name_text_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
@@ -161,7 +161,7 @@ panel.Load = function(self)
     self.name_text_position_v:AddToSearch(button, L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP'], self.Tabs[1]);
     self.name_text_position_v.OnValueChangedCallback = function(_, value)
         O.db.name_text_position_v = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_position = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
@@ -173,7 +173,7 @@ panel.Load = function(self)
     self.name_text_position:AddToSearch(button, L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP'], self.Tabs[1]);
     self.name_text_position.OnValueChangedCallback = function(_, value)
         O.db.name_text_position = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_offset_y = E.CreateSlider(self.TabsFrames['NameTab'].Content);
@@ -184,7 +184,7 @@ panel.Load = function(self)
     self.name_text_offset_y:AddToSearch(button, L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
     self.name_text_offset_y.OnValueChangedCallback = function(_, value)
         O.db.name_text_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_truncate = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -195,7 +195,7 @@ panel.Load = function(self)
     self.name_text_truncate:AddToSearch(button, L['OPTIONS_NAME_TEXT_TRUNCATE_TOOLTIP'], self.Tabs[1]);
     self.name_text_truncate.Callback = function(self)
         O.db.name_text_truncate = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_coloring_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
@@ -208,7 +208,7 @@ panel.Load = function(self)
     self.name_text_coloring_mode:AddToSearch(button, L['OPTIONS_NAME_TEXT_COLORING_MODE_TOOLTIP'], self.Tabs[1]);
     self.name_text_coloring_mode.OnValueChangedCallback = function(_, value)
         O.db.name_text_coloring_mode = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_coloring_mode_npc = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
@@ -221,7 +221,7 @@ panel.Load = function(self)
     self.name_text_coloring_mode_npc:AddToSearch(button, L['OPTIONS_NAME_TEXT_COLORING_NPC_TOOLTIP'], self.Tabs[1]);
     self.name_text_coloring_mode_npc.OnValueChangedCallback = function(_, value)
         O.db.name_text_coloring_mode_npc = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_abbreviated = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -234,7 +234,7 @@ panel.Load = function(self)
 
         panel.name_text_abbreviated_mode:SetEnabled(O.db.name_text_abbreviated);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_abbreviated_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
@@ -247,7 +247,7 @@ panel.Load = function(self)
     self.name_text_abbreviated_mode:SetEnabled(O.db.name_text_abbreviated);
     self.name_text_abbreviated_mode.OnValueChangedCallback = function(_, value)
         O.db.name_text_abbreviated_mode = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
@@ -262,7 +262,7 @@ panel.Load = function(self)
     self.faction_icon_enabled:AddToSearch(button, L['OPTIONS_FACTION_ICON_ENABLED_TOOLTIP'], self.Tabs[1]);
     self.faction_icon_enabled.Callback = function(self)
         O.db.faction_icon_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.class_icon_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -276,7 +276,7 @@ panel.Load = function(self)
 
         panel.class_icon_arena_only:SetEnabled(O.db.class_icon_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.class_icon_arena_only = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -288,7 +288,7 @@ panel.Load = function(self)
     self.class_icon_arena_only:SetEnabled(O.db.class_icon_enabled);
     self.class_icon_arena_only.Callback = function(self)
         O.db.class_icon_arena_only = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_name_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -304,7 +304,7 @@ panel.Load = function(self)
         panel.target_name_not_me:SetEnabled(O.db.target_name_enabled);
         panel.target_name_role_icon:SetEnabled(O.db.target_name_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_name_only_enemy = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -316,7 +316,7 @@ panel.Load = function(self)
     self.target_name_only_enemy:SetEnabled(O.db.target_name_enabled);
     self.target_name_only_enemy.Callback = function(self)
         O.db.target_name_only_enemy = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_name_not_me = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -328,7 +328,7 @@ panel.Load = function(self)
     self.target_name_not_me:SetEnabled(O.db.target_name_enabled);
     self.target_name_not_me.Callback = function(self)
         O.db.target_name_not_me = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.target_name_role_icon = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -340,7 +340,7 @@ panel.Load = function(self)
     self.target_name_role_icon:SetEnabled(O.db.target_name_enabled);
     self.target_name_role_icon.Callback = function(self)
         O.db.target_name_role_icon = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_show_arenaid = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -354,7 +354,7 @@ panel.Load = function(self)
 
         panel.name_text_show_arenaid_solo:SetEnabled(O.db.name_text_show_arenaid);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_text_show_arenaid_solo = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -366,7 +366,7 @@ panel.Load = function(self)
     self.name_text_show_arenaid_solo:SetEnabled(O.db.name_text_show_arenaid);
     self.name_text_show_arenaid_solo.Callback = function(self)
         O.db.name_text_show_arenaid_solo = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -383,7 +383,7 @@ panel.Load = function(self)
     self.health_text_enabled:AddToSearch(button, L['OPTIONS_SHOW_HEALTH_TEXT'], self.Tabs[2]);
     self.health_text_enabled.Callback = function(self)
         O.db.health_text_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_hide_full = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
@@ -395,7 +395,7 @@ panel.Load = function(self)
     self.health_text_hide_full:SetEnabled(O.db.health_text_enabled);
     self.health_text_hide_full.Callback = function(self)
         O.db.health_text_hide_full = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_custom_color_enabled = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
@@ -406,7 +406,7 @@ panel.Load = function(self)
     self.health_text_custom_color_enabled:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_CUSTOM_COLOR_ENABLED_TOOLTIP'], self.Tabs[2]);
     self.health_text_custom_color_enabled.Callback = function(self)
         O.db.health_text_custom_color_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_custom_color = E.CreateColorPicker(self.TabsFrames['HealthTextTab'].Content);
@@ -420,7 +420,7 @@ panel.Load = function(self)
         O.db.health_text_custom_color[3] = b;
         O.db.health_text_custom_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_font_value = E.CreateDropdown('font', self.TabsFrames['HealthTextTab'].Content);
@@ -432,7 +432,7 @@ panel.Load = function(self)
     self.health_text_font_value:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FONT_VALUE'], self.Tabs[2]);
     self.health_text_font_value.OnValueChangedCallback = function(_, value)
         O.db.health_text_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_font_size = E.CreateSlider(self.TabsFrames['HealthTextTab'].Content);
@@ -442,7 +442,7 @@ panel.Load = function(self)
     self.health_text_font_size:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FONT_SIZE'], self.Tabs[2]);
     self.health_text_font_size.OnValueChangedCallback = function(_, value)
         O.db.health_text_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
@@ -454,7 +454,7 @@ panel.Load = function(self)
     self.health_text_font_flag:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FONT_FLAG'], self.Tabs[2]);
     self.health_text_font_flag.OnValueChangedCallback = function(_, value)
         O.db.health_text_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_font_shadow = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
@@ -465,7 +465,7 @@ panel.Load = function(self)
     self.health_text_font_shadow:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FONT_SHADOW'], self.Tabs[2]);
     self.health_text_font_shadow.Callback = function(self)
         O.db.health_text_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['HealthTextTab'].Content);
@@ -487,7 +487,7 @@ panel.Load = function(self)
         panel.SingleBlockHolder:SetShown(O.db.health_text_block_mode == 1);
         panel.DoubleBlockHolder:SetShown(O.db.health_text_block_mode == 2);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.SingleBlockHolder = Mixin(CreateFrame('Frame', nil, self.TabsFrames['HealthTextTab'].Content), E.PixelPerfectMixin);
@@ -513,7 +513,7 @@ panel.Load = function(self)
     self.health_text_display_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP']);
     self.health_text_display_mode.OnValueChangedCallback = function(_, value)
         O.db.health_text_display_mode = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_anchor = E.CreateDropdown('plain', self.SingleBlockHolder);
@@ -525,7 +525,7 @@ panel.Load = function(self)
     self.health_text_anchor:SetTooltip(L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP']);
     self.health_text_anchor.OnValueChangedCallback = function(_, value)
         O.db.health_text_anchor = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_x_offset = E.CreateSlider(self.SingleBlockHolder);
@@ -536,7 +536,7 @@ panel.Load = function(self)
     self.health_text_x_offset:SetValues(O.db.health_text_x_offset, -99, 100, 1);
     self.health_text_x_offset.OnValueChangedCallback = function(_, value)
         O.db.health_text_x_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_y_offset = E.CreateSlider(self.SingleBlockHolder);
@@ -547,7 +547,7 @@ panel.Load = function(self)
     self.health_text_y_offset:SetValues(O.db.health_text_y_offset, -99, 100, 1);
     self.health_text_y_offset.OnValueChangedCallback = function(_, value)
         O.db.health_text_y_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local FirstBlockHeader = E.CreateHeader(self.DoubleBlockHolder, L['OPTIONS_HEALTH_TEXT_FIRST_BLOCK_HEADER']);
@@ -563,7 +563,7 @@ panel.Load = function(self)
     self.health_text_block_1_display_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP']);
     self.health_text_block_1_display_mode.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_1_display_mode = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_block_1_anchor = E.CreateDropdown('plain', self.DoubleBlockHolder);
@@ -575,7 +575,7 @@ panel.Load = function(self)
     self.health_text_block_1_anchor:SetTooltip(L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP']);
     self.health_text_block_1_anchor.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_1_anchor = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_block_1_x_offset = E.CreateSlider(self.DoubleBlockHolder);
@@ -586,7 +586,7 @@ panel.Load = function(self)
     self.health_text_block_1_x_offset:SetValues(O.db.health_text_block_1_x_offset, -99, 100, 1);
     self.health_text_block_1_x_offset.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_1_x_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_block_1_y_offset = E.CreateSlider(self.DoubleBlockHolder);
@@ -597,7 +597,7 @@ panel.Load = function(self)
     self.health_text_block_1_y_offset:SetValues(O.db.health_text_block_1_y_offset, -99, 100, 1);
     self.health_text_block_1_y_offset.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_1_y_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local SecondBlockHeader = E.CreateHeader(self.DoubleBlockHolder, L['OPTIONS_HEALTH_TEXT_SECOND_BLOCK_HEADER']);
@@ -613,7 +613,7 @@ panel.Load = function(self)
     self.health_text_block_2_display_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP']);
     self.health_text_block_2_display_mode.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_2_display_mode = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_block_2_anchor = E.CreateDropdown('plain', self.DoubleBlockHolder);
@@ -625,7 +625,7 @@ panel.Load = function(self)
     self.health_text_block_2_anchor:SetTooltip(L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP']);
     self.health_text_block_2_anchor.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_2_anchor = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_block_2_x_offset = E.CreateSlider(self.DoubleBlockHolder);
@@ -636,7 +636,7 @@ panel.Load = function(self)
     self.health_text_block_2_x_offset:SetValues(O.db.health_text_block_2_x_offset, -99, 100, 1);
     self.health_text_block_2_x_offset.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_2_x_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.health_text_block_2_y_offset = E.CreateSlider(self.DoubleBlockHolder);
@@ -647,7 +647,7 @@ panel.Load = function(self)
     self.health_text_block_2_y_offset:SetValues(O.db.health_text_block_2_y_offset, -99, 100, 1);
     self.health_text_block_2_y_offset.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_2_y_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
 
@@ -668,7 +668,7 @@ panel.Load = function(self)
 
         panel.level_text_hide_max:SetEnabled(O.db.level_text_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.level_text_hide_max = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
@@ -680,7 +680,7 @@ panel.Load = function(self)
     self.level_text_hide_max:SetEnabled(O.db.level_text_enabled);
     self.level_text_hide_max.Callback = function(self)
         O.db.level_text_hide_max = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.level_text_use_diff_color = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
@@ -694,7 +694,7 @@ panel.Load = function(self)
 
         panel.level_text_custom_color_enabled:SetEnabled(not O.db.level_text_use_diff_color);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.level_text_custom_color_enabled = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
@@ -706,7 +706,7 @@ panel.Load = function(self)
     self.level_text_custom_color_enabled:SetEnabled(not O.db.level_text_use_diff_color);
     self.level_text_custom_color_enabled.Callback = function(self)
         O.db.level_text_custom_color_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.level_text_custom_color = E.CreateColorPicker(self.TabsFrames['LevelTextTab'].Content);
@@ -720,7 +720,7 @@ panel.Load = function(self)
         O.db.level_text_custom_color[3] = b;
         O.db.level_text_custom_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.level_text_font_value = E.CreateDropdown('font', self.TabsFrames['LevelTextTab'].Content);
@@ -732,7 +732,7 @@ panel.Load = function(self)
     self.level_text_font_value:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FONT_VALUE'], self.Tabs[3]);
     self.level_text_font_value.OnValueChangedCallback = function(_, value)
         O.db.level_text_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.level_text_font_size = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
@@ -742,7 +742,7 @@ panel.Load = function(self)
     self.level_text_font_size:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FONT_SIZE'], self.Tabs[3]);
     self.level_text_font_size.OnValueChangedCallback = function(_, value)
         O.db.level_text_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.level_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
@@ -754,7 +754,7 @@ panel.Load = function(self)
     self.level_text_font_flag:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FONT_FLAG'], self.Tabs[3]);
     self.level_text_font_flag.OnValueChangedCallback = function(_, value)
         O.db.level_text_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.level_text_font_shadow = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
@@ -765,7 +765,7 @@ panel.Load = function(self)
     self.level_text_font_shadow:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FONT_SHADOW'], self.Tabs[3]);
     self.level_text_font_shadow.Callback = function(self)
         O.db.level_text_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['LevelTextTab'].Content);
@@ -782,7 +782,7 @@ panel.Load = function(self)
     self.level_text_anchor:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_ANCHOR_TOOLTIP'], self.Tabs[3]);
     self.level_text_anchor.OnValueChangedCallback = function(_, value)
         O.db.level_text_anchor = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.level_text_x_offset = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
@@ -794,7 +794,7 @@ panel.Load = function(self)
     self.level_text_x_offset:SetValues(O.db.level_text_x_offset, -99, 100, 1);
     self.level_text_x_offset.OnValueChangedCallback = function(_, value)
         O.db.level_text_x_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.level_text_y_offset = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
@@ -806,6 +806,6 @@ panel.Load = function(self)
     self.level_text_y_offset:SetValues(O.db.level_text_y_offset, -99, 100, 1);
     self.level_text_y_offset.OnValueChangedCallback = function(_, value)
         O.db.level_text_y_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 end

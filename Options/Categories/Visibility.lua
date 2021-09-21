@@ -25,7 +25,7 @@ panel.TabsData = {
 };
 
 panel.Load = function(self)
-    local Handler = S:GetNameplateModule('Handler');
+    local Stripes = S:GetNameplateModule('Handler');
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ panel.Load = function(self)
             C_CVar.SetCVar('nameplateShowAll', O.db.show_always_openworld and 1 or 0);
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.show_always_instance = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -91,7 +91,7 @@ panel.Load = function(self)
             C_CVar.SetCVar('nameplateShowAll', O.db.show_always_instance and 1 or 0);
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.max_distance_openworld = E.CreateEditBox(self.TabsFrames['CommonTab'].Content);
@@ -244,7 +244,7 @@ panel.Load = function(self)
         panel.hide_non_casting_modifier:SetEnabled(O.db.hide_non_casting_enabled);
         panel.hide_non_casting_show_uninterruptible:SetEnabled(O.db.hide_non_casting_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.hide_non_casting_modifier = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -257,7 +257,7 @@ panel.Load = function(self)
     self.hide_non_casting_modifier:SetEnabled(O.db.hide_non_casting_enabled);
     self.hide_non_casting_modifier.OnValueChangedCallback = function(_, value)
         O.db.hide_non_casting_modifier = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.hide_non_casting_show_uninterruptible = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -269,7 +269,7 @@ panel.Load = function(self)
     self.hide_non_casting_show_uninterruptible:SetEnabled(O.db.hide_non_casting_enabled);
     self.hide_non_casting_show_uninterruptible.Callback = function(self)
         O.db.hide_non_casting_show_uninterruptible = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local RaidTargetIconHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_RAID_TARGET_ICON']);
@@ -284,7 +284,7 @@ panel.Load = function(self)
     self.raid_target_icon_show:SetChecked(O.db.raid_target_icon_show);
     self.raid_target_icon_show.Callback = function(self)
         O.db.raid_target_icon_show = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.raid_target_icon_scale = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -296,7 +296,7 @@ panel.Load = function(self)
     self.raid_target_icon_scale:SetValues(O.db.raid_target_icon_scale, 0.1, 2, 0.05);
     self.raid_target_icon_scale.OnValueChangedCallback = function(_, value)
         O.db.raid_target_icon_scale = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.raid_target_icon_frame_strata = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -309,7 +309,7 @@ panel.Load = function(self)
     self.raid_target_icon_frame_strata:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP'], self.Tabs[1]);
     self.raid_target_icon_frame_strata.OnValueChangedCallback = function(_, value)
         O.db.raid_target_icon_frame_strata = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.raid_target_icon_position = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -322,7 +322,7 @@ panel.Load = function(self)
     self.raid_target_icon_position:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP'], self.Tabs[1]);
     self.raid_target_icon_position.OnValueChangedCallback = function(_, value)
         O.db.raid_target_icon_position = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.raid_target_icon_position_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -332,7 +332,7 @@ panel.Load = function(self)
     self.raid_target_icon_position_offset_x:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_X_TOOLTIP'], self.Tabs[1]);
     self.raid_target_icon_position_offset_x.OnValueChangedCallback = function(_, value)
         O.db.raid_target_icon_position_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.raid_target_icon_position_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -342,7 +342,7 @@ panel.Load = function(self)
     self.raid_target_icon_position_offset_y:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
     self.raid_target_icon_position_offset_y.OnValueChangedCallback = function(_, value)
         O.db.raid_target_icon_position_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.raid_target_hpbar_coloring = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -353,7 +353,7 @@ panel.Load = function(self)
     self.raid_target_hpbar_coloring:SetChecked(O.db.raid_target_hpbar_coloring);
     self.raid_target_hpbar_coloring.Callback = function(self)
         O.db.raid_target_hpbar_coloring = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
 
@@ -384,7 +384,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateShowEnemies', O.db.show_enemy and 1 or 0);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.show_enemy_only_in_combat = E.CreateCheckButton(self.TabsFrames['EnemyTab'].Content);
@@ -405,7 +405,7 @@ panel.Load = function(self)
 
         panel.show_enemy:SetEnabled(not O.db.show_enemy_only_in_combat);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.show_enemy_minions = E.CreateCheckButton(self.TabsFrames['EnemyTab'].Content);
@@ -500,7 +500,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateShowFriends', O.db.show_friendly and 1 or 0);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.show_friendly_only_in_combat = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
@@ -521,7 +521,7 @@ panel.Load = function(self)
 
         panel.show_friendly:SetEnabled(not O.db.show_friendly_only_in_combat);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.show_friendly_minions = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
@@ -615,9 +615,9 @@ panel.Load = function(self)
         panel.name_only_friendly_y_offset:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_stacking:SetEnabled(O.db.name_only_friendly_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
 
-        if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+        if Stripes:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
             if U.IsInInstance() then
                 C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
             else
@@ -631,7 +631,7 @@ panel.Load = function(self)
             end
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local LAST_SESSION_name_only_friendly_mode = O.db.name_only_friendly_mode;
@@ -654,7 +654,7 @@ panel.Load = function(self)
             C_CVar.SetCVar('nameplateShowOnlyNames', 0);
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_only_friendly_players_only = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
@@ -669,7 +669,7 @@ panel.Load = function(self)
 
         panel.name_only_friendly_stacking:SetEnabled(O.db.name_only_friendly_enabled);
 
-        if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+        if Stripes:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
             if U.IsInInstance() then
                 C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
             else
@@ -683,7 +683,7 @@ panel.Load = function(self)
             end
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     -- overlapping not stacking
@@ -697,7 +697,7 @@ panel.Load = function(self)
     self.name_only_friendly_stacking.Callback = function(self)
         O.db.name_only_friendly_stacking = self:GetChecked();
 
-        if Handler:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+        if Stripes:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
             if U.IsInInstance() then
                 C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
             else
@@ -711,7 +711,7 @@ panel.Load = function(self)
             end
         end
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_only_friendly_color_name_by_health = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
@@ -723,7 +723,7 @@ panel.Load = function(self)
     self.name_only_friendly_color_name_by_health:SetEnabled(O.db.name_only_friendly_enabled);
     self.name_only_friendly_color_name_by_health.Callback = function(self)
         O.db.name_only_friendly_color_name_by_health = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_only_friendly_color_name_by_class = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
@@ -735,7 +735,7 @@ panel.Load = function(self)
     self.name_only_friendly_color_name_by_class:SetEnabled(O.db.name_only_friendly_enabled);
     self.name_only_friendly_color_name_by_class.Callback = function(self)
         O.db.name_only_friendly_color_name_by_class = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_only_friendly_guild_name = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
@@ -747,7 +747,7 @@ panel.Load = function(self)
     self.name_only_friendly_guild_name:SetEnabled(O.db.name_only_friendly_enabled);
     self.name_only_friendly_guild_name.Callback = function(self)
         O.db.name_only_friendly_guild_name = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_only_friendly_guild_name_color = E.CreateColorPicker(self.TabsFrames['FriendlyTab'].Content);
@@ -762,7 +762,7 @@ panel.Load = function(self)
         O.db.name_only_friendly_guild_name_color[3] = b;
         O.db.name_only_friendly_guild_name_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_only_friendly_guild_name_same_color = E.CreateColorPicker(self.TabsFrames['FriendlyTab'].Content);
@@ -777,7 +777,7 @@ panel.Load = function(self)
         O.db.name_only_friendly_guild_name_same_color[3] = b;
         O.db.name_only_friendly_guild_name_same_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.name_only_friendly_y_offset = E.CreateSlider(self.TabsFrames['FriendlyTab'].Content);
@@ -790,7 +790,7 @@ panel.Load = function(self)
     self.name_only_friendly_y_offset:SetEnabled(O.db.name_only_friendly_enabled);
     self.name_only_friendly_y_offset.OnValueChangedCallback = function(_, value)
         O.db.name_only_friendly_y_offset = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -812,7 +812,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateShowSelf', O.db.show_personal and 1 or 0);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.show_personal_always = E.CreateCheckButton(self.TabsFrames['SelfTab'].Content);
@@ -827,7 +827,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('NameplatePersonalShowAlways', O.db.show_personal_always and 1 or 0);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.show_personal_resource_ontarget = E.CreateCheckButton(self.TabsFrames['SelfTab'].Content);

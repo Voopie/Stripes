@@ -719,7 +719,7 @@ panel.UpdateHPBarColorScroll = function()
 end
 
 panel.Load = function(self)
-    local Handler = S:GetNameplateModule('Handler');
+    local Stripes = S:GetNameplateModule('Handler');
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -735,7 +735,7 @@ panel.Load = function(self)
     self.auras_filter_player_enabled:SetChecked(O.db.auras_filter_player_enabled);
     self.auras_filter_player_enabled.Callback = function(self)
         O.db.auras_filter_player_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_blacklist_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -746,7 +746,7 @@ panel.Load = function(self)
     self.auras_blacklist_enabled:SetChecked(O.db.auras_blacklist_enabled);
     self.auras_blacklist_enabled.Callback = function(self)
         O.db.auras_blacklist_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.BlackListButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
@@ -806,7 +806,7 @@ panel.Load = function(self)
         panel:UpdateBlackListScroll();
         self:SetText('');
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end);
 
     self.BlackListScroll = Mixin(CreateFrame('Frame', nil, self.BlackList, 'BackdropTemplate'), E.PixelPerfectMixin);
@@ -832,7 +832,7 @@ panel.Load = function(self)
     self.auras_square:SetChecked(O.db.auras_square);
     self.auras_square.Callback = function(self)
         O.db.auras_square = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_border_color_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -843,7 +843,7 @@ panel.Load = function(self)
     self.auras_border_color_enabled:SetChecked(O.db.auras_border_color_enabled);
     self.auras_border_color_enabled.Callback = function(self)
         O.db.auras_border_color_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_border_hide = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -854,7 +854,7 @@ panel.Load = function(self)
     self.auras_border_hide:SetChecked(O.db.auras_masque_support);
     self.auras_border_hide.Callback = function(self)
         O.db.auras_border_hide = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_pandemic_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -865,7 +865,7 @@ panel.Load = function(self)
     self.auras_pandemic_enabled:SetChecked(O.db.auras_pandemic_enabled);
     self.auras_pandemic_enabled.Callback = function(self)
         O.db.auras_pandemic_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_pandemic_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -879,7 +879,7 @@ panel.Load = function(self)
         O.db.auras_pandemic_color[3] = b;
         O.db.auras_pandemic_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_show_debuffs_on_friendly = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -892,7 +892,7 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateShowDebuffsOnFriendly', O.db.auras_show_debuffs_on_friendly and 1 or 0);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_sort_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -906,7 +906,7 @@ panel.Load = function(self)
 
         panel.auras_sort_method:SetEnabled(O.db.auras_sort_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_sort_method = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -919,7 +919,7 @@ panel.Load = function(self)
     self.auras_sort_method:SetEnabled(O.db.auras_sort_enabled);
     self.auras_sort_method.OnValueChangedCallback = function(_, value)
         O.db.auras_sort_method = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_hpbar_color_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -930,7 +930,7 @@ panel.Load = function(self)
     self.auras_hpbar_color_enabled:SetChecked(O.db.auras_hpbar_color_enabled);
     self.auras_hpbar_color_enabled.Callback = function(self)
         O.db.auras_hpbar_color_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.HPBarColorListButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
@@ -990,7 +990,7 @@ panel.Load = function(self)
         panel:UpdateHPBarColorScroll();
         self:SetText('');
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end);
 
     self.HPBarColorListScroll = Mixin(CreateFrame('Frame', nil, self.HPBarColorList, 'BackdropTemplate'), E.PixelPerfectMixin);
@@ -1016,7 +1016,7 @@ panel.Load = function(self)
     self.auras_masque_support:SetChecked(O.db.auras_masque_support);
     self.auras_masque_support.Callback = function(self)
         O.db.auras_masque_support = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
@@ -1031,7 +1031,7 @@ panel.Load = function(self)
     self.auras_scale:AddToSearch(button, L['OPTIONS_AURAS_SCALE_TOOLTIP'], self.Tabs[1]);
     self.auras_scale.OnValueChangedCallback = function(_, value)
         O.db.auras_scale = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -1042,7 +1042,7 @@ panel.Load = function(self)
     self.auras_offset_y:AddToSearch(button, L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
     self.auras_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
@@ -1057,7 +1057,7 @@ panel.Load = function(self)
     self.auras_countdown_enabled:SetChecked(O.db.auras_countdown_enabled);
     self.auras_countdown_enabled.Callback = function(self)
         O.db.auras_countdown_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_omnicc_suppress = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -1068,7 +1068,7 @@ panel.Load = function(self)
     self.auras_omnicc_suppress:SetChecked(O.db.auras_omnicc_suppress);
     self.auras_omnicc_suppress.Callback = function(self)
         O.db.auras_omnicc_suppress = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_countdown_text = E.CreateFontString(self.TabsFrames['CommonTab'].Content);
@@ -1084,7 +1084,7 @@ panel.Load = function(self)
     self.auras_cooldown_font_value:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_FONT_VALUE'], self.Tabs[1]);
     self.auras_cooldown_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_cooldown_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -1094,7 +1094,7 @@ panel.Load = function(self)
     self.auras_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_FONT_SIZE'], self.Tabs[1]);
     self.auras_cooldown_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_cooldown_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -1106,7 +1106,7 @@ panel.Load = function(self)
     self.auras_cooldown_font_flag:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_FONT_FLAG'], self.Tabs[1]);
     self.auras_cooldown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -1117,7 +1117,7 @@ panel.Load = function(self)
     self.auras_cooldown_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_FONT_SHADOW'], self.Tabs[1]);
     self.auras_cooldown_font_shadow.Callback = function(self)
         O.db.auras_cooldown_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -1130,7 +1130,7 @@ panel.Load = function(self)
     self.auras_cooldown_point:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_POINT_TOOLTIP'], self.Tabs[1]);
     self.auras_cooldown_point.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -1142,7 +1142,7 @@ panel.Load = function(self)
     self.auras_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[1]);
     self.auras_cooldown_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_cooldown_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -1152,7 +1152,7 @@ panel.Load = function(self)
     self.auras_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_OFFSET_X_TOOLTIP']);
     self.auras_cooldown_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_cooldown_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -1162,7 +1162,7 @@ panel.Load = function(self)
     self.auras_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_OFFSET_Y_TOOLTIP']);
     self.auras_cooldown_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_count_text = E.CreateFontString(self.TabsFrames['CommonTab'].Content);
@@ -1178,7 +1178,7 @@ panel.Load = function(self)
     self.auras_count_font_value:AddToSearch(button, L['OPTIONS_AURAS_COUNT_FONT_VALUE'], self.Tabs[1]);
     self.auras_count_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_count_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_count_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -1188,7 +1188,7 @@ panel.Load = function(self)
     self.auras_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_COUNT_FONT_SIZE'], self.Tabs[1]);
     self.auras_count_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_count_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_count_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -1200,7 +1200,7 @@ panel.Load = function(self)
     self.auras_count_font_flag:AddToSearch(button, L['OPTIONS_AURAS_COUNT_FONT_FLAG'], self.Tabs[1]);
     self.auras_count_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_count_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_count_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -1211,7 +1211,7 @@ panel.Load = function(self)
     self.auras_count_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_COUNT_FONT_SHADOW'], self.Tabs[1]);
     self.auras_count_font_shadow.Callback = function(self)
         O.db.auras_count_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_count_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -1224,7 +1224,7 @@ panel.Load = function(self)
     self.auras_count_point:AddToSearch(button, L['OPTIONS_AURAS_COUNT_POINT_TOOLTIP'], self.Tabs[1]);
     self.auras_count_point.OnValueChangedCallback = function(_, value)
         O.db.auras_count_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -1236,7 +1236,7 @@ panel.Load = function(self)
     self.auras_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[1]);
     self.auras_count_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_count_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_count_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -1246,7 +1246,7 @@ panel.Load = function(self)
     self.auras_count_offset_x:SetTooltip(L['OPTIONS_AURAS_COUNT_OFFSET_X_TOOLTIP']);
     self.auras_count_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_count_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_count_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -1256,7 +1256,7 @@ panel.Load = function(self)
     self.auras_count_offset_y:SetTooltip(L['OPTIONS_AURAS_COUNT_OFFSET_Y_TOOLTIP']);
     self.auras_count_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_count_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
@@ -1277,7 +1277,7 @@ panel.Load = function(self)
         panel.auras_expire_glow_percent_sign:SetFontObject(O.db.auras_expire_glow_enabled and 'StripesOptionsHighlightFont' or 'StripesOptionsDisabledFont');
         panel.auras_expire_glow_color:SetEnabled(O.db.auras_expire_glow_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_expire_glow_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -1292,7 +1292,7 @@ panel.Load = function(self)
         O.db.auras_expire_glow_color[3] = b;
         O.db.auras_expire_glow_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_expire_glow_type = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -1305,7 +1305,7 @@ panel.Load = function(self)
     self.auras_expire_glow_type:SetEnabled(O.db.auras_expire_glow_enabled);
     self.auras_expire_glow_type.OnValueChangedCallback = function(_, value)
         O.db.auras_expire_glow_type = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_expire_glow_percent = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -1317,7 +1317,7 @@ panel.Load = function(self)
     self.auras_expire_glow_percent:SetEnabled(O.db.auras_expire_glow_enabled);
     self.auras_expire_glow_percent.OnValueChangedCallback = function(_, value)
         O.db.auras_expire_glow_percent = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_expire_glow_percent_sign = E.CreateFontString(self.TabsFrames['CommonTab'].Content);
@@ -1339,7 +1339,7 @@ panel.Load = function(self)
     self.auras_spellsteal_enabled:SetChecked(O.db.auras_spellsteal_enabled);
     self.auras_spellsteal_enabled.Callback = function(self)
         O.db.auras_spellsteal_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_color = E.CreateColorPicker(self.TabsFrames['SpellstealTab'].Content);
@@ -1353,7 +1353,7 @@ panel.Load = function(self)
         O.db.auras_spellsteal_color[3] = b;
         O.db.auras_spellsteal_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_glow_enabled = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
@@ -1368,7 +1368,7 @@ panel.Load = function(self)
         panel.auras_spellsteal_glow_type:SetEnabled(O.db.auras_spellsteal_glow_enabled);
         panel.auras_spellsteal_glow_color:SetEnabled(O.db.auras_spellsteal_glow_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_glow_type = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
@@ -1381,7 +1381,7 @@ panel.Load = function(self)
     self.auras_spellsteal_glow_type:SetEnabled(O.db.auras_spellsteal_glow_enabled);
     self.auras_spellsteal_glow_type.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_glow_type = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_glow_color = E.CreateColorPicker(self.TabsFrames['SpellstealTab'].Content);
@@ -1396,7 +1396,7 @@ panel.Load = function(self)
         O.db.auras_spellsteal_glow_color[3] = b;
         O.db.auras_spellsteal_glow_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellstealTab'].Content);
@@ -1411,7 +1411,7 @@ panel.Load = function(self)
     self.auras_spellsteal_offset_y:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_Y_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellstealTab'].Content);
@@ -1426,7 +1426,7 @@ panel.Load = function(self)
     self.auras_spellsteal_countdown_enabled:SetChecked(O.db.auras_spellsteal_countdown_enabled);
     self.auras_spellsteal_countdown_enabled.Callback = function(self)
         O.db.auras_spellsteal_countdown_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_countdown_text = E.CreateFontString(self.TabsFrames['SpellstealTab'].Content);
@@ -1442,7 +1442,7 @@ panel.Load = function(self)
     self.auras_spellsteal_cooldown_font_value:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_VALUE'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_font_size = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
@@ -1452,7 +1452,7 @@ panel.Load = function(self)
     self.auras_spellsteal_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_SIZE'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_font_flag = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
@@ -1464,7 +1464,7 @@ panel.Load = function(self)
     self.auras_spellsteal_cooldown_font_flag:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_FLAG'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
@@ -1475,7 +1475,7 @@ panel.Load = function(self)
     self.auras_spellsteal_cooldown_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_SHADOW'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_font_shadow.Callback = function(self)
         O.db.auras_spellsteal_cooldown_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
@@ -1488,7 +1488,7 @@ panel.Load = function(self)
     self.auras_spellsteal_cooldown_point:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_POINT_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_point.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
@@ -1500,7 +1500,7 @@ panel.Load = function(self)
     self.auras_spellsteal_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_offset_x = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
@@ -1510,7 +1510,7 @@ panel.Load = function(self)
     self.auras_spellsteal_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_OFFSET_X_TOOLTIP']);
     self.auras_spellsteal_cooldown_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_offset_y = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
@@ -1520,7 +1520,7 @@ panel.Load = function(self)
     self.auras_spellsteal_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_OFFSET_Y_TOOLTIP']);
     self.auras_spellsteal_cooldown_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_text = E.CreateFontString(self.TabsFrames['SpellstealTab'].Content);
@@ -1536,7 +1536,7 @@ panel.Load = function(self)
     self.auras_spellsteal_count_font_value:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_VALUE'], self.Tabs[2]);
     self.auras_spellsteal_count_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_font_size = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
@@ -1546,7 +1546,7 @@ panel.Load = function(self)
     self.auras_spellsteal_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_SIZE'], self.Tabs[2]);
     self.auras_spellsteal_count_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_font_flag = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
@@ -1558,7 +1558,7 @@ panel.Load = function(self)
     self.auras_spellsteal_count_font_flag:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_FLAG'], self.Tabs[2]);
     self.auras_spellsteal_count_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
@@ -1569,7 +1569,7 @@ panel.Load = function(self)
     self.auras_spellsteal_count_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_SHADOW'], self.Tabs[2]);
     self.auras_spellsteal_count_font_shadow.Callback = function(self)
         O.db.auras_spellsteal_count_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_point = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
@@ -1582,7 +1582,7 @@ panel.Load = function(self)
     self.auras_spellsteal_count_point:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_POINT_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_count_point.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
@@ -1594,7 +1594,7 @@ panel.Load = function(self)
     self.auras_spellsteal_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_count_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_offset_x = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
@@ -1604,7 +1604,7 @@ panel.Load = function(self)
     self.auras_spellsteal_count_offset_x:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_OFFSET_X_TOOLTIP']);
     self.auras_spellsteal_count_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_offset_y = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
@@ -1614,7 +1614,7 @@ panel.Load = function(self)
     self.auras_spellsteal_count_offset_y:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_OFFSET_Y_TOOLTIP']);
     self.auras_spellsteal_count_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -1631,7 +1631,7 @@ panel.Load = function(self)
     self.auras_mythicplus_enabled:SetChecked(O.db.auras_mythicplus_enabled);
     self.auras_mythicplus_enabled.Callback = function(self)
         O.db.auras_mythicplus_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
@@ -1646,7 +1646,7 @@ panel.Load = function(self)
     self.auras_mythicplus_offset_y:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_Y_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
@@ -1661,7 +1661,7 @@ panel.Load = function(self)
     self.auras_mythicplus_countdown_enabled:SetChecked(O.db.auras_mythicplus_countdown_enabled);
     self.auras_mythicplus_countdown_enabled.Callback = function(self)
         O.db.auras_mythicplus_countdown_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_countdown_text = E.CreateFontString(self.TabsFrames['MythicPlusTab'].Content);
@@ -1677,7 +1677,7 @@ panel.Load = function(self)
     self.auras_mythicplus_cooldown_font_value:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_VALUE'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_font_size = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
@@ -1687,7 +1687,7 @@ panel.Load = function(self)
     self.auras_mythicplus_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_SIZE'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_font_flag = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
@@ -1699,7 +1699,7 @@ panel.Load = function(self)
     self.auras_mythicplus_cooldown_font_flag:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_FLAG'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
@@ -1710,7 +1710,7 @@ panel.Load = function(self)
     self.auras_mythicplus_cooldown_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_SHADOW'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_font_shadow.Callback = function(self)
         O.db.auras_mythicplus_cooldown_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
@@ -1723,7 +1723,7 @@ panel.Load = function(self)
     self.auras_mythicplus_cooldown_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_POINT_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_point.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
@@ -1735,7 +1735,7 @@ panel.Load = function(self)
     self.auras_mythicplus_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_offset_x = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
@@ -1745,7 +1745,7 @@ panel.Load = function(self)
     self.auras_mythicplus_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_OFFSET_X_TOOLTIP']);
     self.auras_mythicplus_cooldown_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_offset_y = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
@@ -1755,7 +1755,7 @@ panel.Load = function(self)
     self.auras_mythicplus_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_OFFSET_Y_TOOLTIP']);
     self.auras_mythicplus_cooldown_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_text = E.CreateFontString(self.TabsFrames['MythicPlusTab'].Content);
@@ -1771,7 +1771,7 @@ panel.Load = function(self)
     self.auras_mythicplus_count_font_value:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_VALUE'], self.Tabs[3]);
     self.auras_mythicplus_count_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_font_size = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
@@ -1781,7 +1781,7 @@ panel.Load = function(self)
     self.auras_mythicplus_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_SIZE'], self.Tabs[3]);
     self.auras_mythicplus_count_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_font_flag = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
@@ -1793,7 +1793,7 @@ panel.Load = function(self)
     self.auras_mythicplus_count_font_flag:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_FLAG'], self.Tabs[3]);
     self.auras_mythicplus_count_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_font_shadow = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
@@ -1804,7 +1804,7 @@ panel.Load = function(self)
     self.auras_mythicplus_count_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_SHADOW'], self.Tabs[3]);
     self.auras_mythicplus_count_font_shadow.Callback = function(self)
         O.db.auras_mythicplus_count_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
@@ -1817,7 +1817,7 @@ panel.Load = function(self)
     self.auras_mythicplus_count_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_POINT_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_count_point.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
@@ -1829,7 +1829,7 @@ panel.Load = function(self)
     self.auras_mythicplus_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_count_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_count_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_offset_x = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
@@ -1839,7 +1839,7 @@ panel.Load = function(self)
     self.auras_mythicplus_count_offset_x:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_X_TOOLTIP']);
     self.auras_mythicplus_count_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_offset_y = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
@@ -1849,7 +1849,7 @@ panel.Load = function(self)
     self.auras_mythicplus_count_offset_y:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_Y_TOOLTIP']);
     self.auras_mythicplus_count_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -1866,7 +1866,7 @@ panel.Load = function(self)
     self.auras_important_enabled:SetChecked(O.db.auras_important_enabled);
     self.auras_important_enabled.Callback = function(self)
         O.db.auras_important_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
@@ -1881,7 +1881,7 @@ panel.Load = function(self)
     self.auras_important_scale:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_SCALE_TOOLTIP'], self.Tabs[4]);
     self.auras_important_scale.OnValueChangedCallback = function(_, value)
         O.db.auras_important_scale = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_offset_y = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
@@ -1892,7 +1892,7 @@ panel.Load = function(self)
     self.auras_important_offset_y:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_OFFSET_Y_TOOLTIP'], self.Tabs[4]);
     self.auras_important_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_important_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
@@ -1907,7 +1907,7 @@ panel.Load = function(self)
     self.auras_important_countdown_enabled:SetChecked(O.db.auras_important_countdown_enabled);
     self.auras_important_countdown_enabled.Callback = function(self)
         O.db.auras_important_countdown_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_countdown_text = E.CreateFontString(self.TabsFrames['ImportantTab'].Content);
@@ -1923,7 +1923,7 @@ panel.Load = function(self)
     self.auras_important_cooldown_font_value:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_VALUE'], self.Tabs[4]);
     self.auras_important_cooldown_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_font_size = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
@@ -1933,7 +1933,7 @@ panel.Load = function(self)
     self.auras_important_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_SIZE'], self.Tabs[4]);
     self.auras_important_cooldown_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_font_flag = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
@@ -1945,7 +1945,7 @@ panel.Load = function(self)
     self.auras_important_cooldown_font_flag:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_FLAG'], self.Tabs[4]);
     self.auras_important_cooldown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
@@ -1956,7 +1956,7 @@ panel.Load = function(self)
     self.auras_important_cooldown_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_SHADOW'], self.Tabs[4]);
     self.auras_important_cooldown_font_shadow.Callback = function(self)
         O.db.auras_important_cooldown_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
@@ -1969,7 +1969,7 @@ panel.Load = function(self)
     self.auras_important_cooldown_point:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_POINT_TOOLTIP'], self.Tabs[4]);
     self.auras_important_cooldown_point.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
@@ -1981,7 +1981,7 @@ panel.Load = function(self)
     self.auras_important_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[4]);
     self.auras_important_cooldown_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_offset_x = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
@@ -1991,7 +1991,7 @@ panel.Load = function(self)
     self.auras_important_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_OFFSET_X_TOOLTIP']);
     self.auras_important_cooldown_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_offset_y = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
@@ -2001,7 +2001,7 @@ panel.Load = function(self)
     self.auras_important_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_OFFSET_Y_TOOLTIP']);
     self.auras_important_cooldown_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_count_text = E.CreateFontString(self.TabsFrames['ImportantTab'].Content);
@@ -2017,7 +2017,7 @@ panel.Load = function(self)
     self.auras_important_count_font_value:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_VALUE'], self.Tabs[4]);
     self.auras_important_count_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_count_font_size = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
@@ -2027,7 +2027,7 @@ panel.Load = function(self)
     self.auras_important_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_SIZE'], self.Tabs[4]);
     self.auras_important_count_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_count_font_flag = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
@@ -2039,7 +2039,7 @@ panel.Load = function(self)
     self.auras_important_count_font_flag:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_FLAG'], self.Tabs[4]);
     self.auras_important_count_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_count_font_shadow = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
@@ -2050,7 +2050,7 @@ panel.Load = function(self)
     self.auras_important_count_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_SHADOW'], self.Tabs[4]);
     self.auras_important_count_font_shadow.Callback = function(self)
         O.db.auras_important_count_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_count_point = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
@@ -2063,7 +2063,7 @@ panel.Load = function(self)
     self.auras_important_count_point:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_POINT_TOOLTIP'], self.Tabs[4]);
     self.auras_important_count_point.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
@@ -2075,7 +2075,7 @@ panel.Load = function(self)
     self.auras_important_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[4]);
     self.auras_important_count_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_count_offset_x = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
@@ -2085,7 +2085,7 @@ panel.Load = function(self)
     self.auras_important_count_offset_x:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_OFFSET_X_TOOLTIP']);
     self.auras_important_count_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_count_offset_y = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
@@ -2095,7 +2095,7 @@ panel.Load = function(self)
     self.auras_important_count_offset_y:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_OFFSET_Y_TOOLTIP']);
     self.auras_important_count_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
@@ -2110,7 +2110,7 @@ panel.Load = function(self)
     self.auras_important_castername_show:SetChecked(O.db.auras_important_castername_show);
     self.auras_important_castername_show.Callback = function(self)
         O.db.auras_important_castername_show = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_castername_font_value = E.CreateDropdown('font', self.TabsFrames['ImportantTab'].Content);
@@ -2122,7 +2122,7 @@ panel.Load = function(self)
     self.auras_important_castername_font_value:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_VALUE'], self.Tabs[4]);
     self.auras_important_castername_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_important_castername_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_castername_font_size = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
@@ -2132,7 +2132,7 @@ panel.Load = function(self)
     self.auras_important_castername_font_size:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SIZE'], self.Tabs[4]);
     self.auras_important_castername_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_important_castername_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_castername_font_flag = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
@@ -2144,7 +2144,7 @@ panel.Load = function(self)
     self.auras_important_castername_font_flag:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_FLAG'], self.Tabs[4]);
     self.auras_important_castername_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_important_castername_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_important_castername_font_shadow = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
@@ -2155,7 +2155,7 @@ panel.Load = function(self)
     self.auras_important_castername_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW'], self.Tabs[4]);
     self.auras_important_castername_font_shadow.Callback = function(self)
         O.db.auras_important_castername_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -2172,7 +2172,7 @@ panel.Load = function(self)
     self.auras_custom_enabled:SetChecked(O.db.auras_custom_enabled);
     self.auras_custom_enabled.Callback = function(self)
         O.db.auras_custom_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_border_color = E.CreateColorPicker(self.TabsFrames['CustomTab'].Content);
@@ -2186,7 +2186,7 @@ panel.Load = function(self)
         O.db.auras_custom_border_color[3] = b;
         O.db.auras_custom_border_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
@@ -2201,7 +2201,7 @@ panel.Load = function(self)
     self.auras_custom_scale:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_SCALE_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_scale.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_scale = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_offset_y = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
@@ -2212,7 +2212,7 @@ panel.Load = function(self)
     self.auras_custom_offset_y:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_OFFSET_Y_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
@@ -2227,7 +2227,7 @@ panel.Load = function(self)
     self.auras_custom_countdown_enabled:SetChecked(O.db.auras_custom_countdown_enabled);
     self.auras_custom_countdown_enabled.Callback = function(self)
         O.db.auras_custom_countdown_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_countdown_text = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
@@ -2243,7 +2243,7 @@ panel.Load = function(self)
     self.auras_custom_cooldown_font_value:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_VALUE'], self.Tabs[5]);
     self.auras_custom_cooldown_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_font_size = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
@@ -2253,7 +2253,7 @@ panel.Load = function(self)
     self.auras_custom_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SIZE'], self.Tabs[5]);
     self.auras_custom_cooldown_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_font_flag = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
@@ -2265,7 +2265,7 @@ panel.Load = function(self)
     self.auras_custom_cooldown_font_flag:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_FLAG'], self.Tabs[5]);
     self.auras_custom_cooldown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
@@ -2276,7 +2276,7 @@ panel.Load = function(self)
     self.auras_custom_cooldown_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SHADOW'], self.Tabs[5]);
     self.auras_custom_cooldown_font_shadow.Callback = function(self)
         O.db.auras_custom_cooldown_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
@@ -2289,7 +2289,7 @@ panel.Load = function(self)
     self.auras_custom_cooldown_point:AddToSearch(button, L['OPTIONS_CUSTOM_AURAS_COOLDOWN_POINT_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_cooldown_point.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
@@ -2301,7 +2301,7 @@ panel.Load = function(self)
     self.auras_custom_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_cooldown_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_offset_x = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
@@ -2311,7 +2311,7 @@ panel.Load = function(self)
     self.auras_custom_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_OFFSET_X_TOOLTIP']);
     self.auras_custom_cooldown_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_offset_y = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
@@ -2321,7 +2321,7 @@ panel.Load = function(self)
     self.auras_custom_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_OFFSET_Y_TOOLTIP']);
     self.auras_custom_cooldown_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_count_text = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
@@ -2337,7 +2337,7 @@ panel.Load = function(self)
     self.auras_custom_count_font_value:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_VALUE'], self.Tabs[5]);
     self.auras_custom_count_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_count_font_size = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
@@ -2347,7 +2347,7 @@ panel.Load = function(self)
     self.auras_custom_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SIZE'], self.Tabs[5]);
     self.auras_custom_count_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_count_font_flag = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
@@ -2359,7 +2359,7 @@ panel.Load = function(self)
     self.auras_custom_count_font_flag:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_FLAG'], self.Tabs[5]);
     self.auras_custom_count_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_count_font_shadow = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
@@ -2370,7 +2370,7 @@ panel.Load = function(self)
     self.auras_custom_count_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SHADOW'], self.Tabs[5]);
     self.auras_custom_count_font_shadow.Callback = function(self)
         O.db.auras_custom_count_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_count_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
@@ -2383,7 +2383,7 @@ panel.Load = function(self)
     self.auras_custom_count_point:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_POINT_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_count_point.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
@@ -2395,7 +2395,7 @@ panel.Load = function(self)
     self.auras_custom_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_count_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_count_offset_x = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
@@ -2405,7 +2405,7 @@ panel.Load = function(self)
     self.auras_custom_count_offset_x:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_OFFSET_X_TOOLTIP']);
     self.auras_custom_count_offset_x.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.auras_custom_count_offset_y = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
@@ -2415,7 +2415,7 @@ panel.Load = function(self)
     self.auras_custom_count_offset_y:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_OFFSET_Y_TOOLTIP']);
     self.auras_custom_count_offset_y.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
@@ -2451,7 +2451,7 @@ panel.Load = function(self)
 
         self:SetText('');
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end);
 
     self.auras_custom_helpful = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);

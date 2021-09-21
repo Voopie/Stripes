@@ -27,7 +27,7 @@ panel.TabsData = {
 };
 
 panel.Load = function(self)
-    local Handler = S:GetNameplateModule('Handler');
+    local Stripes = S:GetNameplateModule('Handler');
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ panel.Load = function(self)
     self.quest_indicator_enabled:SetChecked(O.db.quest_indicator_enabled);
     self.quest_indicator_enabled.Callback = function(self)
         O.db.quest_indicator_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.quest_indicator_position = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
@@ -56,7 +56,7 @@ panel.Load = function(self)
     self.quest_indicator_position:AddToSearch(button, L['OPTIONS_QUEST_INDICATOR_POSITION_TOOLTIP'], self.Tabs[1]);
     self.quest_indicator_position.OnValueChangedCallback = function(_, value)
         O.db.quest_indicator_position = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.stealth_detect_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -71,7 +71,7 @@ panel.Load = function(self)
         panel.stealth_detect_always:SetEnabled(O.db.stealth_detect_enabled);
         panel.stealth_detect_not_in_combat:SetEnabled(O.db.stealth_detect_enabled);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.stealth_detect_always = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -83,7 +83,7 @@ panel.Load = function(self)
     self.stealth_detect_always:SetEnabled(O.db.stealth_detect_enabled);
     self.stealth_detect_always.Callback = function(self)
         O.db.stealth_detect_always = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.stealth_detect_not_in_combat = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -95,7 +95,7 @@ panel.Load = function(self)
     self.stealth_detect_not_in_combat:SetEnabled(O.db.stealth_detect_enabled);
     self.stealth_detect_not_in_combat.Callback = function(self)
         O.db.stealth_detect_not_in_combat = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.totem_icon_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -106,7 +106,7 @@ panel.Load = function(self)
     self.totem_icon_enabled:SetChecked(O.db.totem_icon_enabled);
     self.totem_icon_enabled.Callback = function(self)
         O.db.totem_icon_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.talking_head_suppress = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -120,7 +120,7 @@ panel.Load = function(self)
 
         panel.talking_head_suppress_always:SetEnabled(O.db.talking_head_suppress);
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.talking_head_suppress_always = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -132,7 +132,7 @@ panel.Load = function(self)
     self.talking_head_suppress_always:SetEnabled(O.db.talking_head_suppress);
     self.talking_head_suppress_always.Callback = function(self)
         O.db.talking_head_suppress_always = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ panel.Load = function(self)
     self.combat_indicator_enabled:SetChecked(O.db.combat_indicator_enabled);
     self.combat_indicator_enabled.Callback = function(self)
         O.db.combat_indicator_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.combat_indicator_color = E.CreateColorPicker(self.TabsFrames['CombatIndicatorTab'].Content);
@@ -163,7 +163,7 @@ panel.Load = function(self)
         O.db.combat_indicator_color[3] = b;
         O.db.combat_indicator_color[4] = a or 1;
 
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.combat_indicator_point = E.CreateDropdown('plain', self.TabsFrames['CombatIndicatorTab'].Content);
@@ -176,7 +176,7 @@ panel.Load = function(self)
     self.combat_indicator_point:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_POINT_TOOLTIP'], self.Tabs[2]);
     self.combat_indicator_point.OnValueChangedCallback = function(_, value)
         O.db.combat_indicator_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.combat_indicator_relative_point = E.CreateDropdown('plain', self.TabsFrames['CombatIndicatorTab'].Content);
@@ -188,7 +188,7 @@ panel.Load = function(self)
     self.combat_indicator_relative_point:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_RELATIVE_POINT_TOOLTIP'], self.Tabs[2]);
     self.combat_indicator_relative_point.OnValueChangedCallback = function(_, value)
         O.db.combat_indicator_relative_point = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.combat_indicator_offset_x = E.CreateSlider(self.TabsFrames['CombatIndicatorTab'].Content);
@@ -199,7 +199,7 @@ panel.Load = function(self)
     self.combat_indicator_offset_x:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP'], self.Tabs[2]);
     self.combat_indicator_offset_x.OnValueChangedCallback = function(_, value)
         O.db.combat_indicator_offset_x = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.combat_indicator_offset_y = E.CreateSlider(self.TabsFrames['CombatIndicatorTab'].Content);
@@ -210,7 +210,7 @@ panel.Load = function(self)
     self.combat_indicator_offset_y:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP'], self.Tabs[2]);
     self.combat_indicator_offset_y.OnValueChangedCallback = function(_, value)
         O.db.combat_indicator_offset_y = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.combat_indicator_size = E.CreateSlider(self.TabsFrames['CombatIndicatorTab'].Content);
@@ -220,7 +220,7 @@ panel.Load = function(self)
     self.combat_indicator_size:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP'], self.Tabs[2]);
     self.combat_indicator_size.OnValueChangedCallback = function(_, value)
         O.db.combat_indicator_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -237,7 +237,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon:SetChecked(O.db.spell_interrupted_icon);
     self.spell_interrupted_icon.Callback = function(self)
         O.db.spell_interrupted_icon = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_frame_strata = E.CreateDropdown('plain', self.TabsFrames['SpellInterruptedTab'].Content);
@@ -250,7 +250,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon_frame_strata:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_FRAME_STRATA_TOOLTIP'], self.Tabs[3]);
     self.spell_interrupted_icon_frame_strata.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_frame_strata = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spell_interrupted_countdown_text = E.CreateFontString(self.TabsFrames['SpellInterruptedTab'].Content);
@@ -266,7 +266,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon_countdown_font_value:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_VALUE'], self.Tabs[3]);
     self.spell_interrupted_icon_countdown_font_value.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_countdown_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_countdown_font_size = E.CreateSlider(self.TabsFrames['SpellInterruptedTab'].Content);
@@ -276,7 +276,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon_countdown_font_size:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_SIZE'], self.Tabs[3]);
     self.spell_interrupted_icon_countdown_font_size.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_countdown_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_countdown_font_flag = E.CreateDropdown('plain', self.TabsFrames['SpellInterruptedTab'].Content);
@@ -288,7 +288,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon_countdown_font_flag:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_FLAG'], self.Tabs[3]);
     self.spell_interrupted_icon_countdown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_countdown_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_countdown_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
@@ -299,7 +299,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon_countdown_font_shadow:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_SHADOW'], self.Tabs[3]);
     self.spell_interrupted_icon_countdown_font_shadow.Callback = function(self)
         O.db.spell_interrupted_icon_countdown_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_caster_name_show = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
@@ -310,7 +310,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon_caster_name_show:SetChecked(O.db.spell_interrupted_icon_caster_name_show);
     self.spell_interrupted_icon_caster_name_show.Callback = function(self)
         O.db.spell_interrupted_icon_caster_name_show = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_caster_name_font_value = E.CreateDropdown('font', self.TabsFrames['SpellInterruptedTab'].Content);
@@ -322,7 +322,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon_caster_name_font_value:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_FONT_VALUE'], self.Tabs[3]);
     self.spell_interrupted_icon_caster_name_font_value.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_caster_name_font_value = value;
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_caster_name_font_size = E.CreateSlider(self.TabsFrames['SpellInterruptedTab'].Content);
@@ -332,7 +332,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon_caster_name_font_size:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_FONT_SIZE'], self.Tabs[3]);
     self.spell_interrupted_icon_caster_name_font_size.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_caster_name_font_size = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_caster_name_font_flag = E.CreateDropdown('plain', self.TabsFrames['SpellInterruptedTab'].Content);
@@ -344,7 +344,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon_caster_name_font_flag:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_FONT_FLAG'], self.Tabs[3]);
     self.spell_interrupted_icon_caster_name_font_flag.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_caster_name_font_flag = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_caster_name_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
@@ -355,7 +355,7 @@ panel.Load = function(self)
     self.spell_interrupted_icon_caster_name_font_shadow:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_FONT_SHADOW'], self.Tabs[3]);
     self.spell_interrupted_icon_caster_name_font_shadow.Callback = function(self)
         O.db.spell_interrupted_icon_caster_name_font_shadow = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -372,7 +372,7 @@ panel.Load = function(self)
     self.pvp_healers_enabled:SetChecked(O.db.pvp_healers_enabled);
     self.pvp_healers_enabled.Callback = function(self)
         O.db.pvp_healers_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.pvp_healers_icon_scale = E.CreateSlider(self.TabsFrames['HealersMarksTab'].Content);
@@ -382,7 +382,7 @@ panel.Load = function(self)
     self.pvp_healers_icon_scale:AddToSearch(button, L['OPTIONS_PVP_HEALERS_SCALE_TOOLTIP'], self.Tabs[4]);
     self.pvp_healers_icon_scale.OnValueChangedCallback = function(_, value)
         O.db.pvp_healers_icon_scale = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.pvp_healers_sound = E.CreateCheckButton(self.TabsFrames['HealersMarksTab'].Content);
@@ -393,7 +393,7 @@ panel.Load = function(self)
     self.pvp_healers_sound:SetChecked(O.db.pvp_healers_sound);
     self.pvp_healers_sound.Callback = function(self)
         O.db.pvp_healers_sound = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.pve_healers_enabled = E.CreateCheckButton(self.TabsFrames['HealersMarksTab'].Content);
@@ -404,7 +404,7 @@ panel.Load = function(self)
     self.pve_healers_enabled:SetChecked(O.db.pve_healers_enabled);
     self.pve_healers_enabled.Callback = function(self)
         O.db.pve_healers_enabled = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.pve_healers_icon_scale = E.CreateSlider(self.TabsFrames['HealersMarksTab'].Content);
@@ -414,7 +414,7 @@ panel.Load = function(self)
     self.pve_healers_icon_scale:AddToSearch(button, L['OPTIONS_PVE_HEALERS_SCALE_TOOLTIP'], self.Tabs[4]);
     self.pve_healers_icon_scale.OnValueChangedCallback = function(_, value)
         O.db.pve_healers_icon_scale = tonumber(value);
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 
     self.pve_healers_sound = E.CreateCheckButton(self.TabsFrames['HealersMarksTab'].Content);
@@ -425,6 +425,6 @@ panel.Load = function(self)
     self.pve_healers_sound:SetChecked(O.db.pve_healers_sound);
     self.pve_healers_sound.Callback = function(self)
         O.db.pve_healers_sound = self:GetChecked();
-        Handler:UpdateAll();
+        Stripes:UpdateAll();
     end
 end
