@@ -792,7 +792,10 @@ function Module:StartUp()
 
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
 
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', Update); -- UpdateStatusText because UpdateHealth used in UNIT_MAXHEALTH and we don't neeed it
+    -- For execute coloring, faster response to health change
+    -- UpdateStatusText because UpdateHealth used in UNIT_MAXHEALTH and we don't neeed it
+    -- It needs testing to find out how much it reduces performance
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', Update);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
         Update(unitframe);
