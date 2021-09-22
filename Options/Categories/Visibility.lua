@@ -290,7 +290,7 @@ panel.Load = function(self)
     self.raid_target_icon_scale = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.raid_target_icon_scale:SetPosition('LEFT', self.raid_target_icon_show.Label, 'RIGHT', 16, 0);
     self.raid_target_icon_scale:SetW(137);
-    self.raid_target_icon_scale:SetLabel(L['OPTIONS_RAID_TARGET_ICON_SCALE']);
+    self.raid_target_icon_scale:SetLabel(L['SCALE']);
     self.raid_target_icon_scale:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_SCALE_TOOLTIP']);
     self.raid_target_icon_scale:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_SCALE_TOOLTIP'], self.Tabs[1]);
     self.raid_target_icon_scale:SetValues(O.db.raid_target_icon_scale, 0.1, 2, 0.05);

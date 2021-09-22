@@ -226,7 +226,7 @@ O.Lists = {
     }
 };
 
--- ~419
+-- ~421
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -608,6 +608,7 @@ O.DefaultValues = {
     auras_count_offset_y         = -2,
 
     auras_spellsteal_enabled              = true,
+    auras_spellsteal_scale                = 1,
     auras_spellsteal_offset_y             = 0,
     auras_spellsteal_color                = { 1, 0.95, 0.35, 1 },
     auras_spellsteal_glow_enabled         = false,
@@ -632,6 +633,7 @@ O.DefaultValues = {
     auras_spellsteal_count_offset_y         = -2,
 
     auras_mythicplus_enabled              = true,
+    auras_mythicplus_scale                = 1,
     auras_mythicplus_offset_y             = 0,
     auras_mythicplus_countdown_enabled    = true,
     auras_mythicplus_cooldown_font_value  = 'BigNoodleToo Titling',

@@ -311,7 +311,7 @@ function Module:UpdateLocalConfig()
     COUNT_OFFSET_X       = O.db.auras_mythicplus_count_offset_x;
     COUNT_OFFSET_Y       = O.db.auras_mythicplus_count_offset_y;
 
-    SCALE  = O.db.auras_scale;
+    SCALE  = O.db.auras_mythicplus_scale;
     SQUARE = O.db.auras_square;
 
     OFFSET_Y = O.db.auras_mythicplus_offset_y;
