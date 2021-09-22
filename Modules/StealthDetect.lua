@@ -66,13 +66,25 @@ local auras = {
 };
 
 local units = {
+    -- Legion
+    -- Dungeons
+    [91796]  = true, -- Skrog Wavecrasher (Eye of Azshara)
+    [95939]  = true, -- Skrog Tidestomper (Eye of Azshara)
+    [104270] = true, -- Guardian Construct (Court of Stars)
+    [104277] = true, -- Legion Hound (Court of Stars)
+    [104278] = true, -- Felbound Enforcer (Court of Stars)
+    [105699] = true, -- Mana Saber (Court of Stars)
+
     -- Shadowlands
     -- Dungeons
-    [165349] = true, -- Animated Corpsehound (Maldraxxus)
     [164563] = true, -- Vicious Gargon (Halls of Atonement)
     [163524] = true, -- Kyrian Dark-Praetor (Spires of Ascension)
     [164929] = true, -- Tirnenn Villager (Mists of Tirna Scithe)
     [170850] = true, -- Raging Bloodhorn (Theater of Pain)
+    [163882] = true, -- Decaying Flesh Giant (Plaguefall)
+
+    -- Open World
+    [165349] = true, -- Animated Corpsehound (Maldraxxus)
 
     -- Maw
     [173188] = true, -- Mawsworn Outrider
