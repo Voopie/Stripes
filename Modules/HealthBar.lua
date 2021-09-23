@@ -766,16 +766,6 @@ function Module:UNIT_THREAT_LIST_UPDATE(unit)
     Update(NP[nameplate]);
 end
 
-function Module:UNIT_CONNECTION(unit)
-    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
-
-    if not nameplate or not NP[nameplate] then
-        return;
-    end
-
-    Update(NP[nameplate]);
-end
-
 function Module:StartUp()
     self:UpdateLocalConfig();
 
@@ -788,7 +778,6 @@ function Module:StartUp()
 
     self:RegisterEvent('UNIT_NAME_UPDATE');
     self:RegisterEvent('UNIT_THREAT_LIST_UPDATE');
-    self:RegisterEvent('UNIT_CONNECTION');
 
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
 
