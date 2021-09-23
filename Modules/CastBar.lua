@@ -145,6 +145,23 @@ local function UpdateStyle(unitframe)
     end
 end
 
+local function UpdateColors(unitframe)
+    if not unitframe.castingBar then
+        return;
+    end
+
+    StripesCastingBar_SetStartCastColor(unitframe.castingBar, START_CAST_COLOR[1], START_CAST_COLOR[2], START_CAST_COLOR[3], START_CAST_COLOR[4]);
+    StripesCastingBar_SetStartChannelColor(unitframe.castingBar, START_CHANNEL_COLOR[1], START_CHANNEL_COLOR[2], START_CHANNEL_COLOR[3], START_CHANNEL_COLOR[4]);
+    StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, NONINTERRUPTIBLE_COLOR[1], NONINTERRUPTIBLE_COLOR[2], NONINTERRUPTIBLE_COLOR[3], NONINTERRUPTIBLE_COLOR[4]);
+    StripesCastingBar_SetFailedCastColor(unitframe.castingBar, FAILED_CAST_COLOR[1], FAILED_CAST_COLOR[2], FAILED_CAST_COLOR[3], FAILED_CAST_COLOR[4]);
+    StripesCastingBar_SetInterruptReadyInTimeCastColor(unitframe.castingBar, INTERRUPT_READY_IN_TIME_COLOR[1], INTERRUPT_READY_IN_TIME_COLOR[2], INTERRUPT_READY_IN_TIME_COLOR[3], INTERRUPT_READY_IN_TIME_COLOR[4]);
+    StripesCastingBar_SetInterruptNotReadyCastColor(unitframe.castingBar, INTERRUPT_NOT_READY_COLOR[1], INTERRUPT_NOT_READY_COLOR[2], INTERRUPT_NOT_READY_COLOR[3], INTERRUPT_NOT_READY_COLOR[4]);
+
+    if unitframe.castingBar.InterruptReadyTick then
+        unitframe.castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
+    end
+end
+
 local function CreateTimer(unitframe)
     if not unitframe.castBar then
         return;
@@ -170,33 +187,7 @@ local function CreateTimer(unitframe)
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.BorderShield);
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.Timer);
 
-    StripesCastingBar_SetStartCastColor(unitframe.castingBar, START_CAST_COLOR[1], START_CAST_COLOR[2], START_CAST_COLOR[3], START_CAST_COLOR[4]);
-    StripesCastingBar_SetStartChannelColor(unitframe.castingBar, START_CHANNEL_COLOR[1], START_CHANNEL_COLOR[2], START_CHANNEL_COLOR[3], START_CHANNEL_COLOR[4]);
-    StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, NONINTERRUPTIBLE_COLOR[1], NONINTERRUPTIBLE_COLOR[2], NONINTERRUPTIBLE_COLOR[3], NONINTERRUPTIBLE_COLOR[4]);
-    StripesCastingBar_SetFailedCastColor(unitframe.castingBar, FAILED_CAST_COLOR[1], FAILED_CAST_COLOR[2], FAILED_CAST_COLOR[3], FAILED_CAST_COLOR[4]);
-    StripesCastingBar_SetInterruptReadyInTimeCastColor(unitframe.castingBar, INTERRUPT_READY_IN_TIME_COLOR[1], INTERRUPT_READY_IN_TIME_COLOR[2], INTERRUPT_READY_IN_TIME_COLOR[3], INTERRUPT_READY_IN_TIME_COLOR[4]);
-    StripesCastingBar_SetInterruptNotReadyCastColor(unitframe.castingBar, INTERRUPT_NOT_READY_COLOR[1], INTERRUPT_NOT_READY_COLOR[2], INTERRUPT_NOT_READY_COLOR[3], INTERRUPT_NOT_READY_COLOR[4]);
-
-    if unitframe.castingBar.InterruptReadyTick then
-        unitframe.castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
-    end
-end
-
-local function UpdateColors(unitframe)
-    if not unitframe.castingBar then
-        return;
-    end
-
-    StripesCastingBar_SetStartCastColor(unitframe.castingBar, START_CAST_COLOR[1], START_CAST_COLOR[2], START_CAST_COLOR[3], START_CAST_COLOR[4]);
-    StripesCastingBar_SetStartChannelColor(unitframe.castingBar, START_CHANNEL_COLOR[1], START_CHANNEL_COLOR[2], START_CHANNEL_COLOR[3], START_CHANNEL_COLOR[4]);
-    StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, NONINTERRUPTIBLE_COLOR[1], NONINTERRUPTIBLE_COLOR[2], NONINTERRUPTIBLE_COLOR[3], NONINTERRUPTIBLE_COLOR[4]);
-    StripesCastingBar_SetFailedCastColor(unitframe.castingBar, FAILED_CAST_COLOR[1], FAILED_CAST_COLOR[2], FAILED_CAST_COLOR[3], FAILED_CAST_COLOR[4]);
-    StripesCastingBar_SetInterruptReadyInTimeCastColor(unitframe.castingBar, INTERRUPT_READY_IN_TIME_COLOR[1], INTERRUPT_READY_IN_TIME_COLOR[2], INTERRUPT_READY_IN_TIME_COLOR[3], INTERRUPT_READY_IN_TIME_COLOR[4]);
-    StripesCastingBar_SetInterruptNotReadyCastColor(unitframe.castingBar, INTERRUPT_NOT_READY_COLOR[1], INTERRUPT_NOT_READY_COLOR[2], INTERRUPT_NOT_READY_COLOR[3], INTERRUPT_NOT_READY_COLOR[4]);
-
-    if unitframe.castingBar.InterruptReadyTick then
-        unitframe.castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
-    end
+    UpdateColors(unitframe);
 end
 
 local function UpdateVisibility(unitframe)
