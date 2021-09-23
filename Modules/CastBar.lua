@@ -17,7 +17,7 @@ local LSM_MEDIATYPE_STATUSBAR = LSM.MediaType.STATUSBAR;
 local LIST_FONT_FLAGS = O.Lists.font_flags;
 
 -- Local config
-local TIMER_ENABLED, ON_HP_BAR, ICON_LARGE, ICON_RIGHT_SIDE;
+local TIMER_ENABLED, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y, ON_HP_BAR, ICON_LARGE, ICON_RIGHT_SIDE;
 local START_CAST_COLOR, START_CHANNEL_COLOR, NONINTERRUPTIBLE_COLOR, FAILED_CAST_COLOR, INTERRUPT_READY_IN_TIME_COLOR, INTERRUPT_NOT_READY_COLOR;
 local USE_INTERRUPT_READY_IN_TIME_COLOR, USE_INTERRUPT_NOT_READY_COLOR;
 local FONT_VALUE, FONT_SIZE, FONT_FLAG, FONT_SHADOW;
@@ -28,12 +28,19 @@ local SHOW_INTERRUPT_READY_TICK, INTERRUPT_READY_TICK_COLOR;
 local NAME_ONLY_MODE;
 local BORDER_ENABLED, BORDER_COLOR, BORDER_SIZE;
 local BAR_HEIGHT;
+local TEXT_Y_OFFSET;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 
 local WIDTH_OFFSET = 24;
 local updateDelay = 0.05;
 local TIMER_FORMAT = '%.2f / %.2f';
+
+local ANCHOR_MIRROR = {
+    ['LEFT']   = 'RIGHT',
+    ['CENTER'] = 'CENTER',
+    ['RIGHT']  = 'LEFT',
+};
 
 local function OnUpdate(self, elapsed)
     if not TIMER_ENABLED then
@@ -61,11 +68,6 @@ local function UpdateTexture(unitframe)
     if unitframe.castingBar.Flash then
         unitframe.castingBar.Flash:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, STATUSBAR_TEXTURE));
     end
-end
-
-local function UpdateFont(unitframe)
-    unitframe.castingBar.Text:SetFont(LSM:Fetch(LSM_MEDIATYPE_FONT, FONT_VALUE), FONT_SIZE, LIST_FONT_FLAGS[FONT_FLAG]);
-    unitframe.castingBar.Text:SetShadowOffset(FONT_SHADOW and 1 or 0, FONT_SHADOW and -1 or 0);
 end
 
 local function UpdateStyle(unitframe)
@@ -156,13 +158,13 @@ local function CreateTimer(unitframe)
         unitframe.castingBar = CreateFrame('StatusBar', nil, unitframe, 'StripesNameplateCastBarTemplate');
     end
 
+    unitframe.castingBar.Text:SetPoint('TOPLEFT', 0, TEXT_Y_OFFSET);
+
     unitframe.castingBar.Timer = unitframe.castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarFont');
-    PixelUtil.SetPoint(unitframe.castingBar.Timer, 'LEFT', unitframe.castingBar, 'RIGHT', 2, 0);
+    PixelUtil.SetPoint(unitframe.castingBar.Timer, ANCHOR_MIRROR[TIMER_ANCHOR], unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
     unitframe.castingBar.Timer:SetTextColor(1, 1, 1);
     unitframe.castingBar.updateDelay = updateDelay;
     unitframe.castingBar:HookScript('OnUpdate', OnUpdate);
-
-    unitframe.castingBar.Text:SetFontObject('StripesCastBarFont');
 
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.Icon);
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.BorderShield);
@@ -227,6 +229,11 @@ local function UpdateVisibility(unitframe)
         else
             unitframe.castingBar.border:Hide();
         end
+
+        unitframe.castingBar.Text:SetPoint('TOPLEFT', 0, TEXT_Y_OFFSET);
+
+        unitframe.castingBar.Timer:ClearAllPoints();
+        PixelUtil.SetPoint(unitframe.castingBar.Timer, ANCHOR_MIRROR[TIMER_ANCHOR], unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y);
     end
 end
 
@@ -238,10 +245,8 @@ end
 
 function Module:UnitAdded(unitframe)
     CreateTimer(unitframe);
-    UpdateFont(unitframe);
     UpdateTexture(unitframe);
     UpdateStyle(unitframe);
-
     UpdateVisibility(unitframe);
 end
 
@@ -252,20 +257,23 @@ function Module:UnitRemoved(unitframe)
 end
 
 function Module:Update(unitframe)
-    UpdateFont(unitframe);
     UpdateTexture(unitframe);
     UpdateStyle(unitframe);
     UpdateColors(unitframe);
-
     UpdateVisibility(unitframe);
 end
 
 function Module:UpdateLocalConfig()
     BAR_HEIGHT = O.db.castbar_height;
 
+    TEXT_Y_OFFSET = O.db.castbar_text_offset_y;
+
     TIMER_ENABLED = O.db.castbar_timer_enabled;
     TIMER_FORMAT  = O.db.castbar_timer_format;
     TIMER_FORMAT = '%.' .. TIMER_FORMAT - 1 .. 'f / %.' .. TIMER_FORMAT - 1 .. 'f';
+    TIMER_ANCHOR = O.Lists.frame_points_simple[O.db.castbar_timer_anchor];
+    TIMER_OFFSET_X = O.db.castbar_timer_offset_x;
+    TIMER_OFFSET_Y = O.db.castbar_timer_offset_y;
 
     ON_HP_BAR       = O.db.castbar_on_hp_bar;
     ICON_LARGE      = O.db.castbar_icon_large;
@@ -337,7 +345,7 @@ function Module:UpdateLocalConfig()
 
     BORDER_ENABLED = O.db.castbar_border_enabled;
     BORDER_SIZE = O.db.castbar_border_size;
-    BORDER_COLOR = BORDER_COLOR or {};
+    BORDER_COLOR    = BORDER_COLOR or {};
     BORDER_COLOR[1] = O.db.castbar_border_color[1];
     BORDER_COLOR[2] = O.db.castbar_border_color[2];
     BORDER_COLOR[3] = O.db.castbar_border_color[3];

@@ -61,15 +61,12 @@
                 </Texture>
             </Layer>
             <Layer level="ARTWORK" textureSubLevel="1">
-                <FontString parentKey="Text" inherits="SystemFont_Shadow_Small">
+                <FontString parentKey="Text" inherits="StripesCastBarFont">
                     <Size x="0" y="16" />
                     <Anchors>
                         <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="0" y="0"/>
                         <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="0" y="0"/>
                     </Anchors>
-                    <Shadow>
-                        <Color r="0" g="0" b="0" />
-                    </Shadow>
                 </FontString>
                 <Texture parentKey="Icon" hidden="true" ignoreParentAlpha="true">
                     <Size x="12" y="12" />

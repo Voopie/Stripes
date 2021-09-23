@@ -226,7 +226,7 @@ O.Lists = {
     }
 };
 
--- ~421
+-- ~424
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -355,13 +355,13 @@ O.DefaultValues = {
     threat_percentage_font_shadow    = true,
 
     target_indicator_enabled  = true,
-    target_indicator_color    = { 1, 1, 1 },
+    target_indicator_color    = { 1, 1, 1, 1 },
     target_indicator_texture  = 3,
     target_indicator_x_offset = 0,
     target_indicator_y_offset = 0,
     target_indicator_size     = 16,
     target_glow_enabled       = true,
-    target_glow_color         = { 1, 1, 1 },
+    target_glow_color         = { 1, 1, 1, 1 },
     hover_glow_enabled        = true,
     target_highlight          = true,
 
@@ -375,6 +375,10 @@ O.DefaultValues = {
     -- Cast bar
     castbar_timer_enabled    = true,
     castbar_timer_format     = 3,
+    castbar_timer_anchor     = 3, -- RIGHT
+    castbar_timer_offset_x   = 2,
+    castbar_timer_offset_y   = 0,
+    castbar_text_offset_y    = 0,
     castbar_text_font_value  = 'BigNoodleToo Titling',
     castbar_text_font_size   = 11,
     castbar_text_font_flag   = 1, -- NONE
