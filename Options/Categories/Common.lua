@@ -509,7 +509,7 @@ panel.Load = function(self)
     self.health_text_display_mode:SetSize(120, 20);
     self.health_text_display_mode:SetList(O.Lists.health_text_display_mode);
     self.health_text_display_mode:SetValue(O.db.health_text_display_mode);
-    self.health_text_display_mode:SetLabel(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE']);
+    self.health_text_display_mode:SetLabel(L['FORMAT']);
     self.health_text_display_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP']);
     self.health_text_display_mode.OnValueChangedCallback = function(_, value)
         O.db.health_text_display_mode = tonumber(value);
@@ -559,7 +559,7 @@ panel.Load = function(self)
     self.health_text_block_1_display_mode:SetSize(120, 20);
     self.health_text_block_1_display_mode:SetList(O.Lists.health_text_display_mode);
     self.health_text_block_1_display_mode:SetValue(O.db.health_text_block_1_display_mode);
-    self.health_text_block_1_display_mode:SetLabel(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE']);
+    self.health_text_block_1_display_mode:SetLabel(L['FORMAT']);
     self.health_text_block_1_display_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP']);
     self.health_text_block_1_display_mode.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_1_display_mode = tonumber(value);
@@ -609,7 +609,7 @@ panel.Load = function(self)
     self.health_text_block_2_display_mode:SetSize(120, 20);
     self.health_text_block_2_display_mode:SetList(O.Lists.health_text_display_mode);
     self.health_text_block_2_display_mode:SetValue(O.db.health_text_block_2_display_mode);
-    self.health_text_block_2_display_mode:SetLabel(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE']);
+    self.health_text_block_2_display_mode:SetLabel(L['FORMAT']);
     self.health_text_block_2_display_mode:SetTooltip(L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP']);
     self.health_text_block_2_display_mode.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_2_display_mode = tonumber(value);

@@ -483,7 +483,7 @@ O.DefaultValues = {
 
     raid_target_icon_show              = true,
     raid_target_icon_scale             = 1,
-    raid_target_icon_frame_strata      = 1, -- Inherit
+    raid_target_icon_frame_strata      = 5, -- HIGH
     raid_target_icon_position          = 1, -- LEFT
     raid_target_icon_position_offset_x = -4,
     raid_target_icon_position_offset_y = 0,

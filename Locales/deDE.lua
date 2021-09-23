@@ -18,6 +18,7 @@ L['NO'] = 'No';
 L['COLOR'] = 'Color';
 L['SCALE'] = 'Scale';
 L['ENABLE'] = 'Enable';
+L['FORMAT'] = 'Format';
 
 L['FONT_VALUE'] = 'Font';
 L['FONT_SIZE'] = 'Font size';
@@ -223,7 +224,6 @@ L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS_TOOLTIP'] = 'Replace diacritical signs i
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Show health text';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Hide full';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL_TOOLTIP'] = 'Hide when full health';
-L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE'] = 'Format';
 L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP'] = 'Health text format';
 L['OPTIONS_HEALTH_TEXT_FONT_VALUE'] = 'Health text font';
 L['OPTIONS_HEALTH_TEXT_FONT_SIZE'] = 'Health text font size';

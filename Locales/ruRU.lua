@@ -18,6 +18,7 @@ L['NO'] = 'Нет';
 L['COLOR'] = 'Цвет';
 L['SCALE'] = 'Масштаб';
 L['ENABLE'] = 'Включить';
+L['FORMAT'] = 'Формат';
 
 L['FONT_VALUE'] = 'Шрифт';
 L['FONT_SIZE'] = 'Размер шрифта';
@@ -223,7 +224,6 @@ L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS_TOOLTIP'] = 'Заменять в име�
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Показывать здоровье текстом';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Скрывать полное';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL_TOOLTIP'] = 'Скрывать полное здоровье';
-L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE'] = 'Формат';
 L['OPTIONS_HEALTH_TEXT_DISPLAY_MODE_TOOLTIP'] = 'Формат текста здоровья';
 L['OPTIONS_HEALTH_TEXT_FONT_VALUE'] = 'Шрифт здоровья';
 L['OPTIONS_HEALTH_TEXT_FONT_SIZE'] = 'Размер шрифта здоровья';

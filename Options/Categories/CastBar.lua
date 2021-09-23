@@ -686,6 +686,7 @@ panel.Load = function(self)
     self.castbar_timer_format:SetSize(200, 20);
     self.castbar_timer_format:SetList(O.Lists.castbar_timer_format);
     self.castbar_timer_format:SetValue(O.db.castbar_timer_format);
+    self.castbar_timer_format:SetLabel(L['FORMAT']);
     self.castbar_timer_format:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP']);
     self.castbar_timer_format:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP'], self.Tabs[2]);
     self.castbar_timer_format:SetEnabled(O.db.castbar_timer_enabled);
@@ -699,6 +700,7 @@ panel.Load = function(self)
     self.castbar_timer_anchor:SetSize(120, 20);
     self.castbar_timer_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.castbar_timer_anchor:SetValue(O.db.castbar_timer_anchor);
+    self.castbar_timer_anchor:SetLabel(L['POSITION']);
     self.castbar_timer_anchor:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP']);
     self.castbar_timer_anchor:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP'], self.Tabs[2]);
     self.castbar_timer_anchor.OnValueChangedCallback = function(_, value)
