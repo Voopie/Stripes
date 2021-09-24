@@ -102,8 +102,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    local Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_translit, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.name_text_font_value = E.CreateDropdown('font', self.TabsFrames['NameTab'].Content);
-    self.name_text_font_value:SetPosition('TOPLEFT', self.name_text_translit, 'BOTTOMLEFT', 0, -12);
+    self.name_text_font_value:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.name_text_font_value:SetSize(160, 20);
     self.name_text_font_value:SetList(LSM:HashTable('font'));
     self.name_text_font_value:SetValue(O.db.name_text_font_value);
@@ -147,7 +151,7 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    local Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
+    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.name_text_font_value, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
@@ -198,8 +202,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_position_v, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.name_text_coloring_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_coloring_mode:SetPosition('TOPLEFT', self.name_text_position_v, 'BOTTOMLEFT', 0, -8);
+    self.name_text_coloring_mode:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.name_text_coloring_mode:SetSize(160, 20);
     self.name_text_coloring_mode:SetList(O.Lists.name_text_coloring_mode);
     self.name_text_coloring_mode:SetValue(O.db.name_text_coloring_mode);
@@ -224,8 +232,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_coloring_mode, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.name_text_abbreviated = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_abbreviated:SetPosition('TOPLEFT', self.name_text_coloring_mode, 'BOTTOMLEFT', 0, -12);
+    self.name_text_abbreviated:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.name_text_abbreviated:SetLabel(L['OPTIONS_NAME_TEXT_ABBREVIATED']);
     self.name_text_abbreviated:SetChecked(O.db.name_text_abbreviated);
     self.name_text_abbreviated:AddToSearch(button, L['OPTIONS_NAME_TEXT_ABBREVIATED'], self.Tabs[1]);
@@ -250,12 +262,8 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.name_text_abbreviated, 'BOTTOMLEFT', 0, -4);
-    Delimiter:SetW(self:GetWidth());
-
     self.faction_icon_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.faction_icon_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.faction_icon_enabled:SetPosition('TOPLEFT', self.name_text_abbreviated, 'BOTTOMLEFT', 0, -8);
     self.faction_icon_enabled:SetLabel(L['OPTIONS_FACTION_ICON_ENABLED']);
     self.faction_icon_enabled:SetTooltip(L['OPTIONS_FACTION_ICON_ENABLED_TOOLTIP']);
     self.faction_icon_enabled:SetChecked(O.db.faction_icon_enabled);
@@ -423,8 +431,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['HealthTextTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.health_text_custom_color_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.health_text_font_value = E.CreateDropdown('font', self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_font_value:SetPosition('TOPLEFT', self.health_text_custom_color_enabled, 'BOTTOMLEFT', 0, -12);
+    self.health_text_font_value:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.health_text_font_value:SetSize(160, 20);
     self.health_text_font_value:SetList(LSM:HashTable('font'));
     self.health_text_font_value:SetValue(O.db.health_text_font_value);
@@ -473,7 +485,7 @@ panel.Load = function(self)
     Delimiter:SetW(self:GetWidth());
 
     self.health_text_block_mode = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_block_mode:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
+    self.health_text_block_mode:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.health_text_block_mode:SetSize(180, 20);
     self.health_text_block_mode:SetList(O.Lists.health_text_block_mode);
     self.health_text_block_mode:SetValue(O.db.health_text_block_mode);
@@ -723,8 +735,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['LevelTextTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.level_text_use_diff_color, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.level_text_font_value = E.CreateDropdown('font', self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_font_value:SetPosition('TOPLEFT', self.level_text_use_diff_color, 'BOTTOMLEFT', 0, -12);
+    self.level_text_font_value:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.level_text_font_value:SetSize(160, 20);
     self.level_text_font_value:SetList(LSM:HashTable('font'));
     self.level_text_font_value:SetValue(O.db.level_text_font_value);
@@ -773,7 +789,7 @@ panel.Load = function(self)
     Delimiter:SetW(self:GetWidth());
 
     self.level_text_anchor = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_anchor:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -20);
+    self.level_text_anchor:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.level_text_anchor:SetSize(120, 20);
     self.level_text_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.level_text_anchor:SetValue(O.db.level_text_anchor);
@@ -788,7 +804,6 @@ panel.Load = function(self)
     self.level_text_x_offset = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
     self.level_text_x_offset:SetPosition('LEFT', self.level_text_anchor, 'RIGHT', 16, 0);
     self.level_text_x_offset:SetW(137);
-    self.level_text_x_offset:SetLabel(L['OFFSET_X_SHORT']);
     self.level_text_x_offset:SetTooltip(L['OPTIONS_LEVEL_TEXT_X_OFFSET_TOOLTIP']);
     self.level_text_x_offset:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_X_OFFSET_TOOLTIP'], self.Tabs[3]);
     self.level_text_x_offset:SetValues(O.db.level_text_x_offset, -99, 100, 1);
@@ -800,7 +815,6 @@ panel.Load = function(self)
     self.level_text_y_offset = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
     self.level_text_y_offset:SetPosition('LEFT', self.level_text_x_offset, 'RIGHT', 16, 0);
     self.level_text_y_offset:SetW(137);
-    self.level_text_y_offset:SetLabel(L['OFFSET_Y_SHORT']);
     self.level_text_y_offset:SetTooltip(L['OPTIONS_LEVEL_TEXT_Y_OFFSET_TOOLTIP']);
     self.level_text_y_offset:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_Y_OFFSET_TOOLTIP'], self.Tabs[3]);
     self.level_text_y_offset:SetValues(O.db.level_text_y_offset, -99, 100, 1);
