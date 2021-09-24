@@ -309,8 +309,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_texture_value, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.castbar_text_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_offset_y:SetPosition('TOPLEFT', self.castbar_texture_value, 'BOTTOMLEFT', 0, -26);
+    self.castbar_text_offset_y:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -20);
     self.castbar_text_offset_y:SetValues(O.db.castbar_text_offset_y, -50, 50, 1);
     self.castbar_text_offset_y:SetLabel(L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y']);
     self.castbar_text_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP']);
@@ -365,8 +369,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -6);
+    Delimiter:SetW(self:GetWidth());
+
     self.castbar_height = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_height:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -28);
+    self.castbar_height:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -20);
     self.castbar_height:SetLabel(L['OPTIONS_CAST_BAR_HEIGHT']);
     self.castbar_height:SetTooltip(L['OPTIONS_CAST_BAR_HEIGHT_TOOLTIP']);
     self.castbar_height:AddToSearch(button, L['OPTIONS_CAST_BAR_HEIGHT_TOOLTIP'], self.Tabs[1]);
@@ -411,7 +419,7 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.castbar_height, 'BOTTOMLEFT', 0, -6);
     Delimiter:SetW(self:GetWidth());
 
