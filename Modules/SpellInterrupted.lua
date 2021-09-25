@@ -45,10 +45,11 @@ local durations = {
     [  6552] = 4, -- Warrior -- Pummel
 };
 
-local SigilOfSilenceAuras = {
-    [204490] = true,
-    [202137] = true,
-    [207682] = true,
+local auras = {
+    [ 31935] = true, -- Avenger's Shield - Paladin (Protection)
+    [204490] = true, -- Sigil of Silence - Demon Hunter (Vengeance)
+    [202137] = true, -- Sigil of Silence - Demon Hunter (Vengeance)
+    [207682] = true, -- Sigil of Silence - Demon Hunter (Vengeance)
 };
 
 local DEFAULT_DURATION = 4;
@@ -117,7 +118,7 @@ local function FindAura(unit)
             return false;
         end
 
-        if SigilOfSilenceAuras[spellId] then
+        if auras[spellId] then
             return texture, duration, expirationTime, source;
         end
     end
