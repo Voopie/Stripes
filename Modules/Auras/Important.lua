@@ -43,7 +43,7 @@ local additionalAuras = {
     -- Druid
     [81261] = true, -- Solar Beam
 
-    -- Coventant
+    -- Covenant
     [331866] = true, -- Agent of Chaos (Venthyr)
 };
 
