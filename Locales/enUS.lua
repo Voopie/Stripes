@@ -109,7 +109,7 @@ L['MASQUE_MYTHIC_AURAS'] = 'Mythic auras';
 L['MASQUE_IMPORTANT_AURAS'] = 'Important auras';
 L['MASQUE_CUSTOM_AURAS'] = 'Custom auras';
 
-L['OPTIONS_INCOMPATIBLE_NAMEPLATES_ADDON'] = '|cffff6666Warning!|r\r\rYou have another addon for nameplates enabled (|cffffb833З%s|r)\r\rPlease turn it off so that everything works as it should';
+L['OPTIONS_INCOMPATIBLE_NAMEPLATES_ADDON'] = '|cffff6666Warning!|r\r\rYou have another addon for nameplates enabled (|cffffb833%s|r)\r\rPlease turn it off so that everything works as it should';
 L['OPTIONS_DONT_WARN_ME'] = 'Don\'t warn me';
 
 L['OPTIONS_NEED_RELOAD'] = 'You must reload the interface to apply the settings.\r\rReload now?';
