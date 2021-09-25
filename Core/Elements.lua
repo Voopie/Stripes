@@ -788,6 +788,10 @@ do
         end);
 
         slider:HookScript('OnEnter', function(self)
+            if not self:IsEnabled() then
+                return;
+            end
+
             self.plusButton:SetShown(true);
             self.minusButton:SetShown(true);
         end);
