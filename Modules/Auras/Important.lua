@@ -42,6 +42,9 @@ local pixelGlowColor = { 1, 0.3, 0, 1 };
 local additionalAuras = {
     -- Druid
     [81261] = true, -- Solar Beam
+
+    -- Coventant
+    [331866] = true, -- Agent of Chaos (Venthyr)
 };
 
 local function CreateAnchor(unitframe)
