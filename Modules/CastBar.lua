@@ -11,16 +11,12 @@ local PlayerState = D.Player.State;
 
 -- Libraries
 local LSM = S.Libraries.LSM;
-local LSM_MEDIATYPE_FONT = LSM.MediaType.FONT;
 local LSM_MEDIATYPE_STATUSBAR = LSM.MediaType.STATUSBAR;
-
-local LIST_FONT_FLAGS = O.Lists.font_flags;
 
 -- Local config
 local TIMER_ENABLED, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y, ON_HP_BAR, ICON_LARGE, ICON_RIGHT_SIDE;
 local START_CAST_COLOR, START_CHANNEL_COLOR, NONINTERRUPTIBLE_COLOR, FAILED_CAST_COLOR, INTERRUPT_READY_IN_TIME_COLOR, INTERRUPT_NOT_READY_COLOR;
 local USE_INTERRUPT_READY_IN_TIME_COLOR, USE_INTERRUPT_NOT_READY_COLOR;
-local FONT_VALUE, FONT_SIZE, FONT_FLAG, FONT_SHADOW;
 local STATUSBAR_TEXTURE;
 local ENEMY_WIDTH, FRIENDLY_WIDTH, PLAYER_WIDTH;
 local SHOW_TRADE_SKILLS, SHOW_SHIELD, SHOW_ICON_NOTINTERRUPTIBLE;
@@ -31,6 +27,7 @@ local BAR_HEIGHT;
 local TEXT_Y_OFFSET;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
+local StripesCastBarTimerFont = CreateFont('StripesCastBarTimerFont');
 
 local WIDTH_OFFSET = 24;
 local updateDelay = 0.05;
@@ -177,7 +174,7 @@ local function CreateTimer(unitframe)
 
     unitframe.castingBar.Text:SetPoint('TOPLEFT', 0, TEXT_Y_OFFSET);
 
-    unitframe.castingBar.Timer = unitframe.castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarFont');
+    unitframe.castingBar.Timer = unitframe.castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarTimerFont');
     PixelUtil.SetPoint(unitframe.castingBar.Timer, ANCHOR_MIRROR[TIMER_ANCHOR], unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
     unitframe.castingBar.Timer:SetTextColor(1, 1, 1);
     unitframe.castingBar.updateDelay = updateDelay;
@@ -318,11 +315,6 @@ function Module:UpdateLocalConfig()
 
     STATUSBAR_TEXTURE = O.db.castbar_texture_value;
 
-    FONT_VALUE  = O.db.castbar_text_font_value;
-    FONT_SIZE   = O.db.castbar_text_font_size;
-    FONT_FLAG   = O.db.castbar_text_font_flag;
-    FONT_SHADOW = O.db.castbar_text_font_shadow;
-
     ENEMY_WIDTH    = O.db.size_enemy_clickable_width;
     FRIENDLY_WIDTH = O.db.size_friendly_clickable_width;
     PLAYER_WIDTH   = O.db.size_self_width;
@@ -342,7 +334,8 @@ function Module:UpdateLocalConfig()
     BORDER_COLOR[3] = O.db.castbar_border_color[3];
     BORDER_COLOR[4] = O.db.castbar_border_color[4] or 1;
 
-    UpdateFontObject(StripesCastBarFont, FONT_VALUE, FONT_SIZE, FONT_FLAG, FONT_SHADOW);
+    UpdateFontObject(StripesCastBarFont, O.db.castbar_text_font_value, O.db.castbar_text_font_size, O.db.castbar_text_font_flag, O.db.castbar_text_font_shadow);
+    UpdateFontObject(StripesCastBarTimerFont, O.db.castbar_timer_font_value, O.db.castbar_timer_font_size, O.db.castbar_timer_font_flag, O.db.castbar_timer_font_shadow);
 end
 
 function Module:StartUp()
