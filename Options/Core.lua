@@ -34,8 +34,8 @@ O.Lists = {
     },
 
     motion = {
-        [1] = UNIT_NAMEPLATES_TYPE_1,
-        [2] = UNIT_NAMEPLATES_TYPE_2,
+        [1] = L['NAMEPLATES_OVERLAPPING'],
+        [2] = L['NAMEPLATES_STACKING'],
     },
 
     name_position = {

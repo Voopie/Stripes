@@ -100,6 +100,9 @@ L['OFFSET_X_SHORT'] = 'Hor. offset';
 L['OFFSET_Y'] = 'Vertical offset';
 L['OFFSET_Y_SHORT'] = 'Vert. offset';
 
+L['NAMEPLATES_OVERLAPPING'] = 'Overlapping';
+L['NAMEPLATES_STACKING'] = 'Stacking';
+
 L['MASQUE_AURAS'] = 'Auras';
 L['MASQUE_DISPELLABLE_AURAS'] = 'Dispellable auras';
 L['MASQUE_MYTHIC_AURAS'] = 'Mythic auras';

@@ -100,6 +100,9 @@ L['OFFSET_X_SHORT'] = 'Гор. смещение';
 L['OFFSET_Y'] = 'Вертикальное смещение';
 L['OFFSET_Y_SHORT'] = 'Верт. смещение';
 
+L['NAMEPLATES_OVERLAPPING'] = 'Наложение';
+L['NAMEPLATES_STACKING'] = 'Друг над другом';
+
 L['MASQUE_AURAS'] = 'Ауры';
 L['MASQUE_DISPELLABLE_AURAS'] = 'Развеиваемые ауры';
 L['MASQUE_MYTHIC_AURAS'] = 'Эпохальные ауры';
