@@ -535,6 +535,64 @@ MinimapButton.OnTooltipShow = function(tooltip)
     tooltip:AddDoubleLine(L['MINIMAP_ACTIVE_PROFILE'], NAMESPACE[3].activeProfileName, 1, 0.85, 0, 1, 1, 1);
 end
 
+StaticPopupDialogs['STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON'] = {
+    text    = L['OPTIONS_INCOMPATIBLE_NAMEPLATES_ADDON'],
+    button1 = OKAY,
+    button2 = L['OPTIONS_DONT_WARN_ME'],
+    OnCancel = function()
+        StripesDB.dontWarnAddons = true;
+    end,
+    hideOnEscape = true,
+    whileDead = 1,
+    preferredIndex = STATICPOPUPS_NUMDIALOGS,
+};
+
+function AddOn:CheckIncompatibleAddons()
+    if StripesDB.dontWarnAddons then
+        return;
+    end
+
+    if IsAddOnLoaded('Plater') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'Plater Nameplates');
+        return;
+    end
+
+    if IsAddOnLoaded('ElvUI') and (ElvUI[1] and ElvUI[1].private and ElvUI[1].private.nameplates and ElvUI[1].private.nameplates.enable) then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'ElvUI Nameplates');
+        return;
+    end
+
+    if IsAddOnLoaded('Kui_Nameplates') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'KuiNameplates');
+        return;
+    end
+
+    if IsAddOnLoaded('ThreatPlates') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'ThreatPlates');
+        return;
+    end
+
+    if IsAddOnLoaded('TidyPlates') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'TidyPlates');
+        return;
+    end
+
+    if IsAddOnLoaded('NeatPlates') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'NeatPlates');
+        return;
+    end
+
+    if IsAddOnLoaded('PhantomPlates') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'PhantomPlates');
+        return;
+    end
+
+    if IsAddOnLoaded('Nameplates') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'namePlateM+');
+        return;
+    end
+end
+
 AddOn:RegisterEvent('ADDON_LOADED');
 
 function AddOn:ADDON_LOADED(addonName)
@@ -548,6 +606,8 @@ function AddOn:ADDON_LOADED(addonName)
 
     self:ForAllModules('StartUp');
     self:ForAllNameplateModules('StartUp');
+
+    self:CheckIncompatibleAddons();
 
     self:UnregisterEvent('ADDON_LOADED');
 

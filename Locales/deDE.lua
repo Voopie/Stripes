@@ -109,6 +109,9 @@ L['MASQUE_MYTHIC_AURAS'] = 'Mythic auras';
 L['MASQUE_IMPORTANT_AURAS'] = 'Important auras';
 L['MASQUE_CUSTOM_AURAS'] = 'Custom auras';
 
+L['OPTIONS_INCOMPATIBLE_NAMEPLATES_ADDON'] = '|cffff6666Warning!|r\r\rYou have another addon for nameplates enabled (|cffffb833З%s|r)\r\rPlease turn it off so that everything works as it should';
+L['OPTIONS_DONT_WARN_ME'] = 'Don\'t warn me';
+
 L['OPTIONS_NEED_RELOAD'] = 'You must reload the interface to apply the settings.\r\rReload now?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'The settings were hidden for the duration of the combat and will be automatically opened after the end of the combat';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'The settings will be opened after the combat';

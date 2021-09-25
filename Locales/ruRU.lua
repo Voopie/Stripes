@@ -109,6 +109,9 @@ L['MASQUE_MYTHIC_AURAS'] = 'Эпохальные ауры';
 L['MASQUE_IMPORTANT_AURAS'] = 'Важные ауры';
 L['MASQUE_CUSTOM_AURAS'] = 'Пользовательские ауры';
 
+L['OPTIONS_INCOMPATIBLE_NAMEPLATES_ADDON'] = '|cffff6666Внимание!|r\r\rУ вас включен еще один аддон для неймплейтов (|cffffb833%s|r)\r\rПожалуйста, выключите его, чтобы всё работало без сбоев';
+L['OPTIONS_DONT_WARN_ME'] = 'Не предупреждать';
+
 L['OPTIONS_NEED_RELOAD'] = 'Необходимо перезагрузить интерфейс, чтобы применить настройки.\r\rПерезагрузить сейчас?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'Настройки были скрыты на время боя и будут автоматически открыты после завершения боя';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'Настройки будут открыты после боя';
