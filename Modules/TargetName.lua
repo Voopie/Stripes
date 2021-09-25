@@ -10,6 +10,7 @@ local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitG
 
 -- Stripes API
 local GetUnitColor = U.GetUnitColor;
+local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
 
 -- Libraries
 local LT = S.Libraries.LT;
@@ -37,7 +38,7 @@ local UPDATE_INTERVAL = 0.2;
 local elapsed = 0;
 
 local function TargetChanged(unitframe)
-    if unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
+    if not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
         unitframe.TargetName:SetShown(false);
         return;
     end
