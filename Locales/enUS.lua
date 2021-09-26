@@ -37,6 +37,9 @@ L['FONT_FLAG_THICKOUTLINE_MONOCHROME'] = 'Monochrome + thick outline';
 
 L['POSITION'] = 'Position';
 
+L['POSITION_OUTSIDE'] = 'Снаружи';
+L['POSITION_INSIDE'] = 'Внутри';
+
 L['POSITION_TOP'] = 'Top';
 L['POSITION_BOTTOM'] = 'Bottom';
 L['POSITION_LEFT'] = 'Left';
@@ -407,7 +410,10 @@ L['OPTIONS_CAST_BAR_ICON_RIGHT_SIDE'] = 'Icon: right side';
 L['OPTIONS_CAST_BAR_ICON_RIGHT_SIDE_TOOLTIP'] = 'Show spell icon on the right side';
 L['OPTIONS_CAST_BAR_TIMER_ENABLED_TOOLTIP'] = 'Show a timer next to the cast bar';
 L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP'] = 'Cast bar timer format';
-L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP'] = 'Cast baar timer position';
+L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME'] = 'Only the remaining time';
+L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME_TOOLTIP'] = 'Show only the remaining time of the cast bar timer';
+L['OPTIONS_CAST_BAR_TIMER_XSIDE_TOOLTIP'] = 'Cast bar timer placement';
+L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP'] = 'Cast bar timer position';
 L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP'] = 'Horizontal offset of cast bar timer';
 L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP'] = 'Vertical offset of cast bar timer';
 L['OPTIONS_CAST_BAR_TIMER_FONT_VALUE_TOOLTIP'] = 'Cast bar timer font';

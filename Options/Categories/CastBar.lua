@@ -707,16 +707,39 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.castbar_timer_only_remaining = E.CreateCheckButton(self.TabsFrames['TimerTab'].Content);
+    self.castbar_timer_only_remaining:SetPosition('LEFT', self.castbar_timer_format, 'RIGHT', 12, 0);
+    self.castbar_timer_only_remaining:SetLabel(L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME']);
+    self.castbar_timer_only_remaining:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME_TOOLTIP']);
+    self.castbar_timer_only_remaining:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_only_remaining:SetChecked(O.db.castbar_timer_only_remaining);
+    self.castbar_timer_only_remaining.Callback = function(self)
+        O.db.castbar_timer_only_remaining = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['TimerTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.castbar_timer_format, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.castbar_timer_xside = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
+    self.castbar_timer_xside:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.castbar_timer_xside:SetSize(120, 20);
+    self.castbar_timer_xside:SetList(O.Lists.frame_position_xside);
+    self.castbar_timer_xside:SetValue(O.db.castbar_timer_xside);
+    self.castbar_timer_xside:SetLabel(L['POSITION']);
+    self.castbar_timer_xside:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_XSIDE_TOOLTIP']);
+    self.castbar_timer_xside:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_XSIDE_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_xside.OnValueChangedCallback = function(_, value)
+        O.db.castbar_timer_xside = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.castbar_timer_anchor = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
-    self.castbar_timer_anchor:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.castbar_timer_anchor:SetPosition('LEFT', self.castbar_timer_xside, 'RIGHT', 12, 0);
     self.castbar_timer_anchor:SetSize(120, 20);
     self.castbar_timer_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.castbar_timer_anchor:SetValue(O.db.castbar_timer_anchor);
-    self.castbar_timer_anchor:SetLabel(L['POSITION']);
     self.castbar_timer_anchor:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP']);
     self.castbar_timer_anchor:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP'], self.Tabs[2]);
     self.castbar_timer_anchor.OnValueChangedCallback = function(_, value)
@@ -726,7 +749,7 @@ panel.Load = function(self)
 
     self.castbar_timer_offset_x = E.CreateSlider(self.TabsFrames['TimerTab'].Content);
     self.castbar_timer_offset_x:SetPosition('LEFT', self.castbar_timer_anchor, 'RIGHT', 16, 0);
-    self.castbar_timer_offset_x:SetW(137);
+    self.castbar_timer_offset_x:SetW(120);
     self.castbar_timer_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP']);
     self.castbar_timer_offset_x:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP'], self.Tabs[2]);
     self.castbar_timer_offset_x:SetValues(O.db.castbar_timer_offset_x, -99, 100, 1);
@@ -737,7 +760,7 @@ panel.Load = function(self)
 
     self.castbar_timer_offset_y = E.CreateSlider(self.TabsFrames['TimerTab'].Content);
     self.castbar_timer_offset_y:SetPosition('LEFT', self.castbar_timer_offset_x, 'RIGHT', 16, 0);
-    self.castbar_timer_offset_y:SetW(137);
+    self.castbar_timer_offset_y:SetW(120);
     self.castbar_timer_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP']);
     self.castbar_timer_offset_y:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP'], self.Tabs[2]);
     self.castbar_timer_offset_y:SetValues(O.db.castbar_timer_offset_y, -99, 100, 1);
@@ -747,7 +770,7 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['TimerTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_timer_anchor, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_timer_xside, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_timer_font_value = E.CreateDropdown('font', self.TabsFrames['TimerTab'].Content);

@@ -14,7 +14,7 @@ local LSM = S.Libraries.LSM;
 local LSM_MEDIATYPE_STATUSBAR = LSM.MediaType.STATUSBAR;
 
 -- Local config
-local TIMER_ENABLED, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y, ON_HP_BAR, ICON_LARGE, ICON_RIGHT_SIDE;
+local TIMER_ENABLED, TIMER_XSIDE, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y, ON_HP_BAR, ICON_LARGE, ICON_RIGHT_SIDE;
 local START_CAST_COLOR, START_CHANNEL_COLOR, NONINTERRUPTIBLE_COLOR, FAILED_CAST_COLOR, INTERRUPT_READY_IN_TIME_COLOR, INTERRUPT_NOT_READY_COLOR;
 local USE_INTERRUPT_READY_IN_TIME_COLOR, USE_INTERRUPT_NOT_READY_COLOR;
 local STATUSBAR_TEXTURE;
@@ -48,7 +48,7 @@ local function OnUpdate(self, elapsed)
         if self.casting then
             self.Timer:SetText(string_format(TIMER_FORMAT, math_max(self.maxValue - self.value, 0), self.maxValue));
         elseif self.channeling then
-            self.Timer:SetText(string_format(TIMER_FORMAT, math_max(self.value, 0), self.maxValue));
+            self.Timer:SetText(string_format(TIMER_FORMAT, (TIMER_ONLY_REMAINING and math_max(self.maxValue - self.value, 0) or math_max(self.value, 0)), self.maxValue));
         else
             self.Timer:SetText('');
         end
@@ -175,7 +175,7 @@ local function CreateTimer(unitframe)
     unitframe.castingBar.Text:SetPoint('TOPLEFT', 0, TEXT_Y_OFFSET);
 
     unitframe.castingBar.Timer = unitframe.castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarTimerFont');
-    PixelUtil.SetPoint(unitframe.castingBar.Timer, ANCHOR_MIRROR[TIMER_ANCHOR], unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
+    PixelUtil.SetPoint(unitframe.castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_XSIDE, unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
     unitframe.castingBar.Timer:SetTextColor(1, 1, 1);
     unitframe.castingBar.updateDelay = updateDelay;
     unitframe.castingBar:HookScript('OnUpdate', OnUpdate);
@@ -258,7 +258,15 @@ function Module:UpdateLocalConfig()
 
     TIMER_ENABLED = O.db.castbar_timer_enabled;
     TIMER_FORMAT  = O.db.castbar_timer_format;
-    TIMER_FORMAT = '%.' .. TIMER_FORMAT - 1 .. 'f / %.' .. TIMER_FORMAT - 1 .. 'f';
+    TIMER_ONLY_REMAINING = O.db.castbar_timer_only_remaining;
+
+    if TIMER_ONLY_REMAINING then
+        TIMER_FORMAT = '%.' .. TIMER_FORMAT - 1 .. 'f';
+    else
+        TIMER_FORMAT = '%.' .. TIMER_FORMAT - 1 .. 'f / %.' .. TIMER_FORMAT - 1 .. 'f';
+    end
+
+    TIMER_XSIDE = O.db.castbar_timer_xside;
     TIMER_ANCHOR = O.Lists.frame_points_simple[O.db.castbar_timer_anchor];
     TIMER_OFFSET_X = O.db.castbar_timer_offset_x;
     TIMER_OFFSET_Y = O.db.castbar_timer_offset_y;

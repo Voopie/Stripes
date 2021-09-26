@@ -37,6 +37,9 @@ L['FONT_FLAG_THICKOUTLINE_MONOCHROME'] = 'Монохромный + жирный 
 
 L['POSITION'] = 'Позиция';
 
+L['POSITION_OUTSIDE'] = 'Снаружи';
+L['POSITION_INSIDE'] = 'Внутри';
+
 L['POSITION_TOP'] = 'Сверху';
 L['POSITION_BOTTOM'] = 'Снизу';
 L['POSITION_LEFT'] = 'Слева';
@@ -407,6 +410,9 @@ L['OPTIONS_CAST_BAR_ICON_RIGHT_SIDE'] = 'Иконка: правая сторон
 L['OPTIONS_CAST_BAR_ICON_RIGHT_SIDE_TOOLTIP'] = 'Показывать иконку заклинания на правой стороне';
 L['OPTIONS_CAST_BAR_TIMER_ENABLED_TOOLTIP'] = 'Показывать таймер рядом с полосой заклинания';
 L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP'] = 'Формат таймера полосы заклинания';
+L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME'] = 'Только оставшееся время';
+L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME_TOOLTIP'] = 'Показывать только оставшееся время таймера полосы заклинания';
+L['OPTIONS_CAST_BAR_TIMER_XSIDE_TOOLTIP'] = 'Положение таймера полосы заклинания';
 L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP'] = 'Позиция таймера полосы заклинания';
 L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение таймера полосы заклинания';
 L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение таймера полосы заклинания';

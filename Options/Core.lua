@@ -129,6 +129,11 @@ O.Lists = {
         [3] = L['POSITION_RIGHT'],
     },
 
+    frame_position_xside = {
+        [1] = L['POSITION_OUTSIDE'],
+        [2] = L['POSITION_INSIDE'],
+    },
+
     frame_strata = {
         [1] = L['FRAME_STRATA_INHERIT'],
         [2] = 'BACKGROUND',
@@ -226,7 +231,7 @@ O.Lists = {
     }
 };
 
--- ~428
+-- ~430
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -375,7 +380,9 @@ O.DefaultValues = {
     -- Cast bar
     castbar_timer_enabled    = true,
     castbar_timer_format     = 3,
+    castbar_timer_only_remaining = false,
     castbar_timer_anchor     = 3, -- RIGHT
+    castbar_timer_xside      = 1, -- OUTSIDE
     castbar_timer_offset_x   = 2,
     castbar_timer_offset_y   = 0,
     castbar_timer_font_value  = 'BigNoodleToo Titling',
