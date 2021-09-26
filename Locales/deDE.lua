@@ -37,8 +37,8 @@ L['FONT_FLAG_THICKOUTLINE_MONOCHROME'] = 'Monochrome + thick outline';
 
 L['POSITION'] = 'Position';
 
-L['POSITION_OUTSIDE'] = 'Снаружи';
-L['POSITION_INSIDE'] = 'Внутри';
+L['POSITION_OUTSIDE'] = 'Outside';
+L['POSITION_INSIDE'] = 'Inside';
 
 L['POSITION_TOP'] = 'Top';
 L['POSITION_BOTTOM'] = 'Bottom';
