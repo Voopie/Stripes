@@ -51,7 +51,7 @@ panel.Load = function(self)
     self.quest_indicator_position:SetSize(110, 20);
     self.quest_indicator_position:SetList(O.Lists.quest_indicator_position);
     self.quest_indicator_position:SetValue(O.db.quest_indicator_position);
-    self.quest_indicator_position:SetLabel(L['OPTIONS_QUEST_INDICATOR_POSITION']);
+    self.quest_indicator_position:SetLabel(L['POSITION']);
     self.quest_indicator_position:SetTooltip(L['OPTIONS_QUEST_INDICATOR_POSITION_TOOLTIP']);
     self.quest_indicator_position:AddToSearch(button, L['OPTIONS_QUEST_INDICATOR_POSITION_TOOLTIP'], self.Tabs[1]);
     self.quest_indicator_position.OnValueChangedCallback = function(_, value)

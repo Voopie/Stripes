@@ -317,7 +317,7 @@ panel.Load = function(self)
     self.raid_target_icon_position:SetSize(100, 20);
     self.raid_target_icon_position:SetList(O.Lists.raid_target_icon_position);
     self.raid_target_icon_position:SetValue(O.db.raid_target_icon_position);
-    self.raid_target_icon_position:SetLabel(L['OPTIONS_RAID_TARGET_ICON_POSITION']);
+    self.raid_target_icon_position:SetLabel(L['POSITION']);
     self.raid_target_icon_position:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP']);
     self.raid_target_icon_position:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP'], self.Tabs[1]);
     self.raid_target_icon_position.OnValueChangedCallback = function(_, value)

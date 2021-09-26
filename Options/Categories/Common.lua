@@ -160,7 +160,7 @@ panel.Load = function(self)
     self.name_text_position_v:SetSize(100, 20);
     self.name_text_position_v:SetList(O.Lists.name_position_v);
     self.name_text_position_v:SetValue(O.db.name_text_position_v);
-    self.name_text_position_v:SetLabel(L['OPTIONS_NAME_TEXT_POSITION']);
+    self.name_text_position_v:SetLabel(L['POSITION']);
     self.name_text_position_v:SetTooltip(L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP']);
     self.name_text_position_v:AddToSearch(button, L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP'], self.Tabs[1]);
     self.name_text_position_v.OnValueChangedCallback = function(_, value)
@@ -533,7 +533,7 @@ panel.Load = function(self)
     self.health_text_anchor:SetSize(120, 20);
     self.health_text_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.health_text_anchor:SetValue(O.db.health_text_anchor);
-    self.health_text_anchor:SetLabel(L['OPTIONS_HEALTH_TEXT_ANCHOR']);
+    self.health_text_anchor:SetLabel(L['POSITION']);
     self.health_text_anchor:SetTooltip(L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP']);
     self.health_text_anchor.OnValueChangedCallback = function(_, value)
         O.db.health_text_anchor = tonumber(value);
@@ -583,7 +583,7 @@ panel.Load = function(self)
     self.health_text_block_1_anchor:SetSize(120, 20);
     self.health_text_block_1_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.health_text_block_1_anchor:SetValue(O.db.health_text_block_1_anchor);
-    self.health_text_block_1_anchor:SetLabel(L['OPTIONS_HEALTH_TEXT_ANCHOR']);
+    self.health_text_block_1_anchor:SetLabel(L['POSITION']);
     self.health_text_block_1_anchor:SetTooltip(L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP']);
     self.health_text_block_1_anchor.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_1_anchor = tonumber(value);
@@ -633,7 +633,7 @@ panel.Load = function(self)
     self.health_text_block_2_anchor:SetSize(120, 20);
     self.health_text_block_2_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.health_text_block_2_anchor:SetValue(O.db.health_text_block_2_anchor);
-    self.health_text_block_2_anchor:SetLabel(L['OPTIONS_HEALTH_TEXT_ANCHOR']);
+    self.health_text_block_2_anchor:SetLabel(L['POSITION']);
     self.health_text_block_2_anchor:SetTooltip(L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP']);
     self.health_text_block_2_anchor.OnValueChangedCallback = function(_, value)
         O.db.health_text_block_2_anchor = tonumber(value);
@@ -793,7 +793,7 @@ panel.Load = function(self)
     self.level_text_anchor:SetSize(120, 20);
     self.level_text_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.level_text_anchor:SetValue(O.db.level_text_anchor);
-    self.level_text_anchor:SetLabel(L['OPTIONS_LEVEL_TEXT_ANCHOR']);
+    self.level_text_anchor:SetLabel(L['POSITION']);
     self.level_text_anchor:SetTooltip(L['OPTIONS_LEVEL_TEXT_ANCHOR_TOOLTIP']);
     self.level_text_anchor:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_ANCHOR_TOOLTIP'], self.Tabs[3]);
     self.level_text_anchor.OnValueChangedCallback = function(_, value)

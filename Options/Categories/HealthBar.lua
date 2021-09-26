@@ -325,7 +325,7 @@ panel.Load = function(self)
     self.absorb_text_anchor:SetSize(120, 20);
     self.absorb_text_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.absorb_text_anchor:SetValue(O.db.absorb_text_anchor);
-    self.absorb_text_anchor:SetLabel(L['OPTIONS_ABSORB_TEXT_ANCHOR']);
+    self.absorb_text_anchor:SetLabel(L['POSITION']);
     self.absorb_text_anchor:SetTooltip(L['OPTIONS_ABSORB_TEXT_ANCHOR_TOOLTIP']);
     self.absorb_text_anchor:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_ANCHOR_TOOLTIP'], self.Tabs[1]);
     self.absorb_text_anchor:SetEnabled(O.db.absorb_text_enabled);
