@@ -166,8 +166,22 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.combat_indicator_size = E.CreateSlider(self.TabsFrames['CombatIndicatorTab'].Content);
+    self.combat_indicator_size:SetPosition('LEFT', self.combat_indicator_color, 'RIGHT', 12, 0);
+    self.combat_indicator_size:SetValues(O.db.combat_indicator_size, 2, 32, 1);
+    self.combat_indicator_size:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP']);
+    self.combat_indicator_size:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP'], self.Tabs[2]);
+    self.combat_indicator_size.OnValueChangedCallback = function(_, value)
+        O.db.combat_indicator_size = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    local Delimiter = E.CreateDelimiter(self.TabsFrames['CombatIndicatorTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.combat_indicator_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.combat_indicator_point = E.CreateDropdown('plain', self.TabsFrames['CombatIndicatorTab'].Content);
-    self.combat_indicator_point:SetPosition('TOPLEFT', self.combat_indicator_enabled, 'BOTTOMLEFT', 0, -12);
+    self.combat_indicator_point:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.combat_indicator_point:SetSize(120, 20);
     self.combat_indicator_point:SetList(O.Lists.frame_points_localized);
     self.combat_indicator_point:SetValue(O.db.combat_indicator_point);
@@ -213,16 +227,6 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.combat_indicator_size = E.CreateSlider(self.TabsFrames['CombatIndicatorTab'].Content);
-    self.combat_indicator_size:SetPosition('TOPLEFT', self.combat_indicator_point, 'BOTTOMLEFT', 0, -16);
-    self.combat_indicator_size:SetValues(O.db.combat_indicator_size, 2, 32, 1);
-    self.combat_indicator_size:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP']);
-    self.combat_indicator_size:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_SIZE_TOOLTIP'], self.Tabs[2]);
-    self.combat_indicator_size.OnValueChangedCallback = function(_, value)
-        O.db.combat_indicator_size = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     -- Spell Interrupted Tab -----------------------------------------------------------------------------------------------------------
@@ -253,8 +257,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['SpellInterruptedTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.spell_interrupted_icon, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.spell_interrupted_countdown_text = E.CreateFontString(self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_countdown_text:SetPosition('TOPLEFT', self.spell_interrupted_icon, 'BOTTOMLEFT', 0, -8);
+    self.spell_interrupted_countdown_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.spell_interrupted_countdown_text:SetText(L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_TEXT']);
 
     self.spell_interrupted_icon_countdown_font_value = E.CreateDropdown('font', self.TabsFrames['SpellInterruptedTab'].Content);
