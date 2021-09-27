@@ -268,8 +268,8 @@ panel.UpdateScroll = function()
                 O.db.custom_color_data[npc_id].color[4] = 1;
             end
 
-            frame.color_enabled  = data.color_enabled;
-            frame.color_category = data.color_category;
+            frame.color_enabled  = O.db.custom_color_data[npc_id].color_enabled;
+            frame.color_category = O.db.custom_color_data[npc_id].color_category;
             frame.color = O.db.custom_color_data[npc_id].color;
             frame.list  = S:GetModule('Options_ColorCategory'):GetDropdwonList();
 
