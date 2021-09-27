@@ -720,6 +720,7 @@ O.DefaultValues = {
 
     custom_color_enabled = false,
     custom_color_data    = {},
+    custom_color_category_data = {},
 
     use_global_font_value  = false,
     use_global_font_size   = false,

@@ -1050,8 +1050,8 @@ do
     local kinds = {
         ['plain'] = {
             SetList = function(self, itemsTable)
-                self.itemsTable = itemsTable;
-                self.tKeys = self.tKeys or {};
+                self.itemsTable = itemsTable or {};
+                self.tKeys      = self.tKeys or {};
 
                 wipe(self.tKeys);
 

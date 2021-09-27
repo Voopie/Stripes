@@ -19,6 +19,7 @@ L['COLOR'] = 'Color';
 L['SCALE'] = 'Scale';
 L['ENABLE'] = 'Enable';
 L['FORMAT'] = 'Format';
+L['CATEGORY'] = 'Category';
 
 L['FONT_VALUE'] = 'Font';
 L['FONT_SIZE'] = 'Font size';
@@ -881,3 +882,7 @@ L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'From list';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Type a name and press Enter';
 L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Open the associated list of colors';
+
+L['OPTIONS_CATEGORY_ENTER_NAME'] = 'Type a name and press Enter';
+L['OPTIONS_CATEGORY_ALL'] = 'All';
+L['OPTIONS_CATEGORY_OPEN_TOOLTIP'] = 'Open category list';

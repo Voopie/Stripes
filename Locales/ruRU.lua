@@ -19,6 +19,8 @@ L['COLOR'] = 'Цвет';
 L['SCALE'] = 'Масштаб';
 L['ENABLE'] = 'Включить';
 L['FORMAT'] = 'Формат';
+L['SEARCH'] = 'Поиск';
+L['CATEGORY'] = 'Категория';
 
 L['FONT_VALUE'] = 'Шрифт';
 L['FONT_SIZE'] = 'Размер шрифта';
@@ -881,3 +883,7 @@ L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'Из списка';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Введите имя и нажмите Enter';
 L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Открыть ассоциативный список цветов';
+
+L['OPTIONS_CATEGORY_ENTER_NAME'] = 'Введите имя и нажмите Enter';
+L['OPTIONS_CATEGORY_ALL'] = 'Все';
+L['OPTIONS_CATEGORY_OPEN_TOOLTIP'] = 'Открыть список категорий';
