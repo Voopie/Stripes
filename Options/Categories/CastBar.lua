@@ -724,7 +724,7 @@ panel.Load = function(self)
 
     self.castbar_timer_xside = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
     self.castbar_timer_xside:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.castbar_timer_xside:SetSize(120, 20);
+    self.castbar_timer_xside:SetSize(116, 20);
     self.castbar_timer_xside:SetList(O.Lists.frame_position_xside);
     self.castbar_timer_xside:SetValue(O.db.castbar_timer_xside);
     self.castbar_timer_xside:SetLabel(L['POSITION']);
@@ -737,7 +737,7 @@ panel.Load = function(self)
 
     self.castbar_timer_anchor = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
     self.castbar_timer_anchor:SetPosition('LEFT', self.castbar_timer_xside, 'RIGHT', 12, 0);
-    self.castbar_timer_anchor:SetSize(120, 20);
+    self.castbar_timer_anchor:SetSize(116, 20);
     self.castbar_timer_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.castbar_timer_anchor:SetValue(O.db.castbar_timer_anchor);
     self.castbar_timer_anchor:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP']);
@@ -749,7 +749,7 @@ panel.Load = function(self)
 
     self.castbar_timer_offset_x = E.CreateSlider(self.TabsFrames['TimerTab'].Content);
     self.castbar_timer_offset_x:SetPosition('LEFT', self.castbar_timer_anchor, 'RIGHT', 16, 0);
-    self.castbar_timer_offset_x:SetW(120);
+    self.castbar_timer_offset_x:SetW(116);
     self.castbar_timer_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP']);
     self.castbar_timer_offset_x:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP'], self.Tabs[2]);
     self.castbar_timer_offset_x:SetValues(O.db.castbar_timer_offset_x, -99, 100, 1);
@@ -760,7 +760,7 @@ panel.Load = function(self)
 
     self.castbar_timer_offset_y = E.CreateSlider(self.TabsFrames['TimerTab'].Content);
     self.castbar_timer_offset_y:SetPosition('LEFT', self.castbar_timer_offset_x, 'RIGHT', 16, 0);
-    self.castbar_timer_offset_y:SetW(120);
+    self.castbar_timer_offset_y:SetW(116);
     self.castbar_timer_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP']);
     self.castbar_timer_offset_y:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP'], self.Tabs[2]);
     self.castbar_timer_offset_y:SetValues(O.db.castbar_timer_offset_y, -99, 100, 1);
