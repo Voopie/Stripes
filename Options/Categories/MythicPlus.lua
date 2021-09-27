@@ -108,19 +108,8 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.explosive_orbs_glow = E.CreateCheckButton(self);
-    self.explosive_orbs_glow:SetPosition('LEFT', self.explosive_orbs_crosshair.Label, 'RIGHT', 12, 0);
-    self.explosive_orbs_glow:SetLabel(L['OPTIONS_EXPLOSIVE_ORBS_GLOW']);
-    self.explosive_orbs_glow:SetTooltip(L['OPTIONS_EXPLOSIVE_ORBS_GLOW_TOOLTIP']);
-    self.explosive_orbs_glow:AddToSearch(button, L['OPTIONS_EXPLOSIVE_ORBS_GLOW_TOOLTIP']);
-    self.explosive_orbs_glow:SetChecked(O.db.explosive_orbs_glow);
-    self.explosive_orbs_glow.Callback = function(self)
-        O.db.explosive_orbs_glow = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
     self.explosive_orbs_counter = E.CreateCheckButton(self);
-    self.explosive_orbs_counter:SetPosition('LEFT', self.explosive_orbs_glow.Label, 'RIGHT', 12, 0);
+    self.explosive_orbs_counter:SetPosition('LEFT', self.explosive_orbs_crosshair.Label, 'RIGHT', 12, 0);
     self.explosive_orbs_counter:SetLabel(L['OPTIONS_EXPLOSIVE_ORBS_COUNTER']);
     self.explosive_orbs_counter:SetTooltip(L['OPTIONS_EXPLOSIVE_ORBS_COUNTER_TOOLTIP']);
     self.explosive_orbs_counter:AddToSearch(button, L['OPTIONS_EXPLOSIVE_ORBS_COUNTER_TOOLTIP']);

@@ -231,7 +231,7 @@ O.Lists = {
     }
 };
 
--- ~430
+-- ~429
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -528,7 +528,6 @@ O.DefaultValues = {
 
     explosive_orbs_crosshair = false,
     explosive_orbs_counter   = false,
-    explosive_orbs_glow      = true,
 
     spiteful_enabled         = true,
     spiteful_show_only_on_me = true,

@@ -8,11 +8,7 @@ local pairs = pairs;
 local NP = S.NamePlates;
 
 -- Local Config
-local CROSSHAIR, COUNTER, GLOW;
-
-local LCG = S.Libraries.LCG;
-local LCG_PixelGlow_Start, LCG_PixelGlow_Stop = LCG.PixelGlow_Start, LCG.PixelGlow_Stop;
-local LCG_SUFFIX = 'S_EXPLOSIVE';
+local CROSSHAIR, COUNTER;
 
 local PlayerState = D.Player.State;
 
@@ -80,7 +76,6 @@ local function Update(unitframe)
     if not PlayerState.inMythicPlus then
         OrbsCounter:SetShown(false);
 
-        LCG_PixelGlow_Stop(unitframe.healthBar, LCG_SUFFIX);
         unitframe.Explosive:SetShown(false);
 
         return;
@@ -91,14 +86,7 @@ local function Update(unitframe)
     if unitframe:IsShown() then
         if unitframe.data.npcId == EXPLOSIVE_ID then
             unitframe.Explosive:SetShown(CROSSHAIR);
-
-            if GLOW then
-                LCG_PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, LCG_SUFFIX);
-            else
-                LCG_PixelGlow_Stop(unitframe.healthBar, LCG_SUFFIX);
-            end
         else
-            LCG_PixelGlow_Stop(unitframe.healthBar, LCG_SUFFIX);
             unitframe.Explosive:SetShown(false);
         end
     end
@@ -106,7 +94,6 @@ end
 
 local function Hide(unitframe)
     CountOrbs();
-    LCG_PixelGlow_Stop(unitframe.healthBar, LCG_SUFFIX);
 
     if unitframe.Explosive then
         unitframe.Explosive:SetShown(false);
@@ -164,7 +151,6 @@ end
 function Module:UpdateLocalConfig()
     CROSSHAIR = O.db.explosive_orbs_crosshair;
     COUNTER   = O.db.explosive_orbs_counter;
-    GLOW      = O.db.explosive_orbs_glow;
 end
 
 function Module:StartUp()
