@@ -8,7 +8,7 @@ local panel = O.frame.Right.CustomColor;
 local framePool;
 local ROW_HEIGHT = 28;
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
-local NAME_WIDTH = 400;
+local NAME_WIDTH = 300;
 local DELAY_SECONDS = 0.2;
 
 local DEFAULT_LIST_VALUE = 1;
@@ -46,6 +46,8 @@ local function Add(id, name)
             npc_name = name,
             enabled  = true,
             color    = { 0.45, 0, 1, 1 };
+            glow_enabled = false,
+            glow_type = 0,
         };
     end
 end
@@ -122,6 +124,20 @@ local function CreateRow(frame)
         self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
     end);
 
+    frame.GlowType = E.CreateDropdown('plain', frame);
+    frame.GlowType:SetPosition('RIGHT', frame.RemoveButton, 'LEFT', -16, 0);
+    frame.GlowType:SetSize(100, 20);
+    frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
+    frame.GlowType:SetTooltip(L['GLOW']);
+    frame.GlowType.OnValueChangedCallback = function(self, value)
+        value = tonumber(value);
+
+        O.db.custom_color_data[self:GetParent().npc_id].glow_enabled = value ~= 0;
+        O.db.custom_color_data[self:GetParent().npc_id].glow_type = value;
+
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end
+
     frame:HookScript('OnEnter', function(self)
         self:SetBackdropColor(0.3, 0.3, 0.3, 1);
     end);
@@ -144,7 +160,6 @@ local function CreateRow(frame)
         ModelFrame:SetSize(GameTooltip:GetWidth() - 3, GameTooltip:GetWidth() * 2 - 3);
         ModelFrame:SetCamDistanceScale(1.2);
     end);
-
 end
 
 local function UpdateRow(frame)
@@ -170,6 +185,8 @@ local function UpdateRow(frame)
     frame.IdText:SetText(frame.npc_id);
     frame.NameText:SetText(frame.name);
     frame.ColorPicker:SetValue(unpack(frame.color));
+    frame.GlowType:SetValue(frame.glow_type);
+    frame.GlowType:UpdateScrollArea();
 
     frame.tooltip = string.format(LIST_TOOLTIP_PATTERN, frame.name, frame.npc_id);
 end
@@ -192,11 +209,13 @@ panel.UpdateScroll = function()
             CreateRow(frame);
         end
 
-        frame.index   = index;
-        frame.npc_id  = npc_id;
-        frame.name    = data.npc_name;
-        frame.enabled = data.enabled;
-        frame.color   = data.color;
+        frame.index        = index;
+        frame.npc_id       = npc_id;
+        frame.name         = data.npc_name;
+        frame.enabled      = data.enabled;
+        frame.color        = data.color;
+        frame.glow_enabled = data.glow_type ~= 0;
+        frame.glow_type    = data.glow_type or 0;
 
         UpdateRow(frame);
 

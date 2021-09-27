@@ -73,15 +73,6 @@ local RAID_TARGET_COLORS = {
     [8] = {    1,    1,    1, 1 }, -- WHITE  (SKULL)
 };
 
---[[
-    Coloring prio:
-    1) Raid target
-    2) Aura
-    3) Execution
-    4) Custom
-    5) Threat
-]]
-
 local function IsUseClassColor(unitframe)
     if unitframe.data.unitType == 'ENEMY_PLAYER' and HEALTH_BAR_CLASS_COLOR_ENEMY then
         return true;
@@ -166,20 +157,27 @@ local function Execution_Stop(unitframe)
 end
 
 -- Custom Health Bar Color
-local function CustomHealthBar_CheckNPC(npcId)
-    if not CUSTOM_HP_ENABLED then
-        return false;
+local function UpdateCustomHealthBarColor(unitframe)
+    LCG.PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
+    LCG.AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
+    LCG.ButtonGlow_Stop(unitframe.healthBar);
+
+    if CUSTOM_HP_ENABLED and CUSTOM_HP_DATA[unitframe.data.npcId] and CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
+        unitframe.healthBar:SetStatusBarColor(unpack(CUSTOM_HP_DATA[unitframe.data.npcId].color));
+        unitframe.healthBar.customColored = true;
+
+        if CUSTOM_HP_DATA[unitframe.data.npcId].glow_enabled then
+            if CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 1 then
+                LCG.PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
+            elseif CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 2 then
+                LCG.AutoCastGlow_Start(unitframe.healthBar, nil, nil, nil, nil, nil, nil, 'S_CUSTOMHP');
+            elseif CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 3 then
+                LCG.ButtonGlow_Start(unitframe.healthBar);
+            end
+        end
+    else
+        unitframe.healthBar.customColored = nil;
     end
-
-    if npcId and CUSTOM_HP_DATA[npcId] and CUSTOM_HP_DATA[npcId].enabled then
-        return true;
-    end
-
-    return false;
-end
-
-local function CustomHealthBar_UpdateColor(unitframe)
-    unitframe.healthBar:SetStatusBarColor(unpack(CUSTOM_HP_DATA[unitframe.data.npcId].color));
 end
 
 -- Threat
@@ -308,12 +306,11 @@ local function UpdateAurasColor(unitframe)
     end
 
     unitframe.healthBar:SetStatusBarColor(r, g, b, a or 1);
-    unitframe.data.wasAuraColored = true;
 
     return true;
 end
 
-local function UpdateRaidTargetColor(unitframe)
+local function UpdateRaidTarget(unitframe)
     if not RAID_TARGET_HPBAR_COLORING then
         unitframe.data.raidIndex = nil;
         return false;
@@ -336,31 +333,54 @@ local function UpdateRaidTargetColor(unitframe)
     return false;
 end
 
+--[[
+    Coloring prio:
+    1) Custom
+    2) Raid target
+    3) Aura
+    4) Execution
+    5) Threat
+]]
+
 local function Update(unitframe)
     if not unitframe:IsShown() or unitframe.data.unitType == 'SELF' then
         return;
     end
 
-    if UpdateRaidTargetColor(unitframe) then
+    if unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored or unitframe.healthBar.auraColored then
         return;
     end
 
-    unitframe.data.auraColored = UpdateAurasColor(unitframe);
-
-    if unitframe.data.auraColored then
-        return;
-    end
+    -- Stop execution glow
+    Execution_Stop(unitframe);
 
     UpdateHealthColor(unitframe);
-    Execution_Stop(unitframe);
 
     if EXECUTION_ENABLED and (unitframe.data.healthPer <= EXECUTION_LOW_PERCENT or (EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= EXECUTION_HIGH_PERCENT)) then
         Execution_Start(unitframe);
     else
-        if CustomHealthBar_CheckNPC(unitframe.data.npcId) then
-            CustomHealthBar_UpdateColor(unitframe);
-        else
-            Threat_UpdateColor(unitframe);
+        Threat_UpdateColor(unitframe);
+    end
+end
+
+local function UpdateAuraColor(unitframe)
+    if unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored then
+        unitframe.healthBar.auraColored = nil;
+    else
+        unitframe.healthBar.auraColored = UpdateAurasColor(unitframe);
+        if not unitframe.healthBar.auraColored then
+            Update(unitframe);
+        end
+    end
+end
+
+local function UpdateRaidTargetColor(unitframe)
+    if unitframe.healthBar.customColored then
+        unitframe.healthBar.raidTargetColored = nil;
+    else
+        unitframe.healthBar.raidTargetColored = UpdateRaidTarget(unitframe);
+        if not unitframe.healthBar.raidTargetColored then
+            UpdateAuraColor(unitframe);
         end
     end
 end
@@ -539,30 +559,28 @@ function Module:UnitAdded(unitframe)
 
     CreateThreatPercentage(unitframe);
     UpdateThreatPercentage(unitframe);
-
     CreateCustomBorder(unitframe);
     UpdateCustomBorder(unitframe);
-
-    Update(unitframe);
     UpdateTexture(unitframe);
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
+
+    UpdateCustomHealthBarColor(unitframe);
+    UpdateRaidTargetColor(unitframe);
+    UpdateAuraColor(unitframe);
+    Update(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
     unitframe.data.auraColored = nil;
-    unitframe.data.wasAuraColored = nil;
     unitframe.data.raidIndex = nil;
+    unitframe.healthBar.customColored = nil;
+    unitframe.healthBar.raidTargetColored = nil;
 end
 
 function Module:UnitAura(unitframe)
-    unitframe.data.auraColored = UpdateAurasColor(unitframe);
-
-    if not unitframe.data.auraColored and unitframe.data.wasAuraColored then
-        Update(unitframe);
-        unitframe.data.wasAuraColored = nil;
-    end
+    UpdateAuraColor(unitframe);
 end
 
 function Module:Update(unitframe)
@@ -570,14 +588,16 @@ function Module:Update(unitframe)
     unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
 
     UpdateThreatPercentagePosition(unitframe);
-
     UpdateCustomBorder(unitframe);
-
-    Update(unitframe);
     UpdateTexture(unitframe);
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
+
+    UpdateCustomHealthBarColor(unitframe);
+    UpdateRaidTargetColor(unitframe);
+    UpdateAuraColor(unitframe);
+    Update(unitframe);
 end
 
 function Module:UpdateLocalConfig()
@@ -739,9 +759,7 @@ end
 function Module:RAID_TARGET_UPDATE()
     for _, unitframe in pairs(NP) do
         if unitframe:IsShown() then
-            if not UpdateRaidTargetColor(unitframe) then
-                Update(unitframe);
-            end
+            UpdateRaidTargetColor(unitframe);
         end
     end
 end
