@@ -701,6 +701,11 @@ panel.Load = function(self)
     self.SearchEditBox:SetInstruction(L['SEARCH']);
     self.SearchEditBox:SetScript('OnEnterPressed', function(self)
         panel.searchWordLower = string.lower(strtrim(self:GetText()) or '');
+
+        if panel.searchWordLower == '' then
+            panel.searchWordLower = nil;
+        end
+
         panel.UpdateScroll();
     end);
 
