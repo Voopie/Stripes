@@ -500,6 +500,9 @@ panel.Load = function(self)
     self.ColorCategoryToggleButton:SetSize(29, 28);
     self.ColorCategoryToggleButton.Callback = function()
         S:GetModule('Options_ColorCategory'):ToggleListFrame();
+
+        panel.List:SetShown(false);
+        AddFromList:UnlockHighlight();
     end
 
     self.CustomColorEditFrame = CreateFrame('Frame', nil, self, 'BackdropTemplate');
