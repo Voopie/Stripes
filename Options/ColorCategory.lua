@@ -236,6 +236,7 @@ end
 
 Module.UpdateOtherScrolls = function()
     O.frame.Right.CastBar:UpdateCustomCastsScroll();
+    O.frame.Right.CustomColor:UpdateScroll();
 end
 
 Module.DropdownList = {};

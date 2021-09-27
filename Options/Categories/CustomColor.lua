@@ -45,7 +45,9 @@ local function Add(id, name)
             npc_id   = id,
             npc_name = name,
             enabled  = true,
-            color    = { 0.45, 0, 1, 1 };
+            color    = { 0.1, 0.1, 0.1, 1 },
+            color_category = 0,
+            color_enabled = false,
             glow_enabled = false,
             glow_type = 0,
         };
@@ -72,26 +74,8 @@ local function CreateRow(frame)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
 
-    frame.ColorPicker = E.CreateColorPicker(frame);
-    frame.ColorPicker:SetPosition('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
-    frame.ColorPicker.OnValueChanged = function(self, r, g, b, a)
-        O.db.custom_color_data[self:GetParent().npc_id].color[1] = r;
-        O.db.custom_color_data[self:GetParent().npc_id].color[2] = g;
-        O.db.custom_color_data[self:GetParent().npc_id].color[3] = b;
-        O.db.custom_color_data[self:GetParent().npc_id].color[4] = a or 1;
-
-        S:GetNameplateModule('Handler'):UpdateAll();
-    end
-    frame.ColorPicker:HookScript('OnEnter', function(self)
-        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
-    end);
-
-    frame.ColorPicker:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
-    end);
-
     frame.IdText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.IdText:SetPoint('LEFT', frame.ColorPicker, 'RIGHT', 8, 0);
+    frame.IdText:SetPoint('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
     frame.IdText:SetSize(60, ROW_HEIGHT);
     frame.IdText:SetTextColor(0.67, 0.67, 0.67);
 
@@ -138,27 +122,54 @@ local function CreateRow(frame)
         S:GetNameplateModule('Handler'):UpdateAll();
     end
 
-    frame:HookScript('OnEnter', function(self)
-        self:SetBackdropColor(0.3, 0.3, 0.3, 1);
-    end);
+    frame.ColorCategory = E.CreateDropdown('plain', frame);
+    frame.ColorCategory:SetPosition('RIGHT', frame.GlowType, 'LEFT', -8, 0);
+    frame.ColorCategory:SetSize(100, 20);
+    frame.ColorCategory:SetTooltip(L['COLOR']);
+    frame.ColorCategory.OnValueChangedCallback = function(self, value)
+        value = tonumber(value);
 
-    frame:HookScript('OnLeave', function(self)
-        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
-    end);
+        O.db.custom_color_data[self:GetParent().npc_id].color_enabled  = value ~= 0;
+        O.db.custom_color_data[self:GetParent().npc_id].color_category = value;
+
+        if O.db.color_category_data[value] then
+            O.db.custom_color_data[self:GetParent().npc_id].color[1] = O.db.color_category_data[value].color[1];
+            O.db.custom_color_data[self:GetParent().npc_id].color[2] = O.db.color_category_data[value].color[2];
+            O.db.custom_color_data[self:GetParent().npc_id].color[3] = O.db.color_category_data[value].color[3];
+            O.db.custom_color_data[self:GetParent().npc_id].color[4] = O.db.color_category_data[value].color[4] or 1;
+        else
+            O.db.custom_color_data[self:GetParent().npc_id].color[1] = 0.1;
+            O.db.custom_color_data[self:GetParent().npc_id].color[2] = 0.1;
+            O.db.custom_color_data[self:GetParent().npc_id].color[3] = 0.1;
+            O.db.custom_color_data[self:GetParent().npc_id].color[4] = 1;
+        end
+
+        self:GetParent().ColorPicker:SetValue(unpack(O.db.custom_color_data[self:GetParent().npc_id].color));
+
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end
+
+    frame.ColorPicker = E.CreateColorPicker(frame);
+    frame.ColorPicker:SetPosition('RIGHT', frame.ColorCategory, 'LEFT', 0, 0);
+    frame.ColorPicker:SetEnabled(false);
 
     E.CreateTooltip(frame, nil, nil, true);
 
     frame:HookScript('OnEnter', function(self)
-        if modelBlacklist[self.npc_id] then
-            return;
-        end
+        self:SetBackdropColor(0.3, 0.3, 0.3, 1);
 
-        ModelFrame:SetCreature(self.npc_id);
-        GameTooltip_InsertFrame(GameTooltip, HolderModelFrame, 0);
-        HolderModelFrame:SetSize(GameTooltip:GetWidth(), GameTooltip:GetWidth() * 2);
-        HolderModelFrame:SetPoint('TOPLEFT', GameTooltip, 'BOTTOMLEFT', 0, -1);
-        ModelFrame:SetSize(GameTooltip:GetWidth() - 3, GameTooltip:GetWidth() * 2 - 3);
-        ModelFrame:SetCamDistanceScale(1.2);
+        if not modelBlacklist[self.npc_id] then
+            ModelFrame:SetCreature(self.npc_id);
+            GameTooltip_InsertFrame(GameTooltip, HolderModelFrame, 0);
+            HolderModelFrame:SetSize(GameTooltip:GetWidth(), GameTooltip:GetWidth() * 2);
+            HolderModelFrame:SetPoint('TOPLEFT', GameTooltip, 'BOTTOMLEFT', 0, -1);
+            ModelFrame:SetSize(GameTooltip:GetWidth() - 3, GameTooltip:GetWidth() * 2 - 3);
+            ModelFrame:SetCamDistanceScale(1.2);
+        end
+    end);
+
+    frame:HookScript('OnLeave', function(self)
+        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
     end);
 end
 
@@ -185,6 +196,8 @@ local function UpdateRow(frame)
     frame.IdText:SetText(frame.npc_id);
     frame.NameText:SetText(frame.name);
     frame.ColorPicker:SetValue(unpack(frame.color));
+    frame.ColorCategory:SetList(frame.list);
+    frame.ColorCategory:SetValue(frame.color_category);
     frame.GlowType:SetValue(frame.glow_type);
     frame.GlowType:UpdateScrollArea();
 
@@ -216,6 +229,29 @@ panel.UpdateScroll = function()
         frame.color        = data.color;
         frame.glow_enabled = data.glow_type ~= 0;
         frame.glow_type    = data.glow_type or 0;
+
+        if O.db.color_category_data[data.color_category] then
+            data.color_enabled  = true;
+            data.color_category = data.color_category;
+
+            data.color[1] = O.db.color_category_data[data.color_category].color[1];
+            data.color[2] = O.db.color_category_data[data.color_category].color[2];
+            data.color[3] = O.db.color_category_data[data.color_category].color[3];
+            data.color[4] = O.db.color_category_data[data.color_category].color[4] or 1;
+        else
+            data.color_enabled  = false;
+            data.color_category = 0;
+
+            data.color[1] = 0.1;
+            data.color[2] = 0.1;
+            data.color[3] = 0.1;
+            data.color[4] = 1;
+        end
+
+        frame.color_enabled  = data.color_enabled;
+        frame.color_category = data.color_category;
+        frame.color = O.db.custom_color_data[npc_id].color;
+        frame.list  = S:GetModule('Options_ColorCategory'):GetDropdwonList();
 
         UpdateRow(frame);
 
@@ -457,6 +493,14 @@ panel.Load = function(self)
             self:UnlockHighlight();
         end
     end);
+
+    self.ColorCategoryToggleButton = E.CreateTextureButton(self, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.PALETTE_COLOR, { 1, 1, 1, 1 }, { 1, 1, 0.5, 1 });
+    self.ColorCategoryToggleButton:SetPosition('LEFT', AddFromList, 'RIGHT', 34, 4);
+    self.ColorCategoryToggleButton:SetTooltip(L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME']);
+    self.ColorCategoryToggleButton:SetSize(29, 28);
+    self.ColorCategoryToggleButton.Callback = function()
+        S:GetModule('Options_ColorCategory'):ToggleListFrame();
+    end
 
     self.CustomColorEditFrame = CreateFrame('Frame', nil, self, 'BackdropTemplate');
     self.CustomColorEditFrame:SetPoint('TOPLEFT', EditBox, 'BOTTOMLEFT', -5, -8);
