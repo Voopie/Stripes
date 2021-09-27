@@ -569,8 +569,8 @@ panel.UpdateCategoryListRow = function(frame)
         PixelUtil.SetPoint(frame, 'TOPLEFT', panel.CategoryListScrollArea.scrollChild, 'TOPLEFT', 0, 0);
         PixelUtil.SetPoint(frame, 'TOPRIGHT', panel.CategoryListScrollArea.scrollChild, 'TOPRIGHT', 0, 0);
     else
-        PixelUtil.SetPoint(frame, 'TOPLEFT', DataListRows[frame.index - 1], 'BOTTOMLEFT', 0, 0);
-        PixelUtil.SetPoint(frame, 'TOPRIGHT', DataListRows[frame.index - 1], 'BOTTOMRIGHT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPLEFT', DataCategoryListRows[frame.index - 1], 'BOTTOMLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', DataCategoryListRows[frame.index - 1], 'BOTTOMRIGHT', 0, 0);
     end
 
     frame:SetSize(frame:GetParent():GetWidth(), ROW_HEIGHT);
