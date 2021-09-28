@@ -167,7 +167,7 @@ local function UpdateCustomHealthBarColor(unitframe)
             local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
 
             if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4] or 1);
+                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
             end
 
             unitframe.healthBar.customColored = true;
@@ -347,9 +347,6 @@ local function UpdateAuraColor(unitframe)
         unitframe.healthBar.auraColored = nil;
     else
         unitframe.healthBar.auraColored = UpdateAurasColor(unitframe);
-        if not unitframe.healthBar.auraColored then
-            Module.UpdateHealthBar(unitframe);
-        end
     end
 end
 
@@ -379,16 +376,10 @@ function Module.UpdateHealthBar(unitframe)
     end
 
     UpdateCustomHealthBarColor(unitframe);
+    UpdateRaidTargetColor(unitframe);
+    UpdateAuraColor(unitframe);
 
-    if not unitframe.healthBar.customColored then
-        UpdateRaidTargetColor(unitframe);
-
-        if not unitframe.healthBar.raidTargetColored then
-            UpdateAuraColor(unitframe);
-        end
-    end
-
-    if unitframe.healthBar.auraColored then
+    if unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored or unitframe.healthBar.auraColored then
         return;
     end
 
