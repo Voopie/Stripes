@@ -1074,16 +1074,48 @@ panel.Load = function(self)
     self.SearchEditBox = E.CreateEditBox(self.TabsFrames['CustomCastsTab'].Content);
     self.SearchEditBox:SetPosition('TOPLEFT', self.castbar_custom_casts_editbox, 'BOTTOMLEFT', 0, -11);
     self.SearchEditBox:SetSize(160, 22);
-    self.SearchEditBox.useLastValue = false;
+    self.SearchEditBox:SetUseLastValue(false);
     self.SearchEditBox:SetInstruction(L['SEARCH']);
     self.SearchEditBox:SetScript('OnEnterPressed', function(self)
         panel.searchWordLower = string.lower(strtrim(self:GetText()) or '');
 
         if panel.searchWordLower == '' then
             panel.searchWordLower = nil;
+            panel.ResetSearchEditBox:SetShown(false);
+        end
+
+        if panel.searchWordLower then
+            panel.ResetSearchEditBox:SetShown(true);
         end
 
         panel:UpdateCustomCastsScroll();
+    end);
+    self.SearchEditBox.FocusGainedCallback = function()
+        panel.ResetSearchEditBox:SetShown(true);
+    end
+    self.SearchEditBox.FocusLostCallback = function(self)
+        panel.ResetSearchEditBox:SetShown(self:GetText() ~= '');
+    end
+    self.SearchEditBox.OnTextChangedCallback = function(self)
+        if self:GetText() ~= '' then
+            panel.ResetSearchEditBox:SetShown(true);
+        else
+            panel.ResetSearchEditBox:SetShown(false);
+        end
+    end
+
+    self.ResetSearchEditBox = E.CreateTextureButton(self.SearchEditBox, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.CROSS_WHITE);
+    self.ResetSearchEditBox:SetPosition('RIGHT', self.SearchEditBox, 'RIGHT', 0, 0);
+    self.ResetSearchEditBox:SetSize(12, 12);
+    self.ResetSearchEditBox:SetShown(false);
+    self.ResetSearchEditBox:SetScript('OnClick', function(self)
+        panel.searchWordLower = nil;
+
+        panel.SearchEditBox:SetText('');
+        panel.SearchEditBox.Instruction:SetShown(true);
+        panel.UpdateScroll();
+
+        self:SetShown(false);
     end);
 
     self.CategoryDropdown = E.CreateDropdown('plain', self.TabsFrames['CustomCastsTab'].Content);

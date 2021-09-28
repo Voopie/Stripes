@@ -955,6 +955,10 @@ do
             self.tooltip = tooltip;
         end
 
+        editbox.SetUseLastValue = function(self, state)
+            self.useLastValue = state;
+        end
+
         editbox.useLastValue = true;
 
         editbox.type = 'EditBox';
