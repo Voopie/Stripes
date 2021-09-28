@@ -232,6 +232,22 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.occluded_alpha_mult, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.show_personal_resource_ontarget = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.show_personal_resource_ontarget:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
+    self.show_personal_resource_ontarget:SetLabel(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET']);
+    self.show_personal_resource_ontarget:SetTooltip(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP']);
+    self.show_personal_resource_ontarget:AddToSearch(button, L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP'], self.Tabs[1]);
+    self.show_personal_resource_ontarget:SetChecked(O.db.show_personal_resource_ontarget);
+    self.show_personal_resource_ontarget.Callback = function(self)
+        O.db.show_personal_resource_ontarget = self:GetChecked();
+
+        C_CVar.SetCVar('nameplateResourceOnTarget', O.db.show_personal_resource_ontarget and 1 or 0);
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.show_personal_resource_ontarget, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.hide_non_casting_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.hide_non_casting_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
     self.hide_non_casting_enabled:SetLabel(L['OPTIONS_VISIBILITY_HIDE_NON_CAST_ENABLED']);
@@ -828,17 +844,5 @@ panel.Load = function(self)
         C_CVar.SetCVar('NameplatePersonalShowAlways', O.db.show_personal_always and 1 or 0);
 
         Stripes:UpdateAll();
-    end
-
-    self.show_personal_resource_ontarget = E.CreateCheckButton(self.TabsFrames['SelfTab'].Content);
-    self.show_personal_resource_ontarget:SetPosition('TOPLEFT', self.show_personal, 'BOTTOMLEFT', 0, -8);
-    self.show_personal_resource_ontarget:SetLabel(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET']);
-    self.show_personal_resource_ontarget:SetTooltip(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP']);
-    self.show_personal_resource_ontarget:AddToSearch(button, L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP'], self.Tabs[4]);
-    self.show_personal_resource_ontarget:SetChecked(O.db.show_personal_resource_ontarget);
-    self.show_personal_resource_ontarget.Callback = function(self)
-        O.db.show_personal_resource_ontarget = self:GetChecked();
-
-        C_CVar.SetCVar('nameplateResourceOnTarget', O.db.show_personal_resource_ontarget and 1 or 0);
     end
 end
