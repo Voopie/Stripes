@@ -379,10 +379,16 @@ function Module.UpdateHealthBar(unitframe)
     end
 
     UpdateCustomHealthBarColor(unitframe);
-    UpdateRaidTargetColor(unitframe);
-    UpdateAuraColor(unitframe);
 
-    if unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored or unitframe.healthBar.auraColored then
+    if not unitframe.healthBar.customColored then
+        UpdateRaidTargetColor(unitframe);
+
+        if not unitframe.healthBar.raidTargetColored then
+            UpdateAuraColor(unitframe);
+        end
+    end
+
+    if unitframe.healthBar.auraColored then
         return;
     end
 
