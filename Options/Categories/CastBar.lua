@@ -305,7 +305,7 @@ panel.UpdateCustomCastsScroll = function()
             frame.color_enabled  = O.db.castbar_custom_casts_data[id].color_enabled;
             frame.color_category = O.db.castbar_custom_casts_data[id].color_category;
             frame.color = O.db.castbar_custom_casts_data[id].color;
-            frame.list  = S:GetModule('Options_ColorCategory'):GetDropdwonList();
+            frame.list  = S:GetModule('Options_ColorCategory'):GetDropdownList();
 
             if O.db.castbar_custom_casts_category_data[data.category_id] then
                 O.db.castbar_custom_casts_data[id].category_id = data.category_id;

@@ -240,7 +240,7 @@ Module.UpdateOtherScrolls = function()
 end
 
 Module.DropdownList = {};
-function Module:GetDropdwonList()
+function Module:GetDropdownList()
     wipe(self.DropdownList);
 
     for index, data in ipairs(O.db.color_category_data) do
