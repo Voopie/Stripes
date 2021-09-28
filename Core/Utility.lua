@@ -7,8 +7,8 @@ local pairs, ipairs, select, type, unpack, tostring, tonumber, string_format, st
 local strsplit = strsplit;
 
 -- WoW API
-local UnitClass, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID =
-      UnitClass, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID;
+local UnitClassBase, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID =
+      UnitClassBase, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID;
 local UnitLevel, UnitEffectiveLevel, UnitGUID, UnitAffectingCombat, UnitClassification, UnitTreatAsPlayerForDisplay =
       UnitLevel, UnitEffectiveLevel, UnitGUID, UnitAffectingCombat, UnitClassification, UnitTreatAsPlayerForDisplay;
 local UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole = UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole;
@@ -147,12 +147,12 @@ do
 
     U.GetClassColor = function(class, str)
         if not class then
-            class = select(2, UnitClass(PLAYER_UNIT));
+            class = UnitClassBase(PLAYER_UNIT);
         elseif not RAID_CLASS_COLORS[class] then
             if LCN[class] then
                 class = LCN[class];
             else
-                class = select(2, UnitClass(class));
+                class = UnitClassBase(class);
             end
         end
 

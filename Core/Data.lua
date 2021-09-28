@@ -10,7 +10,7 @@ D.Player = {
 
     Class           = UnitClassBase('player'),
     ClassId         = select(2, UnitClassBase('player')),
-    ClassColor      = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[select(2, UnitClass('player'))] or CreateColor(1, 1, 1),
+    ClassColor      = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[UnitClassBase('player')] or CreateColor(1, 1, 1),
 
     GuildName = '';
 };

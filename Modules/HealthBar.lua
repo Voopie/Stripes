@@ -5,8 +5,8 @@ local Module = S:NewNameplateModule('HealthBar');
 local unpack = unpack;
 
 -- WoW API
-local UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
-      UnitIsConnected, UnitClass, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
+local UnitIsConnected, UnitClassBase, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
+      UnitIsConnected, UnitClassBase, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer;
 local GetRaidTargetIndex = GetRaidTargetIndex;
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
@@ -95,8 +95,7 @@ local function UpdateHealthColor(frame)
             local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
             r, g, b, a = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b, healthBarColorOverride.a or 1;
         else
-            local _, englishClass = UnitClass(frame.displayedUnit);
-            local classColor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[englishClass];
+            local classColor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[UnitClassBase(frame.displayedUnit)];
             if (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.displayedUnit) or UnitTreatAsPlayerForDisplay(frame.displayedUnit)) and classColor and frame.optionTable.useClassColors and IsUseClassColor(frame) then
                 r, g, b = classColor.r, classColor.g, classColor.b;
             elseif CompactUnitFrame_IsTapDenied(frame) then
