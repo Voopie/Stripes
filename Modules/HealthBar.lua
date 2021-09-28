@@ -143,7 +143,7 @@ end
 
 -- Execution
 local function Execution_Start(unitframe)
-    unitframe.healthBar:SetStatusBarColor(unpack(EXECUTION_COLOR));
+    unitframe.healthBar:SetStatusBarColor(EXECUTION_COLOR[1], EXECUTION_COLOR[2], EXECUTION_COLOR[3], EXECUTION_COLOR[4]);
 
     if EXECUTION_GLOW then
         LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
@@ -163,7 +163,13 @@ local function UpdateCustomHealthBarColor(unitframe)
 
     if CUSTOM_HP_ENABLED and CUSTOM_HP_DATA[unitframe.data.npcId] and CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
         if CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled then
-            unitframe.healthBar:SetStatusBarColor(unpack(CUSTOM_HP_DATA[unitframe.data.npcId].color));
+            local color = CUSTOM_HP_DATA[unitframe.data.npcId].color;
+            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+            if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4] or 1);
+            end
+
             unitframe.healthBar.customColored = true;
         else
             unitframe.healthBar.customColored = nil;
@@ -336,6 +342,28 @@ local function UpdateRaidTarget(unitframe)
     return false;
 end
 
+local function UpdateAuraColor(unitframe)
+    if unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored then
+        unitframe.healthBar.auraColored = nil;
+    else
+        unitframe.healthBar.auraColored = UpdateAurasColor(unitframe);
+        if not unitframe.healthBar.auraColored then
+            Module.UpdateHealthBar(unitframe);
+        end
+    end
+end
+
+local function UpdateRaidTargetColor(unitframe)
+    if unitframe.healthBar.customColored then
+        unitframe.healthBar.raidTargetColored = nil;
+    else
+        unitframe.healthBar.raidTargetColored = UpdateRaidTarget(unitframe);
+        if not unitframe.healthBar.raidTargetColored then
+            UpdateAuraColor(unitframe);
+        end
+    end
+end
+
 --[[
     Coloring prio:
     1) Custom
@@ -345,10 +373,14 @@ end
     5) Threat
 ]]
 
-local function Update(unitframe)
+function Module.UpdateHealthBar(unitframe)
     if not unitframe:IsShown() or unitframe.data.unitType == 'SELF' then
         return;
     end
+
+    UpdateCustomHealthBarColor(unitframe);
+    UpdateRaidTargetColor(unitframe);
+    UpdateAuraColor(unitframe);
 
     if unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored or unitframe.healthBar.auraColored then
         return;
@@ -363,28 +395,6 @@ local function Update(unitframe)
         Execution_Start(unitframe);
     else
         Threat_UpdateColor(unitframe);
-    end
-end
-
-local function UpdateAuraColor(unitframe)
-    if unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored then
-        unitframe.healthBar.auraColored = nil;
-    else
-        unitframe.healthBar.auraColored = UpdateAurasColor(unitframe);
-        if not unitframe.healthBar.auraColored then
-            Update(unitframe);
-        end
-    end
-end
-
-local function UpdateRaidTargetColor(unitframe)
-    if unitframe.healthBar.customColored then
-        unitframe.healthBar.raidTargetColored = nil;
-    else
-        unitframe.healthBar.raidTargetColored = UpdateRaidTarget(unitframe);
-        if not unitframe.healthBar.raidTargetColored then
-            UpdateAuraColor(unitframe);
-        end
     end
 end
 
@@ -569,10 +579,7 @@ function Module:UnitAdded(unitframe)
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
 
-    UpdateCustomHealthBarColor(unitframe);
-    UpdateRaidTargetColor(unitframe);
-    UpdateAuraColor(unitframe);
-    Update(unitframe);
+    Module.UpdateHealthBar(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
@@ -597,10 +604,7 @@ function Module:Update(unitframe)
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
 
-    UpdateCustomHealthBarColor(unitframe);
-    UpdateRaidTargetColor(unitframe);
-    UpdateAuraColor(unitframe);
-    Update(unitframe);
+    Module.UpdateHealthBar(unitframe);
 end
 
 function Module:UpdateLocalConfig()
@@ -767,16 +771,6 @@ function Module:RAID_TARGET_UPDATE()
     end
 end
 
-function Module:UNIT_NAME_UPDATE(unit)
-    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
-
-    if not nameplate or not NP[nameplate] then
-        return;
-    end
-
-    Update(NP[nameplate]);
-end
-
 function Module:UNIT_THREAT_LIST_UPDATE(unit)
     local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
 
@@ -784,7 +778,7 @@ function Module:UNIT_THREAT_LIST_UPDATE(unit)
         return;
     end
 
-    Update(NP[nameplate]);
+    Module.UpdateHealthBar(NP[nameplate]);
 end
 
 function Module:StartUp()
@@ -797,7 +791,6 @@ function Module:StartUp()
 
     self:RegisterEvent('RAID_TARGET_UPDATE');
 
-    self:RegisterEvent('UNIT_NAME_UPDATE');
     self:RegisterEvent('UNIT_THREAT_LIST_UPDATE');
 
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
@@ -805,10 +798,10 @@ function Module:StartUp()
     -- For execute coloring, faster response to health change
     -- UpdateStatusText because UpdateHealth used in UNIT_MAXHEALTH and we don't neeed it
     -- It needs testing to find out how much it reduces performance
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', Update);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', Module.UpdateHealthBar);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
-        Update(unitframe);
+        Module.UpdateHealthBar(unitframe);
         UpdateSizes(unitframe);
     end);
 
