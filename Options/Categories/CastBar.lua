@@ -1156,7 +1156,7 @@ panel.Load = function(self)
         panel.CategoryList:SetShown(false);
     end
 
-    self.CategoryList = Mixin(CreateFrame('Frame', nil, self, 'BackdropTemplate'), E.PixelPerfectMixin);
+    self.CategoryList = Mixin(CreateFrame('Frame', nil, self.TabsFrames['CustomCastsTab'].Content, 'BackdropTemplate'), E.PixelPerfectMixin);
     self.CategoryList:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
     self.CategoryList:SetPosition('BOTTOMLEFT', O.frame, 'BOTTOMRIGHT', 0, 0);
     self.CategoryList:SetWidth(250);
