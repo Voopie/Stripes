@@ -1,6 +1,9 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_CastBar');
 
+-- WoW API
+local GetSpellInfo = GetSpellInfo;
+
 local LSM = S.Libraries.LSM;
 
 O.frame.Left.CastBar, O.frame.Right.CastBar = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_CASTBAR']), 'castbar', 5);
@@ -24,7 +27,9 @@ panel.TabsData = {
 
 local ROW_HEIGHT = 28;
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
-local NAME_WIDTH = 200;
+local NAME_WIDTH = 210;
+
+panel.categoryId = 0;
 
 local function AddCustomCast(spellId)
     if O.db.castbar_custom_casts_data[spellId] then
@@ -39,6 +44,7 @@ local function AddCustomCast(spellId)
         color          = { 0.1, 0.1, 0.1, 1 },
         glow_enabled   = true,
         glow_type      = 1,
+        category_id    = 0,
     };
 end
 
@@ -82,7 +88,7 @@ local function CreateCustomCastRow(frame)
     frame.backgroundColor = frame.backgroundColor or {};
 
     frame.EnableCheckBox = E.CreateCheckButton(frame);
-    frame.EnableCheckBox:SetPosition('LEFT', frame, 'LEFT', 8, 0);
+    frame.EnableCheckBox:SetPosition('LEFT', frame, 'LEFT', 2, 0);
     frame.EnableCheckBox.Callback = function(self)
         O.db.castbar_custom_casts_data[self:GetParent().id].enabled = self:GetChecked();
         S:GetNameplateModule('Handler'):UpdateAll();
@@ -94,22 +100,30 @@ local function CreateCustomCastRow(frame)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
 
-    frame.IdText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.IdText:SetPoint('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
-    frame.IdText:SetSize(60, ROW_HEIGHT);
-    frame.IdText:SetTextColor(0.67, 0.67, 0.67);
+    frame.Category = E.CreateDropdown('plain', frame);
+    frame.Category:SetPosition('LEFT', frame.EnableCheckBox, 'RIGHT', 2, 0);
+    frame.Category:SetSize(80, 20);
+    frame.Category:SetTooltip(L['CATEGORY']);
+    frame.Category.OnValueChangedCallback = function(self, value)
+        value = tonumber(value);
+
+        if O.db.castbar_custom_casts_data[tonumber(self:GetParent().id)] then
+            O.db.castbar_custom_casts_data[tonumber(self:GetParent().id)].category_id = value;
+            panel.UpdateCustomCastsScroll();
+        end
+    end
 
     frame.Icon = frame:CreateTexture(nil, 'ARTWORK');
-    frame.Icon:SetPoint('LEFT', frame.IdText, 'RIGHT', 0, 0);
+    frame.Icon:SetPoint('LEFT', frame.Category, 'RIGHT', 6, 0);
     frame.Icon:SetSize(ROW_HEIGHT - 8, ROW_HEIGHT - 8);
     frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
 
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
+    frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 4, 0);
     frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
-    frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -16, 0);
+    frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -4, 0);
     frame.RemoveButton:SetSize(14, 14);
     frame.RemoveButton:SetNormalTexture(S.Media.Icons.TEXTURE);
     frame.RemoveButton:GetNormalTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
@@ -141,7 +155,7 @@ local function CreateCustomCastRow(frame)
     end);
 
     frame.GlowType = E.CreateDropdown('plain', frame);
-    frame.GlowType:SetPosition('RIGHT', frame.RemoveButton, 'LEFT', -16, 0);
+    frame.GlowType:SetPosition('RIGHT', frame.RemoveButton, 'LEFT', -4, 0);
     frame.GlowType:SetSize(100, 20);
     frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
     frame.GlowType:SetTooltip(L['GLOW']);
@@ -155,7 +169,7 @@ local function CreateCustomCastRow(frame)
     end
 
     frame.ColorCategory = E.CreateDropdown('plain', frame);
-    frame.ColorCategory:SetPosition('RIGHT', frame.GlowType, 'LEFT', -8, 0);
+    frame.ColorCategory:SetPosition('RIGHT', frame.GlowType, 'LEFT', -4, 0);
     frame.ColorCategory:SetSize(100, 20);
     frame.ColorCategory:SetTooltip(L['COLOR']);
     frame.ColorCategory.OnValueChangedCallback = function(self, value)
@@ -189,6 +203,7 @@ local function CreateCustomCastRow(frame)
         if self.id then
             GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
             GameTooltip:SetHyperlink('spell:' .. self.id);
+            GameTooltip:AddLine('|cffff6666' .. self.id .. '|r');
             GameTooltip:Show();
         end
     end);
@@ -219,17 +234,16 @@ local function UpdateCustomCastRow(frame)
         frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
     end
 
-    local name, _, icon = GetSpellInfo(frame.id);
-
     frame.EnableCheckBox:SetChecked(frame.enabled);
-    frame.Icon:SetTexture(icon);
-    frame.IdText:SetText(frame.id);
-    frame.NameText:SetText(name);
+    frame.Icon:SetTexture(frame.icon);
+    frame.NameText:SetText(frame.name);
     frame.ColorPicker:SetValue(unpack(frame.color));
     frame.ColorCategory:SetList(frame.list);
     frame.ColorCategory:SetValue(frame.color_category);
     frame.GlowType:SetValue(frame.glow_type);
     frame.GlowType:UpdateScrollArea();
+    frame.Category:SetList(frame.category_list);
+    frame.Category:SetValue(frame.category_id);
 end
 
 panel.UpdateCustomCastsScroll = function()
@@ -238,53 +252,244 @@ panel.UpdateCustomCastsScroll = function()
 
     local index = 0;
     local frame, isNew;
+    local found;
 
     for id, data in pairs(O.db.castbar_custom_casts_data) do
-        index = index + 1;
+        local name, _, icon = GetSpellInfo(id);
 
-        frame, isNew = panel.CastBarCustomCastsFramePool:Acquire();
+        if panel.searchWordLower then
+            found = string.find(string.lower(name), panel.searchWordLower, 1, true);
+        elseif panel.categoryId then
+            found = (panel.categoryId == 0 or (panel.categoryId == 0 and not data.category_id) or data.category_id == panel.categoryId);
+        else
+            found = true;
+        end
 
-        table.insert(DataCustomCastsRow, frame);
+        if found then
+            index = index + 1;
+
+            frame, isNew = panel.CastBarCustomCastsFramePool:Acquire();
+
+            table.insert(DataCustomCastsRow, frame);
+
+            if isNew then
+                CreateCustomCastRow(frame);
+            end
+
+            frame.index          = index;
+            frame.id             = id;
+            frame.name           = name;
+            frame.icon           = icon;
+            frame.enabled        = data.enabled;
+            frame.glow_enabled   = data.glow_type ~= 0;
+            frame.glow_type      = data.glow_type;
+
+            if O.db.color_category_data[data.color_category] then
+                O.db.castbar_custom_casts_data[id].color_enabled  = true;
+                O.db.castbar_custom_casts_data[id].color_category = data.color_category;
+
+                O.db.castbar_custom_casts_data[id].color[1] = O.db.color_category_data[data.color_category].color[1];
+                O.db.castbar_custom_casts_data[id].color[2] = O.db.color_category_data[data.color_category].color[2];
+                O.db.castbar_custom_casts_data[id].color[3] = O.db.color_category_data[data.color_category].color[3];
+                O.db.castbar_custom_casts_data[id].color[4] = O.db.color_category_data[data.color_category].color[4] or 1;
+            else
+                O.db.castbar_custom_casts_data[id].color_enabled  = false;
+                O.db.castbar_custom_casts_data[id].color_category = 0;
+
+                O.db.castbar_custom_casts_data[id].color[1] = 0.1;
+                O.db.castbar_custom_casts_data[id].color[2] = 0.1;
+                O.db.castbar_custom_casts_data[id].color[3] = 0.1;
+                O.db.castbar_custom_casts_data[id].color[4] = 1;
+            end
+
+            frame.color_enabled  = O.db.castbar_custom_casts_data[id].color_enabled;
+            frame.color_category = O.db.castbar_custom_casts_data[id].color_category;
+            frame.color = O.db.castbar_custom_casts_data[id].color;
+            frame.list  = S:GetModule('Options_ColorCategory'):GetDropdwonList();
+
+            if O.db.castbar_custom_casts_category_data[data.category_id] then
+                O.db.castbar_custom_casts_data[id].category_id = data.category_id;
+            else
+                O.db.castbar_custom_casts_data[id].category_id = 0;
+            end
+
+            frame.category_id   = O.db.castbar_custom_casts_data[id].category_id;
+            frame.category_list = panel:GetCategoriesDropdown();
+
+            UpdateCustomCastRow(frame);
+
+            frame:SetShown(true);
+        end
+    end
+
+    PixelUtil.SetSize(panel.castbar_custom_casts_scrollchild, panel.castbar_custom_casts_editframe:GetWidth(), panel.castbar_custom_casts_editframe:GetHeight() - (panel.castbar_custom_casts_editframe:GetHeight() % ROW_HEIGHT + 8));
+end
+
+panel.CategoriesDropdown = {};
+panel.GetCategoriesDropdown = function(self)
+    wipe(self.CategoriesDropdown);
+
+    for index, data in ipairs(O.db.castbar_custom_casts_category_data) do
+        self.CategoriesDropdown[index] = data.name;
+    end
+
+    self.CategoriesDropdown[0] = L['OPTIONS_CATEGORY_ALL'];
+
+    return self.CategoriesDropdown;
+end
+
+local DataCategoryListRows = {};
+panel.CreateCategoryListRow = function(frame)
+    frame:SetBackdrop(BACKDROP);
+    frame.backgroundColor = frame.backgroundColor or {};
+
+    frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.NameText:SetPoint('LEFT', frame, 'LEFT', 6, 0);
+    frame.NameText:SetSize(170, ROW_HEIGHT);
+
+    frame.EditBox = E.CreateEditBox(frame);
+    frame.EditBox:SetPosition('LEFT', frame, 'LEFT', 6, 0);
+    frame.EditBox:SetFrameLevel(frame.EditBox:GetFrameLevel() + 10);
+    frame.EditBox:SetSize(170, ROW_HEIGHT);
+    frame.EditBox:SetShown(false);
+    frame.EditBox:SetScript('OnEnterPressed', function(self)
+        local index   = self:GetParent().index;
+        local newName = strtrim(self:GetText());
+
+        if not newName or newName == '' then
+            return self:SetShown(false);
+        end
+
+        if not index or not O.db.castbar_custom_casts_category_data[index] then
+            return self:SetShown(false);
+        end
+
+        if O.db.castbar_custom_casts_category_data[index].name == newName then
+            return self:SetShown(false);
+        end
+
+        for _, data in ipairs(O.db.castbar_custom_casts_category_data) do
+            if data.name == newName then
+                return self:SetShown(false);
+            end
+        end
+
+        O.db.castbar_custom_casts_category_data[index].name = newName;
+
+        panel.UpdateCustomCastsScroll();
+        panel.UpdateCategoryListScroll();
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown());
+        panel.CategoryDropdown:SetValue(panel.CategoryDropdown:GetValue());
+
+        self:SetShown(false);
+    end);
+    frame.EditBox.FocusLostCallback = function(self)
+        self:SetShown(false);
+    end
+
+    frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
+    frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
+    frame.RemoveButton:SetSize(14, 14);
+    frame.RemoveButton:SetNormalTexture(S.Media.Icons.TEXTURE);
+    frame.RemoveButton:GetNormalTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
+    frame.RemoveButton:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7, 1);
+    frame.RemoveButton:SetHighlightTexture(S.Media.Icons.TEXTURE, 'BLEND');
+    frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
+    frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
+    frame.RemoveButton:SetScript('OnClick', function(self)
+        table.remove(O.db.castbar_custom_casts_category_data, self:GetParent().index);
+
+        panel.UpdateCustomCastsScroll();
+        panel.UpdateCategoryListScroll();
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown());
+        panel.CategoryDropdown:SetValue(0);
+    end);
+    frame.RemoveButton:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+    frame.RemoveButton:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
+    end);
+
+    frame.EditButton = E.CreateTextureButton(frame, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.PENCIL_WHITE);
+    frame.EditButton:SetPosition('RIGHT', frame.RemoveButton, 'LEFT', -8, 0);
+    frame.EditButton:SetSize(14, 14);
+    frame.EditButton:SetScript('OnClick', function(self)
+        self:GetParent().EditBox:SetText(self:GetParent().name);
+        self:GetParent().EditBox:SetShown(true);
+        self:GetParent().EditBox:SetFocus();
+        self:GetParent().EditBox:SetCursorPosition(0);
+    end);
+    frame.EditButton:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+
+    frame.EditButton:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
+    end);
+
+    frame:HookScript('OnDoubleClick', function(self)
+        self.EditBox:SetText(self.name);
+        self.EditBox:SetShown(true);
+        self.EditBox:SetFocus();
+        self.EditBox:SetCursorPosition(0);
+    end);
+
+    frame:HookScript('OnEnter', function(self)
+        self:SetBackdropColor(0.3, 0.3, 0.3, 1);
+    end);
+
+    frame:HookScript('OnLeave', function(self)
+        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+    end);
+end
+
+panel.UpdateCategoryListRow = function(frame)
+    if frame.index == 1 then
+        PixelUtil.SetPoint(frame, 'TOPLEFT', panel.CategoryListScrollArea.scrollChild, 'TOPLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', panel.CategoryListScrollArea.scrollChild, 'TOPRIGHT', 0, 0);
+    else
+        PixelUtil.SetPoint(frame, 'TOPLEFT', DataCategoryListRows[frame.index - 1], 'BOTTOMLEFT', 0, 0);
+        PixelUtil.SetPoint(frame, 'TOPRIGHT', DataCategoryListRows[frame.index - 1], 'BOTTOMRIGHT', 0, 0);
+    end
+
+    frame:SetSize(frame:GetParent():GetWidth(), ROW_HEIGHT);
+
+    if frame.index % 2 == 0 then
+        frame:SetBackdropColor(0.15, 0.15, 0.15, 1);
+        frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.15, 0.15, 0.15, 1;
+    else
+        frame:SetBackdropColor(0.075, 0.075, 0.075, 1);
+        frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
+    end
+
+    frame.NameText:SetText(frame.name);
+end
+
+panel.UpdateCategoryListScroll = function()
+    wipe(DataCategoryListRows);
+    panel.CategoryListButtonPool:ReleaseAll();
+
+    local frame, isNew;
+
+    for index, data in ipairs(O.db.castbar_custom_casts_category_data) do
+        frame, isNew = panel.CategoryListButtonPool:Acquire();
+
+        table.insert(DataCategoryListRows, frame);
 
         if isNew then
-            CreateCustomCastRow(frame);
+            panel.CreateCategoryListRow(frame);
         end
 
-        frame.index          = index;
-        frame.id             = id;
-        frame.enabled        = data.enabled;
-        frame.glow_enabled   = data.glow_type ~= 0;
-        frame.glow_type      = data.glow_type;
+        frame.index = index;
+        frame.name  = data.name;
 
-        if O.db.color_category_data[data.color_category] then
-            data.color_enabled  = true;
-            data.color_category = data.color_category;
-
-            data.color[1] = O.db.color_category_data[data.color_category].color[1];
-            data.color[2] = O.db.color_category_data[data.color_category].color[2];
-            data.color[3] = O.db.color_category_data[data.color_category].color[3];
-            data.color[4] = O.db.color_category_data[data.color_category].color[4] or 1;
-        else
-            data.color_enabled  = false;
-            data.color_category = 0;
-
-            data.color[1] = 0.1;
-            data.color[2] = 0.1;
-            data.color[3] = 0.1;
-            data.color[4] = 1;
-        end
-
-        frame.color_enabled  = data.color_enabled;
-        frame.color_category = data.color_category;
-        frame.color = O.db.castbar_custom_casts_data[id].color;
-        frame.list  = S:GetModule('Options_ColorCategory'):GetDropdwonList();
-
-        UpdateCustomCastRow(frame);
+        panel.UpdateCategoryListRow(frame);
 
         frame:SetShown(true);
     end
 
-    PixelUtil.SetSize(panel.castbar_custom_casts_scrollchild, panel.castbar_custom_casts_editframe:GetWidth(), panel.castbar_custom_casts_editframe:GetHeight() - (panel.castbar_custom_casts_editframe:GetHeight() % ROW_HEIGHT + 8));
+    PixelUtil.SetSize(panel.CategoryListScrollArea.scrollChild, panel.CategoryListScroll:GetWidth(), panel.CategoryListScroll:GetHeight() - (panel.CategoryListScroll:GetHeight() % ROW_HEIGHT));
 end
 
 panel.Load = function(self)
@@ -837,7 +1042,7 @@ panel.Load = function(self)
 
     self.castbar_custom_casts_editbox = E.CreateEditBox(self.TabsFrames['CustomCastsTab'].Content);
     self.castbar_custom_casts_editbox:SetPosition('TOPLEFT', self.castbar_custom_casts_enabled, 'BOTTOMLEFT', 5, -8);
-    self.castbar_custom_casts_editbox:SetSize(280, 22);
+    self.castbar_custom_casts_editbox:SetSize(327, 22);
     self.castbar_custom_casts_editbox.useLastValue = false;
     self.castbar_custom_casts_editbox:SetInstruction(L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID']);
     self.castbar_custom_casts_editbox:SetScript('OnEnterPressed', function(self)
@@ -866,16 +1071,43 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end);
 
-    self.ColorCategoryToggleButton = E.CreateTextureButton(self.TabsFrames['CustomCastsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.PALETTE_COLOR, { 1, 1, 1, 1 }, { 1, 1, 0.5, 1 });
-    self.ColorCategoryToggleButton:SetPosition('LEFT', self.castbar_custom_casts_editbox, 'RIGHT', 60, 4);
-    self.ColorCategoryToggleButton:SetTooltip(L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME']);
-    self.ColorCategoryToggleButton:SetSize(29, 28);
-    self.ColorCategoryToggleButton.Callback = function()
-        S:GetModule('Options_ColorCategory'):ToggleListFrame();
+    self.SearchEditBox = E.CreateEditBox(self.TabsFrames['CustomCastsTab'].Content);
+    self.SearchEditBox:SetPosition('TOPLEFT', self.castbar_custom_casts_editbox, 'BOTTOMLEFT', 0, -11);
+    self.SearchEditBox:SetSize(160, 22);
+    self.SearchEditBox.useLastValue = false;
+    self.SearchEditBox:SetInstruction(L['SEARCH']);
+    self.SearchEditBox:SetScript('OnEnterPressed', function(self)
+        panel.searchWordLower = string.lower(strtrim(self:GetText()) or '');
+
+        if panel.searchWordLower == '' then
+            panel.searchWordLower = nil;
+        end
+
+        panel:UpdateCustomCastsScroll();
+    end);
+
+    self.CategoryDropdown = E.CreateDropdown('plain', self.TabsFrames['CustomCastsTab'].Content);
+    self.CategoryDropdown:SetPosition('LEFT', self.SearchEditBox, 'RIGHT', 11, 0);
+    self.CategoryDropdown:SetSize(160, 22);
+    self.CategoryDropdown:SetList(self:GetCategoriesDropdown());
+    self.CategoryDropdown:SetValue(0);
+    self.CategoryDropdown.OnValueChangedCallback = function(_, value)
+        panel.categoryId = tonumber(value);
+        panel:UpdateCustomCastsScroll();
+    end
+
+    self.OpenCategoryList = E.CreateTextureButton(self.TabsFrames['CustomCastsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.LIST_WHITE, { 1, 1, 1, 1 });
+    self.OpenCategoryList:SetPosition('LEFT', self.CategoryDropdown, 'RIGHT', 12, 0);
+    self.OpenCategoryList:SetSize(18, 18);
+    self.OpenCategoryList:SetTooltip(L['OPTIONS_CATEGORY_OPEN_TOOLTIP']);
+    self.OpenCategoryList.Callback = function()
+        panel.CategoryList:SetShown(not panel.CategoryList:IsShown());
+
+        S:GetModule('Options_ColorCategory'):HideListFrame();
     end
 
     self.castbar_custom_casts_editframe = CreateFrame('Frame', nil, self.TabsFrames['CustomCastsTab'].Content, 'BackdropTemplate');
-    self.castbar_custom_casts_editframe:SetPoint('TOPLEFT', self.castbar_custom_casts_editbox, 'BOTTOMLEFT', -5, -8);
+    self.castbar_custom_casts_editframe:SetPoint('TOPLEFT', self.SearchEditBox, 'BOTTOMLEFT', -5, -8);
     self.castbar_custom_casts_editframe:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 0, 0);
     self.castbar_custom_casts_editframe:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.castbar_custom_casts_editframe:SetBackdropColor(0.15, 0.15, 0.15, 1);
@@ -889,7 +1121,7 @@ panel.Load = function(self)
     self:UpdateCustomCastsScroll();
 
     self.ProfilesDropdown = E.CreateDropdown('plain', self.TabsFrames['CustomCastsTab'].Content);
-    self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.castbar_custom_casts_editframe, 'TOPRIGHT', 0, 8);
+    self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.castbar_custom_casts_editframe, 'TOPRIGHT', 0, 40);
     self.ProfilesDropdown:SetSize(157, 22);
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
         local index = S:GetModule('Options'):FindIndexByName(name);
@@ -913,6 +1145,65 @@ panel.Load = function(self)
     self.CopyFromProfileText = E.CreateFontString(self.TabsFrames['CustomCastsTab'].Content);
     self.CopyFromProfileText:SetPosition('BOTTOMLEFT', self.ProfilesDropdown, 'TOPLEFT', 0, 0);
     self.CopyFromProfileText:SetText(L['OPTIONS_COPY_FROM_PROFILE']);
+
+    self.ColorCategoryToggleButton = E.CreateTextureButton(self.TabsFrames['CustomCastsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.PALETTE_COLOR, { 1, 1, 1, 1 }, { 1, 1, 0.5, 1 });
+    self.ColorCategoryToggleButton:SetPosition('TOPRIGHT', self.ProfilesDropdown, 'BOTTOMRIGHT', -2, -12);
+    self.ColorCategoryToggleButton:SetTooltip(L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME']);
+    self.ColorCategoryToggleButton:SetSize(19, 18);
+    self.ColorCategoryToggleButton.Callback = function()
+        S:GetModule('Options_ColorCategory'):ToggleListFrame();
+
+        panel.CategoryList:SetShown(false);
+    end
+
+    self.CategoryList = Mixin(CreateFrame('Frame', nil, self, 'BackdropTemplate'), E.PixelPerfectMixin);
+    self.CategoryList:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
+    self.CategoryList:SetPosition('BOTTOMLEFT', O.frame, 'BOTTOMRIGHT', 0, 0);
+    self.CategoryList:SetWidth(250);
+    self.CategoryList:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
+    self.CategoryList:SetBackdropColor(0.1, 0.1, 0.1, 1);
+    self.CategoryList:SetShown(false);
+
+    self.CategoryEditbox = E.CreateEditBox(self.CategoryList);
+    self.CategoryEditbox:SetPosition('TOP', self.CategoryList, 'TOP', 0, -10);
+    self.CategoryEditbox:SetFrameLevel(self.CategoryList:GetFrameLevel() + 10);
+    self.CategoryEditbox:SetSize(228, 20);
+    self.CategoryEditbox.useLastValue = false;
+    self.CategoryEditbox:SetInstruction(L['OPTIONS_CATEGORY_ENTER_NAME']);
+    self.CategoryEditbox:SetScript('OnEnterPressed', function(self)
+        local name = strtrim(self:GetText());
+
+        if not name or name == ''  then
+            self:SetText('');
+            self:ClearFocus();
+            return;
+        end
+
+        table.insert(O.db.castbar_custom_casts_category_data, { name = name });
+
+        self:SetText('');
+        self:ClearFocus();
+
+        panel.UpdateCustomCastsScroll();
+        panel.UpdateCategoryListScroll();
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown());
+        panel.CategoryDropdown:SetValue(panel.CategoryDropdown:GetValue());
+    end);
+
+    self.CategoryListScroll = Mixin(CreateFrame('Frame', nil, self.CategoryList, 'BackdropTemplate'), E.PixelPerfectMixin);
+    self.CategoryListScroll:SetPoint('TOPLEFT', self.CategoryList , 'TOPLEFT', 6, -40);
+    self.CategoryListScroll:SetPoint('BOTTOMRIGHT', self.CategoryList, 'BOTTOMRIGHT', -6, 6);
+    self.CategoryListScroll:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
+    self.CategoryListScroll:SetBackdropColor(0.15, 0.15, 0.15, 1);
+
+    self.CategoryListScrollChild, self.CategoryListScrollArea = E.CreateScrollFrame(self.CategoryListScroll, ROW_HEIGHT);
+
+    PixelUtil.SetPoint(self.CategoryListScrollArea.ScrollBar, 'TOPLEFT', self.CategoryListScrollArea, 'TOPRIGHT', -8, 0);
+    PixelUtil.SetPoint(self.CategoryListScrollArea.ScrollBar, 'BOTTOMLEFT', self.CategoryListScrollArea, 'BOTTOMRIGHT', -8, 0);
+
+    self.CategoryListButtonPool = CreateFramePool('Button', self.CategoryListScrollChild, 'BackdropTemplate');
+
+    self.UpdateCategoryListScroll();
 end
 
 panel.OnShow = function(self)
@@ -927,6 +1218,7 @@ end
 
 panel.Update = function(self)
     self:UpdateCustomCastsScroll();
+    self:UpdateCategoryListScroll();
 end
 
 function Module:MODIFIER_STATE_CHANGED(key, down)

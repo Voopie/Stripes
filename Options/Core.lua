@@ -421,6 +421,7 @@ O.DefaultValues = {
 
     castbar_custom_casts_enabled = false,
     castbar_custom_casts_data    = {},
+    castbar_custom_casts_category_data = {},
 
     -- Sizes
     size_clickable_area_show   = false,
