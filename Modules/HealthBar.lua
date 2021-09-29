@@ -130,7 +130,7 @@ local function UpdateHealthColor(frame)
     end
 
     local cR, cG, cB, cA = frame.healthBar:GetStatusBarColor();
-    if ( r ~= cR or g ~= cG or b ~= cB or a ~= cA ) then
+    if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
         frame.healthBar:SetStatusBarColor(r, g, b, a);
 
         if frame.optionTable.colorHealthWithExtendedColors then
@@ -768,16 +768,6 @@ function Module:RAID_TARGET_UPDATE()
     end
 end
 
-function Module:UNIT_THREAT_LIST_UPDATE(unit)
-    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
-
-    if not nameplate or not NP[nameplate] then
-        return;
-    end
-
-    Module.UpdateHealthBar(NP[nameplate]);
-end
-
 function Module:StartUp()
     self:UpdateLocalConfig();
 
@@ -788,17 +778,9 @@ function Module:StartUp()
 
     self:RegisterEvent('RAID_TARGET_UPDATE');
 
-    self:RegisterEvent('UNIT_THREAT_LIST_UPDATE');
-
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
 
-    -- For execute coloring, faster response to health change
-    -- UpdateStatusText because UpdateHealth used in UNIT_MAXHEALTH and we don't neeed it
-    -- It needs testing to find out how much it reduces performance
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', Module.UpdateHealthBar);
-
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
-        Module.UpdateHealthBar(unitframe);
         UpdateSizes(unitframe);
     end);
 
@@ -806,4 +788,8 @@ function Module:StartUp()
         UpdateBorder(unitframe);
         UpdateSizes(unitframe);
     end);
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', Module.UpdateHealthBar);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', Module.UpdateHealthBar);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateAggroFlash', Module.UpdateHealthBar);
 end
