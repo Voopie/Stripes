@@ -9,7 +9,6 @@ local UnitIsConnected, UnitClassBase, UnitIsFriend, UnitSelectionType, UnitSelec
       UnitIsConnected, UnitClassBase, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer;
 local GetRaidTargetIndex = GetRaidTargetIndex;
-local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
 
 -- Stripes API
 local UnitIsTapped, IsPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.IsPlayer, U.IsPlayerEffectivelyTank;
