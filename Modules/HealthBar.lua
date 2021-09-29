@@ -779,11 +779,7 @@ function Module:StartUp()
     self:RegisterEvent('RAID_TARGET_UPDATE');
 
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
-
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
-        UpdateSizes(unitframe);
-    end);
-
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', UpdateSizes);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthBorder', function(unitframe)
         UpdateBorder(unitframe);
         UpdateSizes(unitframe);
