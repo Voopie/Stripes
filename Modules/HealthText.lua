@@ -9,7 +9,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local FRAME_POINTS_SIMPLE = O.Lists.frame_points_simple;
 
 -- Local Config
-local ENABLED, HIDE_FULL, DISPLAY_MODE, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
+local ENABLED, HIDE_FULL, DISPLAY_MODE, SHOW_PCT_SIGN, PCT_SIGN, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
 local BLOCK_1_TEXT_ANCHOR, BLOCK_1_TEXT_X_OFFSET, BLOCK_1_TEXT_Y_OFFSET, BLOCK_2_TEXT_ANCHOR, BLOCK_2_TEXT_X_OFFSET, BLOCK_2_TEXT_Y_OFFSET;
 local IS_DOUBLE, DISPLAY_MODE_BLOCK_1, DISPLAY_MODE_BLOCK_2;
@@ -35,27 +35,27 @@ end
 
 local UpdateHealthTextFormat = {
     [1] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%s  %d%%' or '%s  %.1f%%', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF)
+        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s  %d' .. PCT_SIGN) or ('%s  %.1f' .. PCT_SIGN) , ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF)
     end,
 
     [2] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%s | %d%%' or '%s | %.1f%%', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s | %d' .. PCT_SIGN) or ('%s | %.1f' .. PCT_SIGN), ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
     end,
 
     [3] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%s - %d%%' or '%s - %.1f%%', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s - %d' .. PCT_SIGN) or ('%s - %.1f' .. PCT_SIGN), ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
     end,
 
     [4] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%s / %d%%' or '%s / %.1f%%', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s / %d' .. PCT_SIGN) or ('%s / %.1f' .. PCT_SIGN), ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
     end,
 
     [5] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%s [%d%%]' or '%s  [%.1f%%]', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s [%d' .. PCT_SIGN ..']') or ('%s  [%.1f' .. PCT_SIGN .. ']'), ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
     end,
 
     [6] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%s (%d%%)' or '%s  (%.1f%%)', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s (%d' .. PCT_SIGN .. ')') or ('%s  (%.1f' .. PCT_SIGN .. ')'), ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
     end,
 
     [7] = function(unitframe, fontObject)
@@ -63,7 +63,7 @@ local UpdateHealthTextFormat = {
     end,
 
     [8] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and '%d%%' or '%.1f%%', unitframe.data.healthPerF);
+        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%d' .. PCT_SIGN) or ('%.1f' .. PCT_SIGN), unitframe.data.healthPerF);
     end,
 
     [9] = function(unitframe, fontObject)
@@ -141,6 +141,9 @@ function Module:UpdateLocalConfig()
     ENABLED      = O.db.health_text_enabled;
     HIDE_FULL    = O.db.health_text_hide_full;
     DISPLAY_MODE = math.max(math.min(O.db.health_text_display_mode, #UpdateHealthTextFormat), 1);
+
+    SHOW_PCT_SIGN = O.db.health_text_show_pct_sign;
+    PCT_SIGN      = SHOW_PCT_SIGN and '%%' or '';
 
     TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.health_text_anchor];
     TEXT_X_OFFSET = O.db.health_text_x_offset;

@@ -231,7 +231,7 @@ O.Lists = {
     }
 };
 
--- ~429
+-- ~430
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -266,6 +266,7 @@ O.DefaultValues = {
     health_text_enabled      = true,
     health_text_hide_full    = false,
     health_text_display_mode = 1,
+    health_text_show_pct_sign = true,
     health_text_font_value   = 'BigNoodleToo Titling',
     health_text_font_size    = 11,
     health_text_font_flag    = 1, -- NONE

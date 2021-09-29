@@ -406,6 +406,18 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.health_text_show_pct_sign = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_show_pct_sign:SetPosition('LEFT', self.health_text_hide_full.Label, 'RIGHT', 12, 0);
+    self.health_text_show_pct_sign:SetLabel(L['OPTIONS_HEALTH_TEXT_SHOW_PCT_SIGN']);
+    self.health_text_show_pct_sign:SetTooltip(L['OPTIONS_HEALTH_TEXT_SHOW_PCT_SIGN_TOOLTIP']);
+    self.health_text_show_pct_sign:SetChecked(O.db.health_text_show_pct_sign);
+    self.health_text_show_pct_sign:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_SHOW_PCT_SIGN_TOOLTIP'], self.Tabs[2]);
+    self.health_text_show_pct_sign:SetEnabled(O.db.health_text_enabled);
+    self.health_text_show_pct_sign.Callback = function(self)
+        O.db.health_text_show_pct_sign = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.health_text_custom_color_enabled = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
     self.health_text_custom_color_enabled:SetPosition('TOPLEFT', self.health_text_enabled, 'BOTTOMLEFT', 0, -8);
     self.health_text_custom_color_enabled:SetLabel(L['OPTIONS_HEALTH_TEXT_CUSTOM_COLOR_ENABLED']);
