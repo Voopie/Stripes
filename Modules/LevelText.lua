@@ -12,7 +12,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local NP = S.NamePlates;
 
 -- Local Config
-local ENABLED, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
+local ENABLED, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR, CUSTOM_COLOR_TEXT;
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
 
 local CLOSE_COLOR = '|r';
@@ -45,7 +45,7 @@ local function Update(unitframe)
     if USE_DIFF_COLOR then
         unitframe.LevelText.text:SetText(RGB2CFFHEX(unitframe.data.diff) .. unitframe.data.level .. unitframe.data.classification .. CLOSE_COLOR);
     elseif CUSTOM_COLOR_ENABLED then
-        unitframe.LevelText.text:SetText(RGB2CFFHEX(CUSTOM_COLOR) .. unitframe.data.level .. unitframe.data.classification .. CLOSE_COLOR);
+        unitframe.LevelText.text:SetText(CUSTOM_COLOR_TEXT .. unitframe.data.level .. unitframe.data.classification .. CLOSE_COLOR);
     else
         unitframe.LevelText.text:SetText(unitframe.data.level .. unitframe.data.classification);
     end
@@ -99,6 +99,7 @@ function Module:UpdateLocalConfig()
     CUSTOM_COLOR[2] = O.db.level_text_custom_color[2];
     CUSTOM_COLOR[3] = O.db.level_text_custom_color[3];
     CUSTOM_COLOR[4] = O.db.level_text_custom_color[4] or 1;
+    CUSTOM_COLOR_TEXT = RGB2CFFHEX(CUSTOM_COLOR);
 
     UpdateFontObject(StripesLevelTextFont, O.db.level_text_font_value, O.db.level_text_font_size, O.db.level_text_font_flag, O.db.level_text_font_shadow);
 end
