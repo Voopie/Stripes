@@ -48,7 +48,7 @@ local function OnUpdate(self, elapsed)
         if self.casting then
             self.Timer:SetText(string_format(TIMER_FORMAT, math_max(self.maxValue - self.value, 0), self.maxValue));
         elseif self.channeling then
-            self.Timer:SetText(string_format(TIMER_FORMAT, (TIMER_ONLY_REMAINING and math_max(self.maxValue - self.value, 0) or math_max(self.value, 0)), self.maxValue));
+            self.Timer:SetText(string_format(TIMER_FORMAT, math_max(self.value, 0), self.maxValue));
         else
             self.Timer:SetText('');
         end
