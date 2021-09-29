@@ -108,9 +108,9 @@ local function UpdateStyle(unitframe)
     PixelUtil.SetPoint(unitframe.HealthText.RightText, BLOCK_2_TEXT_ANCHOR, unitframe.HealthText, BLOCK_2_TEXT_ANCHOR, BLOCK_2_TEXT_X_OFFSET, BLOCK_2_TEXT_Y_OFFSET);
 
     if CUSTOM_COLOR_ENABLED then
-        unitframe.HealthText.text:SetTextColor(unpack(CUSTOM_COLOR));
-        unitframe.HealthText.LeftText:SetTextColor(unpack(CUSTOM_COLOR));
-        unitframe.HealthText.RightText:SetTextColor(unpack(CUSTOM_COLOR));
+        unitframe.HealthText.text:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
+        unitframe.HealthText.LeftText:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
+        unitframe.HealthText.RightText:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
     else
         unitframe.HealthText.text:SetTextColor(1, 1, 1, 1);
         unitframe.HealthText.LeftText:SetTextColor(1, 1, 1, 1);
