@@ -19,7 +19,9 @@ L['COLOR'] = 'Color';
 L['SCALE'] = 'Scale';
 L['ENABLE'] = 'Enable';
 L['FORMAT'] = 'Format';
+L['SEARCH'] = 'Search';
 L['CATEGORY'] = 'Category';
+L['COLOR_CATEGORY'] = 'Color category';
 
 L['FONT_VALUE'] = 'Font';
 L['FONT_SIZE'] = 'Font size';
@@ -86,6 +88,7 @@ L['RAID_SL_SOD'] = 'Sanctum of Domination';
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C to copy';
 
 L['GLOW'] = 'Glow';
+L['GLOW_TYPE'] = 'Glow type';
 
 L['GLOW_TYPE_PIXEL'] = 'Pixel glow';
 L['GLOW_TYPE_AUTOCAST'] = 'Autocast glow';
@@ -119,6 +122,8 @@ L['OPTIONS_DONT_WARN_ME'] = 'Don\'t warn me';
 L['OPTIONS_NEED_RELOAD'] = 'You must reload the interface to apply the settings.\r\rReload now?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'The settings were hidden for the duration of the combat and will be automatically opened after the end of the combat';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'The settings will be opened after the combat';
+
+L['OPTIONS_SHIFT_CLICK_TO_DELETE'] = 'Shift-LMB to quickly delete';
 
 L['OPTIONS_COPY_FROM_PROFILE'] = 'Copy from profile';
 L['OPTIONS_REPLACE_FROM_PROFILE'] = 'Replace from profile';

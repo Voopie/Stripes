@@ -21,6 +21,7 @@ L['ENABLE'] = 'Включить';
 L['FORMAT'] = 'Формат';
 L['SEARCH'] = 'Поиск';
 L['CATEGORY'] = 'Категория';
+L['COLOR_CATEGORY'] = 'Цветовая категория';
 
 L['FONT_VALUE'] = 'Шрифт';
 L['FONT_SIZE'] = 'Размер шрифта';
@@ -87,6 +88,7 @@ L['RAID_SL_SOD'] = 'Святилище Господства';
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C для копирования';
 
 L['GLOW'] = 'Свечение';
+L['GLOW_TYPE'] = 'Тип свечения';
 
 L['GLOW_TYPE_PIXEL'] = 'Пиксельное свечение';
 L['GLOW_TYPE_AUTOCAST'] = 'Свечение при автоприменении';
@@ -120,6 +122,8 @@ L['OPTIONS_DONT_WARN_ME'] = 'Не предупреждать';
 L['OPTIONS_NEED_RELOAD'] = 'Необходимо перезагрузить интерфейс, чтобы применить настройки.\r\rПерезагрузить сейчас?';
 L['OPTIONS_HIDED_IN_COMBAT'] = 'Настройки были скрыты на время боя и будут автоматически открыты после завершения боя';
 L['OPTIONS_WILL_BE_OPENED_AFTER_COMBAT'] = 'Настройки будут открыты после боя';
+
+L['OPTIONS_SHIFT_CLICK_TO_DELETE'] = 'Shift-ЛКМ для быстрого удаления';
 
 L['OPTIONS_COPY_FROM_PROFILE'] = 'Копировать из профиля';
 L['OPTIONS_REPLACE_FROM_PROFILE'] = 'Заменить из профиля';

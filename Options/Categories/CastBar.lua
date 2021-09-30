@@ -27,7 +27,9 @@ panel.TabsData = {
 
 local ROW_HEIGHT = 28;
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
-local NAME_WIDTH = 210;
+local BACKDROP_BORDER_2 = { bgFile = 'Interface\\Buttons\\WHITE8x8', edgeFile = 'Interface\\Buttons\\WHITE8x8', edgeSize = 2 };
+local NAME_WIDTH = 410;
+local CATEGORY_MAX_LETTERS = 10;
 
 panel.categoryId = 0;
 
@@ -82,134 +84,234 @@ panel.UpdateProfilesDropdown = function(self)
 end
 
 local DataCustomCastsRow = {};
+local ExtendedOptionsFrames = {};
+
+local function HideAllExtendedOptionsFrames()
+    for _, frame in ipairs(ExtendedOptionsFrames) do
+        if not frame:IsMouseOver() and not frame.ToggleExtendedOptions:IsMouseOver() then
+            frame.ExtendedOptions:SetShown(false);
+            frame.ToggleExtendedOptions:UnlockHighlight();
+        end
+    end
+end
+
+if UIDropDownMenu_HandleGlobalMouseEvent then
+    local function ExtendedOptions_CloseNotActive()
+        if not (O.frame and O.frame:IsShown()) then
+            return;
+        end
+
+        for _, frame in ipairs(ExtendedOptionsFrames) do
+            if frame.ExtendedOptions:IsShown() and not frame.ExtendedOptions:IsMouseOver() and not frame:IsMouseOver() and not frame.ToggleExtendedOptions:IsMouseOver() then
+                frame.ExtendedOptions:SetShown(false);
+                frame.ToggleExtendedOptions:UnlockHighlight();
+            end
+        end
+    end
+
+    hooksecurefunc('UIDropDownMenu_HandleGlobalMouseEvent', function(b, event)
+        if event == 'GLOBAL_MOUSE_DOWN' and (b == 'LeftButton' or b == 'RightButton') then
+            ExtendedOptions_CloseNotActive();
+        end
+    end);
+end
 
 local function CreateCustomCastRow(frame)
     frame:SetBackdrop(BACKDROP);
     frame.backgroundColor = frame.backgroundColor or {};
+    frame.highlightColor  = frame.highlightColor or {};
+
+    frame.ColorLine = frame:CreateTexture(nil, 'ARTWORK');
+    frame.ColorLine:SetPoint('TOPLEFT', 0, -1);
+    frame.ColorLine:SetPoint('BOTTOMLEFT', 0, 1);
+    frame.ColorLine:SetWidth(4);
+
+    frame.ExtendedOptions = CreateFrame('Frame', nil, panel, 'BackdropTemplate');
+    frame.ExtendedOptions:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 0, 0);
+    frame.ExtendedOptions:SetFrameLevel(100);
+    frame.ExtendedOptions:SetSize(260, 220);
+    frame.ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
+    frame.ExtendedOptions:SetShown(false);
+
+    frame.ToggleExtendedOptions = E.CreateTextureButton(frame, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.GEAR_WHITE);
+    frame.ToggleExtendedOptions:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
+    frame.ToggleExtendedOptions:SetScript('OnClick', function(self)
+        HideAllExtendedOptionsFrames();
+
+        if frame.ExtendedOptions:IsShown() then
+            frame.ExtendedOptions:SetShown(false);
+            self:UnlockHighlight();
+        else
+            frame.ExtendedOptions:SetShown(true);
+            self:LockHighlight();
+        end
+    end);
+    frame.ToggleExtendedOptions:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
+    end);
+    frame.ToggleExtendedOptions:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+    end);
+
+    frame:SetScript('OnClick', function(self)
+        if IsShiftKeyDown() then
+            self.RemoveButton:Click();
+            return;
+        end
+
+        HideAllExtendedOptionsFrames();
+
+        if self.ExtendedOptions:IsShown() then
+            self.ExtendedOptions:SetShown(false);
+            self.ToggleExtendedOptions:UnlockHighlight();
+        else
+            self.ExtendedOptions:SetShown(true);
+            self.ToggleExtendedOptions:LockHighlight();
+        end
+    end);
+
+    table.insert(ExtendedOptionsFrames, frame);
 
     frame.EnableCheckBox = E.CreateCheckButton(frame);
-    frame.EnableCheckBox:SetPosition('LEFT', frame, 'LEFT', 2, 0);
+    frame.EnableCheckBox:SetPosition('LEFT', frame, 'LEFT', 10, 0);
     frame.EnableCheckBox.Callback = function(self)
         O.db.castbar_custom_casts_data[self:GetParent().id].enabled = self:GetChecked();
         S:GetNameplateModule('Handler'):UpdateAll();
     end
     frame.EnableCheckBox:HookScript('OnEnter', function(self)
-        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+        self:GetParent():SetBackdropColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
     end);
     frame.EnableCheckBox:HookScript('OnLeave', function(self)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
 
-    frame.Category = E.CreateDropdown('plain', frame);
-    frame.Category:SetPosition('LEFT', frame.EnableCheckBox, 'RIGHT', 2, 0);
-    frame.Category:SetSize(80, 20);
-    frame.Category:SetTooltip(L['CATEGORY']);
-    frame.Category.OnValueChangedCallback = function(self, value)
-        value = tonumber(value);
-
-        if O.db.castbar_custom_casts_data[tonumber(self:GetParent().id)] then
-            O.db.castbar_custom_casts_data[tonumber(self:GetParent().id)].category_id = value;
-            panel.UpdateCustomCastsScroll();
-        end
-    end
+    frame.CategoryNameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.CategoryNameText:SetPoint('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
+    frame.CategoryNameText:SetSize(60, ROW_HEIGHT);
+    frame.CategoryNameText:SetTextColor(0.67, 0.67, 0.67);
+    frame.CategoryNameText:SetJustifyH('RIGHT');
 
     frame.Icon = frame:CreateTexture(nil, 'ARTWORK');
-    frame.Icon:SetPoint('LEFT', frame.Category, 'RIGHT', 6, 0);
+    frame.Icon:SetPoint('LEFT', frame.CategoryNameText, 'RIGHT', 8, 0);
     frame.Icon:SetSize(ROW_HEIGHT - 8, ROW_HEIGHT - 8);
     frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
 
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 4, 0);
+    frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
     frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
 
-    frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
-    frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -4, 0);
-    frame.RemoveButton:SetSize(14, 14);
-    frame.RemoveButton:SetNormalTexture(S.Media.Icons.TEXTURE);
-    frame.RemoveButton:GetNormalTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
-    frame.RemoveButton:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7, 1);
-    frame.RemoveButton:SetHighlightTexture(S.Media.Icons.TEXTURE, 'BLEND');
-    frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
-    frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
-    frame.RemoveButton:SetScript('OnClick', function(self)
-        local id = tonumber(self:GetParent().id);
+    -- Extended frame
+    frame.ColorLineExtended = frame.ExtendedOptions:CreateTexture(nil, 'ARTWORK');
+    frame.ColorLineExtended:SetPoint('TOPRIGHT', frame.ExtendedOptions, 'TOPLEFT', 0, 0);
+    frame.ColorLineExtended:SetSize(4, ROW_HEIGHT);
 
-        if not id then
-            return;
-        end
+    frame.IconExtended = frame.ExtendedOptions:CreateTexture(nil, 'ARTWORK');
+    frame.IconExtended:SetPoint('TOPLEFT', frame.ExtendedOptions, 'TOPLEFT', 16, -10);
+    frame.IconExtended:SetSize(ROW_HEIGHT - 8, ROW_HEIGHT - 8);
+    frame.IconExtended:SetTexCoord(0.1, 0.9, 0.1, 0.9);
 
-        if O.db.castbar_custom_casts_data[id] then
-            O.db.castbar_custom_casts_data[id] = nil;
+    frame.NameExtendedText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.NameExtendedText:SetPoint('LEFT', frame.IconExtended, 'RIGHT', 8, 0);
+    frame.NameExtendedText:SetPoint('RIGHT', frame.ExtendedOptions, 'RIGHT', -8, 0);
 
-            panel:UpdateCustomCastsScroll();
+    frame.ExtendedDelimiter = E.CreateDelimiter(frame.ExtendedOptions);
+    frame.ExtendedDelimiter:SetPosition('TOPLEFT', frame.IconExtended, 'BOTTOMLEFT', -7, 0);
+    frame.ExtendedDelimiter:SetW(frame.ExtendedOptions:GetWidth() - 16);
 
-            S:GetNameplateModule('Handler'):UpdateAll();
-        end
-    end);
-    frame.RemoveButton:HookScript('OnEnter', function(self)
-        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
-    end);
+    frame.CategoryText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+    frame.CategoryText:SetPoint('TOPLEFT', frame.ExtendedDelimiter, 'BOTTOMLEFT', 7, -2);
+    frame.CategoryText:SetText(L['CATEGORY']);
 
-    frame.RemoveButton:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
-    end);
-
-    frame.GlowType = E.CreateDropdown('plain', frame);
-    frame.GlowType:SetPosition('RIGHT', frame.RemoveButton, 'LEFT', -4, 0);
-    frame.GlowType:SetSize(100, 20);
-    frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
-    frame.GlowType:SetTooltip(L['GLOW']);
-    frame.GlowType.OnValueChangedCallback = function(self, value)
+    frame.Category = E.CreateDropdown('plain', frame.ExtendedOptions);
+    frame.Category:SetPosition('TOPLEFT', frame.CategoryText, 'BOTTOMLEFT', 0, -4);
+    frame.Category:SetSize(120, 20);
+    frame.Category.OnValueChangedCallback = function(_, value)
         value = tonumber(value);
 
-        O.db.castbar_custom_casts_data[self:GetParent().id].glow_enabled = value ~= 0;
-        O.db.castbar_custom_casts_data[self:GetParent().id].glow_type = value;
+        if O.db.castbar_custom_casts_data[frame.id] then
+            O.db.castbar_custom_casts_data[frame.id].category_id = value;
+            panel:UpdateCustomCastsScroll();
+        end
+    end
+
+    frame.ColorCategoryText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+    frame.ColorCategoryText:SetPoint('TOPLEFT', frame.Category, 'BOTTOMLEFT', 0, -12);
+    frame.ColorCategoryText:SetText(L['COLOR_CATEGORY']);
+
+    frame.ColorCategory = E.CreateDropdown('plain', frame.ExtendedOptions);
+    frame.ColorCategory:SetPosition('TOPLEFT', frame.ColorCategoryText, 'BOTTOMLEFT', 0, -4);
+    frame.ColorCategory:SetSize(120, 20);
+    frame.ColorCategory.OnValueChangedCallback = function(_, value)
+        value = tonumber(value);
+
+        O.db.castbar_custom_casts_data[frame.id].color_enabled  = value ~= 0;
+        O.db.castbar_custom_casts_data[frame.id].color_category = value;
+
+        if O.db.color_category_data[value] then
+            O.db.castbar_custom_casts_data[frame.id].color[1] = O.db.color_category_data[value].color[1];
+            O.db.castbar_custom_casts_data[frame.id].color[2] = O.db.color_category_data[value].color[2];
+            O.db.castbar_custom_casts_data[frame.id].color[3] = O.db.color_category_data[value].color[3];
+            O.db.castbar_custom_casts_data[frame.id].color[4] = O.db.color_category_data[value].color[4] or 1;
+        else
+            O.db.castbar_custom_casts_data[frame.id].color[1] = 0.1;
+            O.db.castbar_custom_casts_data[frame.id].color[2] = 0.1;
+            O.db.castbar_custom_casts_data[frame.id].color[3] = 0.1;
+            O.db.castbar_custom_casts_data[frame.id].color[4] = 1;
+        end
+
+        panel:UpdateCustomCastsScroll();
+    end
+
+    frame.GlowTypeText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+    frame.GlowTypeText:SetPoint('TOPLEFT', frame.ColorCategory, 'BOTTOMLEFT', 0, -12);
+    frame.GlowTypeText:SetText(L['GLOW_TYPE']);
+
+    frame.GlowType = E.CreateDropdown('plain', frame.ExtendedOptions);
+    frame.GlowType:SetPosition('TOPLEFT', frame.GlowTypeText, 'BOTTOMLEFT', 0, -4);
+    frame.GlowType:SetSize(120, 20);
+    frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
+    frame.GlowType.OnValueChangedCallback = function(_, value)
+        value = tonumber(value);
+
+        O.db.castbar_custom_casts_data[frame.id].glow_enabled = value ~= 0;
+        O.db.castbar_custom_casts_data[frame.id].glow_type = value;
+
+        panel:UpdateCustomCastsScroll();
 
         S:GetNameplateModule('Handler'):UpdateAll();
     end
 
-    frame.ColorCategory = E.CreateDropdown('plain', frame);
-    frame.ColorCategory:SetPosition('RIGHT', frame.GlowType, 'LEFT', -4, 0);
-    frame.ColorCategory:SetSize(100, 20);
-    frame.ColorCategory:SetTooltip(L['COLOR']);
-    frame.ColorCategory.OnValueChangedCallback = function(self, value)
-        value = tonumber(value);
+    frame.RemoveButton = E.CreateTextureButton(frame.ExtendedOptions, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.TRASH_WHITE, { 1, 0.2, 0.2, 1});
+    frame.RemoveButton:SetPosition('BOTTOMRIGHT', frame.ExtendedOptions, 'BOTTOMRIGHT', -6, 8);
+    frame.RemoveButton:SetSize(16, 16);
+    frame.RemoveButton:SetScript('OnClick', function(_)
+        if O.db.castbar_custom_casts_data[frame.id] then
+            O.db.castbar_custom_casts_data[frame.id] = nil;
 
-        O.db.castbar_custom_casts_data[self:GetParent().id].color_enabled  = value ~= 0;
-        O.db.castbar_custom_casts_data[self:GetParent().id].color_category = value;
+            frame.ExtendedOptions:SetShown(false);
+            frame.ToggleExtendedOptions:UnlockHighlight();
 
-        if O.db.color_category_data[value] then
-            O.db.castbar_custom_casts_data[self:GetParent().id].color[1] = O.db.color_category_data[value].color[1];
-            O.db.castbar_custom_casts_data[self:GetParent().id].color[2] = O.db.color_category_data[value].color[2];
-            O.db.castbar_custom_casts_data[self:GetParent().id].color[3] = O.db.color_category_data[value].color[3];
-            O.db.castbar_custom_casts_data[self:GetParent().id].color[4] = O.db.color_category_data[value].color[4] or 1;
-        else
-            O.db.castbar_custom_casts_data[self:GetParent().id].color[1] = 0.1;
-            O.db.castbar_custom_casts_data[self:GetParent().id].color[2] = 0.1;
-            O.db.castbar_custom_casts_data[self:GetParent().id].color[3] = 0.1;
-            O.db.castbar_custom_casts_data[self:GetParent().id].color[4] = 1;
+            panel:UpdateCustomCastsScroll();
+            S:GetNameplateModule('Handler'):UpdateAll();
         end
-
-        self:GetParent().ColorPicker:SetValue(unpack(O.db.castbar_custom_casts_data[self:GetParent().id].color));
-    end
-
-    frame.ColorPicker = E.CreateColorPicker(frame);
-    frame.ColorPicker:SetPosition('RIGHT', frame.ColorCategory, 'LEFT', 0, 0);
-    frame.ColorPicker:SetEnabled(false);
+    end);
 
     frame:HookScript('OnEnter', function(self)
-        self:SetBackdropColor(0.3, 0.3, 0.3, 1);
+        self:SetBackdropColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
+
+        self.NameText:SetText(self.name .. '    |cffaaaaaa' .. self.id .. ' | ' .. self.list[self.color_category] .. ' | ' .. O.Lists.glow_type_short_with_none[self.glow_type] .. '|r');
 
         if self.id then
             GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
             GameTooltip:SetHyperlink('spell:' .. self.id);
-            GameTooltip:AddLine('|cffff6666' .. self.id .. '|r');
             GameTooltip:Show();
         end
     end);
 
     frame:HookScript('OnLeave', function(self)
         self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+
+        self.NameText:SetText(self.name);
 
         GameTooltip_Hide();
     end);
@@ -228,34 +330,56 @@ local function UpdateCustomCastRow(frame)
 
     if frame.index % 2 == 0 then
         frame:SetBackdropColor(0.15, 0.15, 0.15, 1);
+        frame.ExtendedOptions:SetBackdropColor(0.15, 0.15, 0.15, 1);
         frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.15, 0.15, 0.15, 1;
     else
         frame:SetBackdropColor(0.075, 0.075, 0.075, 1);
+        frame.ExtendedOptions:SetBackdropColor(0.075, 0.075, 0.075, 1);
         frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
     end
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
+    frame.CategoryNameText:SetText(frame.category_list[frame.category_id]);
     frame.Icon:SetTexture(frame.icon);
     frame.NameText:SetText(frame.name);
-    frame.ColorPicker:SetValue(unpack(frame.color));
     frame.ColorCategory:SetList(frame.list);
     frame.ColorCategory:SetValue(frame.color_category);
     frame.GlowType:SetValue(frame.glow_type);
     frame.GlowType:UpdateScrollArea();
     frame.Category:SetList(frame.category_list);
     frame.Category:SetValue(frame.category_id);
+
+    frame.IconExtended:SetTexture(frame.icon);
+    frame.NameExtendedText:SetText(frame.name .. '  |cffaaaaaa[' .. frame.id .. ']|r');
+    frame.ColorLine:SetColorTexture(unpack(frame.color));
+    frame.ColorLineExtended:SetColorTexture(unpack(frame.color));
+    frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4] = frame.color[1], frame.color[2], frame.color[3], 0.5;
+    frame.ExtendedOptions:SetBackdropBorderColor(frame.color[1], frame.color[2], frame.color[3], frame.color[4]);
 end
 
+local sortedData = {};
 panel.UpdateCustomCastsScroll = function()
     wipe(DataCustomCastsRow);
+    wipe(sortedData);
+
+    for id in pairs(O.db.castbar_custom_casts_data) do
+        table.insert(sortedData, id);
+    end
+
+    table.sort(sortedData, function(a, b)
+        return (GetSpellInfo(a)) < (GetSpellInfo(b));
+    end);
+
     panel.CastBarCustomCastsFramePool:ReleaseAll();
 
     local index = 0;
     local frame, isNew;
+    local name, icon, data;
     local found;
 
-    for id, data in pairs(O.db.castbar_custom_casts_data) do
-        local name, _, icon = GetSpellInfo(id);
+    for _, id in ipairs(sortedData) do
+        name, _, icon = GetSpellInfo(id);
+        data = O.db.castbar_custom_casts_data[id];
 
         if panel.searchWordLower then
             found = string.find(string.lower(name), panel.searchWordLower, 1, true);
@@ -351,6 +475,7 @@ panel.CreateCategoryListRow = function(frame)
     frame.EditBox:SetPosition('LEFT', frame, 'LEFT', 6, 0);
     frame.EditBox:SetFrameLevel(frame.EditBox:GetFrameLevel() + 10);
     frame.EditBox:SetSize(170, ROW_HEIGHT);
+    frame.EditBox:SetMaxLetters(CATEGORY_MAX_LETTERS);
     frame.EditBox:SetShown(false);
     frame.EditBox:SetScript('OnEnterPressed', function(self)
         local index   = self:GetParent().index;
@@ -1148,7 +1273,7 @@ panel.Load = function(self)
     PixelUtil.SetPoint(self.castbar_custom_casts_scrollarea.ScrollBar, 'TOPLEFT', self.castbar_custom_casts_scrollarea, 'TOPRIGHT', -8, 0);
     PixelUtil.SetPoint(self.castbar_custom_casts_scrollarea.ScrollBar, 'BOTTOMLEFT', self.castbar_custom_casts_scrollarea, 'BOTTOMRIGHT', -8, 0);
 
-    self.CastBarCustomCastsFramePool = CreateFramePool('Frame', self.castbar_custom_casts_scrollchild, 'BackdropTemplate');
+    self.CastBarCustomCastsFramePool = CreateFramePool('Button', self.castbar_custom_casts_scrollchild, 'BackdropTemplate');
 
     self:UpdateCustomCastsScroll();
 
@@ -1188,6 +1313,10 @@ panel.Load = function(self)
         panel.CategoryList:SetShown(false);
     end
 
+    self.HelpTipButton = E.CreateHelpTipButton(self.TabsFrames['CustomCastsTab'].Content);
+    self.HelpTipButton:SetPosition('TOPLEFT', self.ProfilesDropdown, 'BOTTOMLEFT', 2, -12);
+    self.HelpTipButton:SetTooltip(L['OPTIONS_SHIFT_CLICK_TO_DELETE']);
+
     self.CategoryList = Mixin(CreateFrame('Frame', nil, self.TabsFrames['CustomCastsTab'].Content, 'BackdropTemplate'), E.PixelPerfectMixin);
     self.CategoryList:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
     self.CategoryList:SetPosition('BOTTOMLEFT', O.frame, 'BOTTOMRIGHT', 0, 0);
@@ -1200,6 +1329,7 @@ panel.Load = function(self)
     self.CategoryEditbox:SetPosition('TOP', self.CategoryList, 'TOP', 0, -10);
     self.CategoryEditbox:SetFrameLevel(self.CategoryList:GetFrameLevel() + 10);
     self.CategoryEditbox:SetSize(228, 20);
+    self.CategoryEditbox:SetMaxLetters(CATEGORY_MAX_LETTERS);
     self.CategoryEditbox.useLastValue = false;
     self.CategoryEditbox:SetInstruction(L['OPTIONS_CATEGORY_ENTER_NAME']);
     self.CategoryEditbox:SetScript('OnEnterPressed', function(self)

@@ -8,7 +8,9 @@ local panel = O.frame.Right.CustomColor;
 local framePool;
 local ROW_HEIGHT = 28;
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
-local NAME_WIDTH = 230;
+local BACKDROP_BORDER_2 = { bgFile = 'Interface\\Buttons\\WHITE8x8', edgeFile = 'Interface\\Buttons\\WHITE8x8', edgeSize = 2 };
+local NAME_WIDTH = 420;
+local CATEGORY_MAX_LETTERS = 10;
 local DELAY_SECONDS = 0.25;
 
 local DEFAULT_LIST_VALUE = 1;
@@ -57,128 +59,237 @@ local function Add(id, name)
 end
 
 local DataRows = {};
+local ExtendedOptionsFrames = {};
+
+local function HideAllExtendedOptionsFrames()
+    for _, frame in ipairs(ExtendedOptionsFrames) do
+        if not frame:IsMouseOver() and not frame.ToggleExtendedOptions:IsMouseOver() then
+            frame.ExtendedOptions:SetShown(false);
+            frame.ToggleExtendedOptions:UnlockHighlight();
+        end
+    end
+end
+
+if UIDropDownMenu_HandleGlobalMouseEvent then
+    local function ExtendedOptions_CloseNotActive()
+        if not (O.frame and O.frame:IsShown()) then
+            return;
+        end
+
+        for _, frame in ipairs(ExtendedOptionsFrames) do
+            if frame.ExtendedOptions:IsShown() and not frame.ExtendedOptions:IsMouseOver() and not frame:IsMouseOver() and not frame.ToggleExtendedOptions:IsMouseOver() then
+                frame.ExtendedOptions:SetShown(false);
+                frame.ToggleExtendedOptions:UnlockHighlight();
+            end
+        end
+    end
+
+    hooksecurefunc('UIDropDownMenu_HandleGlobalMouseEvent', function(b, event)
+        if event == 'GLOBAL_MOUSE_DOWN' and (b == 'LeftButton' or b == 'RightButton') then
+            ExtendedOptions_CloseNotActive();
+        end
+    end);
+end
+
 local function CreateRow(frame)
     frame:SetBackdrop(BACKDROP);
     frame.backgroundColor = frame.backgroundColor or {};
+    frame.highlightColor  = frame.highlightColor or {};
+
+    frame.ColorLine = frame:CreateTexture(nil, 'ARTWORK');
+    frame.ColorLine:SetPoint('TOPLEFT', 0, -1);
+    frame.ColorLine:SetPoint('BOTTOMLEFT', 0, 1);
+    frame.ColorLine:SetWidth(4);
+
+    frame.ExtendedOptions = CreateFrame('Frame', nil, panel, 'BackdropTemplate');
+    frame.ExtendedOptions:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 0, 0);
+    frame.ExtendedOptions:SetFrameLevel(100);
+    frame.ExtendedOptions:SetSize(260, 220);
+    frame.ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
+    frame.ExtendedOptions:SetShown(false);
+
+    frame.ToggleExtendedOptions = E.CreateTextureButton(frame, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.GEAR_WHITE);
+    frame.ToggleExtendedOptions:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
+    frame.ToggleExtendedOptions:SetScript('OnClick', function(self)
+        GameTooltip_Hide();
+
+        HideAllExtendedOptionsFrames();
+
+        if frame.ExtendedOptions:IsShown() then
+            frame.ExtendedOptions:SetShown(false);
+            self:UnlockHighlight();
+        else
+            frame.ExtendedOptions:SetShown(true);
+            self:LockHighlight();
+        end
+    end);
+    frame.ToggleExtendedOptions:HookScript('OnEnter', function(self)
+        self:GetParent():SetBackdropColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
+    end);
+    frame.ToggleExtendedOptions:HookScript('OnLeave', function(self)
+        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+    end);
+
+    frame:SetScript('OnClick', function(self)
+        GameTooltip_Hide();
+
+        if IsShiftKeyDown() then
+            self.RemoveButton:Click();
+            return;
+        end
+
+        HideAllExtendedOptionsFrames();
+
+        if self.ExtendedOptions:IsShown() then
+            self.ExtendedOptions:SetShown(false);
+            self.ToggleExtendedOptions:UnlockHighlight();
+        else
+            self.ExtendedOptions:SetShown(true);
+            self.ToggleExtendedOptions:LockHighlight();
+        end
+    end);
+
+    table.insert(ExtendedOptionsFrames, frame);
 
     frame.EnableCheckBox = E.CreateCheckButton(frame);
-    frame.EnableCheckBox:SetPosition('LEFT', frame, 'LEFT', 2, 0);
+    frame.EnableCheckBox:SetPosition('LEFT', frame, 'LEFT', 10, 0);
     frame.EnableCheckBox.Callback = function(self)
         O.db.custom_color_data[self:GetParent().npc_id].enabled = self:GetChecked();
         S:GetNameplateModule('Handler'):UpdateAll();
     end
     frame.EnableCheckBox:HookScript('OnEnter', function(self)
-        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
+        self:GetParent():SetBackdropColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
     end);
-
     frame.EnableCheckBox:HookScript('OnLeave', function(self)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
 
-    frame.Category = E.CreateDropdown('plain', frame);
-    frame.Category:SetPosition('LEFT', frame.EnableCheckBox, 'RIGHT', 2, 0);
-    frame.Category:SetSize(80, 20);
-    frame.Category:SetTooltip(L['CATEGORY']);
-    frame.Category.OnValueChangedCallback = function(self, value)
+    frame.CategoryNameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.CategoryNameText:SetPoint('LEFT', frame.EnableCheckBox, 'RIGHT', 8, 0);
+    frame.CategoryNameText:SetSize(60, ROW_HEIGHT);
+    frame.CategoryNameText:SetTextColor(0.67, 0.67, 0.67);
+    frame.CategoryNameText:SetJustifyH('RIGHT');
+
+    frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.NameText:SetPoint('LEFT', frame.CategoryNameText, 'RIGHT', 8, 0);
+    frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
+
+    -- Extended frame
+    frame.ColorLineExtended = frame.ExtendedOptions:CreateTexture(nil, 'ARTWORK');
+    frame.ColorLineExtended:SetPoint('TOPRIGHT', frame.ExtendedOptions, 'TOPLEFT', 0, 0);
+    frame.ColorLineExtended:SetSize(4, ROW_HEIGHT);
+
+    frame.NameExtendedText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+    frame.NameExtendedText:SetPoint('TOPLEFT', frame.ExtendedOptions, 'TOPLEFT', 16, -10);
+    frame.NameExtendedText:SetPoint('TOPRIGHT', frame.ExtendedOptions, 'TOPRIGHT', -8, 0);
+
+    frame.ExtendedDelimiter = E.CreateDelimiter(frame.ExtendedOptions);
+    frame.ExtendedDelimiter:SetPosition('TOPLEFT', frame.NameExtendedText, 'BOTTOMLEFT', -7, 0);
+    frame.ExtendedDelimiter:SetW(frame.ExtendedOptions:GetWidth() - 16);
+
+    frame.CategoryText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+    frame.CategoryText:SetPoint('TOPLEFT', frame.ExtendedDelimiter, 'BOTTOMLEFT', 7, -2);
+    frame.CategoryText:SetText(L['CATEGORY']);
+
+    frame.Category = E.CreateDropdown('plain', frame.ExtendedOptions);
+    frame.Category:SetPosition('TOPLEFT', frame.CategoryText, 'BOTTOMLEFT', 0, -4);
+    frame.Category:SetSize(120, 20);
+    frame.Category.OnValueChangedCallback = function(_, value)
         value = tonumber(value);
 
-        if O.db.custom_color_data[tonumber(self:GetParent().npc_id)] then
-            O.db.custom_color_data[tonumber(self:GetParent().npc_id)].category_id = value;
-            panel.UpdateScroll();
+        if O.db.custom_color_data[frame.id] then
+            O.db.custom_color_data[frame.id].category_id = value;
+            panel:UpdateScroll();
         end
     end
 
-    frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.NameText:SetPoint('LEFT', frame.Category, 'RIGHT', 4, 0);
-    frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
+    frame.ColorCategoryText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+    frame.ColorCategoryText:SetPoint('TOPLEFT', frame.Category, 'BOTTOMLEFT', 0, -12);
+    frame.ColorCategoryText:SetText(L['COLOR_CATEGORY']);
 
-    frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
-    frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -4, 0);
-    frame.RemoveButton:SetSize(14, 14);
-    frame.RemoveButton:SetNormalTexture(S.Media.Icons.TEXTURE);
-    frame.RemoveButton:GetNormalTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
-    frame.RemoveButton:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7, 1);
-    frame.RemoveButton:SetHighlightTexture(S.Media.Icons.TEXTURE, 'BLEND');
-    frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
-    frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
-    frame.RemoveButton:SetScript('OnClick', function(self)
-        if O.db.custom_color_data[tonumber(self:GetParent().npc_id)] then
-            O.db.custom_color_data[tonumber(self:GetParent().npc_id)] = nil;
+    frame.ColorCategory = E.CreateDropdown('plain', frame.ExtendedOptions);
+    frame.ColorCategory:SetPosition('TOPLEFT', frame.ColorCategoryText, 'BOTTOMLEFT', 0, -4);
+    frame.ColorCategory:SetSize(120, 20);
+    frame.ColorCategory.OnValueChangedCallback = function(_, value)
+        value = tonumber(value);
 
-            panel.UpdateScroll();
+        O.db.custom_color_data[frame.npc_id].color_enabled  = value ~= 0;
+        O.db.custom_color_data[frame.npc_id].color_category = value;
+
+        if O.db.color_category_data[value] then
+            O.db.custom_color_data[frame.npc_id].color[1] = O.db.color_category_data[value].color[1];
+            O.db.custom_color_data[frame.npc_id].color[2] = O.db.color_category_data[value].color[2];
+            O.db.custom_color_data[frame.npc_id].color[3] = O.db.color_category_data[value].color[3];
+            O.db.custom_color_data[frame.npc_id].color[4] = O.db.color_category_data[value].color[4] or 1;
+        else
+            O.db.custom_color_data[frame.npc_id].color[1] = 0.1;
+            O.db.custom_color_data[frame.npc_id].color[2] = 0.1;
+            O.db.custom_color_data[frame.npc_id].color[3] = 0.1;
+            O.db.custom_color_data[frame.npc_id].color[4] = 1;
+        end
+
+        panel:UpdateScroll();
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end
+
+    frame.GlowTypeText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+    frame.GlowTypeText:SetPoint('TOPLEFT', frame.ColorCategory, 'BOTTOMLEFT', 0, -12);
+    frame.GlowTypeText:SetText(L['GLOW_TYPE']);
+
+    frame.GlowType = E.CreateDropdown('plain', frame.ExtendedOptions);
+    frame.GlowType:SetPosition('TOPLEFT', frame.GlowTypeText, 'BOTTOMLEFT', 0, -4);
+    frame.GlowType:SetSize(120, 20);
+    frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
+    frame.GlowType.OnValueChangedCallback = function(_, value)
+        value = tonumber(value);
+
+        O.db.custom_color_data[frame.npc_id].glow_enabled = value ~= 0;
+        O.db.custom_color_data[frame.npc_id].glow_type = value;
+
+        panel:UpdateScroll();
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end
+
+    frame.RemoveButton = E.CreateTextureButton(frame.ExtendedOptions, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.TRASH_WHITE, { 1, 0.2, 0.2, 1});
+    frame.RemoveButton:SetPosition('BOTTOMRIGHT', frame.ExtendedOptions, 'BOTTOMRIGHT', -6, 8);
+    frame.RemoveButton:SetSize(16, 16);
+    frame.RemoveButton:SetScript('OnClick', function(_)
+        if O.db.custom_color_data[frame.npc_id] then
+            O.db.custom_color_data[frame.npc_id] = nil;
+
+            frame.ExtendedOptions:SetShown(false);
+            frame.ToggleExtendedOptions:UnlockHighlight();
+
+            panel:UpdateScroll();
             S:GetNameplateModule('Handler'):UpdateAll();
         end
     end);
-    frame.RemoveButton:HookScript('OnEnter', function(self)
-        self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
-    end);
-
-    frame.RemoveButton:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
-    end);
-
-    frame.GlowType = E.CreateDropdown('plain', frame);
-    frame.GlowType:SetPosition('RIGHT', frame.RemoveButton, 'LEFT', -4, 0);
-    frame.GlowType:SetSize(100, 20);
-    frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
-    frame.GlowType:SetTooltip(L['GLOW']);
-    frame.GlowType.OnValueChangedCallback = function(self, value)
-        value = tonumber(value);
-
-        O.db.custom_color_data[self:GetParent().npc_id].glow_enabled = value ~= 0;
-        O.db.custom_color_data[self:GetParent().npc_id].glow_type = value;
-
-        S:GetNameplateModule('Handler'):UpdateAll();
-    end
-
-    frame.ColorCategory = E.CreateDropdown('plain', frame);
-    frame.ColorCategory:SetPosition('RIGHT', frame.GlowType, 'LEFT', -4, 0);
-    frame.ColorCategory:SetSize(100, 20);
-    frame.ColorCategory:SetTooltip(L['COLOR']);
-    frame.ColorCategory.OnValueChangedCallback = function(self, value)
-        value = tonumber(value);
-
-        O.db.custom_color_data[self:GetParent().npc_id].color_enabled  = value ~= 0;
-        O.db.custom_color_data[self:GetParent().npc_id].color_category = value;
-
-        if O.db.color_category_data[value] then
-            O.db.custom_color_data[self:GetParent().npc_id].color[1] = O.db.color_category_data[value].color[1];
-            O.db.custom_color_data[self:GetParent().npc_id].color[2] = O.db.color_category_data[value].color[2];
-            O.db.custom_color_data[self:GetParent().npc_id].color[3] = O.db.color_category_data[value].color[3];
-            O.db.custom_color_data[self:GetParent().npc_id].color[4] = O.db.color_category_data[value].color[4] or 1;
-        else
-            O.db.custom_color_data[self:GetParent().npc_id].color[1] = 0.1;
-            O.db.custom_color_data[self:GetParent().npc_id].color[2] = 0.1;
-            O.db.custom_color_data[self:GetParent().npc_id].color[3] = 0.1;
-            O.db.custom_color_data[self:GetParent().npc_id].color[4] = 1;
-        end
-
-        self:GetParent().ColorPicker:SetValue(unpack(O.db.custom_color_data[self:GetParent().npc_id].color));
-
-        S:GetNameplateModule('Handler'):UpdateAll();
-    end
-
-    frame.ColorPicker = E.CreateColorPicker(frame);
-    frame.ColorPicker:SetPosition('RIGHT', frame.ColorCategory, 'LEFT', 0, 0);
-    frame.ColorPicker:SetEnabled(false);
 
     E.CreateTooltip(frame, nil, nil, true);
 
     frame:HookScript('OnEnter', function(self)
-        self:SetBackdropColor(0.3, 0.3, 0.3, 1);
+        self:SetBackdropColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
 
-        if not modelBlacklist[self.npc_id] then
-            ModelFrame:SetCreature(self.npc_id);
-            GameTooltip_InsertFrame(GameTooltip, HolderModelFrame, 0);
-            HolderModelFrame:SetSize(GameTooltip:GetWidth(), GameTooltip:GetWidth() * 2);
-            HolderModelFrame:SetPoint('TOPLEFT', GameTooltip, 'BOTTOMLEFT', 0, -1);
-            ModelFrame:SetSize(GameTooltip:GetWidth() - 3, GameTooltip:GetWidth() * 2 - 3);
-            ModelFrame:SetCamDistanceScale(1.2);
+        self.NameText:SetText(self.name .. '    |cffaaaaaa' .. self.npc_id .. ' | ' .. self.list[self.color_category] .. ' | ' .. O.Lists.glow_type_short_with_none[self.glow_type] .. '|r');
+
+        if frame.ExtendedOptions:IsShown() then
+            GameTooltip_Hide();
+        else
+            if not modelBlacklist[self.npc_id] then
+                ModelFrame:SetCreature(self.npc_id);
+                GameTooltip_InsertFrame(GameTooltip, HolderModelFrame, 0);
+                HolderModelFrame:SetSize(GameTooltip:GetWidth(), GameTooltip:GetWidth() * 2);
+                HolderModelFrame:SetPoint('TOPLEFT', GameTooltip, 'BOTTOMLEFT', 0, -1);
+                ModelFrame:SetSize(GameTooltip:GetWidth() - 3, GameTooltip:GetWidth() * 2 - 3);
+                ModelFrame:SetCamDistanceScale(1.2);
+            end
         end
     end);
 
     frame:HookScript('OnLeave', function(self)
         self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+
+        self.NameText:SetText(self.name);
     end);
 end
 
@@ -195,15 +306,17 @@ local function UpdateRow(frame)
 
     if frame.index % 2 == 0 then
         frame:SetBackdropColor(0.15, 0.15, 0.15, 1);
+        frame.ExtendedOptions:SetBackdropColor(0.15, 0.15, 0.15, 1);
         frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.15, 0.15, 0.15, 1;
     else
         frame:SetBackdropColor(0.075, 0.075, 0.075, 1);
+        frame.ExtendedOptions:SetBackdropColor(0.075, 0.075, 0.075, 1);
         frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
     end
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
+    frame.CategoryNameText:SetText(frame.category_list[frame.category_id]);
     frame.NameText:SetText(frame.name);
-    frame.ColorPicker:SetValue(unpack(frame.color));
     frame.ColorCategory:SetList(frame.list);
     frame.ColorCategory:SetValue(frame.color_category);
     frame.GlowType:SetValue(frame.glow_type);
@@ -211,18 +324,36 @@ local function UpdateRow(frame)
     frame.Category:SetList(frame.category_list);
     frame.Category:SetValue(frame.category_id);
 
+    frame.NameExtendedText:SetText(frame.name .. '  |cffaaaaaa[' .. frame.npc_id .. ']|r');
+    frame.ColorLine:SetColorTexture(unpack(frame.color));
+    frame.ColorLineExtended:SetColorTexture(unpack(frame.color));
+    frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4] = frame.color[1], frame.color[2], frame.color[3], 0.5;
+    frame.ExtendedOptions:SetBackdropBorderColor(frame.color[1], frame.color[2], frame.color[3], frame.color[4]);
+
     frame.tooltip = string.format(LIST_TOOLTIP_PATTERN, frame.name, frame.npc_id);
 end
 
+local sortedData = {};
 panel.UpdateScroll = function()
     wipe(DataRows);
+    wipe(sortedData);
+
+    for npc_id, data in pairs(O.db.custom_color_data) do
+        data.npc_id = npc_id;
+        table.insert(sortedData, data);
+    end
+
+    table.sort(sortedData, function(a, b)
+        return a.npc_name < b.npc_name;
+    end);
+
     framePool:ReleaseAll();
 
     local index = 0;
     local frame, isNew;
     local found;
 
-    for npc_id, data in pairs(O.db.custom_color_data) do
+    for _, data in ipairs(sortedData) do
         if panel.searchWordLower then
             found = string.find(string.lower(data.npc_name), panel.searchWordLower, 1, true);
         elseif panel.categoryId then
@@ -243,7 +374,7 @@ panel.UpdateScroll = function()
             end
 
             frame.index        = index;
-            frame.npc_id       = npc_id;
+            frame.npc_id       = data.npc_id;
             frame.name         = data.npc_name;
             frame.enabled      = data.enabled;
             frame.color        = data.color;
@@ -251,35 +382,35 @@ panel.UpdateScroll = function()
             frame.glow_type    = data.glow_type or 0;
 
             if O.db.color_category_data[data.color_category] then
-                O.db.custom_color_data[npc_id].color_enabled  = true;
-                O.db.custom_color_data[npc_id].color_category = data.color_category;
+                O.db.custom_color_data[data.npc_id].color_enabled  = true;
+                O.db.custom_color_data[data.npc_id].color_category = data.color_category;
 
-                O.db.custom_color_data[npc_id].color[1] = O.db.color_category_data[data.color_category].color[1];
-                O.db.custom_color_data[npc_id].color[2] = O.db.color_category_data[data.color_category].color[2];
-                O.db.custom_color_data[npc_id].color[3] = O.db.color_category_data[data.color_category].color[3];
-                O.db.custom_color_data[npc_id].color[4] = O.db.color_category_data[data.color_category].color[4] or 1;
+                O.db.custom_color_data[data.npc_id].color[1] = O.db.color_category_data[data.color_category].color[1];
+                O.db.custom_color_data[data.npc_id].color[2] = O.db.color_category_data[data.color_category].color[2];
+                O.db.custom_color_data[data.npc_id].color[3] = O.db.color_category_data[data.color_category].color[3];
+                O.db.custom_color_data[data.npc_id].color[4] = O.db.color_category_data[data.color_category].color[4] or 1;
             else
-                O.db.custom_color_data[npc_id].color_enabled  = false;
-                O.db.custom_color_data[npc_id].color_category = 0;
+                O.db.custom_color_data[data.npc_id].color_enabled  = false;
+                O.db.custom_color_data[data.npc_id].color_category = 0;
 
-                O.db.custom_color_data[npc_id].color[1] = 0.1;
-                O.db.custom_color_data[npc_id].color[2] = 0.1;
-                O.db.custom_color_data[npc_id].color[3] = 0.1;
-                O.db.custom_color_data[npc_id].color[4] = 1;
+                O.db.custom_color_data[data.npc_id].color[1] = 0.1;
+                O.db.custom_color_data[data.npc_id].color[2] = 0.1;
+                O.db.custom_color_data[data.npc_id].color[3] = 0.1;
+                O.db.custom_color_data[data.npc_id].color[4] = 1;
             end
 
-            frame.color_enabled  = O.db.custom_color_data[npc_id].color_enabled;
-            frame.color_category = O.db.custom_color_data[npc_id].color_category;
-            frame.color = O.db.custom_color_data[npc_id].color;
+            frame.color_enabled  = O.db.custom_color_data[data.npc_id].color_enabled;
+            frame.color_category = O.db.custom_color_data[data.npc_id].color_category;
+            frame.color = O.db.custom_color_data[data.npc_id].color;
             frame.list  = S:GetModule('Options_ColorCategory'):GetDropdownList();
 
             if O.db.custom_color_category_data[data.category_id] then
-                O.db.custom_color_data[npc_id].category_id = data.category_id;
+                O.db.custom_color_data[data.npc_id].category_id = data.category_id;
             else
-                O.db.custom_color_data[npc_id].category_id = 0;
+                O.db.custom_color_data[data.npc_id].category_id = 0;
             end
 
-            frame.category_id   = O.db.custom_color_data[npc_id].category_id;
+            frame.category_id   = O.db.custom_color_data[data.npc_id].category_id;
             frame.category_list = panel:GetCategoriesDropdown();
 
             UpdateRow(frame);
@@ -471,6 +602,7 @@ panel.CreateCategoryListRow = function(frame)
     frame.EditBox:SetPosition('LEFT', frame, 'LEFT', 6, 0);
     frame.EditBox:SetFrameLevel(frame.EditBox:GetFrameLevel() + 10);
     frame.EditBox:SetSize(170, ROW_HEIGHT);
+    frame.EditBox:SetMaxLetters(CATEGORY_MAX_LETTERS);
     frame.EditBox:SetShown(false);
     frame.EditBox:SetScript('OnEnterPressed', function(self)
         local index   = self:GetParent().index;
@@ -775,7 +907,7 @@ panel.Load = function(self)
     PixelUtil.SetPoint(self.CustomColorScrollArea.ScrollBar, 'TOPLEFT', self.CustomColorScrollArea, 'TOPRIGHT', -8, 0);
     PixelUtil.SetPoint(self.CustomColorScrollArea.ScrollBar, 'BOTTOMLEFT', self.CustomColorScrollArea, 'BOTTOMRIGHT', -8, 0);
 
-    framePool = CreateFramePool('Frame', self.CustomColorScrollChild, 'BackdropTemplate');
+    framePool = CreateFramePool('Button', self.CustomColorScrollChild, 'BackdropTemplate');
 
     self.UpdateScroll();
 
@@ -849,6 +981,9 @@ panel.Load = function(self)
         panel.CategoryList:SetShown(false);
     end
 
+    self.HelpTipButton = E.CreateHelpTipButton(self);
+    self.HelpTipButton:SetPosition('TOPLEFT', self.ProfilesDropdown, 'BOTTOMLEFT', 2, -12);
+    self.HelpTipButton:SetTooltip(L['OPTIONS_SHIFT_CLICK_TO_DELETE']);
 
     self.CategoryList = Mixin(CreateFrame('Frame', nil, self, 'BackdropTemplate'), E.PixelPerfectMixin);
     self.CategoryList:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
@@ -862,6 +997,7 @@ panel.Load = function(self)
     self.CategoryEditbox:SetPosition('TOP', self.CategoryList, 'TOP', 0, -10);
     self.CategoryEditbox:SetFrameLevel(self.CategoryList:GetFrameLevel() + 10);
     self.CategoryEditbox:SetSize(228, 20);
+    self.CategoryEditbox:SetMaxLetters(CATEGORY_MAX_LETTERS);
     self.CategoryEditbox.useLastValue = false;
     self.CategoryEditbox:SetInstruction(L['OPTIONS_CATEGORY_ENTER_NAME']);
     self.CategoryEditbox:SetScript('OnEnterPressed', function(self)
