@@ -494,6 +494,7 @@ local function CreateBlackListRow(frame)
         if self.id then
             GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
             GameTooltip:SetHyperlink('spell:' .. self.id);
+            GameTooltip:AddLine('|cffff6666' .. self.id .. '|r');
             GameTooltip:Show();
         end
     end);
@@ -653,6 +654,7 @@ local function CreateHPBarColorRow(frame)
         if self.id then
             GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
             GameTooltip:SetHyperlink('spell:' .. self.id);
+            GameTooltip:AddLine('|cffff6666' .. self.id .. '|r');
             GameTooltip:Show();
         end
     end);
