@@ -375,6 +375,44 @@ E.CreateTextureButton = function(parent, texturePath, textureCoord, normalColor,
     return b;
 end
 
+E.CreateHelpTipButton = function(parent)
+    local b = Mixin(CreateFrame('Button', nil, parent), E.PixelPerfectMixin);
+
+    b:SetSize(16, 16);
+    b:SetNormalTexture(S.Media.Icons64.TEXTURE);
+    b:GetNormalTexture():SetTexCoord(unpack(S.Media.Icons64.COORDS.EXMARK_WHITE));
+    b:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7, 1);
+    b:SetHighlightTexture(S.Media.Icons64.TEXTURE, 'BLEND');
+    b:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons64.COORDS.EXMARK_WHITE));
+    b:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
+
+    b:SetScript('OnEnter', function(self)
+        self.Text:SetShown(true);
+    end);
+
+    b:SetScript('OnLeave', function(self)
+        self.Text:SetShown(false);
+    end);
+
+    b.Text = Mixin(b:CreateFontString(nil, 'ARTWORK'), E.PixelPerfectMixin);
+    b.Text:SetPosition('LEFT', b, 'RIGHT', 8, 0);
+    b.Text:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 12, 'OUTLINE');
+    b.Text:SetTextColor(0.85, 0.85, 0.85);
+    b.Text:SetShown(false);
+
+    b.SetTip = function(self, helpTip)
+        self.Text:SetText(helpTip);
+    end
+
+    b.SetTooltip = function(self, tooltip)
+        self.tooltip = tooltip;
+    end
+
+    E.CreateTooltip(b);
+
+    return b;
+end
+
 E.CreateScrollFrame = function(parent, scrollStep, scrollChild)
     scrollStep = scrollStep or 20;
 
