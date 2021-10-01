@@ -1543,6 +1543,154 @@ do
                 end
             end,
         },
+
+        ['color'] = {
+            SetList = function(self, itemsTable)
+                self.itemsTable = itemsTable or S:GetModule('Options_ColorCategory'):GetDropdownList();
+                self.tKeys      = self.tKeys or {};
+
+                local combinedList = S:GetModule('Options_ColorCategory'):GetCombinedList();
+
+                wipe(self.tKeys);
+
+                for k, d in pairs(self.itemsTable) do
+                    table.insert(self.tKeys, { key = k, name = d});
+                end
+
+                table.sort(self.tKeys, function(a, b)
+                    if a.name == b.name then
+                        return true;
+                    end
+
+                    if a.name == L['NO'] then
+                        return true;
+                    end
+
+                    if b.name == L['NO'] then
+                        return false;
+                    end
+
+                    return a.name < b.name;
+                end);
+
+                local itemButton, isNew, lastButton;
+                local itemCounter = 0;
+
+                local container    = self;
+                container.subType = 'number';
+
+                local holderButton = self.holderButton;
+                local listFrame    = self.holderButton.list;
+
+                holderButton.buttonPool:ReleaseAll();
+
+                for _, d in ipairs(self.tKeys) do
+                    itemCounter = itemCounter + 1;
+                    itemButton, isNew = holderButton.buttonPool:Acquire();
+
+                    itemButton:ClearAllPoints();
+
+                    if itemCounter == 1 then
+                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', holderButton.scrollChild, 'TOPLEFT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', holderButton.scrollChild, 'TOPRIGHT', 0, 0);
+                    else
+                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', lastButton, 'BOTTOMLEFT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', lastButton, 'BOTTOMRIGHT', 0, 0);
+                    end
+
+                    lastButton = itemButton;
+
+                    if isNew then
+                        itemButton:SetBackdrop(DROPDOWN_ITEMBUTTON_BACKDROP);
+                        itemButton:SetBackdropColor(0, 0, 0, 1);
+
+                        itemButton.SelectedIcon = itemButton:CreateTexture(nil, 'ARTWORK');
+                        PixelUtil.SetPoint(itemButton.SelectedIcon, 'LEFT', itemButton, 'LEFT', 2, 0);
+                        itemButton.SelectedIcon:SetTexture('Interface\\Buttons\\UI-CheckBox-Check');
+                        itemButton.SelectedIcon:SetShown(false);
+
+                        itemButton.Text = itemButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+                        PixelUtil.SetPoint(itemButton.Text, 'TOPLEFT', itemButton.SelectedIcon, 'TOPRIGHT', 2, 4);
+                        PixelUtil.SetPoint(itemButton.Text, 'BOTTOMRIGHT', itemButton, 'BOTTOMRIGHT', -2, 0);
+                        itemButton.Text:SetJustifyH('LEFT');
+                        itemButton.Text:SetJustifyV('MIDDLE');
+
+                        itemButton.Color = itemButton:CreateTexture(nil, 'ARTWORK');
+                        PixelUtil.SetPoint(itemButton.Color, 'TOPLEFT', itemButton.SelectedIcon, 'TOPRIGHT', 2, 4);
+                        PixelUtil.SetPoint(itemButton.Color, 'BOTTOMRIGHT', itemButton, 'BOTTOMRIGHT', 0, 0);
+                        itemButton.Color:SetColorTexture(1, 1, 1, 1);
+
+                        itemButton:HookScript('OnEnter', function(self)
+                            self:SetBackdropColor(0.6, 0.5, 0.2, 1);
+                        end);
+
+                        itemButton:HookScript('OnLeave', function(self)
+                            self:SetBackdropColor(0, 0, 0, 1);
+                        end);
+
+                        itemButton:SetScript('OnClick', function(self)
+                            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+
+                            container:SetValue(self.Key);
+                            listFrame:SetShown(false);
+
+                            if container.OnValueChangedCallback then
+                                container:OnValueChangedCallback(self.Key);
+                            end
+                        end);
+                    end
+
+                    PixelUtil.SetHeight(itemButton, self.HeightValue);
+                    PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
+
+                    if d.key == 0 then
+                        itemButton.Text:SetText(L['NO']);
+                        itemButton.Color:SetShown(false);
+                        itemButton.Value = L['NO'];
+                    else
+                        itemButton.Text:SetText(combinedList[d.key].name);
+                        itemButton.Color:SetVertexColor(unpack(combinedList[d.key].color));
+                        itemButton.Color:SetShown(true);
+                        itemButton.Value = combinedList[d.key].name;
+                    end
+
+                    itemButton.Key = d.key;
+
+                    itemButton:SetShown(true);
+                end
+
+                PixelUtil.SetHeight(listFrame, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
+                PixelUtil.SetSize(holderButton.scrollChild, self.WidthValue, listFrame:GetHeight());
+
+                self.UpdateScrollArea = function()
+                    UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), container.HeightValue, itemCounter);
+                end
+
+                self:UpdateScrollArea();
+            end,
+
+            SetValue = function(self, value)
+                local combinedList = S:GetModule('Options_ColorCategory'):GetCombinedList();
+
+                for button, _ in self.holderButton.buttonPool:EnumerateActive() do
+                    button.SelectedIcon:SetShown(false);
+
+                    if button.Key == value then
+                        button.SelectedIcon:SetShown(true);
+                        self.holderButton.Text:SetText(button.Value);
+
+                        if value == 0 then
+                            self.holderButton.Color:SetShown(false);
+                        else
+                            self.holderButton.Color:SetVertexColor(unpack(combinedList[value].color));
+                            self.holderButton.Color:SetShown(true);
+                        end
+
+                        self.currentValue = value;
+                    end
+                end
+            end,
+        },
     };
 
     E.CreateDropdown = function(kind, parent)
@@ -1595,6 +1743,12 @@ do
         holderButton.StatusBar = holderButton:CreateTexture(nil, 'ARTWORK');
         PixelUtil.SetPoint(holderButton.StatusBar, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
         PixelUtil.SetPoint(holderButton.StatusBar, 'BOTTOMRIGHT', holderButton, 'BOTTOMRIGHT', 0, 0);
+
+        holderButton.Color = holderButton:CreateTexture(nil, 'ARTWORK');
+        PixelUtil.SetPoint(holderButton.Color, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
+        PixelUtil.SetPoint(holderButton.Color, 'BOTTOMRIGHT', holderButton, 'BOTTOMRIGHT', 0, 0);
+        holderButton.Color:SetColorTexture(1, 1, 1, 1);
+        holderButton.Color:SetShown(false);
 
         holderButton.Texture = holderButton:CreateTexture(nil, 'ARTWORK');
         PixelUtil.SetPoint(holderButton.Texture, 'LEFT', holderButton.Text, 'LEFT', 22, 0);
