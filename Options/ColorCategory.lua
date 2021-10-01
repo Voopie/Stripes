@@ -4,6 +4,83 @@ local Module = S:NewModule('Options_ColorCategory');
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
 local ROW_HEIGHT = 28;
 
+local PREDEFINED_COLORS = {
+    [1] = {
+        name  = 'Meadowlark',
+        color = { 0.93, 0.86, 0.33, 1 },
+    },
+
+    [2]  = {
+        name  = 'Cherry Tomato',
+        color = { 0.91, 0.29, 0.24, 1 },
+    },
+
+    [3]  = {
+        name  = 'Little Boy Blue',
+        color = { 0.44, 0.62, 0.85, 1 },
+    },
+
+    [4]  = {
+        name  = 'Blooming Dahlia',
+        color = { 0.93, 0.59, 0.53, 1 },
+    },
+
+    [5]  = {
+        name  = 'Arcadia',
+        color = { 0, 0.65, 0.57, 1 },
+    },
+
+    [6]  = {
+        name  = 'Ultra Violet',
+        color = { 0.42, 0.36, 0.58, 1  },
+    },
+
+    [7]  = {
+        name  = 'Emperador',
+        color = { 0.42, 0.31, 0.24, 1 },
+    },
+
+    [8] = {
+        name  = 'Almost Mauve',
+        color = { 0.92, 0.87, 0.86, 1},
+    },
+
+    [9] = {
+        name  = 'Lime Punch',
+        color = { 0.75, 0.84, 0.25, 1 },
+    },
+
+    [10] = {
+        name  = 'Sailor Blue',
+        color = { 0.18, 0.29, 0.38, 1 },
+    },
+
+    [11] = {
+        name  = 'Butterum',
+        color = { 0.77, 0.56, 0.4, 1 },
+    },
+
+    [12] = {
+        name  = 'Marina',
+        color = { 0.31, 0.52, 0.77, 1 },
+    },
+
+    [13] = {
+        name  = 'Golden Lime',
+        color = { 0.61, 0.6, 0.25, 1 },
+    },
+
+    [14] = {
+        name  = 'Aurora Red',
+        color = { 0.73, 0.23, 0.2, 1 },
+    },
+
+    [15] = {
+        name  = 'Chili Oil',
+        color = { 0.58, 0.28, 0.26, 1 },
+    },
+};
+
 local List = Mixin(CreateFrame('Frame', nil, O.frame, 'BackdropTemplate'), E.PixelPerfectMixin);
 List:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
 List:SetPosition('BOTTOMLEFT', O.frame, 'BOTTOMRIGHT', 0, 0);
@@ -30,7 +107,11 @@ EditBox:SetScript('OnEnterPressed', function(self)
 
     Module.AddColorCategory(name);
 
+    Module:UpdateDropdownList();
+    Module:UpdateCombinedList();
+
     Module:UpdateListScroll();
+
     self:SetText('');
     self:ClearFocus();
 end);
@@ -49,10 +130,6 @@ PixelUtil.SetPoint(ListScrollArea.ScrollBar, 'BOTTOMLEFT', ListScrollArea, 'BOTT
 local ListButtonPool = CreateFramePool('Button', ListScrollChild, 'BackdropTemplate');
 
 Module.AddColorCategory = function(name)
-    if O.db.color_category_data[name] then
-        return;
-    end
-
     for _, data in ipairs(O.db.color_category_data) do
         if data.name == name then
             return;
@@ -85,6 +162,9 @@ Module.UpdateName = function(editbox, index, newName)
 
     O.db.color_category_data[index].name = newName;
 
+    Module:UpdateDropdownList();
+    Module:UpdateCombinedList();
+
     Module:UpdateListScroll();
     editbox:SetShown(false);
 end
@@ -98,17 +178,24 @@ local CreateListRow = function(frame)
     frame.ColorPicker = E.CreateColorPicker(frame);
     frame.ColorPicker:SetPosition('LEFT', frame, 'LEFT', 4, 0);
     frame.ColorPicker.OnValueChanged = function(self, r, g, b, a)
-        O.db.color_category_data[self:GetParent().index].color[1] = r;
-        O.db.color_category_data[self:GetParent().index].color[2] = g;
-        O.db.color_category_data[self:GetParent().index].color[3] = b;
-        O.db.color_category_data[self:GetParent().index].color[4] = a or 1;
+        local index = self:GetParent().index;
+        if not index then
+            return;
+        end
+
+        O.db.color_category_data[index].color[1] = r;
+        O.db.color_category_data[index].color[2] = g;
+        O.db.color_category_data[index].color[3] = b;
+        O.db.color_category_data[index].color[4] = a or 1;
 
         Module.UpdateOtherScrolls();
+
+        Module:UpdateDropdownList();
+        Module:UpdateCombinedList();
     end
     frame.ColorPicker:HookScript('OnEnter', function(self)
         self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
     end);
-
     frame.ColorPicker:HookScript('OnLeave', function(self)
         self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     end);
@@ -123,7 +210,12 @@ local CreateListRow = function(frame)
     frame.EditBox:SetSize(170, ROW_HEIGHT);
     frame.EditBox:SetShown(false);
     frame.EditBox:SetScript('OnEnterPressed', function(self)
-        Module.UpdateName(self, self:GetParent().index, self:GetText());
+        local index = self:GetParent().index;
+        if not index then
+            return;
+        end
+
+        Module.UpdateName(self, index, self:GetText());
     end);
     frame.EditBox.FocusLostCallback = function(self)
         self:SetShown(false);
@@ -139,7 +231,16 @@ local CreateListRow = function(frame)
     frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
     frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     frame.RemoveButton:SetScript('OnClick', function(self)
-        table.remove(O.db.color_category_data, self:GetParent().index);
+        local index = self:GetParent().index;
+        if not index then
+            return;
+        end
+
+        table.remove(O.db.color_category_data, index);
+
+        Module:UpdateDropdownList();
+        Module:UpdateCombinedList();
+
         Module:UpdateListScroll();
     end);
     frame.RemoveButton:HookScript('OnEnter', function(self)
@@ -240,16 +341,43 @@ Module.UpdateOtherScrolls = function()
 end
 
 Module.DropdownList = {};
-function Module:GetDropdownList()
+function Module:UpdateDropdownList()
     wipe(self.DropdownList);
 
-    for index, data in ipairs(O.db.color_category_data) do
+    local index = 1;
+
+    for _, data in ipairs(PREDEFINED_COLORS) do
         self.DropdownList[index] = data.name;
+        index = index + 1;
+    end
+
+    for _, data in ipairs(O.db.color_category_data) do
+        self.DropdownList[index] = data.name;
+        index = index + 1;
     end
 
     self.DropdownList[0] = L['NO'];
+end
 
+function Module:GetDropdownList()
     return self.DropdownList;
+end
+
+Module.CombinedList = {};
+function Module:UpdateCombinedList()
+    wipe(self.CombinedList);
+
+    for _, data in ipairs(PREDEFINED_COLORS) do
+        table.insert(self.CombinedList, { name = data.name, color = data.color });
+    end
+
+    for _, data in ipairs(O.db.color_category_data) do
+        table.insert(self.CombinedList, { name = data.name, color = data.color });
+    end
+end
+
+function Module:GetCombinedList()
+    return self.CombinedList;
 end
 
 function Module:ToggleListFrame()
@@ -265,5 +393,8 @@ function Module:HideListFrame()
 end
 
 function Module:StartUp()
+    self:UpdateDropdownList();
+    self:UpdateCombinedList();
+
     self:UpdateListScroll();
 end

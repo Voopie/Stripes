@@ -59,15 +59,108 @@ local function Add(id, name)
 end
 
 local DataRows = {};
-local ExtendedOptionsFrames = {};
 
-local function HideAllExtendedOptionsFrames()
-    for _, frame in ipairs(ExtendedOptionsFrames) do
-        if not frame:IsMouseOver() and not frame.ToggleExtendedOptions:IsMouseOver() then
-            frame.ExtendedOptions:SetShown(false);
-            frame.ToggleExtendedOptions:UnlockHighlight();
-        end
+local ExtendedOptions = CreateFrame('Frame', nil, panel, 'BackdropTemplate');
+ExtendedOptions:SetFrameLevel(100);
+ExtendedOptions:SetSize(260, 220);
+ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
+ExtendedOptions:SetShown(false);
+
+ExtendedOptions.NameText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+ExtendedOptions.NameText:SetPoint('TOPLEFT', ExtendedOptions, 'TOPLEFT', 16, -10);
+ExtendedOptions.NameText:SetPoint('TOPRIGHT', ExtendedOptions, 'TOPRIGHT', -8, 0);
+
+ExtendedOptions.Delimiter = E.CreateDelimiter(ExtendedOptions);
+ExtendedOptions.Delimiter:SetPosition('TOPLEFT', ExtendedOptions.NameText, 'BOTTOMLEFT', -7, 0);
+ExtendedOptions.Delimiter:SetW(ExtendedOptions:GetWidth() - 16);
+
+ExtendedOptions.CategoryText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+ExtendedOptions.CategoryText:SetPoint('TOPLEFT', ExtendedOptions.Delimiter, 'BOTTOMLEFT', 7, -2);
+ExtendedOptions.CategoryText:SetText(L['CATEGORY']);
+
+ExtendedOptions.Category = E.CreateDropdown('plain', ExtendedOptions);
+ExtendedOptions.Category:SetPosition('TOPLEFT', ExtendedOptions.CategoryText, 'BOTTOMLEFT', 0, -4);
+ExtendedOptions.Category:SetSize(140, 20);
+ExtendedOptions.Category.OnValueChangedCallback = function(_, value)
+    value = tonumber(value);
+
+    if O.db.custom_color_data[ExtendedOptions.id] then
+        O.db.custom_color_data[ExtendedOptions.id].category_id = value;
+        panel:UpdateScroll();
     end
+end
+
+ExtendedOptions.ColorCategoryText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+ExtendedOptions.ColorCategoryText:SetPoint('TOPLEFT', ExtendedOptions.Category, 'BOTTOMLEFT', 0, -12);
+ExtendedOptions.ColorCategoryText:SetText(L['COLOR_CATEGORY']);
+
+ExtendedOptions.ColorCategory = E.CreateDropdown('color', ExtendedOptions);
+ExtendedOptions.ColorCategory:SetPosition('TOPLEFT', ExtendedOptions.ColorCategoryText, 'BOTTOMLEFT', 0, -4);
+ExtendedOptions.ColorCategory:SetSize(140, 20);
+ExtendedOptions.ColorCategory.OnValueChangedCallback = function(_, index)
+    index = tonumber(index);
+    local combinedList = S:GetModule('Options_ColorCategory'):GetCombinedList();
+
+    O.db.custom_color_data[ExtendedOptions.id].color_enabled  = index ~= 0;
+    O.db.custom_color_data[ExtendedOptions.id].color_category = index;
+
+    if combinedList[index] then
+        O.db.custom_color_data[ExtendedOptions.id].color[1] = combinedList[index].color[1];
+        O.db.custom_color_data[ExtendedOptions.id].color[2] = combinedList[index].color[2];
+        O.db.custom_color_data[ExtendedOptions.id].color[3] = combinedList[index].color[3];
+        O.db.custom_color_data[ExtendedOptions.id].color[4] = combinedList[index].color[4] or 1;
+    else
+        O.db.custom_color_data[ExtendedOptions.id].color[1] = 0.1;
+        O.db.custom_color_data[ExtendedOptions.id].color[2] = 0.1;
+        O.db.custom_color_data[ExtendedOptions.id].color[3] = 0.1;
+        O.db.custom_color_data[ExtendedOptions.id].color[4] = 1;
+    end
+
+    panel:UpdateScroll();
+    S:GetNameplateModule('Handler'):UpdateAll();
+
+    ExtendedOptions:SetBackdropBorderColor(ExtendedOptions.anchor.highlightColor[1], ExtendedOptions.anchor.highlightColor[2], ExtendedOptions.anchor.highlightColor[3], ExtendedOptions.anchor.highlightColor[4]);
+end
+
+ExtendedOptions.GlowTypeText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+ExtendedOptions.GlowTypeText:SetPoint('TOPLEFT', ExtendedOptions.ColorCategory, 'BOTTOMLEFT', 0, -12);
+ExtendedOptions.GlowTypeText:SetText(L['GLOW_TYPE']);
+
+ExtendedOptions.GlowType = E.CreateDropdown('plain', ExtendedOptions);
+ExtendedOptions.GlowType:SetPosition('TOPLEFT', ExtendedOptions.GlowTypeText, 'BOTTOMLEFT', 0, -4);
+ExtendedOptions.GlowType:SetSize(140, 20);
+ExtendedOptions.GlowType:SetList(O.Lists.glow_type_short_with_none);
+ExtendedOptions.GlowType.OnValueChangedCallback = function(_, value)
+    value = tonumber(value);
+
+    O.db.custom_color_data[ExtendedOptions.id].glow_enabled = value ~= 0;
+    O.db.custom_color_data[ExtendedOptions.id].glow_type = value;
+
+    panel:UpdateScroll();
+    S:GetNameplateModule('Handler'):UpdateAll();
+end
+
+ExtendedOptions.RemoveButton = E.CreateTextureButton(ExtendedOptions, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.TRASH_WHITE, { 1, 0.2, 0.2, 1});
+ExtendedOptions.RemoveButton:SetPosition('BOTTOMRIGHT', ExtendedOptions, 'BOTTOMRIGHT', -6, 8);
+ExtendedOptions.RemoveButton:SetSize(16, 16);
+ExtendedOptions.RemoveButton:SetScript('OnClick', function(_)
+    if O.db.custom_color_data[ExtendedOptions.id] then
+        O.db.custom_color_data[ExtendedOptions.id] = nil;
+
+        ExtendedOptions:SetShown(false);
+        ExtendedOptions.anchor.isHighlighted = false;
+        ExtendedOptions.anchor.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
+
+        panel:UpdateScroll();
+        S:GetNameplateModule('Handler'):UpdateAll();
+    end
+end);
+
+local function ExtendedOptionsHide()
+    ExtendedOptions:SetShown(false);
+    ExtendedOptions.anchor.isHighlighted = false;
+    ExtendedOptions.anchor:SetBackdropColor(ExtendedOptions.anchor.backgroundColor[1], ExtendedOptions.anchor.backgroundColor[2], ExtendedOptions.anchor.backgroundColor[3], ExtendedOptions.anchor.backgroundColor[4]);
+    ExtendedOptions.anchor.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
 end
 
 if UIDropDownMenu_HandleGlobalMouseEvent then
@@ -76,11 +169,8 @@ if UIDropDownMenu_HandleGlobalMouseEvent then
             return;
         end
 
-        for _, frame in ipairs(ExtendedOptionsFrames) do
-            if frame.ExtendedOptions:IsShown() and not frame.ExtendedOptions:IsMouseOver() and not frame:IsMouseOver() and not frame.ToggleExtendedOptions:IsMouseOver() then
-                frame.ExtendedOptions:SetShown(false);
-                frame.ToggleExtendedOptions:UnlockHighlight();
-            end
+        if ExtendedOptions:IsShown() and not ExtendedOptions:IsMouseOver() and not ExtendedOptions.anchor:IsMouseOver() and not ExtendedOptions.ColorCategory.holderButton.list:IsMouseOver() then
+            ExtendedOptionsHide();
         end
     end
 
@@ -101,55 +191,62 @@ local function CreateRow(frame)
     frame.ColorLine:SetPoint('BOTTOMLEFT', 0, 1);
     frame.ColorLine:SetWidth(4);
 
-    frame.ExtendedOptions = CreateFrame('Frame', nil, panel, 'BackdropTemplate');
-    frame.ExtendedOptions:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 0, 0);
-    frame.ExtendedOptions:SetFrameLevel(100);
-    frame.ExtendedOptions:SetSize(260, 220);
-    frame.ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
-    frame.ExtendedOptions:SetShown(false);
-
-    frame.ToggleExtendedOptions = E.CreateTextureButton(frame, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.GEAR_WHITE);
-    frame.ToggleExtendedOptions:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
-    frame.ToggleExtendedOptions:SetScript('OnClick', function(self)
-        GameTooltip_Hide();
-
-        HideAllExtendedOptionsFrames();
-
-        if frame.ExtendedOptions:IsShown() then
-            frame.ExtendedOptions:SetShown(false);
-            self:UnlockHighlight();
-        else
-            frame.ExtendedOptions:SetShown(true);
-            self:LockHighlight();
-        end
-    end);
-    frame.ToggleExtendedOptions:HookScript('OnEnter', function(self)
-        self:GetParent():SetBackdropColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
-    end);
-    frame.ToggleExtendedOptions:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
-    end);
+    frame.ToggleExtendedOptions = frame:CreateTexture(nil, 'ARTWORK');
+    frame.ToggleExtendedOptions:SetPoint('RIGHT', frame, 'RIGHT', -8, 0);
+    frame.ToggleExtendedOptions:SetSize(16, 16);
+    frame.ToggleExtendedOptions:SetTexture(S.Media.Icons.TEXTURE);
+    frame.ToggleExtendedOptions:SetTexCoord(unpack(S.Media.Icons.COORDS.GEAR_WHITE));
+    frame.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
 
     frame:SetScript('OnClick', function(self)
         GameTooltip_Hide();
 
         if IsShiftKeyDown() then
-            self.RemoveButton:Click();
+            if O.db.custom_color_data[frame.npc_id] then
+                O.db.custom_color_data[frame.npc_id] = nil;
+
+                self.isHighlighted = false;
+                self.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
+
+                ExtendedOptions:SetShown(false);
+
+                panel:UpdateScroll();
+                S:GetNameplateModule('Handler'):UpdateAll();
+            end
+
             return;
         end
 
-        HideAllExtendedOptionsFrames();
+        if not self:IsMouseOver() then
+            ExtendedOptionsHide();
+        end
 
-        if self.ExtendedOptions:IsShown() then
-            self.ExtendedOptions:SetShown(false);
-            self.ToggleExtendedOptions:UnlockHighlight();
+        if ExtendedOptions:IsShown() then
+            ExtendedOptions:SetShown(false);
+
+            self.isHighlighted = false;
+            self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+            self.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
         else
-            self.ExtendedOptions:SetShown(true);
-            self.ToggleExtendedOptions:LockHighlight();
+            ExtendedOptions.id = frame.npc_id;
+            ExtendedOptions.anchor = frame;
+            ExtendedOptions:SetPoint('TOPLEFT', ExtendedOptions.anchor, 'TOPRIGHT', 0, 0);
+            ExtendedOptions.ColorCategory:SetList();
+            ExtendedOptions.ColorCategory:SetValue(frame.color_category);
+            ExtendedOptions.GlowType:SetValue(frame.glow_type);
+            ExtendedOptions.GlowType:UpdateScrollArea();
+            ExtendedOptions.Category:SetList(frame.category_list);
+            ExtendedOptions.Category:SetValue(frame.category_id);
+            ExtendedOptions.NameText:SetText(frame.name .. '  |cffaaaaaa[' .. frame.npc_id .. ']|r');
+            ExtendedOptions:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+            ExtendedOptions:SetBackdropBorderColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
+            ExtendedOptions:SetShown(true);
+
+            self.isHighlighted = true;
+            self:SetBackdropColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
+            self.ToggleExtendedOptions:SetVertexColor(1, 0.85, 0, 1);
         end
     end);
-
-    table.insert(ExtendedOptionsFrames, frame);
 
     frame.EnableCheckBox = E.CreateCheckButton(frame);
     frame.EnableCheckBox:SetPosition('LEFT', frame, 'LEFT', 10, 0);
@@ -161,7 +258,9 @@ local function CreateRow(frame)
         self:GetParent():SetBackdropColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
     end);
     frame.EnableCheckBox:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+        if not frame.isHighlighted then
+            self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+        end
     end);
 
     frame.CategoryNameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
@@ -174,105 +273,15 @@ local function CreateRow(frame)
     frame.NameText:SetPoint('LEFT', frame.CategoryNameText, 'RIGHT', 8, 0);
     frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
 
-    -- Extended frame
-    frame.ColorLineExtended = frame.ExtendedOptions:CreateTexture(nil, 'ARTWORK');
-    frame.ColorLineExtended:SetPoint('TOPRIGHT', frame.ExtendedOptions, 'TOPLEFT', 0, 0);
-    frame.ColorLineExtended:SetSize(4, ROW_HEIGHT);
-
-    frame.NameExtendedText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-    frame.NameExtendedText:SetPoint('TOPLEFT', frame.ExtendedOptions, 'TOPLEFT', 16, -10);
-    frame.NameExtendedText:SetPoint('TOPRIGHT', frame.ExtendedOptions, 'TOPRIGHT', -8, 0);
-
-    frame.ExtendedDelimiter = E.CreateDelimiter(frame.ExtendedOptions);
-    frame.ExtendedDelimiter:SetPosition('TOPLEFT', frame.NameExtendedText, 'BOTTOMLEFT', -7, 0);
-    frame.ExtendedDelimiter:SetW(frame.ExtendedOptions:GetWidth() - 16);
-
-    frame.CategoryText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
-    frame.CategoryText:SetPoint('TOPLEFT', frame.ExtendedDelimiter, 'BOTTOMLEFT', 7, -2);
-    frame.CategoryText:SetText(L['CATEGORY']);
-
-    frame.Category = E.CreateDropdown('plain', frame.ExtendedOptions);
-    frame.Category:SetPosition('TOPLEFT', frame.CategoryText, 'BOTTOMLEFT', 0, -4);
-    frame.Category:SetSize(120, 20);
-    frame.Category.OnValueChangedCallback = function(_, value)
-        value = tonumber(value);
-
-        if O.db.custom_color_data[frame.id] then
-            O.db.custom_color_data[frame.id].category_id = value;
-            panel:UpdateScroll();
-        end
-    end
-
-    frame.ColorCategoryText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
-    frame.ColorCategoryText:SetPoint('TOPLEFT', frame.Category, 'BOTTOMLEFT', 0, -12);
-    frame.ColorCategoryText:SetText(L['COLOR_CATEGORY']);
-
-    frame.ColorCategory = E.CreateDropdown('plain', frame.ExtendedOptions);
-    frame.ColorCategory:SetPosition('TOPLEFT', frame.ColorCategoryText, 'BOTTOMLEFT', 0, -4);
-    frame.ColorCategory:SetSize(120, 20);
-    frame.ColorCategory.OnValueChangedCallback = function(_, value)
-        value = tonumber(value);
-
-        O.db.custom_color_data[frame.npc_id].color_enabled  = value ~= 0;
-        O.db.custom_color_data[frame.npc_id].color_category = value;
-
-        if O.db.color_category_data[value] then
-            O.db.custom_color_data[frame.npc_id].color[1] = O.db.color_category_data[value].color[1];
-            O.db.custom_color_data[frame.npc_id].color[2] = O.db.color_category_data[value].color[2];
-            O.db.custom_color_data[frame.npc_id].color[3] = O.db.color_category_data[value].color[3];
-            O.db.custom_color_data[frame.npc_id].color[4] = O.db.color_category_data[value].color[4] or 1;
-        else
-            O.db.custom_color_data[frame.npc_id].color[1] = 0.1;
-            O.db.custom_color_data[frame.npc_id].color[2] = 0.1;
-            O.db.custom_color_data[frame.npc_id].color[3] = 0.1;
-            O.db.custom_color_data[frame.npc_id].color[4] = 1;
-        end
-
-        panel:UpdateScroll();
-        S:GetNameplateModule('Handler'):UpdateAll();
-    end
-
-    frame.GlowTypeText = frame.ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
-    frame.GlowTypeText:SetPoint('TOPLEFT', frame.ColorCategory, 'BOTTOMLEFT', 0, -12);
-    frame.GlowTypeText:SetText(L['GLOW_TYPE']);
-
-    frame.GlowType = E.CreateDropdown('plain', frame.ExtendedOptions);
-    frame.GlowType:SetPosition('TOPLEFT', frame.GlowTypeText, 'BOTTOMLEFT', 0, -4);
-    frame.GlowType:SetSize(120, 20);
-    frame.GlowType:SetList(O.Lists.glow_type_short_with_none);
-    frame.GlowType.OnValueChangedCallback = function(_, value)
-        value = tonumber(value);
-
-        O.db.custom_color_data[frame.npc_id].glow_enabled = value ~= 0;
-        O.db.custom_color_data[frame.npc_id].glow_type = value;
-
-        panel:UpdateScroll();
-        S:GetNameplateModule('Handler'):UpdateAll();
-    end
-
-    frame.RemoveButton = E.CreateTextureButton(frame.ExtendedOptions, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.TRASH_WHITE, { 1, 0.2, 0.2, 1});
-    frame.RemoveButton:SetPosition('BOTTOMRIGHT', frame.ExtendedOptions, 'BOTTOMRIGHT', -6, 8);
-    frame.RemoveButton:SetSize(16, 16);
-    frame.RemoveButton:SetScript('OnClick', function(_)
-        if O.db.custom_color_data[frame.npc_id] then
-            O.db.custom_color_data[frame.npc_id] = nil;
-
-            frame.ExtendedOptions:SetShown(false);
-            frame.ToggleExtendedOptions:UnlockHighlight();
-
-            panel:UpdateScroll();
-            S:GetNameplateModule('Handler'):UpdateAll();
-        end
-    end);
-
     E.CreateTooltip(frame, nil, nil, true);
 
     frame:HookScript('OnEnter', function(self)
         self:SetBackdropColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
+        self.ToggleExtendedOptions:SetVertexColor(1, 0.85, 0, 1);
 
         self.NameText:SetText(self.name .. '    |cffaaaaaa' .. self.npc_id .. ' | ' .. self.list[self.color_category] .. ' | ' .. O.Lists.glow_type_short_with_none[self.glow_type] .. '|r');
 
-        if frame.ExtendedOptions:IsShown() then
+        if ExtendedOptions:IsShown() then
             GameTooltip_Hide();
         else
             if not modelBlacklist[self.npc_id] then
@@ -287,7 +296,10 @@ local function CreateRow(frame)
     end);
 
     frame:HookScript('OnLeave', function(self)
-        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+        if not self.isHighlighted then
+            self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+            self.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
+        end
 
         self.NameText:SetText(self.name);
     end);
@@ -306,29 +318,21 @@ local function UpdateRow(frame)
 
     if frame.index % 2 == 0 then
         frame:SetBackdropColor(0.15, 0.15, 0.15, 1);
-        frame.ExtendedOptions:SetBackdropColor(0.15, 0.15, 0.15, 1);
         frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.15, 0.15, 0.15, 1;
     else
         frame:SetBackdropColor(0.075, 0.075, 0.075, 1);
-        frame.ExtendedOptions:SetBackdropColor(0.075, 0.075, 0.075, 1);
         frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
     end
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
     frame.CategoryNameText:SetText(frame.category_list[frame.category_id]);
     frame.NameText:SetText(frame.name);
-    frame.ColorCategory:SetList(frame.list);
-    frame.ColorCategory:SetValue(frame.color_category);
-    frame.GlowType:SetValue(frame.glow_type);
-    frame.GlowType:UpdateScrollArea();
-    frame.Category:SetList(frame.category_list);
-    frame.Category:SetValue(frame.category_id);
-
-    frame.NameExtendedText:SetText(frame.name .. '  |cffaaaaaa[' .. frame.npc_id .. ']|r');
-    frame.ColorLine:SetColorTexture(unpack(frame.color));
-    frame.ColorLineExtended:SetColorTexture(unpack(frame.color));
+    frame.ColorLine:SetColorTexture(frame.color[1], frame.color[2], frame.color[3], frame.color[4]);
     frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4] = frame.color[1], frame.color[2], frame.color[3], 0.5;
-    frame.ExtendedOptions:SetBackdropBorderColor(frame.color[1], frame.color[2], frame.color[3], frame.color[4]);
+
+    if frame.isHighlighted then
+        frame:SetBackdropColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
+    end
 
     frame.tooltip = string.format(LIST_TOOLTIP_PATTERN, frame.name, frame.npc_id);
 end
@@ -346,6 +350,8 @@ panel.UpdateScroll = function()
     table.sort(sortedData, function(a, b)
         return a.npc_name < b.npc_name;
     end);
+
+    local combinedList = S:GetModule('Options_ColorCategory'):GetCombinedList();
 
     framePool:ReleaseAll();
 
@@ -381,14 +387,14 @@ panel.UpdateScroll = function()
             frame.glow_enabled = data.glow_type ~= 0;
             frame.glow_type    = data.glow_type or 0;
 
-            if O.db.color_category_data[data.color_category] then
+            if combinedList[data.color_category] then
                 O.db.custom_color_data[data.npc_id].color_enabled  = true;
                 O.db.custom_color_data[data.npc_id].color_category = data.color_category;
 
-                O.db.custom_color_data[data.npc_id].color[1] = O.db.color_category_data[data.color_category].color[1];
-                O.db.custom_color_data[data.npc_id].color[2] = O.db.color_category_data[data.color_category].color[2];
-                O.db.custom_color_data[data.npc_id].color[3] = O.db.color_category_data[data.color_category].color[3];
-                O.db.custom_color_data[data.npc_id].color[4] = O.db.color_category_data[data.color_category].color[4] or 1;
+                O.db.custom_color_data[data.npc_id].color[1] = combinedList[data.color_category].color[1];
+                O.db.custom_color_data[data.npc_id].color[2] = combinedList[data.color_category].color[2];
+                O.db.custom_color_data[data.npc_id].color[3] = combinedList[data.color_category].color[3];
+                O.db.custom_color_data[data.npc_id].color[4] = combinedList[data.color_category].color[4] or 1;
             else
                 O.db.custom_color_data[data.npc_id].color_enabled  = false;
                 O.db.custom_color_data[data.npc_id].color_category = 0;
@@ -868,7 +874,7 @@ panel.Load = function(self)
 
         panel.SearchEditBox:SetText('');
         panel.SearchEditBox.Instruction:SetShown(true);
-        panel.UpdateScroll();
+        panel:UpdateScroll();
 
         self:SetShown(false);
     end);
@@ -880,7 +886,7 @@ panel.Load = function(self)
     self.CategoryDropdown:SetValue(0);
     self.CategoryDropdown.OnValueChangedCallback = function(_, value)
         panel.categoryId = tonumber(value);
-        panel.UpdateScroll();
+        panel:UpdateScroll();
     end
 
     self.OpenCategoryList = E.CreateTextureButton(self, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.LIST_WHITE, { 1, 1, 1, 1 });
@@ -908,8 +914,6 @@ panel.Load = function(self)
     PixelUtil.SetPoint(self.CustomColorScrollArea.ScrollBar, 'BOTTOMLEFT', self.CustomColorScrollArea, 'BOTTOMRIGHT', -8, 0);
 
     framePool = CreateFramePool('Button', self.CustomColorScrollChild, 'BackdropTemplate');
-
-    self.UpdateScroll();
 
     self.List = Mixin(CreateFrame('Frame', nil, self, 'BackdropTemplate'), E.PixelPerfectMixin);
     self.List:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
@@ -961,7 +965,7 @@ panel.Load = function(self)
 
         self:SetValue(nil);
 
-        panel.UpdateScroll();
+        panel:UpdateScroll();
     end
 
     self.CopyFromProfileText = E.CreateFontString(self);
@@ -1014,8 +1018,9 @@ panel.Load = function(self)
         self:SetText('');
         self:ClearFocus();
 
-        panel.UpdateScroll();
-        panel.UpdateCategoryListScroll();
+        panel:UpdateScroll();
+        panel:UpdateCategoryListScroll();
+
         panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown());
         panel.CategoryDropdown:SetValue(panel.CategoryDropdown:GetValue());
     end);
@@ -1032,8 +1037,6 @@ panel.Load = function(self)
     PixelUtil.SetPoint(self.CategoryListScrollArea.ScrollBar, 'BOTTOMLEFT', self.CategoryListScrollArea, 'BOTTOMRIGHT', -8, 0);
 
     self.CategoryListButtonPool = CreateFramePool('Button', self.CategoryListScrollChild, 'BackdropTemplate');
-
-    self.UpdateCategoryListScroll();
 end
 
 panel.OnShow = function(self)
@@ -1043,13 +1046,15 @@ panel.OnShow = function(self)
 end
 
 panel.OnShowOnce = function(self)
+    self:UpdateScroll();
+    self:UpdateCategoryListScroll();
+
     for i = 1, #O.Lists.custom_color_npcs do
         self.UpdateListScroll(i);
         self.UpdateListScroll(i);
     end
 
     self.UpdateListScroll(DEFAULT_LIST_VALUE);
-    self.UpdateCategoryListScroll();
 end
 
 panel.OnHide = function()
@@ -1058,6 +1063,7 @@ end
 
 panel.Update = function(self)
     self:UpdateScroll();
+    self:UpdateCategoryListScroll();
 end
 
 function Module:MODIFIER_STATE_CHANGED(key, down)
