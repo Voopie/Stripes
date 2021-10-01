@@ -2093,12 +2093,16 @@ local NewColorPicker do
             r, g, b = GetFloorValue(r), GetFloorValue(g), GetFloorValue(b);
             a       = a and self.hasOpacity and GetFloorValue(a) or 1;
 
+            if self.OnValueChanged then
+                local cR, cG, cB, cA = self.sample:GetVertexColor();
+                cR, cG, cB, cA = GetFloorValue(cR), GetFloorValue(cG), GetFloorValue(cB), GetFloorValue(cA);
+                if cR ~= r or cG ~= g or cB ~= b or cA ~= a then
+                    self:OnValueChanged(r, g, b, a);
+                end
+            end
+
             self.sample:SetVertexColor(r, g, b, a);
             self.background:SetAlpha(a);
-
-            if self.OnValueChanged then
-                self:OnValueChanged(r, g, b, a);
-            end
         end
 
         holder.hasOpacity = hasOpacity;
