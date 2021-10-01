@@ -1399,7 +1399,9 @@ panel.OnHide = function()
 end
 
 panel.Update = function(self)
-    self:UpdateCustomCastsScroll();
+    S:GetModule('Options_ColorCategory'):UpdateAllLists();
+    S:GetModule('Options_ColorCategory'):UpdateListScroll();
+
     self:UpdateCategoryListScroll();
 end
 
