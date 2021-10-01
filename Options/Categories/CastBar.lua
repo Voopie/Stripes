@@ -89,6 +89,7 @@ local ExtendedOptions = CreateFrame('Frame', nil, panel, 'BackdropTemplate');
 ExtendedOptions:SetFrameLevel(100);
 ExtendedOptions:SetSize(260, 220);
 ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
+ExtendedOptions:SetClampedToScreen(true);
 ExtendedOptions:SetShown(false);
 
 ExtendedOptions.Icon = ExtendedOptions:CreateTexture(nil, 'ARTWORK');
