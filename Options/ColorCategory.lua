@@ -107,9 +107,7 @@ EditBox:SetScript('OnEnterPressed', function(self)
 
     Module.AddColorCategory(name);
 
-    Module:UpdateDropdownList();
-    Module:UpdateCombinedList();
-
+    Module:UpdateAllLists();
     Module:UpdateListScroll();
 
     self:SetText('');
@@ -162,9 +160,7 @@ Module.UpdateName = function(editbox, index, newName)
 
     O.db.color_category_data[index].name = newName;
 
-    Module:UpdateDropdownList();
-    Module:UpdateCombinedList();
-
+    Module:UpdateAllLists();
     Module:UpdateListScroll();
     editbox:SetShown(false);
 end
@@ -188,10 +184,8 @@ local CreateListRow = function(frame)
         O.db.color_category_data[index].color[3] = b;
         O.db.color_category_data[index].color[4] = a or 1;
 
+        Module:UpdateAllLists();
         Module.UpdateOtherScrolls();
-
-        Module:UpdateDropdownList();
-        Module:UpdateCombinedList();
     end
     frame.ColorPicker:HookScript('OnEnter', function(self)
         self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
@@ -238,9 +232,7 @@ local CreateListRow = function(frame)
 
         table.remove(O.db.color_category_data, index);
 
-        Module:UpdateDropdownList();
-        Module:UpdateCombinedList();
-
+        Module:UpdateAllLists();
         Module:UpdateListScroll();
     end);
     frame.RemoveButton:HookScript('OnEnter', function(self)
@@ -380,6 +372,11 @@ function Module:GetCombinedList()
     return self.CombinedList;
 end
 
+function Module:UpdateAllLists()
+    self:UpdateDropdownList();
+    self:UpdateCombinedList();
+end
+
 function Module:ToggleListFrame()
     List:SetShown(not List:IsShown());
 end
@@ -393,8 +390,6 @@ function Module:HideListFrame()
 end
 
 function Module:StartUp()
-    self:UpdateDropdownList();
-    self:UpdateCombinedList();
-
+    self:UpdateAllLists();
     self:UpdateListScroll();
 end

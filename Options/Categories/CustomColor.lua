@@ -949,6 +949,7 @@ panel.Load = function(self)
     self.ProfilesDropdown = E.CreateDropdown('plain', self);
     self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.CustomColorEditFrame, 'TOPRIGHT', 0, 40);
     self.ProfilesDropdown:SetSize(157, 22);
+    self.ProfilesDropdown:SetTooltip(L['OPTIONS_COPY_REPLACE_FROM_PROFILE_TOOLTIP']);
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
         local index = S:GetModule('Options'):FindIndexByName(name);
         if not index then
@@ -957,15 +958,24 @@ panel.Load = function(self)
         end
 
         if isShiftKeyDown then
+            wipe(StripesDB.profiles[O.activeProfileId].color_category_data);
+            wipe(StripesDB.profiles[O.activeProfileId].custom_color_category_data);
             wipe(StripesDB.profiles[O.activeProfileId].custom_color_data);
-            StripesDB.profiles[O.activeProfileId].custom_color_data = U.DeepCopy(StripesDB.profiles[index].custom_color_data);
+
+            StripesDB.profiles[O.activeProfileId].color_category_data        = U.DeepCopy(StripesDB.profiles[index].color_category_data);
+            StripesDB.profiles[O.activeProfileId].custom_color_category_data = U.DeepCopy(StripesDB.profiles[index].custom_color_category_data);
+            StripesDB.profiles[O.activeProfileId].custom_color_data          = U.DeepCopy(StripesDB.profiles[index].custom_color_data);
         else
-            StripesDB.profiles[O.activeProfileId].custom_color_data = U.Merge(StripesDB.profiles[index].custom_color_data, StripesDB.profiles[O.activeProfileId].custom_color_data);
+            StripesDB.profiles[O.activeProfileId].color_category_data        = U.Merge(StripesDB.profiles[index].color_category_data, StripesDB.profiles[O.activeProfileId].color_category_data);
+            StripesDB.profiles[O.activeProfileId].custom_color_category_data = U.Merge(StripesDB.profiles[index].custom_color_category_data, StripesDB.profiles[O.activeProfileId].custom_color_category_data);
+            StripesDB.profiles[O.activeProfileId].custom_color_data          = U.Merge(StripesDB.profiles[index].custom_color_data, StripesDB.profiles[O.activeProfileId].custom_color_data);
         end
 
         self:SetValue(nil);
 
-        panel:UpdateScroll();
+        S:GetModule('Options_ColorCategory'):UpdateAllLists();
+        S:GetModule('Options_ColorCategory'):UpdateListScroll();
+        panel:UpdateCategoryListScroll();
     end
 
     self.CopyFromProfileText = E.CreateFontString(self);

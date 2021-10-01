@@ -127,6 +127,7 @@ L['OPTIONS_SHIFT_CLICK_TO_DELETE'] = 'Shift-LMB to quickly delete';
 
 L['OPTIONS_COPY_FROM_PROFILE'] = 'Copy from profile';
 L['OPTIONS_REPLACE_FROM_PROFILE'] = 'Replace from profile';
+L['OPTIONS_COPY_REPLACE_FROM_PROFILE_TOOLTIP'] = 'All entries will be copied (or replaced if the Shift key is pressed) along with the associated color list and categories';
 
 L['OPTIONS_CATEGORY_COMMON'] = 'General';
 L['OPTIONS_CATEGORY_SIZES'] = 'Sizes';

@@ -1286,6 +1286,7 @@ panel.Load = function(self)
     self.ProfilesDropdown = E.CreateDropdown('plain', self.TabsFrames['CustomCastsTab'].Content);
     self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.castbar_custom_casts_editframe, 'TOPRIGHT', 0, 40);
     self.ProfilesDropdown:SetSize(157, 22);
+    self.ProfilesDropdown:SetTooltip(L['OPTIONS_COPY_REPLACE_FROM_PROFILE_TOOLTIP']);
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
         local index = S:GetModule('Options'):FindIndexByName(name);
         if not index then
@@ -1294,15 +1295,24 @@ panel.Load = function(self)
         end
 
         if isShiftKeyDown then
+            wipe(StripesDB.profiles[O.activeProfileId].color_category_data);
+            wipe(StripesDB.profiles[O.activeProfileId].castbar_custom_casts_category_data);
             wipe(StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data);
-            StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data = U.DeepCopy(StripesDB.profiles[index].castbar_custom_casts_data);
+
+            StripesDB.profiles[O.activeProfileId].color_category_data                = U.DeepCopy(StripesDB.profiles[index].color_category_data);
+            StripesDB.profiles[O.activeProfileId].castbar_custom_casts_category_data = U.DeepCopy(StripesDB.profiles[index].castbar_custom_casts_category_data);
+            StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data          = U.DeepCopy(StripesDB.profiles[index].castbar_custom_casts_data);
         else
-            StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data = U.Merge(StripesDB.profiles[index].castbar_custom_casts_data, StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data);
+            StripesDB.profiles[O.activeProfileId].color_category_data                = U.Merge(StripesDB.profiles[index].color_category_data, StripesDB.profiles[O.activeProfileId].color_category_data);
+            StripesDB.profiles[O.activeProfileId].castbar_custom_casts_category_data = U.Merge(StripesDB.profiles[index].castbar_custom_casts_category_data, StripesDB.profiles[O.activeProfileId].castbar_custom_casts_category_data);
+            StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data          = U.Merge(StripesDB.profiles[index].castbar_custom_casts_data, StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data);
         end
 
         self:SetValue(nil);
 
-        panel:UpdateCustomCastsScroll();
+        S:GetModule('Options_ColorCategory'):UpdateAllLists();
+        S:GetModule('Options_ColorCategory'):UpdateListScroll();
+        panel:UpdateCategoryListScroll();
     end
 
     self.CopyFromProfileText = E.CreateFontString(self.TabsFrames['CustomCastsTab'].Content);
