@@ -5,81 +5,131 @@ local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
 local ROW_HEIGHT = 28;
 
 local PREDEFINED_COLORS = {
-    [1] = {
+    {
+        name  = 'White',
+        color = { 1, 1, 1, 1 },
+    },
+
+    {
+        name  = 'Silver',
+        color = { 0.75, 0.75, 0.75, 1 },
+    },
+
+    {
+        name  = 'Gray',
+        color = { 0.5, 0.5, 0.5, 1 },
+    },
+
+    {
+        name  = 'Black',
+        color = { 0, 0, 0, 1 },
+    },
+
+    {
+        name  = 'Red',
+        color = { 1, 0, 0, 1 },
+    },
+
+    {
+        name  = 'Orange Red',
+        color = { 1, 0.27, 0, 1 },
+    },
+
+    {
+        name  = 'Maroon',
+        color = { 0.5, 0, 0, 1},
+    },
+
+    {
+        name  = 'Saddle Brown',
+        color = { 0.55, 0.27, 0.07, 1 },
+    },
+
+    {
+        name  = 'Yellow',
+        color = { 1, 1, 0, 1},
+    },
+
+    {
+        name  = 'Moccasin',
+        color = { 1, 0.89, 0.71, 1 },
+    },
+
+    {
         name  = 'Meadowlark',
         color = { 0.93, 0.86, 0.33, 1 },
     },
 
-    [2]  = {
-        name  = 'Cherry Tomato',
-        color = { 0.91, 0.29, 0.24, 1 },
+    {
+        name  = 'Olive',
+        color = { 0.5, 0.5, 0, 1 },
     },
 
-    [3]  = {
-        name  = 'Little Boy Blue',
-        color = { 0.44, 0.62, 0.85, 1 },
+    {
+        name  = 'Lime',
+        color = { 0, 1, 0, 1 },
     },
 
-    [4]  = {
-        name  = 'Blooming Dahlia',
-        color = { 0.93, 0.59, 0.53, 1 },
+    {
+        name  = 'Green',
+        color = { 0, 0.5, 0, 1 },
     },
 
-    [5]  = {
-        name  = 'Arcadia',
-        color = { 0, 0.65, 0.57, 1 },
+    {
+        name  = 'Aqua',
+        color = { 0, 1, 1, 1 },
     },
 
-    [6]  = {
+    {
+        name  = 'Teal',
+        color = { 0, 0.5, 0.5, 1 },
+    },
+
+    {
+        name  = 'Blue',
+        color = { 0, 0, 1, 1 },
+    },
+
+    {
+        name  = 'Navy',
+        color = { 0, 0, 0.5, 1 },
+    },
+
+    {
+        name  = 'Fuchsia',
+        color = { 1, 0, 1, 1 },
+    },
+
+    {
+        name  = 'Purple',
+        color = { 0.5, 0, 0.5 },
+    },
+
+    {
         name  = 'Ultra Violet',
         color = { 0.42, 0.36, 0.58, 1  },
     },
 
-    [7]  = {
-        name  = 'Emperador',
-        color = { 0.42, 0.31, 0.24, 1 },
+    {
+        name  = 'Dark Orange',
+        color = { 1, 0.55, 0, 1  },
     },
 
-    [8] = {
-        name  = 'Almost Mauve',
-        color = { 0.92, 0.87, 0.86, 1},
+    {
+        name  = 'Coral',
+        color = { 1, 0.5, 0.31, 1  },
     },
 
-    [9] = {
-        name  = 'Lime Punch',
-        color = { 0.75, 0.84, 0.25, 1 },
+    {
+        name = 'Aquamarine',
+        color = { 0.5, 1, 0.83, 1  },
     },
 
-    [10] = {
-        name  = 'Sailor Blue',
-        color = { 0.18, 0.29, 0.38, 1 },
+    {
+        name = 'Slate Gray',
+        color = { 0.44, 0.5, 0.56, 1  },
     },
-
-    [11] = {
-        name  = 'Butterum',
-        color = { 0.77, 0.56, 0.4, 1 },
-    },
-
-    [12] = {
-        name  = 'Marina',
-        color = { 0.31, 0.52, 0.77, 1 },
-    },
-
-    [13] = {
-        name  = 'Golden Lime',
-        color = { 0.61, 0.6, 0.25, 1 },
-    },
-
-    [14] = {
-        name  = 'Aurora Red',
-        color = { 0.73, 0.23, 0.2, 1 },
-    },
-
-    [15] = {
-        name  = 'Chili Oil',
-        color = { 0.58, 0.28, 0.26, 1 },
-    },
-};
+}
 
 local List = Mixin(CreateFrame('Frame', nil, O.frame, 'BackdropTemplate'), E.PixelPerfectMixin);
 List:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
