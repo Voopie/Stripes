@@ -1091,17 +1091,23 @@ do
 
     local kinds = {
         ['plain'] = {
-            SetList = function(self, itemsTable)
-                self.itemsTable = itemsTable or {};
-                self.tKeys      = self.tKeys or {};
+            SetList = function(self, itemsTable, sortFunc)
+                self.itemsTable  = itemsTable or {};
+                self.sortedTable = self.sortedTable or {};
 
-                wipe(self.tKeys);
+                wipe(self.sortedTable);
 
-                for k in pairs(self.itemsTable) do
-                    table.insert(self.tKeys, k);
+                for k, v in pairs(self.itemsTable) do
+                    table.insert(self.sortedTable, { key = k, value = v});
                 end
 
-                table.sort(self.tKeys);
+                if sortFunc and type(sortFunc) == 'function' then
+                    table.sort(self.sortedTable, sortFunc);
+                else
+                    table.sort(self.sortedTable, function(a, b)
+                        return a.key < b.key;
+                    end);
+                end
 
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
@@ -1114,7 +1120,7 @@ do
 
                 holderButton.buttonPool:ReleaseAll();
 
-                for _, key in pairs(self.tKeys) do
+                for _, data in pairs(self.sortedTable) do
                     itemCounter = itemCounter + 1;
                     itemButton, isNew = holderButton.buttonPool:Acquire();
 
@@ -1167,10 +1173,10 @@ do
 
                     PixelUtil.SetHeight(itemButton, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
-                    itemButton.Text:SetText(self.itemsTable[key]);
+                    itemButton.Text:SetText(self.itemsTable[data.key]);
 
-                    itemButton.Key   = key;
-                    itemButton.Value = self.itemsTable[key];
+                    itemButton.Key   = data.key;
+                    itemButton.Value = self.itemsTable[data.key];
 
                     itemButton:SetShown(true);
                 end
