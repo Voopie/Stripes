@@ -116,20 +116,23 @@ O.OpenOptions = function()
 end
 
 O.CloseOptions = function()
-    if O.frame:IsShown() then
-        O.frame.SearchButton:SetShown(true);
-        O.frame.SearchEditbox:SetShown(false);
-        O.frame:SetPropagateKeyboardInput(false);
-        O.frame:SetShown(false);
-
-        if isNeedReload then
-            StaticPopup_Show('STRIPES_OPTIONS_NEED_RELOAD');
-        else
-            StaticPopup_Hide('STRIPES_OPTIONS_NEED_RELOAD');
-        end
-
-        S:GetModule('Options_ColorCategory'):HideListFrame();
+    if not O.frame:IsShown() then
+        return;
     end
+
+    O.frame.SearchButton:SetShown(true);
+    O.frame.SearchEditbox:SetShown(false);
+    O.frame:SetPropagateKeyboardInput(false);
+    O.frame:SetShown(false);
+
+    if isNeedReload then
+        StaticPopup_Show('STRIPES_OPTIONS_NEED_RELOAD');
+    else
+        StaticPopup_Hide('STRIPES_OPTIONS_NEED_RELOAD');
+    end
+
+    E.DropDown_CloseNotActive();
+    S:GetModule('Options_ColorCategory'):HideListFrame();
 end
 
 O.ToggleOptions = function()
@@ -580,7 +583,6 @@ O.UpdatePanelAll = function()
         end
     end
 end
-
 
 O.NeedReload = function(name, need)
     needReloadTable[name] = need;

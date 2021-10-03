@@ -1918,7 +1918,7 @@ do
     end
 
     if UIDropDownMenu_HandleGlobalMouseEvent then
-        local function DropDown_CloseNotActive()
+        function E.DropDown_CloseNotActive()
             for _, list in ipairs(activeLists) do
                 if list:IsShown() and not list:IsMouseOver() and not (list.scrollBar and list.scrollBar:IsMouseOver()) then
                     list:SetShown(false);
@@ -1928,7 +1928,7 @@ do
 
         hooksecurefunc('UIDropDownMenu_HandleGlobalMouseEvent', function(button, event)
             if event == 'GLOBAL_MOUSE_DOWN' and (button == 'LeftButton' or button == 'RightButton') then
-               DropDown_CloseNotActive();
+                E.DropDown_CloseNotActive();
             end
         end);
     end
