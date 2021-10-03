@@ -33,6 +33,22 @@ local CATEGORY_MAX_LETTERS = 10;
 
 panel.categoryId = 0;
 
+local function SortCategoryByName(a, b)
+    if a.value == b.value then
+        return true;
+    end
+
+    if a.value == L['OPTIONS_CATEGORY_ALL'] then
+        return true;
+    end
+
+    if b.value == L['OPTIONS_CATEGORY_ALL'] then
+        return false;
+    end
+
+    return a.value < b.value;
+end
+
 local function AddCustomCast(spellId)
     if O.db.castbar_custom_casts_data[spellId] then
         return;
@@ -487,10 +503,10 @@ panel.CreateCategoryListRow = function(frame)
     frame.EditBox:SetMaxLetters(CATEGORY_MAX_LETTERS);
     frame.EditBox:SetShown(false);
     frame.EditBox:SetScript('OnEnterPressed', function(self)
-        local index   = self:GetParent().index;
+        local index   = self:GetParent().dbIndex;
         local newName = strtrim(self:GetText());
 
-        if not newName or newName == '' then
+        if not newName or newName == '' or string.lower(newName) == string.lower(L['OPTIONS_CATEGORY_ALL']) then
             return self:SetShown(false);
         end
 
@@ -512,7 +528,7 @@ panel.CreateCategoryListRow = function(frame)
 
         panel.UpdateCustomCastsScroll();
         panel.UpdateCategoryListScroll();
-        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown());
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName);
         panel.CategoryDropdown:SetValue(panel.CategoryDropdown:GetValue());
 
         self:SetShown(false);
@@ -531,11 +547,11 @@ panel.CreateCategoryListRow = function(frame)
     frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
     frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     frame.RemoveButton:SetScript('OnClick', function(self)
-        table.remove(O.db.castbar_custom_casts_category_data, self:GetParent().index);
+        table.remove(O.db.castbar_custom_casts_category_data, self:GetParent().dbIndex);
 
         panel.UpdateCustomCastsScroll();
         panel.UpdateCategoryListScroll();
-        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown());
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName);
         panel.CategoryDropdown:SetValue(0);
     end);
     frame.RemoveButton:HookScript('OnEnter', function(self)
@@ -600,13 +616,25 @@ panel.UpdateCategoryListRow = function(frame)
     frame.NameText:SetText(frame.name);
 end
 
+local categorySortedData = {};
 panel.UpdateCategoryListScroll = function()
     wipe(DataCategoryListRows);
+    wipe(categorySortedData);
+
+    for index, data in pairs(O.db.castbar_custom_casts_category_data) do
+        data.index = index;
+        table.insert(categorySortedData, data);
+    end
+
+    table.sort(categorySortedData, function(a, b)
+        return a.name < b.name;
+    end);
+
     panel.CategoryListButtonPool:ReleaseAll();
 
     local frame, isNew;
 
-    for index, data in ipairs(O.db.castbar_custom_casts_category_data) do
+    for index, data in ipairs(categorySortedData) do
         frame, isNew = panel.CategoryListButtonPool:Acquire();
 
         table.insert(DataCategoryListRows, frame);
@@ -615,8 +643,9 @@ panel.UpdateCategoryListScroll = function()
             panel.CreateCategoryListRow(frame);
         end
 
-        frame.index = index;
-        frame.name  = data.name;
+        frame.index   = index;
+        frame.dbIndex = data.index;
+        frame.name    = data.name;
 
         panel.UpdateCategoryListRow(frame);
 
@@ -1255,7 +1284,7 @@ panel.Load = function(self)
     self.CategoryDropdown = E.CreateDropdown('plain', self.TabsFrames['CustomCastsTab'].Content);
     self.CategoryDropdown:SetPosition('LEFT', self.SearchEditBox, 'RIGHT', 11, 0);
     self.CategoryDropdown:SetSize(160, 22);
-    self.CategoryDropdown:SetList(self:GetCategoriesDropdown());
+    self.CategoryDropdown:SetList(self:GetCategoriesDropdown(), SortCategoryByName);
     self.CategoryDropdown:SetValue(0);
     self.CategoryDropdown.OnValueChangedCallback = function(_, value)
         panel.categoryId = tonumber(value);
@@ -1352,7 +1381,7 @@ panel.Load = function(self)
     self.CategoryEditbox:SetScript('OnEnterPressed', function(self)
         local name = strtrim(self:GetText());
 
-        if not name or name == ''  then
+        if not name or name == '' or string.lower(name) == string.lower(L['OPTIONS_CATEGORY_ALL']) then
             self:SetText('');
             self:ClearFocus();
             return;
@@ -1365,7 +1394,7 @@ panel.Load = function(self)
 
         panel.UpdateCustomCastsScroll();
         panel.UpdateCategoryListScroll();
-        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown());
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName);
         panel.CategoryDropdown:SetValue(panel.CategoryDropdown:GetValue());
     end);
 

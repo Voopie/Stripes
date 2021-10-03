@@ -128,6 +128,10 @@ PixelUtil.SetPoint(ListScrollArea.ScrollBar, 'BOTTOMLEFT', ListScrollArea, 'BOTT
 local ListButtonPool = CreateFramePool('Button', ListScrollChild, 'BackdropTemplate');
 
 Module.AddColorCategory = function(name)
+    if string.lower(name) == string.lower(L['NO']) then
+        return;
+    end
+
     for _, data in ipairs(O.db.color_category_data) do
         if data.name == name then
             return;
@@ -140,7 +144,7 @@ end
 Module.UpdateName = function(editbox, index, newName)
     newName = strtrim(newName);
 
-    if not newName or newName == '' then
+    if not newName or newName == '' or string.lower(newName) == string.lower(L['NO']) then
         return editbox:SetShown(false);
     end
 
@@ -174,7 +178,7 @@ local CreateListRow = function(frame)
     frame.ColorPicker = E.CreateColorPicker(frame);
     frame.ColorPicker:SetPosition('LEFT', frame, 'LEFT', 4, 0);
     frame.ColorPicker.OnValueChanged = function(self, r, g, b, a)
-        local index = self:GetParent().index;
+        local index = self:GetParent().dbIndex;
         if not index then
             return;
         end
@@ -204,7 +208,7 @@ local CreateListRow = function(frame)
     frame.EditBox:SetSize(170, ROW_HEIGHT);
     frame.EditBox:SetShown(false);
     frame.EditBox:SetScript('OnEnterPressed', function(self)
-        local index = self:GetParent().index;
+        local index = self:GetParent().dbIndex;
         if not index then
             return;
         end
@@ -225,7 +229,7 @@ local CreateListRow = function(frame)
     frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
     frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     frame.RemoveButton:SetScript('OnClick', function(self)
-        local index = self:GetParent().index;
+        local index = self:GetParent().dbIndex;
         if not index then
             return;
         end
@@ -298,13 +302,25 @@ local UpdateListRow = function(frame)
     frame.ColorPicker:SetValue(unpack(frame.color));
 end
 
+local colorCategorySortedData = {};
 Module.UpdateListScroll = function()
     wipe(DataListRows);
+    wipe(colorCategorySortedData);
+
+    for index, data in pairs(O.db.color_category_data) do
+        data.index = index;
+        table.insert(colorCategorySortedData, data);
+    end
+
+    table.sort(colorCategorySortedData, function(a, b)
+        return a.name < b.name;
+    end);
+
     ListButtonPool:ReleaseAll();
 
     local frame, isNew;
 
-    for index, data in ipairs(O.db.color_category_data) do
+    for index, data in ipairs(colorCategorySortedData) do
         frame, isNew = ListButtonPool:Acquire();
 
         table.insert(DataListRows, frame);
@@ -313,9 +329,10 @@ Module.UpdateListScroll = function()
             CreateListRow(frame);
         end
 
-        frame.index = index;
-        frame.name  = data.name;
-        frame.color = data.color;
+        frame.index   = index;
+        frame.dbIndex = data.index;
+        frame.name    = data.name;
+        frame.color   = data.color;
 
         UpdateListRow(frame);
 
