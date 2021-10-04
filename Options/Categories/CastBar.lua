@@ -469,6 +469,10 @@ panel.UpdateCustomCastsScroll = function()
 
         if panel.searchWordLower then
             found = string.find(string.lower(name), panel.searchWordLower, 1, true);
+
+            if not found then
+                found = string.find(id, panel.searchWordLower, 1, true);
+            end
         elseif panel.categoryId then
             found = (panel.categoryId == 0 or (panel.categoryId == 0 and not data.category_id) or data.category_id == panel.categoryId);
         else
