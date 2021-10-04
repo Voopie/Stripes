@@ -22,6 +22,7 @@ L['FORMAT'] = 'Format';
 L['SEARCH'] = 'Search';
 L['CATEGORY'] = 'Category';
 L['COLOR_CATEGORY'] = 'Color category';
+L['CUSTOM_COLOR_CATEGORY'] = 'Custom color category';
 
 L['FONT_VALUE'] = 'Font';
 L['FONT_SIZE'] = 'Font size';
