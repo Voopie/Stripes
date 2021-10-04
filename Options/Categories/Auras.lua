@@ -310,12 +310,10 @@ local function UpdateCustomAuraRow(frame)
         frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
     end
 
-    local name, _, icon = GetSpellInfo(frame.id);
-
     frame.EnableCheckBox:SetChecked(frame.enabled);
-    frame.Icon:SetTexture(icon);
+    frame.Icon:SetTexture(frame.icon);
     frame.IdText:SetText(frame.id);
-    frame.NameText:SetText(name);
+    frame.NameText:SetText(frame.name);
 
     if frame.filter == 'HELPFUL' then
         frame.FilterToggleButton.texture:SetColorTexture(0.4, 0.85, 0.4);
@@ -348,14 +346,29 @@ local function UpdateCustomAuraRow(frame)
     end
 end
 
+local sortedCustomData = {};
 panel.UpdateScroll = function()
     wipe(DataCustomAuraRows);
+    wipe(sortedCustomData);
+
+    for id in pairs(O.db.auras_custom_data) do
+        table.insert(sortedCustomData, id);
+    end
+
+    table.sort(sortedCustomData, function(a, b)
+        return (GetSpellInfo(a)) < (GetSpellInfo(b));
+    end);
+
     aurasCustomFramePool:ReleaseAll();
 
     local index = 0;
     local frame, isNew;
+    local name, icon, data;
 
-    for id, data in pairs(O.db.auras_custom_data) do
+    for _, id in pairs(sortedCustomData) do
+        name, _, icon = GetSpellInfo(id);
+        data = O.db.auras_custom_data[id];
+
         index = index + 1;
 
         frame, isNew = aurasCustomFramePool:Acquire();
@@ -368,6 +381,8 @@ panel.UpdateScroll = function()
 
         frame.index         = index;
         frame.id            = id;
+        frame.icon          = icon;
+        frame.name          = name;
         frame.filter        = data.filter;
         frame.enabled       = data.enabled;
         frame.own_only      = data.own_only;
@@ -521,21 +536,34 @@ local function UpdateBlackListRow(frame)
         frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
     end
 
-    local name, _, icon = GetSpellInfo(frame.id);
-
     frame.EnableCheckBox:SetChecked(frame.enabled);
-    frame.Icon:SetTexture(icon);
-    frame.NameText:SetText(name);
+    frame.Icon:SetTexture(frame.icon);
+    frame.NameText:SetText(frame.name);
 end
 
+local sortedBlackListData = {};
 panel.UpdateBlackListScroll = function()
     wipe(DataBlackListRows);
+    wipe(sortedBlackListData);
+
+    for id in pairs(O.db.auras_blacklist) do
+        table.insert(sortedBlackListData, id);
+    end
+
+    table.sort(sortedBlackListData, function(a, b)
+        return (GetSpellInfo(a)) < (GetSpellInfo(b));
+    end);
+
     panel.BlackListButtonPool:ReleaseAll();
 
     local index = 0;
     local frame, isNew;
+    local name, icon, data;
 
-    for id, data in pairs(O.db.auras_blacklist) do
+    for _, id in pairs(sortedBlackListData) do
+        name, _, icon = GetSpellInfo(id);
+        data = O.db.auras_blacklist[id];
+
         index = index + 1;
 
         frame, isNew = panel.BlackListButtonPool:Acquire();
@@ -548,6 +576,8 @@ panel.UpdateBlackListScroll = function()
 
         frame.index   = index;
         frame.id      = id;
+        frame.icon    = icon;
+        frame.name    = name;
         frame.enabled = data.enabled;
 
         UpdateBlackListRow(frame);
@@ -681,22 +711,35 @@ local function UpdateHPBarColorRow(frame)
         frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
     end
 
-    local name, _, icon = GetSpellInfo(frame.id);
-
     frame.EnableCheckBox:SetChecked(frame.enabled);
-    frame.Icon:SetTexture(icon);
-    frame.NameText:SetText(name);
+    frame.Icon:SetTexture(frame.icon);
+    frame.NameText:SetText(frame.name);
     frame.ColorPicker:SetValue(unpack(frame.color));
 end
 
+local sortedHBBarColorData = {};
 panel.UpdateHPBarColorScroll = function()
     wipe(DataHPBarColorRows);
+    wipe(sortedHBBarColorData);
+
+    for id in pairs(O.db.auras_hpbar_color_data) do
+        table.insert(sortedHBBarColorData, id);
+    end
+
+    table.sort(sortedHBBarColorData, function(a, b)
+        return (GetSpellInfo(a)) < (GetSpellInfo(b));
+    end);
+
     panel.HPBarColorButtonPool:ReleaseAll();
 
     local index = 0;
     local frame, isNew;
+    local name, icon, data;
 
-    for id, data in pairs(O.db.auras_hpbar_color_data) do
+    for _, id in pairs(sortedHBBarColorData) do
+        name, _, icon = GetSpellInfo(id);
+        data = O.db.auras_hpbar_color_data[id];
+
         index = index + 1;
 
         frame, isNew = panel.HPBarColorButtonPool:Acquire();
@@ -709,6 +752,8 @@ panel.UpdateHPBarColorScroll = function()
 
         frame.index   = index;
         frame.id      = id;
+        frame.name    = name;
+        frame.icon    = icon;
         frame.enabled = data.enabled;
         frame.color   = data.color;
 
