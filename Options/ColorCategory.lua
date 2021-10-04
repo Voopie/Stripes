@@ -3,6 +3,7 @@ local Module = S:NewModule('Options_ColorCategory');
 
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
 local ROW_HEIGHT = 28;
+local CATEGORY_MAX_LETTERS = 25;
 
 local PREDEFINED_COLORS = {
     {
@@ -144,6 +145,7 @@ local EditBox = E.CreateEditBox(List);
 EditBox:SetPosition('TOP', List, 'TOP', 0, -10);
 EditBox:SetFrameLevel(List:GetFrameLevel() + 10);
 EditBox:SetSize(228, 20);
+EditBox:SetMaxLetters(CATEGORY_MAX_LETTERS);
 EditBox:SetInstruction(L['OPTIONS_COLOR_CATEGORY_ENTER_NAME']);
 EditBox.useLastValue = false;
 EditBox:SetScript('OnEnterPressed', function(self)
