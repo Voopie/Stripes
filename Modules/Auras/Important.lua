@@ -45,6 +45,7 @@ local additionalAuras = {
 
     -- Covenant
     [331866] = true, -- Agent of Chaos (Venthyr)
+    [332423] = true, -- Sparkling Driftglobe Core (Kyrian)
 
     -- Other
     [228626] = true, -- Haunted Urn (De Other Side) (Stun)
