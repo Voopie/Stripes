@@ -45,6 +45,10 @@ local additionalAuras = {
 
     -- Covenant
     [331866] = true, -- Agent of Chaos (Venthyr)
+
+    -- Other
+    [228626] = true, -- Haunted Urn (De Other Side) (Stun)
+    [348723] = true, -- Haunted Urn (De Other Side) (Stun) ???
 };
 
 local function CreateAnchor(unitframe)
