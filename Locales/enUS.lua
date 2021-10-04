@@ -24,6 +24,9 @@ L['CATEGORY'] = 'Category';
 L['COLOR_CATEGORY'] = 'Color category';
 L['CUSTOM_COLOR_CATEGORY'] = 'Custom color category';
 
+L['MISSING_TEXTURE'] = 'Missing texture';
+L['MISSING_FONT'] = 'Missing font';
+
 L['FONT_VALUE'] = 'Font';
 L['FONT_SIZE'] = 'Font size';
 L['FONT_SIZE_SHORT'] = 'size';

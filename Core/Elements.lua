@@ -1422,6 +1422,9 @@ do
             end,
 
             SetValue = function(self, value)
+                self.holderButton.Text:SetText(L['MISSING_TEXTURE']);
+                self.holderButton.StatusBar:SetTexture(LSM:Fetch('statusbar', LSM.DefaultMedia.statusbar));
+
                 for button, _ in self.holderButton.buttonPool:EnumerateActive() do
                     button.SelectedIcon:SetShown(false);
 
@@ -1534,6 +1537,10 @@ do
             end,
 
             SetValue = function(self, value)
+                self.holderButton.Text:SetText(L['MISSING_FONT']);
+                local _, size, outline = self.holderButton.Text:GetFont();
+                self.holderButton.Text:SetFont(LSM:Fetch('font', LSM.DefaultMedia.font), size, outline);
+
                 for button, _ in self.holderButton.buttonPool:EnumerateActive() do
                     button.SelectedIcon:SetShown(false);
 
@@ -1541,7 +1548,7 @@ do
                         button.SelectedIcon:SetShown(true);
 
                         self.holderButton.Text:SetText(button.Value);
-                        local _, size, outline = self.holderButton.Text:GetFont();
+                        _, size, outline = self.holderButton.Text:GetFont();
                         self.holderButton.Text:SetFont(LSM:Fetch('font', value), size, outline);
 
                         self.currentValue = value;

@@ -24,6 +24,9 @@ L['CATEGORY'] = 'Категория';
 L['COLOR_CATEGORY'] = 'Цветовая категория';
 L['CUSTOM_COLOR_CATEGORY'] = 'Своя цветовая категория';
 
+L['MISSING_TEXTURE'] = 'Нет текстуры';
+L['MISSING_FONT'] = 'Нет шрифта';
+
 L['FONT_VALUE'] = 'Шрифт';
 L['FONT_SIZE'] = 'Размер шрифта';
 L['FONT_SIZE_SHORT'] = 'Размер';
