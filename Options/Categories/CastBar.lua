@@ -1431,7 +1431,9 @@ panel.Load = function(self)
 
         S:GetModule('Options_ColorCategory'):UpdateAllLists();
         S:GetModule('Options_ColorCategory'):UpdateListScroll();
+
         panel:UpdateCategoryListScroll();
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName);
 
         Stripes:UpdateAll();
     end
