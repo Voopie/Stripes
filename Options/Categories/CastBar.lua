@@ -1514,6 +1514,7 @@ panel.Update = function(self)
     S:GetModule('Options_ColorCategory'):UpdateListScroll();
 
     self:UpdateCategoryListScroll();
+    self.CategoryDropdown:SetList(self:GetCategoriesDropdown(), SortCategoryByName);
 end
 
 function Module:MODIFIER_STATE_CHANGED(key, down)
