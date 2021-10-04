@@ -203,7 +203,7 @@ local function ImportProfile(name, data)
     StripesDB.profiles[index] = U.Merge(StripesDB.profiles[index], data);
     StripesDB.profiles[index].profileName = Options:IsNameExists(name) and string.format('%s-%s', name, date('%Y%m%d%H%M%S')) or name;
 
-    O.db = StripesDB.profiles[index];
+    O.db                = StripesDB.profiles[index];
     O.activeProfileId   = index;
     O.activeProfileName = StripesDB.profiles[index].profileName;
 
@@ -221,6 +221,8 @@ local function ImportProfile(name, data)
     S:GetNameplateModule('Handler'):UpdateAll();
 
     O.frame.TopBar.CurrentProfileName:SetText(O.activeProfileName);
+
+    collectgarbage('collect');
 end
 
 Module.ChooseProfileByName = function(name)
@@ -297,6 +299,8 @@ local function RemoveProfileByName(name)
     panel.EditActiveProfileName:SetShown(O.activeProfileId ~= PROFILE_DEFAULT_ID);
 
     O.frame.TopBar.CurrentProfileName:SetText(O.activeProfileName);
+
+    collectgarbage('collect');
 
     return true;
 end
