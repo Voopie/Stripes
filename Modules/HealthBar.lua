@@ -161,7 +161,7 @@ local function UpdateCustomHealthBarColor(unitframe)
     LCG.ButtonGlow_Stop(unitframe.healthBar);
 
     if CUSTOM_HP_ENABLED and CUSTOM_HP_DATA[unitframe.data.npcId] and CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
-        if CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled then
+        if CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled or CUSTOM_HP_DATA[unitframe.data.npcId].custom_color_enabled then
             local color = CUSTOM_HP_DATA[unitframe.data.npcId].color;
             local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
 

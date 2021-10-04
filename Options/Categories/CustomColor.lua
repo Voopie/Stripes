@@ -63,13 +63,19 @@ local function Add(id, name)
         O.db.custom_color_data[id] = {
             npc_id   = id,
             npc_name = name,
+
             enabled  = true,
-            color    = { 0.1, 0.1, 0.1, 1 },
-            color_category = 0,
-            color_enabled = false,
+
+            category_id = 0,
+
+            color_enabled         = false,
+            color_category        = 0,
+            custom_color_enabled  = false,
+            custom_color_category = 0,
+            color                 = { 0.1, 0.1, 0.1, 1 },
+
             glow_enabled = false,
             glow_type = 0,
-            category_id = 0,
         };
     end
 end
@@ -78,10 +84,17 @@ local DataRows = {};
 
 local ExtendedOptions = CreateFrame('Frame', nil, panel, 'BackdropTemplate');
 ExtendedOptions:SetFrameLevel(100);
-ExtendedOptions:SetSize(260, 220);
+ExtendedOptions:SetSize(260, 280);
 ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
 ExtendedOptions:SetClampedToScreen(true);
 ExtendedOptions:SetShown(false);
+
+ExtendedOptions.Update = function(self)
+    self.ColorCategory:SetList(self.anchor.color_list, S:GetModule('Options_ColorCategory'):GetPredefinedList());
+    self.ColorCategory:SetValue(self.anchor.color_category);
+    self.CustomColorCategory:SetList(self.anchor.custom_color_list, O.db.color_category_data);
+    self.CustomColorCategory:SetValue(self.anchor.custom_color_category);
+end
 
 ExtendedOptions.NameText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
 ExtendedOptions.NameText:SetPoint('TOPLEFT', ExtendedOptions, 'TOPLEFT', 16, -10);
@@ -116,16 +129,19 @@ ExtendedOptions.ColorCategory:SetPosition('TOPLEFT', ExtendedOptions.ColorCatego
 ExtendedOptions.ColorCategory:SetSize(140, 20);
 ExtendedOptions.ColorCategory.OnValueChangedCallback = function(_, index)
     index = tonumber(index);
-    local combinedList = S:GetModule('Options_ColorCategory'):GetCombinedList();
+    local predefinedList = S:GetModule('Options_ColorCategory'):GetPredefinedList();
 
     O.db.custom_color_data[ExtendedOptions.id].color_enabled  = index ~= 0;
     O.db.custom_color_data[ExtendedOptions.id].color_category = index;
 
-    if combinedList[index] then
-        O.db.custom_color_data[ExtendedOptions.id].color[1] = combinedList[index].color[1];
-        O.db.custom_color_data[ExtendedOptions.id].color[2] = combinedList[index].color[2];
-        O.db.custom_color_data[ExtendedOptions.id].color[3] = combinedList[index].color[3];
-        O.db.custom_color_data[ExtendedOptions.id].color[4] = combinedList[index].color[4] or 1;
+    if predefinedList[index] then
+        O.db.custom_color_data[ExtendedOptions.id].color[1] = predefinedList[index].color[1];
+        O.db.custom_color_data[ExtendedOptions.id].color[2] = predefinedList[index].color[2];
+        O.db.custom_color_data[ExtendedOptions.id].color[3] = predefinedList[index].color[3];
+        O.db.custom_color_data[ExtendedOptions.id].color[4] = predefinedList[index].color[4] or 1;
+
+        O.db.custom_color_data[ExtendedOptions.id].custom_color_enabled  = false;
+        O.db.custom_color_data[ExtendedOptions.id].custom_color_category = 0;
     else
         O.db.custom_color_data[ExtendedOptions.id].color[1] = 0.1;
         O.db.custom_color_data[ExtendedOptions.id].color[2] = 0.1;
@@ -137,10 +153,48 @@ ExtendedOptions.ColorCategory.OnValueChangedCallback = function(_, index)
     S:GetNameplateModule('Handler'):UpdateAll();
 
     ExtendedOptions:SetBackdropBorderColor(ExtendedOptions.anchor.highlightColor[1], ExtendedOptions.anchor.highlightColor[2], ExtendedOptions.anchor.highlightColor[3], ExtendedOptions.anchor.highlightColor[4]);
+
+    ExtendedOptions:Update();
+end
+
+ExtendedOptions.CustomColorCategoryText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+ExtendedOptions.CustomColorCategoryText:SetPoint('TOPLEFT', ExtendedOptions.ColorCategory, 'BOTTOMLEFT', 0, -12);
+ExtendedOptions.CustomColorCategoryText:SetText(L['CUSTOM_COLOR_CATEGORY']);
+
+ExtendedOptions.CustomColorCategory = E.CreateDropdown('color', ExtendedOptions);
+ExtendedOptions.CustomColorCategory:SetPosition('TOPLEFT', ExtendedOptions.CustomColorCategoryText, 'BOTTOMLEFT', 0, -4);
+ExtendedOptions.CustomColorCategory:SetSize(140, 20);
+ExtendedOptions.CustomColorCategory.OnValueChangedCallback = function(_, index)
+    index = tonumber(index);
+
+    O.db.custom_color_data[ExtendedOptions.id].custom_color_enabled  = index ~= 0;
+    O.db.custom_color_data[ExtendedOptions.id].custom_color_category = index;
+
+    if O.db.color_category_data[index] then
+        O.db.custom_color_data[ExtendedOptions.id].color[1] = O.db.color_category_data[index].color[1];
+        O.db.custom_color_data[ExtendedOptions.id].color[2] = O.db.color_category_data[index].color[2];
+        O.db.custom_color_data[ExtendedOptions.id].color[3] = O.db.color_category_data[index].color[3];
+        O.db.custom_color_data[ExtendedOptions.id].color[4] = O.db.color_category_data[index].color[4] or 1;
+
+        O.db.custom_color_data[ExtendedOptions.id].color_enabled  = false;
+        O.db.custom_color_data[ExtendedOptions.id].color_category = 0;
+    else
+        O.db.custom_color_data[ExtendedOptions.id].color[1] = 0.1;
+        O.db.custom_color_data[ExtendedOptions.id].color[2] = 0.1;
+        O.db.custom_color_data[ExtendedOptions.id].color[3] = 0.1;
+        O.db.custom_color_data[ExtendedOptions.id].color[4] = 1;
+    end
+
+    panel:UpdateScroll();
+    S:GetNameplateModule('Handler'):UpdateAll();
+
+    ExtendedOptions:SetBackdropBorderColor(ExtendedOptions.anchor.highlightColor[1], ExtendedOptions.anchor.highlightColor[2], ExtendedOptions.anchor.highlightColor[3], ExtendedOptions.anchor.highlightColor[4]);
+
+    ExtendedOptions:Update();
 end
 
 ExtendedOptions.GlowTypeText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
-ExtendedOptions.GlowTypeText:SetPoint('TOPLEFT', ExtendedOptions.ColorCategory, 'BOTTOMLEFT', 0, -12);
+ExtendedOptions.GlowTypeText:SetPoint('TOPLEFT', ExtendedOptions.CustomColorCategory, 'BOTTOMLEFT', 0, -12);
 ExtendedOptions.GlowTypeText:SetText(L['GLOW_TYPE']);
 
 ExtendedOptions.GlowType = E.CreateDropdown('plain', ExtendedOptions);
@@ -151,7 +205,7 @@ ExtendedOptions.GlowType.OnValueChangedCallback = function(_, value)
     value = tonumber(value);
 
     O.db.custom_color_data[ExtendedOptions.id].glow_enabled = value ~= 0;
-    O.db.custom_color_data[ExtendedOptions.id].glow_type = value;
+    O.db.custom_color_data[ExtendedOptions.id].glow_type    = value;
 
     panel:UpdateScroll();
     S:GetNameplateModule('Handler'):UpdateAll();
@@ -248,8 +302,10 @@ local function CreateRow(frame)
             ExtendedOptions.id = frame.npc_id;
             ExtendedOptions.anchor = frame;
             ExtendedOptions:SetPoint('TOPLEFT', ExtendedOptions.anchor, 'TOPRIGHT', 0, 0);
-            ExtendedOptions.ColorCategory:SetList();
+            ExtendedOptions.ColorCategory:SetList(frame.color_list, S:GetModule('Options_ColorCategory'):GetPredefinedList());
             ExtendedOptions.ColorCategory:SetValue(frame.color_category);
+            ExtendedOptions.CustomColorCategory:SetList(frame.custom_color_list, O.db.color_category_data);
+            ExtendedOptions.CustomColorCategory:SetValue(frame.custom_color_category);
             ExtendedOptions.GlowType:SetValue(frame.glow_type);
             ExtendedOptions.GlowType:UpdateScrollArea();
             ExtendedOptions.Category:SetList(frame.category_list);
@@ -296,7 +352,11 @@ local function CreateRow(frame)
         self:SetBackdropColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
         self.ToggleExtendedOptions:SetVertexColor(1, 0.85, 0, 1);
 
-        self.NameText:SetText(self.name .. '    |cffaaaaaa' .. self.npc_id .. ' | ' .. self.list[self.color_category] .. ' | ' .. O.Lists.glow_type_short_with_none[self.glow_type] .. '|r');
+        if self.color_enabled then
+            self.NameText:SetText(self.name .. '    |cffaaaaaa' .. self.npc_id .. ' | ' .. self.color_list[self.color_category] .. ' | ' .. O.Lists.glow_type_short_with_none[self.glow_type] .. '|r');
+        else
+            self.NameText:SetText(self.name .. '    |cffaaaaaa' .. self.npc_id .. ' | ' .. self.custom_color_list[self.custom_color_category] .. ' | ' .. O.Lists.glow_type_short_with_none[self.glow_type] .. '|r');
+        end
 
         if ExtendedOptions:IsShown() then
             GameTooltip_Hide();
@@ -368,7 +428,8 @@ panel.UpdateScroll = function()
         return a.npc_name < b.npc_name;
     end);
 
-    local combinedList = S:GetModule('Options_ColorCategory'):GetCombinedList();
+    local predefinedList = S:GetModule('Options_ColorCategory'):GetPredefinedList();
+    local customList     = S:GetModule('Options_ColorCategory'):GetCustomList();
 
     framePool:ReleaseAll();
 
@@ -404,17 +465,27 @@ panel.UpdateScroll = function()
             frame.glow_enabled = data.glow_type ~= 0;
             frame.glow_type    = data.glow_type or 0;
 
-            if combinedList[data.color_category] then
-                O.db.custom_color_data[data.npc_id].color_enabled  = true;
-                O.db.custom_color_data[data.npc_id].color_category = data.color_category;
+            if predefinedList[data.color_category] then
+                O.db.custom_color_data[data.npc_id].color_enabled         = true;
+                O.db.custom_color_data[data.npc_id].color_category        = data.color_category;
 
-                O.db.custom_color_data[data.npc_id].color[1] = combinedList[data.color_category].color[1];
-                O.db.custom_color_data[data.npc_id].color[2] = combinedList[data.color_category].color[2];
-                O.db.custom_color_data[data.npc_id].color[3] = combinedList[data.color_category].color[3];
-                O.db.custom_color_data[data.npc_id].color[4] = combinedList[data.color_category].color[4] or 1;
+                O.db.custom_color_data[data.npc_id].color[1] = predefinedList[data.color_category].color[1];
+                O.db.custom_color_data[data.npc_id].color[2] = predefinedList[data.color_category].color[2];
+                O.db.custom_color_data[data.npc_id].color[3] = predefinedList[data.color_category].color[3];
+                O.db.custom_color_data[data.npc_id].color[4] = predefinedList[data.color_category].color[4] or 1;
+            elseif customList[data.custom_color_category] then
+                O.db.custom_color_data[data.npc_id].custom_color_enabled  = true;
+                O.db.custom_color_data[data.npc_id].custom_color_category = data.custom_color_category;
+
+                O.db.custom_color_data[data.npc_id].color[1] = customList[data.custom_color_category].color[1];
+                O.db.custom_color_data[data.npc_id].color[2] = customList[data.custom_color_category].color[2];
+                O.db.custom_color_data[data.npc_id].color[3] = customList[data.custom_color_category].color[3];
+                O.db.custom_color_data[data.npc_id].color[4] = customList[data.custom_color_category].color[4] or 1;
             else
-                O.db.custom_color_data[data.npc_id].color_enabled  = false;
-                O.db.custom_color_data[data.npc_id].color_category = 0;
+                O.db.custom_color_data[data.npc_id].color_enabled         = false;
+                O.db.custom_color_data[data.npc_id].color_category        = 0;
+                O.db.custom_color_data[data.npc_id].custom_color_enabled  = false;
+                O.db.custom_color_data[data.npc_id].custom_color_category = 0;
 
                 O.db.custom_color_data[data.npc_id].color[1] = 0.1;
                 O.db.custom_color_data[data.npc_id].color[2] = 0.1;
@@ -423,9 +494,14 @@ panel.UpdateScroll = function()
             end
 
             frame.color_enabled  = O.db.custom_color_data[data.npc_id].color_enabled;
-            frame.color_category = O.db.custom_color_data[data.npc_id].color_category;
-            frame.color = O.db.custom_color_data[data.npc_id].color;
-            frame.list  = S:GetModule('Options_ColorCategory'):GetDropdownList();
+            frame.color_category = O.db.custom_color_data[data.npc_id].color_category or 0;
+
+            frame.custom_color_enabled  = O.db.custom_color_data[data.npc_id].custom_color_enabled;
+            frame.custom_color_category = O.db.custom_color_data[data.npc_id].custom_color_category or 0;
+
+            frame.color             = O.db.custom_color_data[data.npc_id].color;
+            frame.color_list        = S:GetModule('Options_ColorCategory'):GetPredefinedDropdownList();
+            frame.custom_color_list = S:GetModule('Options_ColorCategory'):GetCustomDropdownList();
 
             if O.db.custom_color_category_data[data.category_id] then
                 O.db.custom_color_data[data.npc_id].category_id = data.category_id;
@@ -1116,4 +1192,8 @@ function Module:MODIFIER_STATE_CHANGED(key, down)
     else
         panel.CopyFromProfileText:SetText(L['OPTIONS_COPY_FROM_PROFILE']);
     end
+end
+
+function Module:StartUp()
+    panel:UpdateScroll();
 end

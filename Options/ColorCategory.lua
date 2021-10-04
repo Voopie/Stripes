@@ -399,49 +399,58 @@ Module.UpdateOtherScrolls = function()
     O.frame.Right.CustomColor:UpdateScroll();
 end
 
-Module.DropdownList = {};
-function Module:UpdateDropdownList()
-    wipe(self.DropdownList);
+function Module:GetPredefinedList()
+    return PREDEFINED_COLORS;
+end
 
-    local index = 1;
+Module.PredefinedDropdownList = {};
+function Module:UpdatePredefinedDropdownList()
+    wipe(self.PredefinedDropdownList);
 
-    for _, data in ipairs(PREDEFINED_COLORS) do
-        self.DropdownList[index] = data.name;
-        index = index + 1;
+    for index, data in ipairs(PREDEFINED_COLORS) do
+        self.PredefinedDropdownList[index] = data.name;
     end
+
+    self.PredefinedDropdownList[0] = L['NO'];
+end
+
+function Module:GetPredefinedDropdownList()
+    return self.PredefinedDropdownList;
+end
+
+Module.CustomList = {};
+function Module:UpdateCustomList()
+    wipe(self.CustomList);
 
     for _, data in ipairs(O.db.color_category_data) do
-        self.DropdownList[index] = data.name;
-        index = index + 1;
-    end
-
-    self.DropdownList[0] = L['NO'];
-end
-
-function Module:GetDropdownList()
-    return self.DropdownList;
-end
-
-Module.CombinedList = {};
-function Module:UpdateCombinedList()
-    wipe(self.CombinedList);
-
-    for _, data in ipairs(PREDEFINED_COLORS) do
-        table.insert(self.CombinedList, { name = data.name, color = data.color });
-    end
-
-    for _, data in ipairs(O.db.color_category_data) do
-        table.insert(self.CombinedList, { name = data.name, color = data.color });
+        table.insert(self.CustomList, { name = data.name, color = data.color });
     end
 end
 
-function Module:GetCombinedList()
-    return self.CombinedList;
+function Module:GetCustomList()
+    return self.CustomList;
+end
+
+Module.CustomDropdownList = {};
+function Module:UpdateCustomDropdownList()
+    wipe(self.CustomDropdownList);
+
+    for index, data in ipairs(O.db.color_category_data) do
+        self.CustomDropdownList[index] = data.name;
+    end
+
+    self.CustomDropdownList[0] = L['NO'];
+end
+
+function Module:GetCustomDropdownList()
+    return self.CustomDropdownList;
 end
 
 function Module:UpdateAllLists()
-    self:UpdateDropdownList();
-    self:UpdateCombinedList();
+    self:UpdatePredefinedDropdownList();
+
+    self:UpdateCustomList();
+    self:UpdateCustomDropdownList();
 end
 
 function Module:ToggleListFrame()

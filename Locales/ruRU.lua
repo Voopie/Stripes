@@ -22,6 +22,7 @@ L['FORMAT'] = 'Формат';
 L['SEARCH'] = 'Поиск';
 L['CATEGORY'] = 'Категория';
 L['COLOR_CATEGORY'] = 'Цветовая категория';
+L['CUSTOM_COLOR_CATEGORY'] = 'Своя цветовая категория';
 
 L['FONT_VALUE'] = 'Шрифт';
 L['FONT_SIZE'] = 'Размер шрифта';

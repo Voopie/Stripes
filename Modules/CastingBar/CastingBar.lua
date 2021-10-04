@@ -112,7 +112,7 @@ local function UpdateCustomCast(self)
         return;
     end
 
-    if CustomCastsData[spellId].color_enabled then
+    if CustomCastsData[spellId].color_enabled or CustomCastsData[spellId].custom_color_enabled then
         self:SetStatusBarColor(CustomCastsData[spellId].color[1], CustomCastsData[spellId].color[2], CustomCastsData[spellId].color[3], CustomCastsData[spellId].color[4] or 1);
     end
 
