@@ -41,6 +41,7 @@ local HelpfulList = {
     [322569] = true, -- Mists of Tirna Scithe (Hand of Thros)
     [326450] = true, -- Halls of Atonement (Loyal Beasts)
     [328015] = true, -- Plaguefall (Wonder Grow)
+    [343470] = true, -- The Necrotic Wake (Skeletal Marauder)
 };
 
 local HarmfulList = {
