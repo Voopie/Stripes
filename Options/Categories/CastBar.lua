@@ -498,22 +498,31 @@ panel.UpdateCustomCastsScroll = function()
             frame.glow_enabled   = data.glow_type ~= 0;
             frame.glow_type      = data.glow_type;
 
-            if predefinedList[data.color_category] then
-                O.db.castbar_custom_casts_data[data.id].color_enabled         = true;
-                O.db.castbar_custom_casts_data[data.id].color_category        = data.color_category;
+            -- Migration on the fly. lol.
+            local custom_color_category = data.custom_color_category or data.color_category or 0;
+
+            if customList[custom_color_category] then
+                O.db.castbar_custom_casts_data[data.id].custom_color_enabled  = true;
+                O.db.castbar_custom_casts_data[data.id].custom_color_category = custom_color_category;
+
+                O.db.castbar_custom_casts_data[data.id].color[1] = customList[custom_color_category].color[1];
+                O.db.castbar_custom_casts_data[data.id].color[2] = customList[custom_color_category].color[2];
+                O.db.castbar_custom_casts_data[data.id].color[3] = customList[custom_color_category].color[3];
+                O.db.castbar_custom_casts_data[data.id].color[4] = customList[custom_color_category].color[4] or 1;
+
+                O.db.castbar_custom_casts_data[data.id].color_enabled  = false;
+                O.db.castbar_custom_casts_data[data.id].color_category = 0;
+            elseif predefinedList[data.color_category] then
+                O.db.castbar_custom_casts_data[data.id].color_enabled  = true;
+                O.db.castbar_custom_casts_data[data.id].color_category = data.color_category;
 
                 O.db.castbar_custom_casts_data[data.id].color[1] = predefinedList[data.color_category].color[1];
                 O.db.castbar_custom_casts_data[data.id].color[2] = predefinedList[data.color_category].color[2];
                 O.db.castbar_custom_casts_data[data.id].color[3] = predefinedList[data.color_category].color[3];
                 O.db.castbar_custom_casts_data[data.id].color[4] = predefinedList[data.color_category].color[4] or 1;
-            elseif customList[data.custom_color_category] then
-                O.db.castbar_custom_casts_data[data.id].custom_color_enabled  = true;
-                O.db.castbar_custom_casts_data[data.id].custom_color_category = data.custom_color_category;
 
-                O.db.castbar_custom_casts_data[data.id].color[1] = customList[data.custom_color_category].color[1];
-                O.db.castbar_custom_casts_data[data.id].color[2] = customList[data.custom_color_category].color[2];
-                O.db.castbar_custom_casts_data[data.id].color[3] = customList[data.custom_color_category].color[3];
-                O.db.castbar_custom_casts_data[data.id].color[4] = customList[data.custom_color_category].color[4] or 1;
+                O.db.castbar_custom_casts_data[data.id].custom_color_enabled  = false;
+                O.db.castbar_custom_casts_data[data.id].custom_color_category = 0;
             else
                 O.db.castbar_custom_casts_data[data.id].color_enabled         = false;
                 O.db.castbar_custom_casts_data[data.id].color_category        = 0;
