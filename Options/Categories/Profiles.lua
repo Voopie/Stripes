@@ -199,7 +199,8 @@ local function ImportProfile(name, data)
     local index = Options:GetNewIndex();
 
     StripesDB.profiles[index] = {};
-    StripesDB.profiles[index] = U.Merge(O.db, data);
+    StripesDB.profiles[index] = U.DeepCopy(O.DefaultValues);
+    StripesDB.profiles[index] = U.Merge(StripesDB.profiles[index], data);
     StripesDB.profiles[index].profileName = Options:IsNameExists(name) and string.format('%s-%s', name, date('%Y%m%d%H%M%S')) or name;
 
     O.db = StripesDB.profiles[index];
