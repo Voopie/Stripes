@@ -1085,9 +1085,17 @@ panel.Load = function(self)
             StripesDB.profiles[O.activeProfileId].custom_color_category_data = U.DeepCopy(StripesDB.profiles[index].custom_color_category_data);
             StripesDB.profiles[O.activeProfileId].custom_color_data          = U.DeepCopy(StripesDB.profiles[index].custom_color_data);
         else
-            StripesDB.profiles[O.activeProfileId].color_category_data        = U.Merge(StripesDB.profiles[index].color_category_data, StripesDB.profiles[O.activeProfileId].color_category_data);
-            StripesDB.profiles[O.activeProfileId].custom_color_category_data = U.Merge(StripesDB.profiles[index].custom_color_category_data, StripesDB.profiles[O.activeProfileId].custom_color_category_data);
-            StripesDB.profiles[O.activeProfileId].custom_color_data          = U.Merge(StripesDB.profiles[index].custom_color_data, StripesDB.profiles[O.activeProfileId].custom_color_data);
+            -- Colors
+            for _, data in ipairs(StripesDB.profiles[index].color_category_data) do
+                table.insert(StripesDB.profiles[O.activeProfileId].color_category_data, data);
+            end
+
+            -- Categories
+            for _, data in ipairs(StripesDB.profiles[index].custom_color_category_data) do
+                table.insert(StripesDB.profiles[O.activeProfileId].custom_color_category_data, data);
+            end
+
+            StripesDB.profiles[O.activeProfileId].custom_color_data = U.Merge(StripesDB.profiles[index].custom_color_data, StripesDB.profiles[O.activeProfileId].custom_color_data);
         end
 
         self:SetValue(nil);

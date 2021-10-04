@@ -1422,9 +1422,17 @@ panel.Load = function(self)
             StripesDB.profiles[O.activeProfileId].castbar_custom_casts_category_data = U.DeepCopy(StripesDB.profiles[index].castbar_custom_casts_category_data);
             StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data          = U.DeepCopy(StripesDB.profiles[index].castbar_custom_casts_data);
         else
-            StripesDB.profiles[O.activeProfileId].color_category_data                = U.Merge(StripesDB.profiles[index].color_category_data, StripesDB.profiles[O.activeProfileId].color_category_data);
-            StripesDB.profiles[O.activeProfileId].castbar_custom_casts_category_data = U.Merge(StripesDB.profiles[index].castbar_custom_casts_category_data, StripesDB.profiles[O.activeProfileId].castbar_custom_casts_category_data);
-            StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data          = U.Merge(StripesDB.profiles[index].castbar_custom_casts_data, StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data);
+            -- Colors
+            for _, data in ipairs(StripesDB.profiles[index].color_category_data) do
+                table.insert(StripesDB.profiles[O.activeProfileId].color_category_data, data);
+            end
+
+            -- Categories
+            for _, data in ipairs(StripesDB.profiles[index].castbar_custom_casts_category_data) do
+                table.insert(StripesDB.profiles[O.activeProfileId].castbar_custom_casts_category_data, data);
+            end
+
+            StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data = U.Merge(StripesDB.profiles[index].castbar_custom_casts_data, StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data);
         end
 
         self:SetValue(nil);
