@@ -29,7 +29,7 @@ local ROW_HEIGHT = 28;
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
 local BACKDROP_BORDER_2 = { bgFile = 'Interface\\Buttons\\WHITE8x8', edgeFile = 'Interface\\Buttons\\WHITE8x8', edgeSize = 2 };
 local NAME_WIDTH = 410;
-local CATEGORY_MAX_LETTERS = 10;
+local CATEGORY_MAX_LETTERS = 20;
 
 panel.categoryId = 0;
 
