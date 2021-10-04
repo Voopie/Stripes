@@ -1551,11 +1551,10 @@ do
         },
 
         ['color'] = {
-            SetList = function(self, itemsTable)
-                self.itemsTable = itemsTable or S:GetModule('Options_ColorCategory'):GetDropdownList();
+            SetList = function(self, itemsTable, colorList)
+                self.itemsTable = itemsTable or S:GetModule('Options_ColorCategory'):GetPredefinedDropdownList();
                 self.tKeys      = self.tKeys or {};
-
-                local combinedList = S:GetModule('Options_ColorCategory'):GetCombinedList();
+                self.colorList  = colorList or S:GetModule('Options_ColorCategory'):GetPredefinedList();
 
                 wipe(self.tKeys);
 
@@ -1654,10 +1653,10 @@ do
                         itemButton.Color:SetShown(false);
                         itemButton.Value = L['NO'];
                     else
-                        itemButton.Text:SetText(combinedList[d.key].name);
-                        itemButton.Color:SetVertexColor(unpack(combinedList[d.key].color));
+                        itemButton.Text:SetText(self.colorList[d.key].name);
+                        itemButton.Color:SetVertexColor(unpack(self.colorList[d.key].color));
                         itemButton.Color:SetShown(true);
-                        itemButton.Value = combinedList[d.key].name;
+                        itemButton.Value = self.colorList[d.key].name;
                     end
 
                     itemButton.Key = d.key;
@@ -1676,8 +1675,6 @@ do
             end,
 
             SetValue = function(self, value)
-                local combinedList = S:GetModule('Options_ColorCategory'):GetCombinedList();
-
                 for button, _ in self.holderButton.buttonPool:EnumerateActive() do
                     button.SelectedIcon:SetShown(false);
 
@@ -1688,7 +1685,7 @@ do
                         if value == 0 then
                             self.holderButton.Color:SetShown(false);
                         else
-                            self.holderButton.Color:SetVertexColor(unpack(combinedList[value].color));
+                            self.holderButton.Color:SetVertexColor(unpack(self.colorList[value].color));
                             self.holderButton.Color:SetShown(true);
                         end
 
