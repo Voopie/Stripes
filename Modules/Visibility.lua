@@ -16,11 +16,11 @@ local function ZoneChanged()
     end
 
     if U.IsInInstance() then
-        C_CVar.SetCVar('nameplateShowAll', SHOW_ALWAYS_INSTANCE and 1 or 0);
-        C_CVar.SetCVar('nameplateMaxDistance', MAX_DISTANCE_INSTANCE);
+        Stripes.SetCVar('nameplateShowAll', SHOW_ALWAYS_INSTANCE and 1 or 0);
+        Stripes.SetCVar('nameplateMaxDistance', MAX_DISTANCE_INSTANCE);
     else
-        C_CVar.SetCVar('nameplateShowAll', SHOW_ALWAYS_OPENWORLD and 1 or 0);
-        C_CVar.SetCVar('nameplateMaxDistance', MAX_DISTANCE_OPENWORLD);
+        Stripes.SetCVar('nameplateShowAll', SHOW_ALWAYS_OPENWORLD and 1 or 0);
+        Stripes.SetCVar('nameplateMaxDistance', MAX_DISTANCE_OPENWORLD);
     end
 
     if Stripes.IsNameOnlyMode() and O.db.name_only_friendly_stacking then
@@ -60,21 +60,21 @@ function Module:PLAYER_REGEN_ENABLED()
     end
 
     if ENEMY_ONLY_IN_COMBAT then
-        C_CVar.SetCVar('nameplateShowEnemies', SHOW_ENEMY and 1 or 0);
+        Stripes.SetCVar('nameplateShowEnemies', SHOW_ENEMY and 1 or 0);
     end
 
     if FRIENDLY_ONLY_IN_COMBAT then
-        C_CVar.SetCVar('nameplateShowFriends', SHOW_FRIENDLY and 1 or 0);
+        Stripes.SetCVar('nameplateShowFriends', SHOW_FRIENDLY and 1 or 0);
     end
 end
 
 function Module:PLAYER_REGEN_DISABLED()
     if ENEMY_ONLY_IN_COMBAT then
-        C_CVar.SetCVar('nameplateShowEnemies', 1);
+        Stripes.SetCVar('nameplateShowEnemies', 1);
     end
 
     if FRIENDLY_ONLY_IN_COMBAT then
-        C_CVar.SetCVar('nameplateShowFriends', 1);
+        Stripes.SetCVar('nameplateShowFriends', 1);
     end
 end
 

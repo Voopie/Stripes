@@ -45,6 +45,14 @@ local NAME_ONLY_FRIENDLY_UNIT_TYPES = {
     ['FRIENDLY_NPC']    = true,
 };
 
+local function SetCVar(key, value)
+	if C_CVar.GetCVar(key) ~= tostring(value) then
+		C_CVar.SetCVar(key, value);
+	end
+end
+
+Stripes.SetCVar = SetCVar;
+
 Stripes.UpdateAll = function()
     S:ForAllNameplateModules('UpdateLocalConfig');
 
@@ -128,7 +136,7 @@ local function UpdateSizesSafe()
     C_NamePlate.SetNamePlateEnemyClickThrough(O.db.size_enemy_click_through);
     C_NamePlate.SetNamePlateFriendlyClickThrough(O.db.size_friendly_click_through);
 
-    C_CVar.SetCVar('NameplatePersonalClickThrough', O.db.size_self_click_through and 1 or 0);
+    SetCVar('NameplatePersonalClickThrough', O.db.size_self_click_through and 1 or 0);
     C_NamePlate.SetNamePlateSelfClickThrough(O.db.size_self_click_through);
 end
 
@@ -208,119 +216,119 @@ local function UpdateConnection(unitframe)
 end
 
 local function CVarsReset()
-    C_CVar.SetCVar('nameplateShowOnlyNames', GetCVarDefault('nameplateShowOnlyNames'));
+    SetCVar('nameplateShowOnlyNames', GetCVarDefault('nameplateShowOnlyNames'));
 
-    C_CVar.SetCVar('nameplateMotion', GetCVarDefault('nameplateMotion'));
-    C_CVar.SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'));
+    SetCVar('nameplateMotion', GetCVarDefault('nameplateMotion'));
+    SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'));
 
-    C_CVar.SetCVar('ShowClassColorInFriendlyNameplate', GetCVarDefault('ShowClassColorInFriendlyNameplate'));
-    C_CVar.SetCVar('ShowClassColorInNameplate', GetCVarDefault('ShowClassColorInNameplate'));
+    SetCVar('ShowClassColorInFriendlyNameplate', GetCVarDefault('ShowClassColorInFriendlyNameplate'));
+    SetCVar('ShowClassColorInNameplate', GetCVarDefault('ShowClassColorInNameplate'));
 
-    C_CVar.SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'));
-    C_CVar.SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'));
+    SetCVar('nameplateOverlapH', GetCVarDefault('nameplateOverlapH'));
+    SetCVar('nameplateOverlapV', GetCVarDefault('nameplateOverlapV'));
 
-    C_CVar.SetCVar('nameplateShowFriends', GetCVarDefault('nameplateShowFriends'));
-    C_CVar.SetCVar('nameplateShowEnemies', GetCVarDefault('nameplateShowEnemies'));
+    SetCVar('nameplateShowFriends', GetCVarDefault('nameplateShowFriends'));
+    SetCVar('nameplateShowEnemies', GetCVarDefault('nameplateShowEnemies'));
 
-    C_CVar.SetCVar('nameplateShowSelf', 0);
-    C_CVar.SetCVar('NameplatePersonalShowAlways', 0);
-    C_CVar.SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'));
+    SetCVar('nameplateShowSelf', 0);
+    SetCVar('NameplatePersonalShowAlways', 0);
+    SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'));
 
-    C_CVar.SetCVar('nameplateShowDebuffsOnFriendly', GetCVarDefault('nameplateShowDebuffsOnFriendly'));
+    SetCVar('nameplateShowDebuffsOnFriendly', GetCVarDefault('nameplateShowDebuffsOnFriendly'));
 
     -- Scales
-    C_CVar.SetCVar('nameplateLargerScale', GetCVarDefault('nameplateLargerScale'));
-    C_CVar.SetCVar('nameplateGlobalScale', GetCVarDefault('nameplateGlobalScale'));
-    C_CVar.SetCVar('nameplateSelectedScale', GetCVarDefault('nameplateSelectedScale'));
-    C_CVar.SetCVar('nameplateSelfScale', GetCVarDefault('nameplateSelfScale'));
+    SetCVar('nameplateLargerScale', GetCVarDefault('nameplateLargerScale'));
+    SetCVar('nameplateGlobalScale', GetCVarDefault('nameplateGlobalScale'));
+    SetCVar('nameplateSelectedScale', GetCVarDefault('nameplateSelectedScale'));
+    SetCVar('nameplateSelfScale', GetCVarDefault('nameplateSelfScale'));
 
     -- Insets
-    C_CVar.SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'));
-    C_CVar.SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'));
-    C_CVar.SetCVar('nameplateOtherTopInset', GetCVarDefault('nameplateOtherTopInset'));
-    C_CVar.SetCVar('nameplateOtherBottomInset', GetCVarDefault('nameplateOtherBottomInset'));
-    C_CVar.SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'));
-    C_CVar.SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'));
+    SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'));
+    SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'));
+    SetCVar('nameplateOtherTopInset', GetCVarDefault('nameplateOtherTopInset'));
+    SetCVar('nameplateOtherBottomInset', GetCVarDefault('nameplateOtherBottomInset'));
+    SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'));
+    SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'));
 
-    C_CVar.SetCVar('nameplateShowEnemyMinions', GetCVarDefault('nameplateShowEnemyMinions'));
-    C_CVar.SetCVar('nameplateShowEnemyGuardians', GetCVarDefault('nameplateShowEnemyGuardians'));
-    C_CVar.SetCVar('nameplateShowEnemyMinus', GetCVarDefault('nameplateShowEnemyMinus'));
-    C_CVar.SetCVar('nameplateShowEnemyPets', GetCVarDefault('nameplateShowEnemyPets'));
-    C_CVar.SetCVar('nameplateShowEnemyTotems', GetCVarDefault('nameplateShowEnemyTotems'));
-    C_CVar.SetCVar('nameplateShowFriendlyMinions', GetCVarDefault('nameplateShowFriendlyMinions'));
-    C_CVar.SetCVar('nameplateShowFriendlyGuardians', GetCVarDefault('nameplateShowFriendlyGuardians'));
-    C_CVar.SetCVar('nameplateShowFriendlyNPCs', GetCVarDefault('nameplateShowFriendlyNPCs'));
-    C_CVar.SetCVar('nameplateShowFriendlyPets', GetCVarDefault('nameplateShowFriendlyPets'));
-    C_CVar.SetCVar('nameplateShowFriendlyTotems', GetCVarDefault('nameplateShowFriendlyTotems'));
+    SetCVar('nameplateShowEnemyMinions', GetCVarDefault('nameplateShowEnemyMinions'));
+    SetCVar('nameplateShowEnemyGuardians', GetCVarDefault('nameplateShowEnemyGuardians'));
+    SetCVar('nameplateShowEnemyMinus', GetCVarDefault('nameplateShowEnemyMinus'));
+    SetCVar('nameplateShowEnemyPets', GetCVarDefault('nameplateShowEnemyPets'));
+    SetCVar('nameplateShowEnemyTotems', GetCVarDefault('nameplateShowEnemyTotems'));
+    SetCVar('nameplateShowFriendlyMinions', GetCVarDefault('nameplateShowFriendlyMinions'));
+    SetCVar('nameplateShowFriendlyGuardians', GetCVarDefault('nameplateShowFriendlyGuardians'));
+    SetCVar('nameplateShowFriendlyNPCs', GetCVarDefault('nameplateShowFriendlyNPCs'));
+    SetCVar('nameplateShowFriendlyPets', GetCVarDefault('nameplateShowFriendlyPets'));
+    SetCVar('nameplateShowFriendlyTotems', GetCVarDefault('nameplateShowFriendlyTotems'));
 
-    C_CVar.SetCVar('NameplatePersonalClickThrough', GetCVarDefault('NameplatePersonalClickThrough'));
+    SetCVar('NameplatePersonalClickThrough', GetCVarDefault('NameplatePersonalClickThrough'));
 
     -- Alpha
-    C_CVar.SetCVar('nameplateSelectedAlpha', GetCVarDefault('nameplateSelectedAlpha'));
-    C_CVar.SetCVar('nameplateMaxAlpha', GetCVarDefault('nameplateMaxAlpha'));
-    C_CVar.SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'));
-    C_CVar.SetCVar('nameplateMinAlpha', GetCVarDefault('nameplateMinAlpha'));
-    C_CVar.SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'));
-    C_CVar.SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'));
+    SetCVar('nameplateSelectedAlpha', GetCVarDefault('nameplateSelectedAlpha'));
+    SetCVar('nameplateMaxAlpha', GetCVarDefault('nameplateMaxAlpha'));
+    SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'));
+    SetCVar('nameplateMinAlpha', GetCVarDefault('nameplateMinAlpha'));
+    SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'));
+    SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'));
 end
 
 Stripes.CVarsReset = CVarsReset;
 
 local function CVarsUpdate()
-    C_CVar.SetCVar('nameplateShowOnlyNames', O.db.name_only_friendly_mode == 1 and 1 or 0);
+    SetCVar('nameplateShowOnlyNames', O.db.name_only_friendly_mode == 1 and 1 or 0);
 
-    C_CVar.SetCVar('nameplateMotion', O.db.motion - 1);
-    C_CVar.SetCVar('nameplateMotionSpeed', O.db.motion_speed);
+    SetCVar('nameplateMotion', O.db.motion - 1);
+    SetCVar('nameplateMotionSpeed', O.db.motion_speed);
 
-    C_CVar.SetCVar('ShowClassColorInFriendlyNameplate', O.db.health_bar_class_color_friendly and 1 or 0);
-    C_CVar.SetCVar('ShowClassColorInNameplate', O.db.health_bar_class_color_enemy and 1 or 0);
+    SetCVar('ShowClassColorInFriendlyNameplate', O.db.health_bar_class_color_friendly and 1 or 0);
+    SetCVar('ShowClassColorInNameplate', O.db.health_bar_class_color_enemy and 1 or 0);
 
-    C_CVar.SetCVar('nameplateOverlapH', O.db.overlap_h);
-    C_CVar.SetCVar('nameplateOverlapV', O.db.overlap_v);
+    SetCVar('nameplateOverlapH', O.db.overlap_h);
+    SetCVar('nameplateOverlapV', O.db.overlap_v);
 
-    C_CVar.SetCVar('nameplateShowFriends', O.db.show_friendly and 1 or 0);
-    C_CVar.SetCVar('nameplateShowEnemies', O.db.show_enemy and 1 or 0);
+    SetCVar('nameplateShowFriends', O.db.show_friendly and 1 or 0);
+    SetCVar('nameplateShowEnemies', O.db.show_enemy and 1 or 0);
 
-    C_CVar.SetCVar('nameplateShowSelf', O.db.show_personal and 1 or 0);
-    C_CVar.SetCVar('NameplatePersonalShowAlways', O.db.show_personal_always and 1 or 0);
-    C_CVar.SetCVar('nameplateResourceOnTarget', O.db.show_personal_resource_ontarget and 1 or 0);
+    SetCVar('nameplateShowSelf', O.db.show_personal and 1 or 0);
+    SetCVar('NameplatePersonalShowAlways', O.db.show_personal_always and 1 or 0);
+    SetCVar('nameplateResourceOnTarget', O.db.show_personal_resource_ontarget and 1 or 0);
 
-    C_CVar.SetCVar('nameplateShowDebuffsOnFriendly', O.db.auras_show_debuffs_on_friendly and 1 or 0);
+    SetCVar('nameplateShowDebuffsOnFriendly', O.db.auras_show_debuffs_on_friendly and 1 or 0);
 
     -- Scales
-    C_CVar.SetCVar('nameplateLargerScale', O.db.scale_large);
-    C_CVar.SetCVar('nameplateGlobalScale', O.db.scale_global);
-    C_CVar.SetCVar('nameplateSelectedScale', O.db.scale_selected);
-    C_CVar.SetCVar('nameplateSelfScale', O.db.scale_self);
+    SetCVar('nameplateLargerScale', O.db.scale_large);
+    SetCVar('nameplateGlobalScale', O.db.scale_global);
+    SetCVar('nameplateSelectedScale', O.db.scale_selected);
+    SetCVar('nameplateSelfScale', O.db.scale_self);
 
     -- Insets
-    C_CVar.SetCVar('nameplateLargeTopInset', O.db.large_top_inset);
-    C_CVar.SetCVar('nameplateLargeBottomInset', O.db.large_bottom_inset);
-    C_CVar.SetCVar('nameplateOtherTopInset', O.db.other_top_inset);
-    C_CVar.SetCVar('nameplateOtherBottomInset', O.db.other_bottom_inset);
-    C_CVar.SetCVar('nameplateSelfTopInset', O.db.self_top_inset);
-    C_CVar.SetCVar('nameplateSelfBottomInset', O.db.self_bottom_inset);
+    SetCVar('nameplateLargeTopInset', O.db.large_top_inset);
+    SetCVar('nameplateLargeBottomInset', O.db.large_bottom_inset);
+    SetCVar('nameplateOtherTopInset', O.db.other_top_inset);
+    SetCVar('nameplateOtherBottomInset', O.db.other_bottom_inset);
+    SetCVar('nameplateSelfTopInset', O.db.self_top_inset);
+    SetCVar('nameplateSelfBottomInset', O.db.self_bottom_inset);
 
-    C_CVar.SetCVar('nameplateShowEnemyMinions', O.db.show_enemy_minions and 1 or 0);
-    C_CVar.SetCVar('nameplateShowEnemyGuardians', O.db.show_enemy_guardians and 1 or 0);
-    C_CVar.SetCVar('nameplateShowEnemyMinus', O.db.show_enemy_minus and 1 or 0);
-    C_CVar.SetCVar('nameplateShowEnemyPets', O.db.show_enemy_pets and 1 or 0);
-    C_CVar.SetCVar('nameplateShowEnemyTotems', O.db.show_enemy_totems and 1 or 0);
-    C_CVar.SetCVar('nameplateShowFriendlyMinions', O.db.show_friendly_minions and 1 or 0);
-    C_CVar.SetCVar('nameplateShowFriendlyGuardians', O.db.show_friendly_guardians and 1 or 0);
-    C_CVar.SetCVar('nameplateShowFriendlyNPCs', O.db.show_friendly_npcs and 1 or 0);
-    C_CVar.SetCVar('nameplateShowFriendlyPets', O.db.show_friendly_pets and 1 or 0);
-    C_CVar.SetCVar('nameplateShowFriendlyTotems', O.db.show_friendly_totems and 1 or 0);
+    SetCVar('nameplateShowEnemyMinions', O.db.show_enemy_minions and 1 or 0);
+    SetCVar('nameplateShowEnemyGuardians', O.db.show_enemy_guardians and 1 or 0);
+    SetCVar('nameplateShowEnemyMinus', O.db.show_enemy_minus and 1 or 0);
+    SetCVar('nameplateShowEnemyPets', O.db.show_enemy_pets and 1 or 0);
+    SetCVar('nameplateShowEnemyTotems', O.db.show_enemy_totems and 1 or 0);
+    SetCVar('nameplateShowFriendlyMinions', O.db.show_friendly_minions and 1 or 0);
+    SetCVar('nameplateShowFriendlyGuardians', O.db.show_friendly_guardians and 1 or 0);
+    SetCVar('nameplateShowFriendlyNPCs', O.db.show_friendly_npcs and 1 or 0);
+    SetCVar('nameplateShowFriendlyPets', O.db.show_friendly_pets and 1 or 0);
+    SetCVar('nameplateShowFriendlyTotems', O.db.show_friendly_totems and 1 or 0);
 
-    C_CVar.SetCVar('NameplatePersonalClickThrough', O.db.size_self_click_through and 1 or 0);
+    SetCVar('NameplatePersonalClickThrough', O.db.size_self_click_through and 1 or 0);
 
     -- Alpha
-    C_CVar.SetCVar('nameplateSelectedAlpha', O.db.selected_alpha);
-    C_CVar.SetCVar('nameplateMaxAlpha', O.db.max_alpha);
-    C_CVar.SetCVar('nameplateMaxAlphaDistance', O.db.max_alpha_distance);
-    C_CVar.SetCVar('nameplateMinAlpha', O.db.min_alpha);
-    C_CVar.SetCVar('nameplateMinAlphaDistance', O.db.min_alpha_distance);
-    C_CVar.SetCVar('nameplateOccludedAlphaMult', O.db.occluded_alpha_mult);
+    SetCVar('nameplateSelectedAlpha', O.db.selected_alpha);
+    SetCVar('nameplateMaxAlpha', O.db.max_alpha);
+    SetCVar('nameplateMaxAlphaDistance', O.db.max_alpha_distance);
+    SetCVar('nameplateMinAlpha', O.db.min_alpha);
+    SetCVar('nameplateMinAlphaDistance', O.db.min_alpha_distance);
+    SetCVar('nameplateOccludedAlphaMult', O.db.occluded_alpha_mult);
 end
 
 Stripes.CVarsUpdate = CVarsUpdate;

@@ -1048,8 +1048,6 @@ end
 
 -- Reinventing the wheel
 do
-    local activeLists = {};
-
     local DROPDOWN_WIDTH, DROPDOWN_HEIGHT = 100, 24;
 
     local DROPDOWN_HOLDER_BACKDROP = {
@@ -1084,21 +1082,90 @@ do
         end
     end
 
-    local sortedList = {};
     local function textSort(a, b)
-        return string.upper(a) < string.upper(b)
+        return string.upper(a) < string.upper(b);
+    end
+
+    local DropdownList = CreateFrame('Frame', 'StripesDropdownList', UIParent, 'BackdropTemplate');
+    DropdownList:SetClampedToScreen(true);
+    DropdownList:SetBackdrop(DROPDOWN_LIST_BACKDROP);
+    DropdownList:SetBackdropColor(0, 0, 0, 1);
+    DropdownList:SetShown(false);
+
+    local function FramePoolResetter(framePool, frame)
+        frame:Hide();
+        frame:ClearAllPoints();
+
+        if frame.Text then
+            local value, size, outline = _G['StripesOptionsNormalFont']:GetFont();
+            frame.Text:SetFont(value, size, outline);
+        end
+
+        if frame.Texture then
+            frame.Texture:Hide();
+        end
+
+        if frame.StatusBar then
+            frame.StatusBar:Hide();
+        end
+
+        if frame.Color then
+            frame.Color:Hide();
+        end
+    end
+
+    DropdownList.scrollChild, DropdownList.scrollArea = E.CreateScrollFrame(DropdownList, DROPDOWN_HEIGHT);
+    DropdownList.buttonPool = CreateFramePool('Button', DropdownList.scrollChild, 'BackdropTemplate', FramePoolResetter);
+    DropdownList.scrollBar = DropdownList.scrollArea.ScrollBar;
+
+    local function CreateDropdownItem(button)
+        button:SetBackdrop(DROPDOWN_ITEMBUTTON_BACKDROP);
+        button:SetBackdropColor(0, 0, 0, 1);
+
+        button.SelectedIcon = button:CreateTexture(nil, 'ARTWORK');
+        PixelUtil.SetPoint(button.SelectedIcon, 'LEFT', button, 'LEFT', 2, 0);
+        button.SelectedIcon:SetTexture('Interface\\Buttons\\UI-CheckBox-Check');
+        button.SelectedIcon:SetShown(false);
+
+        button.Text = button:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
+        PixelUtil.SetPoint(button.Text, 'TOPLEFT', button.SelectedIcon, 'TOPRIGHT', 2, 4);
+        PixelUtil.SetPoint(button.Text, 'BOTTOMRIGHT', button, 'BOTTOMRIGHT', -2, 0);
+        button.Text:SetJustifyH('LEFT');
+        button.Text:SetJustifyV('MIDDLE');
+
+        button.Texture = button:CreateTexture(nil, 'ARTWORK');
+        PixelUtil.SetPoint(button.Texture, 'LEFT', button.Text , 'LEFT', 22, 0);
+
+        button.Color = button:CreateTexture(nil, 'ARTWORK');
+        PixelUtil.SetPoint(button.Color, 'TOPLEFT', button.SelectedIcon, 'TOPRIGHT', 2, 4);
+        PixelUtil.SetPoint(button.Color, 'BOTTOMRIGHT', button, 'BOTTOMRIGHT', 0, 0);
+        button.Color:SetColorTexture(1, 1, 1, 1);
+        button.Color:Hide();
+
+        button.StatusBar = button:CreateTexture(nil, 'ARTWORK');
+        PixelUtil.SetPoint(button.StatusBar, 'TOPLEFT', button.SelectedIcon, 'TOPRIGHT', 2, 4);
+        PixelUtil.SetPoint(button.StatusBar, 'BOTTOMRIGHT', button, 'BOTTOMRIGHT', 0, 0);
+
+        button:HookScript('OnEnter', function(self)
+            self:SetBackdropColor(0.6, 0.5, 0.2, 1);
+        end);
+
+        button:HookScript('OnLeave', function(self)
+            self:SetBackdropColor(0, 0, 0, 1);
+        end);
     end
 
     local kinds = {
         ['plain'] = {
             SetList = function(self, itemsTable, sortFunc)
+                self.subType     = 'number';
                 self.itemsTable  = itemsTable or {};
                 self.sortedTable = self.sortedTable or {};
 
                 wipe(self.sortedTable);
 
                 for k, v in pairs(self.itemsTable) do
-                    table.insert(self.sortedTable, { key = k, value = v});
+                    table.insert(self.sortedTable, { key = k, value = v });
                 end
 
                 if sortFunc and type(sortFunc) == 'function' then
@@ -1108,27 +1175,24 @@ do
                         return a.key < b.key;
                     end);
                 end
+            end,
 
+            UpdateList = function(self)
+                local container = self;
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
-                local container    = self;
-                container.subType = 'string';
-
-                local holderButton = self.holderButton;
-                local listFrame    = self.holderButton.list;
-
-                holderButton.buttonPool:ReleaseAll();
+                DropdownList.buttonPool:ReleaseAll();
 
                 for _, data in pairs(self.sortedTable) do
                     itemCounter = itemCounter + 1;
-                    itemButton, isNew = holderButton.buttonPool:Acquire();
+                    itemButton, isNew = DropdownList.buttonPool:Acquire();
 
                     itemButton:ClearAllPoints();
 
                     if itemCounter == 1 then
-                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', holderButton.scrollChild, 'TOPLEFT', 0, 0);
-                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', holderButton.scrollChild, 'TOPRIGHT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', DropdownList.scrollChild, 'TOPLEFT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', DropdownList.scrollChild, 'TOPRIGHT', 0, 0);
                     else
                         PixelUtil.SetPoint(itemButton, 'TOPLEFT', lastButton, 'BOTTOMLEFT', 0, 0);
                         PixelUtil.SetPoint(itemButton, 'TOPRIGHT', lastButton, 'BOTTOMRIGHT', 0, 0);
@@ -1137,39 +1201,19 @@ do
                     lastButton = itemButton;
 
                     if isNew then
-                        itemButton:SetBackdrop(DROPDOWN_ITEMBUTTON_BACKDROP);
-                        itemButton:SetBackdropColor(0, 0, 0, 1);
-
-                        itemButton.SelectedIcon = itemButton:CreateTexture(nil, 'ARTWORK');
-                        PixelUtil.SetPoint(itemButton.SelectedIcon, 'LEFT', itemButton, 'LEFT', 2, 0);
-                        itemButton.SelectedIcon:SetTexture('Interface\\Buttons\\UI-CheckBox-Check');
-                        itemButton.SelectedIcon:SetShown(false);
-
-                        itemButton.Text = itemButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-                        PixelUtil.SetPoint(itemButton.Text, 'TOPLEFT', itemButton.SelectedIcon, 'TOPRIGHT', 2, 4);
-                        PixelUtil.SetPoint(itemButton.Text, 'BOTTOMRIGHT', itemButton, 'BOTTOMRIGHT', -2, 0);
-                        itemButton.Text:SetJustifyH('LEFT');
-                        itemButton.Text:SetJustifyV('MIDDLE');
-
-                        itemButton:HookScript('OnEnter', function(self)
-                            self:SetBackdropColor(0.6, 0.5, 0.2, 1);
-                        end);
-
-                        itemButton:HookScript('OnLeave', function(self)
-                            self:SetBackdropColor(0, 0, 0, 1);
-                        end);
-
-                        itemButton:SetScript('OnClick', function(self)
-                            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-
-                            container:SetValue(self.Key);
-                            listFrame:SetShown(false);
-
-                            if container.OnValueChangedCallback then
-                                container:OnValueChangedCallback(self.Key, self.Value, IsShiftKeyDown());
-                            end
-                        end);
+                        CreateDropdownItem(itemButton);
                     end
+
+                    itemButton:SetScript('OnClick', function(self)
+                        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+
+                        container:SetValue(self.Key);
+                        DropdownList:SetShown(false);
+
+                        if container.OnValueChangedCallback then
+                            container:OnValueChangedCallback(self.Key, self.Value, IsShiftKeyDown());
+                        end
+                    end);
 
                     PixelUtil.SetHeight(itemButton, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
@@ -1181,63 +1225,71 @@ do
                     itemButton:SetShown(true);
                 end
 
-                PixelUtil.SetHeight(listFrame, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
-                PixelUtil.SetSize(holderButton.scrollChild, self.WidthValue, listFrame:GetHeight());
+                if self.currentValue then
+                    for button, _ in DropdownList.buttonPool:EnumerateActive() do
+                        button.SelectedIcon:SetShown(false);
+
+                        if button.Key == self.currentValue then
+                            button.SelectedIcon:SetShown(true);
+                        end
+                    end
+                end
+
+                self:UpdateHeader();
+
+                PixelUtil.SetHeight(DropdownList, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
+                PixelUtil.SetSize(DropdownList.scrollChild, self.WidthValue, DropdownList:GetHeight());
 
                 self.UpdateScrollArea = function()
-                    UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), container.HeightValue, itemCounter);
+                    UpdateScrollArea(DropdownList.scrollArea, DropdownList:GetHeight(), container.HeightValue, itemCounter);
                 end
 
                 self:UpdateScrollArea();
             end,
 
             SetValue = function(self, value)
-                if not value then
-                    self.holderButton.Text:SetText('');
+                self.currentValue = value;
+                self.holderButton.Text:SetText('');
 
-                    for button, _ in self.holderButton.buttonPool:EnumerateActive() do
-                        button.SelectedIcon:SetShown(false);
-                    end
-
-                    return;
-                end
-
-                for button, _ in self.holderButton.buttonPool:EnumerateActive() do
+                for button, _ in DropdownList.buttonPool:EnumerateActive() do
                     button.SelectedIcon:SetShown(false);
 
-                    if button.Key == value then
+                    if button.Key == self.currentValue then
                         button.SelectedIcon:SetShown(true);
                         self.holderButton.Text:SetText(button.Value);
-                        self.currentValue = value;
                     end
                 end
-            end
+
+                self:UpdateHeader();
+            end,
+
+            UpdateHeader = function(self)
+                self.holderButton.Text:SetText(self.itemsTable[self.currentValue] or '');
+            end,
         },
 
         ['texture'] = {
             SetList = function(self, itemsTable)
-                self.itemsTable = itemsTable;
+                self.subType    = 'number';
+                self.itemsTable = itemsTable or {};
+            end,
 
+            UpdateList = function(self)
+                local container = self;
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
-                local container    = self;
-                container.subType = 'number';
+                DropdownList.buttonPool:ReleaseAll();
 
-                local holderButton = self.holderButton;
-                local listFrame    = self.holderButton.list;
-
-                holderButton.buttonPool:ReleaseAll();
-
-                for key, value in ipairs(itemsTable) do
+                for key, value in ipairs(self.itemsTable) do
                     itemCounter = itemCounter + 1;
-                    itemButton, isNew = holderButton.buttonPool:Acquire();
+                    itemButton, isNew = DropdownList.buttonPool:Acquire();
 
                     itemButton:ClearAllPoints();
 
                     if itemCounter == 1 then
-                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', holderButton.scrollChild, 'TOPLEFT', 0, 0);
-                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', holderButton.scrollChild, 'TOPRIGHT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', DropdownList.scrollChild, 'TOPLEFT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', DropdownList.scrollChild, 'TOPRIGHT', 0, 0);
                     else
                         PixelUtil.SetPoint(itemButton, 'TOPLEFT', lastButton, 'BOTTOMLEFT', 0, 0);
                         PixelUtil.SetPoint(itemButton, 'TOPRIGHT', lastButton, 'BOTTOMRIGHT', 0, 0);
@@ -1246,42 +1298,19 @@ do
                     lastButton = itemButton;
 
                     if isNew then
-                        itemButton:SetBackdrop(DROPDOWN_ITEMBUTTON_BACKDROP);
-                        itemButton:SetBackdropColor(0, 0, 0, 1);
-
-                        itemButton.SelectedIcon = itemButton:CreateTexture(nil, 'ARTWORK');
-                        PixelUtil.SetPoint(itemButton.SelectedIcon, 'LEFT', itemButton, 'LEFT', 2, 0);
-                        itemButton.SelectedIcon:SetTexture('Interface\\Buttons\\UI-CheckBox-Check');
-                        itemButton.SelectedIcon:SetShown(false);
-
-                        itemButton.Text = itemButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-                        PixelUtil.SetPoint(itemButton.Text, 'TOPLEFT', itemButton.SelectedIcon, 'TOPRIGHT', 2, 4);
-                        PixelUtil.SetPoint(itemButton.Text, 'BOTTOMRIGHT', itemButton, 'BOTTOMRIGHT', -2, 0);
-                        itemButton.Text:SetJustifyH('LEFT');
-                        itemButton.Text:SetJustifyV('MIDDLE');
-
-                        itemButton.Texture = itemButton:CreateTexture(nil, 'ARTWORK');
-                        PixelUtil.SetPoint(itemButton.Texture, 'LEFT', itemButton.Text , 'LEFT', 22, 0);
-
-                        itemButton:HookScript('OnEnter', function(self)
-                            self:SetBackdropColor(0.6, 0.5, 0.2, 1);
-                        end);
-
-                        itemButton:HookScript('OnLeave', function(self)
-                            self:SetBackdropColor(0, 0, 0, 1);
-                        end);
-
-                        itemButton:SetScript('OnClick', function(self)
-                            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-
-                            container:SetValue(self.Key);
-                            listFrame:SetShown(false);
-
-                            if container.OnValueChangedCallback then
-                                container:OnValueChangedCallback(self.Key);
-                            end
-                        end);
+                        CreateDropdownItem(itemButton);
                     end
+
+                    itemButton:SetScript('OnClick', function(self)
+                        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+
+                        container:SetValue(self.Key);
+                        DropdownList:SetShown(false);
+
+                        if container.OnValueChangedCallback then
+                            container:OnValueChangedCallback(self.Key);
+                        end
+                    end);
 
                     PixelUtil.SetHeight(itemButton, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
@@ -1289,6 +1318,7 @@ do
 
                     itemButton.Text:SetText(key);
                     itemButton.Texture:SetTexture(value);
+                    itemButton.Texture:Show();
 
                     itemButton.Key   = key;
                     itemButton.Value = value;
@@ -1296,61 +1326,83 @@ do
                     itemButton:SetShown(true);
                 end
 
-                PixelUtil.SetHeight(listFrame, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
-                PixelUtil.SetSize(holderButton.scrollChild, self.WidthValue, listFrame:GetHeight());
+                if self.currentValue then
+                    for button, _ in DropdownList.buttonPool:EnumerateActive() do
+                        button.SelectedIcon:SetShown(false);
+
+                        if button.Key == self.currentValue then
+                            button.SelectedIcon:SetShown(true);
+                        end
+                    end
+                end
+
+                self:UpdateHeader();
+
+                PixelUtil.SetHeight(DropdownList, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
+                PixelUtil.SetSize(DropdownList.scrollChild, self.WidthValue, DropdownList:GetHeight());
 
                 self.UpdateScrollArea = function()
-                    UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), container.HeightValue, itemCounter);
+                    UpdateScrollArea(DropdownList.scrollArea, DropdownList:GetHeight(), container.HeightValue, itemCounter);
                 end
 
                 self:UpdateScrollArea();
             end,
 
             SetValue = function(self, value)
-                for button, _ in self.holderButton.buttonPool:EnumerateActive() do
+                self.currentValue = value;
+
+                for button, _ in DropdownList.buttonPool:EnumerateActive() do
                     button.SelectedIcon:SetShown(false);
 
                     if button.Key == value then
                         button.SelectedIcon:SetShown(true);
                         self.holderButton.Text:SetText(value);
                         self.holderButton.Texture:SetTexture(self.itemsTable[value]);
-                        self.currentValue = value;
                     end
+                end
+
+                self:UpdateHeader();
+            end,
+
+            UpdateHeader = function(self)
+                if self.itemsTable[self.currentValue] then
+                    self.holderButton.Text:SetText(self.currentValue);
+                    self.holderButton.Texture:SetTexture(self.itemsTable[self.currentValue]);
                 end
             end,
         },
 
         ['statusbar'] = {
             SetList = function(self, itemsTable)
-                itemsTable = itemsTable or LSM:HashTable('statusbar');
-                self.itemsTable = itemsTable;
+                self.subType     = 'string';
+                self.itemsTable  = itemsTable or LSM:HashTable('statusbar');
+                self.sortedTable = self.sortedTable or {};
 
+                wipe(self.sortedTable);
+
+                for k, _ in pairs(self.itemsTable) do
+                    self.sortedTable[#self.sortedTable + 1] = k;
+                end
+
+                table.sort(self.sortedTable, textSort);
+            end,
+
+            UpdateList = function(self)
+                local container = self;
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
-                local container    = self;
-                container.subType = 'string';
+                DropdownList.buttonPool:ReleaseAll();
 
-                local holderButton = self.holderButton;
-                local listFrame    = self.holderButton.list;
-
-                holderButton.buttonPool:ReleaseAll();
-
-                for k, _ in pairs(itemsTable) do
-                    sortedList[#sortedList + 1] = k;
-                end
-
-                table.sort(sortedList, textSort)
-
-                for key, value in ipairs(sortedList) do
+                for key, value in ipairs(self.sortedTable) do
                     itemCounter = itemCounter + 1;
-                    itemButton, isNew = holderButton.buttonPool:Acquire();
+                    itemButton, isNew = DropdownList.buttonPool:Acquire();
 
                     itemButton:ClearAllPoints();
 
                     if itemCounter == 1 then
-                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', holderButton.scrollChild, 'TOPLEFT', 0, 0);
-                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', holderButton.scrollChild, 'TOPRIGHT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', DropdownList.scrollChild, 'TOPLEFT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', DropdownList.scrollChild, 'TOPRIGHT', 0, 0);
                     else
                         PixelUtil.SetPoint(itemButton, 'TOPLEFT', lastButton, 'BOTTOMLEFT', 0, 0);
                         PixelUtil.SetPoint(itemButton, 'TOPRIGHT', lastButton, 'BOTTOMRIGHT', 0, 0);
@@ -1359,49 +1411,26 @@ do
                     lastButton = itemButton;
 
                     if isNew then
-                        itemButton:SetBackdrop(DROPDOWN_ITEMBUTTON_BACKDROP);
-                        itemButton:SetBackdropColor(0, 0, 0, 1);
-
-                        itemButton.SelectedIcon = itemButton:CreateTexture(nil, 'ARTWORK');
-                        PixelUtil.SetPoint(itemButton.SelectedIcon, 'LEFT', itemButton, 'LEFT', 2, 0);
-                        itemButton.SelectedIcon:SetTexture('Interface\\Buttons\\UI-CheckBox-Check');
-                        itemButton.SelectedIcon:SetShown(false);
-
-                        itemButton.Text = itemButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-                        PixelUtil.SetPoint(itemButton.Text, 'TOPLEFT', itemButton.SelectedIcon, 'TOPRIGHT', 2, 4);
-                        PixelUtil.SetPoint(itemButton.Text, 'BOTTOMRIGHT', itemButton, 'BOTTOMRIGHT', -2, 0);
-                        itemButton.Text:SetJustifyH('LEFT');
-                        itemButton.Text:SetJustifyV('MIDDLE');
-
-                        itemButton.StatusBar = itemButton:CreateTexture(nil, 'ARTWORK');
-                        PixelUtil.SetPoint(itemButton.StatusBar, 'TOPLEFT', itemButton.SelectedIcon, 'TOPRIGHT', 2, 4);
-                        PixelUtil.SetPoint(itemButton.StatusBar, 'BOTTOMRIGHT', itemButton, 'BOTTOMRIGHT', 0, 0);
-
-                        itemButton:HookScript('OnEnter', function(self)
-                            self:SetBackdropColor(0.6, 0.5, 0.2, 1);
-                        end);
-
-                        itemButton:HookScript('OnLeave', function(self)
-                            self:SetBackdropColor(0, 0, 0, 1);
-                        end);
-
-                        itemButton:SetScript('OnClick', function(self)
-                            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-
-                            container:SetValue(self.Value);
-                            listFrame:SetShown(false);
-
-                            if container.OnValueChangedCallback then
-                                container:OnValueChangedCallback(self.Value);
-                            end
-                        end);
+                        CreateDropdownItem(itemButton);
                     end
+
+                    itemButton:SetScript('OnClick', function(self)
+                        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+
+                        container:SetValue(self.Value);
+                        DropdownList:SetShown(false);
+
+                        if container.OnValueChangedCallback then
+                            container:OnValueChangedCallback(self.Value);
+                        end
+                    end);
 
                     PixelUtil.SetHeight(itemButton, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
 
                     itemButton.Text:SetText(value);
                     itemButton.StatusBar:SetTexture(LSM:Fetch('statusbar', value));
+                    itemButton.StatusBar:Show();
 
                     itemButton.Key   = key;
                     itemButton.Value = value;
@@ -1409,66 +1438,91 @@ do
                     itemButton:SetShown(true);
                 end
 
-                PixelUtil.SetHeight(listFrame, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
-                PixelUtil.SetSize(holderButton.scrollChild, self.WidthValue, listFrame:GetHeight());
+                if self.currentValue then
+                    for button, _ in DropdownList.buttonPool:EnumerateActive() do
+                        button.SelectedIcon:SetShown(false);
+
+                        if button.Value == self.currentValue then
+                            button.SelectedIcon:SetShown(true);
+                        end
+                    end
+                end
+
+                self:UpdateHeader();
+
+                PixelUtil.SetHeight(DropdownList, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
+                PixelUtil.SetSize(DropdownList.scrollChild, self.WidthValue, DropdownList:GetHeight());
 
                 self.UpdateScrollArea = function()
-                    UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), container.HeightValue, itemCounter);
+                    UpdateScrollArea(DropdownList.scrollArea, DropdownList:GetHeight(), container.HeightValue, itemCounter);
                 end
 
                 self:UpdateScrollArea();
-
-                wipe(sortedList);
             end,
 
             SetValue = function(self, value)
-                self.holderButton.Text:SetText(L['MISSING_TEXTURE']);
-                self.holderButton.StatusBar:SetTexture(LSM:Fetch('statusbar', LSM.DefaultMedia.statusbar));
+                self.currentValue = value;
 
-                for button, _ in self.holderButton.buttonPool:EnumerateActive() do
+                for button, _ in DropdownList.buttonPool:EnumerateActive() do
                     button.SelectedIcon:SetShown(false);
 
                     if button.Value == value then
                         button.SelectedIcon:SetShown(true);
-                        self.holderButton.Text:SetText(button.Value);
-                        self.holderButton.StatusBar:SetTexture(LSM:Fetch('statusbar', value));
-                        self.currentValue = value;
+
                     end
+                end
+
+                self:UpdateHeader();
+            end,
+
+            UpdateHeader = function(self)
+                if LSM:IsValid('statusbar', self.currentValue) then
+                    self.holderButton.Text:SetTextColor(1, 1, 1, 1);
+                else
+                    self.holderButton.Text:SetTextColor(1, 0, 0, 1);
+                end
+
+                if self.currentValue then
+                    self.holderButton.Text:SetText(self.currentValue);
+                    self.holderButton.StatusBar:SetTexture(LSM:Fetch('statusbar', self.currentValue));
+                else
+                    self.holderButton.Text:SetText(L['MISSING_TEXTURE']);
+                    self.holderButton.StatusBar:SetTexture(LSM:Fetch('statusbar', LSM.DefaultMedia.statusbar));
                 end
             end,
         },
 
         ['font'] = {
             SetList = function(self, itemsTable)
-                itemsTable = itemsTable or LSM:HashTable('font');
-                self.itemsTable = itemsTable;
+                self.subType     = 'string';
+                self.itemsTable  = itemsTable or LSM:HashTable('font');
+                self.sortedTable = self.sortedTable or {};
 
+                wipe(self.sortedTable);
+
+                for k, _ in pairs(self.itemsTable) do
+                    self.sortedTable[#self.sortedTable + 1] = k;
+                end
+
+                table.sort(self.sortedTable, textSort);
+            end,
+
+            UpdateList = function(self)
+                local container = self;
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
-                local container    = self;
-                container.subType = 'string';
+                DropdownList.buttonPool:ReleaseAll();
 
-                local holderButton = self.holderButton;
-                local listFrame    = self.holderButton.list;
-
-                holderButton.buttonPool:ReleaseAll();
-
-                for k, _ in pairs(itemsTable) do
-                    sortedList[#sortedList+1] = k
-                end
-
-                table.sort(sortedList, textSort)
-
-                for key, value in ipairs(sortedList) do
+                for key, value in ipairs(self.sortedTable) do
                     itemCounter = itemCounter + 1;
-                    itemButton, isNew  = holderButton.buttonPool:Acquire();
+                    itemButton, isNew  = DropdownList.buttonPool:Acquire();
 
                     itemButton:ClearAllPoints();
 
                     if itemCounter == 1 then
-                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', holderButton.scrollChild, 'TOPLEFT', 0, 0);
-                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', holderButton.scrollChild, 'TOPRIGHT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', DropdownList.scrollChild, 'TOPLEFT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', DropdownList.scrollChild, 'TOPRIGHT', 0, 0);
                     else
                         PixelUtil.SetPoint(itemButton, 'TOPLEFT', lastButton, 'BOTTOMLEFT', 0, 0);
                         PixelUtil.SetPoint(itemButton, 'TOPRIGHT', lastButton, 'BOTTOMRIGHT', 0, 0);
@@ -1477,39 +1531,19 @@ do
                     lastButton = itemButton;
 
                     if isNew then
-                        itemButton:SetBackdrop(DROPDOWN_ITEMBUTTON_BACKDROP);
-                        itemButton:SetBackdropColor(0, 0, 0, 1);
-
-                        itemButton.SelectedIcon = itemButton:CreateTexture(nil, 'ARTWORK');
-                        PixelUtil.SetPoint(itemButton.SelectedIcon, 'LEFT', itemButton, 'LEFT', 2, 0);
-                        itemButton.SelectedIcon:SetTexture('Interface\\Buttons\\UI-CheckBox-Check');
-                        itemButton.SelectedIcon:SetShown(false);
-
-                        itemButton.Text = itemButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-                        PixelUtil.SetPoint(itemButton.Text, 'TOPLEFT', itemButton.SelectedIcon, 'TOPRIGHT', 2, 4);
-                        PixelUtil.SetPoint(itemButton.Text, 'BOTTOMRIGHT', itemButton, 'BOTTOMRIGHT', -2, 0);
-                        itemButton.Text:SetJustifyH('LEFT');
-                        itemButton.Text:SetJustifyV('MIDDLE');
-
-                        itemButton:HookScript('OnEnter', function(self)
-                            self:SetBackdropColor(0.6, 0.5, 0.2, 1);
-                        end);
-
-                        itemButton:HookScript('OnLeave', function(self)
-                            self:SetBackdropColor(0, 0, 0, 1);
-                        end);
-
-                        itemButton:SetScript('OnClick', function(self)
-                            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-
-                            container:SetValue(self.Value);
-                            listFrame:SetShown(false);
-
-                            if container.OnValueChangedCallback then
-                                container:OnValueChangedCallback(self.Value);
-                            end
-                        end);
+                        CreateDropdownItem(itemButton);
                     end
+
+                    itemButton:SetScript('OnClick', function(self)
+                        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+
+                        container:SetValue(self.Value);
+                        DropdownList:SetShown(false);
+
+                        if container.OnValueChangedCallback then
+                            container:OnValueChangedCallback(self.Value);
+                        end
+                    end);
 
                     PixelUtil.SetSize(itemButton, self.WidthValue, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
@@ -1524,56 +1558,75 @@ do
                     itemButton:SetShown(true);
                 end
 
-                PixelUtil.SetHeight(listFrame, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
-                PixelUtil.SetSize(holderButton.scrollChild, self.WidthValue, listFrame:GetHeight());
+                if self.currentValue then
+                    for button, _ in DropdownList.buttonPool:EnumerateActive() do
+                        button.SelectedIcon:SetShown(false);
+
+                        if button.Value == self.currentValue then
+                            button.SelectedIcon:SetShown(true);
+                        end
+                    end
+                end
+
+                self:UpdateHeader();
+
+                PixelUtil.SetHeight(DropdownList, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
+                PixelUtil.SetSize(DropdownList.scrollChild, self.WidthValue, DropdownList:GetHeight());
 
                 self.UpdateScrollArea = function()
-                    UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), container.HeightValue, itemCounter);
+                    UpdateScrollArea(DropdownList.scrollArea, DropdownList:GetHeight(), container.HeightValue, itemCounter);
                 end
 
                 self:UpdateScrollArea();
-
-                wipe(sortedList);
             end,
 
             SetValue = function(self, value)
-                self.holderButton.Text:SetText(L['MISSING_FONT']);
-                local _, size, outline = self.holderButton.Text:GetFont();
-                self.holderButton.Text:SetFont(LSM:Fetch('font', LSM.DefaultMedia.font), size, outline);
+                self.currentValue = value;
 
-                for button, _ in self.holderButton.buttonPool:EnumerateActive() do
+                for button, _ in DropdownList.buttonPool:EnumerateActive() do
                     button.SelectedIcon:SetShown(false);
 
                     if button.Value == value then
                         button.SelectedIcon:SetShown(true);
-
-                        self.holderButton.Text:SetText(button.Value);
-                        _, size, outline = self.holderButton.Text:GetFont();
-                        self.holderButton.Text:SetFont(LSM:Fetch('font', value), size, outline);
-
-                        self.currentValue = value;
                     end
+                end
+
+                self:UpdateHeader();
+            end,
+
+            UpdateHeader = function(self)
+                if LSM:IsValid('font', self.currentValue) then
+                    self.holderButton.Text:SetTextColor(1, 1, 1, 1);
+                else
+                    self.holderButton.Text:SetTextColor(1, 0, 0, 1);
+                end
+
+                if self.currentValue then
+                    self.holderButton.Text:SetText(self.currentValue);
+                    local _, size, outline = self.holderButton.Text:GetFont();
+                    self.holderButton.Text:SetFont(LSM:Fetch('font', self.currentValue), size, outline);
+                else
+                    self.holderButton.Text:SetText(L['MISSING_FONT']);
+                    local _, size, outline = self.holderButton.Text:GetFont();
+                    self.holderButton.Text:SetFont(LSM:Fetch('font', LSM.DefaultMedia.font), size, outline);
                 end
             end,
         },
 
         ['color'] = {
             SetList = function(self, itemsTable, colorList)
-                self.itemsTable = itemsTable or S:GetModule('Options_ColorCategory'):GetPredefinedDropdownList();
-                self.tKeys      = self.tKeys or {};
-                self.colorList  = colorList or S:GetModule('Options_ColorCategory'):GetPredefinedList();
+                self.subType     = 'number';
+                self.itemsTable  = itemsTable or S:GetModule('Options_ColorCategory'):GetPredefinedDropdownList();
+                self.sortedTable = self.sortedTable or {};
+                self.colorList   = colorList or S:GetModule('Options_ColorCategory'):GetPredefinedList();
 
-                wipe(self.tKeys);
+                wipe(self.sortedTable);
 
                 for k, d in pairs(self.itemsTable) do
-                    table.insert(self.tKeys, { key = k, name = d});
+                    table.insert(self.sortedTable, { key = k, name = d});
                 end
 
-                table.sort(self.tKeys, function(a, b)
-                    if a.name == b.name then
-                        return true;
-                    end
-
+                table.sort(self.sortedTable, function(a, b)
                     if a.name == L['NO'] then
                         return true;
                     end
@@ -1584,27 +1637,24 @@ do
 
                     return a.name < b.name;
                 end);
+            end,
 
+            UpdateList = function(self)
+                local container = self;
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
-                local container    = self;
-                container.subType = 'number';
+                DropdownList.buttonPool:ReleaseAll();
 
-                local holderButton = self.holderButton;
-                local listFrame    = self.holderButton.list;
-
-                holderButton.buttonPool:ReleaseAll();
-
-                for _, d in ipairs(self.tKeys) do
+                for _, d in ipairs(self.sortedTable) do
                     itemCounter = itemCounter + 1;
-                    itemButton, isNew = holderButton.buttonPool:Acquire();
+                    itemButton, isNew = DropdownList.buttonPool:Acquire();
 
                     itemButton:ClearAllPoints();
 
                     if itemCounter == 1 then
-                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', holderButton.scrollChild, 'TOPLEFT', 0, 0);
-                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', holderButton.scrollChild, 'TOPRIGHT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', DropdownList.scrollChild, 'TOPLEFT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', DropdownList.scrollChild, 'TOPRIGHT', 0, 0);
                     else
                         PixelUtil.SetPoint(itemButton, 'TOPLEFT', lastButton, 'BOTTOMLEFT', 0, 0);
                         PixelUtil.SetPoint(itemButton, 'TOPRIGHT', lastButton, 'BOTTOMRIGHT', 0, 0);
@@ -1613,56 +1663,31 @@ do
                     lastButton = itemButton;
 
                     if isNew then
-                        itemButton:SetBackdrop(DROPDOWN_ITEMBUTTON_BACKDROP);
-                        itemButton:SetBackdropColor(0, 0, 0, 1);
-
-                        itemButton.SelectedIcon = itemButton:CreateTexture(nil, 'ARTWORK');
-                        PixelUtil.SetPoint(itemButton.SelectedIcon, 'LEFT', itemButton, 'LEFT', 2, 0);
-                        itemButton.SelectedIcon:SetTexture('Interface\\Buttons\\UI-CheckBox-Check');
-                        itemButton.SelectedIcon:SetShown(false);
-
-                        itemButton.Text = itemButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
-                        PixelUtil.SetPoint(itemButton.Text, 'TOPLEFT', itemButton.SelectedIcon, 'TOPRIGHT', 2, 4);
-                        PixelUtil.SetPoint(itemButton.Text, 'BOTTOMRIGHT', itemButton, 'BOTTOMRIGHT', -2, 0);
-                        itemButton.Text:SetJustifyH('LEFT');
-                        itemButton.Text:SetJustifyV('MIDDLE');
-
-                        itemButton.Color = itemButton:CreateTexture(nil, 'ARTWORK');
-                        PixelUtil.SetPoint(itemButton.Color, 'TOPLEFT', itemButton.SelectedIcon, 'TOPRIGHT', 2, 4);
-                        PixelUtil.SetPoint(itemButton.Color, 'BOTTOMRIGHT', itemButton, 'BOTTOMRIGHT', 0, 0);
-                        itemButton.Color:SetColorTexture(1, 1, 1, 1);
-
-                        itemButton:HookScript('OnEnter', function(self)
-                            self:SetBackdropColor(0.6, 0.5, 0.2, 1);
-                        end);
-
-                        itemButton:HookScript('OnLeave', function(self)
-                            self:SetBackdropColor(0, 0, 0, 1);
-                        end);
-
-                        itemButton:SetScript('OnClick', function(self)
-                            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
-
-                            container:SetValue(self.Key);
-                            listFrame:SetShown(false);
-
-                            if container.OnValueChangedCallback then
-                                container:OnValueChangedCallback(self.Key);
-                            end
-                        end);
+                        CreateDropdownItem(itemButton);
                     end
+
+                    itemButton:SetScript('OnClick', function(self)
+                        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+
+                        container:SetValue(self.Key);
+                        DropdownList:SetShown(false);
+
+                        if container.OnValueChangedCallback then
+                            container:OnValueChangedCallback(self.Key);
+                        end
+                    end);
 
                     PixelUtil.SetHeight(itemButton, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
 
                     if d.key == 0 then
                         itemButton.Text:SetText(L['NO']);
-                        itemButton.Color:SetShown(false);
+                        itemButton.Color:Hide();
                         itemButton.Value = L['NO'];
                     else
                         itemButton.Text:SetText(self.colorList[d.key].name);
                         itemButton.Color:SetVertexColor(unpack(self.colorList[d.key].color));
-                        itemButton.Color:SetShown(true);
+                        itemButton.Color:Show();
                         itemButton.Value = self.colorList[d.key].name;
                     end
 
@@ -1671,32 +1696,51 @@ do
                     itemButton:SetShown(true);
                 end
 
-                PixelUtil.SetHeight(listFrame, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
-                PixelUtil.SetSize(holderButton.scrollChild, self.WidthValue, listFrame:GetHeight());
+                if self.currentValue then
+                    for button, _ in DropdownList.buttonPool:EnumerateActive() do
+                        button.SelectedIcon:SetShown(false);
+
+                        if button.Key == self.currentValue then
+                            button.SelectedIcon:SetShown(true);
+                        end
+                    end
+                end
+
+                self:UpdateHeader();
+
+                PixelUtil.SetHeight(DropdownList, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
+                PixelUtil.SetSize(DropdownList.scrollChild, self.WidthValue, DropdownList:GetHeight());
 
                 self.UpdateScrollArea = function()
-                    UpdateScrollArea(holderButton.scrollArea, listFrame:GetHeight(), container.HeightValue, itemCounter);
+                    UpdateScrollArea(DropdownList.scrollArea, DropdownList:GetHeight(), container.HeightValue, itemCounter);
                 end
 
                 self:UpdateScrollArea();
             end,
 
             SetValue = function(self, value)
-                for button, _ in self.holderButton.buttonPool:EnumerateActive() do
+                self.currentValue = value;
+
+                for button, _ in DropdownList.buttonPool:EnumerateActive() do
                     button.SelectedIcon:SetShown(false);
 
                     if button.Key == value then
                         button.SelectedIcon:SetShown(true);
-                        self.holderButton.Text:SetText(button.Value);
+                    end
+                end
 
-                        if value == 0 then
-                            self.holderButton.Color:SetShown(false);
-                        else
-                            self.holderButton.Color:SetVertexColor(unpack(self.colorList[value].color));
-                            self.holderButton.Color:SetShown(true);
-                        end
+                self:UpdateHeader();
+            end,
 
-                        self.currentValue = value;
+            UpdateHeader = function(self)
+                if self.currentValue or self.currentValue == 0 then
+                    if self.currentValue == 0 then
+                        self.holderButton.Text:SetText(L['NO']);
+                        self.holderButton.Color:SetShown(false);
+                    else
+                        self.holderButton.Text:SetText(self.colorList[self.currentValue].name);
+                        self.holderButton.Color:SetVertexColor(unpack(self.colorList[self.currentValue].color));
+                        self.holderButton.Color:SetShown(true);
                     end
                 end
             end,
@@ -1733,13 +1777,22 @@ do
         container.WidthValue  = DROPDOWN_WIDTH;
         container.HeightValue = DROPDOWN_HEIGHT;
 
-        PixelUtil.SetSize(holderButton, container.WidthValue, container.HeightValue);
+        holderButton:SetSize(container.WidthValue, container.HeightValue);
         holderButton:SetBackdrop(DROPDOWN_HOLDER_BACKDROP);
         holderButton:SetBackdropColor(0.05, 0.05, 0.05, 1);
         holderButton:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
 
         holderButton:SetScript('OnClick', function(self)
-            self.list:SetShown(not self.list:IsShown());
+            DropdownList:SetShown(not DropdownList:IsShown());
+            PixelUtil.SetPoint(DropdownList, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
+            PixelUtil.SetPoint(DropdownList, 'TOPRIGHT', holderButton, 'TOPRIGHT', 0, 0);
+            DropdownList:SetFrameStrata(holderButton:GetFrameStrata());
+            DropdownList:SetFrameLevel(holderButton.arrowButton:GetFrameLevel() + 1);
+            DropdownList:SetScale(container:GetScale());
+            DropdownList.scrollArea.ScrollBar.scrollStep = container.HeightValue;
+            DropdownList.scrollChild:SetSize(container.WidthValue, DropdownList:GetHeight());
+            container:UpdateList();
+
             PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
             AddToFreqUsed(self, container.SearchText);
@@ -1777,7 +1830,16 @@ do
         arrowButton:SetBackdropBorderColor(0.5, 0.5, 0.5, 1);
 
         arrowButton:SetScript('OnClick', function(self)
-            self:GetParent().list:SetShown(not self:GetParent().list:IsShown());
+            DropdownList:SetShown(not DropdownList:IsShown());
+            PixelUtil.SetPoint(DropdownList, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
+            PixelUtil.SetPoint(DropdownList, 'TOPRIGHT', holderButton, 'TOPRIGHT', 0, 0);
+            DropdownList:SetFrameStrata(holderButton:GetFrameStrata());
+            DropdownList:SetFrameLevel(holderButton.arrowButton:GetFrameLevel() + 1);
+            DropdownList:SetScale(container:GetScale());
+            DropdownList.scrollArea.ScrollBar.scrollStep = container.HeightValue;
+            DropdownList.scrollChild:SetSize(container.WidthValue, DropdownList:GetHeight());
+            container:UpdateList();
+
             PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
             AddToFreqUsed(self, container.SearchText);
@@ -1803,25 +1865,7 @@ do
             GameTooltip:Hide();
         end);
 
-        local list = CreateFrame('Frame', 'Stripes_DDList_' .. (#activeLists + 1), UIParent, 'BackdropTemplate');
-        PixelUtil.SetPoint(list, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
-        PixelUtil.SetPoint(list, 'TOPRIGHT', holderButton, 'TOPRIGHT', 0, 0);
-        list:SetFrameStrata(holderButton:GetFrameStrata());
-        list:SetFrameLevel(arrowButton:GetFrameLevel() + 1);
-        list:SetClampedToScreen(true);
-        list:SetBackdrop(DROPDOWN_LIST_BACKDROP);
-        list:SetBackdropColor(0, 0, 0, 1);
-        list:SetShown(false);
-
-        holderButton.scrollChild, holderButton.scrollArea = E.CreateScrollFrame(list, container.HeightValue);
-        holderButton.buttonPool = CreateFramePool('Button', holderButton.scrollChild, 'BackdropTemplate');
-
-        list.scrollBar = holderButton.scrollArea.ScrollBar;
-
-        table.insert(activeLists, list);
-
         holderButton.arrowButton = arrowButton;
-        holderButton.list        = list;
 
         holderButton:HookScript('OnEnter', function()
             arrowButton.Icon:SetVertexColor(1, 0.72, 0.2);
@@ -1843,10 +1887,6 @@ do
             GameTooltip:Hide();
         end);
 
-        hooksecurefunc(holderButton, 'SetScale', function(self, value)
-            self.list:SetScale(value);
-        end);
-
         hooksecurefunc(holderButton, 'SetEnabled', function(self, state)
             if state then
                 self.Text:SetFontObject('StripesOptionsNormalFont');
@@ -1859,8 +1899,10 @@ do
             end
         end);
 
-        container.SetList  = kinds[kind].SetList;
-        container.SetValue = kinds[kind].SetValue;
+        container.SetList      = kinds[kind].SetList;
+        container.UpdateList   = kinds[kind].UpdateList;
+        container.SetValue     = kinds[kind].SetValue;
+        container.UpdateHeader = kinds[kind].UpdateHeader
 
         container.SetSize = function(self, width, height)
             if not width or not height then
@@ -1868,19 +1910,18 @@ do
             end
 
             if self.Label:GetStringWidth() > 0 then
-                PixelUtil.SetSize(self, self.Label:GetStringWidth() + width + 12, height);
+                self:SetW(self.Label:GetStringWidth() + width + 12);
+                self:SetH(height);
             else
-                PixelUtil.SetSize(self, width, height);
+                self:SetW(width);
+                self:SetH(height);
             end
 
-            PixelUtil.SetSize(self.holderButton, width, height);
+            self.holderButton:SetSize(width, height);
             PixelUtil.SetSize(self.holderButton.arrowButton, height, height);
             PixelUtil.SetSize(self.holderButton.arrowButton.Icon, height / 1.2, height / 1.2);
             PixelUtil.SetPoint(self.holderButton.Text, 'BOTTOMRIGHT', self.holderButton, 'BOTTOMRIGHT', -(height + 6.5), 0);
             PixelUtil.SetSize(self.holderButton.Texture, height - 2, height - 2);
-
-            self.holderButton.scrollArea.ScrollBar.scrollStep = height;
-            self.holderButton.scrollChild:SetSize(width, self.holderButton.list:GetHeight());
 
             self.WidthValue  = width;
             self.HeightValue = height;
@@ -1923,10 +1964,8 @@ do
 
     if UIDropDownMenu_HandleGlobalMouseEvent then
         function E.DropDown_CloseNotActive()
-            for _, list in ipairs(activeLists) do
-                if list:IsShown() and not list:IsMouseOver() and not (list.scrollBar and list.scrollBar:IsMouseOver()) then
-                    list:SetShown(false);
-                end
+            if DropdownList:IsShown() and not DropdownList:IsMouseOver() and not (DropdownList.scrollBar and DropdownList.scrollBar:IsMouseOver()) then
+                DropdownList:SetShown(false);
             end
         end
 

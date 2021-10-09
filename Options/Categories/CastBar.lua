@@ -83,10 +83,6 @@ panel.UpdateProfilesDropdown = function(self)
     end
 
     table.sort(profilesList, function(a, b)
-        if a == b then
-            return true;
-        end
-
         if a == L['OPTIONS_PROFILE_DEFAULT_NAME'] then
             return true;
         end
@@ -270,7 +266,7 @@ if UIDropDownMenu_HandleGlobalMouseEvent then
             return;
         end
 
-        if ExtendedOptions:IsShown() and not ExtendedOptions:IsMouseOver() and not ExtendedOptions.anchor:IsMouseOver() and not ExtendedOptions.ColorCategory.holderButton.list:IsMouseOver() then
+        if ExtendedOptions:IsShown() and not ExtendedOptions:IsMouseOver() and not ExtendedOptions.anchor:IsMouseOver() and not _G['StripesDropdownList']:IsMouseOver() then
             ExtendedOptionsHide();
         end
     end
@@ -335,7 +331,6 @@ local function CreateCustomCastRow(frame)
             ExtendedOptions.CustomColorCategory:SetList(frame.custom_color_list, O.db.color_category_data);
             ExtendedOptions.CustomColorCategory:SetValue(frame.custom_color_category);
             ExtendedOptions.GlowType:SetValue(frame.glow_type);
-            ExtendedOptions.GlowType:UpdateScrollArea();
             ExtendedOptions.Category:SetList(frame.category_list);
             ExtendedOptions.Category:SetValue(frame.category_id);
             ExtendedOptions.Icon:SetTexture(frame.icon);
@@ -1511,6 +1506,8 @@ panel.Load = function(self)
     PixelUtil.SetPoint(self.CategoryListScrollArea.ScrollBar, 'BOTTOMLEFT', self.CategoryListScrollArea, 'BOTTOMRIGHT', -8, 0);
 
     self.CategoryListButtonPool = CreateFramePool('Button', self.CategoryListScrollChild, 'BackdropTemplate');
+
+    S:GetModule('Options_ColorCategory'):AddScroll(self.UpdateCustomCastsScroll);
 end
 
 panel.OnShow = function(self)
@@ -1542,8 +1539,4 @@ function Module:MODIFIER_STATE_CHANGED(key, down)
     else
         panel.CopyFromProfileText:SetText(L['OPTIONS_COPY_FROM_PROFILE']);
     end
-end
-
-function Module:StartUp()
-    panel:UpdateCustomCastsScroll();
 end

@@ -381,10 +381,6 @@ panel.UpdateProfilesDropdown = function(self)
     end
 
     table.sort(profilesList, function(a, b)
-        if a == b then
-            return true;
-        end
-
         if a == L['OPTIONS_PROFILE_DEFAULT_NAME'] then
             return true;
         end

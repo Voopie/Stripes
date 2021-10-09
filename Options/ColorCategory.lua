@@ -241,7 +241,7 @@ local CreateListRow = function(frame)
         O.db.color_category_data[index].color[4] = a or 1;
 
         Module:UpdateAllLists();
-        Module.UpdateOtherScrolls();
+        Module:UpdateOtherScrolls();
     end
     frame.ColorPicker:HookScript('OnEnter', function(self)
         self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
@@ -393,12 +393,19 @@ Module.UpdateListScroll = function()
 
     PixelUtil.SetSize(ListScrollArea.scrollChild, ListScroll:GetWidth(), ListScroll:GetHeight() - (ListScroll:GetHeight() % ROW_HEIGHT));
 
-    Module.UpdateOtherScrolls();
+    Module:UpdateOtherScrolls();
 end
 
-Module.UpdateOtherScrolls = function()
-    O.frame.Right.CastBar:UpdateCustomCastsScroll();
-    O.frame.Right.CustomColor:UpdateScroll();
+local OtherScrollsTable = {};
+
+function Module:AddScroll(func)
+    table.insert(OtherScrollsTable, func);
+end
+
+function Module:UpdateOtherScrolls()
+    for _, func in ipairs(OtherScrollsTable) do
+        func();
+    end
 end
 
 function Module:GetPredefinedList()
