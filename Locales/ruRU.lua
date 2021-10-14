@@ -11,6 +11,8 @@ NAMESPACE[2]['ruRU'] = {};
 
 local L = NAMESPACE[2]['ruRU'];
 
+L['OPTIONS_TRANSLATED_BY'] = 'Переведено на русский: Рипна-Гордунни';
+
 L['RENAME'] = 'Переименовать';
 L['SAVE'] = 'Сохранить';
 L['USE'] = 'Использовать';
@@ -148,7 +150,6 @@ L['OPTIONS_CATEGORY_INFO'] = 'Инфо';
 L['OPTIONS_CATEGORY_GLOBAL'] = 'Глобальное';
 
 L['OPTIONS_INFO_VERSION'] = 'Версия';
-L['OPTIONS_INFO_TRANSLATED_BY'] = 'Переведено на русский: Рипна-Гордунни';
 
 L['OPTIONS_HOME_FREQUENTLY_USED_OPTIONS_TIP'] = 'Здесь будут ссылки на наиболее часто используемые настройки';
 L['OPTIONS_HOME_DELETE_TIP'] = 'Кликни правой - удалишь, что надо';
