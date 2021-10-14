@@ -897,6 +897,8 @@ do
 
         editbox.Instruction = Mixin(editbox:CreateFontString(nil, 'ARTWORK', 'StripesOptionsLightGreyedFont'), E.PixelPerfectMixin);
         editbox.Instruction:SetPosition('LEFT', editbox, 'LEFT', 0, 0);
+        editbox.Instruction:SetPosition('RIGHT', editbox, 'RIGHT', 0, 0);
+        editbox.Instruction:SetWordWrap(false);
 
         editbox.SetLabel = function(self, label)
             self.Label:SetText(label);
@@ -992,6 +994,22 @@ do
         editbox.SetTooltip = function(self, tooltip)
             self.tooltip = tooltip;
         end
+
+        editbox:HookScript('OnEnter', function(self)
+            if self.Instruction:IsTruncated() then
+                local tooltip = self.tooltip or '';
+
+                if tooltip == '' then
+                    tooltip = self.Instruction:GetText();
+                else
+                    tooltip = tooltip .. '|n|n' .. self.Instruction:GetText();
+                end
+
+                GameTooltip:SetOwner(self, 'ANCHOR_RIGHT');
+                GameTooltip:AddLine(tooltip, 1, 0.85, 0, true);
+                GameTooltip:Show();
+            end
+        end);
 
         editbox.SetUseLastValue = function(self, state)
             self.useLastValue = state;
