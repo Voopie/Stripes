@@ -283,12 +283,25 @@ panel.Load = function(self)
         O.db.class_icon_enabled = self:GetChecked();
 
         panel.class_icon_arena_only:SetEnabled(O.db.class_icon_enabled);
+        panel.class_icon_enemy_only:SetEnabled(O.db.class_icon_enabled);
 
         Stripes:UpdateAll();
     end
 
+    self.class_icon_enemy_only = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.class_icon_enemy_only:SetPosition('LEFT', self.class_icon_enabled.Label, 'RIGHT', 12, 0);
+    self.class_icon_enemy_only:SetLabel(L['OPTIONS_CLASS_ICON_ENEMY_ONLY']);
+    self.class_icon_enemy_only:SetTooltip(L['OPTIONS_CLASS_ICON_ENEMY_ONLY_TOOLTIP']);
+    self.class_icon_enemy_only:SetChecked(O.db.class_icon_enemy_only);
+    self.class_icon_enemy_only:AddToSearch(button, L['OPTIONS_CLASS_ICON_ENEMY_ONLY_TOOLTIP'], self.Tabs[1]);
+    self.class_icon_enemy_only:SetEnabled(O.db.class_icon_enabled);
+    self.class_icon_enemy_only.Callback = function(self)
+        O.db.class_icon_enemy_only = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.class_icon_arena_only = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.class_icon_arena_only:SetPosition('LEFT', self.class_icon_enabled.Label, 'RIGHT', 12, 0);
+    self.class_icon_arena_only:SetPosition('LEFT', self.class_icon_enemy_only.Label, 'RIGHT', 12, 0);
     self.class_icon_arena_only:SetLabel(L['OPTIONS_CLASS_ICON_ARENA_ONLY']);
     self.class_icon_arena_only:SetTooltip(L['OPTIONS_CLASS_ICON_ARENA_ONLY_TOOLTIP']);
     self.class_icon_arena_only:SetChecked(O.db.class_icon_arena_only);

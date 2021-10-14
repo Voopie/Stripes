@@ -250,6 +250,7 @@ O.DefaultValues = {
     faction_icon_enabled             = false,
     class_icon_enabled               = false,
     class_icon_arena_only            = false,
+    class_icon_enemy_only            = true,
     target_name_enabled              = true,
     target_name_only_enemy           = true,
     target_name_not_me               = false,

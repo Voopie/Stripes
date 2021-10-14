@@ -4,7 +4,7 @@ local Module = S:NewNameplateModule('ClassIcon');
 local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
 
 -- Local Config
-local ENABLED, ONLY_IN_ARENA;
+local ENABLED, ONLY_IN_ARENA, ONLY_ENEMY;
 
 local PlayerState = D.Player.State;
 
@@ -42,8 +42,17 @@ local function Update(unitframe)
             unitframe.ClassIcon:SetShown(false);
         end
     else
-        unitframe.ClassIcon.icon:SetTexCoord(unpack(classIconsCoords[unitframe.data.className]));
-        unitframe.ClassIcon:SetShown(true);
+        if ONLY_ENEMY then
+            if unitframe.data.unitType == 'ENEMY_PLAYER' then
+                unitframe.ClassIcon.icon:SetTexCoord(unpack(classIconsCoords[unitframe.data.className]));
+                unitframe.ClassIcon:SetShown(true);
+            else
+                unitframe.ClassIcon:SetShown(false);
+            end
+        else
+            unitframe.ClassIcon.icon:SetTexCoord(unpack(classIconsCoords[unitframe.data.className]));
+            unitframe.ClassIcon:SetShown(true);
+        end
     end
 end
 
@@ -65,6 +74,7 @@ end
 function Module:UpdateLocalConfig()
     ENABLED       = O.db.class_icon_enabled;
     ONLY_IN_ARENA = O.db.class_icon_arena_only;
+    ONLY_ENEMY    = O.db.class_icon_enemy_only;
 end
 
 function Module:StartUp()
