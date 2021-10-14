@@ -97,7 +97,7 @@ end
 
 function Module:MythicDungeonTools()
     MDTLoaded        = true;
-    MDT              = _G.MDT;
+    MDT              = _G['MDT'];
     MDT_GetEnemyInfo = MDT.GetEnemyForces;
 
     DB_MODE = O.db.mythic_plus_percentage_use_mode;
