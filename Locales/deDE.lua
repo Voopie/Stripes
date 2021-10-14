@@ -757,8 +757,8 @@ L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED'] = 'Einfärbung nach Aura';
 L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP'] = 'Einschalten der Färbung des Gesundheitsbalkens in Abhängigkeit vom Vorhandensein einer bestimmten Aura';
 L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_OPEN'] = 'Liste öffnen';
 L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_CLOSE'] = 'Liste schließen';
-L['OPTIONS_AURAS_MASQUE_SUPPORT'] = '"Masken"-Unterstützung';
-L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'] = 'Anpassung des Aussehens von Aura über das Addon "Masque" aktivieren';
+L['OPTIONS_AURAS_MASQUE_SUPPORT'] = 'Unterstützung für das «Masque»-Addon';
+L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'] = 'Anpassung des Aussehens von Aura über das Addon «Masque» aktivieren';
 L['OPTIONS_AURAS_BORDER_HIDE'] = 'Den Rahmen ausblenden';
 L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP'] = 'Den Aurarahmen ausblenden';
 
