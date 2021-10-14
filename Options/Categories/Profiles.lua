@@ -356,7 +356,7 @@ end);
 
 panel.Load = function(self)
     self.ActiveProfile = Mixin(self:CreateFontString(nil, 'ARTWORK', 'StripesMediumNormalSemiBoldFont'), E.PixelPerfectMixin);
-    self.ActiveProfile:SetPosition('TOPLEFT', self, 'TOPLEFT', 12, -12);
+    self.ActiveProfile:SetPosition('TOPLEFT', self, 'TOPLEFT', 4, -12);
     self.ActiveProfile:SetJustifyH('LEFT');
     self.ActiveProfile:SetTextColor(0.85, 0.85, 0.85);
     self.ActiveProfile:SetText(L['OPTIONS_PROFILES_ACTIVE_PROFILE']);
@@ -445,11 +445,11 @@ panel.Load = function(self)
     end
 
     local Delimiter = E.CreateDelimiter(self);
-    Delimiter:SetPosition('TOPLEFT', self.ChooseProfileText, 'BOTTOMLEFT', -12, -8);
+    Delimiter:SetPosition('TOPLEFT', self.ChooseProfileText, 'BOTTOMLEFT', -4, -8);
     Delimiter:SetW(self:GetWidth());
 
     self.CreateNewProfileEditBox = E.CreateEditBox(self);
-    self.CreateNewProfileEditBox:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 17, -8);
+    self.CreateNewProfileEditBox:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 9, -8);
     self.CreateNewProfileEditBox:SetSize(180, 22)
     self.CreateNewProfileEditBox:SetFont(self.ActiveProfileValue:GetFont());
     self.CreateNewProfileEditBox:SetInstruction(L['OPTIONS_PROFILES_CREATE_NEW_ENTER_NAME']);
@@ -475,11 +475,11 @@ panel.Load = function(self)
     end);
 
     Delimiter = E.CreateDelimiter(self);
-    Delimiter:SetPosition('TOPLEFT', self.CreateNewProfileEditBox, 'BOTTOMLEFT', -17, -8);
+    Delimiter:SetPosition('TOPLEFT', self.CreateNewProfileEditBox, 'BOTTOMLEFT', -9, -8);
     Delimiter:SetW(self:GetWidth());
 
     self.ImportProfileButton = E.CreateButton(self);
-    self.ImportProfileButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 12, -8);
+    self.ImportProfileButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 4, -8);
     self.ImportProfileButton:SetLabel(L['OPTIONS_PROFILES_IMPORT_BUTTON_LABEL']);
     self.ImportProfileButton:SetHighlightColor('ff884d');
     self.ImportProfileButton:SetScript('OnClick', function()
@@ -549,11 +549,11 @@ panel.Load = function(self)
 
 
     Delimiter = E.CreateDelimiter(self);
-    Delimiter:SetPosition('TOPLEFT', self.ImportProfileButton, 'BOTTOMLEFT', -12, -8);
+    Delimiter:SetPosition('TOPLEFT', self.ImportProfileButton, 'BOTTOMLEFT', -4, -8);
     Delimiter:SetW(self:GetWidth());
 
     self.RemoveProfile = Mixin(self:CreateFontString(nil, 'ARTWORK', 'StripesMediumNormalSemiBoldFont'), E.PixelPerfectMixin);
-    self.RemoveProfile:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 12, -8);
+    self.RemoveProfile:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 4, -8);
     self.RemoveProfile:SetJustifyH('LEFT');
     self.RemoveProfile:SetTextColor(1, 0.3, 0.3);
     self.RemoveProfile:SetText(L['OPTIONS_PROFILES_REMOVE_PROFILE']);
