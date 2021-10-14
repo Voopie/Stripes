@@ -255,7 +255,7 @@ S.Media.Fonts = {
     },
 };
 
--- Textures
+-- Status bar textures
 LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Flat', S.Media.Textures.StatusBar.FLAT);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Liline', S.Media.Textures.StatusBar.LILINE);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Limida', S.Media.Textures.StatusBar.LIMIDA);
@@ -364,8 +364,14 @@ do
 	end);
 end
 
+local hieroglyphsLocales = {
+    ['zhCN'] = true,
+    ['zhTW'] = true,
+    ['koKR'] = true,
+};
+
 local StripesCategoryButtonNormalFont = CreateFont('StripesCategoryButtonNormalFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesCategoryButtonNormalFont:CopyFontObject('SystemFont_Med3');
 else
     StripesCategoryButtonNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 14);
@@ -376,7 +382,7 @@ StripesCategoryButtonNormalFont:SetShadowColor(0, 0, 0);
 StripesCategoryButtonNormalFont:SetShadowOffset(1, -1);
 
 local StripesCategoryButtonHighlightFont = CreateFont('StripesCategoryButtonHighlightFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesCategoryButtonHighlightFont:CopyFontObject('SystemFont_Shadow_Med3');
 else
     StripesCategoryButtonHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 14);
@@ -387,7 +393,7 @@ StripesCategoryButtonHighlightFont:SetShadowColor(0, 0, 0);
 StripesCategoryButtonHighlightFont:SetShadowOffset(1, -1);
 
 local StripesOptionsNormalFont = CreateFont('StripesOptionsNormalFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsNormalFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
     StripesOptionsNormalFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13);
@@ -398,7 +404,7 @@ StripesOptionsNormalFont:SetShadowColor(0, 0, 0);
 StripesOptionsNormalFont:SetShadowOffset(1, -1);
 
 local StripesOptionsHighlightFont = CreateFont('StripesOptionsHighlightFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsHighlightFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
     StripesOptionsHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13);
@@ -409,7 +415,7 @@ StripesOptionsHighlightFont:SetShadowColor(0, 0, 0);
 StripesOptionsHighlightFont:SetShadowOffset(1, -1);
 
 local StripesOptionsLightGreyedFont = CreateFont('StripesOptionsLightGreyedFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsLightGreyedFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
     StripesOptionsLightGreyedFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13);
@@ -420,7 +426,7 @@ StripesOptionsLightGreyedFont:SetShadowColor(0, 0, 0);
 StripesOptionsLightGreyedFont:SetShadowOffset(1, -1);
 
 local StripesOptionsDisabledFont = CreateFont('StripesOptionsDisabledFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsDisabledFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
     StripesOptionsDisabledFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13);
@@ -431,7 +437,7 @@ StripesOptionsDisabledFont:SetShadowColor(0, 0, 0);
 StripesOptionsDisabledFont:SetShadowOffset(1, -1);
 
 local StripesOptionsTabHighlightFont = CreateFont('StripesOptionsTabHighlightFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsTabHighlightFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
     StripesOptionsTabHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11);
@@ -441,7 +447,7 @@ StripesOptionsTabHighlightFont:SetShadowColor(0, 0, 0);
 StripesOptionsTabHighlightFont:SetShadowOffset(1, -1);
 
 local StripesOptionsTabGreyedFont = CreateFont('StripesOptionsTabGreyedFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsTabGreyedFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
     StripesOptionsTabGreyedFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11);
@@ -451,7 +457,7 @@ StripesOptionsTabGreyedFont:SetShadowColor(0, 0, 0);
 StripesOptionsTabGreyedFont:SetShadowOffset(1, -1);
 
 local StripesOptionsButtonNormalFont = CreateFont('StripesOptionsButtonNormalFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsButtonNormalFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
     StripesOptionsButtonNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11);
@@ -461,7 +467,7 @@ StripesOptionsButtonNormalFont:SetShadowColor(0, 0, 0);
 StripesOptionsButtonNormalFont:SetShadowOffset(1, -1);
 
 local StripesOptionsButtonHighlightFont = CreateFont('StripesOptionsButtonHighlightFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsButtonHighlightFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
     StripesOptionsButtonHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11);
@@ -471,7 +477,7 @@ StripesOptionsButtonHighlightFont:SetShadowColor(0, 0, 0);
 StripesOptionsButtonHighlightFont:SetShadowOffset(1, -1);
 
 local StripesOptionsButtonDisabledFont = CreateFont('StripesOptionsButtonDisabledFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsButtonDisabledFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
     StripesOptionsButtonDisabledFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11);
@@ -481,7 +487,7 @@ StripesOptionsButtonDisabledFont:SetShadowColor(0, 0, 0);
 StripesOptionsButtonDisabledFont:SetShadowOffset(1, -1);
 
 local StripesMediumHighlightFont = CreateFont('StripesMediumHighlightFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesMediumHighlightFont:CopyFontObject('SystemFont_Shadow_Med2');
 else
     StripesMediumHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 14);
@@ -492,7 +498,7 @@ StripesMediumHighlightFont:SetShadowColor(0, 0, 0);
 StripesMediumHighlightFont:SetShadowOffset(1, -1);
 
 local StripesLargeHighlightFont = CreateFont('StripesLargeHighlightFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesLargeHighlightFont:CopyFontObject('SystemFont_Shadow_Large');
 else
     StripesLargeHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 16);
@@ -503,7 +509,7 @@ StripesLargeHighlightFont:SetShadowColor(0, 0, 0);
 StripesLargeHighlightFont:SetShadowOffset(1, -1);
 
 local StripesSmallNormalFont = CreateFont('StripesSmallNormalFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesSmallNormalFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
     StripesSmallNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.REGULARITALIC, 11);
@@ -513,7 +519,7 @@ StripesSmallNormalFont:SetShadowColor(0, 0, 0);
 StripesSmallNormalFont:SetShadowOffset(1, -1);
 
 local StripesMediumNormalSemiBoldFont = CreateFont('StripesMediumNormalSemiBoldFont');
-if S.ClientLocale == 'zhCN' or S.ClientLocale == 'zhTW' or S.ClientLocale == 'koKR' then
+if hieroglyphsLocales[S.ClientLocale] then
     StripesMediumNormalSemiBoldFont:CopyFontObject('SystemFont_Shadow_Med2');
 else
     StripesMediumNormalSemiBoldFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLD, 14);
