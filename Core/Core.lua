@@ -296,41 +296,41 @@ end
 
 AddOn.Eventer = Eventer;
 
-local ModulePrototype = {};
+local ModuleMixin = {};
 
-function ModulePrototype:RegisterEvent(event, func)
+function ModuleMixin:RegisterEvent(event, func)
 	Eventer:RegisterEvent(event, self, func);
 end
 
-function ModulePrototype:UnregisterEvent(event)
+function ModuleMixin:UnregisterEvent(event)
 	Eventer:UnregisterEvent(event, self);
 end
 
-function ModulePrototype:IsEventRegistered(event)
+function ModuleMixin:IsEventRegistered(event)
 	return Eventer:IsEventRegistered(event, self);
 end
 
-function ModulePrototype:RegisterUnitEvent(event, unit1, unit2, func)
+function ModuleMixin:RegisterUnitEvent(event, unit1, unit2, func)
 	Eventer:RegisterUnitEvent(event, self, unit1, unit2, func);
 end
 
-function ModulePrototype:UnregisterUnitEvent(event)
+function ModuleMixin:UnregisterUnitEvent(event)
 	Eventer:UnregisterUnitEvent(event, self);
 end
 
-function ModulePrototype:IsUnitEventRegistered(event)
+function ModuleMixin:IsUnitEventRegistered(event)
 	return Eventer:IsUnitEventRegistered(event, self);
 end
 
-function ModulePrototype:RegisterAddon(name, func)
+function ModuleMixin:RegisterAddon(name, func)
 	Eventer:RegisterAddon(name, self, func);
 end
 
-function ModulePrototype:UnregisterAddon(name)
+function ModuleMixin:UnregisterAddon(name)
 	Eventer:UnregisterAddon(name, self);
 end
 
-function ModulePrototype:CheckNamePlate(nameplate)
+function ModuleMixin:CheckNamePlate(nameplate)
     if NP[nameplate] then
         return true;
     end
@@ -338,11 +338,11 @@ function ModulePrototype:CheckNamePlate(nameplate)
     return false;
 end
 
-function ModulePrototype:GetNamePlate(nameplate)
+function ModuleMixin:GetNamePlate(nameplate)
     return NP[nameplate];
 end
 
-function ModulePrototype:CheckUnitFrame(unitframe)
+function ModuleMixin:CheckUnitFrame(unitframe)
     for _, frame in pairs(NP) do
         if frame == unitframe and frame.isActive then
             return true;
@@ -352,7 +352,7 @@ function ModulePrototype:CheckUnitFrame(unitframe)
     return false;
 end
 
-function ModulePrototype:GetUnitFrame(unitframe)
+function ModuleMixin:GetUnitFrame(unitframe)
     for _, frame in pairs(NP) do
         if frame == unitframe and frame.isActive then
             return frame;
@@ -360,7 +360,7 @@ function ModulePrototype:GetUnitFrame(unitframe)
     end
 end
 
-function ModulePrototype:SecureHook(name, func)
+function ModuleMixin:SecureHook(name, func)
     if not _G[name] then
         return;
     end
@@ -380,7 +380,7 @@ function ModulePrototype:SecureHook(name, func)
     end
 end
 
-function ModulePrototype:SecureUnitFrameHook(name, func)
+function ModuleMixin:SecureUnitFrameHook(name, func)
     if not _G[name] then
         return;
     end
@@ -421,7 +421,7 @@ function AddOn:NewModule(name)
     Modules[name] = object;
     table_insert(Modules, object);
 
-    setmetatable(object, { __index = ModulePrototype });
+    Mixin(object, ModuleMixin);
 
     object.Name  = name;
     object.Hooks = {};
@@ -447,7 +447,7 @@ function AddOn:NewNameplateModule(name)
     NameplateModules[name] = object;
     table_insert(NameplateModules, object);
 
-    setmetatable(object, { __index = ModulePrototype });
+    Mixin(object, ModuleMixin);
 
     object.Name  = name;
     object.Hooks = {};
@@ -600,6 +600,8 @@ function AddOn:ADDON_LOADED(addonName)
         return;
     end
 
+    self:UnregisterEvent('ADDON_LOADED');
+
     StripesDB = StripesDB or {};
     StripesDB.minimap_button = StripesDB.minimap_button or { hide = false };
     StripesDB.last_used_hex_color = StripesDB.last_used_hex_color or nil;
@@ -608,8 +610,6 @@ function AddOn:ADDON_LOADED(addonName)
     self:ForAllNameplateModules('StartUp');
 
     self:CheckIncompatibleAddons();
-
-    self:UnregisterEvent('ADDON_LOADED');
 
     MinimapButton:Initialize();
 
