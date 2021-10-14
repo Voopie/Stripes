@@ -31,7 +31,7 @@ local ROLE_ICONS = {
     ['TANK']    = INLINE_TANK_ICON,
     ['DAMAGER'] = INLINE_DAMAGER_ICON,
     ['HEALER']  = INLINE_HEALER_ICON,
-    ['NONE']    = ''
+    ['NONE']    = '',
 };
 
 local UPDATE_INTERVAL = 0.2;
