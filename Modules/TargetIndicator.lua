@@ -21,7 +21,7 @@ local currentTargetGUID;
 local INDICATOR_TEXTURES = O.Lists.target_indicator_texture_path;
 local DEFAULT_INDICATOR = 1;
 
-local GLOW_TEXTURE = S.Media.Path .. 'Textures\\glow'
+local GLOW_TEXTURE = S.Media.Path .. 'Textures\\glow';
 
 local GLOW_UPDATE_INTERVAL = 0.1;
 
