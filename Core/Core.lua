@@ -366,7 +366,7 @@ function ModuleMixin:SecureHook(name, func)
     end
 
     if self.Hooks[name] then
-        error('SecureHook: ' .. name .. ' was already hooked!');
+        error('SecureHook: «' .. name .. '» was already hooked in «' .. self.Name .. '» module!');
     end
 
     self.Hooks[name] = func;
@@ -386,7 +386,7 @@ function ModuleMixin:SecureUnitFrameHook(name, func)
     end
 
     if self.Hooks[name] then
-        error('SecureUnitFrameHook: ' .. name.. ' was already hooked!');
+        error('SecureUnitFrameHook: «' .. name.. '» was already hooked in «' .. self.Name .. '» module!');
     end
 
     self.Hooks[name] = func;
@@ -394,20 +394,16 @@ function ModuleMixin:SecureUnitFrameHook(name, func)
     if type(func) == 'table' then
         for hookMethod, hookFunc2 in pairs(func) do
             hooksecurefunc(_G[name], hookMethod, function(unitframe)
-                if not self:CheckUnitFrame(unitframe) then
-                    return;
+                if self:CheckUnitFrame(unitframe) then
+                    hookFunc2(unitframe);
                 end
-
-                hookFunc2(unitframe);
             end);
         end
     else
         hooksecurefunc(name, function(unitframe)
-            if not self:CheckUnitFrame(unitframe) then
-                return;
+            if self:CheckUnitFrame(unitframe) then
+                func(unitframe);
             end
-
-            func(unitframe);
         end);
     end
 end
@@ -430,7 +426,7 @@ function AddOn:NewModule(name)
 end
 
 function AddOn:GetModule(name)
-    return Modules[name] or error('Invalid module name ' .. name);
+    return Modules[name] or error('Invalid module name: ' .. name);
 end
 
 function AddOn:ForAllModules(event, ...)
@@ -456,7 +452,7 @@ function AddOn:NewNameplateModule(name)
 end
 
 function AddOn:GetNameplateModule(name)
-    return NameplateModules[name] or error('Invalid nameplate module name ' .. name);
+    return NameplateModules[name] or error('Invalid nameplate module name: ' .. name);
 end
 
 function AddOn:ForAllNameplateModules(event, ...)
@@ -476,8 +472,8 @@ do
     local deltaX, deltaY = 0, 0;
 
     MinimapButton.UpdateCoord = function(self)
-        local coords = self:GetParent().dataObject.iconCoords or defaultCoords
-        self:SetTexCoord(coords[1] + deltaX, coords[2] - deltaX, coords[3] + deltaY, coords[4] - deltaY)
+        local coords = self:GetParent().dataObject.iconCoords or defaultCoords;
+        self:SetTexCoord(coords[1] + deltaX, coords[2] - deltaX, coords[3] + deltaY, coords[4] - deltaY);
     end
 end
 
