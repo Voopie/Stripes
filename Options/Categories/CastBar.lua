@@ -117,6 +117,29 @@ ExtendedOptions.Update = function(self)
     self.CustomColorCategory:SetValue(self.anchor.custom_color_category);
 end
 
+ExtendedOptions.UpdateAll = function(self, frame)
+    self.id = frame.id;
+    self.anchor = frame;
+    self.ColorCategory:SetList(frame.color_list, S:GetModule('Options_ColorCategory'):GetPredefinedList());
+    self.ColorCategory:SetValue(frame.color_category);
+    self.CustomColorCategory:SetList(frame.custom_color_list, O.db.color_category_data);
+    self.CustomColorCategory:SetValue(frame.custom_color_category);
+    self.GlowType:SetValue(frame.glow_type);
+    self.Category:SetList(frame.category_list);
+    self.Category:SetValue(frame.category_id);
+    self.Icon:SetTexture(frame.icon);
+    self.NameText:SetText(frame.name .. '  |cffaaaaaa[' .. frame.id .. ']|r');
+
+    self:SetPoint('TOPLEFT', self.anchor, 'TOPRIGHT', 0, 0);
+    self:SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+    self:SetBackdropBorderColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
+    self:Show();
+
+    frame.isHighlighted = true;
+    frame:SetBackdropColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
+    frame.ToggleExtendedOptions:SetVertexColor(1, 0.85, 0, 1);
+end
+
 ExtendedOptions.Icon = ExtendedOptions:CreateTexture(nil, 'ARTWORK');
 ExtendedOptions.Icon:SetPoint('TOPLEFT', ExtendedOptions, 'TOPLEFT', 16, -10);
 ExtendedOptions.Icon:SetSize(ROW_HEIGHT - 8, ROW_HEIGHT - 8);
@@ -323,26 +346,7 @@ local function CreateCustomCastRow(frame)
             self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
             self.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
         else
-            ExtendedOptions.id = self.id;
-            ExtendedOptions.anchor = self;
-            ExtendedOptions.ColorCategory:SetList(self.color_list, S:GetModule('Options_ColorCategory'):GetPredefinedList());
-            ExtendedOptions.ColorCategory:SetValue(self.color_category);
-            ExtendedOptions.CustomColorCategory:SetList(self.custom_color_list, O.db.color_category_data);
-            ExtendedOptions.CustomColorCategory:SetValue(self.custom_color_category);
-            ExtendedOptions.GlowType:SetValue(self.glow_type);
-            ExtendedOptions.Category:SetList(self.category_list);
-            ExtendedOptions.Category:SetValue(self.category_id);
-            ExtendedOptions.Icon:SetTexture(self.icon);
-            ExtendedOptions.NameText:SetText(self.name .. '  |cffaaaaaa[' .. self.id .. ']|r');
-
-            ExtendedOptions:SetPoint('TOPLEFT', ExtendedOptions.anchor, 'TOPRIGHT', 0, 0);
-            ExtendedOptions:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
-            ExtendedOptions:SetBackdropBorderColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
-            ExtendedOptions:Show();
-
-            self.isHighlighted = true;
-            self:SetBackdropColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
-            self.ToggleExtendedOptions:SetVertexColor(1, 0.85, 0, 1);
+            ExtendedOptions:UpdateAll(self);
         end
     end);
 
@@ -431,8 +435,10 @@ local function UpdateCustomCastRow(frame)
     frame.ColorLine:SetColorTexture(frame.color[1], frame.color[2], frame.color[3], frame.color[4]);
     frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4] = frame.color[1], frame.color[2], frame.color[3], 0.5;
 
-    if frame.isHighlighted then
-        frame:SetBackdropColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
+    frame.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
+
+    if ExtendedOptions:IsShown() and ExtendedOptions.id == frame.id then
+        ExtendedOptions:UpdateAll(frame);
     end
 end
 
