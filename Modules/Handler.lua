@@ -8,7 +8,6 @@ local string_find, string_lower, math_ceil, math_max = string.find, string.lower
 local UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
       UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
 local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack = UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack;
-local UnitThreatSituation = UnitThreatSituation;
 local UnitInGuild = U.UnitInGuild;
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
 
@@ -550,8 +549,6 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
     NP[nameplate].data.isConnected = UnitIsConnected(unit);
 
     NP[nameplate].data.targetName = UnitName(unit .. 'target');
-
-    NP[nameplate].data.inCombatWithPlayer = UnitThreatSituation('player', unit);
 
     if UnitIsUnit(unit, PLAYER_UNIT) then
         NP[nameplate].data.unitType = 'SELF';
