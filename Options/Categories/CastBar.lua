@@ -297,8 +297,8 @@ local function CreateCustomCastRow(frame)
 
     frame:SetScript('OnClick', function(self)
         if IsShiftKeyDown() then
-            if O.db.castbar_custom_casts_data[frame.id] then
-                O.db.castbar_custom_casts_data[frame.id] = nil;
+            if O.db.castbar_custom_casts_data[self.id] then
+                O.db.castbar_custom_casts_data[self.id] = nil;
 
                 self.isHighlighted = false;
                 self.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
@@ -323,21 +323,22 @@ local function CreateCustomCastRow(frame)
             self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
             self.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
         else
-            ExtendedOptions.id = frame.id;
-            ExtendedOptions.anchor = frame;
+            ExtendedOptions.id = self.id;
+            ExtendedOptions.anchor = self;
+            ExtendedOptions.ColorCategory:SetList(self.color_list, S:GetModule('Options_ColorCategory'):GetPredefinedList());
+            ExtendedOptions.ColorCategory:SetValue(self.color_category);
+            ExtendedOptions.CustomColorCategory:SetList(self.custom_color_list, O.db.color_category_data);
+            ExtendedOptions.CustomColorCategory:SetValue(self.custom_color_category);
+            ExtendedOptions.GlowType:SetValue(self.glow_type);
+            ExtendedOptions.Category:SetList(self.category_list);
+            ExtendedOptions.Category:SetValue(self.category_id);
+            ExtendedOptions.Icon:SetTexture(self.icon);
+            ExtendedOptions.NameText:SetText(self.name .. '  |cffaaaaaa[' .. self.id .. ']|r');
+
             ExtendedOptions:SetPoint('TOPLEFT', ExtendedOptions.anchor, 'TOPRIGHT', 0, 0);
-            ExtendedOptions.ColorCategory:SetList(frame.color_list, S:GetModule('Options_ColorCategory'):GetPredefinedList());
-            ExtendedOptions.ColorCategory:SetValue(frame.color_category);
-            ExtendedOptions.CustomColorCategory:SetList(frame.custom_color_list, O.db.color_category_data);
-            ExtendedOptions.CustomColorCategory:SetValue(frame.custom_color_category);
-            ExtendedOptions.GlowType:SetValue(frame.glow_type);
-            ExtendedOptions.Category:SetList(frame.category_list);
-            ExtendedOptions.Category:SetValue(frame.category_id);
-            ExtendedOptions.Icon:SetTexture(frame.icon);
-            ExtendedOptions.NameText:SetText(frame.name .. '  |cffaaaaaa[' .. frame.id .. ']|r');
             ExtendedOptions:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
             ExtendedOptions:SetBackdropBorderColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
-            ExtendedOptions:SetShown(true);
+            ExtendedOptions:Show();
 
             self.isHighlighted = true;
             self:SetBackdropColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
