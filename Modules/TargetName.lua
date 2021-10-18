@@ -2,6 +2,8 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('TargetName');
 Module.Updater = CreateFrame('Frame');
 
+local Spiteful = S:GetNameplateModule('MythicPlusSpiteful');
+
 -- Lua API
 local pairs = pairs;
 
@@ -95,6 +97,7 @@ local function OnUpdate(_, elap)
                 if unitframe.data.targetName ~= name then
                     unitframe.data.targetName = name;
                     TargetChanged(unitframe);
+                    Spiteful:Update(unitframe);
                 end
             end
         end
