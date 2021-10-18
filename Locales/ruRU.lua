@@ -618,7 +618,7 @@ L['OPTIONS_VISIBILITY_MIN_ALPHA_TOOLTIP'] = 'Минимальное значен
 L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE'] = 'Дистанция (макс. непр.)';
 L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE_TOOLTIP'] = 'Дистанция от камеры, на котором неймплейты достигнут максимального значения непрозрачности';
 L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE'] = 'Дистанция (мин. непр.)';
-L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'Дистанция от максимального расстояния, на котором неймплейты достигнут своего минимального значения альфа';
+L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'Дистанция от максимального расстояния, на котором неймплейты достигнут своего минимального значения непрозрачности';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT'] = 'Скрытые';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP'] = 'Значение множителя непрозрачности для скрытых неймплейтов (например, находящихся за каким-либо объектом)';
 
