@@ -615,10 +615,10 @@ L['OPTIONS_VISIBILITY_MAX_ALPHA'] = 'Max';
 L['OPTIONS_VISIBILITY_MAX_ALPHA_TOOLTIP'] = 'Maximaler Alphawert von Typenschildern';
 L['OPTIONS_VISIBILITY_MIN_ALPHA'] = 'Min';
 L['OPTIONS_VISIBILITY_MIN_ALPHA_TOOLTIP'] = 'Minimaler Alphawert von Typenschildern';
-L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE'] = 'Abstand';
-L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE_TOOLTIP'] = 'Abstand für maximalen Alphawert von Typenschildern';
-L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE'] = 'Abstand';
-L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'Abstand für minimalen Alphawert von Typenschildern';
+L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE'] = 'Abstand (max alpha)';
+L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE_TOOLTIP'] = 'Die Entfernung zur Kamera, in der die Namensschilder ihr maximales Alpha erreichen';
+L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE'] = 'Abstand (min alpha)';
+L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'Die Entfernung von der maximalen Entfernung, in der die Namensschilder ihr Alpha-Minimum erreichen';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT'] = 'Verdeckt';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP'] = 'Alpha-Multiplikatorwert für verdeckte Namensschilder (z. B. hinter einem Objekt)';
 

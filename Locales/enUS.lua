@@ -615,10 +615,10 @@ L['OPTIONS_VISIBILITY_MAX_ALPHA'] = 'Max';
 L['OPTIONS_VISIBILITY_MAX_ALPHA_TOOLTIP'] = 'Maximum alpha value of nameplates';
 L['OPTIONS_VISIBILITY_MIN_ALPHA'] = 'Min';
 L['OPTIONS_VISIBILITY_MIN_ALPHA_TOOLTIP'] = 'Minimum alpha value of nameplates';
-L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE'] = 'Distance';
-L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE_TOOLTIP'] = 'Distance for maximum alpha value of nameplates';
-L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE'] = 'Distance';
-L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'Distance for minimum alpha value of nameplates';
+L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE'] = 'Distance (max alpha)';
+L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE_TOOLTIP'] = 'The distance from the camera that nameplates will reach their maximum alpha';
+L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE'] = 'Distance (min alpha)';
+L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'The distance from the max distance that nameplates will reach their minimum alpha';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT'] = 'Occluded';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP'] = 'Alpha multiplier value for occluded nameplates (e.g., behind an object)';
 
