@@ -195,7 +195,7 @@ panel.Load = function(self)
     self.max_alpha_distance:SetLabel(L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE']);
     self.max_alpha_distance:SetTooltip(L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE_TOOLTIP']);
     self.max_alpha_distance:AddToSearch(button, L['OPTIONS_VISIBILITY_MAX_ALPHA_DISTANCE_TOOLTIP'], self.Tabs[1]);
-    self.max_alpha_distance:SetValues(O.db.max_alpha_distance, 8, 100, 1);
+    self.max_alpha_distance:SetValues(O.db.max_alpha_distance, 8, 60, 1);
     self.max_alpha_distance.OnValueChangedCallback = function(_, value)
         O.db.max_alpha_distance = tonumber(value);
 
@@ -221,7 +221,7 @@ panel.Load = function(self)
     self.min_alpha_distance:SetLabel(L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE']);
     self.min_alpha_distance:SetTooltip(L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP']);
     self.min_alpha_distance:AddToSearch(button, L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'], self.Tabs[1]);
-    self.min_alpha_distance:SetValues(O.db.min_alpha_distance, 8, 100, 1);
+    self.min_alpha_distance:SetValues(O.db.min_alpha_distance, 8, 60, 1);
     self.min_alpha_distance.OnValueChangedCallback = function(_, value)
         O.db.min_alpha_distance = tonumber(value);
 
