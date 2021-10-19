@@ -578,6 +578,11 @@ function AddOn:CheckIncompatibleAddons()
         return;
     end
 
+    if IsAddOnLoaded('nPlates') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'nPlates');
+        return;
+    end
+
     if IsAddOnLoaded('PhantomPlates') then
         StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'PhantomPlates');
         return;
