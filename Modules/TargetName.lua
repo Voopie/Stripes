@@ -1,25 +1,17 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('TargetName');
-Module.Updater = CreateFrame('Frame');
-
-local Spiteful = S:GetNameplateModule('MythicPlusSpiteful');
-
--- Lua API
-local pairs = pairs;
+local Stripes = S:GetNameplateModule('Handler');
 
 -- WoW API
 local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitGroupRolesAssigned;
 
 -- Stripes API
 local GetUnitColor = U.GetUnitColor;
-local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
+local ShouldShowName = Stripes.ShouldShowName;
 
 -- Libraries
 local LT = S.Libraries.LT;
 local LDC = S.Libraries.LDC;
-
--- Nameplates
-local NP = S.NamePlates;
 
 -- Local Config
 local ENABLED, ONLY_ENEMY, NOT_ME, ROLE_ICON;
@@ -35,9 +27,6 @@ local ROLE_ICONS = {
     ['HEALER']  = INLINE_HEALER_ICON,
     ['NONE']    = '',
 };
-
-local UPDATE_INTERVAL = 0.2;
-local elapsed = 0;
 
 local function TargetChanged(unitframe)
     if not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
@@ -84,23 +73,12 @@ local function TargetChanged(unitframe)
     end
 end
 
-local function OnUpdate(_, elap)
-    elapsed = elapsed + elap;
+local function OnUpdate(unitframe)
+    local name = UnitName(unitframe.data.unit .. 'target');
 
-    if elapsed >= UPDATE_INTERVAL then
-        elapsed = 0;
-
-        for _, unitframe in pairs(NP) do
-            if unitframe:IsShown() then
-                local name = UnitName(unitframe.data.unit .. 'target');
-
-                if unitframe.data.targetName ~= name then
-                    unitframe.data.targetName = name;
-                    TargetChanged(unitframe);
-                    Spiteful:Update(unitframe);
-                end
-            end
-        end
+    if unitframe.data.targetName ~= name then
+        unitframe.data.targetName = name;
+        TargetChanged(unitframe);
     end
 end
 
@@ -145,7 +123,11 @@ function Module:UpdateLocalConfig()
     NAME_TRANSLIT           = O.db.name_text_translit;
     NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
 
-    Module.Updater:SetScript('OnUpdate', ENABLED and OnUpdate or nil);
+    if ENABLED then
+        Stripes.Updater:Add('TargetName', OnUpdate);
+    else
+        Stripes.Updater:Remove('TargetName');
+    end
 end
 
 function Module:UpdatePartyCache()

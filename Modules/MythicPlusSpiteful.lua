@@ -1,5 +1,9 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('MythicPlusSpiteful');
+local Stripes = S:GetNameplateModule('Handler');
+
+-- WoW API
+local UnitName = UnitName;
 
 -- Libraires
 local LCG = S.Libraries.LCG;
@@ -70,6 +74,15 @@ local function Update(unitframe)
     end
 end
 
+local function OnUpdate(unitframe)
+    local name = UnitName(unitframe.data.unit .. 'target');
+
+    if unitframe.data.targetName ~= name then
+        unitframe.data.targetName = name;
+        Update(unitframe);
+    end
+end
+
 function Module:UnitAdded(unitframe)
     Create(unitframe);
     Update(unitframe);
@@ -95,6 +108,12 @@ function Module:UpdateLocalConfig()
     GLOW_COLOR[2] = O.db.spiteful_glow_color[2];
     GLOW_COLOR[3] = O.db.spiteful_glow_color[3];
     GLOW_COLOR[4] = O.db.spiteful_glow_color[4] or 1;
+
+    if ENABLED then
+        Stripes.Updater:Add('MythicPlusSpiteful', OnUpdate);
+    else
+        Stripes.Updater:Remove('MythicPlusSpiteful');
+    end
 end
 
 function Module:StartUp()

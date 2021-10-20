@@ -13,6 +13,7 @@
     <Script file="AbsorbBar.lua" />
     <Script file="FactionIcon.lua" />
     <Script file="ClassIcon.lua" />
+    <Script file="TargetName.lua" />
     <Script file="TargetIndicator.lua" />
     <Script file="HideNonCasting.lua" />
     <Script file="WhoInterrupted.lua" />
@@ -28,7 +29,6 @@
     <Script file="StealthDetect.lua" />
     <Script file="TotemIcon.lua" />
     <Script file="CombatIndicator.lua" />
-    <Script file="TargetName.lua" />
 
     <!-- Not nameplates modules-->
     <Script file="AutoSlotKeystone.lua" />

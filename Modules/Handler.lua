@@ -1,8 +1,9 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Stripes = S:NewNameplateModule('Handler');
+Stripes.Updater = CreateFrame('Frame');
 
 -- Lua API
-local string_find, string_lower, math_ceil, math_max = string.find, string.lower, math.ceil, math.max;
+local pairs, string_find, string_lower, math_ceil, math_max = pairs, string.find, string.lower, math.ceil, math.max;
 
 -- WoW API
 local UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
@@ -44,6 +45,42 @@ local NAME_ONLY_FRIENDLY_UNIT_TYPES = {
     ['FRIENDLY_PLAYER'] = true,
     ['FRIENDLY_NPC']    = true,
 };
+
+local UPDATER_INTERVAL = 0.2;
+local updaterElapsed   = 0;
+
+Stripes.Updater.List = {};
+local UpdaterList = Stripes.Updater.List;
+
+Stripes.Updater.Add = function(_, name, func)
+    if not func or type(func) ~= 'function' then
+        error('Stripes.Updater: 2nd parameter must be a function | ' .. name);
+    end
+
+    UpdaterList[name] = func;
+end
+
+Stripes.Updater.Remove = function(_, name)
+    if UpdaterList[name] then
+        UpdaterList[name] = nil;
+    end
+end
+
+Stripes.Updater.OnUpdate = function(_, elapsed)
+    updaterElapsed = updaterElapsed + elapsed;
+
+    if updaterElapsed >= UPDATER_INTERVAL then
+        updaterElapsed = 0;
+
+        for _, unitframe in pairs(NP) do
+            if unitframe.isActive and unitframe:IsShown() then
+                for _, func in pairs(UpdaterList) do
+                    func(unitframe);
+                end
+            end
+        end
+    end
+end
 
 local function SetCVar(key, value)
 	if C_CVar.GetCVar(key) ~= tostring(value) then
@@ -668,6 +705,8 @@ function Stripes:UpdateLocalConfig()
     NAME_TEXT_ENABLED               = O.db.name_text_enabled;
     NAME_ONLY_FRIENDLY_ENABLED      = O.db.name_only_friendly_enabled;
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
+
+    Stripes.Updater:SetScript('OnUpdate', U.TableCount(UpdaterList) > 0 and Stripes.Updater.OnUpdate or nil);
 end
 
 function Stripes:StartUp()
