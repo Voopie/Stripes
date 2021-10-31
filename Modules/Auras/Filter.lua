@@ -1,6 +1,12 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Auras_Filter');
 
+-- Lua API
+local ipairs = ipairs;
+
+-- Wow API
+local CooldownFrame_Set, AuraUtil_ForEachAura = CooldownFrame_Set, AuraUtil.ForEachAura;
+
 -- Local Config
 local ENABLED, BLACKLIST_ENABLED;
 
@@ -70,8 +76,9 @@ local function UpdateBuffs(self, unit, filter, showAll)
 		return;
 	end
 
-	self.unit = unit;
+	self.unit   = unit;
 	self.filter = filter;
+
 	self:UpdateAnchor();
 
 	if filter == 'NONE' then
@@ -83,7 +90,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
 		local index = 1;
         local _, name, texture, count, duration, expirationTime, caster, nameplateShowPersonal, spellId, nameplateShowAll;
 
-		AuraUtil.ForEachAura(unit, filter, BUFF_MAX_DISPLAY, function(...)
+		AuraUtil_ForEachAura(unit, filter, BUFF_MAX_DISPLAY, function(...)
 			name, texture, count, _, duration, expirationTime, caster, _, nameplateShowPersonal, spellId, _, _, _, nameplateShowAll = ...;
 
 			if FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPersonal, nameplateShowAll or showAll, duration) then
