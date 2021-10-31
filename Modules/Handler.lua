@@ -252,6 +252,10 @@ local function UpdateConnection(unitframe)
     unitframe.data.isConnected = UnitIsConnected(unitframe.data.unit);
 end
 
+local function UpdateTarget(unitframe)
+    unitframe.data.isTarget = (UnitGUID('target') or '') == unitframe.data.unitGUID;
+end
+
 local function CVarsReset()
     SetCVar('nameplateShowOnlyNames', GetCVarDefault('nameplateShowOnlyNames'));
 
@@ -587,6 +591,8 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
 
     NP[nameplate].data.targetName = UnitName(unit .. 'target');
 
+    NP[nameplate].data.isTarget = (UnitGUID('target') or '') == NP[nameplate].data.unitGUID;
+
     if UnitIsUnit(unit, PLAYER_UNIT) then
         NP[nameplate].data.unitType = 'SELF';
         NP[nameplate].data.commonUnitType = 'SELF';
@@ -718,6 +724,7 @@ function Stripes:StartUp()
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateWidgetsOnlyMode', UpdateWidgetStatus);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateClassificationIndicator', UpdateClassification);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', UpdateConnection);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', UpdateTarget);
 
     self:RegisterEvent('PLAYER_LOGIN');
     self:RegisterEvent('PLAYER_ENTERING_WORLD');

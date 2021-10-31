@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('TargetIndicator');
 local pairs, math_rad = pairs, math.rad;
 
 -- WoW API
-local UnitIsUnit, UnitExists, UnitGUID = UnitIsUnit, UnitExists, UnitGUID;
+local UnitIsUnit, UnitExists = UnitIsUnit, UnitExists;
 
 -- Nameplates
 local NP = S.NamePlates;
@@ -16,8 +16,6 @@ local TEXTURE, TARGET_INDICATOR_COLOR, TARGET_GLOW_COLOR;
 local TARGET_HIGHLIGHT;
 local SIZE, X_OFFSET, Y_OFFSET;
 
-local currentTargetGUID;
-
 local INDICATOR_TEXTURES = O.Lists.target_indicator_texture_path;
 local DEFAULT_INDICATOR = 1;
 
@@ -26,7 +24,7 @@ local GLOW_TEXTURE = S.Media.Path .. 'Textures\\glow';
 local GLOW_UPDATE_INTERVAL = 0.1;
 
 local function Glow_Show(unitframe)
-    if currentTargetGUID ~= unitframe.data.unitGUID then
+    if not unitframe.data.isTarget then
         unitframe.TargetIndicator.left:Hide();
         unitframe.TargetIndicator.right:Hide();
     end
@@ -38,7 +36,7 @@ local function Glow_Show(unitframe)
 end
 
 local function Glow_Hide(unitframe)
-    if currentTargetGUID == unitframe.data.unitGUID then
+    if unitframe.data.isTarget then
         return;
     end
 
@@ -83,9 +81,7 @@ local function UpdateTargetSelection(unitframe)
         return;
     end
 
-    currentTargetGUID = UnitGUID('target');
-
-    if currentTargetGUID == unitframe.data.unitGUID then
+    if unitframe.data.isTarget then
         unitframe.TargetIndicator:SetShown(true);
 
         unitframe.TargetIndicator.left:SetShown(TARGET_INDICATOR_ENABLED);
@@ -162,7 +158,7 @@ local function UpdateMouseoverUnit()
     end
 
     for _, unitframe in pairs(NP) do
-        if unitframe.data.unitType ~= 'SELF' and currentTargetGUID ~= unitframe.data.unitGUID then
+        if not unitframe.data.isTarget and unitframe.data.unitType ~= 'SELF' then
             if MouseOnUnit(unitframe) then
                 Glow_Show(unitframe);
             else
