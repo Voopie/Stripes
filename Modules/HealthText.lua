@@ -11,6 +11,7 @@ local ENABLED, HIDE_FULL, DISPLAY_MODE, SHOW_PCT_SIGN, PCT_SIGN, CUSTOM_COLOR_EN
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
 local BLOCK_1_TEXT_ANCHOR, BLOCK_1_TEXT_X_OFFSET, BLOCK_1_TEXT_Y_OFFSET, BLOCK_2_TEXT_ANCHOR, BLOCK_2_TEXT_X_OFFSET, BLOCK_2_TEXT_Y_OFFSET;
 local IS_DOUBLE, DISPLAY_MODE_BLOCK_1, DISPLAY_MODE_BLOCK_2;
+local SHOW_ONLY_ON_TARGET;
 
 local StripesHealthTextFont = CreateFont('StripesHealthTextFont');
 
@@ -74,7 +75,7 @@ local UpdateHealthTextFormat = {
 };
 
 local function Update(unitframe)
-    if unitframe.data.unitType == 'SELF' or (HIDE_FULL and unitframe.data.healthCurrent == unitframe.data.healthMax) then
+    if unitframe.data.unitType == 'SELF' or (SHOW_ONLY_ON_TARGET and not unitframe.data.isTarget) or (HIDE_FULL and unitframe.data.healthCurrent == unitframe.data.healthMax) then
         unitframe.HealthText.text:SetText('');
         unitframe.HealthText.LeftText:SetText('');
         unitframe.HealthText.RightText:SetText('');
@@ -166,10 +167,13 @@ function Module:UpdateLocalConfig()
     BLOCK_2_TEXT_X_OFFSET = O.db.health_text_block_2_x_offset;
     BLOCK_2_TEXT_Y_OFFSET = O.db.health_text_block_2_y_offset;
 
+    SHOW_ONLY_ON_TARGET = O.db.health_text_show_only_on_target;
+
     UpdateFontObject(StripesHealthTextFont, O.db.health_text_font_value, O.db.health_text_font_size, O.db.health_text_font_flag, O.db.health_text_font_shadow);
 end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', Update);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', Update);
 end

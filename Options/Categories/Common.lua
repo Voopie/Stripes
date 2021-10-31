@@ -407,32 +407,41 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.health_text_show_only_on_target = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_show_only_on_target:SetPosition('LEFT', self.health_text_enabled.Label, 'RIGHT', 12, 0);
+    self.health_text_show_only_on_target:SetLabel(L['OPTIONS_HEALTH_TEXT_SHOW_ONLY_ON_TARGET']);
+    self.health_text_show_only_on_target:SetTooltip(L['OPTIONS_HEALTH_TEXT_SHOW_ONLY_ON_TARGET_TOOLTIP']);
+    self.health_text_show_only_on_target:SetChecked(O.db.health_text_show_only_on_target);
+    self.health_text_show_only_on_target:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_SHOW_ONLY_ON_TARGET_TOOLTIP'], self.Tabs[2]);
+    self.health_text_show_only_on_target.Callback = function(self)
+        O.db.health_text_show_only_on_target = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.health_text_hide_full = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_hide_full:SetPosition('LEFT', self.health_text_enabled.Label, 'RIGHT', 12, 0);
+    self.health_text_hide_full:SetPosition('LEFT', self.health_text_show_only_on_target.Label, 'RIGHT', 12, 0);
     self.health_text_hide_full:SetLabel(L['OPTIONS_HEALTH_TEXT_HIDE_FULL']);
     self.health_text_hide_full:SetTooltip(L['OPTIONS_HEALTH_TEXT_HIDE_FULL_TOOLTIP']);
     self.health_text_hide_full:SetChecked(O.db.health_text_hide_full);
     self.health_text_hide_full:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_HIDE_FULL_TOOLTIP'], self.Tabs[2]);
-    self.health_text_hide_full:SetEnabled(O.db.health_text_enabled);
     self.health_text_hide_full.Callback = function(self)
         O.db.health_text_hide_full = self:GetChecked();
         Stripes:UpdateAll();
     end
 
     self.health_text_show_pct_sign = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_show_pct_sign:SetPosition('LEFT', self.health_text_hide_full.Label, 'RIGHT', 12, 0);
+    self.health_text_show_pct_sign:SetPosition('TOPLEFT', self.health_text_enabled, 'BOTTOMLEFT', 0, -8);
     self.health_text_show_pct_sign:SetLabel(L['OPTIONS_HEALTH_TEXT_SHOW_PCT_SIGN']);
     self.health_text_show_pct_sign:SetTooltip(L['OPTIONS_HEALTH_TEXT_SHOW_PCT_SIGN_TOOLTIP']);
     self.health_text_show_pct_sign:SetChecked(O.db.health_text_show_pct_sign);
     self.health_text_show_pct_sign:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_SHOW_PCT_SIGN_TOOLTIP'], self.Tabs[2]);
-    self.health_text_show_pct_sign:SetEnabled(O.db.health_text_enabled);
     self.health_text_show_pct_sign.Callback = function(self)
         O.db.health_text_show_pct_sign = self:GetChecked();
         Stripes:UpdateAll();
     end
 
     self.health_text_custom_color_enabled = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_custom_color_enabled:SetPosition('TOPLEFT', self.health_text_enabled, 'BOTTOMLEFT', 0, -8);
+    self.health_text_custom_color_enabled:SetPosition('TOPLEFT', self.health_text_show_pct_sign, 'BOTTOMLEFT', 0, -8);
     self.health_text_custom_color_enabled:SetLabel(L['OPTIONS_HEALTH_TEXT_CUSTOM_COLOR_ENABLED']);
     self.health_text_custom_color_enabled:SetChecked(O.db.health_text_custom_color_enabled);
     self.health_text_custom_color_enabled:SetTooltip(L['OPTIONS_HEALTH_TEXT_CUSTOM_COLOR_ENABLED_TOOLTIP']);
