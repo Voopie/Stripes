@@ -16,7 +16,6 @@ local ENABLED, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR, CUS
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
 
 local CLOSE_COLOR = '|r';
-local FRAME_POINTS_SIMPLE = O.Lists.frame_points_simple;
 
 local StripesLevelTextFont = CreateFont('StripesLevelTextFont');
 
@@ -88,7 +87,7 @@ function Module:UpdateLocalConfig()
     HIDE_MAX       = O.db.level_text_hide_max;
     USE_DIFF_COLOR = O.db.level_text_use_diff_color;
 
-    TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.level_text_anchor];
+    TEXT_ANCHOR   = O.Lists.frame_points_simple[O.db.level_text_anchor];
     TEXT_X_OFFSET = O.db.level_text_x_offset;
     TEXT_Y_OFFSET = O.db.level_text_y_offset;
 

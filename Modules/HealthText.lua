@@ -6,8 +6,6 @@ local ShortValue = U.ShortValue;
 local LargeNumberFormat = U.LargeNumberFormat;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
-local FRAME_POINTS_SIMPLE = O.Lists.frame_points_simple;
-
 -- Local Config
 local ENABLED, HIDE_FULL, DISPLAY_MODE, SHOW_PCT_SIGN, PCT_SIGN, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
@@ -145,7 +143,7 @@ function Module:UpdateLocalConfig()
     SHOW_PCT_SIGN = O.db.health_text_show_pct_sign;
     PCT_SIGN      = SHOW_PCT_SIGN and '%%' or '';
 
-    TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.health_text_anchor];
+    TEXT_ANCHOR   = O.Lists.frame_points_simple[O.db.health_text_anchor];
     TEXT_X_OFFSET = O.db.health_text_x_offset;
     TEXT_Y_OFFSET = O.db.health_text_y_offset;
 
@@ -161,10 +159,10 @@ function Module:UpdateLocalConfig()
     DISPLAY_MODE_BLOCK_1 = math.max(math.min(O.db.health_text_block_1_display_mode, #UpdateHealthTextFormat), 1);
     DISPLAY_MODE_BLOCK_2 = math.max(math.min(O.db.health_text_block_2_display_mode, #UpdateHealthTextFormat), 1);
 
-    BLOCK_1_TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.health_text_block_1_anchor];
+    BLOCK_1_TEXT_ANCHOR   = O.Lists.frame_points_simple[O.db.health_text_block_1_anchor];
     BLOCK_1_TEXT_X_OFFSET = O.db.health_text_block_1_x_offset;
     BLOCK_1_TEXT_Y_OFFSET = O.db.health_text_block_1_y_offset;
-    BLOCK_2_TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.health_text_block_2_anchor];
+    BLOCK_2_TEXT_ANCHOR   = O.Lists.frame_points_simple[O.db.health_text_block_2_anchor];
     BLOCK_2_TEXT_X_OFFSET = O.db.health_text_block_2_x_offset;
     BLOCK_2_TEXT_Y_OFFSET = O.db.health_text_block_2_y_offset;
 
