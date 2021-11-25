@@ -43,6 +43,9 @@ local additionalAuras = {
     -- Druid
     [81261] = true, -- Solar Beam
 
+    -- Priest
+    [453] = true, -- Mind Soothe
+
     -- Covenant
     [331866] = true, -- Agent of Chaos (Venthyr)
     [332423] = true, -- Sparkling Driftglobe Core (Kyrian)
