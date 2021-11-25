@@ -355,7 +355,7 @@ local function NameOnly_UpdateNameHealth(unitframe)
     end
 
     if NAME_ONLY_COLOR_HEALTH then
-        if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+        if unitframe.data.unitType == 'FRIENDLY_PLAYER' and not unitframe.data.canAttack then
             if unitframe.data.isConnected then
                 if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
                     local name = GetPlayerName(unitframe);
