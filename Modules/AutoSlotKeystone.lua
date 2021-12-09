@@ -21,7 +21,10 @@ function Module:Slot()
 
                 if CursorHasItem() then
                     C_ChallengeMode.SlotKeystone();
-                    return;
+
+                    if C_ChallengeMode.HasSlottedKeystone() then
+                        return;
+                    end
                 end
             end
         end
