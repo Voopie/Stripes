@@ -43,8 +43,14 @@ local additionalAuras = {
     -- Druid
     [81261] = true, -- Solar Beam
 
+    -- Paladin
+    [10326] = true, -- Turn Evil
+
     -- Priest
     [453] = true, -- Mind Soothe
+
+    -- Warlock
+    [5484] = true, -- Howl of Terror
 
     -- Covenant
     [331866] = true, -- Agent of Chaos (Venthyr)
