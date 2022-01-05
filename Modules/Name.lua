@@ -452,13 +452,13 @@ local function NameOnly_UpdateGuildName(unitframe)
 end
 
 local function UpdateClassificationIndicator(unitframe)
-	if unitframe.classificationIndicator then
-		if unitframe.optionTable.showPvPClassificationIndicator and CompactUnitFrame_UpdatePvPClassificationIndicator(unitframe) then
-			return;
-		elseif not CLASSIFICATION_INDICATOR_ENABLED or not unitframe.optionTable.showClassificationIndicator then
-			unitframe.classificationIndicator:Hide();
-		end
-	end
+    if unitframe.classificationIndicator then
+        if unitframe.optionTable.showPvPClassificationIndicator and CompactUnitFrame_UpdatePvPClassificationIndicator(unitframe) then
+            return;
+        elseif not CLASSIFICATION_INDICATOR_ENABLED or not unitframe.optionTable.showClassificationIndicator then
+            unitframe.classificationIndicator:Hide();
+        end
+    end
 end
 
 function Module:UnitAdded(unitframe)
