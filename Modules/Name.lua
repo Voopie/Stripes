@@ -23,13 +23,14 @@ local LT = S.Libraries.LT;
 local LDC = S.Libraries.LDC;
 
 -- Local Config
-local POSITION, POSITION_V, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE, COLORING_MODE_NPC;
+local POSITION, POSITION_V, OFFSET_X, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE, COLORING_MODE_NPC;
 local NAME_ONLY_MODE, NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 local NAME_WITH_TITLE_ENABLED, NAME_WITH_TITLE_UNIT_TYPE, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
 local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local CUSTOM_NAME_ENABLED;
+local CLASSIFICATION_INDICATOR_ENABLED;
 
 local StripesNameFont      = CreateFont('StripesNameFont');
 local StripesGuildNameFont = CreateFont('StripesGuildNameFont');
@@ -190,13 +191,17 @@ local function UpdateAnchor(unitframe)
     unitframe.name:ClearAllPoints();
 
     if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
+        unitframe.name:SetParent(unitframe);
         unitframe.name:SetJustifyH('CENTER');
         PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, NAME_ONLY_OFFSET_Y);
 
         return;
     end
 
-    if POSITION == 1 then
+    unitframe.name:SetParent(unitframe.healthBar);
+    unitframe.name:SetDrawLayer('OVERLAY', 7);
+
+    if POSITION == 1 then -- LEFT
         unitframe.name:SetJustifyH('LEFT');
 
         if TRUNCATE then
@@ -204,19 +209,23 @@ local function UpdateAnchor(unitframe)
             PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, 0);
 
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
-            else
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, OFFSET_Y);
+            elseif POSITION_V == 2 then
+                PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, OFFSET_Y);
+            elseif POSITION_V == 3 then
+                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', OFFSET_X, OFFSET_Y);
             end
         else
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', 0, OFFSET_Y);
-            else
-                PixelUtil.SetPoint(unitframe.name, 'TOPLEFT', unitframe.healthBar, 'BOTTOMLEFT', 0, OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', OFFSET_X, OFFSET_Y);
+            elseif POSITION_V == 2 then
+                PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, OFFSET_Y);
+            elseif POSITION_V == 3 then
+                PixelUtil.SetPoint(unitframe.name, 'TOPLEFT', unitframe.healthBar, 'BOTTOMLEFT', OFFSET_X, OFFSET_Y);
             end
         end
 
-    elseif POSITION == 2 then
+    elseif POSITION == 2 then -- CENTER
         unitframe.name:SetJustifyH('CENTER');
 
         if TRUNCATE then
@@ -224,18 +233,25 @@ local function UpdateAnchor(unitframe)
             PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, 0);
 
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
-            else
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, OFFSET_Y);
+            elseif POSITION_V == 2 then
+                PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, OFFSET_Y);
+
+            elseif POSITION_V == 3 then
+                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', OFFSET_X, OFFSET_Y);
             end
         else
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
-            else
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, OFFSET_Y);
+            elseif POSITION_V == 2 then
+                PixelUtil.SetPoint(unitframe.name, 'CENTER', unitframe.healthBar, 'CENTER', OFFSET_X, OFFSET_Y);
+            elseif POSITION_V == 3 then
+                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', OFFSET_X, OFFSET_Y);
+
             end
         end
-    else
+    elseif POSITION == 3 then -- RIGHT
         unitframe.name:SetJustifyH('RIGHT');
 
         if TRUNCATE then
@@ -243,15 +259,21 @@ local function UpdateAnchor(unitframe)
             PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, 0);
 
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
-            else
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, OFFSET_Y);
+            elseif POSITION_V == 2 then
+                PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, OFFSET_Y);
+
+            elseif POSITION_V == 3 then
+                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', OFFSET_X, OFFSET_Y);
             end
         else
             if POSITION_V == 1 then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, OFFSET_Y);
-            else
-                PixelUtil.SetPoint(unitframe.name, 'TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', 0, OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.name, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', OFFSET_X, OFFSET_Y);
+            elseif POSITION_V == 2 then
+                PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, OFFSET_Y);
+            elseif POSITION_V == 3 then
+                PixelUtil.SetPoint(unitframe.name, 'TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', OFFSET_X, OFFSET_Y);
             end
         end
     end
@@ -429,6 +451,16 @@ local function NameOnly_UpdateGuildName(unitframe)
     end
 end
 
+local function UpdateClassificationIndicator(unitframe)
+	if unitframe.classificationIndicator then
+		if unitframe.optionTable.showPvPClassificationIndicator and CompactUnitFrame_UpdatePvPClassificationIndicator(unitframe) then
+			return;
+		elseif not CLASSIFICATION_INDICATOR_ENABLED or not unitframe.optionTable.showClassificationIndicator then
+			unitframe.classificationIndicator:Hide();
+		end
+	end
+end
+
 function Module:UnitAdded(unitframe)
     UpdateFont(unitframe);
     UpdateName(unitframe);
@@ -441,6 +473,8 @@ function Module:UnitAdded(unitframe)
     NameOnly_UpdateGuildName(unitframe);
 
     UpdateRaidTargetIcon(unitframe);
+
+    UpdateClassificationIndicator(unitframe);
 
     UpdateAnchor(unitframe);
 end
@@ -472,6 +506,7 @@ function Module:UpdateLocalConfig()
 
     POSITION               = O.db.name_text_position;
     POSITION_V             = O.db.name_text_position_v;
+    OFFSET_X               = O.db.name_text_offset_x;
     OFFSET_Y               = O.db.name_text_offset_y;
     TRUNCATE               = O.db.name_text_truncate;
     ABBR_ENABLED           = O.db.name_text_abbreviated
@@ -520,6 +555,8 @@ function Module:UpdateLocalConfig()
     RAID_TARGET_ICON_POSITION_OFFSET_X = O.db.raid_target_icon_position_offset_x;
     RAID_TARGET_ICON_POSITION_OFFSET_Y = O.db.raid_target_icon_position_offset_y;
 
+    CLASSIFICATION_INDICATOR_ENABLED = O.db.classification_indicator_enabled;
+
     UpdateFontObject(SystemFont_NamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
     UpdateFontObject(SystemFont_NamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
     UpdateFontObject(SystemFont_LargeNamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
@@ -552,4 +589,6 @@ function Module:StartUp()
     end);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateWidgetsOnlyMode', NameOnly_UpdateHealthBar);
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateClassificationIndicator', UpdateClassificationIndicator);
 end

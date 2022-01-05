@@ -46,7 +46,8 @@ O.Lists = {
 
     name_position_v = {
         [1] = L['POSITION_TOP'],
-        [2] = L['POSITION_BOTTOM'],
+        [2] = L['POSITION_CENTER'],
+        [3] = L['POSITION_BOTTOM'],
     },
 
     raid_target_icon_position = {
@@ -242,6 +243,7 @@ O.DefaultValues = {
     name_text_position               = 2, -- CENTER
     name_text_position_v             = 1, -- TOP
     name_text_offset_y               = 0,
+    name_text_offset_x               = 0,
     name_text_truncate               = false,
     name_text_abbreviated            = false,
     name_text_abbreviated_mode       = 1, -- Without space
@@ -503,6 +505,8 @@ O.DefaultValues = {
     raid_target_icon_position_offset_x = -4,
     raid_target_icon_position_offset_y = 0,
     raid_target_hpbar_coloring         = false,
+
+    classification_indicator_enabled = true,
 
     name_only_friendly_enabled               = C_CVar.GetCVar('nameplateShowOnlyNames') == '1',
     name_only_friendly_mode                  = C_CVar.GetCVar('nameplateShowOnlyNames') == '1' and 1 or 2,

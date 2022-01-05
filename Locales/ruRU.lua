@@ -193,6 +193,7 @@ L['OPTIONS_NAME_TEXT_FONT_FLAG'] = 'Контур шрифта имени';
 L['OPTIONS_NAME_TEXT_FONT_SHADOW'] = 'Тень шрифта имени';
 L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP'] = 'Расположение имени по горизонтали';
 L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP'] = 'Расположение имени по вертикали';
+L['OPTIONS_NAME_TEXT_OFFSET_X_TOOLTIP'] = 'Смещение имени по горизонтали';
 L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP'] = 'Смещение имени по вертикали';
 L['OPTIONS_NAME_TEXT_TRUNCATE'] = 'Обрезать';
 L['OPTIONS_NAME_TEXT_TRUNCATE_TOOLTIP'] = 'Обрезать имя, если оно выходит за границы полосы здоровья';
@@ -623,6 +624,8 @@ L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE'] = 'Дистанция (мин. неп
 L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'Дистанция от максимального расстояния, на котором неймплейты достигнут своего минимального значения непрозрачности';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT'] = 'Скрытые';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP'] = 'Значение множителя непрозрачности для скрытых неймплейтов (например, находящихся за каким-либо объектом)';
+L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED'] = 'Индикатор элитного противника';
+L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'] = 'Показывать индикатор элитного противника (золотой или серебряный дракончик)';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Проценты';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Включить';

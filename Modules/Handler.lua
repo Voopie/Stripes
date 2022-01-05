@@ -102,6 +102,7 @@ Stripes.UpdateAll = function()
             CompactUnitFrame_UpdateHealPrediction(unitframe);
             CompactUnitFrame_UpdateWidgetsOnlyMode(unitframe);
             CompactUnitFrame_UpdateStatusText(unitframe);
+            CompactUnitFrame_UpdateClassificationIndicator(unitframe);
         end
 
         S:ForAllNameplateModules('Update', unitframe);

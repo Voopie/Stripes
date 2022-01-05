@@ -232,8 +232,19 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.occluded_alpha_mult, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.classification_indicator_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.classification_indicator_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
+    self.classification_indicator_enabled:SetLabel(L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED']);
+    self.classification_indicator_enabled:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP']);
+    self.classification_indicator_enabled:AddToSearch(button, L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.classification_indicator_enabled:SetChecked(O.db.classification_indicator_enabled);
+    self.classification_indicator_enabled.Callback = function(self)
+        O.db.classification_indicator_enabled = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.show_personal_resource_ontarget = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.show_personal_resource_ontarget:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
+    self.show_personal_resource_ontarget:SetPosition('LEFT', self.classification_indicator_enabled.Label, 'RIGHT', 12, 0);
     self.show_personal_resource_ontarget:SetLabel(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET']);
     self.show_personal_resource_ontarget:SetTooltip(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP']);
     self.show_personal_resource_ontarget:AddToSearch(button, L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP'], self.Tabs[1]);
@@ -245,7 +256,7 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.show_personal_resource_ontarget, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.classification_indicator_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.hide_non_casting_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);

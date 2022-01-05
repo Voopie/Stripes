@@ -180,9 +180,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.name_text_offset_x = E.CreateSlider(self.TabsFrames['NameTab'].Content);
+    self.name_text_offset_x:SetPosition('LEFT', self.name_text_position, 'RIGHT', 12, 0);
+    self.name_text_offset_x:SetW(80);
+    self.name_text_offset_x:SetValues(O.db.name_text_offset_x, -50, 50, 1);
+    self.name_text_offset_x:SetTooltip(L['OPTIONS_NAME_TEXT_OFFSET_X_TOOLTIP']);
+    self.name_text_offset_x:AddToSearch(button, L['OPTIONS_NAME_TEXT_OFFSET_X_TOOLTIP'], self.Tabs[1]);
+    self.name_text_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.name_text_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+
     self.name_text_offset_y = E.CreateSlider(self.TabsFrames['NameTab'].Content);
-    self.name_text_offset_y:SetPosition('LEFT', self.name_text_position, 'RIGHT', 12, 0);
-    self.name_text_offset_y:SetW(120);
+    self.name_text_offset_y:SetPosition('LEFT', self.name_text_offset_x, 'RIGHT', 12, 0);
+    self.name_text_offset_y:SetW(80);
     self.name_text_offset_y:SetValues(O.db.name_text_offset_y, -50, 50, 1);
     self.name_text_offset_y:SetTooltip(L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP']);
     self.name_text_offset_y:AddToSearch(button, L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP'], self.Tabs[1]);

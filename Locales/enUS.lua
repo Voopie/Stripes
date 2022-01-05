@@ -193,6 +193,7 @@ L['OPTIONS_NAME_TEXT_FONT_FLAG'] = 'Name font outline';
 L['OPTIONS_NAME_TEXT_FONT_SHADOW'] = 'Name font shadow';
 L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP'] = 'Horizontal name position';
 L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP'] = 'Vertical name position';
+L['OPTIONS_NAME_TEXT_OFFSET_X_TOOLTIP'] = 'Horizontal name offset';
 L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP'] = 'Vertical name offset';
 L['OPTIONS_NAME_TEXT_TRUNCATE'] = 'Truncate';
 L['OPTIONS_NAME_TEXT_TRUNCATE_TOOLTIP'] = 'Truncate the name if it goes outside the health bar';
@@ -623,6 +624,8 @@ L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE'] = 'Distance (min alpha)';
 L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'The distance from the max distance that nameplates will reach their minimum alpha';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT'] = 'Occluded';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP'] = 'Alpha multiplier value for occluded nameplates (e.g., behind an object)';
+L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED'] = 'Classification indicator';
+L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'] = 'Show classification indicator (gold or silver dragon)';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Percentage';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Enable';

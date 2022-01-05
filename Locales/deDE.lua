@@ -192,6 +192,7 @@ L['OPTIONS_NAME_TEXT_FONT_SIZE'] = 'Name Schriftgröße';
 L['OPTIONS_NAME_TEXT_FONT_FLAG'] = 'Name Schriftumriss';
 L['OPTIONS_NAME_TEXT_FONT_SHADOW'] = 'Name Schrift Schattierung';
 L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP'] = 'Horizontale Namensposition';
+L['OPTIONS_NAME_TEXT_OFFSET_X_TOOLTIP'] = 'Horizontale Namensposition';
 L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP'] = 'Vertikale Namensposition';
 L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP'] = 'Vertikaler Namensversatz';
 L['OPTIONS_NAME_TEXT_TRUNCATE'] = 'Abkürzen';
@@ -623,6 +624,8 @@ L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE'] = 'Abstand (min alpha)';
 L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'Die Entfernung von der maximalen Entfernung, in der die Namensschilder ihr Alpha-Minimum erreichen';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT'] = 'Verdeckt';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP'] = 'Alpha-Multiplikatorwert für verdeckte Namensschilder (z. B. hinter einem Objekt)';
+L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED'] = 'Klassifizierungsindikator';
+L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'] = 'Klassifizierungskennzeichen anzeigen (goldener oder silberner Drache)';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Prozentsatz';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Aktivieren';

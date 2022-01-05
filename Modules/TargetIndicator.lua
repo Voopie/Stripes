@@ -104,6 +104,7 @@ local function CreateTargetIndicator(unitframe)
     end
 
     local indicator = CreateFrame('Frame', nil, unitframe.healthBar);
+    indicator:SetFrameStrata('LOW');
     indicator:SetAllPoints(unitframe.healthBar);
 
     indicator.left = indicator:CreateTexture(nil, 'BORDER');
