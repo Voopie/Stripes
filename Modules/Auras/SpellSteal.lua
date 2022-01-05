@@ -2,6 +2,9 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Auras_SpellSteal');
 local Stripes = S:GetNameplateModule('Handler');
 
+-- Lua API
+local math_max = math.max;
+
 -- WoW API
 local CooldownFrame_Set, GetCVarBool, UnitIsUnit, GetTime, AuraUtil_ForEachAura = CooldownFrame_Set, GetCVarBool, UnitIsUnit, GetTime, AuraUtil.ForEachAura;
 
@@ -32,6 +35,8 @@ local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HELPFUL';
 local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 
+local MAX_OFFSET_Y = -9;
+
 local function CreateAnchor(unitframe)
     if unitframe.AurasSpellSteal then
         return;
@@ -51,7 +56,7 @@ local function UpdateAnchor(unitframe)
     if not unitframe.BuffFrame.buffList[1] or not unitframe.BuffFrame.buffList[1]:IsShown() then
         if ShouldShowName(unitframe) then
             local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
-            local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + NAME_TEXT_OFFSET_Y + showMechanicOnTarget) or showMechanicOnTarget;
+            local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
             PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
         else
             local offset = unitframe.BuffFrame:GetBaseYOffset() + (UnitIsUnit(unitframe.data.unit, 'target') and unitframe.BuffFrame:GetTargetYOffset() or 0.0);

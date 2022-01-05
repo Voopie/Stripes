@@ -3,7 +3,7 @@ local Module = S:NewNameplateModule('Auras_Mod');
 local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
-local select, ipairs = select, ipairs;
+local select, ipairs, math_max = select, ipairs, math.max;
 
 -- WoW API
 local UnitAura, UnitIsUnit, GetCVarBool = UnitAura, UnitIsUnit, GetCVarBool;
@@ -29,6 +29,8 @@ local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 
 local StripesAurasModCooldownFont = CreateFont('StripesAurasModCooldownFont');
 local StripesAurasModCountFont    = CreateFont('StripesAurasModCountFont');
+
+local MAX_OFFSET_Y = -9;
 
 local function UpdateBuffs(unitframe)
     local debuffType;
@@ -82,7 +84,7 @@ local function UpdateAnchor(unitframe)
     local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
 
     if unit and ShouldShowName(unitframe) then
-        local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + NAME_TEXT_OFFSET_Y + showMechanicOnTarget) or showMechanicOnTarget;
+        local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
         PixelUtil.SetPoint(unitframe.BuffFrame, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     else
         local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);

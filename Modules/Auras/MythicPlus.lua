@@ -3,7 +3,7 @@ local Module = S:NewNameplateModule('Auras_MythicPlus');
 local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
-local pairs, table_wipe = pairs, wipe;
+local pairs, table_wipe, math_max = pairs, wipe, math.max;
 
 -- WoW API
 local CooldownFrame_Set, GetCVarBool, UnitIsUnit, AuraUtil_ForEachAura = CooldownFrame_Set, GetCVarBool, UnitIsUnit, AuraUtil.ForEachAura;
@@ -54,6 +54,8 @@ local filterHelpful = 'HELPFUL';
 local filterHarmful = 'HARMFUL';
 local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 
+local MAX_OFFSET_Y = -9;
+
 local function CreateAnchor(unitframe)
     if unitframe.AurasMythicPlus then
         return;
@@ -74,7 +76,7 @@ local function UpdateAnchor(unitframe)
 
     if unit and ShouldShowName(unitframe) then
         local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
-        local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + NAME_TEXT_OFFSET_Y + showMechanicOnTarget) or showMechanicOnTarget;
+        local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
         PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
     else
         local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
