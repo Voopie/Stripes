@@ -232,7 +232,7 @@ O.Lists = {
     }
 };
 
--- ~434
+-- ~435
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -291,6 +291,7 @@ O.DefaultValues = {
     health_text_block_2_anchor       = 3, -- RIGHT
 
     level_text_enabled        = true,
+    level_text_show_only_on_target = false,
     level_text_hide_max       = false,
     level_text_font_value     = 'BigNoodleToo Titling',
     level_text_font_size      = 11,

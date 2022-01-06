@@ -271,6 +271,8 @@ L['OPTIONS_HEALTH_TEXT_SINGLE_BLOCK'] = 'Одиночный блок';
 L['OPTIONS_HEALTH_TEXT_DOUBLE_BLOCK'] = 'Двойной блок';
 
 L['OPTIONS_SHOW_LEVEL_TEXT'] = 'Показывать уровень текстом';
+L['OPTIONS_LEVEL_TEXT_SHOW_ONLY_ON_TARGET'] = 'Только на цели';
+L['OPTIONS_LEVEL_TEXT_SHOW_ONLY_ON_TARGET_TOOLTIP'] = 'Показывать уровень только на текущей цели';
 L['OPTIONS_LEVEL_TEXT_HIDE_MAX'] = 'Скрывать максимальный';
 L['OPTIONS_LEVEL_TEXT_HIDE_MAX_TOOLTIP'] = 'Скрывать максимальный уровень';
 L['OPTIONS_LEVEL_TEXT_FONT_VALUE'] = 'Шрифт уровня';

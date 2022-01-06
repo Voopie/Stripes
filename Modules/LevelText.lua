@@ -14,6 +14,7 @@ local NP = S.NamePlates;
 -- Local Config
 local ENABLED, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR, CUSTOM_COLOR_TEXT;
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
+local SHOW_ONLY_ON_TARGET;
 
 local CLOSE_COLOR = '|r';
 
@@ -36,7 +37,7 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.unitType == 'SELF' or (SHOW_ONLY_ON_TARGET and not unitframe.data.isTarget) then
         unitframe.LevelText.text:SetText('');
         return;
     end
@@ -99,6 +100,8 @@ function Module:UpdateLocalConfig()
     CUSTOM_COLOR[3] = O.db.level_text_custom_color[3];
     CUSTOM_COLOR[4] = O.db.level_text_custom_color[4] or 1;
     CUSTOM_COLOR_TEXT = RGB2CFFHEX(CUSTOM_COLOR);
+
+    SHOW_ONLY_ON_TARGET = O.db.level_text_show_only_on_target;
 
     UpdateFontObject(StripesLevelTextFont, O.db.level_text_font_value, O.db.level_text_font_size, O.db.level_text_font_flag, O.db.level_text_font_shadow);
 end

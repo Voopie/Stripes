@@ -271,10 +271,12 @@ L['OPTIONS_HEALTH_TEXT_SINGLE_BLOCK'] = 'Einzelner Block';
 L['OPTIONS_HEALTH_TEXT_DOUBLE_BLOCK'] = 'Doppelblock';
 
 L['OPTIONS_SHOW_LEVEL_TEXT'] = 'Leveltext anzeigen';
+L['OPTIONS_LEVEL_TEXT_SHOW_ONLY_ON_TARGET'] = 'Nur am Ziel';
+L['OPTIONS_LEVEL_TEXT_SHOW_ONLY_ON_TARGET_TOOLTIP'] = 'Leveltext nur auf aktuellem Ziel anzeigen';
 L['OPTIONS_LEVEL_TEXT_HIDE_MAX'] = 'Maximum ausblenden';
 L['OPTIONS_LEVEL_TEXT_HIDE_MAX_TOOLTIP'] = 'Maximale Stufe ausblenden';
 L['OPTIONS_LEVEL_TEXT_FONT_VALUE'] = 'Ebene Textschriftart';
-L['OPTIONS_LEVEL_TEXT_FONT_SIZE'] = 'Level-Text-Schriftgröße';
+L['OPTIONS_LEVEL_TEXT_FONT_SIZE'] = 'Schriftgröße der Ebene Text';
 L['OPTIONS_LEVEL_TEXT_FONT_FLAG'] = 'Ebene Text Schriftumriss';
 L['OPTIONS_LEVEL_TEXT_FONT_SHADOW'] = 'Ebene Text Schriftschatten';
 L['OPTIONS_LEVEL_TEXT_USE_DIFF_COLOR'] = 'Einfärbung';

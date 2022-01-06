@@ -191,7 +191,6 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-
     self.name_text_offset_y = E.CreateSlider(self.TabsFrames['NameTab'].Content);
     self.name_text_offset_y:SetPosition('LEFT', self.name_text_offset_x, 'RIGHT', 12, 0);
     self.name_text_offset_y:SetW(80);
@@ -729,8 +728,19 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.level_text_show_only_on_target = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_show_only_on_target:SetPosition('LEFT', self.level_text_enabled.Label, 'RIGHT', 12, 0);
+    self.level_text_show_only_on_target:SetLabel(L['OPTIONS_LEVEL_TEXT_SHOW_ONLY_ON_TARGET']);
+    self.level_text_show_only_on_target:SetTooltip(L['OPTIONS_LEVEL_TEXT_SHOW_ONLY_ON_TARGET_TOOLTIP']);
+    self.level_text_show_only_on_target:SetChecked(O.db.level_text_show_only_on_target);
+    self.level_text_show_only_on_target:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_SHOW_ONLY_ON_TARGET_TOOLTIP'], self.Tabs[3]);
+    self.level_text_show_only_on_target.Callback = function(self)
+        O.db.level_text_show_only_on_target = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.level_text_hide_max = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_hide_max:SetPosition('LEFT', self.level_text_enabled.Label, 'RIGHT', 12, 0);
+    self.level_text_hide_max:SetPosition('LEFT', self.level_text_show_only_on_target.Label, 'RIGHT', 12, 0);
     self.level_text_hide_max:SetLabel(L['OPTIONS_LEVEL_TEXT_HIDE_MAX']);
     self.level_text_hide_max:SetTooltip(L['OPTIONS_LEVEL_TEXT_HIDE_MAX_TOOLTIP'] .. ' (' .. GetMaxLevelForLatestExpansion() .. ')');
     self.level_text_hide_max:SetChecked(O.db.level_text_hide_max);
