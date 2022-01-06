@@ -605,12 +605,11 @@ AddOn:RegisterEvent('ADDON_LOADED');
 -- Code from WeakAuras (https://github.com/WeakAuras/WeakAuras2/blob/main/WeakAurasOptions/Cache.lua)
 -- It will only be rebuilt if the client build number and locale changes
 local GetSpellInfo = GetSpellInfo;
-local spellCache = {};
 local cache, metaData, spellCacheCoroutine;
 
-local spellCacheUpdater = CreateFrame('Frame');
-spellCacheUpdater:Hide();
-spellCacheUpdater:SetScript('OnUpdate', function()
+local spellCache = CreateFrame('Frame');
+spellCache:Hide();
+spellCache:SetScript('OnUpdate', function()
     -- Start timing
     local start = debugprofilestop();
 
@@ -622,7 +621,7 @@ spellCacheUpdater:SetScript('OnUpdate', function()
                 geterrorhandler()(msg .. '\n' .. debugstack(spellCacheCoroutine));
             end
         else
-            spellCacheUpdater:Hide();
+            spellCache:Hide();
         end
     end
 end);
@@ -665,7 +664,7 @@ function spellCache.Build()
         metaData.needsRebuild = false;
     end);
 
-    spellCacheUpdater:Show();
+    spellCache:Show();
 end
 
 function spellCache.Load(data)
