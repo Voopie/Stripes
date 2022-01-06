@@ -27,10 +27,10 @@ NAMESPACE[5] = {};                       -- Data
 NAMESPACE[6] = {};                       -- Elements
 
 local L = setmetatable(NAMESPACE[2], {
-	__index = function(t, k)
+    __index = function(t, k)
         t[k] = tostring(k);
         return t[k];
-	end
+    end
 });
 
 AddOn.AddonName        = ADDON_NAME;
@@ -181,7 +181,7 @@ function Eventer:RegisterUnitEvent(event, callback, unit1, unit2, func)
 end
 
 function Eventer:UnregisterEvent(event, callback)
-	if not embeds[event] then
+    if not embeds[event] then
         return;
     end
 
@@ -204,7 +204,7 @@ function Eventer:UnregisterEvent(event, callback)
 end
 
 function Eventer:UnregisterUnitEvent(event, callback)
-	if not embedsUnit[event] then
+    if not embedsUnit[event] then
         return;
     end
 
@@ -269,7 +269,7 @@ function Eventer:RegisterAddon(name, callback, func)
         end
 
         table_insert(addons[name], { [callback] = func });
-	end
+    end
 end
 
 function Eventer:UnregisterAddon(name, callback, func)
@@ -299,35 +299,35 @@ AddOn.Eventer = Eventer;
 local ModuleMixin = {};
 
 function ModuleMixin:RegisterEvent(event, func)
-	Eventer:RegisterEvent(event, self, func);
+    Eventer:RegisterEvent(event, self, func);
 end
 
 function ModuleMixin:UnregisterEvent(event)
-	Eventer:UnregisterEvent(event, self);
+    Eventer:UnregisterEvent(event, self);
 end
 
 function ModuleMixin:IsEventRegistered(event)
-	return Eventer:IsEventRegistered(event, self);
+    return Eventer:IsEventRegistered(event, self);
 end
 
 function ModuleMixin:RegisterUnitEvent(event, unit1, unit2, func)
-	Eventer:RegisterUnitEvent(event, self, unit1, unit2, func);
+    Eventer:RegisterUnitEvent(event, self, unit1, unit2, func);
 end
 
 function ModuleMixin:UnregisterUnitEvent(event)
-	Eventer:UnregisterUnitEvent(event, self);
+    Eventer:UnregisterUnitEvent(event, self);
 end
 
 function ModuleMixin:IsUnitEventRegistered(event)
-	return Eventer:IsUnitEventRegistered(event, self);
+    return Eventer:IsUnitEventRegistered(event, self);
 end
 
 function ModuleMixin:RegisterAddon(name, func)
-	Eventer:RegisterAddon(name, self, func);
+    Eventer:RegisterAddon(name, self, func);
 end
 
 function ModuleMixin:UnregisterAddon(name)
-	Eventer:UnregisterAddon(name, self);
+    Eventer:UnregisterAddon(name, self);
 end
 
 function ModuleMixin:CheckNamePlate(nameplate)
@@ -430,11 +430,11 @@ function AddOn:GetModule(name)
 end
 
 function AddOn:ForAllModules(event, ...)
-	for _, m in ipairs(Modules) do
-		if m[event] then
-			m[event](m, ...);
-		end
-	end
+    for _, m in ipairs(Modules) do
+        if m[event] then
+            m[event](m, ...);
+        end
+    end
 end
 
 function AddOn:NewNameplateModule(name)
@@ -456,11 +456,11 @@ function AddOn:GetNameplateModule(name)
 end
 
 function AddOn:ForAllNameplateModules(event, ...)
-	for _, m in ipairs(NameplateModules) do
-		if m[event] then
-			m[event](m, ...);
-		end
-	end
+    for _, m in ipairs(NameplateModules) do
+        if m[event] then
+            m[event](m, ...);
+        end
+    end
 end
 
 local MinimapButton = {};
@@ -596,6 +596,93 @@ end
 
 AddOn:RegisterEvent('ADDON_LOADED');
 
+
+-- Code from WeakAuras (https://github.com/WeakAuras/WeakAuras2/blob/main/WeakAurasOptions/Cache.lua)
+-- It will only be rebuilt if the client build number and locale changes
+local GetSpellInfo = GetSpellInfo;
+local spellCache = {};
+local cache, metaData, spellCacheCoroutine;
+
+local spellCacheUpdater = CreateFrame('Frame');
+spellCacheUpdater:Hide();
+spellCacheUpdater:SetScript('OnUpdate', function()
+    -- Start timing
+    local start = debugprofilestop();
+
+    -- Resume as often as possible (Limit to 16ms per frame -> 60 FPS)
+    while debugprofilestop() - start < 16 do
+        if coroutine.status(spellCacheCoroutine) ~= 'dead' then
+            local ok, msg = coroutine.resume(spellCacheCoroutine);
+            if not ok then
+                geterrorhandler()(msg .. '\n' .. debugstack(spellCacheCoroutine));
+            end
+        else
+            spellCacheUpdater:Hide();
+        end
+    end
+end);
+
+function spellCache.Build()
+    if not cache then
+        error('spellCache has not been loaded. Call spellCache.Load(...) first.');
+    end
+
+    if not metaData.needsRebuild then
+        return;
+    end
+
+    wipe(cache);
+
+    spellCacheCoroutine = coroutine.create(function()
+        local id = 0
+        local misses = 0
+
+        while misses < 50000 do
+            id = id + 1;
+
+            local name, _, icon = GetSpellInfo(id);
+
+            if icon == 136243 then -- 136243 is the a gear icon, we can ignore those spells
+                misses = 0;
+            elseif name and name ~= '' then
+                cache[name]            = cache[name] or {};
+                cache[name].spells     = cache[name].spells or {};
+                cache[name].spells[id] = icon;
+
+                misses = 0;
+            else
+                misses = misses + 1;
+            end
+
+            coroutine.yield();
+        end
+
+        metaData.needsRebuild = false;
+    end);
+
+    spellCacheUpdater:Show();
+end
+
+function spellCache.Load(data)
+    metaData = data;
+    cache    = metaData.data;
+
+    local _, build = GetBuildInfo();
+
+    local num = 0;
+    for _, _ in pairs(cache) do
+        num = num + 1;
+    end
+
+    if num < 39000 or metaData.locale ~= locale or metaData.build ~= build then
+        metaData.build        = build;
+        metaData.locale       = locale;
+        metaData.needsRebuild = true;
+
+        wipe(cache);
+    end
+end
+
 function AddOn:ADDON_LOADED(addonName)
     if addonName ~= AddOn.AddonName then
         return;
@@ -606,6 +693,12 @@ function AddOn:ADDON_LOADED(addonName)
     StripesDB = StripesDB or {};
     StripesDB.minimap_button = StripesDB.minimap_button or { hide = false };
     StripesDB.last_used_hex_color = StripesDB.last_used_hex_color or nil;
+
+    StripesDB.spellCache      = StripesDB.spellCache or {};
+    StripesDB.spellCache.data = StripesDB.spellCache.data or {};
+
+    spellCache.Load(StripesDB.spellCache);
+    spellCache.Build();
 
     self:ForAllModules('StartUp');
     self:ForAllNameplateModules('StartUp');

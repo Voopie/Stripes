@@ -31,7 +31,7 @@ local function UpdateBlacklistCache()
 
     for spellId, data in pairs(O.db.auras_blacklist) do
         if not data.enabled then
-            name = CacheFindAuraNameById(spellId);
+            name = type(spellId) == 'string' and spellId or CacheFindAuraNameById(spellId);
 
             if name then
                 blacklistAurasNameCache[name] = nil;
@@ -50,9 +50,14 @@ local function FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPe
             return false;
         end
 
+		if O.db.auras_blacklist[name] and O.db.auras_blacklist[name].enabled then
+			blacklistAurasNameCache[name] = spellId;
+			return false;
+		end
+
         if spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
-            blacklistAurasNameCache[name] = spellId;
-            return false;
+			blacklistAurasNameCache[name] = spellId;
+			return false;
         end
     end
 

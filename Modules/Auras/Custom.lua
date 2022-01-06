@@ -88,7 +88,9 @@ local function Update(unitframe)
     AuraUtil_ForEachAura(unitframe.AurasCustom.unit, filterHelpful, BUFF_MAX_DISPLAY, function(...)
         buffName, texture, count, _, duration, expirationTime, source, _, _, spellId = ...;
 
-        if O.db.auras_custom_data[spellId] and O.db.auras_custom_data[spellId].enabled and (not O.db.auras_custom_data[spellId].own_only or (playerUnits[source] and O.db.auras_custom_data[spellId].own_only)) then
+        local spellData = O.db.auras_custom_data[spellId] or O.db.auras_custom_data[buffName];
+
+        if spellData and spellData.enabled and (not spellData.own_only or (playerUnits[source] and spellData.own_only)) then
             local cCount = count == 0 and 1 or count;
 
             if not unitframe.AurasCustom.buffCompact[spellId] then
@@ -115,7 +117,9 @@ local function Update(unitframe)
     AuraUtil_ForEachAura(unitframe.AurasCustom.unit, filterHarmful, BUFF_MAX_DISPLAY, function(...)
         buffName, texture, count, _, duration, expirationTime, source, _, _, spellId = ...;
 
-        if O.db.auras_custom_data[spellId] and O.db.auras_custom_data[spellId].enabled and (not O.db.auras_custom_data[spellId].own_only or (playerUnits[source] and O.db.auras_custom_data[spellId].own_only)) then
+        local spellData = O.db.auras_custom_data[spellId] or O.db.auras_custom_data[buffName];
+
+        if spellData and spellData.enabled and (not spellData.own_only or (playerUnits[source] and spellData.own_only)) then
             local cCount = count == 0 and 1 or count;
 
             if not unitframe.AurasCustom.buffCompact[spellId] then

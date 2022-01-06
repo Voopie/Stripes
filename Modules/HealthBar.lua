@@ -281,17 +281,19 @@ local function Threat_UpdateColor(unitframe)
 end
 
 local function GetAuraColor(unit)
-    local spellId;
+    local _, name, spellId;
 
     for i = 1, BUFF_MAX_DISPLAY do
-        spellId = select(10, UnitAura(unit, i, 'PLAYER HARMFUL'));
+        name, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, i, 'PLAYER HARMFUL');
 
-        if not spellId then
+        if not name or not spellId then
             return false;
         end
 
-        if O.db.auras_hpbar_color_data[spellId] and O.db.auras_hpbar_color_data[spellId].enabled then
-            return unpack(O.db.auras_hpbar_color_data[spellId].color);
+        local spellData = O.db.auras_hpbar_color_data[spellId] or O.db.auras_hpbar_color_data[name];
+
+        if spellData and spellData.enabled then
+            return unpack(spellData.color);
         end
     end
 

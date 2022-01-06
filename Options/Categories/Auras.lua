@@ -45,8 +45,34 @@ local function ToggleTooltip_Show(self)
     GameTooltip:Show();
 end
 
-local function AddCustomAura(id)
-    if O.db.auras_custom_data[id] then
+local bestIcon = {};
+local function GetIconFromCache(name)
+    if bestIcon[name] then
+        return bestIcon[name];
+    end
+
+    local icons = StripesDB.spellCache.data[name];
+    local bestMatch = nil;
+
+    if icons then
+        if icons.spells then
+            for spellId, _ in pairs(icons.spells) do
+                if not bestMatch or (type(spellId) == 'number' and IsSpellKnown(spellId)) then
+                    bestMatch = spellId;
+                end
+            end
+        end
+    end
+
+    bestIcon[name] = bestMatch and icons.spells[bestMatch];
+
+    return bestIcon[name];
+end
+
+local function AddCustomAura(id, byName, name)
+    id = byName and name or id;
+
+    if not id or O.db.auras_custom_data[id] then
         return;
     end
 
@@ -174,7 +200,7 @@ local function CreateCustomAuraRow(frame)
     frame.BlacklistButton.texture:SetPoint('TOPLEFT', 6, -6);
     frame.BlacklistButton.texture:SetPoint('BOTTOMRIGHT', -6, 6);
     frame.BlacklistButton:SetScript('OnClick', function(self)
-        local id = tonumber(self:GetParent().id);
+        local id = self:GetParent().id;
 
         if not id then
             return;
@@ -245,7 +271,7 @@ local function CreateCustomAuraRow(frame)
     frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
     frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     frame.RemoveButton:SetScript('OnClick', function(self)
-        local id = tonumber(self:GetParent().id);
+        local id = self:GetParent().id;
 
         if not id then
             return;
@@ -281,7 +307,7 @@ local function CreateCustomAuraRow(frame)
     end);
 
     frame:HookScript('OnEnter', function(self)
-        if self.id then
+        if self.id and type(self.id) == 'number' then
             GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
             GameTooltip:SetHyperlink('spell:' .. self.id);
             GameTooltip:Show();
@@ -312,7 +338,7 @@ local function UpdateCustomAuraRow(frame)
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
     frame.Icon:SetTexture(frame.icon);
-    frame.IdText:SetText(frame.id);
+    frame.IdText:SetText(type(frame.id) == 'number' and frame.id or 'NA');
     frame.NameText:SetText(frame.name);
 
     if frame.filter == 'HELPFUL' then
@@ -356,7 +382,15 @@ panel.UpdateScroll = function()
     end
 
     table.sort(sortedCustomData, function(a, b)
-        return (GetSpellInfo(a)) < (GetSpellInfo(b));
+        if type(a) == 'string' and type(b) == 'number' then
+            return a < (GetSpellInfo(b));
+        elseif type(a) == 'number' and type(b) == 'string' then
+            return (GetSpellInfo(a)) < b;
+        elseif type(a) == 'string' and type(b) == 'string' then
+            return a < b;
+        else
+            return (GetSpellInfo(a)) < (GetSpellInfo(b));
+        end
     end);
 
     aurasCustomFramePool:ReleaseAll();
@@ -366,7 +400,13 @@ panel.UpdateScroll = function()
     local name, icon, data;
 
     for _, id in pairs(sortedCustomData) do
-        name, _, icon = GetSpellInfo(id);
+        if type(id) == 'string' then
+            name = id;
+            icon = GetIconFromCache(name);
+        else
+            name, _, icon = GetSpellInfo(id);
+        end
+
         data = O.db.auras_custom_data[id];
 
         index = index + 1;
@@ -428,8 +468,10 @@ end
 
 local DataBlackListRows = {};
 
-local function AddBlackListAura(id)
-    if O.db.auras_blacklist[id] then
+local function AddBlackListAura(id, byName, name)
+    id = byName and name or id;
+
+    if not id or O.db.auras_blacklist[id] then
         return;
     end
 
@@ -476,8 +518,8 @@ local function CreateBlackListRow(frame)
     frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
     frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     frame.RemoveButton:SetScript('OnClick', function(self)
-        if O.db.auras_blacklist[tonumber(self:GetParent().id)] then
-            O.db.auras_blacklist[tonumber(self:GetParent().id)] = nil;
+        if O.db.auras_blacklist[self:GetParent().id] then
+            O.db.auras_blacklist[self:GetParent().id] = nil;
 
             panel:UpdateScroll();
             panel:UpdateBlackListScroll();
@@ -502,7 +544,7 @@ local function CreateBlackListRow(frame)
     end);
 
     frame:HookScript('OnEnter', function(self)
-        if self.id then
+        if self.id and type(self.id) == 'number' then
             GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
             GameTooltip:SetHyperlink('spell:' .. self.id);
             GameTooltip:AddLine('|cffff6666' .. self.id .. '|r');
@@ -547,7 +589,15 @@ panel.UpdateBlackListScroll = function()
     end
 
     table.sort(sortedBlackListData, function(a, b)
-        return (GetSpellInfo(a)) < (GetSpellInfo(b));
+        if type(a) == 'string' and type(b) == 'number' then
+            return a < (GetSpellInfo(b));
+        elseif type(a) == 'number' and type(b) == 'string' then
+            return (GetSpellInfo(a)) < b;
+        elseif type(a) == 'string' and type(b) == 'string' then
+            return a < b;
+        else
+            return (GetSpellInfo(a)) < (GetSpellInfo(b));
+        end
     end);
 
     panel.BlackListButtonPool:ReleaseAll();
@@ -557,7 +607,13 @@ panel.UpdateBlackListScroll = function()
     local name, icon, data;
 
     for _, id in pairs(sortedBlackListData) do
-        name, _, icon = GetSpellInfo(id);
+        if type(id) == 'string' then
+            name = id;
+            icon = GetIconFromCache(name);
+        else
+            name, _, icon = GetSpellInfo(id);
+        end
+
         data = O.db.auras_blacklist[id];
 
         index = index + 1;
@@ -586,8 +642,10 @@ end
 
 local DataHPBarColorRows = {};
 
-local function AddHPBarColorAura(id)
-    if O.db.auras_hpbar_color_data[id] then
+local function AddHPBarColorAura(id, byName, name)
+    id = byName and name or id;
+
+    if not id or O.db.auras_hpbar_color_data[id] then
         return;
     end
 
@@ -635,8 +693,8 @@ local function CreateHPBarColorRow(frame)
     frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
     frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     frame.RemoveButton:SetScript('OnClick', function(self)
-        if O.db.auras_hpbar_color_data[tonumber(self:GetParent().id)] then
-            O.db.auras_hpbar_color_data[tonumber(self:GetParent().id)] = nil;
+        if O.db.auras_hpbar_color_data[self:GetParent().id] then
+            O.db.auras_hpbar_color_data[self:GetParent().id] = nil;
 
             panel:UpdateHPBarColorScroll();
             S:GetNameplateModule('Handler'):UpdateAll();
@@ -677,7 +735,7 @@ local function CreateHPBarColorRow(frame)
     end);
 
     frame:HookScript('OnEnter', function(self)
-        if self.id then
+        if self.id and type(self.id) == 'number' then
             GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
             GameTooltip:SetHyperlink('spell:' .. self.id);
             GameTooltip:AddLine('|cffff6666' .. self.id .. '|r');
@@ -723,7 +781,15 @@ panel.UpdateHPBarColorScroll = function()
     end
 
     table.sort(sortedHBBarColorData, function(a, b)
-        return (GetSpellInfo(a)) < (GetSpellInfo(b));
+        if type(a) == 'string' and type(b) == 'number' then
+            return a < (GetSpellInfo(b));
+        elseif type(a) == 'number' and type(b) == 'string' then
+            return (GetSpellInfo(a)) < b;
+        elseif type(a) == 'string' and type(b) == 'string' then
+            return a < b;
+        else
+            return (GetSpellInfo(a)) < (GetSpellInfo(b));
+        end
     end);
 
     panel.HPBarColorButtonPool:ReleaseAll();
@@ -733,7 +799,13 @@ panel.UpdateHPBarColorScroll = function()
     local name, icon, data;
 
     for _, id in pairs(sortedHBBarColorData) do
-        name, _, icon = GetSpellInfo(id);
+        if type(id) == 'string' then
+            name = id;
+            icon = GetIconFromCache(name);
+        else
+            name, _, icon = GetSpellInfo(id);
+        end
+
         data = O.db.auras_hpbar_color_data[id];
 
         index = index + 1;
@@ -832,19 +904,28 @@ panel.Load = function(self)
         local saveId;
         local id = tonumber(text);
 
+        local byName = false;
+        local byNameIcon;
+
         if id and id ~= 0 and GetSpellInfo(id) then
             saveId = id;
         else
-            saveId = tonumber(select(7, GetSpellInfo(text)) or '');
+            if StripesDB.spellCache.data[text] then
+                byNameIcon = GetIconFromCache(text);
+
+                if byNameIcon then
+                    byName = true;
+                end
+            end
         end
 
-        if not saveId then
+        if not saveId and not byName then
             self:SetText('');
             self:ClearFocus();
             return;
         end
 
-        AddBlackListAura(tonumber(saveId));
+        AddBlackListAura(tonumber(saveId), byName, text);
 
         panel:UpdateBlackListScroll();
         self:SetText('');
@@ -1016,19 +1097,28 @@ panel.Load = function(self)
         local saveId;
         local id = tonumber(text);
 
+        local byName = false;
+        local byNameIcon;
+
         if id and id ~= 0 and GetSpellInfo(id) then
             saveId = id;
         else
-            saveId = tonumber(select(7, GetSpellInfo(text)) or '');
+            if StripesDB.spellCache.data[text] then
+                byNameIcon = GetIconFromCache(text);
+
+                if byNameIcon then
+                    byName = true;
+                end
+            end
         end
 
-        if not saveId then
+        if not saveId and not byName then
             self:SetText('');
             self:ClearFocus();
             return;
         end
 
-        AddHPBarColorAura(tonumber(saveId));
+        AddHPBarColorAura(tonumber(saveId), byName, text);
 
         panel:UpdateHPBarColorScroll();
         self:SetText('');
@@ -2497,19 +2587,28 @@ panel.Load = function(self)
         local saveId;
         local id = tonumber(text);
 
+        local byName = false;
+        local byNameIcon;
+
         if id and id ~= 0 and GetSpellInfo(id) then
             saveId = id;
         else
-            saveId = tonumber(select(7, GetSpellInfo(text)) or '');
+            if StripesDB.spellCache.data[text] then
+                byNameIcon = GetIconFromCache(text);
+
+                if byNameIcon then
+                    byName = true;
+                end
+            end
         end
 
-        if not saveId then
+        if not saveId and not byName then
             self:SetText('');
             self:ClearFocus();
             return;
         end
 
-        AddCustomAura(tonumber(saveId));
+        AddCustomAura(tonumber(saveId), byName, text);
 
         panel:UpdateScroll();
         panel:UpdateBlackListScroll();
