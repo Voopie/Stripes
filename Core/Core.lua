@@ -645,8 +645,11 @@ function spellCache.Build()
             id = id + 1;
 
             local name, _, icon = GetSpellInfo(id);
+            local nameLower = string.lower(name);
 
-            if icon == 136243 then -- 136243 is the a gear icon, we can ignore those spells
+            -- 136243 is the a gear icon, we can ignore those spells
+            -- Also DNT and test
+            if icon == 136243 or string.find(nameLower, 'dnt') or string.find(nameLower, 'test') then
                 misses = 0;
             elseif name and name ~= '' then
                 cache[name]            = cache[name] or {};
