@@ -622,6 +622,7 @@ spellCache:SetScript('OnUpdate', function()
             end
         else
             spellCache:Hide();
+            NAMESPACE[3].frame.Right.Auras:Update();
         end
     end
 end);
