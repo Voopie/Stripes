@@ -638,8 +638,7 @@ function spellCache.Build()
     wipe(cache);
 
     spellCacheCoroutine = coroutine.create(function()
-        local id = 0
-        local misses = 0
+        local id, misses = 0, 0;
 
         while misses < 50000 do
             id = id + 1;
