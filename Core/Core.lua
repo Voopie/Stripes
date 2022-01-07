@@ -646,13 +646,13 @@ function spellCache.Build()
             id = id + 1;
 
             local name, _, icon = GetSpellInfo(id);
-            local nameLower = string_lower(name);
+            local nameLower = name and string_lower(name);
 
             -- 136243 is the a gear icon, we can ignore those spells
             -- Also DNT and test
-            if icon == 136243 or string_find(nameLower, 'dnt') or string_find(nameLower, 'test') then
+            if icon == 136243 then
                 misses = 0;
-            elseif name and name ~= '' then
+            elseif name and name ~= '' and not (nameLower and (string_find(nameLower, 'dnt') or string_find(nameLower, 'test'))) then
                 cache[name]            = cache[name] or {};
                 cache[name].spells     = cache[name].spells or {};
                 cache[name].spells[id] = icon;
