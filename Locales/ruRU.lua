@@ -883,6 +883,7 @@ L['OPTIONS_AURAS_CUSTOM_ADD_TO_BLACKLIST'] = 'Добавить в чёрный �
 L['OPTIONS_AURAS_CUSTOM_REMOVE_FROM_BLACKLIST'] = 'Удалить из чёрного списка';
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST'] = 'В ЧС';
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST_TOOLTIP'] = 'Добавить ауру сразу в чёрный список';
+L['OPTIONS_AURAS_CUSTOM_HELPTIP'] = 'При добавлении по названию иногда может показываться неверная иконка';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';

@@ -883,6 +883,7 @@ L['OPTIONS_AURAS_CUSTOM_ADD_TO_BLACKLIST'] = 'Add to blacklist';
 L['OPTIONS_AURAS_CUSTOM_REMOVE_FROM_BLACKLIST'] = 'Remove from blacklist';
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST'] = 'To BL';
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST_TOOLTIP'] = 'Add aura immediately to blacklist';
+L['OPTIONS_AURAS_CUSTOM_HELPTIP'] = 'Adding by name can sometimes show the wrong icon';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Enable';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Enable custom health bar colors';

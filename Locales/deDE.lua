@@ -883,6 +883,7 @@ L['OPTIONS_AURAS_CUSTOM_ADD_TO_BLACKLIST'] = 'Zur schwarzen Liste hinzufügen';
 L['OPTIONS_AURAS_CUSTOM_REMOVE_FROM_BLACKLIST'] = 'Von der schwarzen Liste entfernen';
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST'] = 'Auf SL';
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST_TOOLTIP'] = 'Aura sofort zur Schwarzen Liste hinzufügen';
+L['OPTIONS_AURAS_CUSTOM_HELPTIP'] = 'Beim Hinzufügen nach Namen wird manchmal das falsche Symbol angezeigt';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Aktivieren';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Farben der Gesundheitsleiste aktivieren';
