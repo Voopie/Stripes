@@ -604,6 +604,7 @@ AddOn:RegisterEvent('ADDON_LOADED');
 
 -- Code from WeakAuras (https://github.com/WeakAuras/WeakAuras2/blob/main/WeakAurasOptions/Cache.lua)
 -- It will only be rebuilt if the client build number and locale changes
+local string_find, string_lower = string.find, string.lower;
 local GetSpellInfo = GetSpellInfo;
 local cache, metaData, spellCacheCoroutine;
 
@@ -645,11 +646,11 @@ function spellCache.Build()
             id = id + 1;
 
             local name, _, icon = GetSpellInfo(id);
-            local nameLower = string.lower(name);
+            local nameLower = string_lower(name);
 
             -- 136243 is the a gear icon, we can ignore those spells
             -- Also DNT and test
-            if icon == 136243 or string.find(nameLower, 'dnt') or string.find(nameLower, 'test') then
+            if icon == 136243 or string_find(nameLower, 'dnt') or string_find(nameLower, 'test') then
                 misses = 0;
             elseif name and name ~= '' then
                 cache[name]            = cache[name] or {};
