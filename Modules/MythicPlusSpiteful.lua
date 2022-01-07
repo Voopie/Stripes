@@ -77,7 +77,7 @@ end
 local function OnUpdate(unitframe)
     local name = UnitName(unitframe.data.unit .. 'target');
 
-    if not unitframe.data.targetName and (name and name == PlayerName) then
+    if not unitframe.data.targetName or (name and name == PlayerName) then
         Update(unitframe);
     end
 
