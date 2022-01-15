@@ -102,8 +102,34 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.name_text_abbreviated = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.name_text_abbreviated:SetPosition('TOPLEFT', self.name_text_translit, 'BOTTOMLEFT', 0, -8);
+    self.name_text_abbreviated:SetLabel(L['OPTIONS_NAME_TEXT_ABBREVIATED']);
+    self.name_text_abbreviated:SetChecked(O.db.name_text_abbreviated);
+    self.name_text_abbreviated:AddToSearch(button, L['OPTIONS_NAME_TEXT_ABBREVIATED'], self.Tabs[1]);
+    self.name_text_abbreviated.Callback = function(self)
+        O.db.name_text_abbreviated = self:GetChecked();
+
+        panel.name_text_abbreviated_mode:SetEnabled(O.db.name_text_abbreviated);
+
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_abbreviated_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_abbreviated_mode:SetPosition('LEFT', self.name_text_abbreviated.Label, 'RIGHT', 12, 0);
+    self.name_text_abbreviated_mode:SetSize(160, 20);
+    self.name_text_abbreviated_mode:SetList(O.Lists.name_text_abbreviation_mode);
+    self.name_text_abbreviated_mode:SetValue(O.db.name_text_abbreviated_mode);
+    self.name_text_abbreviated_mode:SetTooltip(L['OPTIONS_NAME_TEXT_ABBREVIATED_MODE_TOOLTIP']);
+    self.name_text_abbreviated_mode:AddToSearch(button, L['OPTIONS_NAME_TEXT_ABBREVIATED_MODE_TOOLTIP'], self.Tabs[1]);
+    self.name_text_abbreviated_mode:SetEnabled(O.db.name_text_abbreviated);
+    self.name_text_abbreviated_mode.OnValueChangedCallback = function(_, value)
+        O.db.name_text_abbreviated_mode = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     local Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.name_text_translit, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_abbreviated, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.name_text_font_value = E.CreateDropdown('font', self.TabsFrames['NameTab'].Content);
@@ -247,34 +273,8 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.name_text_coloring_mode, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
-    self.name_text_abbreviated = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_abbreviated:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.name_text_abbreviated:SetLabel(L['OPTIONS_NAME_TEXT_ABBREVIATED']);
-    self.name_text_abbreviated:SetChecked(O.db.name_text_abbreviated);
-    self.name_text_abbreviated:AddToSearch(button, L['OPTIONS_NAME_TEXT_ABBREVIATED'], self.Tabs[1]);
-    self.name_text_abbreviated.Callback = function(self)
-        O.db.name_text_abbreviated = self:GetChecked();
-
-        panel.name_text_abbreviated_mode:SetEnabled(O.db.name_text_abbreviated);
-
-        Stripes:UpdateAll();
-    end
-
-    self.name_text_abbreviated_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_abbreviated_mode:SetPosition('LEFT', self.name_text_abbreviated.Label, 'RIGHT', 12, 0);
-    self.name_text_abbreviated_mode:SetSize(160, 20);
-    self.name_text_abbreviated_mode:SetList(O.Lists.name_text_abbreviation_mode);
-    self.name_text_abbreviated_mode:SetValue(O.db.name_text_abbreviated_mode);
-    self.name_text_abbreviated_mode:SetTooltip(L['OPTIONS_NAME_TEXT_ABBREVIATED_MODE_TOOLTIP']);
-    self.name_text_abbreviated_mode:AddToSearch(button, L['OPTIONS_NAME_TEXT_ABBREVIATED_MODE_TOOLTIP'], self.Tabs[1]);
-    self.name_text_abbreviated_mode:SetEnabled(O.db.name_text_abbreviated);
-    self.name_text_abbreviated_mode.OnValueChangedCallback = function(_, value)
-        O.db.name_text_abbreviated_mode = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
     self.faction_icon_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.faction_icon_enabled:SetPosition('TOPLEFT', self.name_text_abbreviated, 'BOTTOMLEFT', 0, -8);
+    self.faction_icon_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.faction_icon_enabled:SetLabel(L['OPTIONS_FACTION_ICON_ENABLED']);
     self.faction_icon_enabled:SetTooltip(L['OPTIONS_FACTION_ICON_ENABLED_TOOLTIP']);
     self.faction_icon_enabled:SetChecked(O.db.faction_icon_enabled);
