@@ -381,7 +381,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
         if self.BorderShield then
             if self.showShield and notInterruptible then
-                self.BorderShield:Show();
+                self.BorderShield:SetShown(self.iconWhenNoninterruptible);
                 if self.BarBorder then
                     self.BarBorder:Hide();
                 end
@@ -541,8 +541,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
         if self.BorderShield then
             if self.showShield and notInterruptible then
-                self.BorderShield:Show();
-
+                self.BorderShield:SetShown(self.iconWhenNoninterruptible);
                 if self.BarBorder then
                     self.BarBorder:Hide();
                 end
@@ -593,14 +592,12 @@ function StripesCastingBar_UpdateInterruptibleState(self, notInterruptible)
 
         if self.BorderShield then
             if self.showShield and notInterruptible then
-                self.BorderShield:Show();
-
+                self.BorderShield:SetShown(self.iconWhenNoninterruptible);
                 if self.BarBorder then
                     self.BarBorder:Hide();
                 end
             else
                 self.BorderShield:Hide();
-
                 if self.BarBorder then
                     self.BarBorder:Show();
                 end
