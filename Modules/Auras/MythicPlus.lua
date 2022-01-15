@@ -33,6 +33,7 @@ local HelpfulList = {
     [228318] = true, -- Mythic Plus Affix: Raging
 
     -- Shadowlands
+    [324085] = true, -- Theater of Pain (Enrage)
     [333241] = true, -- Theater of Pain (Raging Tantrum)
     [331510] = true, -- Theater of Pain (Death Wish)
     [333227] = true, -- De Other Side (Undying Rage)
