@@ -552,8 +552,8 @@ O.DefaultValues = {
     quest_indicator_enabled  = true,
     quest_indicator_position = 2, -- RIGHT
 
-    stealth_detect_enabled       = false,
-    stealth_detect_always        = false,
+    stealth_detect_enabled       = true,
+    stealth_detect_always        = true,
     stealth_detect_not_in_combat = true,
 
     totem_icon_enabled = false,
