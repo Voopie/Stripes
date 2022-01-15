@@ -87,7 +87,7 @@ panel.Load = function(self)
     end
 
     self.health_bar_border_hide = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.health_bar_border_hide:SetPosition('TOPLEFT', self.health_bar_border_color, 'BOTTOMLEFT', 5, -8);
+    self.health_bar_border_hide:SetPosition('LEFT', self.health_bar_border_selected_color.Label, 'RIGHT', 12, 0);
     self.health_bar_border_hide:SetLabel(L['OPTIONS_HEALTH_BAR_BORDER_HIDE']);
     self.health_bar_border_hide:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_HIDE_TOOLTIP']);
     self.health_bar_border_hide:SetChecked(O.db.health_bar_border_hide);
@@ -109,7 +109,7 @@ panel.Load = function(self)
     end
 
     self.health_bar_border_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.health_bar_border_size:SetPosition('TOPLEFT', self.health_bar_border_hide, 'BOTTOMLEFT', 0, -12);
+    self.health_bar_border_size:SetPosition('LEFT', self.health_bar_border_same_color.Label, 'RIGHT', 12, 0);
     self.health_bar_border_size:SetValues(O.db.health_bar_border_size, 0.5, 10, 0.5);
     self.health_bar_border_size:SetTooltip(L['OPTIONS_HEALTH_BAR_BORDER_SIZE_TOOLTIP']);
     self.health_bar_border_size:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BORDER_SIZE_TOOLTIP'], self.Tabs[1]);
@@ -119,7 +119,7 @@ panel.Load = function(self)
     end
 
     local CustomBorderHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_CUSTOM_BORDER']);
-    CustomBorderHeader:SetPosition('TOPLEFT', self.health_bar_border_size, 'BOTTOMLEFT', 0, -4);
+    CustomBorderHeader:SetPosition('TOPLEFT', self.health_bar_border_color, 'BOTTOMLEFT', 5, -4);
     CustomBorderHeader:SetW(self:GetWidth());
 
     self.health_bar_custom_border_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
