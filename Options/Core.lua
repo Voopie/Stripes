@@ -232,7 +232,7 @@ O.Lists = {
     }
 };
 
--- ~435
+-- ~437
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -632,6 +632,8 @@ O.DefaultValues = {
 
     auras_spellsteal_enabled              = true,
     auras_spellsteal_scale                = 1,
+    auras_spellsteal_static_position      = false,
+    auras_spellsteal_offset_x             = 0,
     auras_spellsteal_offset_y             = 0,
     auras_spellsteal_color                = { 1, 0.95, 0.35, 1 },
     auras_spellsteal_glow_enabled         = false,

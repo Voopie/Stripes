@@ -1547,9 +1547,20 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_spellsteal_offset_x = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
+    self.auras_spellsteal_offset_x:SetPosition('LEFT', self.auras_spellsteal_scale, 'RIGHT', 16, 0);
+    self.auras_spellsteal_offset_x:SetValues(O.db.auras_spellsteal_offset_x, -200, 200, 1);
+    self.auras_spellsteal_offset_x:SetLabel(L['OFFSET_X_SHORT']);
+    self.auras_spellsteal_offset_x:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_X_TOOLTIP']);
+    self.auras_spellsteal_offset_x:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_X_TOOLTIP'], self.Tabs[2]);
+    self.auras_spellsteal_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.auras_spellsteal_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.auras_spellsteal_offset_y = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_offset_y:SetPosition('LEFT', self.auras_spellsteal_scale, 'RIGHT', 16, 0);
-    self.auras_spellsteal_offset_y:SetValues(O.db.auras_spellsteal_offset_y, -50, 50, 1);
+    self.auras_spellsteal_offset_y:SetPosition('LEFT', self.auras_spellsteal_offset_x, 'RIGHT', 16, 0);
+    self.auras_spellsteal_offset_y:SetValues(O.db.auras_spellsteal_offset_y, -200, 200, 1);
     self.auras_spellsteal_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_spellsteal_offset_y:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_Y_TOOLTIP']);
     self.auras_spellsteal_offset_y:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_Y_TOOLTIP'], self.Tabs[2]);
@@ -1558,8 +1569,19 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_spellsteal_static_position = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
+    self.auras_spellsteal_static_position:SetPosition('TOPLEFT', self.auras_spellsteal_scale, 'BOTTOMLEFT', 0, -12);
+    self.auras_spellsteal_static_position:SetLabel(L['OPTIONS_AURAS_SPELLSTEAL_STATIC_POSITION']);
+    self.auras_spellsteal_static_position:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_STATIC_POSITION_TOOLTIP']);
+    self.auras_spellsteal_static_position:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_STATIC_POSITION_TOOLTIP'], self.Tabs[2]);
+    self.auras_spellsteal_static_position:SetChecked(O.db.auras_spellsteal_static_position);
+    self.auras_spellsteal_static_position.Callback = function(self)
+        O.db.auras_spellsteal_static_position = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellstealTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_scale, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_static_position, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_spellsteal_countdown_enabled = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
