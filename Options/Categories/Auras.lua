@@ -1800,6 +1800,20 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_mythicplus_border_color = E.CreateColorPicker(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_border_color:SetPosition('LEFT', self.auras_mythicplus_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_mythicplus_border_color:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_BORDER_COLOR_TOOLTIP']);
+    self.auras_mythicplus_border_color:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_BORDER_COLOR_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_border_color:SetValue(unpack(O.db.auras_mythicplus_border_color));
+    self.auras_mythicplus_border_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.auras_mythicplus_border_color[1] = r;
+        O.db.auras_mythicplus_border_color[2] = g;
+        O.db.auras_mythicplus_border_color[3] = b;
+        O.db.auras_mythicplus_border_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());

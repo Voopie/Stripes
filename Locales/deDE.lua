@@ -822,6 +822,7 @@ L['OPTIONS_AURAS_MYTHICPLUS_COUNT_POINT_TOOLTIP'] = 'Ansatzpunkt des Zähltextes
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_RELATIVE_POINT_TOOLTIP'] = 'An welchen Punkt der mythischen+ Aura hängt der Zähltext an';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz des Zähltextes';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz des Zähltextes';
+L['OPTIONS_AURAS_MYTHICPLUS_BORDER_COLOR_TOOLTIP'] = 'Farbe der Umrandung von mythischen+ Auren';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Wichtige Auren anzeigen (Betäubung, Massenkontrolle, Desorientierung usw.)';

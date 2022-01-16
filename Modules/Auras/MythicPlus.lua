@@ -20,7 +20,7 @@ local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_O
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 local SCALE, SQUARE, BUFFFRAME_OFFSET_Y;
 local OFFSET_Y;
-local BORDER_HIDE;
+local BORDER_HIDE, BORDER_COLOR;
 local MASQUE_SUPPORT;
 
 local StripesAurasMythicPlusCooldownFont = CreateFont('StripesAurasMythicPlusCooldownFont');
@@ -181,7 +181,7 @@ local function Update(unitframe)
             aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
             aura.CountFrame.Count:SetFontObject(StripesAurasMythicPlusCountFont);
 
-            aura.Border:SetColorTexture(0.80, 0.05, 0.05, 1);
+            aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
             aura.Border:SetShown(not BORDER_HIDE);
 
             if MASQUE_SUPPORT and Stripes.Masque then
@@ -248,6 +248,7 @@ local function UpdateStyle(unitframe)
             aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
         end
 
+        aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
         aura.Border:SetShown(not BORDER_HIDE);
 
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
@@ -304,6 +305,11 @@ function Module:UpdateLocalConfig()
     SUPPRESS_OMNICC      = O.db.auras_omnicc_suppress;
 
     BORDER_HIDE = O.db.auras_border_hide;
+    BORDER_COLOR    = BORDER_COLOR or {};
+    BORDER_COLOR[1] = O.db.auras_mythicplus_border_color[1];
+    BORDER_COLOR[2] = O.db.auras_mythicplus_border_color[2];
+    BORDER_COLOR[3] = O.db.auras_mythicplus_border_color[3];
+    BORDER_COLOR[4] = O.db.auras_mythicplus_border_color[4] or 1;
 
     COUNTDOWN_POINT          = O.Lists.frame_points[O.db.auras_mythicplus_cooldown_point] or 'TOPLEFT';
     COUNTDOWN_RELATIVE_POINT = O.Lists.frame_points[O.db.auras_mythicplus_cooldown_relative_point] or 'TOPLEFT';

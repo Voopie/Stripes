@@ -822,6 +822,7 @@ L['OPTIONS_AURAS_MYTHICPLUS_COUNT_POINT_TOOLTIP'] = 'Точка креплени
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_RELATIVE_POINT_TOOLTIP'] = 'К какой точке эпохальной+ ауры прикрепить количество';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение количества';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение количества';
+L['OPTIONS_AURAS_MYTHICPLUS_BORDER_COLOR_TOOLTIP'] = 'Цвет границ эпохальных+ аур';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Показывать важные ауры (оглушения, контроль и т.п.)';

@@ -822,6 +822,7 @@ L['OPTIONS_AURAS_MYTHICPLUS_COUNT_POINT_TOOLTIP'] = 'Point of attachment of coun
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_RELATIVE_POINT_TOOLTIP'] = 'To which point of the mythic+ aura attach count text';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_X_TOOLTIP'] = 'Horizontal offset of count text';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_Y_TOOLTIP'] = 'Vertical offset of count text';
+L['OPTIONS_AURAS_MYTHICPLUS_BORDER_COLOR_TOOLTIP'] = 'Border color of mythic+ auras';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Show important auras (stuns, crowd control, disorient etc)';

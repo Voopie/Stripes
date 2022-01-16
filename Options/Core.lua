@@ -232,7 +232,7 @@ O.Lists = {
     }
 };
 
--- ~437
+-- ~438
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -677,6 +677,7 @@ O.DefaultValues = {
     auras_mythicplus_count_relative_point   = 3, -- BOTTOMRIGHT
     auras_mythicplus_count_offset_x         = 3,
     auras_mythicplus_count_offset_y         = -2,
+    auras_mythicplus_border_color         = { 0.80, 0.05, 0.05, 1 },
 
     auras_important_enabled                = true,
     auras_important_scale                  = 1.3,
