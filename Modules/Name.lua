@@ -429,15 +429,15 @@ local function NameOnly_UpdateGuildName(unitframe)
             unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, guild));
 
             if D.Player.GuildName == unitframe.data.guild then
-                unitframe.GuildName.text:SetTextColor(unpack(NAME_ONLY_GUILD_NAME_SAME_COLOR));
+                unitframe.GuildName.text:SetTextColor(NAME_ONLY_GUILD_NAME_SAME_COLOR[1], NAME_ONLY_GUILD_NAME_SAME_COLOR[2], NAME_ONLY_GUILD_NAME_SAME_COLOR[3], NAME_ONLY_GUILD_NAME_SAME_COLOR[4]);
             else
-                unitframe.GuildName.text:SetTextColor(unpack(NAME_ONLY_GUILD_NAME_COLOR));
+                unitframe.GuildName.text:SetTextColor(NAME_ONLY_GUILD_NAME_COLOR[1], NAME_ONLY_GUILD_NAME_COLOR[2], NAME_ONLY_GUILD_NAME_COLOR[3], NAME_ONLY_GUILD_NAME_COLOR[4]);
             end
 
             unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
         elseif unitframe.data.subLabel and unitframe.data.unitType == 'FRIENDLY_NPC' then
             unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, unitframe.data.subLabel));
-            unitframe.GuildName.text:SetTextColor(unpack(NAME_ONLY_GUILD_NAME_COLOR));
+            unitframe.GuildName.text:SetTextColor(NAME_ONLY_GUILD_NAME_COLOR[1], NAME_ONLY_GUILD_NAME_COLOR[2], NAME_ONLY_GUILD_NAME_COLOR[3], NAME_ONLY_GUILD_NAME_COLOR[4]);
 
             unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
         else
