@@ -9,6 +9,9 @@ local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitG
 local GetUnitColor = U.GetUnitColor;
 local ShouldShowName = Stripes.ShouldShowName;
 
+-- Nameplates
+local NP = S.NamePlates;
+
 -- Libraries
 local LT = S.Libraries.LT;
 local LDC = S.Libraries.LDC;
@@ -33,7 +36,7 @@ local function TargetChanged(unitframe)
         return;
     end
 
-    if not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
+    if not ENABLED or not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
         unitframe.TargetName:SetShown(false);
         return;
     end

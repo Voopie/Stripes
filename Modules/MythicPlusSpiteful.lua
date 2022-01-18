@@ -5,6 +5,9 @@ local Stripes = S:GetNameplateModule('Handler');
 -- WoW API
 local UnitName = UnitName;
 
+-- Nameplates
+local NP = S.NamePlates;
+
 -- Libraires
 local LCG = S.Libraries.LCG;
 local LCG_ButtonGlow_Start, LCG_ButtonGlow_Stop = LCG.ButtonGlow_Start, LCG.ButtonGlow_Stop;
@@ -42,7 +45,7 @@ local function Update(unitframe)
         return;
     end
 
-    if unitframe.data.unitType == 'SELF' then
+    if not ENABLED or unitframe.data.unitType == 'SELF' then
         unitframe.Spiteful:SetShown(false);
         return;
     end
@@ -95,16 +98,20 @@ local function OnUpdate(unitframe)
     end
 end
 
+local function Reset(unitframe)
+    if unitframe.Spiteful then
+        LCG_ButtonGlow_Stop(unitframe.Spiteful);
+        unitframe.Spiteful:SetShown(false);
+    end
+end
+
 function Module:UnitAdded(unitframe)
     Create(unitframe);
     Update(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
-    if unitframe.Spiteful then
-        LCG_ButtonGlow_Stop(unitframe.Spiteful);
-        unitframe.Spiteful:SetShown(false);
-    end
+    Reset(unitframe);
 end
 
 function Module:Update(unitframe)
@@ -115,7 +122,7 @@ function Module:UpdateLocalConfig()
     ENABLED    = O.db.spiteful_enabled;
     ONLY_ON_ME = O.db.spiteful_show_only_on_me;
     GLOW       = O.db.spiteful_glow;
-    GLOW_COLOR = GLOW_COLOR or {};
+    GLOW_COLOR    = GLOW_COLOR or {};
     GLOW_COLOR[1] = O.db.spiteful_glow_color[1];
     GLOW_COLOR[2] = O.db.spiteful_glow_color[2];
     GLOW_COLOR[3] = O.db.spiteful_glow_color[3];
