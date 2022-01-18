@@ -17,7 +17,7 @@ local LDC = S.Libraries.LDC;
 local ENABLED, ONLY_ENEMY, NOT_ME, ROLE_ICON;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 
-local PlayerName = D.Player.Name;
+local PlayerData = D.Player;
 local YOU = YOU;
 
 local partyRolesCache = {};
@@ -29,18 +29,22 @@ local ROLE_ICONS = {
 };
 
 local function TargetChanged(unitframe)
+    if not unitframe.TargetName then
+        return;
+    end
+
     if not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
         unitframe.TargetName:SetShown(false);
         return;
     end
 
     if unitframe.data.targetName then
-        if unitframe.data.targetName == PlayerName then
+        if unitframe.data.targetName == PlayerData.Name then
             if NOT_ME then
                 unitframe.TargetName:SetText('');
             else
-                if ROLE_ICON and partyRolesCache[PlayerName] then
-                    unitframe.TargetName:SetText('» ' .. partyRolesCache[PlayerName] .. ' ' .. YOU);
+                if ROLE_ICON and partyRolesCache[PlayerData.Name] then
+                    unitframe.TargetName:SetText('» ' .. partyRolesCache[PlayerData.Name] .. ' ' .. YOU);
                 else
                     unitframe.TargetName:SetText('» ' .. YOU);
                 end
@@ -140,7 +144,7 @@ function Module:UpdatePartyCache()
     -- Player role
     local spec = GetSpecialization();
     local role = spec and GetSpecializationRole(spec) or '';
-    partyRolesCache[PlayerName] = ROLE_ICONS[role] or '';
+    partyRolesCache[PlayerData.Name] = ROLE_ICONS[role] or '';
 
     local unit;
 

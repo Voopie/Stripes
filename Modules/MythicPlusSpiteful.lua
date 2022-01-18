@@ -12,7 +12,7 @@ local LCG_ButtonGlow_Start, LCG_ButtonGlow_Stop = LCG.ButtonGlow_Start, LCG.Butt
 -- Local config
 local ENABLED, ONLY_ON_ME, GLOW, GLOW_COLOR;
 
-local PlayerName = D.Player.Name;
+local PlayerData = D.Player;
 
 local SPITEFUL_NPC_ID  = 174773;
 local SPITEFUL_TEXTURE = 135945;
@@ -38,6 +38,10 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
+    if not unitframe.Spiteful then
+        return;
+    end
+
     if unitframe.data.unitType == 'SELF' then
         unitframe.Spiteful:SetShown(false);
         return;
@@ -46,7 +50,7 @@ local function Update(unitframe)
     if unitframe:IsShown() then
         if ENABLED and unitframe.data.npcId == SPITEFUL_NPC_ID then
             if ONLY_ON_ME then
-                if unitframe.data.targetName == PlayerName then
+                if unitframe.data.targetName == PlayerData.Name then
                     if GLOW then
                         LCG_ButtonGlow_Start(unitframe.Spiteful, GLOW_COLOR);
                     else
@@ -81,7 +85,7 @@ local function OnUpdate(unitframe)
 
     local name = UnitName(unitframe.data.unit .. 'target');
 
-    if not unitframe.data.targetName or (name and name == PlayerName) then
+    if not unitframe.data.targetName or (name and name == PlayerData.Name) then
         Update(unitframe);
     end
 
