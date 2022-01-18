@@ -647,8 +647,6 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
         ResetNameplateData(NP[nameplate]);
         S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
     end
-
-    print(UnitIsEnemy(PLAYER_UNIT, unit), NP[nameplate].data.commonReaction)
 end
 
 function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
