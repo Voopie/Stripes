@@ -5,9 +5,6 @@ local Stripes = S:GetNameplateModule('Handler');
 -- WoW API
 local UnitName = UnitName;
 
--- Nameplates
-local NP = S.NamePlates;
-
 -- Libraires
 local LCG = S.Libraries.LCG;
 local LCG_ButtonGlow_Start, LCG_ButtonGlow_Stop = LCG.ButtonGlow_Start, LCG.ButtonGlow_Stop;

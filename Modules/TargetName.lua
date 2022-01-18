@@ -9,9 +9,6 @@ local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitG
 local GetUnitColor = U.GetUnitColor;
 local ShouldShowName = Stripes.ShouldShowName;
 
--- Nameplates
-local NP = S.NamePlates;
-
 -- Libraries
 local LT = S.Libraries.LT;
 local LDC = S.Libraries.LDC;
