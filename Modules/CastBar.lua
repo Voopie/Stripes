@@ -210,7 +210,7 @@ local function CreateTimer(unitframe)
     UpdateCastNameTextPosition(unitframe);
 
     unitframe.castingBar.Timer = unitframe.castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarTimerFont');
-    PixelUtil.SetPoint(unitframe.castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_XSIDE, unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
+    PixelUtil.SetPoint(unitframe.castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_ANCHOR, unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
     unitframe.castingBar.Timer:SetTextColor(1, 1, 1);
     unitframe.castingBar.updateDelay = updateDelay;
     unitframe.castingBar:HookScript('OnUpdate', OnUpdate);
@@ -256,7 +256,7 @@ local function UpdateVisibility(unitframe)
         UpdateCastNameTextPosition(unitframe);
 
         unitframe.castingBar.Timer:ClearAllPoints();
-        PixelUtil.SetPoint(unitframe.castingBar.Timer, ANCHOR_MIRROR[TIMER_ANCHOR], unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y);
+        PixelUtil.SetPoint(unitframe.castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_ANCHOR, unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y);
     end
 end
 
