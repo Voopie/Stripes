@@ -406,7 +406,6 @@ local function NameOnly_CreateGuildName(unitframe)
 
     frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesGuildNameFont');
     PixelUtil.SetPoint(frame.text, 'TOP', unitframe.name, 'BOTTOM', 0, -1);
-    frame.text:SetTextColor(unpack(NAME_ONLY_GUILD_NAME_COLOR));
 
     frame:SetShown(false);
 
