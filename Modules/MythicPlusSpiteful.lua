@@ -75,6 +75,10 @@ local function Update(unitframe)
 end
 
 local function OnUpdate(unitframe)
+    if not unitframe.Spiteful then
+        return;
+    end
+
     local name = UnitName(unitframe.data.unit .. 'target');
 
     if not unitframe.data.targetName or (name and name == PlayerName) then

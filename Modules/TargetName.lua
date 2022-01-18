@@ -74,6 +74,10 @@ local function TargetChanged(unitframe)
 end
 
 local function OnUpdate(unitframe)
+    if not unitframe.TargetName then
+        return;
+    end
+
     local name = UnitName(unitframe.data.unit .. 'target');
 
     if unitframe.data.targetName ~= name then
