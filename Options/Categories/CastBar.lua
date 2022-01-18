@@ -769,13 +769,107 @@ panel.Load = function(self)
     end
 
     local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_texture_value, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_texture_value, 'BOTTOMLEFT', 0, -2);
     Delimiter:SetW(self:GetWidth());
 
+    self.castbar_height = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_height:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -16);
+    self.castbar_height:SetLabel(L['OPTIONS_CAST_BAR_HEIGHT']);
+    self.castbar_height:SetTooltip(L['OPTIONS_CAST_BAR_HEIGHT_TOOLTIP']);
+    self.castbar_height:AddToSearch(button, L['OPTIONS_CAST_BAR_HEIGHT_TOOLTIP'], self.Tabs[1]);
+    self.castbar_height:SetValues(O.db.castbar_height, 1, 40, 1);
+    self.castbar_height.OnValueChangedCallback = function(_, value)
+        O.db.castbar_height = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_bg_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.castbar_bg_color:SetPosition('LEFT', self.castbar_height, 'RIGHT', 12, 0);
+    self.castbar_bg_color:SetTooltip(L['OPTIONS_CAST_BAR_BACKGROUND_COLOR_TOOLTIP']);
+    self.castbar_bg_color:AddToSearch(button, L['OPTIONS_CAST_BAR_BACKGROUND_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.castbar_bg_color:SetValue(unpack(O.db.castbar_bg_color));
+    self.castbar_bg_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_bg_color[1] = r;
+        O.db.castbar_bg_color[2] = g;
+        O.db.castbar_bg_color[3] = b;
+        O.db.castbar_bg_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_height, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
+    self.castbar_border_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.castbar_border_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.castbar_border_enabled:SetLabel(L['OPTIONS_CAST_BAR_BORDER_ENABLED']);
+    self.castbar_border_enabled:SetChecked(O.db.castbar_border_enabled);
+    self.castbar_border_enabled:SetTooltip(L['OPTIONS_CAST_BAR_BORDER_ENABLED_TOOLTIP']);
+    self.castbar_border_enabled:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.castbar_border_enabled.Callback = function(self)
+        O.db.castbar_border_enabled = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_border_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.castbar_border_color:SetPosition('LEFT', self.castbar_border_enabled.Label, 'RIGHT', 12, 0);
+    self.castbar_border_color:SetTooltip(L['OPTIONS_CAST_BAR_BORDER_COLOR_TOOLTIP']);
+    self.castbar_border_color:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.castbar_border_color:SetValue(unpack(O.db.castbar_border_color));
+    self.castbar_border_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_border_color[1] = r;
+        O.db.castbar_border_color[2] = g;
+        O.db.castbar_border_color[3] = b;
+        O.db.castbar_border_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_border_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_border_size:SetPosition('LEFT', self.castbar_border_color, 'RIGHT', 12, 0);
+    self.castbar_border_size:SetValues(O.db.castbar_border_size, 0.5, 10, 0.5);
+    self.castbar_border_size:SetTooltip(L['OPTIONS_CAST_BAR_BORDER_SIZE_TOOLTIP']);
+    self.castbar_border_size:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_SIZE_TOOLTIP'], self.Tabs[1]);
+    self.castbar_border_size.OnValueChangedCallback = function(_, value)
+        O.db.castbar_border_size = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    local CastNameHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_CAST_BAR_HEADER_CAST_NAME']);
+    CastNameHeader:SetPosition('TOPLEFT', self.castbar_border_enabled, 'BOTTOMLEFT', 0, -4);
+    CastNameHeader:SetW(self:GetWidth());
+
+    self.castbar_text_anchor = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.castbar_text_anchor:SetPosition('TOPLEFT', CastNameHeader, 'BOTTOMLEFT', 0, -20);
+    self.castbar_text_anchor:SetSize(120, 20);
+    self.castbar_text_anchor:SetList(O.Lists.frame_points_simple_localized);
+    self.castbar_text_anchor:SetValue(O.db.castbar_text_anchor);
+    self.castbar_text_anchor:SetLabel(L['POSITION']);
+    self.castbar_text_anchor:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_ANCHOR_TOOLTIP']);
+    self.castbar_text_anchor:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_ANCHOR_TOOLTIP'], self.Tabs[1]);
+    self.castbar_text_anchor.OnValueChangedCallback = function(_, value)
+        O.db.castbar_text_anchor = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_text_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_text_offset_x:SetPosition('LEFT', self.castbar_text_anchor, 'RIGHT', 12, 0);
+    self.castbar_text_offset_x:SetW(116);
+    self.castbar_text_offset_x:SetValues(O.db.castbar_text_offset_x, -100, 100, 1);
+    self.castbar_text_offset_x:SetLabel(L['OFFSET_X_SHORT']);
+    self.castbar_text_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP']);
+    self.castbar_text_offset_x:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP'], self.Tabs[1]);
+    self.castbar_text_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.castbar_text_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.castbar_text_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_offset_y:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -20);
-    self.castbar_text_offset_y:SetValues(O.db.castbar_text_offset_y, -50, 50, 1);
-    self.castbar_text_offset_y:SetLabel(L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y']);
+    self.castbar_text_offset_y:SetPosition('LEFT', self.castbar_text_offset_x, 'RIGHT', 12, 0);
+    self.castbar_text_offset_y:SetW(116);
+    self.castbar_text_offset_y:SetValues(O.db.castbar_text_offset_y, -100, 100, 1);
+    self.castbar_text_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.castbar_text_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP']);
     self.castbar_text_offset_y:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
     self.castbar_text_offset_y.OnValueChangedCallback = function(_, value)
@@ -783,8 +877,19 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.castbar_text_truncate = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.castbar_text_truncate:SetPosition('LEFT', self.castbar_text_offset_y, 'RIGHT', 12, 0);
+    self.castbar_text_truncate:SetLabel(L['OPTIONS_CAST_BAR_TEXT_TRUNCATE']);
+    self.castbar_text_truncate:SetChecked(O.db.castbar_text_truncate);
+    self.castbar_text_truncate:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_TRUNCATE_TOOLTIP']);
+    self.castbar_text_truncate:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_TRUNCATE_TOOLTIP'], self.Tabs[1]);
+    self.castbar_text_truncate.Callback = function(self)
+        O.db.castbar_text_truncate = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.castbar_text_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_font_value:SetPosition('TOPLEFT', self.castbar_text_offset_y, 'BOTTOMLEFT', 0, -14);
+    self.castbar_text_font_value:SetPosition('TOPLEFT', self.castbar_text_anchor, 'BOTTOMLEFT', 0, -14);
     self.castbar_text_font_value:SetSize(160, 20);
     self.castbar_text_font_value:SetList(LSM:HashTable('font'));
     self.castbar_text_font_value:SetValue(O.db.castbar_text_font_value);
@@ -830,56 +935,6 @@ panel.Load = function(self)
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -6);
-    Delimiter:SetW(self:GetWidth());
-
-    self.castbar_height = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_height:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -20);
-    self.castbar_height:SetLabel(L['OPTIONS_CAST_BAR_HEIGHT']);
-    self.castbar_height:SetTooltip(L['OPTIONS_CAST_BAR_HEIGHT_TOOLTIP']);
-    self.castbar_height:AddToSearch(button, L['OPTIONS_CAST_BAR_HEIGHT_TOOLTIP'], self.Tabs[1]);
-    self.castbar_height:SetValues(O.db.castbar_height, 1, 40, 1);
-    self.castbar_height.OnValueChangedCallback = function(_, value)
-        O.db.castbar_height = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_border_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_border_enabled:SetPosition('LEFT', self.castbar_height, 'RIGHT', 20, 0);
-    self.castbar_border_enabled:SetLabel(L['OPTIONS_CAST_BAR_BORDER_ENABLED']);
-    self.castbar_border_enabled:SetChecked(O.db.castbar_border_enabled);
-    self.castbar_border_enabled:SetTooltip(L['OPTIONS_CAST_BAR_BORDER_ENABLED_TOOLTIP']);
-    self.castbar_border_enabled:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_ENABLED_TOOLTIP'], self.Tabs[1]);
-    self.castbar_border_enabled.Callback = function(self)
-        O.db.castbar_border_enabled = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_border_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.castbar_border_color:SetPosition('LEFT', self.castbar_border_enabled.Label, 'RIGHT', 12, 0);
-    self.castbar_border_color:SetTooltip(L['OPTIONS_CAST_BAR_BORDER_COLOR_TOOLTIP']);
-    self.castbar_border_color:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_border_color:SetValue(unpack(O.db.castbar_border_color));
-    self.castbar_border_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.castbar_border_color[1] = r;
-        O.db.castbar_border_color[2] = g;
-        O.db.castbar_border_color[3] = b;
-        O.db.castbar_border_color[4] = a or 1;
-
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_border_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_border_size:SetPosition('LEFT', self.castbar_border_color, 'RIGHT', 12, 0);
-    self.castbar_border_size:SetValues(O.db.castbar_border_size, 0.5, 10, 0.5);
-    self.castbar_border_size:SetTooltip(L['OPTIONS_CAST_BAR_BORDER_SIZE_TOOLTIP']);
-    self.castbar_border_size:AddToSearch(button, L['OPTIONS_CAST_BAR_BORDER_SIZE_TOOLTIP'], self.Tabs[1]);
-    self.castbar_border_size.OnValueChangedCallback = function(_, value)
-        O.db.castbar_border_size = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_height, 'BOTTOMLEFT', 0, -6);
     Delimiter:SetW(self:GetWidth());
 
     local ResetCastBarColorsButton = E.CreateTextureButton(self.TabsFrames['CommonTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);
@@ -1044,11 +1099,11 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', ResetCastBarColorsButton, 'BOTTOMLEFT', -4, -100);
+    Delimiter:SetPosition('TOPLEFT', ResetCastBarColorsButton, 'BOTTOMLEFT', -4, -96);
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_on_hp_bar = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_on_hp_bar:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
+    self.castbar_on_hp_bar:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.castbar_on_hp_bar:SetLabel(L['OPTIONS_CAST_BAR_ON_HP_BAR']);
     self.castbar_on_hp_bar:SetTooltip(L['OPTIONS_CAST_BAR_ON_HP_BAR_TOOLTIP']);
     self.castbar_on_hp_bar:AddToSearch(button, L['OPTIONS_CAST_BAR_ON_HP_BAR_TOOLTIP'], self.Tabs[1]);

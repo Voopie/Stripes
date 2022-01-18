@@ -23,8 +23,8 @@ local SHOW_TRADE_SKILLS, SHOW_SHIELD, SHOW_ICON_NOTINTERRUPTIBLE;
 local SHOW_INTERRUPT_READY_TICK, INTERRUPT_READY_TICK_COLOR;
 local NAME_ONLY_MODE;
 local BORDER_ENABLED, BORDER_COLOR, BORDER_SIZE;
-local BAR_HEIGHT;
-local TEXT_Y_OFFSET;
+local BAR_HEIGHT, BG_COLOR;
+local TEXT_POSITION, TEXT_X_OFFSET, TEXT_Y_OFFSET, TEXT_TRUNCATE;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 local StripesCastBarTimerFont = CreateFont('StripesCastBarTimerFont');
@@ -157,6 +157,41 @@ local function UpdateColors(unitframe)
     if unitframe.castingBar.InterruptReadyTick then
         unitframe.castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
     end
+
+    unitframe.castingBar.background:SetColorTexture(BG_COLOR[1], BG_COLOR[2], BG_COLOR[3], BG_COLOR[4]);
+end
+
+local function UpdateCastNameTextPosition(unitframe)
+    unitframe.castingBar.Text:ClearAllPoints();
+
+    if TEXT_POSITION == 1 then -- LEFT
+        unitframe.castingBar.Text:SetJustifyH('LEFT');
+
+        if TEXT_TRUNCATE then
+            unitframe.castingBar.Text:SetPoint('RIGHT', 0, 0);
+            unitframe.castingBar.Text:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+        else
+            unitframe.castingBar.Text:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+        end
+    elseif TEXT_POSITION == 2 then -- CENTER
+        unitframe.castingBar.Text:SetJustifyH('CENTER');
+
+        if TEXT_TRUNCATE then
+            unitframe.castingBar.Text:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+            unitframe.castingBar.Text:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+        else
+            unitframe.castingBar.Text:SetPoint('CENTER', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+        end
+    else -- RIGHT
+        unitframe.castingBar.Text:SetJustifyH('RIGHT');
+
+        if TEXT_TRUNCATE then
+            unitframe.castingBar.Text:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+            unitframe.castingBar.Text:SetPoint('LEFT', 0, 0);
+        else
+            unitframe.castingBar.Text:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+        end
+    end
 end
 
 local function CreateTimer(unitframe)
@@ -172,7 +207,7 @@ local function CreateTimer(unitframe)
         unitframe.castingBar = CreateFrame('StatusBar', nil, unitframe, 'StripesNameplateCastBarTemplate');
     end
 
-    unitframe.castingBar.Text:SetPoint('TOPLEFT', 0, TEXT_Y_OFFSET);
+    UpdateCastNameTextPosition(unitframe);
 
     unitframe.castingBar.Timer = unitframe.castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarTimerFont');
     PixelUtil.SetPoint(unitframe.castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_XSIDE, unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
@@ -218,7 +253,7 @@ local function UpdateVisibility(unitframe)
             unitframe.castingBar.border:Hide();
         end
 
-        unitframe.castingBar.Text:SetPoint('TOPLEFT', 0, TEXT_Y_OFFSET);
+        UpdateCastNameTextPosition(unitframe);
 
         unitframe.castingBar.Timer:ClearAllPoints();
         PixelUtil.SetPoint(unitframe.castingBar.Timer, ANCHOR_MIRROR[TIMER_ANCHOR], unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y);
@@ -254,7 +289,16 @@ end
 function Module:UpdateLocalConfig()
     BAR_HEIGHT = O.db.castbar_height;
 
+    BG_COLOR    = BG_COLOR or {};
+    BG_COLOR[1] = O.db.castbar_bg_color[1];
+    BG_COLOR[2] = O.db.castbar_bg_color[2];
+    BG_COLOR[3] = O.db.castbar_bg_color[3];
+    BG_COLOR[4] = O.db.castbar_bg_color[4] or 1;
+
+    TEXT_POSITION = O.db.castbar_text_anchor;
+    TEXT_X_OFFSET = O.db.castbar_text_offset_x;
     TEXT_Y_OFFSET = O.db.castbar_text_offset_y;
+    TEXT_TRUNCATE = O.db.castbar_text_truncate;
 
     TIMER_ENABLED = O.db.castbar_timer_enabled;
     TIMER_FORMAT  = O.db.castbar_timer_format;

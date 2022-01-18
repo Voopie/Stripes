@@ -232,7 +232,7 @@ O.Lists = {
     }
 };
 
--- ~438
+-- ~442
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -395,12 +395,16 @@ O.DefaultValues = {
     castbar_timer_font_size   = 11,
     castbar_timer_font_flag   = 1, -- NONE
     castbar_timer_font_shadow = true,
+    castbar_text_anchor      = 2, -- CENTER
+    castbar_text_offset_x    = 0,
     castbar_text_offset_y    = 0,
+    castbar_text_truncate    = false,
     castbar_text_font_value  = 'BigNoodleToo Titling',
     castbar_text_font_size   = 11,
     castbar_text_font_flag   = 1, -- NONE
     castbar_text_font_shadow = true,
     castbar_texture_value    = 'Stripes Flat',
+    castbar_bg_color         = { 0.2, 0.2, 0.2, 0.85 },
     castbar_on_hp_bar        = false,
     castbar_icon_large       = false,
     castbar_icon_right_side  = false,
