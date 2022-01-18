@@ -2126,7 +2126,7 @@ panel.Load = function(self)
     self.auras_mythicplus_count_relative_point:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_RELATIVE_POINT_TOOLTIP']);
     self.auras_mythicplus_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_count_relative_point.OnValueChangedCallback = function(_, value)
-        O.db.auras_count_relative_point = tonumber(value);
+        O.db.auras_mythicplus_count_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
