@@ -26,9 +26,10 @@ local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 local SQUARE;
-local OFFSET_Y;
+local OFFSET_X, OFFSET_Y;
 local BORDER_HIDE;
 local MASQUE_SUPPORT;
+local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 
 local StripesAurasImportantCooldownFont = CreateFont('StripesAurasImportantCooldownFont');
 local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCountFont');
@@ -75,7 +76,7 @@ local function CreateAnchor(unitframe)
 end
 
 local function UpdateAnchor(unitframe)
-    unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.BuffFrame, 'TOPLEFT', 0, 4 + (SQUARE and 6 or 0) + OFFSET_Y);
+    unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.BuffFrame, 'TOPLEFT', OFFSET_X, 4 + (SQUARE and 6 or 0) + OFFSET_Y);
     unitframe.ImportantAuras:SetWidth(unitframe.healthBar:GetWidth());
 end
 
@@ -131,6 +132,7 @@ local function Update(unitframe)
                 aura.Cooldown:GetRegions():ClearAllPoints();
                 aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
                 aura.Cooldown:GetRegions():SetFontObject(StripesAurasImportantCooldownFont);
+                aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
                 aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
                 aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
@@ -138,6 +140,7 @@ local function Update(unitframe)
                 aura.CountFrame.Count:ClearAllPoints();
                 aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
                 aura.CountFrame.Count:SetFontObject(StripesAurasImportantCountFont);
+                aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
                 aura.CasterName = aura:CreateFontString(nil, 'ARTWORK');
                 PixelUtil.SetPoint(aura.CasterName, 'BOTTOM', aura, 'TOP', 0, 2);
@@ -240,9 +243,11 @@ local function UpdateStyle(unitframe)
 
         aura.Cooldown:GetRegions():ClearAllPoints();
         aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+        aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
 
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+        aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
         if Stripes.Masque then
             if MASQUE_SUPPORT then
@@ -301,7 +306,20 @@ function Module:UpdateLocalConfig()
 
     SQUARE = O.db.auras_square;
 
+    OFFSET_X = O.db.auras_important_offset_x;
     OFFSET_Y = O.db.auras_important_offset_y;
+
+    TEXT_COOLDOWN_COLOR    = TEXT_COOLDOWN_COLOR or {};
+    TEXT_COOLDOWN_COLOR[1] = O.db.auras_important_cooldown_color[1];
+    TEXT_COOLDOWN_COLOR[2] = O.db.auras_important_cooldown_color[2];
+    TEXT_COOLDOWN_COLOR[3] = O.db.auras_important_cooldown_color[3];
+    TEXT_COOLDOWN_COLOR[4] = O.db.auras_important_cooldown_color[4] or 1;
+
+    TEXT_COUNT_COLOR    = TEXT_COUNT_COLOR or {};
+    TEXT_COUNT_COLOR[1] = O.db.auras_important_count_color[1];
+    TEXT_COUNT_COLOR[2] = O.db.auras_important_count_color[2];
+    TEXT_COUNT_COLOR[3] = O.db.auras_important_count_color[3];
+    TEXT_COUNT_COLOR[4] = O.db.auras_important_count_color[4] or 1;
 
     UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
     UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);

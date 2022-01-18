@@ -24,6 +24,7 @@ local STATIC_POSITION, OFFSET_X, OFFSET_Y;
 local GLOW_ENABLED, GLOW_TYPE, GLOW_COLOR;
 local BORDER_HIDE;
 local MASQUE_SUPPORT;
+local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -141,12 +142,14 @@ local function Update(unitframe)
                 aura.Cooldown:GetRegions():ClearAllPoints();
                 aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
                 aura.Cooldown:GetRegions():SetFontObject(StripesAurasSpellStealCooldownFont);
+                aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
                 aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
                 aura.CountFrame:SetFrameStrata('HIGH');
                 aura.CountFrame.Count:ClearAllPoints();
                 aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
                 aura.CountFrame.Count:SetFontObject(StripesAurasSpellStealCountFont);
+                aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
                 aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
                 aura.Border:SetShown(not BORDER_HIDE);
@@ -235,9 +238,11 @@ local function UpdateStyle(unitframe)
 
         aura.Cooldown:GetRegions():ClearAllPoints();
         aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+        aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
 
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+        aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
         StopGlow(aura);
         UpdateGlow(aura);
@@ -320,6 +325,18 @@ function Module:UpdateLocalConfig()
     BORDER_COLOR[2] = O.db.auras_spellsteal_color[2];
     BORDER_COLOR[3] = O.db.auras_spellsteal_color[3];
     BORDER_COLOR[4] = O.db.auras_spellsteal_color[4] or 1;
+
+    TEXT_COOLDOWN_COLOR    = TEXT_COOLDOWN_COLOR or {};
+    TEXT_COOLDOWN_COLOR[1] = O.db.auras_spellsteal_cooldown_color[1];
+    TEXT_COOLDOWN_COLOR[2] = O.db.auras_spellsteal_cooldown_color[2];
+    TEXT_COOLDOWN_COLOR[3] = O.db.auras_spellsteal_cooldown_color[3];
+    TEXT_COOLDOWN_COLOR[4] = O.db.auras_spellsteal_cooldown_color[4] or 1;
+
+    TEXT_COUNT_COLOR    = TEXT_COUNT_COLOR or {};
+    TEXT_COUNT_COLOR[1] = O.db.auras_spellsteal_count_color[1];
+    TEXT_COUNT_COLOR[2] = O.db.auras_spellsteal_count_color[2];
+    TEXT_COUNT_COLOR[3] = O.db.auras_spellsteal_count_color[3];
+    TEXT_COUNT_COLOR[4] = O.db.auras_spellsteal_count_color[4] or 1;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);

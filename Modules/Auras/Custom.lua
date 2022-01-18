@@ -18,9 +18,10 @@ local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
 local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
-local SCALE, SQUARE, OFFSET_Y, BUFFFRAME_OFFSET_Y;
+local SCALE, SQUARE, OFFSET_X, OFFSET_Y, BUFFFRAME_OFFSET_Y;
 local BORDER_HIDE, BORDER_COLOR;
 local MASQUE_SUPPORT;
+local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 
 local StripesAurasCustomCooldownFont = CreateFont('StripesAurasCustomCooldownFont');
 local StripesAurasCustomCountFont    = CreateFont('StripesAurasCustomCountFont');
@@ -62,10 +63,10 @@ local function UpdateAnchor(unitframe)
         if unit and ShouldShowName(unitframe) then
             local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
             local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
-            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 1, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 1 + OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
         else
             local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
-            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
         end
     end
 end
@@ -163,12 +164,14 @@ local function Update(unitframe)
             aura.Cooldown:GetRegions():ClearAllPoints();
             aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
             aura.Cooldown:GetRegions():SetFontObject(StripesAurasCustomCooldownFont);
+            aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
             aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
             aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
             aura.CountFrame.Count:ClearAllPoints();
             aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
             aura.CountFrame.Count:SetFontObject(StripesAurasCustomCountFont);
+            aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
             aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
             aura.Border:SetShown(not BORDER_HIDE);
@@ -245,9 +248,11 @@ local function UpdateStyle(unitframe)
 
         aura.Cooldown:GetRegions():ClearAllPoints();
         aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+        aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
 
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+        aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
         if Stripes.Masque then
             if MASQUE_SUPPORT then
@@ -312,8 +317,21 @@ function Module:UpdateLocalConfig()
 
     SCALE  = O.db.auras_custom_scale;
     SQUARE = O.db.auras_square;
+    OFFSET_X = O.db.auras_custom_offset_x;
     OFFSET_Y = O.db.auras_custom_offset_y;
     BUFFFRAME_OFFSET_Y = O.db.auras_offset_y;
+
+    TEXT_COOLDOWN_COLOR    = TEXT_COOLDOWN_COLOR or {};
+    TEXT_COOLDOWN_COLOR[1] = O.db.auras_custom_cooldown_color[1];
+    TEXT_COOLDOWN_COLOR[2] = O.db.auras_custom_cooldown_color[2];
+    TEXT_COOLDOWN_COLOR[3] = O.db.auras_custom_cooldown_color[3];
+    TEXT_COOLDOWN_COLOR[4] = O.db.auras_custom_cooldown_color[4] or 1;
+
+    TEXT_COUNT_COLOR    = TEXT_COUNT_COLOR or {};
+    TEXT_COUNT_COLOR[1] = O.db.auras_custom_count_color[1];
+    TEXT_COUNT_COLOR[2] = O.db.auras_custom_count_color[2];
+    TEXT_COUNT_COLOR[3] = O.db.auras_custom_count_color[3];
+    TEXT_COUNT_COLOR[4] = O.db.auras_custom_count_color[4] or 1;
 
     UpdateFontObject(StripesAurasCustomCooldownFont, O.db.auras_custom_cooldown_font_value, O.db.auras_custom_cooldown_font_size, O.db.auras_custom_cooldown_font_flag, O.db.auras_custom_cooldown_font_shadow);
     UpdateFontObject(StripesAurasCustomCountFont, O.db.auras_custom_count_font_value, O.db.auras_custom_count_font_size, O.db.auras_custom_count_font_flag, O.db.auras_custom_count_font_shadow);

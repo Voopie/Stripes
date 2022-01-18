@@ -22,6 +22,7 @@ local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
 local SCALE, SQUARE, BUFFFRAME_OFFSET_Y;
 local BORDER_HIDE;
 local MASQUE_SUPPORT;
+local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 
 local DebuffTypeColor = DebuffTypeColor;
 
@@ -64,10 +65,12 @@ local function UpdateBuffs(unitframe)
             aura.Cooldown:GetRegions():ClearAllPoints();
             aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
             aura.Cooldown:GetRegions():SetFontObject(StripesAurasModCooldownFont);
+            aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
 
             aura.CountFrame.Count:ClearAllPoints();
             aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
             aura.CountFrame.Count:SetFontObject(StripesAurasModCountFont);
+            aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
             if MASQUE_SUPPORT and Stripes.Masque then
                 Stripes.MasqueAurasGroup:RemoveButton(aura);
@@ -113,9 +116,11 @@ local function UpdateStyle(unitframe)
 
         aura.Cooldown:GetRegions():ClearAllPoints();
         aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+        aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
 
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+        aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
         if Stripes.Masque then
             if MASQUE_SUPPORT then
@@ -175,6 +180,18 @@ function Module:UpdateLocalConfig()
     SQUARE = O.db.auras_square;
 
     BUFFFRAME_OFFSET_Y = O.db.auras_offset_y;
+
+    TEXT_COOLDOWN_COLOR    = TEXT_COOLDOWN_COLOR or {};
+    TEXT_COOLDOWN_COLOR[1] = O.db.auras_cooldown_color[1];
+    TEXT_COOLDOWN_COLOR[2] = O.db.auras_cooldown_color[2];
+    TEXT_COOLDOWN_COLOR[3] = O.db.auras_cooldown_color[3];
+    TEXT_COOLDOWN_COLOR[4] = O.db.auras_cooldown_color[4] or 1;
+
+    TEXT_COUNT_COLOR    = TEXT_COUNT_COLOR or {};
+    TEXT_COUNT_COLOR[1] = O.db.auras_count_color[1];
+    TEXT_COUNT_COLOR[2] = O.db.auras_count_color[2];
+    TEXT_COUNT_COLOR[3] = O.db.auras_count_color[3];
+    TEXT_COUNT_COLOR[4] = O.db.auras_count_color[4] or 1;
 
     UpdateFontObject(StripesAurasModCooldownFont, O.db.auras_cooldown_font_value, O.db.auras_cooldown_font_size, O.db.auras_cooldown_font_flag, O.db.auras_cooldown_font_shadow);
     UpdateFontObject(StripesAurasModCountFont, O.db.auras_count_font_value, O.db.auras_count_font_size, O.db.auras_count_font_flag, O.db.auras_count_font_shadow);

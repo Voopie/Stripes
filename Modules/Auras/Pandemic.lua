@@ -13,6 +13,7 @@ local GetTrulySpellId, S_IsSpellKnown = U.GetTrulySpellId, U.IsSpellKnown;
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED, PANDEMIC_COLOR;
 local EXPIRE_GLOW_ENABLED, EXPIRE_GLOW_PERCENT, EXPIRE_GLOW_COLOR, EXPIRE_GLOW_TYPE;
+local TEXT_COOLDOWN_COLOR;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -103,7 +104,7 @@ local function Update(unitframe)
                             end
                         end
                     else
-                        self.Cooldown:GetRegions():SetTextColor(1, 1, 1, 1);
+                        self.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
                     end
 
                     if IsOnExpireGlow(self) then
@@ -131,7 +132,7 @@ local function Reset(unitframe)
             aura.spellId = nil;
             StopExpireGlow(aura);
 
-            aura.Cooldown:GetRegions():SetTextColor(1, 1, 1, 1);
+            aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
         end
     end
 end
@@ -161,7 +162,7 @@ function Module:UpdateLocalConfig()
     ENABLED           = O.db.auras_pandemic_enabled;
     COUNTDOWN_ENABLED = O.db.auras_countdown_enabled;
 
-    PANDEMIC_COLOR    = PANDEMIC_COLOR or {}
+    PANDEMIC_COLOR    = PANDEMIC_COLOR or {};
     PANDEMIC_COLOR[1] = O.db.auras_pandemic_color[1];
     PANDEMIC_COLOR[2] = O.db.auras_pandemic_color[2];
     PANDEMIC_COLOR[3] = O.db.auras_pandemic_color[3];
@@ -175,6 +176,12 @@ function Module:UpdateLocalConfig()
     EXPIRE_GLOW_COLOR[3] = O.db.auras_expire_glow_color[3];
     EXPIRE_GLOW_COLOR[4] = O.db.auras_expire_glow_color[4] or 1;
     EXPIRE_GLOW_TYPE     = O.db.auras_expire_glow_type;
+
+    TEXT_COOLDOWN_COLOR    = TEXT_COOLDOWN_COLOR or {};
+    TEXT_COOLDOWN_COLOR[1] = O.db.auras_cooldown_color[1];
+    TEXT_COOLDOWN_COLOR[2] = O.db.auras_cooldown_color[2];
+    TEXT_COOLDOWN_COLOR[3] = O.db.auras_cooldown_color[3];
+    TEXT_COOLDOWN_COLOR[4] = O.db.auras_cooldown_color[4] or 1;
 end
 
 function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
