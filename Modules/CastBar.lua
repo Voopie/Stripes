@@ -168,27 +168,33 @@ local function UpdateCastNameTextPosition(unitframe)
         unitframe.castingBar.Text:SetJustifyH('LEFT');
 
         if TEXT_TRUNCATE then
+            unitframe.castingBar.Text:SetWordWrap(false);
             unitframe.castingBar.Text:SetPoint('RIGHT', 0, 0);
             unitframe.castingBar.Text:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
         else
+            unitframe.castingBar.Text:SetWordWrap(true);
             unitframe.castingBar.Text:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
         end
     elseif TEXT_POSITION == 2 then -- CENTER
         unitframe.castingBar.Text:SetJustifyH('CENTER');
 
         if TEXT_TRUNCATE then
+            unitframe.castingBar.Text:SetWordWrap(false);
             unitframe.castingBar.Text:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
             unitframe.castingBar.Text:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
         else
+            unitframe.castingBar.Text:SetWordWrap(true);
             unitframe.castingBar.Text:SetPoint('CENTER', TEXT_X_OFFSET, TEXT_Y_OFFSET);
         end
     else -- RIGHT
         unitframe.castingBar.Text:SetJustifyH('RIGHT');
 
         if TEXT_TRUNCATE then
+            unitframe.castingBar.Text:SetWordWrap(false);
             unitframe.castingBar.Text:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
             unitframe.castingBar.Text:SetPoint('LEFT', 0, 0);
         else
+            unitframe.castingBar.Text:SetWordWrap(true);
             unitframe.castingBar.Text:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
         end
     end
