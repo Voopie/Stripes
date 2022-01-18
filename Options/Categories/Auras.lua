@@ -1886,8 +1886,8 @@ panel.Load = function(self)
     self.auras_mythicplus_scale:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
     self.auras_mythicplus_scale:SetValues(O.db.auras_mythicplus_scale, 0.25, 4, 0.05);
     self.auras_mythicplus_scale:SetLabel(L['SCALE']);
-    self.auras_mythicplus_scale:SetTooltip(L['OPTIONS_AURAS_MYTHICPLYS_SCALE_TOOLTIP']);
-    self.auras_mythicplus_scale:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLYS_SCALE_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_scale:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_SCALE_TOOLTIP']);
+    self.auras_mythicplus_scale:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_SCALE_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_scale.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_scale = tonumber(value);
         Stripes:UpdateAll();
