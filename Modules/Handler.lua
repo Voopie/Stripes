@@ -209,7 +209,7 @@ local function UpdateStatus(unitframe)
         unitframe.data.unitType = 'SELF';
         unitframe.data.commonUnitType = 'SELF';
         unitframe.data.commonReaction = 'FRIENDLY';
-    elseif UnitIsPVPSanctuary(unit) then
+    elseif UnitIsPVPSanctuary(unit) and not UnitIsEnemy(PLAYER_UNIT, unit) then
         unitframe.data.unitType = 'FRIENDLY_PLAYER';
         unitframe.data.commonUnitType = 'PLAYER';
         unitframe.data.commonReaction = 'FRIENDLY';
@@ -598,7 +598,7 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
         NP[nameplate].data.unitType = 'SELF';
         NP[nameplate].data.commonUnitType = 'SELF';
         NP[nameplate].data.commonReaction = 'FRIENDLY';
-    elseif UnitIsPVPSanctuary(unit) then
+    elseif UnitIsPVPSanctuary(unit) and not UnitIsEnemy(PLAYER_UNIT, unit) then
         NP[nameplate].data.unitType = 'FRIENDLY_PLAYER';
         NP[nameplate].data.commonUnitType = 'PLAYER';
         NP[nameplate].data.commonReaction = 'FRIENDLY';
@@ -647,6 +647,8 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
         ResetNameplateData(NP[nameplate]);
         S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
     end
+
+    print(UnitIsEnemy(PLAYER_UNIT, unit), NP[nameplate].data.commonReaction)
 end
 
 function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
