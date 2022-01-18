@@ -323,8 +323,38 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.name_text_show_arenaid = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.name_text_show_arenaid:SetPosition('TOPLEFT', self.class_icon_enabled, 'BOTTOMLEFT', 0, -8);
+    self.name_text_show_arenaid:SetLabel(L['OPTIONS_NAME_TEXT_SHOW_ARENAID']);
+    self.name_text_show_arenaid:SetTooltip(L['OPTIONS_NAME_TEXT_SHOW_ARENAID_TOOLTIP']);
+    self.name_text_show_arenaid:SetChecked(O.db.name_text_show_arenaid);
+    self.name_text_show_arenaid:AddToSearch(button, L['OPTIONS_NAME_TEXT_SHOW_ARENAID_TOOLTIP'], self.Tabs[1]);
+    self.name_text_show_arenaid.Callback = function(self)
+        O.db.name_text_show_arenaid = self:GetChecked();
+
+        panel.name_text_show_arenaid_solo:SetEnabled(O.db.name_text_show_arenaid);
+
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_show_arenaid_solo = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.name_text_show_arenaid_solo:SetPosition('LEFT', self.name_text_show_arenaid.Label, 'RIGHT', 12, 0);
+    self.name_text_show_arenaid_solo:SetLabel(L['OPTIONS_NAME_TEXT_SHOW_ARENAID_SOLO']);
+    self.name_text_show_arenaid_solo:SetTooltip(L['OPTIONS_NAME_TEXT_SHOW_ARENAID_SOLO_TOOLTIP']);
+    self.name_text_show_arenaid_solo:SetChecked(O.db.name_text_show_arenaid_solo);
+    self.name_text_show_arenaid_solo:AddToSearch(button, L['OPTIONS_NAME_TEXT_SHOW_ARENAID_SOLO_TOOLTIP'], self.Tabs[1]);
+    self.name_text_show_arenaid_solo:SetEnabled(O.db.name_text_show_arenaid);
+    self.name_text_show_arenaid_solo.Callback = function(self)
+        O.db.name_text_show_arenaid_solo = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_show_arenaid, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.target_name_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.target_name_enabled:SetPosition('TOPLEFT', self.class_icon_enabled, 'BOTTOMLEFT', 0, -8);
+    self.target_name_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.target_name_enabled:SetLabel(L['OPTIONS_TARGET_NAME_ENABLED']);
     self.target_name_enabled:SetTooltip(L['OPTIONS_TARGET_NAME_ENABLED_TOOLTIP']);
     self.target_name_enabled:SetChecked(O.db.target_name_enabled);
@@ -335,6 +365,8 @@ panel.Load = function(self)
         panel.target_name_only_enemy:SetEnabled(O.db.target_name_enabled);
         panel.target_name_not_me:SetEnabled(O.db.target_name_enabled);
         panel.target_name_role_icon:SetEnabled(O.db.target_name_enabled);
+        panel.target_name_cut_enabled:SetEnabled(O.db.target_name_enabled);
+        panel.target_name_cut_number:SetEnabled(O.db.target_name_enabled);
 
         Stripes:UpdateAll();
     end
@@ -375,29 +407,26 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.name_text_show_arenaid = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_show_arenaid:SetPosition('TOPLEFT', self.target_name_enabled, 'BOTTOMLEFT', 0, -8);
-    self.name_text_show_arenaid:SetLabel(L['OPTIONS_NAME_TEXT_SHOW_ARENAID']);
-    self.name_text_show_arenaid:SetTooltip(L['OPTIONS_NAME_TEXT_SHOW_ARENAID_TOOLTIP']);
-    self.name_text_show_arenaid:SetChecked(O.db.name_text_show_arenaid);
-    self.name_text_show_arenaid:AddToSearch(button, L['OPTIONS_NAME_TEXT_SHOW_ARENAID_TOOLTIP'], self.Tabs[1]);
-    self.name_text_show_arenaid.Callback = function(self)
-        O.db.name_text_show_arenaid = self:GetChecked();
-
-        panel.name_text_show_arenaid_solo:SetEnabled(O.db.name_text_show_arenaid);
-
+    self.target_name_cut_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.target_name_cut_enabled:SetPosition('TOPLEFT', self.target_name_enabled, 'BOTTOMLEFT', 0, -8);
+    self.target_name_cut_enabled:SetLabel(L['OPTIONS_TARGET_NAME_CUT_ENABLED']);
+    self.target_name_cut_enabled:SetTooltip(L['OPTIONS_TARGET_NAME_CUT_ENABLED_TOOLTIP']);
+    self.target_name_cut_enabled:SetChecked(O.db.target_name_cut_enabled);
+    self.target_name_cut_enabled:AddToSearch(button, L['OPTIONS_TARGET_NAME_CUT_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.target_name_cut_enabled:SetEnabled(O.db.target_name_enabled);
+    self.target_name_cut_enabled.Callback = function(self)
+        O.db.target_name_cut_enabled = self:GetChecked();
         Stripes:UpdateAll();
     end
 
-    self.name_text_show_arenaid_solo = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_show_arenaid_solo:SetPosition('LEFT', self.name_text_show_arenaid.Label, 'RIGHT', 12, 0);
-    self.name_text_show_arenaid_solo:SetLabel(L['OPTIONS_NAME_TEXT_SHOW_ARENAID_SOLO']);
-    self.name_text_show_arenaid_solo:SetTooltip(L['OPTIONS_NAME_TEXT_SHOW_ARENAID_SOLO_TOOLTIP']);
-    self.name_text_show_arenaid_solo:SetChecked(O.db.name_text_show_arenaid_solo);
-    self.name_text_show_arenaid_solo:AddToSearch(button, L['OPTIONS_NAME_TEXT_SHOW_ARENAID_SOLO_TOOLTIP'], self.Tabs[1]);
-    self.name_text_show_arenaid_solo:SetEnabled(O.db.name_text_show_arenaid);
-    self.name_text_show_arenaid_solo.Callback = function(self)
-        O.db.name_text_show_arenaid_solo = self:GetChecked();
+    self.target_name_cut_number = E.CreateSlider(self.TabsFrames['NameTab'].Content);
+    self.target_name_cut_number:SetPosition('LEFT', self.target_name_cut_enabled.Label, 'RIGHT', 12, 0);
+    self.target_name_cut_number:SetW(120);
+    self.target_name_cut_number:SetValues(O.db.target_name_cut_number, 2, 50, 1);
+    self.target_name_cut_number:SetTooltip(L['OPTIONS_TARGET_NAME_CUT_NUMBER_TOOLTIP']);
+    self.target_name_cut_number:AddToSearch(button, L['OPTIONS_TARGET_NAME_CUT_NUMBER_TOOLTIP'], self.Tabs[1]);
+    self.target_name_cut_number.OnValueChangedCallback = function(_, value)
+        O.db.target_name_cut_number = tonumber(value);
         Stripes:UpdateAll();
     end
 

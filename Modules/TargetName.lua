@@ -8,6 +8,7 @@ local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitG
 -- Stripes API
 local GetUnitColor = U.GetUnitColor;
 local ShouldShowName = Stripes.ShouldShowName;
+local utf8sub = U.UTF8SUB;
 
 -- Libraries
 local LT = S.Libraries.LT;
@@ -16,6 +17,7 @@ local LDC = S.Libraries.LDC;
 -- Local Config
 local ENABLED, ONLY_ENEMY, NOT_ME, ROLE_ICON;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
+local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
 
 local PlayerData = D.Player;
 local YOU = YOU;
@@ -60,6 +62,10 @@ local function TargetChanged(unitframe)
 
             if NAME_REPLACE_DIACRITICS then
                 targetName = LDC:Replace(targetName);
+            end
+
+            if NAME_CUT_ENABLED then
+                targetName = utf8sub(targetName, 0, NAME_CUT_NUMBER);
             end
 
             if ROLE_ICON and partyRolesCache[unitframe.data.targetName] then
@@ -127,6 +133,9 @@ function Module:UpdateLocalConfig()
     ONLY_ENEMY = O.db.target_name_only_enemy;
     NOT_ME     = O.db.target_name_not_me;
     ROLE_ICON  = O.db.target_name_role_icon;
+
+    NAME_CUT_ENABLED = O.db.target_name_cut_enabled;
+    NAME_CUT_NUMBER  = O.db.target_name_cut_number;
 
     NAME_TRANSLIT           = O.db.name_text_translit;
     NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
