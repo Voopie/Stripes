@@ -25,9 +25,11 @@ local NAME_ONLY_MODE;
 local BORDER_ENABLED, BORDER_COLOR, BORDER_SIZE;
 local BAR_HEIGHT, BG_COLOR;
 local TEXT_POSITION, TEXT_X_OFFSET, TEXT_Y_OFFSET, TEXT_TRUNCATE;
+local TARGET_NAME_ENABLED, TARGET_NAME_ONLY_ENEMY, TARGET_NAME_POINT, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 local StripesCastBarTimerFont = CreateFont('StripesCastBarTimerFont');
+local StripesCastBarTargetFont = CreateFont('StripesCastBarTargetFont');
 
 local WIDTH_OFFSET = 24;
 local updateDelay = 0.05;
@@ -221,9 +223,13 @@ local function CreateTimer(unitframe)
     unitframe.castingBar.updateDelay = updateDelay;
     unitframe.castingBar:HookScript('OnUpdate', OnUpdate);
 
+    unitframe.castingBar.TargetText:ClearAllPoints();
+    PixelUtil.SetPoint(unitframe.castingBar.TargetText, TARGET_NAME_POINT, unitframe.castingBar, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y);
+
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.Icon);
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.BorderShield);
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.Timer);
+    StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.TargetText);
 
     UpdateColors(unitframe);
 end
@@ -249,6 +255,8 @@ local function UpdateVisibility(unitframe)
         unitframe.castingBar.showInterruptReadyTick       = SHOW_INTERRUPT_READY_TICK;
         unitframe.castingBar.useInterruptReadyInTimeColor = USE_INTERRUPT_READY_IN_TIME_COLOR;
         unitframe.castingBar.useInterruptNotReadyColor    = USE_INTERRUPT_NOT_READY_COLOR;
+        unitframe.castingBar.showCastTargetName           = TARGET_NAME_ENABLED;
+        unitframe.castingBar.castTargetNameOnlyEnemy      = TARGET_NAME_ONLY_ENEMY;
 
         if BORDER_ENABLED then
             unitframe.castingBar.border:SetVertexColor(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
@@ -263,6 +271,9 @@ local function UpdateVisibility(unitframe)
 
         unitframe.castingBar.Timer:ClearAllPoints();
         PixelUtil.SetPoint(unitframe.castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_ANCHOR, unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y);
+
+        unitframe.castingBar.TargetText:ClearAllPoints();
+        PixelUtil.SetPoint(unitframe.castingBar.TargetText, TARGET_NAME_POINT, unitframe.castingBar, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y);
     end
 end
 
@@ -384,16 +395,24 @@ function Module:UpdateLocalConfig()
 
     SHOW_INTERRUPT_READY_TICK = O.db.castbar_show_interrupt_ready_tick;
 
-    BORDER_ENABLED = O.db.castbar_border_enabled;
-    BORDER_SIZE = O.db.castbar_border_size;
+    BORDER_ENABLED  = O.db.castbar_border_enabled;
+    BORDER_SIZE     = O.db.castbar_border_size;
     BORDER_COLOR    = BORDER_COLOR or {};
     BORDER_COLOR[1] = O.db.castbar_border_color[1];
     BORDER_COLOR[2] = O.db.castbar_border_color[2];
     BORDER_COLOR[3] = O.db.castbar_border_color[3];
     BORDER_COLOR[4] = O.db.castbar_border_color[4] or 1;
 
+    TARGET_NAME_ENABLED        = O.db.castbar_target_name_enabled;
+    TARGET_NAME_ONLY_ENEMY     = O.db.castbar_target_name_only_enemy;
+    TARGET_NAME_POINT          = O.Lists.frame_points[O.db.castbar_target_point] or 'TOP';
+    TARGET_NAME_RELATIVE_POINT = O.Lists.frame_points[O.db.castbar_target_relative_point] or 'BOTTOM';
+    TARGET_NAME_OFFSET_X       = O.db.castbar_target_offset_x;
+    TARGET_NAME_OFFSET_Y       = O.db.castbar_target_offset_y;
+
     UpdateFontObject(StripesCastBarFont, O.db.castbar_text_font_value, O.db.castbar_text_font_size, O.db.castbar_text_font_flag, O.db.castbar_text_font_shadow);
     UpdateFontObject(StripesCastBarTimerFont, O.db.castbar_timer_font_value, O.db.castbar_timer_font_size, O.db.castbar_timer_font_flag, O.db.castbar_timer_font_shadow);
+    UpdateFontObject(StripesCastBarTargetFont, O.db.castbar_target_font_value, O.db.castbar_target_font_size, O.db.castbar_target_font_flag, O.db.castbar_target_font_shadow);
 end
 
 function Module:StartUp()

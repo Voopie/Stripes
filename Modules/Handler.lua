@@ -91,6 +91,7 @@ end
 Stripes.SetCVar = SetCVar;
 
 Stripes.UpdateAll = function()
+    S:ForAllModules('UpdateLocalConfig');
     S:ForAllNameplateModules('UpdateLocalConfig');
 
     for _, unitframe in pairs(NP) do

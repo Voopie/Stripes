@@ -16,10 +16,14 @@ panel.TabsData = {
         title = string.upper(L['OPTIONS_CAST_BAR_TAB_COMMON']),
     },
     [2] = {
+        name  = 'ColorsTab',
+        title = string.upper(L['OPTIONS_CAST_BAR_TAB_COLORS']),
+    },
+    [3] = {
         name  = 'TimerTab',
         title = string.upper(L['OPTIONS_CAST_BAR_TAB_TIMER']),
     },
-    [3] = {
+    [4] = {
         name  = 'CustomCastsTab',
         title = string.upper(L['OPTIONS_CAST_BAR_TAB_CUSTOMCASTS']),
     },
@@ -937,169 +941,122 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -6);
     Delimiter:SetW(self:GetWidth());
 
-    local ResetCastBarColorsButton = E.CreateTextureButton(self.TabsFrames['CommonTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);
-    ResetCastBarColorsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 4, -4);
-    ResetCastBarColorsButton:SetTooltip(L['OPTIONS_CAST_BAR_RESET_COLORS_TOOLTIP']);
-    ResetCastBarColorsButton:AddToSearch(button, L['OPTIONS_CAST_BAR_RESET_COLORS_TOOLTIP'], self.Tabs[1]);
-    ResetCastBarColorsButton.Callback = function()
-        panel.castbar_start_cast_color:SetValue(unpack(O.DefaultValues.castbar_start_cast_color));
-        panel.castbar_start_channel_color:SetValue(unpack(O.DefaultValues.castbar_start_channel_color));
-        panel.castbar_noninterruptible_color:SetValue(unpack(O.DefaultValues.castbar_noninterruptible_color));
-        panel.castbar_failed_cast_color:SetValue(unpack(O.DefaultValues.castbar_failed_cast_color));
-        panel.castbar_interrupt_ready_tick_color:SetValue(unpack(O.DefaultValues.castbar_interrupt_ready_tick_color));
-        panel.castbar_interrupt_ready_in_time_color:SetValue(unpack(O.DefaultValues.castbar_interrupt_ready_in_time_color));
-        panel.castbar_interrupt_not_ready_color:SetValue(unpack(O.DefaultValues.castbar_interrupt_not_ready_color));
-    end
-
-    self.castbar_start_cast_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.castbar_start_cast_color:SetPosition('LEFT', ResetCastBarColorsButton, 'RIGHT', 16, 0);
-    self.castbar_start_cast_color:SetLabel(L['OPTIONS_CAST_BAR_START_CAST_COLOR']);
-    self.castbar_start_cast_color:SetTooltip(L['OPTIONS_CAST_BAR_START_CAST_COLOR_TOOLTIP']);
-    self.castbar_start_cast_color:AddToSearch(button, L['OPTIONS_CAST_BAR_START_CAST_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_start_cast_color:SetValue(unpack(O.db.castbar_start_cast_color));
-    self.castbar_start_cast_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.castbar_start_cast_color[1] = r;
-        O.db.castbar_start_cast_color[2] = g;
-        O.db.castbar_start_cast_color[3] = b;
-        O.db.castbar_start_cast_color[4] = a or 1;
-
+    self.castbar_target_name_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_name_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.castbar_target_name_enabled:SetLabel(L['OPTIONS_CAST_BAR_TARGET_ENABLED']);
+    self.castbar_target_name_enabled:SetChecked(O.db.castbar_target_name_enabled);
+    self.castbar_target_name_enabled:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_ENABLED_TOOLTIP']);
+    self.castbar_target_name_enabled:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_name_enabled.Callback = function(self)
+        O.db.castbar_target_name_enabled = self:GetChecked();
         Stripes:UpdateAll();
     end
 
-    self.castbar_start_channel_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.castbar_start_channel_color:SetPosition('LEFT', self.castbar_start_cast_color.Label, 'RIGHT', 12, 0);
-    self.castbar_start_channel_color:SetLabel(L['OPTIONS_CAST_BAR_START_CHANNEL_COLOR']);
-    self.castbar_start_channel_color:SetTooltip(L['OPTIONS_CAST_BAR_START_CHANNEL_COLOR_TOOLTIP']);
-    self.castbar_start_channel_color:AddToSearch(button, L['OPTIONS_CAST_BAR_START_CHANNEL_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_start_channel_color:SetValue(unpack(O.db.castbar_start_channel_color));
-    self.castbar_start_channel_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.castbar_start_channel_color[1] = r;
-        O.db.castbar_start_channel_color[2] = g;
-        O.db.castbar_start_channel_color[3] = b;
-        O.db.castbar_start_channel_color[4] = a or 1;
-
+    self.castbar_target_name_only_enemy = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_name_only_enemy:SetPosition('LEFT', self.castbar_target_name_enabled.Label, 'RIGHT', 12, 0);
+    self.castbar_target_name_only_enemy:SetLabel(L['OPTIONS_CAST_BAR_TARGET_ONLY_ENEMY']);
+    self.castbar_target_name_only_enemy:SetChecked(O.db.castbar_target_name_only_enemy);
+    self.castbar_target_name_only_enemy:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_ONLY_ENEMY_TOOLTIP']);
+    self.castbar_target_name_only_enemy:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_ONLY_ENEMY_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_name_only_enemy.Callback = function(self)
+        O.db.castbar_target_name_only_enemy = self:GetChecked();
         Stripes:UpdateAll();
     end
 
-    self.castbar_noninterruptible_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.castbar_noninterruptible_color:SetPosition('LEFT', self.castbar_start_channel_color.Label, 'RIGHT', 12, 0);
-    self.castbar_noninterruptible_color:SetLabel(L['OPTIONS_CAST_BAR_NON_INTERRUPTIBLE_COLOR']);
-    self.castbar_noninterruptible_color:SetTooltip(L['OPTIONS_CAST_BAR_NON_INTERRUPTIBLE_COLOR_TOOLTIP']);
-    self.castbar_noninterruptible_color:AddToSearch(button, L['OPTIONS_CAST_BAR_NON_INTERRUPTIBLE_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_noninterruptible_color:SetValue(unpack(O.db.castbar_noninterruptible_color));
-    self.castbar_noninterruptible_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.castbar_noninterruptible_color[1] = r;
-        O.db.castbar_noninterruptible_color[2] = g;
-        O.db.castbar_noninterruptible_color[3] = b;
-        O.db.castbar_noninterruptible_color[4] = a or 1;
-
+    self.castbar_target_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_point:SetPosition('TOPLEFT', self.castbar_target_name_enabled, 'BOTTOMLEFT', 0, -14);
+    self.castbar_target_point:SetSize(120, 20);
+    self.castbar_target_point:SetList(O.Lists.frame_points_localized);
+    self.castbar_target_point:SetValue(O.db.castbar_target_point);
+    self.castbar_target_point:SetLabel(L['POSITION']);
+    self.castbar_target_point:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_POINT_TOOLTIP']);
+    self.castbar_target_point:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_POINT_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_point.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
-    self.castbar_failed_cast_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.castbar_failed_cast_color:SetPosition('LEFT', self.castbar_noninterruptible_color.Label, 'RIGHT', 12, 0);
-    self.castbar_failed_cast_color:SetLabel(L['OPTIONS_CAST_BAR_FAILED_CAST_COLOR']);
-    self.castbar_failed_cast_color:SetTooltip(L['OPTIONS_CAST_BAR_FAILED_CAST_COLOR_TOOLTIP']);
-    self.castbar_failed_cast_color:AddToSearch(button, L['OPTIONS_CAST_BAR_FAILED_CAST_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_failed_cast_color:SetValue(unpack(O.db.castbar_failed_cast_color));
-    self.castbar_failed_cast_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.castbar_failed_cast_color[1] = r;
-        O.db.castbar_failed_cast_color[2] = g;
-        O.db.castbar_failed_cast_color[3] = b;
-        O.db.castbar_failed_cast_color[4] = a or 1;
-
+    self.castbar_target_relative_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_relative_point:SetPosition('LEFT', self.castbar_target_point, 'RIGHT', 12, 0);
+    self.castbar_target_relative_point:SetSize(120, 20);
+    self.castbar_target_relative_point:SetList(O.Lists.frame_points_localized);
+    self.castbar_target_relative_point:SetValue(O.db.castbar_target_relative_point);
+    self.castbar_target_relative_point:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_RELATIVE_POINT_TOOLTIP']);
+    self.castbar_target_relative_point:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_RELATIVE_POINT_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
-    self.castbar_show_interrupt_ready_tick = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_show_interrupt_ready_tick:SetPosition('TOPLEFT', ResetCastBarColorsButton, 'BOTTOMLEFT', -1, -12);
-    self.castbar_show_interrupt_ready_tick:SetTooltip(L['OPTIONS_CAST_BAR_SHOW_INTERRUPT_READY_TICK_TOOLTIP']);
-    self.castbar_show_interrupt_ready_tick:AddToSearch(button, L['OPTIONS_CAST_BAR_SHOW_INTERRUPT_READY_TICK_TOOLTIP'], self.Tabs[1]);
-    self.castbar_show_interrupt_ready_tick:SetChecked(O.db.castbar_show_interrupt_ready_tick);
-    self.castbar_show_interrupt_ready_tick.Callback = function(self)
-        O.db.castbar_show_interrupt_ready_tick = self:GetChecked();
-
-        panel.castbar_interrupt_ready_tick_color:SetEnabled(O.db.castbar_show_interrupt_ready_tick);
-
+    self.castbar_target_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_offset_x:SetPosition('LEFT', self.castbar_target_relative_point, 'RIGHT', 12, 0);
+    self.castbar_target_offset_x:SetW(116);
+    self.castbar_target_offset_x:SetValues(O.db.castbar_target_offset_x, -100, 100, 1);
+    self.castbar_target_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP']);
+    self.castbar_target_offset_x:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_offset_x = tonumber(value);
         Stripes:UpdateAll();
     end
 
-    self.castbar_interrupt_ready_tick_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.castbar_interrupt_ready_tick_color:SetPosition('LEFT', self.castbar_show_interrupt_ready_tick.Label, 'RIGHT', 10, 0);
-    self.castbar_interrupt_ready_tick_color:SetLabel(L['OPTIONS_CAST_BAR_SHOW_INTERRUPT_READY_TICK']);
-    self.castbar_interrupt_ready_tick_color:SetTooltip(L['OPTIONS_CAST_BAR_INTERRUPT_READY_TICK_COLOR_TOOLTIP']);
-    self.castbar_interrupt_ready_tick_color:AddToSearch(button, L['OPTIONS_CAST_BAR_INTERRUPT_READY_TICK_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_interrupt_ready_tick_color:SetValue(unpack(O.db.castbar_interrupt_ready_tick_color));
-    self.castbar_interrupt_ready_tick_color:SetEnabled(O.db.castbar_show_interrupt_ready_tick);
-    self.castbar_interrupt_ready_tick_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.castbar_interrupt_ready_tick_color[1] = r;
-        O.db.castbar_interrupt_ready_tick_color[2] = g;
-        O.db.castbar_interrupt_ready_tick_color[3] = b;
-        O.db.castbar_interrupt_ready_tick_color[4] = a or 1;
-
+    self.castbar_target_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_offset_y:SetPosition('LEFT', self.castbar_target_offset_x, 'RIGHT', 12, 0);
+    self.castbar_target_offset_y:SetW(116);
+    self.castbar_target_offset_y:SetValues(O.db.castbar_target_offset_y, -100, 100, 1);
+    self.castbar_target_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP']);
+    self.castbar_target_offset_y:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_offset_y = tonumber(value);
         Stripes:UpdateAll();
     end
 
-    self.castbar_use_interrupt_ready_in_time_color = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_use_interrupt_ready_in_time_color:SetPosition('TOPLEFT', self.castbar_show_interrupt_ready_tick, 'BOTTOMLEFT', 0, -12);
-    self.castbar_use_interrupt_ready_in_time_color:SetTooltip(L['OPTIONS_CAST_BAR_USE_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP']);
-    self.castbar_use_interrupt_ready_in_time_color:AddToSearch(button, L['OPTIONS_CAST_BAR_USE_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_use_interrupt_ready_in_time_color:SetChecked(O.db.castbar_use_interrupt_ready_in_time_color);
-    self.castbar_use_interrupt_ready_in_time_color.Callback = function(self)
-        O.db.castbar_use_interrupt_ready_in_time_color = self:GetChecked();
-
-        panel.castbar_interrupt_ready_in_time_color:SetEnabled(O.db.castbar_use_interrupt_ready_in_time_color);
-
+    self.castbar_target_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_font_value:SetPosition('TOPLEFT', self.castbar_target_point, 'BOTTOMLEFT', 0, -12);
+    self.castbar_target_font_value:SetSize(160, 20);
+    self.castbar_target_font_value:SetList(LSM:HashTable('font'));
+    self.castbar_target_font_value:SetValue(O.db.castbar_target_font_value);
+    self.castbar_target_font_value:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_VALUE']);
+    self.castbar_target_font_value:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_VALUE'], self.Tabs[1]);
+    self.castbar_target_font_value.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_font_value = value;
         Stripes:UpdateAll();
     end
 
-    self.castbar_interrupt_ready_in_time_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.castbar_interrupt_ready_in_time_color:SetPosition('LEFT', self.castbar_use_interrupt_ready_in_time_color.Label, 'RIGHT', 10, 0);
-    self.castbar_interrupt_ready_in_time_color:SetLabel(L['OPTIONS_CAST_BAR_INTERRUPT_READY_IN_TIME_COLOR']);
-    self.castbar_interrupt_ready_in_time_color:SetTooltip(L['OPTIONS_CAST_BAR_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP']);
-    self.castbar_interrupt_ready_in_time_color:AddToSearch(button, L['OPTIONS_CAST_BAR_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_interrupt_ready_in_time_color:SetValue(unpack(O.db.castbar_interrupt_ready_in_time_color));
-    self.castbar_interrupt_ready_in_time_color:SetEnabled(O.db.castbar_use_interrupt_ready_in_time_color);
-    self.castbar_interrupt_ready_in_time_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.castbar_interrupt_ready_in_time_color[1] = r;
-        O.db.castbar_interrupt_ready_in_time_color[2] = g;
-        O.db.castbar_interrupt_ready_in_time_color[3] = b;
-        O.db.castbar_interrupt_ready_in_time_color[4] = a or 1;
-
+    self.castbar_target_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_font_size:SetPosition('LEFT', self.castbar_target_font_value, 'RIGHT', 12, 0);
+    self.castbar_target_font_size:SetValues(O.db.castbar_target_font_size, 3, 28, 1);
+    self.castbar_target_font_size:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_SIZE']);
+    self.castbar_target_font_size:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_SIZE'], self.Tabs[1]);
+    self.castbar_target_font_size.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
-    self.castbar_use_interrupt_not_ready_color = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_use_interrupt_not_ready_color:SetPosition('TOPLEFT', self.castbar_use_interrupt_ready_in_time_color, 'BOTTOMLEFT', 0, -12);
-    self.castbar_use_interrupt_not_ready_color:SetTooltip(L['OPTIONS_CAST_BAR_USE_INTERRUPT_NOT_READY_COLOR_TOOLTIP']);
-    self.castbar_use_interrupt_not_ready_color:AddToSearch(button, L['OPTIONS_CAST_BAR_USE_INTERRUPT_NOT_READY_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_use_interrupt_not_ready_color:SetChecked(O.db.castbar_use_interrupt_not_ready_color);
-    self.castbar_use_interrupt_not_ready_color.Callback = function(self)
-        O.db.castbar_use_interrupt_not_ready_color = self:GetChecked();
-
-        panel.castbar_interrupt_not_ready_color:SetEnabled(O.db.castbar_use_interrupt_not_ready_color);
-
+    self.castbar_target_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_font_flag:SetPosition('LEFT', self.castbar_target_font_size, 'RIGHT', 12, 0);
+    self.castbar_target_font_flag:SetSize(160, 20);
+    self.castbar_target_font_flag:SetList(O.Lists.font_flags_localized);
+    self.castbar_target_font_flag:SetValue(O.db.castbar_target_font_flag);
+    self.castbar_target_font_flag:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_FLAG']);
+    self.castbar_target_font_flag:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_FLAG'], self.Tabs[1]);
+    self.castbar_target_font_flag.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
-    self.castbar_interrupt_not_ready_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.castbar_interrupt_not_ready_color:SetPosition('LEFT', self.castbar_use_interrupt_not_ready_color.Label, 'RIGHT', 10, 0)
-    self.castbar_interrupt_not_ready_color:SetLabel(L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR']);
-    self.castbar_interrupt_not_ready_color:SetTooltip(L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR_TOOLTIP']);
-    self.castbar_interrupt_not_ready_color:AddToSearch(button, L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_interrupt_not_ready_color:SetValue(unpack(O.db.castbar_interrupt_not_ready_color));
-    self.castbar_interrupt_not_ready_color:SetEnabled(O.db.castbar_use_interrupt_not_ready_color);
-    self.castbar_interrupt_not_ready_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.castbar_interrupt_not_ready_color[1] = r;
-        O.db.castbar_interrupt_not_ready_color[2] = g;
-        O.db.castbar_interrupt_not_ready_color[3] = b;
-        O.db.castbar_interrupt_not_ready_color[4] = a or 1;
-
+    self.castbar_target_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_font_shadow:SetPosition('LEFT', self.castbar_target_font_flag, 'RIGHT', 12, 0);
+    self.castbar_target_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
+    self.castbar_target_font_shadow:SetChecked(O.db.castbar_target_font_shadow);
+    self.castbar_target_font_shadow:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_SHADOW']);
+    self.castbar_target_font_shadow:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_SHADOW'], self.Tabs[1]);
+    self.castbar_target_font_shadow.Callback = function(self)
+        O.db.castbar_target_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', ResetCastBarColorsButton, 'BOTTOMLEFT', -4, -96);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_target_font_value, 'BOTTOMLEFT', 0, -6);
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_on_hp_bar = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -1183,9 +1140,176 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-   ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
-    -- Timer Tab -----------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------
+    -- Colors Tab -----------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------
+
+    local ResetCastBarColorsButton = E.CreateTextureButton(self.TabsFrames['ColorsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);
+    ResetCastBarColorsButton:SetPosition('TOPLEFT', self.TabsFrames['ColorsTab'].Content, 'TOPLEFT', 4, -4);
+    ResetCastBarColorsButton:SetTooltip(L['OPTIONS_CAST_BAR_RESET_COLORS_TOOLTIP']);
+    ResetCastBarColorsButton:AddToSearch(button, L['OPTIONS_CAST_BAR_RESET_COLORS_TOOLTIP'], self.Tabs[2]);
+    ResetCastBarColorsButton.Callback = function()
+        panel.castbar_start_cast_color:SetValue(unpack(O.DefaultValues.castbar_start_cast_color));
+        panel.castbar_start_channel_color:SetValue(unpack(O.DefaultValues.castbar_start_channel_color));
+        panel.castbar_noninterruptible_color:SetValue(unpack(O.DefaultValues.castbar_noninterruptible_color));
+        panel.castbar_failed_cast_color:SetValue(unpack(O.DefaultValues.castbar_failed_cast_color));
+        panel.castbar_interrupt_ready_tick_color:SetValue(unpack(O.DefaultValues.castbar_interrupt_ready_tick_color));
+        panel.castbar_interrupt_ready_in_time_color:SetValue(unpack(O.DefaultValues.castbar_interrupt_ready_in_time_color));
+        panel.castbar_interrupt_not_ready_color:SetValue(unpack(O.DefaultValues.castbar_interrupt_not_ready_color));
+    end
+
+    self.castbar_start_cast_color = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.castbar_start_cast_color:SetPosition('LEFT', ResetCastBarColorsButton, 'RIGHT', 16, 0);
+    self.castbar_start_cast_color:SetLabel(L['OPTIONS_CAST_BAR_START_CAST_COLOR']);
+    self.castbar_start_cast_color:SetTooltip(L['OPTIONS_CAST_BAR_START_CAST_COLOR_TOOLTIP']);
+    self.castbar_start_cast_color:AddToSearch(button, L['OPTIONS_CAST_BAR_START_CAST_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.castbar_start_cast_color:SetValue(unpack(O.db.castbar_start_cast_color));
+    self.castbar_start_cast_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_start_cast_color[1] = r;
+        O.db.castbar_start_cast_color[2] = g;
+        O.db.castbar_start_cast_color[3] = b;
+        O.db.castbar_start_cast_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_start_channel_color = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.castbar_start_channel_color:SetPosition('LEFT', self.castbar_start_cast_color.Label, 'RIGHT', 12, 0);
+    self.castbar_start_channel_color:SetLabel(L['OPTIONS_CAST_BAR_START_CHANNEL_COLOR']);
+    self.castbar_start_channel_color:SetTooltip(L['OPTIONS_CAST_BAR_START_CHANNEL_COLOR_TOOLTIP']);
+    self.castbar_start_channel_color:AddToSearch(button, L['OPTIONS_CAST_BAR_START_CHANNEL_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.castbar_start_channel_color:SetValue(unpack(O.db.castbar_start_channel_color));
+    self.castbar_start_channel_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_start_channel_color[1] = r;
+        O.db.castbar_start_channel_color[2] = g;
+        O.db.castbar_start_channel_color[3] = b;
+        O.db.castbar_start_channel_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_noninterruptible_color = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.castbar_noninterruptible_color:SetPosition('LEFT', self.castbar_start_channel_color.Label, 'RIGHT', 12, 0);
+    self.castbar_noninterruptible_color:SetLabel(L['OPTIONS_CAST_BAR_NON_INTERRUPTIBLE_COLOR']);
+    self.castbar_noninterruptible_color:SetTooltip(L['OPTIONS_CAST_BAR_NON_INTERRUPTIBLE_COLOR_TOOLTIP']);
+    self.castbar_noninterruptible_color:AddToSearch(button, L['OPTIONS_CAST_BAR_NON_INTERRUPTIBLE_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.castbar_noninterruptible_color:SetValue(unpack(O.db.castbar_noninterruptible_color));
+    self.castbar_noninterruptible_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_noninterruptible_color[1] = r;
+        O.db.castbar_noninterruptible_color[2] = g;
+        O.db.castbar_noninterruptible_color[3] = b;
+        O.db.castbar_noninterruptible_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_failed_cast_color = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.castbar_failed_cast_color:SetPosition('LEFT', self.castbar_noninterruptible_color.Label, 'RIGHT', 12, 0);
+    self.castbar_failed_cast_color:SetLabel(L['OPTIONS_CAST_BAR_FAILED_CAST_COLOR']);
+    self.castbar_failed_cast_color:SetTooltip(L['OPTIONS_CAST_BAR_FAILED_CAST_COLOR_TOOLTIP']);
+    self.castbar_failed_cast_color:AddToSearch(button, L['OPTIONS_CAST_BAR_FAILED_CAST_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.castbar_failed_cast_color:SetValue(unpack(O.db.castbar_failed_cast_color));
+    self.castbar_failed_cast_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_failed_cast_color[1] = r;
+        O.db.castbar_failed_cast_color[2] = g;
+        O.db.castbar_failed_cast_color[3] = b;
+        O.db.castbar_failed_cast_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_show_interrupt_ready_tick = E.CreateCheckButton(self.TabsFrames['ColorsTab'].Content);
+    self.castbar_show_interrupt_ready_tick:SetPosition('TOPLEFT', ResetCastBarColorsButton, 'BOTTOMLEFT', -1, -12);
+    self.castbar_show_interrupt_ready_tick:SetTooltip(L['OPTIONS_CAST_BAR_SHOW_INTERRUPT_READY_TICK_TOOLTIP']);
+    self.castbar_show_interrupt_ready_tick:AddToSearch(button, L['OPTIONS_CAST_BAR_SHOW_INTERRUPT_READY_TICK_TOOLTIP'], self.Tabs[2]);
+    self.castbar_show_interrupt_ready_tick:SetChecked(O.db.castbar_show_interrupt_ready_tick);
+    self.castbar_show_interrupt_ready_tick.Callback = function(self)
+        O.db.castbar_show_interrupt_ready_tick = self:GetChecked();
+
+        panel.castbar_interrupt_ready_tick_color:SetEnabled(O.db.castbar_show_interrupt_ready_tick);
+
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_interrupt_ready_tick_color = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.castbar_interrupt_ready_tick_color:SetPosition('LEFT', self.castbar_show_interrupt_ready_tick.Label, 'RIGHT', 10, 0);
+    self.castbar_interrupt_ready_tick_color:SetLabel(L['OPTIONS_CAST_BAR_SHOW_INTERRUPT_READY_TICK']);
+    self.castbar_interrupt_ready_tick_color:SetTooltip(L['OPTIONS_CAST_BAR_INTERRUPT_READY_TICK_COLOR_TOOLTIP']);
+    self.castbar_interrupt_ready_tick_color:AddToSearch(button, L['OPTIONS_CAST_BAR_INTERRUPT_READY_TICK_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.castbar_interrupt_ready_tick_color:SetValue(unpack(O.db.castbar_interrupt_ready_tick_color));
+    self.castbar_interrupt_ready_tick_color:SetEnabled(O.db.castbar_show_interrupt_ready_tick);
+    self.castbar_interrupt_ready_tick_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_interrupt_ready_tick_color[1] = r;
+        O.db.castbar_interrupt_ready_tick_color[2] = g;
+        O.db.castbar_interrupt_ready_tick_color[3] = b;
+        O.db.castbar_interrupt_ready_tick_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_use_interrupt_ready_in_time_color = E.CreateCheckButton(self.TabsFrames['ColorsTab'].Content);
+    self.castbar_use_interrupt_ready_in_time_color:SetPosition('TOPLEFT', self.castbar_show_interrupt_ready_tick, 'BOTTOMLEFT', 0, -12);
+    self.castbar_use_interrupt_ready_in_time_color:SetTooltip(L['OPTIONS_CAST_BAR_USE_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP']);
+    self.castbar_use_interrupt_ready_in_time_color:AddToSearch(button, L['OPTIONS_CAST_BAR_USE_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.castbar_use_interrupt_ready_in_time_color:SetChecked(O.db.castbar_use_interrupt_ready_in_time_color);
+    self.castbar_use_interrupt_ready_in_time_color.Callback = function(self)
+        O.db.castbar_use_interrupt_ready_in_time_color = self:GetChecked();
+
+        panel.castbar_interrupt_ready_in_time_color:SetEnabled(O.db.castbar_use_interrupt_ready_in_time_color);
+
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_interrupt_ready_in_time_color = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.castbar_interrupt_ready_in_time_color:SetPosition('LEFT', self.castbar_use_interrupt_ready_in_time_color.Label, 'RIGHT', 10, 0);
+    self.castbar_interrupt_ready_in_time_color:SetLabel(L['OPTIONS_CAST_BAR_INTERRUPT_READY_IN_TIME_COLOR']);
+    self.castbar_interrupt_ready_in_time_color:SetTooltip(L['OPTIONS_CAST_BAR_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP']);
+    self.castbar_interrupt_ready_in_time_color:AddToSearch(button, L['OPTIONS_CAST_BAR_INTERRUPT_READY_IN_TIME_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.castbar_interrupt_ready_in_time_color:SetValue(unpack(O.db.castbar_interrupt_ready_in_time_color));
+    self.castbar_interrupt_ready_in_time_color:SetEnabled(O.db.castbar_use_interrupt_ready_in_time_color);
+    self.castbar_interrupt_ready_in_time_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_interrupt_ready_in_time_color[1] = r;
+        O.db.castbar_interrupt_ready_in_time_color[2] = g;
+        O.db.castbar_interrupt_ready_in_time_color[3] = b;
+        O.db.castbar_interrupt_ready_in_time_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_use_interrupt_not_ready_color = E.CreateCheckButton(self.TabsFrames['ColorsTab'].Content);
+    self.castbar_use_interrupt_not_ready_color:SetPosition('TOPLEFT', self.castbar_use_interrupt_ready_in_time_color, 'BOTTOMLEFT', 0, -12);
+    self.castbar_use_interrupt_not_ready_color:SetTooltip(L['OPTIONS_CAST_BAR_USE_INTERRUPT_NOT_READY_COLOR_TOOLTIP']);
+    self.castbar_use_interrupt_not_ready_color:AddToSearch(button, L['OPTIONS_CAST_BAR_USE_INTERRUPT_NOT_READY_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.castbar_use_interrupt_not_ready_color:SetChecked(O.db.castbar_use_interrupt_not_ready_color);
+    self.castbar_use_interrupt_not_ready_color.Callback = function(self)
+        O.db.castbar_use_interrupt_not_ready_color = self:GetChecked();
+
+        panel.castbar_interrupt_not_ready_color:SetEnabled(O.db.castbar_use_interrupt_not_ready_color);
+
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_interrupt_not_ready_color = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.castbar_interrupt_not_ready_color:SetPosition('LEFT', self.castbar_use_interrupt_not_ready_color.Label, 'RIGHT', 10, 0)
+    self.castbar_interrupt_not_ready_color:SetLabel(L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR']);
+    self.castbar_interrupt_not_ready_color:SetTooltip(L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR_TOOLTIP']);
+    self.castbar_interrupt_not_ready_color:AddToSearch(button, L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR_TOOLTIP'], self.Tabs[2]);
+    self.castbar_interrupt_not_ready_color:SetValue(unpack(O.db.castbar_interrupt_not_ready_color));
+    self.castbar_interrupt_not_ready_color:SetEnabled(O.db.castbar_use_interrupt_not_ready_color);
+    self.castbar_interrupt_not_ready_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_interrupt_not_ready_color[1] = r;
+        O.db.castbar_interrupt_not_ready_color[2] = g;
+        O.db.castbar_interrupt_not_ready_color[3] = b;
+        O.db.castbar_interrupt_not_ready_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    ------------------------------------------------------------------------------------------------------------------------------------
+    ------------------------------------------------------------------------------------------------------------------------------------
+    -- Timer Tab -----------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1193,7 +1317,7 @@ panel.Load = function(self)
     self.castbar_timer_enabled:SetPosition('TOPLEFT', self.TabsFrames['TimerTab'].Content, 'TOPLEFT', 0, -4);
     self.castbar_timer_enabled:SetLabel(L['ENABLE']);
     self.castbar_timer_enabled:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_ENABLED_TOOLTIP']);
-    self.castbar_timer_enabled:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_ENABLED_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_enabled:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_ENABLED_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_enabled:SetChecked(O.db.castbar_timer_enabled);
     self.castbar_timer_enabled.Callback = function(self)
         O.db.castbar_timer_enabled = self:GetChecked();
@@ -1214,7 +1338,7 @@ panel.Load = function(self)
     self.castbar_timer_format:SetValue(O.db.castbar_timer_format);
     self.castbar_timer_format:SetLabel(L['FORMAT']);
     self.castbar_timer_format:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP']);
-    self.castbar_timer_format:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_format:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FORMAT_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_format:SetEnabled(O.db.castbar_timer_enabled);
     self.castbar_timer_format.OnValueChangedCallback = function(_, value)
         O.db.castbar_timer_format = tonumber(value);
@@ -1225,7 +1349,7 @@ panel.Load = function(self)
     self.castbar_timer_only_remaining:SetPosition('LEFT', self.castbar_timer_format, 'RIGHT', 12, 0);
     self.castbar_timer_only_remaining:SetLabel(L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME']);
     self.castbar_timer_only_remaining:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME_TOOLTIP']);
-    self.castbar_timer_only_remaining:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_only_remaining:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_ONLY_REMAINING_TIME_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_only_remaining:SetChecked(O.db.castbar_timer_only_remaining);
     self.castbar_timer_only_remaining.Callback = function(self)
         O.db.castbar_timer_only_remaining = self:GetChecked();
@@ -1243,7 +1367,7 @@ panel.Load = function(self)
     self.castbar_timer_xside:SetValue(O.db.castbar_timer_xside);
     self.castbar_timer_xside:SetLabel(L['POSITION']);
     self.castbar_timer_xside:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_XSIDE_TOOLTIP']);
-    self.castbar_timer_xside:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_XSIDE_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_xside:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_XSIDE_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_xside.OnValueChangedCallback = function(_, value)
         O.db.castbar_timer_xside = tonumber(value);
         Stripes:UpdateAll();
@@ -1255,7 +1379,7 @@ panel.Load = function(self)
     self.castbar_timer_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.castbar_timer_anchor:SetValue(O.db.castbar_timer_anchor);
     self.castbar_timer_anchor:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP']);
-    self.castbar_timer_anchor:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_anchor:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_anchor.OnValueChangedCallback = function(_, value)
         O.db.castbar_timer_anchor = tonumber(value);
         Stripes:UpdateAll();
@@ -1265,7 +1389,7 @@ panel.Load = function(self)
     self.castbar_timer_offset_x:SetPosition('LEFT', self.castbar_timer_anchor, 'RIGHT', 16, 0);
     self.castbar_timer_offset_x:SetW(116);
     self.castbar_timer_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP']);
-    self.castbar_timer_offset_x:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_offset_x:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_offset_x:SetValues(O.db.castbar_timer_offset_x, -99, 100, 1);
     self.castbar_timer_offset_x.OnValueChangedCallback = function(_, value)
         O.db.castbar_timer_offset_x = tonumber(value);
@@ -1276,7 +1400,7 @@ panel.Load = function(self)
     self.castbar_timer_offset_y:SetPosition('LEFT', self.castbar_timer_offset_x, 'RIGHT', 16, 0);
     self.castbar_timer_offset_y:SetW(116);
     self.castbar_timer_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP']);
-    self.castbar_timer_offset_y:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_offset_y:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_offset_y:SetValues(O.db.castbar_timer_offset_y, -99, 100, 1);
     self.castbar_timer_offset_y.OnValueChangedCallback = function(_, value)
         O.db.castbar_timer_offset_y = tonumber(value);
@@ -1293,7 +1417,7 @@ panel.Load = function(self)
     self.castbar_timer_font_value:SetList(LSM:HashTable('font'));
     self.castbar_timer_font_value:SetValue(O.db.castbar_timer_font_value);
     self.castbar_timer_font_value:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_VALUE_TOOLTIP']);
-    self.castbar_timer_font_value:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_VALUE_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_font_value:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_VALUE_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_font_value.OnValueChangedCallback = function(_, value)
         O.db.castbar_timer_font_value = value;
         Stripes:UpdateAll();
@@ -1303,7 +1427,7 @@ panel.Load = function(self)
     self.castbar_timer_font_size:SetPosition('LEFT', self.castbar_timer_font_value, 'RIGHT', 12, 0);
     self.castbar_timer_font_size:SetValues(O.db.castbar_timer_font_size, 3, 28, 1);
     self.castbar_timer_font_size:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_SIZE_TOOLTIP']);
-    self.castbar_timer_font_size:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_SIZE_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_font_size:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_SIZE_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_font_size.OnValueChangedCallback = function(_, value)
         O.db.castbar_timer_font_size = tonumber(value);
         Stripes:UpdateAll();
@@ -1315,7 +1439,7 @@ panel.Load = function(self)
     self.castbar_timer_font_flag:SetList(O.Lists.font_flags_localized);
     self.castbar_timer_font_flag:SetValue(O.db.castbar_timer_font_flag);
     self.castbar_timer_font_flag:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_FLAG_TOOLTIP']);
-    self.castbar_timer_font_flag:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_FLAG_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_font_flag:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_FLAG_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_font_flag.OnValueChangedCallback = function(_, value)
         O.db.castbar_timer_font_flag = tonumber(value);
         Stripes:UpdateAll();
@@ -1326,7 +1450,7 @@ panel.Load = function(self)
     self.castbar_timer_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.castbar_timer_font_shadow:SetChecked(O.db.castbar_timer_font_shadow);
     self.castbar_timer_font_shadow:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_SHADOW_TOOLTIP']);
-    self.castbar_timer_font_shadow:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_SHADOW_TOOLTIP'], self.Tabs[2]);
+    self.castbar_timer_font_shadow:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_SHADOW_TOOLTIP'], self.Tabs[3]);
     self.castbar_timer_font_shadow.Callback = function(self)
         O.db.castbar_timer_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
@@ -1342,7 +1466,7 @@ panel.Load = function(self)
     self.castbar_custom_casts_enabled:SetPosition('TOPLEFT', self.TabsFrames['CustomCastsTab'].Content, 'TOPLEFT', 0, -4);
     self.castbar_custom_casts_enabled:SetLabel(L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED']);
     self.castbar_custom_casts_enabled:SetTooltip(L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED_TOOLTIP']);
-    self.castbar_custom_casts_enabled:AddToSearch(button, L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED_TOOLTIP'], self.Tabs[3]);
+    self.castbar_custom_casts_enabled:AddToSearch(button, L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED_TOOLTIP'], self.Tabs[4]);
     self.castbar_custom_casts_enabled:SetChecked(O.db.castbar_custom_casts_enabled);
     self.castbar_custom_casts_enabled.Callback = function(self)
         O.db.castbar_custom_casts_enabled = self:GetChecked();

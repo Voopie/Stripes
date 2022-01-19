@@ -2,12 +2,21 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('CastingBar');
 
 -- WoW API
+local UnitName, UnitExists = UnitName, UnitExists;
 local GetSpellCooldown, UnitCanAttack = GetSpellCooldown, UnitCanAttack;
 local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
 local GetTime = GetTime;
 
+-- Stripes API
+local GetUnitColor = U.GetUnitColor;
+
 -- Libraries
 local LCG = S.Libraries.LCG;
+local LT = S.Libraries.LT;
+local LDC = S.Libraries.LDC;
+
+-- Local config
+local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 
 -- In fact, this is a copy paste from Blizzard/CastingBarFrame.lua
 
@@ -122,7 +131,46 @@ local function UpdateCustomCast(self)
     end
 end
 
+local function UpdateCastTargetName(self)
+    if not self.unit or not self.showCastTargetName then
+        self.TargetText:Hide();
+        return;
+    end
+
+    if self.castTargetNameOnlyEnemy and self:GetParent().data.commonReaction ~= 'ENEMY' then
+        self.TargetText:Hide();
+        return;
+    end
+
+    local targetUnit = self.unit .. 'target';
+
+    if UnitExists(targetUnit) then
+        local targetName = UnitName(targetUnit);
+
+        if NAME_TRANSLIT then
+            targetName = LT:Transliterate(targetName);
+        end
+
+        if NAME_REPLACE_DIACRITICS then
+            targetName = LDC:Replace(targetName);
+        end
+
+        self.TargetText:SetText(targetName);
+        self.TargetText:SetTextColor(GetUnitColor(targetUnit, 2));
+        self.TargetText:Show();
+    else
+        self.TargetText:Hide();
+    end
+end
+
+function Module:UpdateLocalConfig()
+    NAME_TRANSLIT           = O.db.name_text_translit;
+    NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
+end
+
 function Module:StartUp()
+    self:UpdateLocalConfig();
+
     CustomCastsData = O.db.castbar_custom_casts_data;
 end
 
@@ -376,6 +424,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.startTime = startTime;
         self.endTime   = endTime;
 
+        if self.TargetText then
+            UpdateCastTargetName(self);
+        end
+
         UpdateInterruptReadyColorAndTick(self);
         UpdateCustomCast(self);
 
@@ -449,6 +501,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
                 else
                     self.Text:SetText(INTERRUPTED);
                 end
+            end
+
+            if self.TargetText then
+                self.TargetText:Hide();
             end
 
             self.casting = nil;
@@ -536,6 +592,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.startTime = startTime;
         self.endTime   = endTime;
 
+        if self.TargetText then
+            UpdateCastTargetName(self);
+        end
+
         UpdateInterruptReadyColorAndTick(self);
         UpdateCustomCast(self);
 
@@ -573,6 +633,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
             self.startTime = startTime;
             self.endTime   = endTime;
+
+            if self.TargetText then
+                UpdateCastTargetName(self);
+            end
         end
     elseif event == 'UNIT_SPELLCAST_INTERRUPTIBLE' or event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE' then
         StripesCastingBar_UpdateInterruptibleState(self, event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE');
@@ -610,6 +674,10 @@ function StripesCastingBar_UpdateInterruptibleState(self, notInterruptible)
             else
                 self.Icon:SetShown(true);
             end
+        end
+
+        if self.TargetText then
+            UpdateCastTargetName(self);
         end
 
         UpdateInterruptReadyColorAndTick(self);

@@ -428,6 +428,16 @@ O.DefaultValues = {
     castbar_border_size = 1,
     castbar_border_color = { 0, 0, 0, 1 },
     castbar_height = 12,
+    castbar_target_name_enabled = false,
+    castbar_target_name_only_enemy = true,
+    castbar_target_point = 7, -- TOP
+    castbar_target_relative_point = 1, -- BOTTOM
+    castbar_target_offset_x = 0,
+    castbar_target_offset_y = 2,
+    castbar_target_font_value  = 'BigNoodleToo Titling',
+    castbar_target_font_size   = 11,
+    castbar_target_font_flag   = 1, -- NONE
+    castbar_target_font_shadow = true,
 
     who_interrupted_enabled = true,
 
