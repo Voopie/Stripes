@@ -691,7 +691,7 @@ function StripesCastingBar_OnUpdate(self, elapsed)
 
         if self.value >= self.maxValue then
             self:SetValue(self.maxValue);
-            StripesCastingBar_FinishSpell(self, self.Spark, self.Flash);
+            StripesCastingBar_FinishSpell(self);
             return;
         end
 
@@ -711,7 +711,7 @@ function StripesCastingBar_OnUpdate(self, elapsed)
         self.value = self.value - elapsed;
 
         if self.value <= 0 then
-            StripesCastingBar_FinishSpell(self, self.Spark, self.Flash);
+            StripesCastingBar_FinishSpell(self);
             return;
         end
 
