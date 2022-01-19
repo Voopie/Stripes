@@ -465,11 +465,11 @@ function Data:ENCOUNTER_END()
 end
 
 function Data:GUILD_ROSTER_UPDATE()
-    D.Player.GuildName = U.UnitInGuild('player');
+    D.Player.GuildName = U.PlayerInGuild('player');
 end
 
 function Data:PLAYER_GUILD_UPDATE()
-    D.Player.GuildName = U.UnitInGuild('player');
+    D.Player.GuildName = U.PlayerInGuild('player');
 end
 
 function Data:MAX_EXPANSION_LEVEL_UPDATED()

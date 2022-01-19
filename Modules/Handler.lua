@@ -239,6 +239,10 @@ local function UpdateStatus(unitframe)
         unitframe.data.nameWoRealm, unitframe.data.realm = UnitName(unit);
         unitframe.data.namePVP = UnitPVPName(unit);
     end
+
+    if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+        unitframe.data.guild = UnitInGuild(unit);
+    end
 end
 
 local function UpdateWidgetStatus(unitframe)

@@ -63,8 +63,12 @@ U.UnitIsPet = function(unit)
     return (not UnitIsPlayer(unit) and UnitPlayerControlled(unit));
 end
 
+U.PlayerInGuild = function()
+    return IsInGuild() and GetGuildInfo(PLAYER_UNIT);
+end
+
 U.UnitInGuild = function(unit)
-    return IsInGuild() and GetGuildInfo(unit);
+    return GetGuildInfo(unit);
 end
 
 U.UnitIsCasting = function(unit)
