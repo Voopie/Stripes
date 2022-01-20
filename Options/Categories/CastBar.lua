@@ -971,6 +971,16 @@ panel.Load = function(self)
     self.castbat_target_name_in_spell_name:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_IN_SPELL_NAME_TOOLTIP'], self.Tabs[1]);
     self.castbat_target_name_in_spell_name.Callback = function(self)
         O.db.castbat_target_name_in_spell_name = self:GetChecked();
+
+        panel.castbar_target_point:SetEnabled(not O.db.castbat_target_name_in_spell_name);
+        panel.castbar_target_relative_point:SetEnabled(not O.db.castbat_target_name_in_spell_name);
+        panel.castbar_target_offset_x:SetEnabled(not O.db.castbat_target_name_in_spell_name);
+        panel.castbar_target_offset_y:SetEnabled(not O.db.castbat_target_name_in_spell_name);
+        panel.castbar_target_font_value:SetEnabled(not O.db.castbat_target_name_in_spell_name);
+        panel.castbar_target_font_size:SetEnabled(not O.db.castbat_target_name_in_spell_name);
+        panel.castbar_target_font_flag:SetEnabled(not O.db.castbat_target_name_in_spell_name);
+        panel.castbar_target_font_shadow:SetEnabled(not O.db.castbat_target_name_in_spell_name);
+
         Stripes:UpdateAll();
     end
 
@@ -982,6 +992,7 @@ panel.Load = function(self)
     self.castbar_target_point:SetLabel(L['POSITION']);
     self.castbar_target_point:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_POINT_TOOLTIP']);
     self.castbar_target_point:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_POINT_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_point:SetEnabled(not O.db.castbat_target_name_in_spell_name);
     self.castbar_target_point.OnValueChangedCallback = function(_, value)
         O.db.castbar_target_point = tonumber(value);
         Stripes:UpdateAll();
@@ -994,6 +1005,7 @@ panel.Load = function(self)
     self.castbar_target_relative_point:SetValue(O.db.castbar_target_relative_point);
     self.castbar_target_relative_point:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_RELATIVE_POINT_TOOLTIP']);
     self.castbar_target_relative_point:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_RELATIVE_POINT_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_relative_point:SetEnabled(not O.db.castbat_target_name_in_spell_name);
     self.castbar_target_relative_point.OnValueChangedCallback = function(_, value)
         O.db.castbar_target_relative_point = tonumber(value);
         Stripes:UpdateAll();
@@ -1005,6 +1017,7 @@ panel.Load = function(self)
     self.castbar_target_offset_x:SetValues(O.db.castbar_target_offset_x, -100, 100, 1);
     self.castbar_target_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP']);
     self.castbar_target_offset_x:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_offset_x:SetEnabled(not O.db.castbat_target_name_in_spell_name);
     self.castbar_target_offset_x.OnValueChangedCallback = function(_, value)
         O.db.castbar_target_offset_x = tonumber(value);
         Stripes:UpdateAll();
@@ -1016,6 +1029,7 @@ panel.Load = function(self)
     self.castbar_target_offset_y:SetValues(O.db.castbar_target_offset_y, -100, 100, 1);
     self.castbar_target_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP']);
     self.castbar_target_offset_y:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_offset_y:SetEnabled(not O.db.castbat_target_name_in_spell_name);
     self.castbar_target_offset_y.OnValueChangedCallback = function(_, value)
         O.db.castbar_target_offset_y = tonumber(value);
         Stripes:UpdateAll();
@@ -1028,6 +1042,7 @@ panel.Load = function(self)
     self.castbar_target_font_value:SetValue(O.db.castbar_target_font_value);
     self.castbar_target_font_value:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_VALUE']);
     self.castbar_target_font_value:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_VALUE'], self.Tabs[1]);
+    self.castbar_target_font_value:SetEnabled(not O.db.castbat_target_name_in_spell_name);
     self.castbar_target_font_value.OnValueChangedCallback = function(_, value)
         O.db.castbar_target_font_value = value;
         Stripes:UpdateAll();
@@ -1038,6 +1053,7 @@ panel.Load = function(self)
     self.castbar_target_font_size:SetValues(O.db.castbar_target_font_size, 3, 28, 1);
     self.castbar_target_font_size:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_SIZE']);
     self.castbar_target_font_size:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_SIZE'], self.Tabs[1]);
+    self.castbar_target_font_size:SetEnabled(not O.db.castbat_target_name_in_spell_name);
     self.castbar_target_font_size.OnValueChangedCallback = function(_, value)
         O.db.castbar_target_font_size = tonumber(value);
         Stripes:UpdateAll();
@@ -1050,6 +1066,7 @@ panel.Load = function(self)
     self.castbar_target_font_flag:SetValue(O.db.castbar_target_font_flag);
     self.castbar_target_font_flag:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_FLAG']);
     self.castbar_target_font_flag:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_FLAG'], self.Tabs[1]);
+    self.castbar_target_font_flag:SetEnabled(not O.db.castbat_target_name_in_spell_name);
     self.castbar_target_font_flag.OnValueChangedCallback = function(_, value)
         O.db.castbar_target_font_flag = tonumber(value);
         Stripes:UpdateAll();
@@ -1061,6 +1078,7 @@ panel.Load = function(self)
     self.castbar_target_font_shadow:SetChecked(O.db.castbar_target_font_shadow);
     self.castbar_target_font_shadow:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_SHADOW']);
     self.castbar_target_font_shadow:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_SHADOW'], self.Tabs[1]);
+    self.castbar_target_font_shadow:SetEnabled(not O.db.castbat_target_name_in_spell_name);
     self.castbar_target_font_shadow.Callback = function(self)
         O.db.castbar_target_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
