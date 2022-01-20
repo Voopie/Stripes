@@ -1908,10 +1908,12 @@ do
         hooksecurefunc(holderButton, 'SetEnabled', function(self, state)
             if state then
                 self.Text:SetFontObject('StripesOptionsNormalFont');
+                self.Text:SetTextColor(1, 1, 1, 1);
                 self.arrowButton:Enable();
                 self.arrowButton.Icon:SetVertexColor(1, 1, 1, 1);
             else
                 self.Text:SetFontObject('StripesOptionsDisabledFont');
+                self.Text:SetTextColor(0.5, 0.5, 0.5, 1);
                 self.arrowButton:Disable();
                 self.arrowButton.Icon:SetVertexColor(0.5, 0.5, 0.5, 1);
             end
