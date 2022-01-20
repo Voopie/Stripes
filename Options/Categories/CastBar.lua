@@ -963,6 +963,17 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.castbat_target_name_in_spell_name = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.castbat_target_name_in_spell_name:SetPosition('LEFT', self.castbar_target_name_only_enemy.Label, 'RIGHT', 12, 0);
+    self.castbat_target_name_in_spell_name:SetLabel(L['OPTIONS_CAST_BAR_TARGET_IN_SPELL_NAME']);
+    self.castbat_target_name_in_spell_name:SetChecked(O.db.castbat_target_name_in_spell_name);
+    self.castbat_target_name_in_spell_name:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_IN_SPELL_NAME_TOOLTIP']);
+    self.castbat_target_name_in_spell_name:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_IN_SPELL_NAME_TOOLTIP'], self.Tabs[1]);
+    self.castbat_target_name_in_spell_name.Callback = function(self)
+        O.db.castbat_target_name_in_spell_name = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.castbar_target_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
     self.castbar_target_point:SetPosition('TOPLEFT', self.castbar_target_name_enabled, 'BOTTOMLEFT', 0, -14);
     self.castbar_target_point:SetSize(120, 20);

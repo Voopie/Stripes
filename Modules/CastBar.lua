@@ -25,7 +25,7 @@ local NAME_ONLY_MODE;
 local BORDER_ENABLED, BORDER_COLOR, BORDER_SIZE;
 local BAR_HEIGHT, BG_COLOR;
 local TEXT_POSITION, TEXT_X_OFFSET, TEXT_Y_OFFSET, TEXT_TRUNCATE;
-local TARGET_NAME_ENABLED, TARGET_NAME_ONLY_ENEMY, TARGET_NAME_POINT, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y;
+local TARGET_NAME_ENABLED, TARGET_NAME_ONLY_ENEMY, TARGET_NAME_IN_SPELL_NAME, TARGET_NAME_POINT, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 local StripesCastBarTimerFont = CreateFont('StripesCastBarTimerFont');
@@ -257,6 +257,7 @@ local function UpdateVisibility(unitframe)
         unitframe.castingBar.useInterruptNotReadyColor    = USE_INTERRUPT_NOT_READY_COLOR;
         unitframe.castingBar.showCastTargetName           = TARGET_NAME_ENABLED;
         unitframe.castingBar.castTargetNameOnlyEnemy      = TARGET_NAME_ONLY_ENEMY;
+        unitframe.castingBar.castTargetNameInSpellName    = TARGET_NAME_IN_SPELL_NAME;
 
         if BORDER_ENABLED then
             unitframe.castingBar.border:SetVertexColor(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
@@ -405,6 +406,7 @@ function Module:UpdateLocalConfig()
 
     TARGET_NAME_ENABLED        = O.db.castbar_target_name_enabled;
     TARGET_NAME_ONLY_ENEMY     = O.db.castbar_target_name_only_enemy;
+    TARGET_NAME_IN_SPELL_NAME  = O.db.castbat_target_name_in_spell_name;
     TARGET_NAME_POINT          = O.Lists.frame_points[O.db.castbar_target_point] or 'TOP';
     TARGET_NAME_RELATIVE_POINT = O.Lists.frame_points[O.db.castbar_target_relative_point] or 'BOTTOM';
     TARGET_NAME_OFFSET_X       = O.db.castbar_target_offset_x;

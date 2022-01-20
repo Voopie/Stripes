@@ -155,9 +155,14 @@ local function UpdateCastTargetName(self)
             targetName = LDC:Replace(targetName);
         end
 
-        self.TargetText:SetText(targetName);
-        self.TargetText:SetTextColor(GetUnitColor(targetUnit, 2));
-        self.TargetText:Show();
+        if self.castTargetNameInSpellName and self.spellName then
+            self.Text:SetText(string.format('%s > |cff%s%s|r', self.spellName, GetUnitColor(targetUnit, true), targetName));
+            self.TargetText:Hide();
+        else
+            self.TargetText:SetText(targetName);
+            self.TargetText:SetTextColor(GetUnitColor(targetUnit, 2));
+            self.TargetText:Show();
+        end
     else
         self.TargetText:Hide();
     end
@@ -417,6 +422,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.casting = true;
         self.castID = castID;
         self.spellID = spellID;
+        self.spellName = name;
         self.channeling = nil;
         self.fadeOut = nil;
 
@@ -481,6 +487,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self.flash = true;
             self.fadeOut = true;
             self.holdTime = 0;
+            self.spellName = nil;
         end
     elseif event == 'UNIT_SPELLCAST_FAILED' or event == 'UNIT_SPELLCAST_INTERRUPTED' then
         if self:IsShown() and (self.casting and select(2, ...) == self.castID) and not self.fadeOut then
@@ -512,6 +519,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self.fadeOut = true;
             self.holdTime = GetTime() + CASTING_BAR_HOLD_TIME;
             self.notInterruptible = nil;
+            self.spellName = nil;
         end
     elseif event == 'UNIT_SPELLCAST_DELAYED' then
         if self:IsShown() then
@@ -543,6 +551,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
                 self.flash = nil;
                 self.fadeOut = nil;
                 self.notInterruptible = nil;
+                self.spellName = name;
             end
 
             self.notInterruptible = notInterruptible;
@@ -587,7 +596,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.channeling = true;
         self.fadeOut = nil;
         self.spellID = spellID;
-
+        self.spellName = name;
         self.notInterruptible = notInterruptible;
         self.startTime = startTime;
         self.endTime   = endTime;
@@ -633,6 +642,8 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
             self.startTime = startTime;
             self.endTime   = endTime;
+
+            self.spellName = name;
 
             if self.TargetText then
                 UpdateCastTargetName(self);

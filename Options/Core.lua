@@ -430,6 +430,7 @@ O.DefaultValues = {
     castbar_height = 12,
     castbar_target_name_enabled = false,
     castbar_target_name_only_enemy = true,
+    castbat_target_name_in_spell_name = false,
     castbar_target_point = 7, -- TOP
     castbar_target_relative_point = 1, -- BOTTOM
     castbar_target_offset_x = 0,
