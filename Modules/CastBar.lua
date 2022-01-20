@@ -406,7 +406,7 @@ function Module:UpdateLocalConfig()
 
     TARGET_NAME_ENABLED        = O.db.castbar_target_name_enabled;
     TARGET_NAME_ONLY_ENEMY     = O.db.castbar_target_name_only_enemy;
-    TARGET_NAME_IN_SPELL_NAME  = O.db.castbat_target_name_in_spell_name;
+    TARGET_NAME_IN_SPELL_NAME  = O.db.castbar_target_name_in_spell_name;
     TARGET_NAME_POINT          = O.Lists.frame_points[O.db.castbar_target_point] or 'TOP';
     TARGET_NAME_RELATIVE_POINT = O.Lists.frame_points[O.db.castbar_target_relative_point] or 'BOTTOM';
     TARGET_NAME_OFFSET_X       = O.db.castbar_target_offset_x;
