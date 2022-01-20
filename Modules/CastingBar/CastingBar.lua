@@ -156,11 +156,17 @@ local function UpdateCastTargetName(self)
         end
 
         if self.castTargetNameInSpellName and self.spellName then
-            self.Text:SetText(string.format('%s > |cff%s%s|r', self.spellName, GetUnitColor(targetUnit, true), targetName));
+            self.Text:SetText(string.format('%s > |cff%s%s|r', self.spellName, self.castTargetNameUseClassColor and GetUnitColor(targetUnit, true) or 'ffffff', targetName));
             self.TargetText:Hide();
         else
             self.TargetText:SetText(targetName);
-            self.TargetText:SetTextColor(GetUnitColor(targetUnit, 2));
+
+            if self.castTargetNameUseClassColor then
+                self.TargetText:SetTextColor(GetUnitColor(targetUnit, 2));
+            else
+                self.TargetText:SetTextColor(1, 1, 1, 1);
+            end
+
             self.TargetText:Show();
         end
     else

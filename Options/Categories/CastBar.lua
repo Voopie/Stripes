@@ -952,8 +952,19 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.castbar_target_name_class_color = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_name_class_color:SetPosition('LEFT', self.castbar_target_name_enabled.Label, 'RIGHT', 12, 0);
+    self.castbar_target_name_class_color:SetLabel(L['OPTIONS_CAST_BAR_TARGET_CLASS_COLOR']);
+    self.castbar_target_name_class_color:SetChecked(O.db.castbar_target_name_class_color);
+    self.castbar_target_name_class_color:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_CLASS_COLOR_TOOLTIP']);
+    self.castbar_target_name_class_color:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_CLASS_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.castbar_target_name_class_color.Callback = function(self)
+        O.db.castbar_target_name_class_color = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.castbar_target_name_only_enemy = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_target_name_only_enemy:SetPosition('LEFT', self.castbar_target_name_enabled.Label, 'RIGHT', 12, 0);
+    self.castbar_target_name_only_enemy:SetPosition('LEFT', self.castbar_target_name_class_color.Label, 'RIGHT', 12, 0);
     self.castbar_target_name_only_enemy:SetLabel(L['OPTIONS_CAST_BAR_TARGET_ONLY_ENEMY']);
     self.castbar_target_name_only_enemy:SetChecked(O.db.castbar_target_name_only_enemy);
     self.castbar_target_name_only_enemy:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_ONLY_ENEMY_TOOLTIP']);

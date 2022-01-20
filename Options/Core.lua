@@ -232,7 +232,7 @@ O.Lists = {
     }
 };
 
--- ~460
+-- ~473
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -431,6 +431,7 @@ O.DefaultValues = {
     castbar_target_name_enabled = false,
     castbar_target_name_only_enemy = true,
     castbar_target_name_in_spell_name = false,
+    castbar_target_name_class_color = true,
     castbar_target_point = 7, -- TOP
     castbar_target_relative_point = 1, -- BOTTOM
     castbar_target_offset_x = 0,
