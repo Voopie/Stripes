@@ -25,6 +25,7 @@ L['SEARCH'] = 'Search';
 L['CATEGORY'] = 'Category';
 L['COLOR_CATEGORY'] = 'Color category';
 L['CUSTOM_COLOR_CATEGORY'] = 'Custom color category';
+L['NOT_CHOSEN'] = 'Not chosen';
 
 L['MISSING_TEXTURE'] = 'Missing texture';
 L['MISSING_FONT'] = 'Missing font';
@@ -70,6 +71,9 @@ L['FRAME_STRATA_INHERIT'] = 'Inherit';
 
 L['AURAS_SORT_EXPIRES_ASC'] = 'By less time';
 L['AURAS_SORT_EXPIRES_DESC'] = 'By longer time';
+
+L['FIRST_UPPER'] = 'With a capital letter';
+L['FIRST_LOWER'] = 'With a lowercase letter';
 
 L['MINIMAP_BUTTON_LMB'] = 'LMB';
 L['MINIMAP_BUTTON_OPEN'] = 'Open «Stripes» options';
@@ -246,6 +250,8 @@ L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_FRIENDLY'] = 'Only friendly';
 L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_ENEMY'] = 'Only enemy';
 L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS'] = 'Replace diacritics';
 L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS_TOOLTIP'] = 'Replace diacritical signs in the name with regular letters (for example, Æ » AE, ð » eth)';
+L['OPTIONS_NAME_TEXT_FIRST_MODE'] = 'Type of first letter';
+L['OPTIONS_NAME_TEXT_FIRST_MODE_TOOLTIP'] = 'What type of first letter to display the name from';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Show health text';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Hide full';

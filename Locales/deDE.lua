@@ -25,6 +25,7 @@ L['SEARCH'] = 'Suche';
 L['CATEGORY'] = 'Kategorie';
 L['COLOR_CATEGORY'] = 'Farbkategorie';
 L['CUSTOM_COLOR_CATEGORY'] = 'Benutzerdefinierte Farbkategorie';
+L['NOT_CHOSEN'] = 'Nicht ausgewählt';
 
 L['MISSING_TEXTURE'] = 'Fehlende Textur';
 L['MISSING_FONT'] = 'Fehlende Schriftart';
@@ -70,6 +71,9 @@ L['FRAME_STRATA_INHERIT'] = 'Übertragen';
 
 L['AURAS_SORT_EXPIRES_ASC'] = 'Weniger Zeit';
 L['AURAS_SORT_EXPIRES_DESC'] = 'Längere Zeit';
+
+L['FIRST_UPPER'] = 'Mit einem Großbuchstaben';
+L['FIRST_LOWER'] = 'Mit einem Kleinbuchstaben';
 
 L['MINIMAP_BUTTON_LMB'] = 'Linksklick';
 L['MINIMAP_BUTTON_OPEN'] = 'Öffne «Stripes» AddOn Fenster';
@@ -246,6 +250,8 @@ L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_FRIENDLY'] = 'Nur freundlich';
 L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_ENEMY'] = 'Nur Feind';
 L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS'] = 'Diakritische Zeichen ersetzen';
 L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS_TOOLTIP'] = 'Ersetze diakritische Zeichen im Namen durch normale Buchstaben (z. B. Æ » AE, ð » eth)';
+L['OPTIONS_NAME_TEXT_FIRST_MODE'] = 'Art des Anfangsbuchstabens';
+L['OPTIONS_NAME_TEXT_FIRST_MODE_TOOLTIP'] = 'Welche Art von Anfangsbuchstaben soll der Name anzeigen';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Gesundheitstext anzeigen';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Vollständig ausblenden';

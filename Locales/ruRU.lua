@@ -25,6 +25,7 @@ L['SEARCH'] = 'Поиск';
 L['CATEGORY'] = 'Категория';
 L['COLOR_CATEGORY'] = 'Цветовая категория';
 L['CUSTOM_COLOR_CATEGORY'] = 'Своя цветовая категория';
+L['NOT_CHOSEN'] = 'Не выбрано';
 
 L['MISSING_TEXTURE'] = 'Нет текстуры';
 L['MISSING_FONT'] = 'Нет шрифта';
@@ -70,6 +71,9 @@ L['FRAME_STRATA_INHERIT'] = 'Наследовать';
 
 L['AURAS_SORT_EXPIRES_ASC'] = 'По меньшему времени';
 L['AURAS_SORT_EXPIRES_DESC'] = 'По большему времени';
+
+L['FIRST_UPPER'] = 'С большой буквы';
+L['FIRST_LOWER'] = 'С маленькой буквы';
 
 L['MINIMAP_BUTTON_LMB'] = 'ЛКМ';
 L['MINIMAP_BUTTON_OPEN'] = 'Открыть настройки «Stripes»';
@@ -246,6 +250,8 @@ L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_FRIENDLY'] = 'Только дружеств
 L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_ENEMY'] = 'Только враждебные';
 L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS'] = 'Замена диакритических знаков';
 L['OPTIONS_NAME_TEXT_REPLACE_DIACRITICS_TOOLTIP'] = 'Заменять в имени диакритические знаки на обычные буквы (например, Æ » AE, ð » eth)';
+L['OPTIONS_NAME_TEXT_FIRST_MODE'] = 'Тип первой буквы';
+L['OPTIONS_NAME_TEXT_FIRST_MODE_TOOLTIP'] = 'С какого типа первой буквы отображать имя';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Показывать здоровье текстом';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Скрывать полное';

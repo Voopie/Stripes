@@ -10,6 +10,7 @@ local UnitSelectionColor = UnitSelectionColor;
 
 -- Stripes API
 local utf8sub = U.UTF8SUB;
+local firstUpper, firstLower = U.FirstToUpper, U.FirstToLower;
 local GetUnitArenaId = U.GetUnitArenaId;
 local PlayerState = D.Player.State;
 local UnitIsTapped = U.UnitIsTapped;
@@ -31,6 +32,7 @@ local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRA
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local CUSTOM_NAME_ENABLED;
 local CLASSIFICATION_INDICATOR_ENABLED;
+local FIRST_MODE;
 
 local StripesNameFont      = CreateFont('StripesNameFont');
 local StripesGuildNameFont = CreateFont('StripesGuildNameFont');
@@ -117,19 +119,43 @@ end
 
 local GetAbbreviatedName = {
     [1] = function(name)
-        return string_gsub(name or '', ABBR_FORMAT, AbbrSub);
+        if FIRST_MODE == 1 then
+            return string_gsub(name or '', ABBR_FORMAT, AbbrSub);
+        elseif FIRST_MODE == 2 then
+            return firstUpper(string_gsub(name or '', ABBR_FORMAT, AbbrSub));
+        elseif FIRST_MODE == 3 then
+            return firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSub));
+        end
     end,
 
     [2] = function(name)
-        return string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace);
+        if FIRST_MODE == 1 then
+            return string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace);
+        elseif FIRST_MODE == 2 then
+            return firstUpper(string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace));
+        elseif FIRST_MODE == 3 then
+            return firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace));
+        end
     end,
 
     [3] = function(name)
-        return AbbrLast(name or '');
+        if FIRST_MODE == 1 then
+            return AbbrLast(name or '');
+        elseif FIRST_MODE == 2 then
+            return firstUpper(AbbrLast(name or ''));
+        elseif FIRST_MODE == 3 then
+            return firstLower(AbbrLast(name or ''));
+        end
     end,
 
     [4] = function(name)
-        return AbbrFirst(name or '');
+        if FIRST_MODE == 1 then
+            return AbbrFirst(name or '');
+        elseif FIRST_MODE == 2 then
+            return firstUpper(AbbrFirst(name or ''));
+        elseif FIRST_MODE == 3 then
+            return firstLower(AbbrFirst(name or ''));
+        end
     end,
 };
 
@@ -552,6 +578,8 @@ function Module:UpdateLocalConfig()
     RAID_TARGET_ICON_POSITION_OFFSET_Y = O.db.raid_target_icon_position_offset_y;
 
     CLASSIFICATION_INDICATOR_ENABLED = O.db.classification_indicator_enabled;
+
+    FIRST_MODE = O.db.name_text_first_mode;
 
     UpdateFontObject(SystemFont_NamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
     UpdateFontObject(SystemFont_NamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);

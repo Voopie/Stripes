@@ -229,10 +229,16 @@ O.Lists = {
         [1] = L['INTEGER'],
         [2] = L['FLOAT_1'],
         [3] = L['FLOAT_2'],
-    }
+    },
+
+    name_text_first_mode = {
+        [1] = L['NOT_CHOSEN'],
+        [2] = L['FIRST_UPPER'],
+        [3] = L['FIRST_LOWER'],
+    },
 };
 
--- ~473
+-- ~476
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -267,6 +273,7 @@ O.DefaultValues = {
     name_text_with_title             = false,
     name_text_with_title_mode        = 1, -- ALL
     name_text_replace_diacritics     = false,
+    name_text_first_mode             = 1,
 
     health_text_enabled      = true,
     health_text_hide_full    = false,

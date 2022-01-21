@@ -128,8 +128,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.name_text_first_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_first_mode:SetPosition('TOPLEFT', self.name_text_abbreviated, 'BOTTOMLEFT', 0, -8);
+    self.name_text_first_mode:SetSize(160, 20);
+    self.name_text_first_mode:SetList(O.Lists.name_text_first_mode);
+    self.name_text_first_mode:SetValue(O.db.name_text_first_mode);
+    self.name_text_first_mode:SetLabel(L['OPTIONS_NAME_TEXT_FIRST_MODE']);
+    self.name_text_first_mode:SetTooltip(L['OPTIONS_NAME_TEXT_FIRST_MODE_TOOLTIP']);
+    self.name_text_first_mode:AddToSearch(button, L['OPTIONS_NAME_TEXT_FIRST_MODE_TOOLTIP'], self.Tabs[1]);
+    self.name_text_first_mode.OnValueChangedCallback = function(_, value)
+        O.db.name_text_first_mode = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     local Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.name_text_abbreviated, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_first_mode, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.name_text_font_value = E.CreateDropdown('font', self.TabsFrames['NameTab'].Content);
