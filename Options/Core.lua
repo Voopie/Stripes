@@ -271,6 +271,7 @@ O.DefaultValues = {
     health_text_enabled      = true,
     health_text_hide_full    = false,
     health_text_show_only_on_target = false,
+    health_text_frame_strata = 4, -- MEDIUM
     health_text_display_mode = 1,
     health_text_show_pct_sign = true,
     health_text_font_value   = 'BigNoodleToo Titling',
@@ -294,6 +295,7 @@ O.DefaultValues = {
 
     level_text_enabled        = true,
     level_text_show_only_on_target = false,
+    level_text_frame_strata   = 4, -- MEDIUM
     level_text_hide_max       = false,
     level_text_font_value     = 'BigNoodleToo Titling',
     level_text_font_size      = 11,

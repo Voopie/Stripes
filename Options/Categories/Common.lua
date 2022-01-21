@@ -505,8 +505,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.health_text_frame_strata = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_frame_strata:SetPosition('TOPLEFT', self.health_text_custom_color_enabled, 'BOTTOMLEFT', 0, -10);
+    self.health_text_frame_strata:SetSize(160, 20);
+    self.health_text_frame_strata:SetList(O.Lists.frame_strata);
+    self.health_text_frame_strata:SetValue(O.db.health_text_frame_strata);
+    self.health_text_frame_strata:SetLabel(L['FRAME_STRATA']);
+    self.health_text_frame_strata:SetTooltip(L['OPTIONS_HEALTH_TEXT_FRAME_STRATA_TOOLTIP']);
+    self.health_text_frame_strata:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FRAME_STRATA_TOOLTIP'], self.Tabs[2]);
+    self.health_text_frame_strata.OnValueChangedCallback = function(_, value)
+        O.db.health_text_frame_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['HealthTextTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.health_text_custom_color_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.health_text_frame_strata, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.health_text_font_value = E.CreateDropdown('font', self.TabsFrames['HealthTextTab'].Content);
@@ -820,8 +833,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.level_text_frame_strata = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_frame_strata:SetPosition('TOPLEFT', self.level_text_use_diff_color, 'BOTTOMLEFT', 0, -10);
+    self.level_text_frame_strata:SetSize(160, 20);
+    self.level_text_frame_strata:SetList(O.Lists.frame_strata);
+    self.level_text_frame_strata:SetValue(O.db.level_text_frame_strata);
+    self.level_text_frame_strata:SetLabel(L['FRAME_STRATA']);
+    self.level_text_frame_strata:SetTooltip(L['OPTIONS_LEVEL_TEXT_FRAME_STRATA_TOOLTIP']);
+    self.level_text_frame_strata:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FRAME_STRATA_TOOLTIP'], self.Tabs[3]);
+    self.level_text_frame_strata.OnValueChangedCallback = function(_, value)
+        O.db.level_text_frame_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['LevelTextTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.level_text_use_diff_color, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.level_text_frame_strata, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.level_text_font_value = E.CreateDropdown('font', self.TabsFrames['LevelTextTab'].Content);

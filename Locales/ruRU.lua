@@ -265,6 +265,7 @@ L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP'] = 'Расположение текста
 L['OPTIONS_HEALTH_TEXT_CUSTOM_COLOR_ENABLED'] = 'Свой цвет';
 L['OPTIONS_HEALTH_TEXT_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Использовать свой цвет для текста здоровья';
 L['OPTIONS_HEALTH_TEXT_CUSTOM_COLOR_TOOLTIP'] = 'Свой цвет для текста здоровья';
+L['OPTIONS_HEALTH_TEXT_FRAME_STRATA_TOOLTIP'] = 'Слой текста здоровья';
 L['OPTIONS_HEALTH_TEXT_BLOCK_MODE'] = 'Режим';
 L['OPTIONS_HEALTH_TEXT_BLOCK_MODE_TOOLTIP'] = 'Режим отображения текста здоровья';
 L['OPTIONS_HEALTH_TEXT_SINGLE_BLOCK_HEADER'] = 'Одиночный';
@@ -290,6 +291,7 @@ L['OPTIONS_LEVEL_TEXT_ANCHOR_TOOLTIP'] = 'Расположение текста 
 L['OPTIONS_LEVEL_TEXT_CUSTOM_COLOR_ENABLED'] = 'Свой цвет';
 L['OPTIONS_LEVEL_TEXT_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Использовать свой цвет для текста уровня';
 L['OPTIONS_LEVEL_TEXT_CUSTOM_COLOR_TOOLTIP'] = 'Свой цвет для текста уровня';
+L['OPTIONS_LEVEL_TEXT_FRAME_STRATA_TOOLTIP'] = 'Слой текста уровня';
 
 L['OPTIONS_HEALTHBAR_TAB_COMMON'] = 'Основное';
 L['OPTIONS_HEALTHBAR_TAB_COLORS'] = 'Цвета';

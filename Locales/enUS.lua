@@ -265,6 +265,7 @@ L['OPTIONS_HEALTH_TEXT_ANCHOR_TOOLTIP'] = 'Health text position';
 L['OPTIONS_HEALTH_TEXT_CUSTOM_COLOR_ENABLED'] = 'Custom color';
 L['OPTIONS_HEALTH_TEXT_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Use custom color for the health text';
 L['OPTIONS_HEALTH_TEXT_CUSTOM_COLOR_TOOLTIP'] = 'Custom color for the health text';
+L['OPTIONS_HEALTH_TEXT_FRAME_STRATA_TOOLTIP'] = 'Strata of the health text';
 L['OPTIONS_HEALTH_TEXT_BLOCK_MODE'] = 'Mode';
 L['OPTIONS_HEALTH_TEXT_BLOCK_MODE_TOOLTIP'] = 'Health text display mode';
 L['OPTIONS_HEALTH_TEXT_SINGLE_BLOCK_HEADER'] = 'Single';
@@ -290,6 +291,7 @@ L['OPTIONS_LEVEL_TEXT_ANCHOR_TOOLTIP'] = 'Level text position';
 L['OPTIONS_LEVEL_TEXT_CUSTOM_COLOR_ENABLED'] = 'Custom color';
 L['OPTIONS_LEVEL_TEXT_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Use custom color for the level text';
 L['OPTIONS_LEVEL_TEXT_CUSTOM_COLOR_TOOLTIP'] = 'Custom color for the level text';
+L['OPTIONS_LEVEL_TEXT_FRAME_STRATA_TOOLTIP'] = 'Strata of the level text';
 
 L['OPTIONS_HEALTHBAR_TAB_COMMON'] = 'General';
 L['OPTIONS_HEALTHBAR_TAB_COLORS'] = 'Colors';

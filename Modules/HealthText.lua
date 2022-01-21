@@ -7,7 +7,7 @@ local LargeNumberFormat = U.LargeNumberFormat;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
-local ENABLED, HIDE_FULL, DISPLAY_MODE, SHOW_PCT_SIGN, PCT_SIGN, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
+local ENABLED, TEXT_FRAME_STRATA, HIDE_FULL, DISPLAY_MODE, SHOW_PCT_SIGN, PCT_SIGN, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
 local BLOCK_1_TEXT_ANCHOR, BLOCK_1_TEXT_X_OFFSET, BLOCK_1_TEXT_Y_OFFSET, BLOCK_2_TEXT_ANCHOR, BLOCK_2_TEXT_X_OFFSET, BLOCK_2_TEXT_Y_OFFSET;
 local IS_DOUBLE, DISPLAY_MODE_BLOCK_1, DISPLAY_MODE_BLOCK_2;
@@ -115,6 +115,12 @@ local function UpdateStyle(unitframe)
         unitframe.HealthText.LeftText:SetTextColor(1, 1, 1, 1);
         unitframe.HealthText.RightText:SetTextColor(1, 1, 1, 1);
     end
+
+    if TEXT_FRAME_STRATA == 1 then
+        unitframe.HealthText:SetFrameStrata(unitframe.HealthText:GetParent():GetFrameStrata());
+    else
+        unitframe.HealthText:SetFrameStrata(TEXT_FRAME_STRATA);
+    end
 end
 
 function Module:UnitAdded(unitframe)
@@ -140,6 +146,8 @@ function Module:UpdateLocalConfig()
     ENABLED      = O.db.health_text_enabled;
     HIDE_FULL    = O.db.health_text_hide_full;
     DISPLAY_MODE = math.max(math.min(O.db.health_text_display_mode, #UpdateHealthTextFormat), 1);
+
+    TEXT_FRAME_STRATA = O.db.health_text_frame_strata ~= 1 and O.Lists.frame_strata[O.db.health_text_frame_strata] or 1;
 
     SHOW_PCT_SIGN = O.db.health_text_show_pct_sign;
     PCT_SIGN      = SHOW_PCT_SIGN and '%%' or '';

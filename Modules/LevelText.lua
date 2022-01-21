@@ -12,7 +12,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local NP = S.NamePlates;
 
 -- Local Config
-local ENABLED, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR, CUSTOM_COLOR_TEXT;
+local ENABLED, TEXT_FRAME_STRATA, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR, CUSTOM_COLOR_TEXT;
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
 local SHOW_ONLY_ON_TARGET;
 
@@ -62,6 +62,12 @@ end
 local function UpdateStyle(unitframe)
     unitframe.LevelText.text:ClearAllPoints();
     PixelUtil.SetPoint(unitframe.LevelText.text, TEXT_ANCHOR, unitframe.LevelText, TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET);
+
+    if TEXT_FRAME_STRATA == 1 then
+        unitframe.LevelText:SetFrameStrata(unitframe.LevelText:GetParent():GetFrameStrata());
+    else
+        unitframe.LevelText:SetFrameStrata(TEXT_FRAME_STRATA);
+    end
 end
 
 function Module:UnitAdded(unitframe)
@@ -87,6 +93,8 @@ function Module:UpdateLocalConfig()
     ENABLED        = O.db.level_text_enabled;
     HIDE_MAX       = O.db.level_text_hide_max;
     USE_DIFF_COLOR = O.db.level_text_use_diff_color;
+
+    TEXT_FRAME_STRATA = O.db.level_text_frame_strata ~= 1 and O.Lists.frame_strata[O.db.level_text_frame_strata] or 1;
 
     TEXT_ANCHOR   = O.Lists.frame_points_simple[O.db.level_text_anchor];
     TEXT_X_OFFSET = O.db.level_text_x_offset;
