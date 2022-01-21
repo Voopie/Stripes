@@ -723,6 +723,10 @@ function StripesCastingBar_OnUpdate(self, elapsed)
             self.Spark:SetPoint('CENTER', self, 'LEFT', sparkPosition, self.Spark.offsetY or 2);
         end
 
+        if self.TargetText then
+            UpdateCastTargetName(self);
+        end
+
         UpdateInterruptReadyColorAndTick(self);
     elseif self.channeling then
         self.value = self.value - elapsed;
@@ -736,6 +740,10 @@ function StripesCastingBar_OnUpdate(self, elapsed)
 
         if self.Flash then
             self.Flash:Hide();
+        end
+
+        if self.TargetText then
+            UpdateCastTargetName(self);
         end
 
         UpdateInterruptReadyColorAndTick(self);
