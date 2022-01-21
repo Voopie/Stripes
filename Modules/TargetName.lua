@@ -103,6 +103,7 @@ local function Create(unitframe)
 
     unitframe.TargetName = unitframe:CreateFontString(nil, 'OVERLAY', 'StripesNameFont');
     PixelUtil.SetPoint(unitframe.TargetName, 'LEFT', unitframe.name, 'RIGHT', 2, 0);
+    unitframe.TargetName:SetDrawLayer('OVERLAY', 7);
     unitframe.TargetName:SetTextColor(1, 1, 1, 1);
     unitframe.TargetName:SetShown(false);
 end
