@@ -9,6 +9,7 @@ local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitG
 local GetUnitColor = U.GetUnitColor;
 local ShouldShowName = Stripes.ShouldShowName;
 local utf8sub = U.UTF8SUB;
+local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyModeAndFriendly;
 
 -- Libraries
 local LT = S.Libraries.LT;
@@ -18,8 +19,10 @@ local LDC = S.Libraries.LDC;
 local ENABLED, ONLY_ENEMY, NOT_ME, ROLE_ICON;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
+local NAME_ONLY_MODE;
 
 local PlayerData = D.Player;
+local PlayerState = D.Player.State;
 local YOU = YOU;
 
 local partyRolesCache = {};
@@ -108,6 +111,14 @@ local function Create(unitframe)
     unitframe.TargetName:SetShown(false);
 end
 
+local function Update(unitframe)
+    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
+        unitframe.TargetName:SetParent(unitframe);
+    else
+        unitframe.TargetName:SetParent(unitframe.healthBar);
+    end
+end
+
 local function Reset(unitframe)
     if unitframe.TargetName then
         unitframe.TargetName:SetText('');
@@ -116,6 +127,7 @@ end
 
 function Module:UnitAdded(unitframe)
     Create(unitframe);
+    Update(unitframe);
     Reset(unitframe);
     TargetChanged(unitframe);
 end
@@ -125,6 +137,7 @@ function Module:UnitRemoved(unitframe)
 end
 
 function Module:Update(unitframe)
+    Update(unitframe);
     Reset(unitframe);
     TargetChanged(unitframe);
 end
@@ -140,6 +153,8 @@ function Module:UpdateLocalConfig()
 
     NAME_TRANSLIT           = O.db.name_text_translit;
     NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
+
+    NAME_ONLY_MODE = O.db.name_only_friendly_mode;
 
     if ENABLED then
         Stripes.Updater:Add('TargetName', OnUpdate);
@@ -204,5 +219,8 @@ function Module:StartUp()
     self:RegisterEvent('PLAYER_LOGIN');
     self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED');
     self:RegisterEvent('GROUP_ROSTER_UPDATE');
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', TargetChanged);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
+        Update(unitframe);
+        TargetChanged(unitframe);
+    end);
 end
