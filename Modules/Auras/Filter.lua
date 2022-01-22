@@ -8,7 +8,7 @@ local ipairs = ipairs;
 local CooldownFrame_Set, AuraUtil_ForEachAura = CooldownFrame_Set, AuraUtil.ForEachAura;
 
 -- Local Config
-local ENABLED, BLACKLIST_ENABLED;
+local ENABLED, BLACKLIST_ENABLED, SPACING_X;
 
 local units = {
     ['player']  = true,
@@ -145,6 +145,7 @@ end
 local function Update(unitframe)
     unitframe.BuffFrame.ShouldShowBuff = FilterShouldShowBuff;
     unitframe.BuffFrame.UpdateBuffs    = UpdateBuffs;
+	unitframe.BuffFrame.spacing        = SPACING_X;
 
     if unitframe.BuffFrame.unit and unitframe.BuffFrame.filter then
         unitframe.BuffFrame:UpdateBuffs(unitframe.BuffFrame.unit, unitframe.BuffFrame.filter, unitframe.data.unitType == 'FRIENDLY_PLAYER');
@@ -162,6 +163,7 @@ end
 function Module:UpdateLocalConfig()
     ENABLED           = O.db.auras_filter_player_enabled;
     BLACKLIST_ENABLED = O.db.auras_blacklist_enabled;
+	SPACING_X         = O.db.auras_spacing_x or 4;
 
     UpdateBlacklistCache();
 end

@@ -26,6 +26,7 @@ L['CATEGORY'] = 'Category';
 L['COLOR_CATEGORY'] = 'Color category';
 L['CUSTOM_COLOR_CATEGORY'] = 'Custom color category';
 L['NOT_CHOSEN'] = 'Not chosen';
+L['SPACING'] = 'Spacing';
 
 L['MISSING_TEXTURE'] = 'Missing texture';
 L['MISSING_FONT'] = 'Missing font';
@@ -807,6 +808,7 @@ L['OPTIONS_AURAS_BLACKLIST_BUTTON_CLOSE'] = 'Close the blacklist';
 L['OPTIONS_AURAS_SQUARE'] = 'Square';
 L['OPTIONS_AURAS_SQUARE_TOOLTIP'] = 'Display auras as square, not rectangular';
 L['OPTIONS_AURAS_SCALE_TOOLTIP'] = 'Scale of auras';
+L['OPTIONS_AURAS_OFFSET_X_TOOLTIP'] = 'Horizontal offset of auras';
 L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP'] = 'Vertical offset of auras';
 L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED'] = 'Coloring by aura';
 L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP'] = 'Turn on the coloring of the health bar depending on the presence of a given aura';
@@ -816,6 +818,7 @@ L['OPTIONS_AURAS_MASQUE_SUPPORT'] = '«Masque» support';
 L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'] = 'Enable aura appearance customization via «Masque» addon';
 L['OPTIONS_AURAS_BORDER_HIDE'] = 'Hide the border';
 L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP'] = 'Hide the aura border';
+L['OPTIONS_AURAS_SPACING_X_TOOLTIP'] = 'Horizontal spacing between auras';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Show auras that can be dispelled';

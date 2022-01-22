@@ -57,22 +57,22 @@ local function UpdateAnchor(unitframe)
     if not unitframe.BuffFrame.buffList[1] or not unitframe.BuffFrame.buffList[1]:IsShown() then
         if ShouldShowName(unitframe) then
             if STATIC_POSITION then
-                PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1 + OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
             else
                 local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
                 local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;    
-                PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1 + OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             end
         else
             if STATIC_POSITION then
-                PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1 + OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
+                PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
             else
                 local offset = unitframe.BuffFrame:GetBaseYOffset() + (UnitIsUnit(unitframe.data.unit, 'target') and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
                 PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             end
         end
 
-        PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'LEFT', unitframe.healthBar, 'LEFT', -1 + OFFSET_X, 0);
+        PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, 0);
     else
         if STATIC_POSITION then
             PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1 + OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
@@ -80,7 +80,7 @@ local function UpdateAnchor(unitframe)
             unitframe.AurasSpellSteal:SetPoint('BOTTOM', unitframe.BuffFrame, 'TOP', OFFSET_X, 4 + OFFSET_Y);
         end
 
-        PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'LEFT', unitframe.healthBar, 'LEFT', -1 + OFFSET_X, 0);
+        PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, 0);
     end
 end
 

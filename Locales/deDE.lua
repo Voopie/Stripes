@@ -26,6 +26,7 @@ L['CATEGORY'] = 'Kategorie';
 L['COLOR_CATEGORY'] = 'Farbkategorie';
 L['CUSTOM_COLOR_CATEGORY'] = 'Benutzerdefinierte Farbkategorie';
 L['NOT_CHOSEN'] = 'Nicht ausgewählt';
+L['SPACING'] = 'Abstände';
 
 L['MISSING_TEXTURE'] = 'Fehlende Textur';
 L['MISSING_FONT'] = 'Fehlende Schriftart';
@@ -807,6 +808,7 @@ L['OPTIONS_AURAS_BLACKLIST_BUTTON_CLOSE'] = 'Die schwarze Liste schließen';
 L['OPTIONS_AURAS_SQUARE'] = 'Quadrat';
 L['OPTIONS_AURAS_SQUARE_TOOLTIP'] = 'Auren quadratisch anzeigen, nicht rechteckig';
 L['OPTIONS_AURAS_SCALE_TOOLTIP'] = 'Skalierung der Auren';
+L['OPTIONS_AURAS_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz der Auras';
 L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz der Auras';
 L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED'] = 'Einfärbung nach Aura';
 L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP'] = 'Einschalten der Färbung des Gesundheitsbalkens in Abhängigkeit vom Vorhandensein einer bestimmten Aura';
@@ -816,6 +818,7 @@ L['OPTIONS_AURAS_MASQUE_SUPPORT'] = 'Unterstützung für das «Masque»-Addon';
 L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'] = 'Anpassung des Aussehens von Aura über das Addon «Masque» aktivieren';
 L['OPTIONS_AURAS_BORDER_HIDE'] = 'Den Rahmen ausblenden';
 L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP'] = 'Den Aurarahmen ausblenden';
+L['OPTIONS_AURAS_SPACING_X_TOOLTIP'] = 'Horizontale Abstände zwischen den Auren';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Auren anzeigen, die gebannt werden können';

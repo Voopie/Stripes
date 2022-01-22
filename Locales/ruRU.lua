@@ -26,6 +26,7 @@ L['CATEGORY'] = 'Категория';
 L['COLOR_CATEGORY'] = 'Цветовая категория';
 L['CUSTOM_COLOR_CATEGORY'] = 'Своя цветовая категория';
 L['NOT_CHOSEN'] = 'Не выбрано';
+L['SPACING'] = 'Промежуток';
 
 L['MISSING_TEXTURE'] = 'Нет текстуры';
 L['MISSING_FONT'] = 'Нет шрифта';
@@ -807,6 +808,7 @@ L['OPTIONS_AURAS_BLACKLIST_BUTTON_CLOSE'] = 'Закрыть чёрный спи�
 L['OPTIONS_AURAS_SQUARE'] = 'Квадратные';
 L['OPTIONS_AURAS_SQUARE_TOOLTIP'] = 'Отображать ауры квадратными, а не прямоугольными';
 L['OPTIONS_AURAS_SCALE_TOOLTIP'] = 'Масштаб аур';
+L['OPTIONS_AURAS_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение аур';
 L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение аур';
 L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED'] = 'Окрашивание по ауре';
 L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP'] = 'Включить окрашивание полосы здоровья в зависимости от наличия заданной ауры';
@@ -816,6 +818,7 @@ L['OPTIONS_AURAS_MASQUE_SUPPORT'] = 'Поддержка Masque';
 L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'] = 'Включить поддержку кастомизации внешнего вида аур через Masque';
 L['OPTIONS_AURAS_BORDER_HIDE'] = 'Скрыть рамку';
 L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP'] = 'Скрыть рамку вокруг аур';
+L['OPTIONS_AURAS_SPACING_X_TOOLTIP'] = 'Горизонтальный промежуток между аурами';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';
