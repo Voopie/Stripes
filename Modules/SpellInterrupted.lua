@@ -16,7 +16,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local NP = S.NamePlates;
 
 -- Local Config
-local ENABLED, CASTER_NAME_SHOW, FRAME_STRATA;
+local ENABLED, SIZE, CASTER_NAME_SHOW, FRAME_STRATA;
 
 local StripesSpellInterruptedCooldownFont = CreateFont('StripesSpellInterruptedCooldownFont');
 local StripesSpellInterruptedCasterFont   = CreateFont('StripesSpellInterruptedCasterFont');
@@ -66,7 +66,7 @@ local function Create(unitframe)
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
     frame.icon:SetPoint('LEFT', unitframe.healthBar, 'RIGHT', 4, 0);
     frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
-    frame.icon:SetSize(20, 20);
+    frame.icon:SetSize(SIZE, SIZE);
 
     frame.border = frame:CreateTexture(nil, 'BORDER');
     frame.border:SetPoint('TOPLEFT', frame.icon, 'TOPLEFT', -1, 1);
@@ -101,6 +101,8 @@ local function Update(unitframe)
         else
             unitframe.SpellInterrupted:SetFrameStrata(FRAME_STRATA);
         end
+
+        unitframe.SpellInterrupted.icon:SetSize(SIZE, SIZE);
 
         unitframe.SpellInterrupted:SetShown(unitframe.SpellInterrupted.expTime > GetTime() and unitframe.data.unitGUID == unitframe.SpellInterrupted.destGUID);
     else
@@ -216,6 +218,7 @@ end
 
 function Module:UpdateLocalConfig()
     ENABLED          = O.db.spell_interrupted_icon;
+    SIZE             = O.db.spell_interrupted_icon_size;
     CASTER_NAME_SHOW = O.db.spell_interrupted_icon_caster_name_show;
     FRAME_STRATA     = O.db.spell_interrupted_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.spell_interrupted_icon_frame_strata] or 1;
 

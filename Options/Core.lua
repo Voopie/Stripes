@@ -597,6 +597,7 @@ O.DefaultValues = {
     combat_indicator_offset_y         = 0,
 
     spell_interrupted_icon  = true,
+    spell_interrupted_icon_size = 20,
     spell_interrupted_icon_frame_strata            = 5, -- HIGH
     spell_interrupted_icon_countdown_font_value    = 'BigNoodleToo Titling',
     spell_interrupted_icon_countdown_font_size     = 14,

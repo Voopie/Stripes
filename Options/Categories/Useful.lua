@@ -244,8 +244,20 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.spell_interrupted_icon_size = E.CreateSlider(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.spell_interrupted_icon_size:SetPosition('LEFT', self.spell_interrupted_icon.Label, 'RIGHT', 16, 0);
+    self.spell_interrupted_icon_size:SetValues(O.db.spell_interrupted_icon_size, 2, 40, 1);
+    self.spell_interrupted_icon_size:SetLabel(L['OPTIONS_SPELL_INTERRUPTED_ICON_SIZE']);
+    self.spell_interrupted_icon_size:SetLabelPosition('LEFT');
+    self.spell_interrupted_icon_size:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_SIZE_TOOLTIP']);
+    self.spell_interrupted_icon_size:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_SIZE_TOOLTIP'], self.Tabs[3]);
+    self.spell_interrupted_icon_size.OnValueChangedCallback = function(_, value)
+        O.db.spell_interrupted_icon_size = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.spell_interrupted_icon_frame_strata = E.CreateDropdown('plain', self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_icon_frame_strata:SetPosition('LEFT', self.spell_interrupted_icon.Label, 'RIGHT', 16, 0);
+    self.spell_interrupted_icon_frame_strata:SetPosition('LEFT', self.spell_interrupted_icon_size, 'RIGHT', 16, 0);
     self.spell_interrupted_icon_frame_strata:SetSize(160, 20);
     self.spell_interrupted_icon_frame_strata:SetList(O.Lists.frame_strata);
     self.spell_interrupted_icon_frame_strata:SetValue(O.db.spell_interrupted_icon_frame_strata);
