@@ -828,6 +828,7 @@ L['OPTIONS_AURAS_SPELLSTEAL_GLOW_ENABLED_TOOLTIP'] = 'Show glow on dispellable a
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_TYPE_TOOLTIP'] = 'Type of dispellable auras glow';
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_COLOR_TOOLTIP'] = 'Color of dispellable auras glow';
 L['OPTIONS_AURAS_SPELLSTEAL_SCALE_TOOLTIP'] = 'Scale of dispellable auras';
+L['OPTIONS_AURAS_SPELLSTEAL_SPACING_X_TOOLTIP'] = 'Horizontal spacing between dispellable auras';
 L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_X_TOOLTIP'] = 'Horizontal offset of dispellable auras';
 L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_Y_TOOLTIP'] = 'Vertical offset of dispellable auras';
 L['OPTIONS_AURAS_SPELLSTEAL_STATIC_POSITION'] = 'Static position';

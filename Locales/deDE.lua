@@ -828,6 +828,7 @@ L['OPTIONS_AURAS_SPELLSTEAL_GLOW_ENABLED_TOOLTIP'] = 'Glühen bei auflösbaren A
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_TYPE_TOOLTIP'] = 'Art des Glühens bei zerstörbaren Auren';
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_COLOR_TOOLTIP'] = 'Farbe des auflösbaren Aurenglühens';
 L['OPTIONS_AURAS_SPELLSTEAL_SCALE_TOOLTIP'] = 'Skala der zerstörbaren Auren';
+L['OPTIONS_AURAS_SPELLSTEAL_SPACING_X_TOOLTIP'] = 'Horizontaler Abstand zwischen zerstörbaren Auren';
 L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz der zerstreubaren Auren';
 L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz der zerstreubaren Auren';
 L['OPTIONS_AURAS_SPELLSTEAL_STATIC_POSITION'] = 'Statische Position';

@@ -828,6 +828,7 @@ L['OPTIONS_AURAS_SPELLSTEAL_GLOW_ENABLED_TOOLTIP'] = 'Включить свеч�
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_TYPE_TOOLTIP'] = 'Тип свечения развеиваемых аур';
 L['OPTIONS_AURAS_SPELLSTEAL_GLOW_COLOR_TOOLTIP'] = 'Цвет свечения развеиваемых аур';
 L['OPTIONS_AURAS_SPELLSTEAL_SCALE_TOOLTIP'] = 'Масштаб развеиваемых аур';
+L['OPTIONS_AURAS_SPELLSTEAL_SPACING_X_TOOLTIP'] = 'Горизонтальный промежуток между развеиваемыми аурами';
 L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение развеиваемых аур';
 L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение развеиваемых аур';
 L['OPTIONS_AURAS_SPELLSTEAL_STATIC_POSITION'] = 'Статичное расположение';

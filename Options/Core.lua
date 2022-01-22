@@ -238,7 +238,7 @@ O.Lists = {
     },
 };
 
--- ~486
+-- ~487
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -392,7 +392,7 @@ O.DefaultValues = {
     current_target_custom_texture_enabled = false,
     current_target_custom_texture_value   = 'Bars',
     current_target_custom_texture_overlay = false,
-    current_target_custom_texture_overlay_alpha = 0.25,
+    current_target_custom_texture_overlay_alpha = 0.5,
 
     execution_enabled      = false,
     execution_low_percent  = 30,
@@ -672,6 +672,7 @@ O.DefaultValues = {
     auras_spellsteal_enabled              = true,
     auras_spellsteal_scale                = 1,
     auras_spellsteal_static_position      = false,
+    auras_spellsteal_spacing_x            = 4,
     auras_spellsteal_offset_x             = 0,
     auras_spellsteal_offset_y             = 0,
     auras_spellsteal_color                = { 1, 0.95, 0.35, 1 },

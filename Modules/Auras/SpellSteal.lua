@@ -25,6 +25,7 @@ local GLOW_ENABLED, GLOW_TYPE, GLOW_COLOR;
 local BORDER_HIDE;
 local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
+local SPACING_X;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -43,8 +44,8 @@ local function CreateAnchor(unitframe)
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentAurasSpellSteal', unitframe);
-    frame:SetPoint('LEFT', unitframe.healthBar, 'LEFT', -1, 0);
+    local frame = CreateFrame('Frame', '$parentAurasSpellSteal', unitframe, 'HorizontalLayoutFrame');
+    frame:SetPoint('LEFT', unitframe.healthBar, 'LEFT', 0, 0);
     frame:SetPoint('BOTTOM', unitframe.BuffFrame, 'TOP', 0, 4);
     frame:SetHeight(14);
 
@@ -60,7 +61,7 @@ local function UpdateAnchor(unitframe)
                 PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
             else
                 local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
-                local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;    
+                local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
                 PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             end
         else
@@ -164,9 +165,6 @@ local function Update(unitframe)
                 unitframe.AurasSpellSteal.buffList[buffIndex] = aura;
             end
 
-            aura:ClearAllPoints();
-            aura:SetPoint('TOPLEFT', (buffIndex - 1) * 22, 0);
-
             aura:SetID(index);
 
             aura.Icon:SetTexture(texture);
@@ -215,6 +213,8 @@ local function Update(unitframe)
             unitframe.AurasSpellSteal:SetShown(false);
         end
     end
+
+    unitframe.AurasSpellSteal:Layout();
 end
 
 local function UpdateStyle(unitframe)
@@ -264,6 +264,9 @@ end
 
 function Module:UnitAdded(unitframe)
     CreateAnchor(unitframe);
+
+    unitframe.AurasSpellSteal.spacing = SPACING_X;
+
     Update(unitframe);
 end
 
@@ -278,6 +281,8 @@ function Module:UnitAura(unitframe)
 end
 
 function Module:Update(unitframe)
+    unitframe.AurasSpellSteal.spacing = SPACING_X;
+
     Update(unitframe);
     UpdateStyle(unitframe);
 end
@@ -337,6 +342,8 @@ function Module:UpdateLocalConfig()
     TEXT_COUNT_COLOR[2] = O.db.auras_spellsteal_count_color[2];
     TEXT_COUNT_COLOR[3] = O.db.auras_spellsteal_count_color[3];
     TEXT_COUNT_COLOR[4] = O.db.auras_spellsteal_count_color[4] or 1;
+
+    SPACING_X = O.db.auras_spellsteal_spacing_x or 4;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);
