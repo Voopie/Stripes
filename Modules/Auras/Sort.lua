@@ -53,7 +53,8 @@ local function SortBuffs(unitframe)
 
         for i, data in ipairs(unitframe.SortBuffs) do
             if unitframe.BuffFrame.buffList[data.buffIndex] then
-                unitframe.BuffFrame.buffList[data.buffIndex]:SetPoint('TOPLEFT', (i - 1) * 24, 0);
+                unitframe.BuffFrame.buffList[data.buffIndex].layoutIndex = i;
+                unitframe.BuffFrame:Layout();
             end
         end
     end
