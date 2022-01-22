@@ -7,15 +7,15 @@ local wasHidedInCombat, wasNotified = false, false;
 local needReloadTable = {};
 
 StaticPopupDialogs['STRIPES_OPTIONS_NEED_RELOAD'] = {
-	text    = L['OPTIONS_NEED_RELOAD'],
-	button1 = YES,
-	button2 = NO,
-	OnAccept = function()
-		C_UI.Reload();
-	end,
+    text    = L['OPTIONS_NEED_RELOAD'],
+    button1 = YES,
+    button2 = NO,
+    OnAccept = function()
+        C_UI.Reload();
+    end,
     hideOnEscape = true,
-	whileDead = 1,
-	preferredIndex = STATICPOPUPS_NUMDIALOGS,
+    whileDead = 1,
+    preferredIndex = STATICPOPUPS_NUMDIALOGS,
 };
 
 local function BetterOnDragStop(frame, saveTable)
@@ -86,7 +86,7 @@ O.frame:SetScript('OnKeyDown', function(self, key)
         end
 
         self:SetPropagateKeyboardInput(false);
-	end
+    end
 end);
 
 O.OpenOptions = function()

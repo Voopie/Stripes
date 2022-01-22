@@ -82,14 +82,14 @@ U.UnitIsCasting = function(unit)
 end
 
 U.IsPlayerEffectivelyTank = function ()
-	local assignedRole = UnitGroupRolesAssigned(PLAYER_UNIT);
+    local assignedRole = UnitGroupRolesAssigned(PLAYER_UNIT);
 
-	if assignedRole == 'NONE' then
-		local spec = GetSpecialization();
-		return spec and GetSpecializationRole(spec) == 'TANK';
-	end
+    if assignedRole == 'NONE' then
+        local spec = GetSpecialization();
+        return spec and GetSpecializationRole(spec) == 'TANK';
+    end
 
-	return assignedRole == 'TANK';
+    return assignedRole == 'TANK';
 end
 
 U.IsInArena = function()
@@ -328,33 +328,33 @@ end
 
 -- Colors
 U.RGB2HEX = function(r, g, b)
-	if type(r) == 'table' then
-		if r.r then
-			r, g, b = r.r, r.g, r.b;
-		else
-			r, g, b = unpack(r);
-		end
-	end
+    if type(r) == 'table' then
+        if r.r then
+            r, g, b = r.r, r.g, r.b;
+        else
+            r, g, b = unpack(r);
+        end
+    end
 
-	if not r or not g or not b then
-		r, g, b = 1, 1, 1;
-	end
+    if not r or not g or not b then
+        r, g, b = 1, 1, 1;
+    end
 
     return string_format('%02x%02x%02x', r * 255, g * 255, b * 255);
 end
 
 U.RGB2CFFHEX = function(r, g, b)
-	if type(r) == 'table' then
-		if r.r then
-			r, g, b = r.r, r.g, r.b;
-		else
-			r, g, b = unpack(r);
-		end
-	end
+    if type(r) == 'table' then
+        if r.r then
+            r, g, b = r.r, r.g, r.b;
+        else
+            r, g, b = unpack(r);
+        end
+    end
 
-	if not r or not g or not b then
-		r, g, b = 1, 1, 1;
-	end
+    if not r or not g or not b then
+        r, g, b = 1, 1, 1;
+    end
 
     return string_format('|cff%02x%02x%02x', r * 255, g * 255, b * 255);
 end

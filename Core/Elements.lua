@@ -1042,7 +1042,7 @@ E.CreateHeader = function(parent, text)
     local right = Mixin(frame:CreateTexture(nil, 'BACKGROUND'), E.PixelPerfectMixin);
     right:SetPosition('RIGHT', frame, 'RIGHT', 0, 0);
     right:SetPosition('LEFT', label, 'RIGHT', 5, 0);
-	right:SetH(2);
+    right:SetH(2);
     right:SetTexture('Interface\\Buttons\\WHITE8x8');
     right:SetVertexColor(0.4, 0.4, 0.4, 1);
 

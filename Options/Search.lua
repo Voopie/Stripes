@@ -124,18 +124,18 @@ function Module:TabHandling(editbox)
     editbox.tabIndex = editbox.tabIndex or 0;
 
     if IsShiftKeyDown() then
-		editbox.tabIndex = editbox.tabIndex - 1;
-	else
-		editbox.tabIndex = editbox.tabIndex + 1;
-	end
+        editbox.tabIndex = editbox.tabIndex - 1;
+    else
+        editbox.tabIndex = editbox.tabIndex + 1;
+    end
 
     if editbox.tabIndex <= 0 then
-		editbox.tabIndex = #buttons;
-	elseif editbox.tabIndex > #buttons then
-		editbox.tabIndex = 1;
-	end
+        editbox.tabIndex = #buttons;
+    elseif editbox.tabIndex > #buttons then
+        editbox.tabIndex = 1;
+    end
 
-	buttons[editbox.tabIndex]:SetFocus();
+    buttons[editbox.tabIndex]:SetFocus();
 end
 
 function Module:KeyHandling(editbox, key)
@@ -150,20 +150,20 @@ function Module:KeyHandling(editbox, key)
     editbox.tabIndex = editbox.tabIndex or 0;
 
     if key == 'UP' then
-		editbox.tabIndex = editbox.tabIndex - 1;
-	elseif key == 'DOWN' then
-		editbox.tabIndex = editbox.tabIndex + 1;
+        editbox.tabIndex = editbox.tabIndex - 1;
+    elseif key == 'DOWN' then
+        editbox.tabIndex = editbox.tabIndex + 1;
     else
         self:EnterHandling();
-	end
+    end
 
     if editbox.tabIndex <= 0 then
-		editbox.tabIndex = #buttons;
-	elseif editbox.tabIndex > #buttons then
-		editbox.tabIndex = 1;
-	end
+        editbox.tabIndex = #buttons;
+    elseif editbox.tabIndex > #buttons then
+        editbox.tabIndex = 1;
+    end
 
-	buttons[editbox.tabIndex]:SetFocus();
+    buttons[editbox.tabIndex]:SetFocus();
 end
 
 function Module:AddButton(name, func, numResults, editbox)
