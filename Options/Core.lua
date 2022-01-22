@@ -238,7 +238,7 @@ O.Lists = {
     },
 };
 
--- ~479
+-- ~484
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -387,7 +387,12 @@ O.DefaultValues = {
     target_glow_enabled       = true,
     target_glow_color         = { 1, 1, 1, 1 },
     hover_glow_enabled        = true,
-    target_highlight          = true,
+    current_target_health_bar_coloring = false,
+    current_target_health_bar_color    = { 1, 1, 1, 1 },
+    current_target_custom_texture_enabled = false,
+    current_target_custom_texture_value   = 'Bars',
+    current_target_custom_texture_overlay = false,
+    current_target_custom_texture_overlay_alpha = 0.25,
 
     execution_enabled      = false,
     execution_low_percent  = 30,

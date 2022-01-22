@@ -13,7 +13,6 @@ local NP = S.NamePlates;
 -- Local Config
 local TARGET_INDICATOR_ENABLED, TARGET_GLOW_ENABLED, HOVER_GLOW_ENABLED;
 local TEXTURE, TARGET_INDICATOR_COLOR, TARGET_GLOW_COLOR;
-local TARGET_HIGHLIGHT;
 local SIZE, X_OFFSET, Y_OFFSET;
 
 local INDICATOR_TEXTURES = O.Lists.target_indicator_texture_path;
@@ -91,10 +90,6 @@ local function UpdateTargetSelection(unitframe)
         unitframe.TargetIndicator.glowDown:SetShown(TARGET_GLOW_ENABLED);
     else
         unitframe.TargetIndicator:SetShown(false);
-    end
-
-    if not TARGET_HIGHLIGHT then
-        unitframe.selectionHighlight:SetShown(false);
     end
 end
 
@@ -207,8 +202,6 @@ function Module:UpdateLocalConfig()
     TARGET_GLOW_COLOR[2] = O.db.target_glow_color[2];
     TARGET_GLOW_COLOR[3] = O.db.target_glow_color[3];
     TARGET_GLOW_COLOR[4] = O.db.target_glow_color[4] or 1;
-
-    TARGET_HIGHLIGHT = O.db.target_highlight;
 end
 
 function Module:StartUp()

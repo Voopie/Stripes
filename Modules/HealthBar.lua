@@ -34,6 +34,8 @@ local SHOW_CLICKABLE_AREA, ENEMY_MINUS_HEIGHT, ENEMY_HEIGHT, FRIENDLY_HEIGHT, PL
 local TP_ENABLED, TP_COLORING, TP_POINT, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y;
 local HPBAR_COLOR_DC, HPBAR_COLOR_TAPPED, HPBAR_COLOR_ENEMY_NPC, HPBAR_COLOR_ENEMY_PLAYER, HPBAR_COLOR_FRIENDLY_NPC, HPBAR_COLOR_FRIENDLY_PLAYER, HPBAR_COLOR_NEUTRAL;
 local CUSTOM_BORDER_ENABLED, CUSTOM_BORDER_PATH, CUSTOM_BORDER_WIDTH, CUSTOM_BORDER_HEIGHT, CUSTOM_BORDER_HEIGHT_MINUS, CUSTOM_BORDER_X_OFFSET, CUSTOM_BORDER_Y_OFFSET;
+local CURRENT_TARGET_COLOR_ENABLED, CURRENT_TARGET_COLOR;
+local CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED, CURRENT_TARGET_CUSTOM_TEXTURE_VALUE, CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY, CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA;
 
 local StripesThreatPercentageFont = CreateFont('StripesThreatPercentageFont');
 
@@ -132,11 +134,21 @@ local function UpdateHealthColor(frame)
     if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
         frame.healthBar:SetStatusBarColor(r, g, b, a);
 
-        if frame.optionTable.colorHealthWithExtendedColors then
-            frame.selectionHighlight:SetVertexColor(r, g, b);
-        else
-            frame.selectionHighlight:SetVertexColor(1, 1, 1);
+        if CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
+            if frame.optionTable.colorHealthWithExtendedColors then
+                frame.selectionHighlight:SetVertexColor(r, g, b);
+            else
+                frame.selectionHighlight:SetVertexColor(1, 1, 1);
+            end
         end
+    end
+end
+
+local function UpdateOverlayHealthBarTexture(unitframe)
+    if CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY and unitframe.selectionHighlight then
+        unitframe.selectionHighlight:SetBlendMode('BLEND');
+        unitframe.selectionHighlight:SetAlpha(CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA);
+        unitframe.selectionHighlight:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
     end
 end
 
@@ -156,35 +168,39 @@ end
 
 -- Custom Health Bar Color
 local function UpdateCustomHealthBarColor(unitframe)
-    LCG.PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
-    LCG.AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
-    LCG.ButtonGlow_Stop(unitframe.healthBar);
+    if unitframe.healthBar.currentTargetColored then
+        unitframe.healthBar.customColored = nil;
+    else
+        LCG.PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
+        LCG.AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
+        LCG.ButtonGlow_Stop(unitframe.healthBar);
 
-    if CUSTOM_HP_ENABLED and CUSTOM_HP_DATA[unitframe.data.npcId] and CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
-        if CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled or CUSTOM_HP_DATA[unitframe.data.npcId].custom_color_enabled then
-            local color = CUSTOM_HP_DATA[unitframe.data.npcId].color;
-            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+        if CUSTOM_HP_ENABLED and CUSTOM_HP_DATA[unitframe.data.npcId] and CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
+            if CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled or CUSTOM_HP_DATA[unitframe.data.npcId].custom_color_enabled then
+                local color = CUSTOM_HP_DATA[unitframe.data.npcId].color;
+                local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
 
-            if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+                if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+                    unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+                end
+
+                unitframe.healthBar.customColored = true;
+            else
+                unitframe.healthBar.customColored = nil;
             end
 
-            unitframe.healthBar.customColored = true;
+            if CUSTOM_HP_DATA[unitframe.data.npcId].glow_enabled then
+                if CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 1 then
+                    LCG.PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
+                elseif CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 2 then
+                    LCG.AutoCastGlow_Start(unitframe.healthBar, nil, nil, nil, nil, nil, nil, 'S_CUSTOMHP');
+                elseif CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 3 then
+                    LCG.ButtonGlow_Start(unitframe.healthBar);
+                end
+            end
         else
             unitframe.healthBar.customColored = nil;
         end
-
-        if CUSTOM_HP_DATA[unitframe.data.npcId].glow_enabled then
-            if CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 1 then
-                LCG.PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
-            elseif CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 2 then
-                LCG.AutoCastGlow_Start(unitframe.healthBar, nil, nil, nil, nil, nil, nil, 'S_CUSTOMHP');
-            elseif CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 3 then
-                LCG.ButtonGlow_Start(unitframe.healthBar);
-            end
-        end
-    else
-        unitframe.healthBar.customColored = nil;
     end
 end
 
@@ -315,7 +331,11 @@ local function UpdateAurasColor(unitframe)
         return false;
     end
 
-    unitframe.healthBar:SetStatusBarColor(r, g, b, a or 1);
+    local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+    if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
+        unitframe.healthBar:SetStatusBarColor(r, g, b, a or 1);
+    end
 
     return true;
 end
@@ -334,7 +354,13 @@ local function UpdateRaidTarget(unitframe)
     end
 
     if RAID_TARGET_COLORS[raidIndex] then
-        unitframe.healthBar:SetStatusBarColor(unpack(RAID_TARGET_COLORS[raidIndex]));
+        local color = RAID_TARGET_COLORS[raidIndex];
+        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+        if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+            unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+        end
+
         unitframe.data.raidIndex = raidIndex;
 
         return true;
@@ -362,13 +388,29 @@ local function UpdateRaidTargetColor(unitframe)
     end
 end
 
+local function UpdateCurrentTargetColor(unitframe)
+    if CURRENT_TARGET_COLOR_ENABLED and unitframe.data.isTarget then
+        local color = CURRENT_TARGET_COLOR;
+        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+        if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+            unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+        end
+
+        unitframe.healthBar.currentTargetColored = true;
+    else
+        unitframe.healthBar.currentTargetColored = nil;
+    end
+end
+
 --[[
     Coloring prio:
-    1) Custom
-    2) Raid target
-    3) Aura
-    4) Execution
-    5) Threat
+    1) Current target
+    2) Custom
+    3) Raid target
+    4) Aura
+    5) Execution
+    6) Threat
 ]]
 
 function Module.UpdateHealthBar(unitframe)
@@ -376,11 +418,12 @@ function Module.UpdateHealthBar(unitframe)
         return;
     end
 
+    UpdateCurrentTargetColor(unitframe);
     UpdateCustomHealthBarColor(unitframe);
     UpdateRaidTargetColor(unitframe);
     UpdateAuraColor(unitframe);
 
-    if unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored or unitframe.healthBar.auraColored then
+    if unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored or unitframe.healthBar.auraColored then
         return;
     end
 
@@ -539,7 +582,27 @@ local function UpdateTexture(unitframe)
     if unitframe.data.unitType == 'SELF' then
         unitframe.healthBar:SetStatusBarTexture(DEFAULT_STATUSBAR_TEXTURE);
     else
-        unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, HEALTH_BAR_TEXTURE));
+        if CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and unitframe.data.isTarget then
+            if CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
+                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, HEALTH_BAR_TEXTURE));
+
+                if unitframe.selectionHighlight then
+                    unitframe.selectionHighlight:Show();
+                end
+            else
+                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
+
+                if unitframe.selectionHighlight then
+                    unitframe.selectionHighlight:Hide();
+                end
+            end
+        else
+            if unitframe.selectionHighlight then
+                unitframe.selectionHighlight:Hide();
+            end
+
+            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, HEALTH_BAR_TEXTURE));
+        end
     end
 end
 
@@ -577,6 +640,8 @@ function Module:UnitAdded(unitframe)
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
 
+    UpdateOverlayHealthBarTexture(unitframe);
+
     Module.UpdateHealthBar(unitframe);
 end
 
@@ -585,6 +650,7 @@ function Module:UnitRemoved(unitframe)
     unitframe.data.raidIndex = nil;
     unitframe.healthBar.customColored = nil;
     unitframe.healthBar.raidTargetColored = nil;
+    unitframe.healthBar.currentTargetColored = nil;
 end
 
 function Module:UnitAura(unitframe)
@@ -601,6 +667,8 @@ function Module:Update(unitframe)
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
+
+    UpdateOverlayHealthBarTexture(unitframe);
 
     Module.UpdateHealthBar(unitframe);
 end
@@ -735,6 +803,18 @@ function Module:UpdateLocalConfig()
     CUSTOM_BORDER_HEIGHT_MINUS = O.db.health_bar_custom_border_height_minus;
     CUSTOM_BORDER_X_OFFSET     = O.db.health_bar_custom_border_x_offset;
     CUSTOM_BORDER_Y_OFFSET     = O.db.health_bar_custom_border_y_offset;
+
+    CURRENT_TARGET_COLOR_ENABLED = O.db.current_target_health_bar_coloring;
+    CURRENT_TARGET_COLOR    = CURRENT_TARGET_COLOR or {};
+    CURRENT_TARGET_COLOR[1] = O.db.current_target_health_bar_color[1];
+    CURRENT_TARGET_COLOR[2] = O.db.current_target_health_bar_color[2];
+    CURRENT_TARGET_COLOR[3] = O.db.current_target_health_bar_color[3];
+    CURRENT_TARGET_COLOR[4] = O.db.current_target_health_bar_color[4] or 1;
+
+    CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED       = O.db.current_target_custom_texture_enabled;
+    CURRENT_TARGET_CUSTOM_TEXTURE_VALUE         = O.db.current_target_custom_texture_value;
+    CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY       = O.db.current_target_custom_texture_overlay;
+    CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA = O.db.current_target_custom_texture_overlay_alpha;
 end
 
 function Module:PLAYER_LOGIN()
@@ -778,6 +858,22 @@ function Module:StartUp()
     self:RegisterEvent('PLAYER_ROLES_ASSIGNED'); -- Just to be sure...
 
     self:RegisterEvent('RAID_TARGET_UPDATE');
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
+        if not CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or not CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
+            if unitframe.selectionHighlight then
+                unitframe.selectionHighlight:Hide();
+            end
+        end
+
+        if CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED then
+            UpdateTexture(unitframe);
+        end
+
+        if CURRENT_TARGET_COLOR_ENABLED then
+            Module.UpdateHealthBar(unitframe);
+        end
+    end);
 
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', UpdateSizes);

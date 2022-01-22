@@ -583,19 +583,8 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.target_highlight = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
-    self.target_highlight:SetPosition('TOPLEFT', self.target_indicator_size, 'BOTTOMLEFT', 0, -12);
-    self.target_highlight:SetLabel(L['OPTIONS_TARGET_HIGHLIGHT']);
-    self.target_highlight:SetTooltip(L['OPTIONS_TARGET_HIGHLIGHT_TOOLTIP']);
-    self.target_highlight:SetChecked(O.db.target_highlight);
-    self.target_highlight:AddToSearch(button, L['OPTIONS_TARGET_HIGHLIGHT_TOOLTIP'], self.Tabs[3]);
-    self.target_highlight.Callback = function(self)
-        O.db.target_highlight = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
     self.target_glow_enabled = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
-    self.target_glow_enabled:SetPosition('TOPLEFT', self.target_highlight, 'BOTTOMLEFT', 0, -12);
+    self.target_glow_enabled:SetPosition('TOPLEFT', self.target_indicator_size, 'BOTTOMLEFT', 0, -12);
     self.target_glow_enabled:SetLabel(L['OPTIONS_TARGET_GLOW_ENABLED']);
     self.target_glow_enabled:SetTooltip(L['OPTIONS_TARGET_GLOW_ENABLED_TOOLTIP']);
     self.target_glow_enabled:AddToSearch(button, nil, self.Tabs[3]);
@@ -627,6 +616,90 @@ panel.Load = function(self)
         O.db.target_glow_color[3] = b;
         O.db.target_glow_color[4] = a or 1;
 
+        Stripes:UpdateAll();
+    end
+
+    self.current_target_health_bar_coloring = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_target_health_bar_coloring:SetPosition('TOPLEFT', self.target_glow_enabled, 'BOTTOMLEFT', 0, -12);
+    self.current_target_health_bar_coloring:SetLabel(L['OPTIONS_CURRENT_TARGET_HEALTH_BAR_COLORING']);
+    self.current_target_health_bar_coloring:SetTooltip(L['OPTIONS_CURRENT_TARGET_HEALTH_BAR_COLORING_TOOLTIP']);
+    self.current_target_health_bar_coloring:AddToSearch(button, nil, self.Tabs[3]);
+    self.current_target_health_bar_coloring:SetChecked(O.db.current_target_health_bar_coloring);
+    self.current_target_health_bar_coloring.Callback = function(self)
+        O.db.current_target_health_bar_coloring = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.current_target_health_bar_color = E.CreateColorPicker(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_target_health_bar_color:SetPosition('LEFT', self.current_target_health_bar_coloring.Label, 'RIGHT', 12, 0);
+    self.current_target_health_bar_color:SetTooltip(L['OPTIONS_CURRENT_TARGET_HEALTH_BAR_COLOR_TOOLTIP']);
+    self.current_target_health_bar_color:AddToSearch(button, L['OPTIONS_CURRENT_TARGET_HEALTH_BAR_COLOR_TOOLTIP'], self.Tabs[3]);
+    self.current_target_health_bar_color:SetValue(unpack(O.db.current_target_health_bar_color));
+    self.current_target_health_bar_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.current_target_health_bar_color[1] = r;
+        O.db.current_target_health_bar_color[2] = g;
+        O.db.current_target_health_bar_color[3] = b;
+        O.db.current_target_health_bar_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    local Delimiter = E.CreateDelimiter(self.TabsFrames['TargetIndicatorTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.current_target_health_bar_coloring, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
+    self.current_target_custom_texture_enabled = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_target_custom_texture_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.current_target_custom_texture_enabled:SetLabel(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED']);
+    self.current_target_custom_texture_enabled:SetTooltip(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED_TOOLTIP']);
+    self.current_target_custom_texture_enabled:AddToSearch(button, nil, self.Tabs[3]);
+    self.current_target_custom_texture_enabled:SetChecked(O.db.current_target_custom_texture_enabled);
+    self.current_target_custom_texture_enabled.Callback = function(self)
+        O.db.current_target_custom_texture_enabled = self:GetChecked();
+
+        panel.current_target_custom_texture_value:SetEnabled(O.db.current_target_custom_texture_enabled);
+        panel.current_target_custom_texture_overlay:SetEnabled(O.db.current_target_custom_texture_enabled);
+        panel.current_target_custom_texture_overlay_alpha:SetEnabled(O.db.current_target_custom_texture_enabled);
+
+        Stripes:UpdateAll();
+    end
+
+    self.current_target_custom_texture_value = E.CreateDropdown('statusbar', self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_target_custom_texture_value:SetPosition('LEFT', self.current_target_custom_texture_enabled.Label, 'RIGHT', 12, 0);
+    self.current_target_custom_texture_value:SetSize(200, 20);
+    self.current_target_custom_texture_value:SetList(LSM:HashTable('statusbar'));
+    self.current_target_custom_texture_value:SetValue(O.db.current_target_custom_texture_value);
+    self.current_target_custom_texture_value:SetTooltip(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_VALUE_TOOLTIP']);
+    self.current_target_custom_texture_value:AddToSearch(button, L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_VALUE_TOOLTIP'], self.Tabs[3]);
+    self.current_target_custom_texture_value:SetEnabled(O.db.current_target_custom_texture_enabled);
+    self.current_target_custom_texture_value.OnValueChangedCallback = function(_, value)
+        O.db.current_target_custom_texture_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.current_target_custom_texture_overlay = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_target_custom_texture_overlay:SetPosition('TOPLEFT', self.current_target_custom_texture_enabled, 'BOTTOMLEFT', 0, -8);
+    self.current_target_custom_texture_overlay:SetLabel(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY']);
+    self.current_target_custom_texture_overlay:SetTooltip(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_TOOLTIP']);
+    self.current_target_custom_texture_overlay:AddToSearch(button, nil, self.Tabs[3]);
+    self.current_target_custom_texture_overlay:SetChecked(O.db.current_target_custom_texture_overlay);
+    self.current_target_custom_texture_overlay:SetEnabled(O.db.current_target_custom_texture_enabled);
+    self.current_target_custom_texture_overlay.Callback = function(self)
+        O.db.current_target_custom_texture_overlay = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.current_target_custom_texture_overlay_alpha = E.CreateSlider(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_target_custom_texture_overlay_alpha:SetPosition('LEFT', self.current_target_custom_texture_overlay.Label, 'RIGHT', 12, 0);
+    self.current_target_custom_texture_overlay_alpha:SetW(140.5);
+    self.current_target_custom_texture_overlay_alpha:SetLabel(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA']);
+    self.current_target_custom_texture_overlay_alpha:SetLabelPosition('LEFT');
+    self.current_target_custom_texture_overlay_alpha:SetTooltip(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP']);
+    self.current_target_custom_texture_overlay_alpha:AddToSearch(button, L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP'], self.Tabs[3]);
+    self.current_target_custom_texture_overlay_alpha:SetValues(O.db.current_target_custom_texture_overlay_alpha, 0.1, 1, 0.05);
+    self.current_target_custom_texture_overlay_alpha:SetEnabled(O.db.current_target_custom_texture_enabled);
+    self.current_target_custom_texture_overlay_alpha.OnValueChangedCallback = function(_, value)
+        O.db.current_target_custom_texture_overlay_alpha = tonumber(value);
         Stripes:UpdateAll();
     end
 
@@ -768,7 +841,7 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    local Delimiter = E.CreateDelimiter(self.TabsFrames['ThreatTab'].Content);
+    Delimiter = E.CreateDelimiter(self.TabsFrames['ThreatTab'].Content);
     Delimiter:SetPosition('TOPLEFT', ResetThreatColorsButton, 'BOTTOMLEFT', -4, -4);
     Delimiter:SetW(self:GetWidth());
 
