@@ -154,6 +154,9 @@ S.Media.Textures = {
         MELLI            = M .. 'Textures\\StatusBar\\melli.blp',
         MELLI_DARK       = M .. 'Textures\\StatusBar\\melli_dark.blp',
         MELLI_DARK_ROUGH = M .. 'Textures\\StatusBar\\melli_dark_rough.blp',
+
+        BARS     = M .. 'Textures\\StatusBar\\bars.blp',
+        DIAGONAL = M .. 'Textures\\StatusBar\\diagonal.blp',
     },
 };
 
@@ -272,6 +275,8 @@ LSM:Register(LSM.MediaType.STATUSBAR, 'Skullflower Neon', S.Media.Textures.Statu
 LSM:Register(LSM.MediaType.STATUSBAR, 'Melli', S.Media.Textures.StatusBar.MELLI);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Melli Dark', S.Media.Textures.StatusBar.MELLI_DARK);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Melli Dark Rough', S.Media.Textures.StatusBar.MELLI_DARK_ROUGH);
+LSM:Register(LSM.MediaType.STATUSBAR, 'Bars', S.Media.Textures.StatusBar.BARS);
+LSM:Register(LSM.MediaType.STATUSBAR, 'Diagonal', S.Media.Textures.StatusBar.DIAGONAL);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Blizzard Glow', [[Interface\TargetingFrame\UI-StatusBar-Glow]]);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Blizzard Bar Fill', [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]]);
 
