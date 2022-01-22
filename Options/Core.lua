@@ -275,7 +275,7 @@ O.DefaultValues = {
     name_text_replace_diacritics     = false,
     name_text_first_mode             = 1,
     name_text_cut_enabled            = false,
-    name_text_cut_number             = 14,
+    name_text_cut_number             = 12,
 
     health_text_enabled      = true,
     health_text_hide_full    = false,

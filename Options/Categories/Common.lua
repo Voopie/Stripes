@@ -154,7 +154,7 @@ panel.Load = function(self)
 
     self.name_text_cut_number = E.CreateSlider(self.TabsFrames['NameTab'].Content);
     self.name_text_cut_number:SetPosition('LEFT', self.name_text_cut_enabled.Label, 'RIGHT', 12, 0);
-    self.name_text_cut_number:SetW(150);
+    self.name_text_cut_number:SetW(150.5);
     self.name_text_cut_number:SetValues(O.db.name_text_cut_number, 2, 50, 1);
     self.name_text_cut_number:SetTooltip(L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP']);
     self.name_text_cut_number:AddToSearch(button, L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP'], self.Tabs[1]);
