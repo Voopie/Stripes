@@ -33,6 +33,7 @@ local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local CUSTOM_NAME_ENABLED;
 local CLASSIFICATION_INDICATOR_ENABLED;
 local FIRST_MODE;
+local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
 
 local StripesNameFont      = CreateFont('StripesNameFont');
 local StripesGuildNameFont = CreateFont('StripesGuildNameFont');
@@ -120,42 +121,50 @@ end
 local GetAbbreviatedName = {
     [1] = function(name)
         if FIRST_MODE == 1 then
-            return string_gsub(name or '', ABBR_FORMAT, AbbrSub);
+            name = string_gsub(name or '', ABBR_FORMAT, AbbrSub);
         elseif FIRST_MODE == 2 then
-            return firstUpper(string_gsub(name or '', ABBR_FORMAT, AbbrSub));
+            name = firstUpper(string_gsub(name or '', ABBR_FORMAT, AbbrSub));
         elseif FIRST_MODE == 3 then
-            return firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSub));
+            name = firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSub));
         end
+
+        return NAME_CUT_ENABLED and utf8sub(name, 0, NAME_CUT_NUMBER) or name;
     end,
 
     [2] = function(name)
         if FIRST_MODE == 1 then
-            return string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace);
+            name = string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace);
         elseif FIRST_MODE == 2 then
-            return firstUpper(string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace));
+            name = firstUpper(string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace));
         elseif FIRST_MODE == 3 then
-            return firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace));
+            name = firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace));
         end
+
+        return NAME_CUT_ENABLED and utf8sub(name, 0, NAME_CUT_NUMBER) or name;
     end,
 
     [3] = function(name)
         if FIRST_MODE == 1 then
-            return AbbrLast(name or '');
+            name = AbbrLast(name or '');
         elseif FIRST_MODE == 2 then
-            return firstUpper(AbbrLast(name or ''));
+            name = firstUpper(AbbrLast(name or ''));
         elseif FIRST_MODE == 3 then
-            return firstLower(AbbrLast(name or ''));
+            name = firstLower(AbbrLast(name or ''));
         end
+
+        return NAME_CUT_ENABLED and utf8sub(name, 0, NAME_CUT_NUMBER) or name;
     end,
 
     [4] = function(name)
         if FIRST_MODE == 1 then
-            return AbbrFirst(name or '');
+            name = AbbrFirst(name or '');
         elseif FIRST_MODE == 2 then
-            return firstUpper(AbbrFirst(name or ''));
+            name = firstUpper(AbbrFirst(name or ''));
         elseif FIRST_MODE == 3 then
-            return firstLower(AbbrFirst(name or ''));
+            name = firstLower(AbbrFirst(name or ''));
         end
+
+        return NAME_CUT_ENABLED and utf8sub(name, 0, NAME_CUT_NUMBER) or name;
     end,
 };
 
@@ -580,6 +589,9 @@ function Module:UpdateLocalConfig()
     CLASSIFICATION_INDICATOR_ENABLED = O.db.classification_indicator_enabled;
 
     FIRST_MODE = O.db.name_text_first_mode;
+
+    NAME_CUT_ENABLED = O.db.name_text_cut_enabled;
+    NAME_CUT_NUMBER  = O.db.name_text_cut_number;
 
     UpdateFontObject(SystemFont_NamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
     UpdateFontObject(SystemFont_NamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);

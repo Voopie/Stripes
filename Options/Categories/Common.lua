@@ -141,8 +141,30 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.name_text_cut_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.name_text_cut_enabled:SetPosition('TOPLEFT', self.name_text_first_mode, 'BOTTOMLEFT', 0, -8);
+    self.name_text_cut_enabled:SetLabel(L['OPTIONS_NAME_TEXT_CUT_ENABLED']);
+    self.name_text_cut_enabled:SetTooltip(L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP']);
+    self.name_text_cut_enabled:SetChecked(O.db.name_text_cut_enabled);
+    self.name_text_cut_enabled:AddToSearch(button, L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.name_text_cut_enabled.Callback = function(self)
+        O.db.name_text_cut_enabled = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_cut_number = E.CreateSlider(self.TabsFrames['NameTab'].Content);
+    self.name_text_cut_number:SetPosition('LEFT', self.name_text_cut_enabled.Label, 'RIGHT', 12, 0);
+    self.name_text_cut_number:SetW(150);
+    self.name_text_cut_number:SetValues(O.db.name_text_cut_number, 2, 50, 1);
+    self.name_text_cut_number:SetTooltip(L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP']);
+    self.name_text_cut_number:AddToSearch(button, L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP'], self.Tabs[1]);
+    self.name_text_cut_number.OnValueChangedCallback = function(_, value)
+        O.db.name_text_cut_number = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     local Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.name_text_first_mode, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_cut_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.name_text_font_value = E.CreateDropdown('font', self.TabsFrames['NameTab'].Content);
@@ -434,10 +456,11 @@ panel.Load = function(self)
 
     self.target_name_cut_number = E.CreateSlider(self.TabsFrames['NameTab'].Content);
     self.target_name_cut_number:SetPosition('LEFT', self.target_name_cut_enabled.Label, 'RIGHT', 12, 0);
-    self.target_name_cut_number:SetW(120);
+    self.target_name_cut_number:SetW(150);
     self.target_name_cut_number:SetValues(O.db.target_name_cut_number, 2, 50, 1);
     self.target_name_cut_number:SetTooltip(L['OPTIONS_TARGET_NAME_CUT_NUMBER_TOOLTIP']);
     self.target_name_cut_number:AddToSearch(button, L['OPTIONS_TARGET_NAME_CUT_NUMBER_TOOLTIP'], self.Tabs[1]);
+    self.target_name_cut_number:SetEnabled(O.db.target_name_enabled);
     self.target_name_cut_number.OnValueChangedCallback = function(_, value)
         O.db.target_name_cut_number = tonumber(value);
         Stripes:UpdateAll();
