@@ -39,7 +39,7 @@ StaticPopupDialogs['STRIPES_RESET_PROFILE_TO_DEFAULT'] = {
 
 local profilesList = {};
 local removeProfilesList = {};
-local choosen;
+local chosen;
 
 local function UpdateRemoveProfilesDropdown()
     wipe(removeProfilesList);
@@ -78,17 +78,17 @@ local function UpdateProfilesDropdown()
         return a < b;
     end);
 
-    choosen = nil;
+    chosen = nil;
     for i, name in ipairs(profilesList) do
         if name == O.activeProfileName then
-            choosen = i;
+            chosen = i;
             break;
         end
     end
 
     panel.ProfilesDropdown:SetEnabled(#profilesList > 1);
     panel.ProfilesDropdown:SetList(profilesList);
-    panel.ProfilesDropdown:SetValue(choosen);
+    panel.ProfilesDropdown:SetValue(chosen);
 end
 
 local function UpdateElementsVisibility()
