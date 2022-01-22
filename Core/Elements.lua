@@ -33,6 +33,14 @@ end
 
 E.PixelPerfectMixin = {
     SetPosition = function(self, point, relativeTo, relativePoint, offsetX, offsetY, minOffsetXPixels, minOffsetYPixels)
+        self.point            = point;
+        self.relativeTo       = relativeTo;
+        self.relativePoint    = relativePoint;
+        self.offsetX          = offsetX;
+        self.offsetY          = offsetY;
+        self.minOffsetXPixels = minOffsetXPixels;
+        self.minOffsetYPixels = minOffsetYPixels;
+
         PixelUtil.SetPoint(self, point, relativeTo, relativePoint, offsetX, offsetY, minOffsetXPixels, minOffsetYPixels);
     end,
 
@@ -575,8 +583,35 @@ do
 
         slider.SetLabel = function(self, label)
             self.Text:SetText(label);
+            self.Text:ClearAllPoints();
+
+            if self.LabelPostion == 'LEFT' then
+                PixelUtil.SetPoint(self.Text, 'RIGHT', self, 'LEFT', -6, 0);
+                if self.Text:GetText() and self.Text:GetText() ~= '' then
+                    PixelUtil.SetPoint(self, self.point, self.relativeTo, self.relativePoint, self.offsetX + self.Text:GetStringWidth() + 6, self.offsetY);
+                end
+            else
+                PixelUtil.SetPoint(self.Text, 'BOTTOMLEFT', self, 'TOPLEFT', 0, 4);
+                PixelUtil.SetPoint(self, self.point, self.relativeTo, self.relativePoint, self.offsetX, self.offsetY);
+            end
 
             self.SearchText = label;
+        end
+
+        slider.SetLabelPosition = function(self, position)
+            self.LabelPostion = position;
+
+            self.Text:ClearAllPoints();
+
+            if self.LabelPostion == 'LEFT' then
+                PixelUtil.SetPoint(self.Text, 'RIGHT', self, 'LEFT', -6, 0);
+                if self.Text:GetText() and self.Text:GetText() ~= '' then
+                    PixelUtil.SetPoint(self, self.point, self.relativeTo, self.relativePoint, self.offsetX + self.Text:GetStringWidth() + 6, self.offsetY);
+                end
+            else
+                PixelUtil.SetPoint(self.Text, 'BOTTOMLEFT', self, 'TOPLEFT', 0, 4);
+                PixelUtil.SetPoint(self, self.point, self.relativeTo, self.relativePoint, self.offsetX, self.offsetY);
+            end
         end
 
         slider.SetValues = function(self, currentValue, minValue, maxValue, stepValue)
