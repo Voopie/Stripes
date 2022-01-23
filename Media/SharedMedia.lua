@@ -161,6 +161,15 @@ S.Media.Textures = {
 };
 
 S.Media.Fonts = {
+    AVANTGARDE_CTT = {
+        REGULAR = M .. 'Fonts\\avant_garde_ctt.ttf',
+        ITALIC  = M .. 'Fonts\\avant_garde_ctt_italic.ttf',
+    },
+
+    AVANTGARDE_GOTHIC_CTT = {
+        BOLD = M .. 'Fonts\\avant_garde_gothic_ctt_bold.ttf',
+    },
+
     BIGNOODLETOO = {
         OBLIQUE = M .. 'Fonts\\bignoodletoo_oblique.ttf',
         TITLING = M .. 'Fonts\\bignoodletoo_titling.ttf',
@@ -281,6 +290,9 @@ LSM:Register(LSM.MediaType.STATUSBAR, 'Blizzard Glow', [[Interface\TargetingFram
 LSM:Register(LSM.MediaType.STATUSBAR, 'Blizzard Bar Fill', [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]]);
 
 -- Fonts
+LSM:Register(LSM.MediaType.FONT, 'Avant Garde', S.Media.Fonts.AVANTGARDE_CTT.REGULAR, LOCALE_WEST_AND_RU);
+LSM:Register(LSM.MediaType.FONT, 'Avant Garde Italic', S.Media.Fonts.AVANTGARDE_CTT.ITALIC, LOCALE_WEST_AND_RU);
+LSM:Register(LSM.MediaType.FONT, 'Avant Garde Gothic Bold ', S.Media.Fonts.AVANTGARDE_GOTHIC_CTT.BOLD, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'BigNoodleToo Oblique', S.Media.Fonts.BIGNOODLETOO.OBLIQUE, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'BigNoodleToo Titling', S.Media.Fonts.BIGNOODLETOO.TITLING, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Brutal Type', S.Media.Fonts.BRUTALTYPE.REGULAR, LOCALE_WEST_AND_RU);
