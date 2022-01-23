@@ -390,9 +390,9 @@ O.DefaultValues = {
     hover_glow_enabled        = true,
     current_target_health_bar_coloring = false,
     current_target_health_bar_color    = { 1, 1, 1, 1 },
-    current_target_custom_texture_enabled = false,
-    current_target_custom_texture_value   = 'Bars',
-    current_target_custom_texture_overlay = false,
+    current_target_custom_texture_enabled = true,
+    current_target_custom_texture_value   = 'Blizzard Bar Fill',
+    current_target_custom_texture_overlay = true,
     current_target_custom_texture_overlay_alpha = 0.5,
 
     execution_enabled      = false,
