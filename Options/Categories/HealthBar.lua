@@ -679,7 +679,7 @@ panel.Load = function(self)
     end
 
     self.current_target_custom_texture_overlay = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
-    self.current_target_custom_texture_overlay:SetPosition('TOPLEFT', self.current_target_custom_texture_enabled, 'BOTTOMLEFT', 0, -8);
+    self.current_target_custom_texture_overlay:SetPosition('TOPLEFT', self.current_target_custom_texture_enabled, 'BOTTOMLEFT', 0, -12);
     self.current_target_custom_texture_overlay:SetLabel(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY']);
     self.current_target_custom_texture_overlay:SetTooltip(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_TOOLTIP']);
     self.current_target_custom_texture_overlay:AddToSearch(button, nil, self.Tabs[3]);
