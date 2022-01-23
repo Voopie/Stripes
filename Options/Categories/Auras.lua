@@ -1182,7 +1182,7 @@ panel.Load = function(self)
 
     self.auras_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.auras_offset_x:SetPosition('LEFT', self.auras_scale, 'RIGHT', 16, 0);
-    self.auras_offset_x:SetW(133);
+    self.auras_offset_x:SetW(133.5);
     self.auras_offset_x:SetValues(O.db.auras_offset_x, -200, 200, 1);
     self.auras_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.auras_offset_x:SetTooltip(L['OPTIONS_AURAS_OFFSET_X_TOOLTIP']);
@@ -1194,7 +1194,7 @@ panel.Load = function(self)
 
     self.auras_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.auras_offset_y:SetPosition('LEFT', self.auras_offset_x, 'RIGHT', 16, 0);
-    self.auras_offset_y:SetW(133);
+    self.auras_offset_y:SetW(133.5);
     self.auras_offset_y:SetValues(O.db.auras_offset_y, -200, 200, 1);
     self.auras_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_offset_y:SetTooltip(L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP']);
@@ -1620,7 +1620,7 @@ panel.Load = function(self)
 
     self.auras_spellsteal_offset_x = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
     self.auras_spellsteal_offset_x:SetPosition('LEFT', self.auras_spellsteal_scale, 'RIGHT', 16, 0);
-    self.auras_spellsteal_offset_x:SetW(133);
+    self.auras_spellsteal_offset_x:SetW(133.5);
     self.auras_spellsteal_offset_x:SetValues(O.db.auras_spellsteal_offset_x, -200, 200, 1);
     self.auras_spellsteal_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.auras_spellsteal_offset_x:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_X_TOOLTIP']);
@@ -1632,7 +1632,7 @@ panel.Load = function(self)
 
     self.auras_spellsteal_offset_y = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
     self.auras_spellsteal_offset_y:SetPosition('LEFT', self.auras_spellsteal_offset_x, 'RIGHT', 16, 0);
-    self.auras_spellsteal_offset_y:SetW(133);
+    self.auras_spellsteal_offset_y:SetW(133.5);
     self.auras_spellsteal_offset_y:SetValues(O.db.auras_spellsteal_offset_y, -200, 200, 1);
     self.auras_spellsteal_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_spellsteal_offset_y:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_Y_TOOLTIP']);
