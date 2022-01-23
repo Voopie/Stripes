@@ -246,7 +246,7 @@ O.Lists = {
     },
 };
 
--- ~489
+-- ~492
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -327,7 +327,9 @@ O.DefaultValues = {
     level_text_custom_color         = { 1, 1, 1, 1 },
 
     -- Health bar
-    health_bar_texture_value         = 'Stripes Flat';
+    health_bar_texture_value            = 'Stripes Flat',
+    health_bar_background_texture_value = 'Stripes Flat',
+    health_bar_background_color         = { 0.2, 0.2, 0.2, 0.85 },
     health_bar_border_hide           = false,
     health_bar_border_selected_color = { 1, 1, 1, 0.9},
     health_bar_border_color          = { 0, 0, 0, 1 },
@@ -431,7 +433,8 @@ O.DefaultValues = {
     castbar_text_font_size   = 11,
     castbar_text_font_flag   = 1, -- NONE
     castbar_text_font_shadow = true,
-    castbar_texture_value    = 'Stripes Flat',
+    castbar_texture_value            = 'Stripes Flat',
+    castbar_background_texture_value = 'Stripes Flat',
     castbar_bg_color         = { 0.2, 0.2, 0.2, 0.85 },
     castbar_on_hp_bar        = false,
     castbar_icon_large       = false,
@@ -527,7 +530,7 @@ O.DefaultValues = {
     show_friendly_pets           = C_CVar.GetCVar('nameplateShowFriendlyPets') == '1',
     show_friendly_totems         = C_CVar.GetCVar('nameplateShowFriendlyTotems') == '1',
 
-    show_enemy                = C_CVar.GetCVar('nameplateShowEnemies') == '1';
+    show_enemy                = C_CVar.GetCVar('nameplateShowEnemies') == '1',
     show_enemy_only_in_combat = false,
     show_enemy_minions        = C_CVar.GetCVar('nameplateShowEnemyMinions') == '1',
     show_enemy_guardians      = C_CVar.GetCVar('nameplateShowEnemyGuardians') == '1',

@@ -23,9 +23,10 @@ local SHOW_TRADE_SKILLS, SHOW_SHIELD, SHOW_ICON_NOTINTERRUPTIBLE;
 local SHOW_INTERRUPT_READY_TICK, INTERRUPT_READY_TICK_COLOR;
 local NAME_ONLY_MODE;
 local BORDER_ENABLED, BORDER_COLOR, BORDER_SIZE;
-local BAR_HEIGHT, BG_COLOR;
+local BAR_HEIGHT;
 local TEXT_POSITION, TEXT_X_OFFSET, TEXT_Y_OFFSET, TEXT_TRUNCATE;
 local TARGET_NAME_ENABLED, TARGET_NAME_CLASS_COLOR, TARGET_NAME_ONLY_ENEMY, TARGET_NAME_IN_SPELL_NAME, TARGET_NAME_POINT, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y;
+local CAST_BAR_BACKGROUND_TEXTURE, CAST_BAR_BACKGROUND_COLOR;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 local StripesCastBarTimerFont = CreateFont('StripesCastBarTimerFont');
@@ -159,8 +160,6 @@ local function UpdateColors(unitframe)
     if unitframe.castingBar.InterruptReadyTick then
         unitframe.castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
     end
-
-    unitframe.castingBar.background:SetColorTexture(BG_COLOR[1], BG_COLOR[2], BG_COLOR[3], BG_COLOR[4]);
 end
 
 local function UpdateCastNameTextPosition(unitframe)
@@ -230,8 +229,6 @@ local function CreateTimer(unitframe)
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.BorderShield);
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.Timer);
     StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.TargetText);
-
-    UpdateColors(unitframe);
 end
 
 local function UpdateVisibility(unitframe)
@@ -285,9 +282,20 @@ local function UpdateBorderSizes(unitframe)
     end
 end
 
+local function UpdateBackgroundTexture(unitframe)
+    if not unitframe.castingBar.background then
+        return;
+    end
+
+    unitframe.castingBar.background:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, CAST_BAR_BACKGROUND_TEXTURE));
+    unitframe.castingBar.background:SetVertexColor(CAST_BAR_BACKGROUND_COLOR[1], CAST_BAR_BACKGROUND_COLOR[2], CAST_BAR_BACKGROUND_COLOR[3], CAST_BAR_BACKGROUND_COLOR[4])
+end
+
 function Module:UnitAdded(unitframe)
     CreateTimer(unitframe);
     UpdateTexture(unitframe);
+    UpdateBackgroundTexture(unitframe);
+    UpdateColors(unitframe);
     UpdateStyle(unitframe);
     UpdateVisibility(unitframe);
 end
@@ -300,19 +308,14 @@ end
 
 function Module:Update(unitframe)
     UpdateTexture(unitframe);
-    UpdateStyle(unitframe);
+    UpdateBackgroundTexture(unitframe);
     UpdateColors(unitframe);
+    UpdateStyle(unitframe);
     UpdateVisibility(unitframe);
 end
 
 function Module:UpdateLocalConfig()
     BAR_HEIGHT = O.db.castbar_height;
-
-    BG_COLOR    = BG_COLOR or {};
-    BG_COLOR[1] = O.db.castbar_bg_color[1];
-    BG_COLOR[2] = O.db.castbar_bg_color[2];
-    BG_COLOR[3] = O.db.castbar_bg_color[3];
-    BG_COLOR[4] = O.db.castbar_bg_color[4] or 1;
 
     TEXT_POSITION = O.db.castbar_text_anchor;
     TEXT_X_OFFSET = O.db.castbar_text_offset_x;
@@ -413,6 +416,13 @@ function Module:UpdateLocalConfig()
     TARGET_NAME_RELATIVE_POINT = O.Lists.frame_points[O.db.castbar_target_relative_point] or 'BOTTOM';
     TARGET_NAME_OFFSET_X       = O.db.castbar_target_offset_x;
     TARGET_NAME_OFFSET_Y       = O.db.castbar_target_offset_y;
+
+    CAST_BAR_BACKGROUND_TEXTURE = O.db.castbar_background_texture_value;
+    CAST_BAR_BACKGROUND_COLOR    = CAST_BAR_BACKGROUND_COLOR or {};
+    CAST_BAR_BACKGROUND_COLOR[1] = O.db.castbar_bg_color[1];
+    CAST_BAR_BACKGROUND_COLOR[2] = O.db.castbar_bg_color[2];
+    CAST_BAR_BACKGROUND_COLOR[3] = O.db.castbar_bg_color[3];
+    CAST_BAR_BACKGROUND_COLOR[4] = O.db.castbar_bg_color[4] or 1;
 
     UpdateFontObject(StripesCastBarFont, O.db.castbar_text_font_value, O.db.castbar_text_font_size, O.db.castbar_text_font_flag, O.db.castbar_text_font_shadow);
     UpdateFontObject(StripesCastBarTimerFont, O.db.castbar_timer_font_value, O.db.castbar_timer_font_size, O.db.castbar_timer_font_flag, O.db.castbar_timer_font_shadow);

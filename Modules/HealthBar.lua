@@ -36,6 +36,7 @@ local HPBAR_COLOR_DC, HPBAR_COLOR_TAPPED, HPBAR_COLOR_ENEMY_NPC, HPBAR_COLOR_ENE
 local CUSTOM_BORDER_ENABLED, CUSTOM_BORDER_PATH, CUSTOM_BORDER_WIDTH, CUSTOM_BORDER_HEIGHT, CUSTOM_BORDER_HEIGHT_MINUS, CUSTOM_BORDER_X_OFFSET, CUSTOM_BORDER_Y_OFFSET;
 local CURRENT_TARGET_COLOR_ENABLED, CURRENT_TARGET_COLOR;
 local CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED, CURRENT_TARGET_CUSTOM_TEXTURE_VALUE, CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY, CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA, CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE;
+local HEALTH_BAR_BACKGROUND_TEXTURE, HEALTH_BAR_BACKGROUND_COLOR;
 
 local StripesThreatPercentageFont = CreateFont('StripesThreatPercentageFont');
 
@@ -627,6 +628,15 @@ local function UpdateCustomBorder(unitframe)
     end
 end
 
+local function UpdateBackgroundTexture(unitframe)
+    if not unitframe.healthBar.background then
+        return;
+    end
+
+    unitframe.healthBar.background:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, HEALTH_BAR_BACKGROUND_TEXTURE));
+    unitframe.healthBar.background:SetVertexColor(HEALTH_BAR_BACKGROUND_COLOR[1], HEALTH_BAR_BACKGROUND_COLOR[2], HEALTH_BAR_BACKGROUND_COLOR[3], HEALTH_BAR_BACKGROUND_COLOR[4]);
+end
+
 function Module:UnitAdded(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
     unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
@@ -636,6 +646,7 @@ function Module:UnitAdded(unitframe)
     CreateCustomBorder(unitframe);
     UpdateCustomBorder(unitframe);
     UpdateTexture(unitframe);
+    UpdateBackgroundTexture(unitframe);
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
@@ -664,6 +675,7 @@ function Module:Update(unitframe)
     UpdateThreatPercentagePosition(unitframe);
     UpdateCustomBorder(unitframe);
     UpdateTexture(unitframe);
+    UpdateBackgroundTexture(unitframe);
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
@@ -816,6 +828,13 @@ function Module:UpdateLocalConfig()
     CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY       = O.db.current_target_custom_texture_overlay;
     CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA = O.db.current_target_custom_texture_overlay_alpha;
     CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE = O.Lists.alpha_mode[O.db.current_target_custom_texture_overlay_alpha_mode] or 'BLEND';
+
+    HEALTH_BAR_BACKGROUND_TEXTURE  = O.db.health_bar_background_texture_value;
+    HEALTH_BAR_BACKGROUND_COLOR    = HEALTH_BAR_BACKGROUND_COLOR or {};
+    HEALTH_BAR_BACKGROUND_COLOR[1] = O.db.health_bar_background_color[1];
+    HEALTH_BAR_BACKGROUND_COLOR[2] = O.db.health_bar_background_color[2];
+    HEALTH_BAR_BACKGROUND_COLOR[3] = O.db.health_bar_background_color[3];
+    HEALTH_BAR_BACKGROUND_COLOR[4] = O.db.health_bar_background_color[4] or 1;
 end
 
 function Module:PLAYER_LOGIN()

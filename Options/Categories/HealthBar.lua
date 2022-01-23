@@ -41,7 +41,7 @@ panel.Load = function(self)
 
     self.health_bar_texture_value = E.CreateDropdown('statusbar', self.TabsFrames['CommonTab'].Content);
     self.health_bar_texture_value:SetPosition('TOPLEFT', self.TabsFrames['CommonTab'].Content, 'TOPLEFT', 0, -8);
-    self.health_bar_texture_value:SetSize(200, 20);
+    self.health_bar_texture_value:SetSize(185, 20);
     self.health_bar_texture_value:SetList(LSM:HashTable('statusbar'));
     self.health_bar_texture_value:SetValue(O.db.health_bar_texture_value);
     self.health_bar_texture_value:SetLabel(L['OPTIONS_TEXTURE']);
@@ -49,6 +49,33 @@ panel.Load = function(self)
     self.health_bar_texture_value:AddToSearch(button, L['OPTIONS_HEALTH_BAR_TEXTURE_VALUE_TOOLTIP'], self.Tabs[1]);
     self.health_bar_texture_value.OnValueChangedCallback = function(_, value)
         O.db.health_bar_texture_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_background_texture_value = E.CreateDropdown('statusbar', self.TabsFrames['CommonTab'].Content);
+    self.health_bar_background_texture_value:SetPosition('LEFT', self.health_bar_texture_value, 'RIGHT', 16, 0);
+    self.health_bar_background_texture_value:SetSize(185, 20);
+    self.health_bar_background_texture_value:SetList(LSM:HashTable('statusbar'));
+    self.health_bar_background_texture_value:SetValue(O.db.health_bar_background_texture_value);
+    self.health_bar_background_texture_value:SetLabel(L['BACKGROUND']);
+    self.health_bar_background_texture_value:SetTooltip(L['OPTIONS_HEALTH_BAR_BACKGROUND_TEXTURE_VALUE_TOOLTIP']);
+    self.health_bar_background_texture_value:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BACKGROUND_TEXTURE_VALUE_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_background_texture_value.OnValueChangedCallback = function(_, value)
+        O.db.health_bar_background_texture_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_background_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_background_color:SetPosition('LEFT', self.health_bar_background_texture_value, 'RIGHT', 16, 0);
+    self.health_bar_background_color:SetTooltip(L['OPTIONS_HEALTH_BAR_BACKGROUND_COLOR_TOOLTIP']);
+    self.health_bar_background_color:AddToSearch(button, L['OPTIONS_HEALTH_BAR_BACKGROUND_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_background_color:SetValue(unpack(O.db.health_bar_background_color));
+    self.health_bar_background_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_background_color[1] = r;
+        O.db.health_bar_background_color[2] = g;
+        O.db.health_bar_background_color[3] = b;
+        O.db.health_bar_background_color[4] = a or 1;
+
         Stripes:UpdateAll();
     end
 

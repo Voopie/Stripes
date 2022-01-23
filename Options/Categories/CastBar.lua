@@ -760,8 +760,8 @@ panel.Load = function(self)
     ------------------------------------------------------------------------------------------------------------------------------------
 
     self.castbar_texture_value = E.CreateDropdown('statusbar', self.TabsFrames['CommonTab'].Content);
-    self.castbar_texture_value:SetPosition('TOPLEFT', self.TabsFrames['CommonTab'].Content, 'TOPLEFT', 0, -4);
-    self.castbar_texture_value:SetSize(200, 20);
+    self.castbar_texture_value:SetPosition('TOPLEFT', self.TabsFrames['CommonTab'].Content, 'TOPLEFT', 0, -8);
+    self.castbar_texture_value:SetSize(185, 20);
     self.castbar_texture_value:SetList(LSM:HashTable('statusbar'));
     self.castbar_texture_value:SetValue(O.db.castbar_texture_value);
     self.castbar_texture_value:SetLabel(L['OPTIONS_TEXTURE']);
@@ -772,8 +772,35 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.castbar_background_texture_value = E.CreateDropdown('statusbar', self.TabsFrames['CommonTab'].Content);
+    self.castbar_background_texture_value:SetPosition('LEFT', self.castbar_texture_value, 'RIGHT', 16, 0);
+    self.castbar_background_texture_value:SetSize(185, 20);
+    self.castbar_background_texture_value:SetList(LSM:HashTable('statusbar'));
+    self.castbar_background_texture_value:SetValue(O.db.castbar_background_texture_value);
+    self.castbar_background_texture_value:SetLabel(L['BACKGROUND']);
+    self.castbar_background_texture_value:SetTooltip(L['OPTIONS_CAST_BAR_BACKGROUND_TEXTURE_VALUE_TOOLTIP']);
+    self.castbar_background_texture_value:AddToSearch(button, L['OPTIONS_CAST_BAR_BACKGROUND_TEXTURE_VALUE_TOOLTIP'], self.Tabs[1]);
+    self.castbar_background_texture_value.OnValueChangedCallback = function(_, value)
+        O.db.castbar_background_texture_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_bg_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.castbar_bg_color:SetPosition('LEFT', self.castbar_background_texture_value, 'RIGHT', 16, 0);
+    self.castbar_bg_color:SetTooltip(L['OPTIONS_CAST_BAR_BACKGROUND_COLOR_TOOLTIP']);
+    self.castbar_bg_color:AddToSearch(button, L['OPTIONS_CAST_BAR_BACKGROUND_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.castbar_bg_color:SetValue(unpack(O.db.castbar_bg_color));
+    self.castbar_bg_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.castbar_bg_color[1] = r;
+        O.db.castbar_bg_color[2] = g;
+        O.db.castbar_bg_color[3] = b;
+        O.db.castbar_bg_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
     local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_texture_value, 'BOTTOMLEFT', 0, -2);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_texture_value, 'BOTTOMLEFT', 0, -8);
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_height = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
@@ -784,20 +811,6 @@ panel.Load = function(self)
     self.castbar_height:SetValues(O.db.castbar_height, 1, 40, 1);
     self.castbar_height.OnValueChangedCallback = function(_, value)
         O.db.castbar_height = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_bg_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.castbar_bg_color:SetPosition('LEFT', self.castbar_height, 'RIGHT', 12, 0);
-    self.castbar_bg_color:SetTooltip(L['OPTIONS_CAST_BAR_BACKGROUND_COLOR_TOOLTIP']);
-    self.castbar_bg_color:AddToSearch(button, L['OPTIONS_CAST_BAR_BACKGROUND_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_bg_color:SetValue(unpack(O.db.castbar_bg_color));
-    self.castbar_bg_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.castbar_bg_color[1] = r;
-        O.db.castbar_bg_color[2] = g;
-        O.db.castbar_bg_color[3] = b;
-        O.db.castbar_bg_color[4] = a or 1;
-
         Stripes:UpdateAll();
     end
 
