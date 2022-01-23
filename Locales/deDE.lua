@@ -96,6 +96,7 @@ L['DUNGEON_SL_TTVM'] = 'Tazavesh, der Verhüllte Markt';
 
 L['RAID_SL_CN'] = 'Schloss Natharia';
 L['RAID_SL_SOD'] = 'Sanktum der Herrschaft';
+-- L['RAID_SL_SOTFO'] = 'Mausoleum der Ersten';
 
 L['PSEUDOLINK_TOOLTIP'] = 'Strg+C zum kopieren';
 

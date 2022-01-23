@@ -96,6 +96,7 @@ L['DUNGEON_SL_TTVM'] = 'Tazavesh, the Veiled Market';
 
 L['RAID_SL_CN'] = 'Castle Nathria';
 L['RAID_SL_SOD'] = 'Sanctum of Domination';
+-- L['RAID_SL_SOTFO'] = 'Sepulcher of the First Ones';
 
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C to copy';
 
