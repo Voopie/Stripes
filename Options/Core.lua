@@ -238,7 +238,7 @@ O.Lists = {
     },
 };
 
--- ~487
+-- ~488
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -276,6 +276,7 @@ O.DefaultValues = {
     name_text_first_mode             = 1,
     name_text_cut_enabled            = false,
     name_text_cut_number             = 12,
+    name_text_frame_strata           = 4, -- MEDIUM
 
     health_text_enabled      = true,
     health_text_hide_full    = false,

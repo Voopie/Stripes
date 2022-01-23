@@ -34,6 +34,7 @@ local CUSTOM_NAME_ENABLED;
 local CLASSIFICATION_INDICATOR_ENABLED;
 local FIRST_MODE;
 local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
+local NAME_HOLDER_FRAME_STRATA;
 
 local StripesNameFont      = CreateFont('StripesNameFont');
 local StripesGuildNameFont = CreateFont('StripesGuildNameFont');
@@ -233,7 +234,7 @@ local function UpdateAnchor(unitframe)
         return;
     end
 
-    unitframe.name:SetParent(unitframe.healthBar);
+    unitframe.name:SetParent(unitframe.NameHolder or unitframe.healthBar);
     unitframe.name:SetDrawLayer('OVERLAY', 7);
 
     if POSITION == 1 then -- LEFT
@@ -492,7 +493,18 @@ local function UpdateClassificationIndicator(unitframe)
     end
 end
 
+local function UpdateNameHolder(unitframe)
+    if not unitframe.NameHolder then
+        unitframe.NameHolder = CreateFrame('Frame', '$parentNameHolder', unitframe);
+        unitframe.NameHolder:SetAllPoints(unitframe.healthBar);
+    end
+
+    unitframe.NameHolder:SetFrameStrata(NAME_HOLDER_FRAME_STRATA == 1 and unitframe.healthBar:GetFrameStrata() or NAME_HOLDER_FRAME_STRATA);
+end
+
 function Module:UnitAdded(unitframe)
+    UpdateNameHolder(unitframe);
+
     UpdateFont(unitframe);
     UpdateName(unitframe);
     UpdateColor(unitframe);
@@ -517,6 +529,8 @@ function Module:UnitRemoved(unitframe)
 end
 
 function Module:Update(unitframe)
+    UpdateNameHolder(unitframe);
+
     UpdateFont(unitframe)
     UpdateName(unitframe);
     UpdateColor(unitframe);
@@ -592,6 +606,8 @@ function Module:UpdateLocalConfig()
 
     NAME_CUT_ENABLED = O.db.name_text_cut_enabled;
     NAME_CUT_NUMBER  = O.db.name_text_cut_number;
+
+    NAME_HOLDER_FRAME_STRATA = O.db.name_text_frame_strata ~= 1 and O.Lists.frame_strata[O.db.name_text_frame_strata] or 1;
 
     UpdateFontObject(SystemFont_NamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
     UpdateFontObject(SystemFont_NamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);

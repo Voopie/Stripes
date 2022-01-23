@@ -256,6 +256,7 @@ L['OPTIONS_NAME_TEXT_FIRST_MODE_TOOLTIP'] = 'What type of first letter to displa
 L['OPTIONS_NAME_TEXT_CUT_ENABLED'] = 'Cut to';
 L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP'] = 'Forced cutting the name to a specified number of characters';
 L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP'] = 'Number of characters of the name to keep';
+L['OPTIONS_NAME_TEXT_FRAME_STRATA_TOOLTIP'] = 'Strata of the name text';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Show health text';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Hide full';

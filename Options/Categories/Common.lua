@@ -274,8 +274,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.name_text_frame_strata = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_frame_strata:SetPosition('TOPLEFT', self.name_text_position_v, 'BOTTOMLEFT', 0, -12);
+    self.name_text_frame_strata:SetSize(160, 20);
+    self.name_text_frame_strata:SetList(O.Lists.frame_strata);
+    self.name_text_frame_strata:SetValue(O.db.name_text_frame_strata);
+    self.name_text_frame_strata:SetLabel(L['FRAME_STRATA']);
+    self.name_text_frame_strata:SetTooltip(L['OPTIONS_NAME_TEXT_FRAME_STRATA_TOOLTIP']);
+    self.name_text_frame_strata:AddToSearch(button, L['OPTIONS_NAME_TEXT_FRAME_STRATA_TOOLTIP'], self.Tabs[1]);
+    self.name_text_frame_strata.OnValueChangedCallback = function(_, value)
+        O.db.name_text_frame_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.name_text_position_v, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_frame_strata, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.name_text_coloring_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);

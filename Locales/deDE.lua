@@ -256,6 +256,7 @@ L['OPTIONS_NAME_TEXT_FIRST_MODE_TOOLTIP'] = 'Welche Art von Anfangsbuchstaben so
 L['OPTIONS_NAME_TEXT_CUT_ENABLED'] = 'Trimmen auf';
 L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP'] = 'Erzwungenes Abschneiden des Namens auf eine bestimmte Anzahl von Zeichen';
 L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP'] = 'Anzahl der zu verlassenden Zeichen des Namens';
+L['OPTIONS_NAME_TEXT_FRAME_STRATA_TOOLTIP'] = 'Strata des Namenstextes';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Gesundheitstext anzeigen';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Vollständig ausblenden';

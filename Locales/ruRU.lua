@@ -256,6 +256,7 @@ L['OPTIONS_NAME_TEXT_FIRST_MODE_TOOLTIP'] = 'С какого типа перво
 L['OPTIONS_NAME_TEXT_CUT_ENABLED'] = 'Обрезать до';
 L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP'] = 'Принудительная обрезка имени до заданного количества символов';
 L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP'] = 'Количество символов имени, которые нужно оставить';
+L['OPTIONS_NAME_TEXT_FRAME_STRATA_TOOLTIP'] = 'Слой текста имени';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Показывать здоровье текстом';
 L['OPTIONS_HEALTH_TEXT_HIDE_FULL'] = 'Скрывать полное';
