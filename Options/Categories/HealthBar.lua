@@ -706,7 +706,7 @@ panel.Load = function(self)
 
     self.current_target_custom_texture_overlay_alpha_mode = E.CreateDropdown('plain', self.TabsFrames['TargetIndicatorTab'].Content);
     self.current_target_custom_texture_overlay_alpha_mode:SetPosition('LEFT', self.current_target_custom_texture_overlay_alpha, 'RIGHT', 12, 0);
-    self.current_target_custom_texture_overlay_alpha_mode:SetSize(150, 20);
+    self.current_target_custom_texture_overlay_alpha_mode:SetSize(100, 20);
     self.current_target_custom_texture_overlay_alpha_mode:SetList(O.Lists.alpha_mode);
     self.current_target_custom_texture_overlay_alpha_mode:SetValue(O.db.current_target_custom_texture_overlay_alpha_mode);
     self.current_target_custom_texture_overlay_alpha_mode:SetTooltip(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE_TOOLTIP']);
