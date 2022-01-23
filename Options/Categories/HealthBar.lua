@@ -660,6 +660,7 @@ panel.Load = function(self)
         panel.current_target_custom_texture_value:SetEnabled(O.db.current_target_custom_texture_enabled);
         panel.current_target_custom_texture_overlay:SetEnabled(O.db.current_target_custom_texture_enabled);
         panel.current_target_custom_texture_overlay_alpha:SetEnabled(O.db.current_target_custom_texture_enabled);
+        panel.current_target_custom_texture_overlay_alpha_mode:SetEnabled(O.db.current_target_custom_texture_enabled);
 
         Stripes:UpdateAll();
     end
@@ -700,6 +701,19 @@ panel.Load = function(self)
     self.current_target_custom_texture_overlay_alpha:SetEnabled(O.db.current_target_custom_texture_enabled);
     self.current_target_custom_texture_overlay_alpha.OnValueChangedCallback = function(_, value)
         O.db.current_target_custom_texture_overlay_alpha = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.current_target_custom_texture_overlay_alpha_mode = E.CreateDropdown('plain', self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_target_custom_texture_overlay_alpha_mode:SetPosition('LEFT', self.current_target_custom_texture_overlay_alpha, 'RIGHT', 12, 0);
+    self.current_target_custom_texture_overlay_alpha_mode:SetSize(150, 20);
+    self.current_target_custom_texture_overlay_alpha_mode:SetList(O.Lists.alpha_mode);
+    self.current_target_custom_texture_overlay_alpha_mode:SetValue(O.db.current_target_custom_texture_overlay_alpha_mode);
+    self.current_target_custom_texture_overlay_alpha_mode:SetTooltip(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE_TOOLTIP']);
+    self.current_target_custom_texture_overlay_alpha_mode:AddToSearch(button, L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE_TOOLTIP'], self.Tabs[3]);
+    self.current_target_custom_texture_overlay_alpha_mode:SetEnabled(O.db.current_target_custom_texture_enabled);
+    self.current_target_custom_texture_overlay_alpha_mode.OnValueChangedCallback = function(_, value)
+        O.db.current_target_custom_texture_overlay_alpha_mode = value;
         Stripes:UpdateAll();
     end
 

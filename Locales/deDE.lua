@@ -415,6 +415,7 @@ L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY'] = 'Überlagerung';
 L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_TOOLTIP'] = 'Eine spezielle Textur über die aktuelle Textur legen, sie nicht ersetzen';
 L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA'] = 'Alpha';
 L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP'] = 'Alpha der angewandten Spezialtextur';
+L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE_TOOLTIP'] = 'Spezieller Texturüberblendungsmodus';
 L['OPTIONS_EXECUTION_ENABLED'] = 'Aktivieren';
 L['OPTIONS_EXECUTION_ENABLED_TOOLTIP'] = 'Ausführungsanzeige einschalten';
 L['OPTIONS_EXECUTION_COLOR_TOOLTIP'] = 'Farbe des Gesundheitsbalkens, wenn der angegebene Prozentsatz der Gesundheit erreicht ist';

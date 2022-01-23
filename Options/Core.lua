@@ -236,9 +236,17 @@ O.Lists = {
         [2] = L['FIRST_UPPER'],
         [3] = L['FIRST_LOWER'],
     },
+
+    alpha_mode = {
+        [1] = 'DISABLE',
+        [2] = 'BLEND',
+        [3] = 'ALPHAKEY',
+        [4] = 'ADD',
+        [5] = 'MOD',
+    },
 };
 
--- ~488
+-- ~489
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -393,7 +401,8 @@ O.DefaultValues = {
     current_target_custom_texture_enabled = true,
     current_target_custom_texture_value   = 'Blizzard Bar Fill',
     current_target_custom_texture_overlay = true,
-    current_target_custom_texture_overlay_alpha = 0.5,
+    current_target_custom_texture_overlay_alpha = 0.25,
+    current_target_custom_texture_overlay_alpha_mode = 4,
 
     execution_enabled      = false,
     execution_low_percent  = 30,

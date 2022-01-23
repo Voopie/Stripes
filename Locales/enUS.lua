@@ -415,6 +415,7 @@ L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY'] = 'Overlay';
 L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_TOOLTIP'] = 'Overlay a special texture on top of the current one, not replace it';
 L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA'] = 'Alpha';
 L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP'] = 'Alpha of the applied special texture';
+L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE_TOOLTIP'] = 'Special texture blending mode';
 L['OPTIONS_EXECUTION_ENABLED'] = 'Enable';
 L['OPTIONS_EXECUTION_ENABLED_TOOLTIP'] = 'Enable execution indication';
 L['OPTIONS_EXECUTION_COLOR_TOOLTIP'] = 'Color of the health bar when the specified percentage of the health is reached';

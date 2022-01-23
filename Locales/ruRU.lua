@@ -415,6 +415,7 @@ L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY'] = 'Накладывать п�
 L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_TOOLTIP'] = 'Накладывать особоую текстуру поверх текущей, а не заменять';
 L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA'] = 'Непрозрачность';
 L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP'] = 'Непрозрачность накладываемой особой текстуры';
+L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE_TOOLTIP'] = 'Режим наложения особой текстуры';
 L['OPTIONS_EXECUTION_ENABLED'] = 'Включить';
 L['OPTIONS_EXECUTION_ENABLED_TOOLTIP'] = 'Включить индикацию добивания';
 L['OPTIONS_EXECUTION_COLOR_TOOLTIP'] = 'Цвет полоски здоровья при достижении заданного процента';
