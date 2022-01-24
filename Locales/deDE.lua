@@ -827,6 +827,10 @@ L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'] = 'Anpassung des Aussehens von Aura ü
 L['OPTIONS_AURAS_BORDER_HIDE'] = 'Den Rahmen ausblenden';
 L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP'] = 'Den Aurarahmen ausblenden';
 L['OPTIONS_AURAS_SPACING_X_TOOLTIP'] = 'Horizontale Abstände zwischen den Auren';
+L['OPTIONS_AURAS_DRAW_SWIPE'] = 'Dimmen';
+L['OPTIONS_AURAS_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) auf Auren anzeigen';
+L['OPTIONS_AURAS_DRAW_EDGE'] = 'Fläche';
+L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) bei Auren anzeigen';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Auren anzeigen, die gebannt werden können';
@@ -861,6 +865,10 @@ L['OPTIONS_AURAS_SPELLSTEAL_COUNT_RELATIVE_POINT_TOOLTIP'] = 'An welchem Punkt d
 L['OPTIONS_AURAS_SPELLSTEAL_COUNT_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz des Zähltextes';
 L['OPTIONS_AURAS_SPELLSTEAL_COUNT_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz des Zähltextes';
 L['OPTIONS_AURAS_SPELLSTEAL_COUNT_COLOR_TOOLTIP'] = 'Zählung der Textfarbe der auflösbaren Auren';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE'] = 'Dimmen';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) der zerstreubaren Auren anzeigen';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE'] = 'Fläche';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) der zerstreubaren Auren anzeigen';
 
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED_TOOLTIP'] = 'Zeige spezielle Auren, die in mythischen+ Dungeons angezeigt werden';
@@ -888,6 +896,10 @@ L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz des
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz des Zähltextes';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_COLOR_TOOLTIP'] = 'Textfarbe von mythischen+ Auren zählen';
 L['OPTIONS_AURAS_MYTHICPLUS_BORDER_COLOR_TOOLTIP'] = 'Farbe der Umrandung von mythischen+ Auren';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE'] = 'Dimmen';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) von mythischen+ Auren anzeigen';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE'] = 'Fläche';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von mythischen+ Auren anzeigen';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Wichtige Auren anzeigen (Betäubung, Massenkontrolle, Desorientierung usw.)';
@@ -920,6 +932,10 @@ L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_VALUE'] = 'Spielernamen-Schriftart be
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SIZE'] = 'Schriftgröße des Spielernamens bei wichtigen Auren';
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_FLAG'] = 'Umriss des Spielernamens bei wichtigen Auren';
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW'] = 'Schatten der Spielernamen-Schrift auf wichtigen Auras';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE'] = 'Dimmen';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) von wichtigen Auren anzeigen';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE'] = 'Fläche';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von wichtigen Auren anzeigen';
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Auren anzeigen';
@@ -959,6 +975,10 @@ L['OPTIONS_AURAS_CUSTOM_REMOVE_FROM_BLACKLIST'] = 'Von der schwarzen Liste entfe
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST'] = 'Auf SL';
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST_TOOLTIP'] = 'Aura sofort zur Schwarzen Liste hinzufügen';
 L['OPTIONS_AURAS_CUSTOM_HELPTIP'] = 'Beim Hinzufügen nach Namen wird manchmal das falsche Symbol angezeigt';
+L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE'] = 'Dimmen';
+L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) von benutzerdefinierten Auren anzeigen';
+L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE'] = 'Fläche';
+L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von benutzerdefinierten Auren anzeigen';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Aktivieren';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Farben der Gesundheitsleiste aktivieren';

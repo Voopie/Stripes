@@ -23,6 +23,7 @@ local SCALE, SQUARE, BUFFFRAME_OFFSET_X, BUFFFRAME_OFFSET_Y;
 local BORDER_HIDE;
 local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
+local DRAW_EDGE, DRAW_SWIPE;
 
 local DebuffTypeColor = DebuffTypeColor;
 
@@ -59,6 +60,8 @@ local function UpdateBuffs(unitframe)
                 aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
             end
 
+            aura.Cooldown:SetDrawEdge(DRAW_EDGE);
+            aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
             aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
             aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
@@ -125,6 +128,8 @@ local function UpdateStyle(unitframe)
             aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
         end
 
+        aura.Cooldown:SetDrawEdge(DRAW_EDGE);
+        aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
@@ -198,6 +203,9 @@ function Module:UpdateLocalConfig()
     TEXT_COUNT_COLOR[2] = O.db.auras_count_color[2];
     TEXT_COUNT_COLOR[3] = O.db.auras_count_color[3];
     TEXT_COUNT_COLOR[4] = O.db.auras_count_color[4] or 1;
+
+    DRAW_EDGE  = O.db.auras_draw_edge;
+    DRAW_SWIPE = O.db.auras_draw_swipe;
 
     UpdateFontObject(StripesAurasModCooldownFont, O.db.auras_cooldown_font_value, O.db.auras_cooldown_font_size, O.db.auras_cooldown_font_flag, O.db.auras_cooldown_font_shadow);
     UpdateFontObject(StripesAurasModCountFont, O.db.auras_count_font_value, O.db.auras_count_font_size, O.db.auras_count_font_flag, O.db.auras_count_font_shadow);

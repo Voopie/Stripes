@@ -827,6 +827,10 @@ L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'] = 'Enable aura appearance customizatio
 L['OPTIONS_AURAS_BORDER_HIDE'] = 'Hide the border';
 L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP'] = 'Hide the aura border';
 L['OPTIONS_AURAS_SPACING_X_TOOLTIP'] = 'Horizontal spacing between auras';
+L['OPTIONS_AURAS_DRAW_SWIPE'] = 'Swipe';
+L['OPTIONS_AURAS_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on auras';
+L['OPTIONS_AURAS_DRAW_EDGE'] = 'Edge';
+L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on auras';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Show auras that can be dispelled';
@@ -861,6 +865,10 @@ L['OPTIONS_AURAS_SPELLSTEAL_COUNT_RELATIVE_POINT_TOOLTIP'] = 'To which point of 
 L['OPTIONS_AURAS_SPELLSTEAL_COUNT_OFFSET_X_TOOLTIP'] = 'Horizontal offset of count text';
 L['OPTIONS_AURAS_SPELLSTEAL_COUNT_OFFSET_Y_TOOLTIP'] = 'Vertical offset of count text';
 L['OPTIONS_AURAS_SPELLSTEAL_COUNT_COLOR_TOOLTIP'] = 'Count text color of dispellable auras';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE'] = 'Swipe';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on dispellable auras';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE'] = 'Edge';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on dispellable auras';
 
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED_TOOLTIP'] = 'Show special auras that will be shown in mythic+ dungeons';
@@ -888,6 +896,10 @@ L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_X_TOOLTIP'] = 'Horizontal offset of cou
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_Y_TOOLTIP'] = 'Vertical offset of count text';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_COLOR_TOOLTIP'] = 'Count text color of mythic+ auras';
 L['OPTIONS_AURAS_MYTHICPLUS_BORDER_COLOR_TOOLTIP'] = 'Border color of mythic+ auras';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE'] = 'Swipe';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on mythic+ auras';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE'] = 'Edge';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on mythic+ auras';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Show important auras (stuns, crowd control, disorient etc)';
@@ -920,6 +932,10 @@ L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_VALUE'] = 'Player name font on import
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SIZE'] = 'Player name font size on important auras';
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_FLAG'] = 'Player name font outline on important auras';
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW'] = 'Player name font shadow on important auras';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE'] = 'Swipe';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on important auras';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE'] = 'Edge';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on important auras';
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Show custom auras';
@@ -959,6 +975,10 @@ L['OPTIONS_AURAS_CUSTOM_REMOVE_FROM_BLACKLIST'] = 'Remove from blacklist';
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST'] = 'To BL';
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST_TOOLTIP'] = 'Add aura immediately to blacklist';
 L['OPTIONS_AURAS_CUSTOM_HELPTIP'] = 'Adding by name can sometimes show the wrong icon';
+L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE'] = 'Swipe';
+L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on custom auras';
+L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE'] = 'Edge';
+L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on custom auras';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Enable';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Enable custom health bar colors';

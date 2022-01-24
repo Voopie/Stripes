@@ -9,6 +9,7 @@ local CooldownFrame_Set, AuraUtil_ForEachAura = CooldownFrame_Set, AuraUtil.ForE
 
 -- Local Config
 local ENABLED, BLACKLIST_ENABLED, SPACING_X;
+local DRAW_EDGE;
 
 local units = {
     ['player']  = true,
@@ -118,7 +119,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
 					buff.CountFrame.Count:Hide();
 				end
 
-				CooldownFrame_Set(buff.Cooldown, expirationTime - duration, duration, duration > 0, true);
+				CooldownFrame_Set(buff.Cooldown, expirationTime - duration, duration, duration > 0, DRAW_EDGE);
 
 				buff:Show();
 
@@ -164,6 +165,7 @@ function Module:UpdateLocalConfig()
     ENABLED           = O.db.auras_filter_player_enabled;
     BLACKLIST_ENABLED = O.db.auras_blacklist_enabled;
 	SPACING_X         = O.db.auras_spacing_x or 4;
+	DRAW_EDGE         = O.db.auras_draw_edge;
 
     UpdateBlacklistCache();
 end

@@ -247,7 +247,7 @@ O.Lists = {
     },
 };
 
--- ~493
+-- ~503
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -663,6 +663,8 @@ O.DefaultValues = {
     auras_masque_support           = false,
     auras_border_hide              = false,
     auras_spacing_x                = 4,
+    auras_draw_swipe               = true,
+    auras_draw_edge                = true,
 
     auras_countdown_enabled     = true,
     auras_cooldown_font_value     = 'BigNoodleToo Titling',
@@ -685,6 +687,8 @@ O.DefaultValues = {
     auras_count_color          = { 1, 1, 1, 1 },
 
     auras_spellsteal_enabled              = true,
+    auras_spellsteal_draw_swipe           = true,
+    auras_spellsteal_draw_edge            = true,
     auras_spellsteal_scale                = 1,
     auras_spellsteal_static_position      = false,
     auras_spellsteal_spacing_x            = 4,
@@ -715,6 +719,8 @@ O.DefaultValues = {
     auras_spellsteal_count_color          = { 1, 1, 1, 1 },
 
     auras_mythicplus_enabled              = true,
+    auras_mythicplus_draw_swipe           = true,
+    auras_mythicplus_draw_edge            = true,
     auras_mythicplus_scale                = 1,
     auras_mythicplus_offset_x             = 0,
     auras_mythicplus_offset_y             = 0,
@@ -740,6 +746,8 @@ O.DefaultValues = {
     auras_mythicplus_border_color         = { 0.80, 0.05, 0.05, 1 },
 
     auras_important_enabled                = true,
+    auras_important_draw_swipe             = true,
+    auras_important_draw_edge              = true,
     auras_important_scale                  = 1.3,
     auras_important_offset_x               = 0,
     auras_important_offset_y               = 0,
@@ -769,6 +777,8 @@ O.DefaultValues = {
     auras_important_castername_font_shadow = true,
 
     auras_custom_enabled              = true,
+    auras_custom_draw_swipe           = true,
+    auras_custom_draw_edge            = true,
     auras_custom_scale                = 1,
     auras_custom_offset_x             = 0,
     auras_custom_offset_y             = 0,

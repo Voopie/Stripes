@@ -1230,6 +1230,28 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_draw_swipe = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_draw_swipe:SetPosition('LEFT', self.auras_omnicc_suppress.Label, 'RIGHT', 12, 0);
+    self.auras_draw_swipe:SetLabel(L['OPTIONS_AURAS_DRAW_SWIPE']);
+    self.auras_draw_swipe:SetTooltip(L['OPTIONS_AURAS_DRAW_SWIPE_TOOLTIP']);
+    self.auras_draw_swipe:AddToSearch(button, L['OPTIONS_AURAS_DRAW_SWIPE_TOOLTIP'], self.Tabs[1]);
+    self.auras_draw_swipe:SetChecked(O.db.auras_draw_swipe);
+    self.auras_draw_swipe.Callback = function(self)
+        O.db.auras_draw_swipe = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.auras_draw_edge = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_draw_edge:SetPosition('LEFT', self.auras_draw_swipe.Label, 'RIGHT', 12, 0);
+    self.auras_draw_edge:SetLabel(L['OPTIONS_AURAS_DRAW_EDGE']);
+    self.auras_draw_edge:SetTooltip(L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP']);
+    self.auras_draw_edge:AddToSearch(button, L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP'], self.Tabs[1]);
+    self.auras_draw_edge:SetChecked(O.db.auras_draw_edge);
+    self.auras_draw_edge.Callback = function(self)
+        O.db.auras_draw_edge = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.auras_countdown_text = E.CreateFontString(self.TabsFrames['CommonTab'].Content);
     self.auras_countdown_text:SetPosition('TOPLEFT', self.auras_countdown_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
@@ -1668,6 +1690,28 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_spellsteal_draw_swipe = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
+    self.auras_spellsteal_draw_swipe:SetPosition('LEFT', self.auras_spellsteal_countdown_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_spellsteal_draw_swipe:SetLabel(L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE']);
+    self.auras_spellsteal_draw_swipe:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE_TOOLTIP']);
+    self.auras_spellsteal_draw_swipe:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE_TOOLTIP'], self.Tabs[2]);
+    self.auras_spellsteal_draw_swipe:SetChecked(O.db.auras_spellsteal_draw_swipe);
+    self.auras_spellsteal_draw_swipe.Callback = function(self)
+        O.db.auras_spellsteal_draw_swipe = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.auras_spellsteal_draw_edge = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
+    self.auras_spellsteal_draw_edge:SetPosition('LEFT', self.auras_spellsteal_draw_swipe.Label, 'RIGHT', 12, 0);
+    self.auras_spellsteal_draw_edge:SetLabel(L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE']);
+    self.auras_spellsteal_draw_edge:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP']);
+    self.auras_spellsteal_draw_edge:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP'], self.Tabs[2]);
+    self.auras_spellsteal_draw_edge:SetChecked(O.db.auras_spellsteal_draw_edge);
+    self.auras_spellsteal_draw_edge.Callback = function(self)
+        O.db.auras_spellsteal_draw_edge = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.auras_spellsteal_countdown_text = E.CreateFontString(self.TabsFrames['SpellstealTab'].Content);
     self.auras_spellsteal_countdown_text:SetPosition('TOPLEFT', self.auras_spellsteal_countdown_enabled, 'BOTTOMLEFT', 0, -16);
     self.auras_spellsteal_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
@@ -1971,6 +2015,28 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_mythicplus_draw_swipe = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_draw_swipe:SetPosition('LEFT', self.auras_mythicplus_countdown_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_mythicplus_draw_swipe:SetLabel(L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE']);
+    self.auras_mythicplus_draw_swipe:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE_TOOLTIP']);
+    self.auras_mythicplus_draw_swipe:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_draw_swipe:SetChecked(O.db.auras_mythicplus_draw_swipe);
+    self.auras_mythicplus_draw_swipe.Callback = function(self)
+        O.db.auras_mythicplus_draw_swipe = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.auras_mythicplus_draw_edge = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_draw_edge:SetPosition('LEFT', self.auras_mythicplus_draw_swipe.Label, 'RIGHT', 12, 0);
+    self.auras_mythicplus_draw_edge:SetLabel(L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE']);
+    self.auras_mythicplus_draw_edge:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP']);
+    self.auras_mythicplus_draw_edge:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_draw_edge:SetChecked(O.db.auras_mythicplus_draw_edge);
+    self.auras_mythicplus_draw_edge.Callback = function(self)
+        O.db.auras_mythicplus_draw_edge = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.auras_mythicplus_countdown_text = E.CreateFontString(self.TabsFrames['MythicPlusTab'].Content);
     self.auras_mythicplus_countdown_text:SetPosition('TOPLEFT', self.auras_mythicplus_countdown_enabled, 'BOTTOMLEFT', 0, -16);
     self.auras_mythicplus_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
@@ -2257,6 +2323,28 @@ panel.Load = function(self)
     self.auras_important_countdown_enabled:SetChecked(O.db.auras_important_countdown_enabled);
     self.auras_important_countdown_enabled.Callback = function(self)
         O.db.auras_important_countdown_enabled = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.auras_important_draw_swipe = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_draw_swipe:SetPosition('LEFT', self.auras_important_countdown_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_important_draw_swipe:SetLabel(L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE']);
+    self.auras_important_draw_swipe:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP']);
+    self.auras_important_draw_swipe:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP'], self.Tabs[4]);
+    self.auras_important_draw_swipe:SetChecked(O.db.auras_important_draw_swipe);
+    self.auras_important_draw_swipe.Callback = function(self)
+        O.db.auras_important_draw_swipe = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.auras_important_draw_edge = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_draw_edge:SetPosition('LEFT', self.auras_important_draw_swipe.Label, 'RIGHT', 12, 0);
+    self.auras_important_draw_edge:SetLabel(L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE']);
+    self.auras_important_draw_edge:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP']);
+    self.auras_important_draw_edge:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'], self.Tabs[4]);
+    self.auras_important_draw_edge:SetChecked(O.db.auras_important_draw_edge);
+    self.auras_important_draw_edge.Callback = function(self)
+        O.db.auras_important_draw_edge = self:GetChecked();
         Stripes:UpdateAll();
     end
 
@@ -2620,6 +2708,28 @@ panel.Load = function(self)
     self.auras_custom_countdown_enabled:SetChecked(O.db.auras_custom_countdown_enabled);
     self.auras_custom_countdown_enabled.Callback = function(self)
         O.db.auras_custom_countdown_enabled = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.auras_custom_draw_swipe = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_draw_swipe:SetPosition('LEFT', self.auras_custom_countdown_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_custom_draw_swipe:SetLabel(L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE']);
+    self.auras_custom_draw_swipe:SetTooltip(L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE_TOOLTIP']);
+    self.auras_custom_draw_swipe:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_draw_swipe:SetChecked(O.db.auras_custom_draw_swipe);
+    self.auras_custom_draw_swipe.Callback = function(self)
+        O.db.auras_custom_draw_swipe = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.auras_custom_draw_edge = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_draw_edge:SetPosition('LEFT', self.auras_custom_draw_swipe.Label, 'RIGHT', 12, 0);
+    self.auras_custom_draw_edge:SetLabel(L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE']);
+    self.auras_custom_draw_edge:SetTooltip(L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP']);
+    self.auras_custom_draw_edge:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_draw_edge:SetChecked(O.db.auras_custom_draw_edge);
+    self.auras_custom_draw_edge.Callback = function(self)
+        O.db.auras_custom_draw_edge = self:GetChecked();
         Stripes:UpdateAll();
     end
 

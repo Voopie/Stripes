@@ -827,6 +827,10 @@ L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'] = 'Включить поддержку
 L['OPTIONS_AURAS_BORDER_HIDE'] = 'Скрыть рамку';
 L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP'] = 'Скрыть рамку вокруг аур';
 L['OPTIONS_AURAS_SPACING_X_TOOLTIP'] = 'Горизонтальный промежуток между аурами';
+L['OPTIONS_AURAS_DRAW_SWIPE'] = 'Затемнение';
+L['OPTIONS_AURAS_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффект затемнения (swipe) на аурах';
+L['OPTIONS_AURAS_DRAW_EDGE'] = 'Грань';
+L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на аурах';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';
@@ -861,6 +865,10 @@ L['OPTIONS_AURAS_SPELLSTEAL_COUNT_RELATIVE_POINT_TOOLTIP'] = 'К какой то
 L['OPTIONS_AURAS_SPELLSTEAL_COUNT_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение количества';
 L['OPTIONS_AURAS_SPELLSTEAL_COUNT_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение количества';
 L['OPTIONS_AURAS_SPELLSTEAL_COUNT_COLOR_TOOLTIP'] = 'Цвет текста количества развеиваемых аур';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE'] = 'Затемнение';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффект затемнения (swipe) на развеиваемых аурах';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE'] = 'Грань';
+L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на развеиваемых аурах';
 
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED_TOOLTIP'] = 'Показывать особые ауры, которые будут показываться в эпохальных+ подземельях';
@@ -888,6 +896,10 @@ L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_X_TOOLTIP'] = 'Горизонтальн
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение количества';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNT_COLOR_TOOLTIP'] = 'Цвет текста количества эпохальных+ аур';
 L['OPTIONS_AURAS_MYTHICPLUS_BORDER_COLOR_TOOLTIP'] = 'Цвет границ эпохальных+ аур';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE'] = 'Затемнение';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффект затемнения (swipe) на эпохальных+ аурах';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE'] = 'Грань';
+L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на эпохальных+ аурах';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Показывать важные ауры (оглушения, контроль и т.п.)';
@@ -920,6 +932,10 @@ L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_VALUE'] = 'Шрифт имени иг
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SIZE'] = 'Размер шрифта имени игрока на важных аурах';
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_FLAG'] = 'Контур шрифта имени игрока на важных аурах';
 L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW'] = 'Тень шрифта имени игрока на важных аурах';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE'] = 'Затемнение';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффект затемнения (swipe) на важных аурах';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE'] = 'Грань';
+L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на важных аурах';
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Показывать пользовательские ауры';
@@ -959,6 +975,10 @@ L['OPTIONS_AURAS_CUSTOM_REMOVE_FROM_BLACKLIST'] = 'Удалить из чёрн�
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST'] = 'В ЧС';
 L['OPTIONS_AURAS_CUSTOM_TO_BLACKLIST_TOOLTIP'] = 'Добавить ауру сразу в чёрный список';
 L['OPTIONS_AURAS_CUSTOM_HELPTIP'] = 'При добавлении по названию иногда может показываться неверная иконка';
+L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE'] = 'Затемнение';
+L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффект затемнения (swipe) на пользовательских аурах';
+L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE'] = 'Грань';
+L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на пользовательских аурах';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';

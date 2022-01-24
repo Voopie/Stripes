@@ -30,6 +30,7 @@ local OFFSET_X, OFFSET_Y;
 local BORDER_HIDE;
 local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
+local DRAW_EDGE, DRAW_SWIPE;
 
 local StripesAurasImportantCooldownFont = CreateFont('StripesAurasImportantCooldownFont');
 local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCountFont');
@@ -128,6 +129,8 @@ local function Update(unitframe)
 
                 aura.Border:SetShown(not BORDER_HIDE);
 
+                aura.Cooldown:SetDrawEdge(DRAW_EDGE);
+                aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
                 aura.Cooldown:SetFrameStrata('HIGH');
                 aura.Cooldown:GetRegions():ClearAllPoints();
                 aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
@@ -173,7 +176,7 @@ local function Update(unitframe)
                 aura.CountFrame.Count:SetShown(false);
             end
 
-            CooldownFrame_Set(aura.Cooldown, expirationTime - duration, duration, duration > 0, true);
+            CooldownFrame_Set(aura.Cooldown, expirationTime - duration, duration, duration > 0, DRAW_EDGE);
 
             LCG.PixelGlow_Stop(aura);
             LCG.PixelGlow_Start(aura, pixelGlowColor);
@@ -248,6 +251,8 @@ local function UpdateStyle(unitframe)
             aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
         end
 
+        aura.Cooldown:SetDrawEdge(DRAW_EDGE);
+        aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
@@ -324,6 +329,9 @@ function Module:UpdateLocalConfig()
     TEXT_COUNT_COLOR[2] = O.db.auras_important_count_color[2];
     TEXT_COUNT_COLOR[3] = O.db.auras_important_count_color[3];
     TEXT_COUNT_COLOR[4] = O.db.auras_important_count_color[4] or 1;
+
+    DRAW_EDGE  = O.db.auras_important_draw_edge;
+    DRAW_SWIPE = O.db.auras_important_draw_swipe;
 
     UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
     UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);

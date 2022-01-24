@@ -26,6 +26,7 @@ local BORDER_HIDE;
 local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 local SPACING_X;
+local DRAW_EDGE, DRAW_SWIPE;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -139,6 +140,8 @@ local function Update(unitframe)
                     aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
                 end
 
+                aura.Cooldown:SetDrawEdge(DRAW_EDGE);
+                aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
                 aura.Cooldown:SetFrameStrata('HIGH');
                 aura.Cooldown:GetRegions():ClearAllPoints();
                 aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
@@ -176,7 +179,7 @@ local function Update(unitframe)
                 aura.CountFrame.Count:SetShown(false);
             end
 
-            CooldownFrame_Set(aura.Cooldown, expirationTime - duration, duration, duration > 0, true);
+            CooldownFrame_Set(aura.Cooldown, expirationTime - duration, duration, duration > 0, DRAW_EDGE);
 
             if expirationTime - GetTime() >= 3600 then
                 aura.Cooldown:SetHideCountdownNumbers(true);
@@ -246,6 +249,8 @@ local function UpdateStyle(unitframe)
         aura.Border:SetShown(not BORDER_HIDE);
         aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
 
+        aura.Cooldown:SetDrawEdge(DRAW_EDGE);
+        aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
         aura.Cooldown:GetRegions():ClearAllPoints();
@@ -347,6 +352,9 @@ function Module:UpdateLocalConfig()
     TEXT_COUNT_COLOR[4] = O.db.auras_spellsteal_count_color[4] or 1;
 
     SPACING_X = O.db.auras_spellsteal_spacing_x or 4;
+
+    DRAW_EDGE  = O.db.auras_spellsteal_draw_edge;
+    DRAW_SWIPE = O.db.auras_spellsteal_draw_swipe;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);
