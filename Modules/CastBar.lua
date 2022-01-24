@@ -27,6 +27,7 @@ local BAR_HEIGHT;
 local TEXT_POSITION, TEXT_X_OFFSET, TEXT_Y_OFFSET, TEXT_TRUNCATE;
 local TARGET_NAME_ENABLED, TARGET_NAME_CLASS_COLOR, TARGET_NAME_ONLY_ENEMY, TARGET_NAME_IN_SPELL_NAME, TARGET_NAME_POINT, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y;
 local CAST_BAR_BACKGROUND_TEXTURE, CAST_BAR_BACKGROUND_COLOR;
+local CAST_BAR_FRAME_STRATA;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 local StripesCastBarTimerFont = CreateFont('StripesCastBarTimerFont');
@@ -212,6 +213,7 @@ local function CreateTimer(unitframe)
 
     if not unitframe.castingBar then
         unitframe.castingBar = CreateFrame('StatusBar', nil, unitframe, 'StripesNameplateCastBarTemplate');
+        unitframe.castingBar:SetFrameStrata(CAST_BAR_FRAME_STRATA == 1 and unitframe.castingBar:GetParent():GetFrameStrata() or CAST_BAR_FRAME_STRATA);
     end
 
     UpdateCastNameTextPosition(unitframe);
@@ -245,6 +247,7 @@ local function UpdateVisibility(unitframe)
                 StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
             else
                 StripesCastingBar_SetUnit(unitframe.castingBar, unitframe.data.unit, SHOW_TRADE_SKILLS, SHOW_SHIELD);
+                unitframe.castingBar:SetFrameStrata(CAST_BAR_FRAME_STRATA == 1 and unitframe.castingBar:GetParent():GetFrameStrata() or CAST_BAR_FRAME_STRATA);
             end
         end
 
@@ -423,6 +426,8 @@ function Module:UpdateLocalConfig()
     CAST_BAR_BACKGROUND_COLOR[2] = O.db.castbar_bg_color[2];
     CAST_BAR_BACKGROUND_COLOR[3] = O.db.castbar_bg_color[3];
     CAST_BAR_BACKGROUND_COLOR[4] = O.db.castbar_bg_color[4] or 1;
+
+    CAST_BAR_FRAME_STRATA = O.db.castbar_frame_strata ~= 1 and O.Lists.frame_strata[O.db.castbar_frame_strata] or 1;
 
     UpdateFontObject(StripesCastBarFont, O.db.castbar_text_font_value, O.db.castbar_text_font_size, O.db.castbar_text_font_flag, O.db.castbar_text_font_shadow);
     UpdateFontObject(StripesCastBarTimerFont, O.db.castbar_timer_font_value, O.db.castbar_timer_font_size, O.db.castbar_timer_font_flag, O.db.castbar_timer_font_shadow);

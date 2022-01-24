@@ -804,8 +804,9 @@ panel.Load = function(self)
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_height = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_height:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -16);
+    self.castbar_height:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
     self.castbar_height:SetLabel(L['OPTIONS_CAST_BAR_HEIGHT']);
+    self.castbar_height:SetLabelPosition('LEFT');
     self.castbar_height:SetTooltip(L['OPTIONS_CAST_BAR_HEIGHT_TOOLTIP']);
     self.castbar_height:AddToSearch(button, L['OPTIONS_CAST_BAR_HEIGHT_TOOLTIP'], self.Tabs[1]);
     self.castbar_height:SetValues(O.db.castbar_height, 1, 40, 1);
@@ -814,8 +815,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.castbar_frame_strata = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.castbar_frame_strata:SetPosition('LEFT', self.castbar_height, 'RIGHT', 16, 0);
+    self.castbar_frame_strata:SetSize(160, 20);
+    self.castbar_frame_strata:SetList(O.Lists.frame_strata);
+    self.castbar_frame_strata:SetValue(O.db.castbar_frame_strata);
+    self.castbar_frame_strata:SetLabel(L['FRAME_STRATA']);
+    self.castbar_frame_strata:SetTooltip(L['OPTIONS_CAST_BAR_FRAME_STRATA_TOOLTIP']);
+    self.castbar_frame_strata:AddToSearch(button, L['OPTIONS_CAST_BAR_FRAME_STRATA_TOOLTIP'], self.Tabs[1]);
+    self.castbar_frame_strata.OnValueChangedCallback = function(_, value)
+        O.db.castbar_frame_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_height, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_height, 'BOTTOMLEFT', 0 - self.castbar_height.Text:GetStringWidth() - 6, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_border_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);

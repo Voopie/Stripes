@@ -520,6 +520,7 @@ L['OPTIONS_CAST_BAR_USE_INTERRUPT_NOT_READY_COLOR_TOOLTIP'] = 'Farbe des Zaubers
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED'] = 'Aktivieren';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Effekte für bestimmte Zaubersprüche aktivieren';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID'] = 'Geben Sie den Namen oder die ID des Zaubers ein';
+L['OPTIONS_CAST_BAR_FRAME_STRATA_TOOLTIP'] = 'Strata für Zauberstab';
 
 L['OPTIONS_SIZES_TAB_ENEMY'] = 'Feind';
 L['OPTIONS_SIZES_TAB_FRIENDLY'] = 'Freundlich';
