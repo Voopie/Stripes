@@ -1645,7 +1645,12 @@ do
 
             UpdateHeader = function(self)
                 if LSM:IsValid('font', self.currentValue) then
-                    self.holderButton.Text:SetTextColor(1, 1, 1, 1);
+                    if self.holderButton:IsEnabled() then
+                        self.holderButton.Text:SetTextColor(1, 1, 1, 1);
+                    else
+                        self.holderButton.Text:SetTextColor(0.5, 0.5, 0.5, 1);
+                    end
+
                     self.holderButton.Text:SetText('Trigger'); -- Not fully resolve a problem...
                     self.holderButton.Text:SetText(self.currentValue);
                     local _, size, outline = self.holderButton.Text:GetFont();
