@@ -228,6 +228,15 @@ end
 
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.AurasCustom.buffList) do
+        if Stripes.Masque then
+            if MASQUE_SUPPORT then
+                Stripes.MasqueAurasCustomGroup:RemoveButton(aura);
+                Stripes.MasqueAurasCustomGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+            else
+                Stripes.MasqueAurasCustomGroup:RemoveButton(aura);
+            end
+        end
+
         aura:SetScale(SCALE);
 
         if SQUARE then
@@ -242,6 +251,7 @@ local function UpdateStyle(unitframe)
 
         aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
         aura.Border:SetShown(not BORDER_HIDE);
+        aura.Border:SetDrawLayer('BACKGROUND');
 
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
@@ -253,15 +263,6 @@ local function UpdateStyle(unitframe)
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
         aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
-
-        if Stripes.Masque then
-            if MASQUE_SUPPORT then
-                Stripes.MasqueAurasCustomGroup:RemoveButton(aura);
-                Stripes.MasqueAurasCustomGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
-            else
-                Stripes.MasqueAurasCustomGroup:RemoveButton(aura);
-            end
-        end
     end
 
     if Stripes.Masque and MASQUE_SUPPORT then

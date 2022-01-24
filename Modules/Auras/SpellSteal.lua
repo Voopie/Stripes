@@ -219,6 +219,15 @@ end
 
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.AurasSpellSteal.buffList) do
+        if Stripes.Masque then
+            if MASQUE_SUPPORT then
+                Stripes.MasqueAurasSpellstealGroup:RemoveButton(aura);
+                Stripes.MasqueAurasSpellstealGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+            else
+                Stripes.MasqueAurasSpellstealGroup:RemoveButton(aura);
+            end
+        end
+
         aura:SetScale(SCALE);
 
         if SQUARE then
@@ -233,6 +242,7 @@ local function UpdateStyle(unitframe)
 
         aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
         aura.Border:SetShown(not BORDER_HIDE);
+        aura.Border:SetDrawLayer('BACKGROUND');
 
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
@@ -246,15 +256,6 @@ local function UpdateStyle(unitframe)
 
         StopGlow(aura);
         UpdateGlow(aura);
-
-        if Stripes.Masque then
-            if MASQUE_SUPPORT then
-                Stripes.MasqueAurasSpellstealGroup:RemoveButton(aura);
-                Stripes.MasqueAurasSpellstealGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
-            else
-                Stripes.MasqueAurasSpellstealGroup:RemoveButton(aura);
-            end
-        end
     end
 
     if Stripes.Masque and MASQUE_SUPPORT then

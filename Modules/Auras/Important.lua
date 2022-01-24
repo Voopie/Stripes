@@ -25,7 +25,7 @@ local ENABLED, COUNTDOWN_ENABLED, CASTER_NAME_SHOW;
 local SUPPRESS_OMNICC;
 local COUNTDOWN_POINT, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y;
 local COUNT_POINT, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y;
-local SQUARE;
+local SCALE, SQUARE;
 local OFFSET_X, OFFSET_Y;
 local BORDER_HIDE;
 local MASQUE_SUPPORT;
@@ -124,7 +124,7 @@ local function Update(unitframe)
                     aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
                 end
 
-                aura:SetScale(O.db.auras_important_scale);
+                aura:SetScale(SCALE);
 
                 aura.Border:SetShown(not BORDER_HIDE);
 
@@ -224,7 +224,16 @@ end
 
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.ImportantAuras.buffList) do
-        aura:SetScale(O.db.auras_important_scale);
+        if Stripes.Masque then
+            if MASQUE_SUPPORT then
+                Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
+                Stripes.MasqueAurasImportantGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+            else
+                Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
+            end
+        end
+
+        aura:SetScale(SCALE);
 
         if SQUARE then
             aura:SetSize(20, 20);
@@ -237,6 +246,7 @@ local function UpdateStyle(unitframe)
         end
 
         aura.Border:SetShown(not BORDER_HIDE);
+        aura.Border:SetDrawLayer('BACKGROUND');
 
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
@@ -249,14 +259,6 @@ local function UpdateStyle(unitframe)
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
         aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
-        if Stripes.Masque then
-            if MASQUE_SUPPORT then
-                Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
-                Stripes.MasqueAurasImportantGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
-            else
-                Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
-            end
-        end
     end
 
     if Stripes.Masque and MASQUE_SUPPORT then
@@ -286,6 +288,8 @@ end
 
 function Module:UpdateLocalConfig()
     MASQUE_SUPPORT = O.db.auras_masque_support;
+
+    SCALE = O.db.auras_important_scale;
 
     ENABLED           = O.db.auras_important_enabled;
     COUNTDOWN_ENABLED = O.db.auras_important_countdown_enabled;
