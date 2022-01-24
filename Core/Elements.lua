@@ -1650,15 +1650,12 @@ do
             UpdateHeader = function(self)
                 if LSM:IsValid('font', self.currentValue) then
                     self.holderButton.Text:SetTextColor(1, 1, 1, 1);
-                else
-                    self.holderButton.Text:SetTextColor(1, 0, 0, 1);
-                end
-
-                if self.currentValue then
+                    self.holderButton.Text:SetText('Trigger'); -- Not fully resolve a problem...
                     self.holderButton.Text:SetText(self.currentValue);
                     local _, size, outline = self.holderButton.Text:GetFont();
                     self.holderButton.Text:SetFont(LSM:Fetch('font', self.currentValue), size, outline);
                 else
+                    self.holderButton.Text:SetTextColor(1, 0, 0, 1);
                     self.holderButton.Text:SetText(L['MISSING_FONT']);
                     local _, size, outline = self.holderButton.Text:GetFont();
                     self.holderButton.Text:SetFont(LSM:Fetch('font', LSM.DefaultMedia.font), size, outline);
@@ -1676,7 +1673,7 @@ do
                 wipe(self.sortedTable);
 
                 for k, d in pairs(self.itemsTable) do
-                    table.insert(self.sortedTable, { key = k, name = d});
+                    table.insert(self.sortedTable, { key = k, name = d });
                 end
 
                 table.sort(self.sortedTable, function(a, b)
@@ -1906,7 +1903,13 @@ do
 
             if container.tooltip then
                 GameTooltip:SetOwner(container, 'ANCHOR_RIGHT');
-                GameTooltip:AddLine(container.tooltip, 1, 0.85, 0, true);
+
+                if holderButton.Text:IsTruncated() then
+                    GameTooltip:AddLine(container.tooltip .. '|n' .. holderButton.Text:GetText(), 1, 0.85, 0, true);
+                else
+                    GameTooltip:AddLine(container.tooltip, 1, 0.85, 0, true);
+                end
+
                 GameTooltip:Show();
             end
         end);
@@ -1928,7 +1931,13 @@ do
 
             if container.tooltip then
                 GameTooltip:SetOwner(container, 'ANCHOR_RIGHT');
-                GameTooltip:AddLine(container.tooltip, 1, 0.85, 0, true);
+
+                if holderButton.Text:IsTruncated() then
+                    GameTooltip:AddLine(container.tooltip .. '|n' .. holderButton.Text:GetText(), 1, 0.85, 0, true);
+                else
+                    GameTooltip:AddLine(container.tooltip, 1, 0.85, 0, true);
+                end
+
                 GameTooltip:Show();
             end
         end);
@@ -2005,12 +2014,26 @@ do
 
             if self.tooltip then
                 GameTooltip:SetOwner(self, 'ANCHOR_RIGHT');
-                GameTooltip:AddLine(self.tooltip, 1, 0.85, 0, true);
+
+                if holderButton.Text:IsTruncated() then
+                    GameTooltip:AddLine(self.tooltip .. '|n' .. holderButton.Text:GetText(), 1, 0.85, 0, true);
+                else
+                    GameTooltip:AddLine(self.tooltip, 1, 0.85, 0, true);
+                end
+
                 GameTooltip:Show();
             end
         end);
 
         container:HookScript('OnLeave', GameTooltip_Hide);
+
+        container.showedOnce = false;
+        container:HookScript('OnShow', function(self)
+            if not self.showedOnce then
+                self:UpdateHeader();
+                self.showedOnce = true;
+            end
+        end);
 
         container.type = 'DropDown';
 

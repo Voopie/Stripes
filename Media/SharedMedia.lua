@@ -271,6 +271,39 @@ S.Media.Fonts = {
     },
 };
 
+-- LSM Font Preloader ~Simpy
+do
+    local preloader = CreateFrame('Frame');
+    preloader:SetPoint('TOP', UIParent, 'BOTTOM', 0, -500);
+    preloader:SetSize(100, 100);
+
+    local cacheFont = function(_, data)
+        local loadFont = preloader:CreateFontString()
+        loadFont:SetAllPoints()
+
+        if pcall(loadFont.SetFont, loadFont, data, 14) then
+            pcall(loadFont.SetText, loadFont, 'cache');
+        end
+    end
+
+    -- Lets load all the fonts in LSM to prevent fonts not being ready
+    local sharedFonts = LSM:HashTable('font')
+    for key, data in next, sharedFonts do
+        cacheFont(key, data);
+    end
+
+    -- Now lets hook it so we can preload any other AddOns add to LSM
+    hooksecurefunc(LSM, 'Register', function(_, mediatype, key, data)
+        if not mediatype or type(mediatype) ~= 'string' then
+            return;
+        end
+
+        if mediatype:lower() == 'font' then
+            cacheFont(key, data);
+        end
+    end);
+end
+
 -- Status bar textures
 LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Flat', S.Media.Textures.StatusBar.FLAT);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Liline', S.Media.Textures.StatusBar.LILINE);
@@ -354,39 +387,6 @@ LSM:Register(LSM.MediaType.FONT, 'Systopie Semi Bold Italic', S.Media.Fonts.SYST
 LSM:Register(LSM.MediaType.FONT, 'Systopie Bold', S.Media.Fonts.SYSTOPIE.BOLD, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Systopie Bold Italic', S.Media.Fonts.SYSTOPIE.BOLDITALIC, LOCALE_WEST_AND_RU);
 LSM:Register(LSM.MediaType.FONT, 'Teen CYR', S.Media.Fonts.TEEN.CYR, LOCALE_WEST_AND_RU);
-
--- LSM Font Preloader ~Simpy
-do
-    local preloader = CreateFrame('Frame');
-    preloader:SetPoint('TOP', UIParent, 'BOTTOM', 0, -500);
-    preloader:SetSize(100, 100);
-
-    local cacheFont = function(_, data)
-        local loadFont = preloader:CreateFontString()
-        loadFont:SetAllPoints()
-
-        if pcall(loadFont.SetFont, loadFont, data, 14) then
-            pcall(loadFont.SetText, loadFont, 'cache');
-        end
-    end
-
-    -- Lets load all the fonts in LSM to prevent fonts not being ready
-    local sharedFonts = LSM:HashTable('font')
-    for key, data in next, sharedFonts do
-        cacheFont(key, data);
-    end
-
-    -- Now lets hook it so we can preload any other AddOns add to LSM
-    hooksecurefunc(LSM, 'Register', function(_, mediatype, key, data)
-        if not mediatype or type(mediatype) ~= 'string' then
-            return;
-        end
-
-        if mediatype:lower() == 'font' then
-            cacheFont(key, data);
-        end
-    end);
-end
 
 local hieroglyphsLocales = {
     ['zhCN'] = true,
