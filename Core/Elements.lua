@@ -1317,7 +1317,7 @@ do
             end,
 
             UpdateHeader = function(self)
-                self.holderButton.Text:SetText(self.itemsTable[self.currentValue] or '');
+                self.holderButton.Text:SetText(self.itemsTable and (self.itemsTable[self.currentValue] or ''));
             end,
         },
 
@@ -1418,7 +1418,7 @@ do
             end,
 
             UpdateHeader = function(self)
-                if self.itemsTable[self.currentValue] then
+                if self.itemsTable and self.itemsTable[self.currentValue] then
                     self.holderButton.Text:SetText(self.currentValue);
                     self.holderButton.Texture:SetTexture(self.itemsTable[self.currentValue]);
                 end
@@ -1531,14 +1531,10 @@ do
             UpdateHeader = function(self)
                 if LSM:IsValid('statusbar', self.currentValue) then
                     self.holderButton.Text:SetTextColor(1, 1, 1, 1);
-                else
-                    self.holderButton.Text:SetTextColor(1, 0, 0, 1);
-                end
-
-                if self.currentValue then
                     self.holderButton.Text:SetText(self.currentValue);
                     self.holderButton.StatusBar:SetTexture(LSM:Fetch('statusbar', self.currentValue));
                 else
+                    self.holderButton.Text:SetTextColor(1, 0, 0, 1);
                     self.holderButton.Text:SetText(L['MISSING_TEXTURE']);
                     self.holderButton.StatusBar:SetTexture(LSM:Fetch('statusbar', LSM.DefaultMedia.statusbar));
                 end
