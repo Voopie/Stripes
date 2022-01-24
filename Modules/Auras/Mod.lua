@@ -105,13 +105,15 @@ local function UpdateStyle(unitframe)
                 Stripes.MasqueAurasGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
             else
                 Stripes.MasqueAurasGroup:RemoveButton(aura);
+
+                aura.Border:SetColorTexture(0, 0, 0, 1);
+                aura.Border:SetDrawLayer('BACKGROUND');
             end
         end
 
         aura:SetScale(SCALE);
 
         aura.Border:SetShown(not BORDER_HIDE);
-        aura.Border:SetDrawLayer('BACKGROUND');
 
         if SQUARE then
             aura:SetSize(20, 20);

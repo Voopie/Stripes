@@ -225,6 +225,9 @@ local function UpdateStyle(unitframe)
                 Stripes.MasqueAurasSpellstealGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
             else
                 Stripes.MasqueAurasSpellstealGroup:RemoveButton(aura);
+
+                aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+                aura.Border:SetDrawLayer('BACKGROUND');
             end
         end
 
@@ -240,9 +243,8 @@ local function UpdateStyle(unitframe)
             aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
         end
 
-        aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
         aura.Border:SetShown(not BORDER_HIDE);
-        aura.Border:SetDrawLayer('BACKGROUND');
+        aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
 
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 

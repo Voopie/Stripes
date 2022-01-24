@@ -230,6 +230,9 @@ local function UpdateStyle(unitframe)
                 Stripes.MasqueAurasImportantGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
             else
                 Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
+
+                aura.Border:SetColorTexture(0, 0, 0, 1);
+                aura.Border:SetDrawLayer('BACKGROUND');
             end
         end
 
@@ -244,9 +247,6 @@ local function UpdateStyle(unitframe)
             aura.Icon:SetSize(18, 12);
             aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
         end
-
-        aura.Border:SetShown(not BORDER_HIDE);
-        aura.Border:SetDrawLayer('BACKGROUND');
 
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
