@@ -6,8 +6,8 @@ Stripes.Updater = CreateFrame('Frame');
 local pairs, string_find, string_lower, math_ceil, math_max = pairs, string.find, string.lower, math.ceil, math.max;
 
 -- WoW API
-local UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
-      UnitIsUnit, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
+local UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
+      UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
 local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack = UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack;
 local UnitInGuild = U.UnitInGuild;
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
@@ -96,12 +96,16 @@ Stripes.UpdateAll = function()
 
     for _, unitframe in pairs(NP) do
         if unitframe.unit and UnitExists(unitframe.unit) then
-            CompactUnitFrame_UpdateHealth(unitframe);
-            CompactUnitFrame_UpdateName(unitframe);
-            CompactUnitFrame_UpdateSelectionHighlight(unitframe);
-            CompactUnitFrame_UpdateHealthBorder(unitframe);
-            CompactUnitFrame_UpdateHealPrediction(unitframe);
             CompactUnitFrame_UpdateWidgetsOnlyMode(unitframe);
+            CompactUnitFrame_UpdateName(unitframe);
+
+            if unitframe.displayedUnit and UnitExists(unitframe.displayedUnit) then
+                CompactUnitFrame_UpdateHealth(unitframe);
+                CompactUnitFrame_UpdateHealthBorder(unitframe);
+                CompactUnitFrame_UpdateHealPrediction(unitframe);
+                CompactUnitFrame_UpdateSelectionHighlight(unitframe);
+            end
+
             CompactUnitFrame_UpdateStatusText(unitframe);
             CompactUnitFrame_UpdateClassificationIndicator(unitframe);
         end
