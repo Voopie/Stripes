@@ -88,6 +88,10 @@ local function IsUseClassColor(unitframe)
 end
 
 local function UpdateHealthColor(frame)
+    if not frame.displayedUnit then
+        return;
+    end
+
     local r, g, b, a;
 
     if not UnitIsConnected(frame.displayedUnit) then
