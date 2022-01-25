@@ -5,13 +5,13 @@ local Module = S:NewNameplateModule('WhoInterrupted');
 local pairs, string_format, bit_band = pairs, string.format, bit.band;
 
 -- WoW API
-local UnitExists = UnitExists;
+local UnitExists, GetPlayerInfoByGUID = UnitExists, GetPlayerInfoByGUID;
 
 -- WoW Global string
 local INTERRUPTED = INTERRUPTED;
 
 -- Stripes API
-local GetClassColorByGUID = U.GetClassColorByGUID;
+local U_GetClassColor = U.GetClassColor;
 
 -- Nameplates
 local NP = S.NamePlates;
@@ -28,19 +28,22 @@ local blacklist = {
     [197214] = true, -- Sundering (Shaman Enhancement talent)
 };
 
-local function OnInterrupt(unitframe, name, guid)
-    if name and guid then
-        unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, GetClassColorByGUID(guid, 1), INTERRUPTED, name));
+local function OnInterrupt(unitframe, guid)
+    if guid and guid ~= '' then
+        local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(guid);
+        if name then
+            unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(englishClass, 1), INTERRUPTED, name));
+        end
     end
 end
 
 function Module:COMBAT_LOG_EVENT_UNFILTERED()
-    local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId = CombatLogGetCurrentEventInfo();
+    local _, subEvent, _, sourceGUID, _, _, _, destGUID, _, _, _, spellId = CombatLogGetCurrentEventInfo();
 
     if subEvent == 'SPELL_INTERRUPT' then
         for _, unitframe in pairs(NP) do
             if unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
-                OnInterrupt(unitframe, sourceName, sourceGUID);
+                OnInterrupt(unitframe, sourceGUID);
             end
         end
     elseif subEvent == 'SPELL_AURA_APPLIED' and not blacklist[spellId] then
@@ -48,7 +51,7 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
         if flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0 then
             for _, unitframe in pairs(NP) do
                 if unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
-                    OnInterrupt(unitframe, sourceName, sourceGUID);
+                    OnInterrupt(unitframe, sourceGUID);
                 end
             end
         end
