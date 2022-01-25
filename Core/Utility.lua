@@ -214,6 +214,20 @@ U.GetClassColorByGUID = function(guid, str)
     return U.GetClassColor(select(2, GetPlayerInfoByGUID(guid)), str);
 end
 
+U.GetUnitNameByGUID = function(guid, withRealm, realmDelimiter)
+    if withRealm then
+       local name, realm = select(6, GetPlayerInfoByGUID(guid));
+
+       if realm and realm ~= '' then
+           return name .. (realmDelimiter or '-') .. realm;
+       end
+
+       return name;
+    end
+
+    return (select(6, GetPlayerInfoByGUID(guid)));
+end
+
 do
     local ClassificationTable = {
         elite     = { '+',  'elite'      },
