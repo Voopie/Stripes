@@ -89,6 +89,9 @@ S.Media.Icons2 = {
         CROSS_SWORDS_WHITE = {1/4, 2/4, 1/4, 2/4},
         LIST_WHITE         = {2/4, 3/4, 1/4, 2/4},
 
+        -- 3rd row
+        STAR_WHITE         = {  0, 1/4, 2/4, 3/4},
+
         PALETTE_COLOR      = {0.71875, 1, 0.734375, 1},
     },
 };
