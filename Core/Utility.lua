@@ -222,7 +222,7 @@ U.GetUnitNameByGUID = function(guid, withRealm, realmDelimiter)
            return name .. (realmDelimiter or '-') .. realm;
        end
 
-       return name;
+       return name .. (realmDelimiter or '-') .. D.Player.RealmNormalized;
     end
 
     return (select(6, GetPlayerInfoByGUID(guid)));
