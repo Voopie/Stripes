@@ -674,6 +674,18 @@ do
             LCG.PixelGlow_Stop(self.Glow);
         end);
 
+        slider:HookScript('OnMouseWheel', function(self, direction)
+            if not self:IsEnabled() then
+                return;
+            end
+
+            if direction > 0 then
+                self.plusButton:Click();
+            else
+                self.minusButton:Click();
+            end
+        end);
+
         slider.CurrentValueBox = Mixin(CreateFrame('Frame', nil, slider, 'BackdropTemplate'), E.PixelPerfectMixin);
         slider.CurrentValueBox:SetPosition('CENTER', slider.Thumb, 'CENTER', 0, 0);
         slider.CurrentValueBox:SetSize(34, 20);
