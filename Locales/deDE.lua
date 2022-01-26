@@ -679,8 +679,12 @@ L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE'] = 'Abstand (min alpha)';
 L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'Die Entfernung von der maximalen Entfernung, in der die Namensschilder ihr Alpha-Minimum erreichen';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT'] = 'Verdeckt';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP'] = 'Alpha-Multiplikatorwert für verdeckte Namensschilder (z. B. hinter einem Objekt)';
-L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED'] = 'Klassifizierungsindikator';
-L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'] = 'Klassifizierungskennzeichen anzeigen (goldener oder silberner Drache)';
+L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED'] = 'Elite-Feind-Anzeige';
+L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'] = 'Anzeige der Elite-Feinde (Gold- oder Silberdrachen)';
+L['OPTIONS_CLASSIFICATION_INDICATOR_STAR'] = 'Stern';
+L['OPTIONS_CLASSIFICATION_INDICATOR_STAR_TOOLTIP'] = 'Elite-Feind-Anzeige in Form eines Sterns anzeigen';
+L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE'] = 'Größe';
+L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE_TOOLTIP'] = 'Größe des Elite-Feindindikators';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Prozentsatz';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Aktivieren';

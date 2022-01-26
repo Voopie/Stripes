@@ -247,7 +247,7 @@ O.Lists = {
     },
 };
 
--- ~503
+-- ~505
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -557,6 +557,8 @@ O.DefaultValues = {
     raid_target_hpbar_coloring         = false,
 
     classification_indicator_enabled = true,
+    classification_indicator_star    = false,
+    classification_indicator_size    = 14,
 
     name_only_friendly_enabled               = C_CVar.GetCVar('nameplateShowOnlyNames') == '1',
     name_only_friendly_mode                  = C_CVar.GetCVar('nameplateShowOnlyNames') == '1' and 1 or 2,

@@ -232,8 +232,20 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.occluded_alpha_mult, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.show_personal_resource_ontarget = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.show_personal_resource_ontarget:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
+    self.show_personal_resource_ontarget:SetLabel(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET']);
+    self.show_personal_resource_ontarget:SetTooltip(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP']);
+    self.show_personal_resource_ontarget:AddToSearch(button, L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP'], self.Tabs[1]);
+    self.show_personal_resource_ontarget:SetChecked(O.db.show_personal_resource_ontarget);
+    self.show_personal_resource_ontarget.Callback = function(self)
+        O.db.show_personal_resource_ontarget = self:GetChecked();
+
+        C_CVar.SetCVar('nameplateResourceOnTarget', O.db.show_personal_resource_ontarget and 1 or 0);
+    end
+
     self.classification_indicator_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.classification_indicator_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
+    self.classification_indicator_enabled:SetPosition('TOPLEFT', self.show_personal_resource_ontarget, 'BOTTOMLEFT', 0, -8);
     self.classification_indicator_enabled:SetLabel(L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED']);
     self.classification_indicator_enabled:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP']);
     self.classification_indicator_enabled:AddToSearch(button, L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'], self.Tabs[1]);
@@ -243,16 +255,27 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.show_personal_resource_ontarget = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.show_personal_resource_ontarget:SetPosition('LEFT', self.classification_indicator_enabled.Label, 'RIGHT', 12, 0);
-    self.show_personal_resource_ontarget:SetLabel(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET']);
-    self.show_personal_resource_ontarget:SetTooltip(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP']);
-    self.show_personal_resource_ontarget:AddToSearch(button, L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP'], self.Tabs[1]);
-    self.show_personal_resource_ontarget:SetChecked(O.db.show_personal_resource_ontarget);
-    self.show_personal_resource_ontarget.Callback = function(self)
-        O.db.show_personal_resource_ontarget = self:GetChecked();
+    self.classification_indicator_star = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.classification_indicator_star:SetPosition('LEFT', self.classification_indicator_enabled.Label, 'RIGHT', 12, 0);
+    self.classification_indicator_star:SetLabel(L['OPTIONS_CLASSIFICATION_INDICATOR_STAR']);
+    self.classification_indicator_star:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_STAR_TOOLTIP']);
+    self.classification_indicator_star:AddToSearch(button, L['OPTIONS_CLASSIFICATION_INDICATOR_STAR_TOOLTIP'], self.Tabs[1]);
+    self.classification_indicator_star:SetChecked(O.db.classification_indicator_star);
+    self.classification_indicator_star.Callback = function(self)
+        O.db.classification_indicator_star = self:GetChecked();
+        Stripes:UpdateAll();
+    end
 
-        C_CVar.SetCVar('nameplateResourceOnTarget', O.db.show_personal_resource_ontarget and 1 or 0);
+    self.classification_indicator_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.classification_indicator_size:SetPosition('LEFT', self.classification_indicator_star.Label, 'RIGHT', 16, 0);
+    self.classification_indicator_size:SetValues(O.db.classification_indicator_size, 2, 40, 1);
+    self.classification_indicator_size:SetLabel(L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE']);
+    self.classification_indicator_size:SetLabelPosition('LEFT');
+    self.classification_indicator_size:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE_TOOLTIP']);
+    self.classification_indicator_size:AddToSearch(button, L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE_TOOLTIP'], self.Tabs[1]);
+    self.classification_indicator_size.OnValueChangedCallback = function(_, value)
+        O.db.classification_indicator_size = tonumber(value);
+        Stripes:UpdateAll();
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);

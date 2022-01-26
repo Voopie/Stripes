@@ -31,7 +31,7 @@ local NAME_TEXT_ENABLED;
 local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local CUSTOM_NAME_ENABLED;
-local CLASSIFICATION_INDICATOR_ENABLED;
+local CLASSIFICATION_INDICATOR_ENABLED, CLASSIFICATION_INDICATOR_STAR, CLASSIFICATION_INDICATOR_SIZE;
 local FIRST_MODE;
 local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
 local NAME_HOLDER_FRAME_STRATA;
@@ -484,11 +484,45 @@ local function NameOnly_UpdateGuildName(unitframe)
 end
 
 local function UpdateClassificationIndicator(unitframe)
-    if unitframe.classificationIndicator then
-        if unitframe.optionTable.showPvPClassificationIndicator and CompactUnitFrame_UpdatePvPClassificationIndicator(unitframe) then
-            return;
-        elseif not CLASSIFICATION_INDICATOR_ENABLED or not unitframe.optionTable.showClassificationIndicator then
-            unitframe.classificationIndicator:Hide();
+    if not unitframe.classificationIndicator then
+        return;
+    end
+
+    if unitframe.optionTable.showPvPClassificationIndicator and CompactUnitFrame_UpdatePvPClassificationIndicator(unitframe) then
+        unitframe.classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
+
+        if unitframe.classificationIndicator.wasChanged then
+            unitframe.classificationIndicator:SetTexCoord(0, 1, 0, 1);
+            unitframe.classificationIndicator:SetVertexColor(1, 1, 1, 1);
+
+            unitframe.classificationIndicator.wasChanged = nil;
+        end
+
+        return;
+    elseif not CLASSIFICATION_INDICATOR_ENABLED or not unitframe.optionTable.showClassificationIndicator then
+        unitframe.classificationIndicator:Hide();
+    else
+        if CLASSIFICATION_INDICATOR_STAR and unitframe.data.classification then
+            unitframe.classificationIndicator:SetTexture(S.Media.Icons2.TEXTURE);
+            unitframe.classificationIndicator:SetTexCoord(unpack(S.Media.Icons2.COORDS.STAR_WHITE));
+            unitframe.classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
+
+            if unitframe.data.classification == '+' or unitframe.data.classification == 'b' then
+                unitframe.classificationIndicator:SetVertexColor(0.85, 0.65, 0.13, 1);
+            elseif unitframe.data.classification == 'r' or unitframe.data.classification == 'r+' then
+                unitframe.classificationIndicator:SetVertexColor(0.6, 0.6, 0.6, 1);
+            end
+
+            unitframe.classificationIndicator.wasChanged = true;
+        else
+            unitframe.classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
+
+            if unitframe.classificationIndicator.wasChanged then
+                unitframe.classificationIndicator:SetTexCoord(0, 1, 0, 1);
+                unitframe.classificationIndicator:SetVertexColor(1, 1, 1, 1);
+
+                unitframe.classificationIndicator.wasChanged = nil;
+            end
         end
     end
 end
@@ -601,6 +635,8 @@ function Module:UpdateLocalConfig()
     RAID_TARGET_ICON_POSITION_OFFSET_Y = O.db.raid_target_icon_position_offset_y;
 
     CLASSIFICATION_INDICATOR_ENABLED = O.db.classification_indicator_enabled;
+    CLASSIFICATION_INDICATOR_STAR    = O.db.classification_indicator_star;
+    CLASSIFICATION_INDICATOR_SIZE    = O.db.classification_indicator_size;
 
     FIRST_MODE = O.db.name_text_first_mode;
 

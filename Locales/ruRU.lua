@@ -681,6 +681,10 @@ L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT'] = 'Скрытые';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP'] = 'Значение множителя непрозрачности для скрытых неймплейтов (например, находящихся за каким-либо объектом)';
 L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED'] = 'Индикатор элитного противника';
 L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'] = 'Показывать индикатор элитного противника (золотой или серебряный дракончик)';
+L['OPTIONS_CLASSIFICATION_INDICATOR_STAR'] = 'Звезда';
+L['OPTIONS_CLASSIFICATION_INDICATOR_STAR_TOOLTIP'] = 'Показывать индикатор элитного противника в виде звезды';
+L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE'] = 'Размер';
+L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE_TOOLTIP'] = 'Размер индикатора элитного противника';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Проценты';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Включить';

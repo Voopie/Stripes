@@ -679,8 +679,12 @@ L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE'] = 'Distance (min alpha)';
 L['OPTIONS_VISIBILITY_MIN_ALPHA_DISTANCE_TOOLTIP'] = 'The distance from the max distance that nameplates will reach their minimum alpha';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT'] = 'Occluded';
 L['OPTIONS_VISIBILITY_OCCLUDED_ALPHA_MULT_TOOLTIP'] = 'Alpha multiplier value for occluded nameplates (e.g., behind an object)';
-L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED'] = 'Classification indicator';
-L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'] = 'Show classification indicator (gold or silver dragon)';
+L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED'] = 'Elite enemy indicator';
+L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'] = 'Show elite enemy indicator (gold or silver dragon)';
+L['OPTIONS_CLASSIFICATION_INDICATOR_STAR'] = 'Star';
+L['OPTIONS_CLASSIFICATION_INDICATOR_STAR_TOOLTIP'] = 'Show elite enemy indicator in the form of a star';
+L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE'] = 'Size';
+L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE_TOOLTIP'] = 'Size of elite enemy indicator';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Percentage';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Enable';
