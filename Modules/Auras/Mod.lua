@@ -65,9 +65,9 @@ local function UpdateBuffs(unitframe)
             aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
             aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
+            aura.Cooldown:SetCountdownFont('StripesAurasModCooldownFont');
             aura.Cooldown:GetRegions():ClearAllPoints();
             aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-            aura.Cooldown:GetRegions():SetFontObject(StripesAurasModCooldownFont);
             aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
 
             aura.CountFrame.Count:ClearAllPoints();
