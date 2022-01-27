@@ -263,7 +263,7 @@ panel.Load = function(self)
     end
 
     self.absorb_text_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.absorb_text_enabled:SetPosition('TOPLEFT', self.absorb_bar_enabled, 'BOTTOMLEFT', 0, -8);
+    self.absorb_text_enabled:SetPosition('LEFT', self.absorb_bar_at_top.Label, 'RIGHT', 12, 0);
     self.absorb_text_enabled:SetLabel(L['OPTIONS_ABSORB_TEXT_ENABLED']);
     self.absorb_text_enabled:SetTooltip(L['OPTIONS_ABSORB_TEXT_ENABLED_TOOLTIP']);
     self.absorb_text_enabled:SetChecked(O.db.absorb_text_enabled);
@@ -299,7 +299,7 @@ panel.Load = function(self)
     end
 
     self.absorb_text_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
-    self.absorb_text_font_value:SetPosition('TOPLEFT', self.absorb_text_enabled, 'BOTTOMLEFT', 0, -12);
+    self.absorb_text_font_value:SetPosition('TOPLEFT', self.absorb_bar_enabled, 'BOTTOMLEFT', 0, -12);
     self.absorb_text_font_value:SetSize(160, 20);
     self.absorb_text_font_value:SetList(LSM:HashTable('font'));
     self.absorb_text_font_value:SetValue(O.db.absorb_text_font_value);
