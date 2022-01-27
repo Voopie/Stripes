@@ -25,18 +25,7 @@ local LSM_MEDIATYPE_STATUSBAR = LSM.MediaType.STATUSBAR;
 local NP = S.NamePlates;
 
 -- Local Config
-local RAID_TARGET_HPBAR_COLORING, AURAS_HPBAR_COLORING;
-local THREAT_ENABLED, THREAT_COLOR_ISTAPPED_BORDER, CUSTOM_HP_ENABLED, CUSTOM_HP_DATA;
-local EXECUTION_ENABLED, EXECUTION_COLOR, EXECUTION_GLOW, EXECUTION_LOW_PERCENT, EXECUTION_HIGH_ENABLED, EXECUTION_HIGH_PERCENT;
-local HEALTH_BAR_CLASS_COLOR_ENEMY, HEALTH_BAR_CLASS_COLOR_FRIENDLY;
-local HEALTH_BAR_TEXTURE, BORDER_SIZE, BORDER_HIDE, BORDER_COLOR, BORDER_SELECTED_COLOR, SAME_BORDER_COLOR;
-local SHOW_CLICKABLE_AREA, ENEMY_MINUS_HEIGHT, ENEMY_HEIGHT, FRIENDLY_HEIGHT, PLAYER_HEIGHT;
-local TP_ENABLED, TP_COLORING, TP_POINT, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y;
-local HPBAR_COLOR_DC, HPBAR_COLOR_TAPPED, HPBAR_COLOR_ENEMY_NPC, HPBAR_COLOR_ENEMY_PLAYER, HPBAR_COLOR_FRIENDLY_NPC, HPBAR_COLOR_FRIENDLY_PLAYER, HPBAR_COLOR_NEUTRAL;
-local CUSTOM_BORDER_ENABLED, CUSTOM_BORDER_PATH, CUSTOM_BORDER_WIDTH, CUSTOM_BORDER_HEIGHT, CUSTOM_BORDER_HEIGHT_MINUS, CUSTOM_BORDER_X_OFFSET, CUSTOM_BORDER_Y_OFFSET;
-local CURRENT_TARGET_COLOR_ENABLED, CURRENT_TARGET_COLOR;
-local CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED, CURRENT_TARGET_CUSTOM_TEXTURE_VALUE, CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY, CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA, CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE;
-local HEALTH_BAR_BACKGROUND_TEXTURE, HEALTH_BAR_BACKGROUND_COLOR;
+local DB = {};
 
 local StripesThreatPercentageFont = CreateFont('StripesThreatPercentageFont');
 
@@ -76,11 +65,11 @@ local RAID_TARGET_COLORS = {
 };
 
 local function IsUseClassColor(unitframe)
-    if unitframe.data.unitType == 'ENEMY_PLAYER' and HEALTH_BAR_CLASS_COLOR_ENEMY then
+    if unitframe.data.unitType == 'ENEMY_PLAYER' and DB.HEALTH_BAR_CLASS_COLOR_ENEMY then
         return true;
     end
 
-    if unitframe.data.unitType == 'FRIENDLY_PLAYER' and HEALTH_BAR_CLASS_COLOR_FRIENDLY then
+    if unitframe.data.unitType == 'FRIENDLY_PLAYER' and DB.HEALTH_BAR_CLASS_COLOR_FRIENDLY then
         return true;
     end
 
@@ -95,7 +84,7 @@ local function UpdateHealthColor(frame)
     local r, g, b, a;
 
     if not UnitIsConnected(frame.displayedUnit) then
-        r, g, b, a = HPBAR_COLOR_DC[1], HPBAR_COLOR_DC[2], HPBAR_COLOR_DC[3], HPBAR_COLOR_DC[4];
+        r, g, b, a = DB.HPBAR_COLOR_DC[1], DB.HPBAR_COLOR_DC[2], DB.HPBAR_COLOR_DC[3], DB.HPBAR_COLOR_DC[4];
     else
         if frame.optionTable.healthBarColorOverride then
             local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
@@ -105,32 +94,32 @@ local function UpdateHealthColor(frame)
             if (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.displayedUnit) or UnitTreatAsPlayerForDisplay(frame.displayedUnit)) and classColor and frame.optionTable.useClassColors and IsUseClassColor(frame) then
                 r, g, b = classColor.r, classColor.g, classColor.b;
             elseif CompactUnitFrame_IsTapDenied(frame) then
-                r, g, b, a = HPBAR_COLOR_TAPPED[1], HPBAR_COLOR_TAPPED[2], HPBAR_COLOR_TAPPED[3], HPBAR_COLOR_TAPPED[4];
+                r, g, b, a = DB.HPBAR_COLOR_TAPPED[1], DB.HPBAR_COLOR_TAPPED[2], DB.HPBAR_COLOR_TAPPED[3], DB.HPBAR_COLOR_TAPPED[4];
             elseif frame.optionTable.colorHealthBySelection then
                 if frame.optionTable.considerSelectionInCombatAsHostile and CompactUnitFrame_IsOnThreatListWithPlayer(frame.displayedUnit) then
-                    r, g, b, a = HPBAR_COLOR_ENEMY_NPC[1], HPBAR_COLOR_ENEMY_NPC[2], HPBAR_COLOR_ENEMY_NPC[3], HPBAR_COLOR_ENEMY_NPC[4];
+                    r, g, b, a = DB.HPBAR_COLOR_ENEMY_NPC[1], DB.HPBAR_COLOR_ENEMY_NPC[2], DB.HPBAR_COLOR_ENEMY_NPC[3], DB.HPBAR_COLOR_ENEMY_NPC[4];
                 elseif UnitIsPlayer(frame.displayedUnit) and UnitIsFriend(PLAYER_UNIT, frame.displayedUnit) then
-                    r, g, b, a = HPBAR_COLOR_FRIENDLY_PLAYER[1], HPBAR_COLOR_FRIENDLY_PLAYER[2], HPBAR_COLOR_FRIENDLY_PLAYER[3], HPBAR_COLOR_FRIENDLY_PLAYER[4];
+                    r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_PLAYER[1], DB.HPBAR_COLOR_FRIENDLY_PLAYER[2], DB.HPBAR_COLOR_FRIENDLY_PLAYER[3], DB.HPBAR_COLOR_FRIENDLY_PLAYER[4];
                 else
                     local selectionType = UnitSelectionType(frame.displayedUnit, frame.optionTable.colorHealthWithExtendedColors);
                     if selectionType == 2 then
-                        r, g, b, a = HPBAR_COLOR_NEUTRAL[1], HPBAR_COLOR_NEUTRAL[2], HPBAR_COLOR_NEUTRAL[3], HPBAR_COLOR_NEUTRAL[4];
+                        r, g, b, a = DB.HPBAR_COLOR_NEUTRAL[1], DB.HPBAR_COLOR_NEUTRAL[2], DB.HPBAR_COLOR_NEUTRAL[3], DB.HPBAR_COLOR_NEUTRAL[4];
                     else
                         if frame.data.unitType == 'ENEMY_PLAYER' then
-                            r, g, b, a = HPBAR_COLOR_ENEMY_PLAYER[1], HPBAR_COLOR_ENEMY_PLAYER[2], HPBAR_COLOR_ENEMY_PLAYER[3], HPBAR_COLOR_ENEMY_PLAYER[4];
+                            r, g, b, a = DB.HPBAR_COLOR_ENEMY_PLAYER[1], DB.HPBAR_COLOR_ENEMY_PLAYER[2], DB.HPBAR_COLOR_ENEMY_PLAYER[3], DB.HPBAR_COLOR_ENEMY_PLAYER[4];
                         elseif frame.data.unitType == 'ENEMY_NPC' then
-                            r, g, b, a = HPBAR_COLOR_ENEMY_NPC[1], HPBAR_COLOR_ENEMY_NPC[2], HPBAR_COLOR_ENEMY_NPC[3], HPBAR_COLOR_ENEMY_NPC[4];
+                            r, g, b, a = DB.HPBAR_COLOR_ENEMY_NPC[1], DB.HPBAR_COLOR_ENEMY_NPC[2], DB.HPBAR_COLOR_ENEMY_NPC[3], DB.HPBAR_COLOR_ENEMY_NPC[4];
                         elseif frame.data.unitType == 'FRIENDLY_NPC' then
-                            r, g, b, a = HPBAR_COLOR_FRIENDLY_NPC[1], HPBAR_COLOR_FRIENDLY_NPC[2], HPBAR_COLOR_FRIENDLY_NPC[3], HPBAR_COLOR_FRIENDLY_NPC[4];
+                            r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_NPC[1], DB.HPBAR_COLOR_FRIENDLY_NPC[2], DB.HPBAR_COLOR_FRIENDLY_NPC[3], DB.HPBAR_COLOR_FRIENDLY_NPC[4];
                         else
                             r, g, b, a = UnitSelectionColor(frame.displayedUnit, frame.optionTable.colorHealthWithExtendedColors);
                         end
                     end
                 end
             elseif UnitIsFriend(PLAYER_UNIT, frame.displayedUnit) then
-                r, g, b, a = HPBAR_COLOR_FRIENDLY_NPC[1], HPBAR_COLOR_FRIENDLY_NPC[2], HPBAR_COLOR_FRIENDLY_NPC[3], HPBAR_COLOR_FRIENDLY_NPC[4];
+                r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_NPC[1], DB.HPBAR_COLOR_FRIENDLY_NPC[2], DB.HPBAR_COLOR_FRIENDLY_NPC[3], DB.HPBAR_COLOR_FRIENDLY_NPC[4];
             else
-                r, g, b, a = HPBAR_COLOR_ENEMY_NPC[1], HPBAR_COLOR_ENEMY_NPC[2], HPBAR_COLOR_ENEMY_NPC[3], HPBAR_COLOR_ENEMY_NPC[4];
+                r, g, b, a = DB.HPBAR_COLOR_ENEMY_NPC[1], DB.HPBAR_COLOR_ENEMY_NPC[2], DB.HPBAR_COLOR_ENEMY_NPC[3], DB.HPBAR_COLOR_ENEMY_NPC[4];
             end
         end
     end
@@ -139,7 +128,7 @@ local function UpdateHealthColor(frame)
     if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
         frame.healthBar:SetStatusBarColor(r, g, b, a);
 
-        if CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
+        if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
             if frame.optionTable.colorHealthWithExtendedColors then
                 frame.selectionHighlight:SetVertexColor(r, g, b);
             else
@@ -150,18 +139,18 @@ local function UpdateHealthColor(frame)
 end
 
 local function UpdateOverlayHealthBarTexture(unitframe)
-    if CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY and unitframe.selectionHighlight then
-        unitframe.selectionHighlight:SetBlendMode(CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
-        unitframe.selectionHighlight:SetAlpha(CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA);
-        unitframe.selectionHighlight:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
+    if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY and unitframe.selectionHighlight then
+        unitframe.selectionHighlight:SetBlendMode(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
+        unitframe.selectionHighlight:SetAlpha(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA);
+        unitframe.selectionHighlight:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
     end
 end
 
 -- Execution
 local function Execution_Start(unitframe)
-    unitframe.healthBar:SetStatusBarColor(EXECUTION_COLOR[1], EXECUTION_COLOR[2], EXECUTION_COLOR[3], EXECUTION_COLOR[4]);
+    unitframe.healthBar:SetStatusBarColor(DB.EXECUTION_COLOR[1], DB.EXECUTION_COLOR[2], DB.EXECUTION_COLOR[3], DB.EXECUTION_COLOR[4]);
 
-    if EXECUTION_GLOW then
+    if DB.EXECUTION_GLOW then
         LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
         LCG_PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_EXECUTION');
     end
@@ -180,9 +169,9 @@ local function UpdateCustomHealthBarColor(unitframe)
         LCG.AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
         LCG.ButtonGlow_Stop(unitframe.healthBar);
 
-        if CUSTOM_HP_ENABLED and CUSTOM_HP_DATA[unitframe.data.npcId] and CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
-            if CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled or CUSTOM_HP_DATA[unitframe.data.npcId].custom_color_enabled then
-                local color = CUSTOM_HP_DATA[unitframe.data.npcId].color;
+        if DB.CUSTOM_HP_ENABLED and DB.CUSTOM_HP_DATA[unitframe.data.npcId] and DB.CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
+            if DB.CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled or DB.CUSTOM_HP_DATA[unitframe.data.npcId].custom_color_enabled then
+                local color = DB.CUSTOM_HP_DATA[unitframe.data.npcId].color;
                 local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
 
                 if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
@@ -194,12 +183,12 @@ local function UpdateCustomHealthBarColor(unitframe)
                 unitframe.healthBar.customColored = nil;
             end
 
-            if CUSTOM_HP_DATA[unitframe.data.npcId].glow_enabled then
-                if CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 1 then
+            if DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_enabled then
+                if DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 1 then
                     LCG.PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
-                elseif CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 2 then
+                elseif DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 2 then
                     LCG.AutoCastGlow_Start(unitframe.healthBar, nil, nil, nil, nil, nil, nil, 'S_CUSTOMHP');
-                elseif CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 3 then
+                elseif DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 3 then
                     LCG.ButtonGlow_Start(unitframe.healthBar);
                 end
             end
@@ -219,21 +208,21 @@ local function CreateThreatPercentage(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     frame.text = frame:CreateFontString(nil, 'BACKGROUND', 'StripesThreatPercentageFont');
-    PixelUtil.SetPoint(frame.text, TP_POINT, frame, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y);
+    PixelUtil.SetPoint(frame.text, DB.TP_POINT, frame, DB.TP_RELATIVE_POINT, DB.TP_OFFSET_X, DB.TP_OFFSET_Y);
     frame.text:SetTextColor(1, 1, 1, 1);
 
     unitframe.ThreatPercentage = frame;
 end
 
 local function UpdateThreatPercentage(unitframe, value, r, g, b, a)
-    if not TP_ENABLED or not value then
+    if not DB.TP_ENABLED or not value then
         unitframe.ThreatPercentage.text:SetText('');
         return;
     end
 
     unitframe.ThreatPercentage.text:SetText(string.format('%.0f%%', value));
 
-    if TP_COLORING then
+    if DB.TP_COLORING then
         unitframe.ThreatPercentage.text:SetTextColor(r, g, b, a or 1);
     else
         unitframe.ThreatPercentage.text:SetTextColor(1, 1, 1, 1);
@@ -242,7 +231,7 @@ end
 
 local function UpdateThreatPercentagePosition(unitframe)
     unitframe.ThreatPercentage.text:ClearAllPoints();
-    PixelUtil.SetPoint(unitframe.ThreatPercentage.text, TP_POINT, unitframe.ThreatPercentage, TP_RELATIVE_POINT, TP_OFFSET_X, TP_OFFSET_Y);
+    PixelUtil.SetPoint(unitframe.ThreatPercentage.text, DB.TP_POINT, unitframe.ThreatPercentage, DB.TP_RELATIVE_POINT, DB.TP_OFFSET_X, DB.TP_OFFSET_Y);
 end
 
 local function Threat_GetThreatSituationStatus(unit)
@@ -258,7 +247,7 @@ local function Threat_GetThreatSituationStatus(unit)
 end
 
 local function Threat_UpdateColor(unitframe)
-    if not THREAT_ENABLED then
+    if not DB.THREAT_ENABLED then
         return;
     end
 
@@ -290,7 +279,7 @@ local function Threat_UpdateColor(unitframe)
         end
 
         if UnitIsTapped(unitframe.data.unit) then
-            if THREAT_COLOR_ISTAPPED_BORDER then
+            if DB.THREAT_COLOR_ISTAPPED_BORDER then
                 unitframe.healthBar.border:SetVertexColor(r, g, b, a);
             end
         else
@@ -322,11 +311,11 @@ local function GetAuraColor(unit)
 end
 
 local function UpdateAurasColor(unitframe)
-    if not AURAS_HPBAR_COLORING then
+    if not DB.AURAS_HPBAR_COLORING then
         return false;
     end
 
-    if RAID_TARGET_HPBAR_COLORING and unitframe.data.raidIndex then
+    if DB.RAID_TARGET_HPBAR_COLORING and unitframe.data.raidIndex then
         return false;
     end
 
@@ -346,7 +335,7 @@ local function UpdateAurasColor(unitframe)
 end
 
 local function UpdateRaidTarget(unitframe)
-    if not RAID_TARGET_HPBAR_COLORING then
+    if not DB.RAID_TARGET_HPBAR_COLORING then
         unitframe.data.raidIndex = nil;
         return false;
     end
@@ -394,8 +383,8 @@ local function UpdateRaidTargetColor(unitframe)
 end
 
 local function UpdateCurrentTargetColor(unitframe)
-    if CURRENT_TARGET_COLOR_ENABLED and unitframe.data.isTarget then
-        local color = CURRENT_TARGET_COLOR;
+    if DB.CURRENT_TARGET_COLOR_ENABLED and unitframe.data.isTarget then
+        local color = DB.CURRENT_TARGET_COLOR;
         local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
 
         if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
@@ -437,7 +426,7 @@ function Module.UpdateHealthBar(unitframe)
 
     UpdateHealthColor(unitframe);
 
-    if EXECUTION_ENABLED and (unitframe.data.healthPer <= EXECUTION_LOW_PERCENT or (EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= EXECUTION_HIGH_PERCENT)) then
+    if DB.EXECUTION_ENABLED and (unitframe.data.healthPer <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= DB.EXECUTION_HIGH_PERCENT)) then
         Execution_Start(unitframe);
     else
         Threat_UpdateColor(unitframe);
@@ -445,7 +434,7 @@ function Module.UpdateHealthBar(unitframe)
 end
 
 local function UpdateBorder(unitframe)
-    if BORDER_HIDE then
+    if DB.BORDER_HIDE then
         if unitframe.data.unitType == 'SELF' then
             unitframe.healthBar.border:SetVertexColor(0, 0, 0);
             unitframe.healthBar.border:Show();
@@ -458,21 +447,21 @@ local function UpdateBorder(unitframe)
 
     unitframe.healthBar.border:Show();
 
-    if SAME_BORDER_COLOR then
+    if DB.SAME_BORDER_COLOR then
         unitframe.healthBar.border:SetVertexColor(unitframe.healthBar:GetStatusBarTexture():GetVertexColor());
         return;
     end
 
     if UnitIsUnit(unitframe.data.unit, 'target') then
-        unitframe.healthBar.border:SetVertexColor(BORDER_SELECTED_COLOR[1], BORDER_SELECTED_COLOR[2], BORDER_SELECTED_COLOR[3], BORDER_SELECTED_COLOR[4]);
+        unitframe.healthBar.border:SetVertexColor(DB.BORDER_SELECTED_COLOR[1], DB.BORDER_SELECTED_COLOR[2], DB.BORDER_SELECTED_COLOR[3], DB.BORDER_SELECTED_COLOR[4]);
         return;
     end
 
-    unitframe.healthBar.border:SetVertexColor(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+    unitframe.healthBar.border:SetVertexColor(DB.BORDER_COLOR[1], DB.BORDER_COLOR[2], DB.BORDER_COLOR[3], DB.BORDER_COLOR[4]);
 end
 
 local function UpdateBorderSizes(unitframe)
-    local borderSize, minPixels = BORDER_SIZE, BORDER_SIZE - 0.5;
+    local borderSize, minPixels = DB.BORDER_SIZE, DB.BORDER_SIZE - 0.5;
 
     if unitframe.data.unitType == 'SELF' then
         borderSize, minPixels = 1, 2;
@@ -519,33 +508,33 @@ end
 
 local function UpdateSizes(unitframe)
     if unitframe.data.unitType == 'SELF' then
-        unitframe.healthBar:SetHeight(PLAYER_HEIGHT);
+        unitframe.healthBar:SetHeight(DB.PLAYER_HEIGHT);
 
         if unitframe.powerBar and unitframe.powerBar:IsShown() then
-            unitframe.powerBar:SetHeight(PLAYER_HEIGHT);
+            unitframe.powerBar:SetHeight(DB.PLAYER_HEIGHT);
         end
 
         if ClassNameplateManaBarFrame and ClassNameplateManaBarFrame:IsShown() then
-            PixelUtil.SetHeight(ClassNameplateManaBarFrame, PLAYER_HEIGHT);
+            PixelUtil.SetHeight(ClassNameplateManaBarFrame, DB.PLAYER_HEIGHT);
         end
     elseif unitframe.data.commonReaction == 'ENEMY' then
         if unitframe.data.minus then
-            unitframe.healthBar:SetHeight(ENEMY_MINUS_HEIGHT);
-            unitframe.healthBar.sHeight = ENEMY_MINUS_HEIGHT;
+            unitframe.healthBar:SetHeight(DB.ENEMY_MINUS_HEIGHT);
+            unitframe.healthBar.sHeight = DB.ENEMY_MINUS_HEIGHT;
         else
-            unitframe.healthBar:SetHeight(ENEMY_HEIGHT);
-            unitframe.healthBar.sHeight = ENEMY_HEIGHT;
+            unitframe.healthBar:SetHeight(DB.ENEMY_HEIGHT);
+            unitframe.healthBar.sHeight = DB.ENEMY_HEIGHT;
         end
     elseif unitframe.data.commonReaction == 'FRIENDLY' then
-        unitframe.healthBar:SetHeight(FRIENDLY_HEIGHT);
-        unitframe.healthBar.sHeight = FRIENDLY_HEIGHT;
+        unitframe.healthBar:SetHeight(DB.FRIENDLY_HEIGHT);
+        unitframe.healthBar.sHeight = DB.FRIENDLY_HEIGHT;
     end
 
     UpdateBorderSizes(unitframe);
 end
 
 local function UpdateClickableArea(unitframe)
-    if not SHOW_CLICKABLE_AREA or unitframe.data.unitType == 'SELF' then
+    if not DB.SHOW_CLICKABLE_AREA or unitframe.data.unitType == 'SELF' then
         if unitframe.ClickableArea then
             unitframe.ClickableArea:SetShown(false);
         end
@@ -587,15 +576,15 @@ local function UpdateTexture(unitframe)
     if unitframe.data.unitType == 'SELF' then
         unitframe.healthBar:SetStatusBarTexture(DEFAULT_STATUSBAR_TEXTURE);
     else
-        if CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and unitframe.data.isTarget then
-            if CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
-                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, HEALTH_BAR_TEXTURE));
+        if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and unitframe.data.isTarget then
+            if DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
+                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
 
                 if unitframe.selectionHighlight then
                     unitframe.selectionHighlight:Show();
                 end
             else
-                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
+                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
 
                 if unitframe.selectionHighlight then
                     unitframe.selectionHighlight:Hide();
@@ -606,7 +595,7 @@ local function UpdateTexture(unitframe)
                 unitframe.selectionHighlight:Hide();
             end
 
-            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, HEALTH_BAR_TEXTURE));
+            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
         end
     end
 end
@@ -622,10 +611,10 @@ local function UpdateCustomBorder(unitframe)
         return;
     end
 
-    if CUSTOM_BORDER_ENABLED then
-        unitframe.healthBar.CustomBorderTexture:SetTexture(CUSTOM_BORDER_PATH);
-        unitframe.healthBar.CustomBorderTexture:SetPoint('CENTER', CUSTOM_BORDER_X_OFFSET, CUSTOM_BORDER_Y_OFFSET);
-        unitframe.healthBar.CustomBorderTexture:SetSize(CUSTOM_BORDER_WIDTH, unitframe.data.minus and CUSTOM_BORDER_HEIGHT_MINUS or CUSTOM_BORDER_HEIGHT);
+    if DB.CUSTOM_BORDER_ENABLED then
+        unitframe.healthBar.CustomBorderTexture:SetTexture(DB.CUSTOM_BORDER_PATH);
+        unitframe.healthBar.CustomBorderTexture:SetPoint('CENTER', DB.CUSTOM_BORDER_X_OFFSET, DB.CUSTOM_BORDER_Y_OFFSET);
+        unitframe.healthBar.CustomBorderTexture:SetSize(DB.CUSTOM_BORDER_WIDTH, unitframe.data.minus and DB.CUSTOM_BORDER_HEIGHT_MINUS or DB.CUSTOM_BORDER_HEIGHT);
         unitframe.healthBar.CustomBorderTexture:Show();
     else
         unitframe.healthBar.CustomBorderTexture:Hide();
@@ -637,8 +626,8 @@ local function UpdateBackgroundTexture(unitframe)
         return;
     end
 
-    unitframe.healthBar.background:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, HEALTH_BAR_BACKGROUND_TEXTURE));
-    unitframe.healthBar.background:SetVertexColor(HEALTH_BAR_BACKGROUND_COLOR[1], HEALTH_BAR_BACKGROUND_COLOR[2], HEALTH_BAR_BACKGROUND_COLOR[3], HEALTH_BAR_BACKGROUND_COLOR[4]);
+    unitframe.healthBar.background:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_BACKGROUND_TEXTURE));
+    unitframe.healthBar.background:SetVertexColor(DB.HEALTH_BAR_BACKGROUND_COLOR[1], DB.HEALTH_BAR_BACKGROUND_COLOR[2], DB.HEALTH_BAR_BACKGROUND_COLOR[3], DB.HEALTH_BAR_BACKGROUND_COLOR[4]);
 end
 
 function Module:UnitAdded(unitframe)
@@ -690,12 +679,11 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    RAID_TARGET_HPBAR_COLORING = O.db.raid_target_hpbar_coloring;
-    AURAS_HPBAR_COLORING = O.db.auras_hpbar_color_enabled;
+    DB.RAID_TARGET_HPBAR_COLORING = O.db.raid_target_hpbar_coloring;
+    DB.AURAS_HPBAR_COLORING = O.db.auras_hpbar_color_enabled;
 
-    THREAT_ENABLED = O.db.threat_color_enabled;
-
-    THREAT_COLOR_ISTAPPED_BORDER = O.db.threat_color_istapped_border;
+    DB.THREAT_ENABLED = O.db.threat_color_enabled;
+    DB.THREAT_COLOR_ISTAPPED_BORDER = O.db.threat_color_istapped_border;
 
     if not O.db.threat_color_reversed then
         statusColors[0] = O.db.threat_color_status_0;
@@ -719,126 +707,126 @@ function Module:UpdateLocalConfig()
     petTankColor[3] = O.db.threat_color_pettank[3];
     petTankColor[4] = O.db.threat_color_pettank[4] or 1;
 
-    TP_ENABLED        = O.db.threat_percentage_enabled;
-    TP_COLORING       = O.db.threat_percentage_coloring;
-    TP_POINT          = O.Lists.frame_points[O.db.threat_percentage_point] or 'TOPLEFT';
-    TP_RELATIVE_POINT = O.Lists.frame_points[O.db.threat_percentage_relative_point] or 'BOTTOMLEFT';
-    TP_OFFSET_X       = O.db.threat_percentage_offset_x;
-    TP_OFFSET_Y       = O.db.threat_percentage_offset_y;
+    DB.TP_ENABLED        = O.db.threat_percentage_enabled;
+    DB.TP_COLORING       = O.db.threat_percentage_coloring;
+    DB.TP_POINT          = O.Lists.frame_points[O.db.threat_percentage_point] or 'TOPLEFT';
+    DB.TP_RELATIVE_POINT = O.Lists.frame_points[O.db.threat_percentage_relative_point] or 'BOTTOMLEFT';
+    DB.TP_OFFSET_X       = O.db.threat_percentage_offset_x;
+    DB.TP_OFFSET_Y       = O.db.threat_percentage_offset_y;
     UpdateFontObject(StripesThreatPercentageFont, O.db.threat_percentage_font_value, O.db.threat_percentage_font_size, O.db.threat_percentage_font_flag, O.db.threat_percentage_font_shadow);
 
-    CUSTOM_HP_ENABLED = O.db.custom_color_enabled;
-    CUSTOM_HP_DATA    = O.db.custom_color_data;
+    DB.CUSTOM_HP_ENABLED = O.db.custom_color_enabled;
+    DB.CUSTOM_HP_DATA    = O.db.custom_color_data;
 
-    EXECUTION_ENABLED      = O.db.execution_enabled;
-    EXECUTION_COLOR        = EXECUTION_COLOR or {};
-    EXECUTION_COLOR[1]     = O.db.execution_color[1];
-    EXECUTION_COLOR[2]     = O.db.execution_color[2];
-    EXECUTION_COLOR[3]     = O.db.execution_color[3];
-    EXECUTION_COLOR[4]     = O.db.execution_color[4] or 1;
-    EXECUTION_GLOW         = O.db.execution_glow;
-    EXECUTION_LOW_PERCENT  = O.db.execution_low_percent;
-    EXECUTION_HIGH_ENABLED = O.db.execution_high_enabled;
-    EXECUTION_HIGH_PERCENT = O.db.execution_high_percent;
+    DB.EXECUTION_ENABLED      = O.db.execution_enabled;
+    DB.EXECUTION_COLOR        = DB.EXECUTION_COLOR or {};
+    DB.EXECUTION_COLOR[1]     = O.db.execution_color[1];
+    DB.EXECUTION_COLOR[2]     = O.db.execution_color[2];
+    DB.EXECUTION_COLOR[3]     = O.db.execution_color[3];
+    DB.EXECUTION_COLOR[4]     = O.db.execution_color[4] or 1;
+    DB.EXECUTION_GLOW         = O.db.execution_glow;
+    DB.EXECUTION_LOW_PERCENT  = O.db.execution_low_percent;
+    DB.EXECUTION_HIGH_ENABLED = O.db.execution_high_enabled;
+    DB.EXECUTION_HIGH_PERCENT = O.db.execution_high_percent;
 
-    HEALTH_BAR_CLASS_COLOR_ENEMY    = O.db.health_bar_class_color_enemy;
-    HEALTH_BAR_CLASS_COLOR_FRIENDLY = O.db.health_bar_class_color_friendly;
+    DB.HEALTH_BAR_CLASS_COLOR_ENEMY    = O.db.health_bar_class_color_enemy;
+    DB.HEALTH_BAR_CLASS_COLOR_FRIENDLY = O.db.health_bar_class_color_friendly;
 
-    HEALTH_BAR_TEXTURE = O.db.health_bar_texture_value;
+    DB.HEALTH_BAR_TEXTURE = O.db.health_bar_texture_value;
 
-    BORDER_HIDE = O.db.health_bar_border_hide;
-    BORDER_SIZE = O.db.health_bar_border_size;
+    DB.BORDER_HIDE = O.db.health_bar_border_hide;
+    DB.BORDER_SIZE = O.db.health_bar_border_size;
 
-    SAME_BORDER_COLOR = O.db.health_bar_border_same_color;
+    DB.SAME_BORDER_COLOR = O.db.health_bar_border_same_color;
 
-    BORDER_COLOR    = BORDER_COLOR or {};
-    BORDER_COLOR[1] = O.db.health_bar_border_color[1];
-    BORDER_COLOR[2] = O.db.health_bar_border_color[2];
-    BORDER_COLOR[3] = O.db.health_bar_border_color[3];
-    BORDER_COLOR[4] = O.db.health_bar_border_color[4] or 1;
+    DB.BORDER_COLOR    = DB.BORDER_COLOR or {};
+    DB.BORDER_COLOR[1] = O.db.health_bar_border_color[1];
+    DB.BORDER_COLOR[2] = O.db.health_bar_border_color[2];
+    DB.BORDER_COLOR[3] = O.db.health_bar_border_color[3];
+    DB.BORDER_COLOR[4] = O.db.health_bar_border_color[4] or 1;
 
-    BORDER_SELECTED_COLOR    = BORDER_SELECTED_COLOR or {};
-    BORDER_SELECTED_COLOR[1] = O.db.health_bar_border_selected_color[1];
-    BORDER_SELECTED_COLOR[2] = O.db.health_bar_border_selected_color[2];
-    BORDER_SELECTED_COLOR[3] = O.db.health_bar_border_selected_color[3];
-    BORDER_SELECTED_COLOR[4] = O.db.health_bar_border_selected_color[4] or 1;
+    DB.BORDER_SELECTED_COLOR    = DB.BORDER_SELECTED_COLOR or {};
+    DB.BORDER_SELECTED_COLOR[1] = O.db.health_bar_border_selected_color[1];
+    DB.BORDER_SELECTED_COLOR[2] = O.db.health_bar_border_selected_color[2];
+    DB.BORDER_SELECTED_COLOR[3] = O.db.health_bar_border_selected_color[3];
+    DB.BORDER_SELECTED_COLOR[4] = O.db.health_bar_border_selected_color[4] or 1;
 
-    SHOW_CLICKABLE_AREA = O.db.size_clickable_area_show;
+    DB.SHOW_CLICKABLE_AREA = O.db.size_clickable_area_show;
 
-    ENEMY_MINUS_HEIGHT = O.db.size_enemy_minus_height;
-    ENEMY_HEIGHT       = O.db.size_enemy_height;
-    FRIENDLY_HEIGHT    = O.db.size_friendly_height;
-    PLAYER_HEIGHT      = O.db.size_self_height;
+    DB.ENEMY_MINUS_HEIGHT = O.db.size_enemy_minus_height;
+    DB.ENEMY_HEIGHT       = O.db.size_enemy_height;
+    DB.FRIENDLY_HEIGHT    = O.db.size_friendly_height;
+    DB.PLAYER_HEIGHT      = O.db.size_self_height;
 
-    HPBAR_COLOR_DC    = HPBAR_COLOR_DC or {};
-    HPBAR_COLOR_DC[1] = O.db.health_bar_color_dc[1];
-    HPBAR_COLOR_DC[2] = O.db.health_bar_color_dc[2];
-    HPBAR_COLOR_DC[3] = O.db.health_bar_color_dc[3];
-    HPBAR_COLOR_DC[4] = O.db.health_bar_color_dc[4] or 1;
+    DB.HPBAR_COLOR_DC    = DB.HPBAR_COLOR_DC or {};
+    DB.HPBAR_COLOR_DC[1] = O.db.health_bar_color_dc[1];
+    DB.HPBAR_COLOR_DC[2] = O.db.health_bar_color_dc[2];
+    DB.HPBAR_COLOR_DC[3] = O.db.health_bar_color_dc[3];
+    DB.HPBAR_COLOR_DC[4] = O.db.health_bar_color_dc[4] or 1;
 
-    HPBAR_COLOR_TAPPED    = HPBAR_COLOR_TAPPED or {};
-    HPBAR_COLOR_TAPPED[1] = O.db.health_bar_color_tapped[1];
-    HPBAR_COLOR_TAPPED[2] = O.db.health_bar_color_tapped[2];
-    HPBAR_COLOR_TAPPED[3] = O.db.health_bar_color_tapped[3];
-    HPBAR_COLOR_TAPPED[4] = O.db.health_bar_color_tapped[4] or 1;
+    DB.HPBAR_COLOR_TAPPED    = DB.HPBAR_COLOR_TAPPED or {};
+    DB.HPBAR_COLOR_TAPPED[1] = O.db.health_bar_color_tapped[1];
+    DB.HPBAR_COLOR_TAPPED[2] = O.db.health_bar_color_tapped[2];
+    DB.HPBAR_COLOR_TAPPED[3] = O.db.health_bar_color_tapped[3];
+    DB.HPBAR_COLOR_TAPPED[4] = O.db.health_bar_color_tapped[4] or 1;
 
-    HPBAR_COLOR_ENEMY_NPC    = HPBAR_COLOR_ENEMY_NPC or {};
-    HPBAR_COLOR_ENEMY_NPC[1] = O.db.health_bar_color_enemy_npc[1];
-    HPBAR_COLOR_ENEMY_NPC[2] = O.db.health_bar_color_enemy_npc[2];
-    HPBAR_COLOR_ENEMY_NPC[3] = O.db.health_bar_color_enemy_npc[3];
-    HPBAR_COLOR_ENEMY_NPC[4] = O.db.health_bar_color_enemy_npc[4] or 1;
+    DB.HPBAR_COLOR_ENEMY_NPC    = DB.HPBAR_COLOR_ENEMY_NPC or {};
+    DB.HPBAR_COLOR_ENEMY_NPC[1] = O.db.health_bar_color_enemy_npc[1];
+    DB.HPBAR_COLOR_ENEMY_NPC[2] = O.db.health_bar_color_enemy_npc[2];
+    DB.HPBAR_COLOR_ENEMY_NPC[3] = O.db.health_bar_color_enemy_npc[3];
+    DB.HPBAR_COLOR_ENEMY_NPC[4] = O.db.health_bar_color_enemy_npc[4] or 1;
 
-    HPBAR_COLOR_ENEMY_PLAYER    = HPBAR_COLOR_ENEMY_PLAYER or {};
-    HPBAR_COLOR_ENEMY_PLAYER[1] = O.db.health_bar_color_enemy_player[1];
-    HPBAR_COLOR_ENEMY_PLAYER[2] = O.db.health_bar_color_enemy_player[2];
-    HPBAR_COLOR_ENEMY_PLAYER[3] = O.db.health_bar_color_enemy_player[3];
-    HPBAR_COLOR_ENEMY_PLAYER[4] = O.db.health_bar_color_enemy_player[4] or 1;
+    DB.HPBAR_COLOR_ENEMY_PLAYER    = DB.HPBAR_COLOR_ENEMY_PLAYER or {};
+    DB.HPBAR_COLOR_ENEMY_PLAYER[1] = O.db.health_bar_color_enemy_player[1];
+    DB.HPBAR_COLOR_ENEMY_PLAYER[2] = O.db.health_bar_color_enemy_player[2];
+    DB.HPBAR_COLOR_ENEMY_PLAYER[3] = O.db.health_bar_color_enemy_player[3];
+    DB.HPBAR_COLOR_ENEMY_PLAYER[4] = O.db.health_bar_color_enemy_player[4] or 1;
 
-    HPBAR_COLOR_FRIENDLY_NPC    = HPBAR_COLOR_FRIENDLY_NPC or {};
-    HPBAR_COLOR_FRIENDLY_NPC[1] = O.db.health_bar_color_friendly_npc[1];
-    HPBAR_COLOR_FRIENDLY_NPC[2] = O.db.health_bar_color_friendly_npc[2];
-    HPBAR_COLOR_FRIENDLY_NPC[3] = O.db.health_bar_color_friendly_npc[3];
-    HPBAR_COLOR_FRIENDLY_NPC[4] = O.db.health_bar_color_friendly_npc[4] or 1;
+    DB.HPBAR_COLOR_FRIENDLY_NPC    = DB.HPBAR_COLOR_FRIENDLY_NPC or {};
+    DB.HPBAR_COLOR_FRIENDLY_NPC[1] = O.db.health_bar_color_friendly_npc[1];
+    DB.HPBAR_COLOR_FRIENDLY_NPC[2] = O.db.health_bar_color_friendly_npc[2];
+    DB.HPBAR_COLOR_FRIENDLY_NPC[3] = O.db.health_bar_color_friendly_npc[3];
+    DB.HPBAR_COLOR_FRIENDLY_NPC[4] = O.db.health_bar_color_friendly_npc[4] or 1;
 
-    HPBAR_COLOR_FRIENDLY_PLAYER    = HPBAR_COLOR_FRIENDLY_PLAYER or {};
-    HPBAR_COLOR_FRIENDLY_PLAYER[1] = O.db.health_bar_color_friendly_player[1];
-    HPBAR_COLOR_FRIENDLY_PLAYER[2] = O.db.health_bar_color_friendly_player[2];
-    HPBAR_COLOR_FRIENDLY_PLAYER[3] = O.db.health_bar_color_friendly_player[3];
-    HPBAR_COLOR_FRIENDLY_PLAYER[4] = O.db.health_bar_color_friendly_player[4] or 1;
+    DB.HPBAR_COLOR_FRIENDLY_PLAYER    = DB.HPBAR_COLOR_FRIENDLY_PLAYER or {};
+    DB.HPBAR_COLOR_FRIENDLY_PLAYER[1] = O.db.health_bar_color_friendly_player[1];
+    DB.HPBAR_COLOR_FRIENDLY_PLAYER[2] = O.db.health_bar_color_friendly_player[2];
+    DB.HPBAR_COLOR_FRIENDLY_PLAYER[3] = O.db.health_bar_color_friendly_player[3];
+    DB.HPBAR_COLOR_FRIENDLY_PLAYER[4] = O.db.health_bar_color_friendly_player[4] or 1;
 
-    HPBAR_COLOR_NEUTRAL    = HPBAR_COLOR_NEUTRAL or {};
-    HPBAR_COLOR_NEUTRAL[1] = O.db.health_bar_color_neutral_npc[1];
-    HPBAR_COLOR_NEUTRAL[2] = O.db.health_bar_color_neutral_npc[2];
-    HPBAR_COLOR_NEUTRAL[3] = O.db.health_bar_color_neutral_npc[3];
-    HPBAR_COLOR_NEUTRAL[4] = O.db.health_bar_color_neutral_npc[4] or 1;
+    DB.HPBAR_COLOR_NEUTRAL    = DB.HPBAR_COLOR_NEUTRAL or {};
+    DB.HPBAR_COLOR_NEUTRAL[1] = O.db.health_bar_color_neutral_npc[1];
+    DB.HPBAR_COLOR_NEUTRAL[2] = O.db.health_bar_color_neutral_npc[2];
+    DB.HPBAR_COLOR_NEUTRAL[3] = O.db.health_bar_color_neutral_npc[3];
+    DB.HPBAR_COLOR_NEUTRAL[4] = O.db.health_bar_color_neutral_npc[4] or 1;
 
-    CUSTOM_BORDER_ENABLED      = O.db.health_bar_custom_border_enabled;
-    CUSTOM_BORDER_PATH         = O.db.health_bar_custom_border_path;
-    CUSTOM_BORDER_WIDTH        = O.db.health_bar_custom_border_width;
-    CUSTOM_BORDER_HEIGHT       = O.db.health_bar_custom_border_height;
-    CUSTOM_BORDER_HEIGHT_MINUS = O.db.health_bar_custom_border_height_minus;
-    CUSTOM_BORDER_X_OFFSET     = O.db.health_bar_custom_border_x_offset;
-    CUSTOM_BORDER_Y_OFFSET     = O.db.health_bar_custom_border_y_offset;
+    DB.CUSTOM_BORDER_ENABLED      = O.db.health_bar_custom_border_enabled;
+    DB.CUSTOM_BORDER_PATH         = O.db.health_bar_custom_border_path;
+    DB.CUSTOM_BORDER_WIDTH        = O.db.health_bar_custom_border_width;
+    DB.CUSTOM_BORDER_HEIGHT       = O.db.health_bar_custom_border_height;
+    DB.CUSTOM_BORDER_HEIGHT_MINUS = O.db.health_bar_custom_border_height_minus;
+    DB.CUSTOM_BORDER_X_OFFSET     = O.db.health_bar_custom_border_x_offset;
+    DB.CUSTOM_BORDER_Y_OFFSET     = O.db.health_bar_custom_border_y_offset;
 
-    CURRENT_TARGET_COLOR_ENABLED = O.db.current_target_health_bar_coloring;
-    CURRENT_TARGET_COLOR    = CURRENT_TARGET_COLOR or {};
-    CURRENT_TARGET_COLOR[1] = O.db.current_target_health_bar_color[1];
-    CURRENT_TARGET_COLOR[2] = O.db.current_target_health_bar_color[2];
-    CURRENT_TARGET_COLOR[3] = O.db.current_target_health_bar_color[3];
-    CURRENT_TARGET_COLOR[4] = O.db.current_target_health_bar_color[4] or 1;
+    DB.CURRENT_TARGET_COLOR_ENABLED = O.db.current_target_health_bar_coloring;
+    DB.CURRENT_TARGET_COLOR    = DB.CURRENT_TARGET_COLOR or {};
+    DB.CURRENT_TARGET_COLOR[1] = O.db.current_target_health_bar_color[1];
+    DB.CURRENT_TARGET_COLOR[2] = O.db.current_target_health_bar_color[2];
+    DB.CURRENT_TARGET_COLOR[3] = O.db.current_target_health_bar_color[3];
+    DB.CURRENT_TARGET_COLOR[4] = O.db.current_target_health_bar_color[4] or 1;
 
-    CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED       = O.db.current_target_custom_texture_enabled;
-    CURRENT_TARGET_CUSTOM_TEXTURE_VALUE         = O.db.current_target_custom_texture_value;
-    CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY       = O.db.current_target_custom_texture_overlay;
-    CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA = O.db.current_target_custom_texture_overlay_alpha;
-    CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE = O.Lists.alpha_mode[O.db.current_target_custom_texture_overlay_alpha_mode] or 'BLEND';
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED       = O.db.current_target_custom_texture_enabled;
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE         = O.db.current_target_custom_texture_value;
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY       = O.db.current_target_custom_texture_overlay;
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA = O.db.current_target_custom_texture_overlay_alpha;
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE = O.Lists.alpha_mode[O.db.current_target_custom_texture_overlay_alpha_mode] or 'BLEND';
 
-    HEALTH_BAR_BACKGROUND_TEXTURE  = O.db.health_bar_background_texture_value;
-    HEALTH_BAR_BACKGROUND_COLOR    = HEALTH_BAR_BACKGROUND_COLOR or {};
-    HEALTH_BAR_BACKGROUND_COLOR[1] = O.db.health_bar_background_color[1];
-    HEALTH_BAR_BACKGROUND_COLOR[2] = O.db.health_bar_background_color[2];
-    HEALTH_BAR_BACKGROUND_COLOR[3] = O.db.health_bar_background_color[3];
-    HEALTH_BAR_BACKGROUND_COLOR[4] = O.db.health_bar_background_color[4] or 1;
+    DB.HEALTH_BAR_BACKGROUND_TEXTURE  = O.db.health_bar_background_texture_value;
+    DB.HEALTH_BAR_BACKGROUND_COLOR    = DB.HEALTH_BAR_BACKGROUND_COLOR or {};
+    DB.HEALTH_BAR_BACKGROUND_COLOR[1] = O.db.health_bar_background_color[1];
+    DB.HEALTH_BAR_BACKGROUND_COLOR[2] = O.db.health_bar_background_color[2];
+    DB.HEALTH_BAR_BACKGROUND_COLOR[3] = O.db.health_bar_background_color[3];
+    DB.HEALTH_BAR_BACKGROUND_COLOR[4] = O.db.health_bar_background_color[4] or 1;
 end
 
 function Module:PLAYER_LOGIN()
@@ -884,17 +872,17 @@ function Module:StartUp()
     self:RegisterEvent('RAID_TARGET_UPDATE');
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
-        if not CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or not CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
+        if not DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or not DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
             if unitframe.selectionHighlight then
                 unitframe.selectionHighlight:Hide();
             end
         end
 
-        if CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED then
+        if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED then
             UpdateTexture(unitframe);
         end
 
-        if CURRENT_TARGET_COLOR_ENABLED then
+        if DB.CURRENT_TARGET_COLOR_ENABLED then
             Module.UpdateHealthBar(unitframe);
         end
     end);
