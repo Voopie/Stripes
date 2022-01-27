@@ -522,3 +522,30 @@ U.Merge = function(src, dst)
 
     return dst;
 end
+
+local LCG = S.Libraries.LCG;
+U.GlowStart = function(frame, glowType, glowColor, glowKey)
+    if glowType == 1 then
+        LCG.PixelGlow_Start(frame, glowColor, nil, nil, nil, nil, nil, nil, nil, glowKey);
+    elseif glowType == 2 then
+        LCG.AutoCastGlow_Start(frame, glowColor, nil, nil, nil, nil, nil, glowKey);
+    elseif glowType == 3 then
+        LCG.ButtonGlow_Start(frame, glowColor);
+    end
+end
+
+U.GlowStopType = function(frame, glowType, glowKey)
+    if glowType == 1 then
+        LCG.PixelGlow_Stop(frame, glowKey);
+    elseif glowType == 2 then
+        LCG.AutoCastGlow_Stop(frame, glowKey);
+    elseif glowType == 3 then
+        LCG.ButtonGlow_Stop(frame);
+    end
+end
+
+U.GlowStopAll = function(frame, glowKey)
+    LCG.PixelGlow_Stop(frame, glowKey);
+    LCG.AutoCastGlow_Stop(frame, glowKey);
+    LCG.ButtonGlow_Stop(frame);
+end

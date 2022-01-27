@@ -9,14 +9,12 @@ local UnitAura = UnitAura;
 
 -- Stripes API
 local GetTrulySpellId, S_IsSpellKnown = U.GetTrulySpellId, U.IsSpellKnown;
+local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED, PANDEMIC_COLOR;
 local EXPIRE_GLOW_ENABLED, EXPIRE_GLOW_PERCENT, EXPIRE_GLOW_COLOR, EXPIRE_GLOW_TYPE;
 local TEXT_COOLDOWN_COLOR;
-
--- Libraries
-local LCG = S.Libraries.LCG;
 
 local LPS = S.Libraries.LPS;
 local LPS_GetSpellInfo = LPS.GetSpellInfo;
@@ -48,22 +46,6 @@ local function IsOnExpireGlow(aura)
     local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
 
     return remTimeMs > 0 and remTimeMs <= durationMs/100*EXPIRE_GLOW_PERCENT;
-end
-
-local function UpdateExpireGlow(aura)
-    if EXPIRE_GLOW_TYPE == 1 then
-        LCG.PixelGlow_Start(aura, EXPIRE_GLOW_COLOR);
-    elseif EXPIRE_GLOW_TYPE == 2 then
-        LCG.AutoCastGlow_Start(aura, EXPIRE_GLOW_COLOR);
-    elseif EXPIRE_GLOW_TYPE == 3 then
-        LCG.ButtonGlow_Start(aura, EXPIRE_GLOW_COLOR);
-    end
-end
-
-local function StopExpireGlow(aura)
-    LCG.PixelGlow_Stop(aura);
-    LCG.AutoCastGlow_Stop(aura);
-    LCG.ButtonGlow_Stop(aura);
 end
 
 local function Update(unitframe)
@@ -108,16 +90,16 @@ local function Update(unitframe)
                     end
 
                     if IsOnExpireGlow(self) then
-                        UpdateExpireGlow(self);
+                        GlowStart(self, EXPIRE_GLOW_TYPE, EXPIRE_GLOW_COLOR);
                     else
-                        StopExpireGlow(self);
+                        GlowStopAll(self);
                     end
 
                     self.elapsed = 0;
                 end);
 
                 aura.Cooldown:HookScript('OnCooldownDone', function(self)
-                    StopExpireGlow(self:GetParent());
+                    GlowStopAll(self:GetParent());
                 end);
 
                 aura.OnUpdateHooked = true;
@@ -130,7 +112,7 @@ local function Reset(unitframe)
     if unitframe.BuffFrame and unitframe.BuffFrame.buffList then
         for _, aura in ipairs(unitframe.BuffFrame.buffList) do
             aura.spellId = nil;
-            StopExpireGlow(aura);
+            GlowStopAll(aura);
 
             aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
         end

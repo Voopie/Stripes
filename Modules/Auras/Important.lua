@@ -11,9 +11,7 @@ local CooldownFrame_Set, UnitName, AuraUtil_ForEachAura = CooldownFrame_Set, Uni
 -- Sripes API
 local GetUnitColor = U.GetUnitColor;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
-
--- Libraries
-local LCG = S.Libraries.LCG;
+local GlowStart, GlowStopType = U.GlowStart, U.GlowStopType;
 
 local LPS = S.Libraries.LPS;
 local LPS_GetSpellInfo = LPS.GetSpellInfo;
@@ -39,7 +37,9 @@ local StripesAurasImportantCasterFont   = CreateFont('StripesAurasImportantCaste
 local MAX_AURAS = 3;
 local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HARMFUL';
-local pixelGlowColor = { 1, 0.3, 0, 1 };
+
+local glowType  = 1; -- PIXEL
+local glowColor = { 1, 0.3, 0, 1 };
 
 local additionalAuras = {
     -- Druid
@@ -178,8 +178,8 @@ local function Update(unitframe)
 
             CooldownFrame_Set(aura.Cooldown, expirationTime - duration, duration, duration > 0, DRAW_EDGE);
 
-            LCG.PixelGlow_Stop(aura);
-            LCG.PixelGlow_Start(aura, pixelGlowColor);
+            GlowStopType(aura, glowType);
+            GlowStart(aura, glowType, glowColor);
 
             if CASTER_NAME_SHOW then
                 local unitname = source and UnitName(source);

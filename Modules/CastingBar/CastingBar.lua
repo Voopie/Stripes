@@ -9,6 +9,7 @@ local GetTime = GetTime;
 
 -- Stripes API
 local GetUnitColor = U.GetUnitColor;
+local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -97,27 +98,11 @@ end
 
 local CustomCastsData = {};
 
-local function UpdateCastBaGlow(self, glowType)
-    if glowType == 1 then
-        LCG.PixelGlow_Start(self);
-    elseif glowType == 2 then
-        LCG.AutoCastGlow_Start(self);
-    elseif glowType == 3 then
-        LCG.ButtonGlow_Start(self);
-    end
-end
-
-local function StopCastBarGlow(self)
-    LCG.PixelGlow_Stop(self);
-    LCG.AutoCastGlow_Stop(self);
-    LCG.ButtonGlow_Stop(self);
-end
-
 local function UpdateCustomCast(self)
     local spellId = self.spellID;
 
     if not spellId or not O.db.castbar_custom_casts_enabled or not CustomCastsData[spellId] or not CustomCastsData[spellId].enabled then
-        StopCastBarGlow(self);
+        GlowStopAll(self);
         return;
     end
 
@@ -126,8 +111,8 @@ local function UpdateCustomCast(self)
     end
 
     if CustomCastsData[spellId].glow_enabled then
-        StopCastBarGlow(self);
-        UpdateCastBaGlow(self, CustomCastsData[spellId].glow_type);
+        GlowStopAll(self);
+        GlowStart(self, CustomCastsData[spellId].glow_type);
     end
 end
 
