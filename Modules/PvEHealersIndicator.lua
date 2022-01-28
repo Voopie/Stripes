@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('PvEHealersIndicator');
 local GetNpcID = U.GetNpcID;
 
 -- Local Config
-local ENABLED, SOUND_ENABLED, ICON_SCALE;
+local ENABLED, SOUND_ENABLED, ICON_SCALE, OFFSET_Y;
 
 local TEXTURE = S.Media.Path .. 'Textures\\icons_healers';
 local SOUNDFILE_ID = 567458;
@@ -89,19 +89,24 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, 4);
+    frame.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, OFFSET_Y);
     frame.icon:SetTexture(TEXTURE);
     frame.icon:SetTexCoord(3/4, 4/4, 0, 1/2); -- Monk Mistweaver icon
     frame.icon:SetSize(32, 32);
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.PVEHealers = frame;
 end
 
 local function Update(unitframe)
-    unitframe.PVEHealers:SetScale(ICON_SCALE);
-    unitframe.PVEHealers:SetShown(ENABLED and (unitframe.data.npcId and mobsIDs[unitframe.data.npcId]));
+    if ENABLED and (unitframe.data.npcId and mobsIDs[unitframe.data.npcId]) then
+        unitframe.PVEHealers:SetScale(ICON_SCALE);
+        unitframe.PVEHealers.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, OFFSET_Y);
+        unitframe.PVEHealers:Show();
+    else
+        unitframe.PVEHealers:Hide();
+    end
 end
 
 local function UpdateMouseoverUnit()
@@ -133,6 +138,7 @@ function Module:UpdateLocalConfig()
     ENABLED       = O.db.pve_healers_enabled;
     SOUND_ENABLED = O.db.pve_healers_sound;
     ICON_SCALE    = O.db.pve_healers_icon_scale;
+    OFFSET_Y      = O.db.pve_healers_icon_offset_y;
 end
 
 function Module:StartUp()

@@ -247,7 +247,7 @@ O.Lists = {
     },
 };
 
--- ~505
+-- ~507
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -636,10 +636,12 @@ O.DefaultValues = {
     pvp_healers_enabled    = true,
     pvp_healers_sound      = false,
     pvp_healers_icon_scale = 1,
+    pvp_healers_icon_offset_y = 4;
 
     pve_healers_enabled    = true,
     pve_healers_sound      = false,
     pve_healers_icon_scale = 1,
+    pve_healers_icon_offset_y = 4;
 
     -- Auras
     auras_filter_player_enabled    = true,

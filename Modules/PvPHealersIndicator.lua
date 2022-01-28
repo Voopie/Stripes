@@ -16,7 +16,7 @@ local TANKS_TEXTURE   = S.Media.Path .. 'Textures\\icons_tanks';
 local SOUNDFILE_ID    = 567458;
 
 -- Local Config
-local ENABLED, SOUND_ENABLED, ICON_SCALE;
+local ENABLED, SOUND_ENABLED, ICON_SCALE, OFFSET_Y;
 
 local ICON_COORDS = {
     [257] = {   0, 1/4,   0, 1/2 }, -- Priest Holy
@@ -130,17 +130,17 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, 4);
+    frame.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, OFFSET_Y);
     frame.icon:SetSize(32, 32);
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.PVPHealers = frame;
 end
 
 local function Update(unitframe)
     if not ENABLED or unitframe.data.unitType == 'SELF' or not PlayerState.inPvPInstance then
-        unitframe.PVPHealers:SetShown(false);
+        unitframe.PVPHealers:Hide();
         return;
     end
 
@@ -151,10 +151,11 @@ local function Update(unitframe)
 
         unitframe.PVPHealers.icon:SetTexture(tankSpecIDs[specID] and TANKS_TEXTURE or HEALERS_TEXTURE);
         unitframe.PVPHealers.icon:SetTexCoord(unpack(ICON_COORDS[specID]));
+        unitframe.PVPHealers.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, OFFSET_Y);
         unitframe.PVPHealers:SetScale(ICON_SCALE);
-        unitframe.PVPHealers:SetShown(true);
+        unitframe.PVPHealers:Show();
     else
-        unitframe.PVPHealers:SetShown(false);
+        unitframe.PVPHealers:Hide();
     end
 end
 
@@ -191,6 +192,7 @@ function Module:UpdateLocalConfig()
     ENABLED       = O.db.pvp_healers_enabled;
     SOUND_ENABLED = O.db.pvp_healers_sound;
     ICON_SCALE    = O.db.pvp_healers_icon_scale;
+    OFFSET_Y      = O.db.pvp_healers_icon_offset_y;
 end
 
 function Module:StartUp()
