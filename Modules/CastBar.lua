@@ -27,7 +27,7 @@ local BAR_HEIGHT;
 local TEXT_POSITION, TEXT_X_OFFSET, TEXT_Y_OFFSET, TEXT_TRUNCATE;
 local TARGET_NAME_ENABLED, TARGET_NAME_CLASS_COLOR, TARGET_NAME_ONLY_ENEMY, TARGET_NAME_IN_SPELL_NAME, TARGET_NAME_POINT, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y;
 local CAST_BAR_BACKGROUND_TEXTURE, CAST_BAR_BACKGROUND_COLOR;
-local CAST_BAR_FRAME_STRATA;
+local CAST_BAR_FRAME_STRATA, CAST_BAR_OFFSET_Y;
 
 local StripesCastBarFont = CreateFont('StripesCastBarFont');
 local StripesCastBarTimerFont = CreateFont('StripesCastBarTimerFont');
@@ -113,8 +113,8 @@ local function UpdateStyle(unitframe)
             PixelUtil.SetWidth(unitframe.castingBar, FRIENDLY_WIDTH - WIDTH_OFFSET);
         end
 
-        PixelUtil.SetPoint(unitframe.healthBar, 'BOTTOMLEFT', unitframe.castingBar, 'TOPLEFT', 0, 2);
-        PixelUtil.SetPoint(unitframe.healthBar, 'BOTTOMRIGHT', unitframe.castingBar, 'TOPRIGHT', 0, 2);
+        PixelUtil.SetPoint(unitframe.healthBar, 'BOTTOMLEFT', unitframe.castingBar, 'TOPLEFT', 0, CAST_BAR_OFFSET_Y);
+        PixelUtil.SetPoint(unitframe.healthBar, 'BOTTOMRIGHT', unitframe.castingBar, 'TOPRIGHT', 0, CAST_BAR_OFFSET_Y);
 
         if ICON_RIGHT_SIDE then
             if ICON_LARGE then
@@ -429,6 +429,8 @@ function Module:UpdateLocalConfig()
 
     CAST_BAR_FRAME_STRATA = O.db.castbar_frame_strata ~= 1 and O.Lists.frame_strata[O.db.castbar_frame_strata] or 1;
 
+    CAST_BAR_OFFSET_Y = O.db.castbar_offset_y;
+
     UpdateFontObject(StripesCastBarFont, O.db.castbar_text_font_value, O.db.castbar_text_font_size, O.db.castbar_text_font_flag, O.db.castbar_text_font_shadow);
     UpdateFontObject(StripesCastBarTimerFont, O.db.castbar_timer_font_value, O.db.castbar_timer_font_size, O.db.castbar_timer_font_flag, O.db.castbar_timer_font_shadow);
     UpdateFontObject(StripesCastBarTargetFont, O.db.castbar_target_font_value, O.db.castbar_target_font_size, O.db.castbar_target_font_flag, O.db.castbar_target_font_shadow);
@@ -443,5 +445,5 @@ function Module:StartUp()
     end);
 
     self:SecureUnitFrameHook('CompactUnitFrame_SetUnit', UpdateVisibility);
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', UpdateVisibility); -- for duels, for example
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', UpdateVisibility);
 end

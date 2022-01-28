@@ -247,7 +247,7 @@ O.Lists = {
     },
 };
 
--- ~507
+-- ~508
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -436,6 +436,7 @@ O.DefaultValues = {
     castbar_text_font_shadow = true,
     castbar_texture_value            = 'Stripes Flat',
     castbar_background_texture_value = 'Stripes Flat',
+    castbar_offset_y         = 2,
     castbar_bg_color         = { 0.2, 0.2, 0.2, 0.85 },
     castbar_on_hp_bar        = false,
     castbar_icon_large       = false,
