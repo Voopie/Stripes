@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('PvEHealersIndicator');
 local GetNpcID = U.GetNpcID;
 
 -- Local Config
-local ENABLED, SOUND_ENABLED, ICON_SCALE, OFFSET_Y;
+local ENABLED, SOUND_ENABLED, ICON_SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
 
 local TEXTURE = S.Media.Path .. 'Textures\\icons_healers';
 local SOUNDFILE_ID = 567458;
@@ -89,7 +89,7 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, OFFSET_Y);
+    frame.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
     frame.icon:SetTexture(TEXTURE);
     frame.icon:SetTexCoord(3/4, 4/4, 0, 1/2); -- Monk Mistweaver icon
     frame.icon:SetSize(32, 32);
@@ -102,7 +102,8 @@ end
 local function Update(unitframe)
     if ENABLED and (unitframe.data.npcId and mobsIDs[unitframe.data.npcId]) then
         unitframe.PVEHealers:SetScale(ICON_SCALE);
-        unitframe.PVEHealers.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, OFFSET_Y);
+        unitframe.PVEHealers.icon:ClearAllPoints();
+        unitframe.PVEHealers.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
         unitframe.PVEHealers:Show();
     else
         unitframe.PVEHealers:Hide();
@@ -135,10 +136,13 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    ENABLED       = O.db.pve_healers_enabled;
-    SOUND_ENABLED = O.db.pve_healers_sound;
-    ICON_SCALE    = O.db.pve_healers_icon_scale;
-    OFFSET_Y      = O.db.pve_healers_icon_offset_y;
+    ENABLED        = O.db.pve_healers_enabled;
+    SOUND_ENABLED  = O.db.pve_healers_sound;
+    ICON_SCALE     = O.db.pve_healers_icon_scale;
+    POINT          = O.Lists.frame_points[O.db.pve_healers_icon_point] or 'BOTTOM';
+    RELATIVE_POINT = O.Lists.frame_points[O.db.pve_healers_icon_relative_point] or 'TOP';
+    OFFSET_X       = O.db.pve_healers_icon_offset_x;
+    OFFSET_Y       = O.db.pve_healers_icon_offset_y;
 end
 
 function Module:StartUp()

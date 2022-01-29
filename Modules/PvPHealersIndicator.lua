@@ -16,7 +16,7 @@ local TANKS_TEXTURE   = S.Media.Path .. 'Textures\\icons_tanks';
 local SOUNDFILE_ID    = 567458;
 
 -- Local Config
-local ENABLED, SOUND_ENABLED, ICON_SCALE, OFFSET_Y;
+local ENABLED, SOUND_ENABLED, ICON_SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
 
 local ICON_COORDS = {
     [257] = {   0, 1/4,   0, 1/2 }, -- Priest Holy
@@ -130,7 +130,7 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, OFFSET_Y);
+    frame.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
     frame.icon:SetSize(32, 32);
 
     frame:Hide();
@@ -151,7 +151,9 @@ local function Update(unitframe)
 
         unitframe.PVPHealers.icon:SetTexture(tankSpecIDs[specID] and TANKS_TEXTURE or HEALERS_TEXTURE);
         unitframe.PVPHealers.icon:SetTexCoord(unpack(ICON_COORDS[specID]));
-        unitframe.PVPHealers.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, OFFSET_Y);
+
+        unitframe.PVPHealers.icon:ClearAllPoints();
+        unitframe.PVPHealers.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
         unitframe.PVPHealers:SetScale(ICON_SCALE);
         unitframe.PVPHealers:Show();
     else
@@ -189,10 +191,13 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    ENABLED       = O.db.pvp_healers_enabled;
-    SOUND_ENABLED = O.db.pvp_healers_sound;
-    ICON_SCALE    = O.db.pvp_healers_icon_scale;
-    OFFSET_Y      = O.db.pvp_healers_icon_offset_y;
+    ENABLED        = O.db.pvp_healers_enabled;
+    SOUND_ENABLED  = O.db.pvp_healers_sound;
+    ICON_SCALE     = O.db.pvp_healers_icon_scale;
+    POINT          = O.Lists.frame_points[O.db.pvp_healers_icon_point] or 'BOTTOM';
+    RELATIVE_POINT = O.Lists.frame_points[O.db.pvp_healers_icon_relative_point] or 'TOP';
+    OFFSET_X       = O.db.pvp_healers_icon_offset_x;
+    OFFSET_Y       = O.db.pvp_healers_icon_offset_y;
 end
 
 function Module:StartUp()
