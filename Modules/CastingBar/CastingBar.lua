@@ -129,7 +129,7 @@ local function UpdateCastTargetName(self)
 
     local targetUnit = self.unit .. 'target';
 
-    if UnitExists(targetUnit) then
+    if UnitExists(targetUnit) and not UnitIsUnit(self.unit, targetUnit) then
         local targetName = UnitName(targetUnit);
 
         if NAME_TRANSLIT then
