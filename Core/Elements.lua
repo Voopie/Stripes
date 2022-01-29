@@ -1290,7 +1290,11 @@ do
                     itemButton:SetShown(true);
                 end
 
-                if self.currentValue then
+                if not self.currentValue then
+                    for button, _ in DropdownList.buttonPool:EnumerateActive() do
+                        button.SelectedIcon:SetShown(false);
+                    end
+                else
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
                         button.SelectedIcon:SetShown(false);
 
@@ -1316,12 +1320,18 @@ do
                 self.currentValue = value;
                 self.holderButton.Text:SetText('');
 
-                for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                    button.SelectedIcon:SetShown(false);
+                if not self.currentValue then
+                    for button, _ in DropdownList.buttonPool:EnumerateActive() do
+                        button.SelectedIcon:SetShown(false);
+                    end
+                else
+                    for button, _ in DropdownList.buttonPool:EnumerateActive() do
+                        button.SelectedIcon:SetShown(false);
 
-                    if button.Key == self.currentValue then
-                        button.SelectedIcon:SetShown(true);
-                        self.holderButton.Text:SetText(button.Value);
+                        if button.Key == self.currentValue then
+                            button.SelectedIcon:SetShown(true);
+                            self.holderButton.Text:SetText(button.Value);
+                        end
                     end
                 end
 
