@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('CastingBar');
 
 -- WoW API
-local UnitName, UnitExists = UnitName, UnitExists;
+local UnitName, UnitExists, UnitIsUnit = UnitName, UnitExists, UnitIsUnit;
 local GetSpellCooldown, UnitCanAttack = GetSpellCooldown, UnitCanAttack;
 local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
 local GetTime = GetTime;
