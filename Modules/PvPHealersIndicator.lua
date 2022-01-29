@@ -16,7 +16,7 @@ local TANKS_TEXTURE   = S.Media.Path .. 'Textures\\icons_tanks';
 local SOUNDFILE_ID    = 567458;
 
 -- Local Config
-local ENABLED, SOUND_ENABLED, ICON_SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
+local ENABLED, SOUND_ENABLED, ICON_SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y, STRATA;
 
 local ICON_COORDS = {
     [257] = {   0, 1/4,   0, 1/2 }, -- Priest Holy
@@ -149,6 +149,12 @@ local function Update(unitframe)
     if Healers[name] then
         local specID = HealerSpecs[Healers[name]];
 
+        if STRATA == 1 then
+            unitframe.PVPHealers:SetFrameStrata(unitframe.healthBar:GetFrameStrata());
+        else
+            unitframe.PVPHealers:SetFrameStrata(STRATA);
+        end
+
         unitframe.PVPHealers.icon:SetTexture(tankSpecIDs[specID] and TANKS_TEXTURE or HEALERS_TEXTURE);
         unitframe.PVPHealers.icon:SetTexCoord(unpack(ICON_COORDS[specID]));
 
@@ -198,6 +204,7 @@ function Module:UpdateLocalConfig()
     RELATIVE_POINT = O.Lists.frame_points[O.db.pvp_healers_icon_relative_point] or 'TOP';
     OFFSET_X       = O.db.pvp_healers_icon_offset_x;
     OFFSET_Y       = O.db.pvp_healers_icon_offset_y;
+    STRATA         = O.db.pvp_healers_icon_strata ~= 1 and O.Lists.frame_strata[O.db.pvp_healers_icon_strata] or 1;
 end
 
 function Module:StartUp()

@@ -422,8 +422,22 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.pvp_healers_icon_strata = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
+    self.pvp_healers_icon_strata:SetPosition('LEFT', self.pvp_healers_icon_scale, 'RIGHT', 16, 0);
+    self.pvp_healers_icon_strata:SetSize(160, 20);
+    self.pvp_healers_icon_strata:SetList(O.Lists.frame_strata);
+    self.pvp_healers_icon_strata:SetValue(O.db.pvp_healers_icon_strata);
+    self.pvp_healers_icon_strata:SetLabel(L['FRAME_STRATA']);
+    self.pvp_healers_icon_strata:SetTooltip(L['OPTIONS_PVP_HEALERS_ICON_STRATA_TOOLTIP']);
+    self.pvp_healers_icon_strata:AddToSearch(button, L['OPTIONS_PVP_HEALERS_ICON_STRATA_TOOLTIP'], self.Tabs[4]);
+    self.pvp_healers_icon_strata.OnValueChangedCallback = function(_, value)
+        O.db.pvp_healers_icon_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+
     self.pvp_healers_icon_point = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
-    self.pvp_healers_icon_point:SetPosition('TOPLEFT', self.pvp_healers_icon_scale, 'BOTTOMLEFT', 0 - self.pvp_healers_icon_scale.Text:GetStringWidth() - 6, -12);
+    self.pvp_healers_icon_point:SetPosition('TOPLEFT', self.pvp_healers_icon_scale, 'BOTTOMLEFT', 0 - self.pvp_healers_icon_scale.Text:GetStringWidth() - 6, -22);
     self.pvp_healers_icon_point:SetSize(120, 20);
     self.pvp_healers_icon_point:SetList(O.Lists.frame_points_localized);
     self.pvp_healers_icon_point:SetValue(O.db.pvp_healers_icon_point);
@@ -509,8 +523,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.pve_healers_icon_strata = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
+    self.pve_healers_icon_strata:SetPosition('LEFT', self.pve_healers_icon_scale, 'RIGHT', 16, 0);
+    self.pve_healers_icon_strata:SetSize(160, 20);
+    self.pve_healers_icon_strata:SetList(O.Lists.frame_strata);
+    self.pve_healers_icon_strata:SetValue(O.db.pve_healers_icon_strata);
+    self.pve_healers_icon_strata:SetLabel(L['FRAME_STRATA']);
+    self.pve_healers_icon_strata:SetTooltip(L['OPTIONS_PVE_HEALERS_ICON_STRATA_TOOLTIP']);
+    self.pve_healers_icon_strata:AddToSearch(button, L['OPTIONS_PVE_HEALERS_ICON_STRATA_TOOLTIP'], self.Tabs[4]);
+    self.pve_healers_icon_strata.OnValueChangedCallback = function(_, value)
+        O.db.pve_healers_icon_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.pve_healers_icon_point = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
-    self.pve_healers_icon_point:SetPosition('TOPLEFT', self.pve_healers_icon_scale, 'BOTTOMLEFT', 0 - self.pve_healers_icon_scale.Text:GetStringWidth() - 6, -12);
+    self.pve_healers_icon_point:SetPosition('TOPLEFT', self.pve_healers_icon_scale, 'BOTTOMLEFT', 0 - self.pve_healers_icon_scale.Text:GetStringWidth() - 6, -22);
     self.pve_healers_icon_point:SetSize(120, 20);
     self.pve_healers_icon_point:SetList(O.Lists.frame_points_localized);
     self.pve_healers_icon_point:SetValue(O.db.pve_healers_icon_point);

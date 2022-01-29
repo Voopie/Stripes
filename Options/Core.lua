@@ -247,7 +247,7 @@ O.Lists = {
     },
 };
 
--- ~514
+-- ~516
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -641,6 +641,7 @@ O.DefaultValues = {
     pvp_healers_icon_relative_point = 7, -- TOP
     pvp_healers_icon_offset_x = 0,
     pvp_healers_icon_offset_y = 0;
+    pvp_healers_icon_strata = 4, -- MEDIUM
 
     pve_healers_enabled    = true,
     pve_healers_sound      = false,
@@ -649,6 +650,7 @@ O.DefaultValues = {
     pve_healers_icon_relative_point = 7, -- TOP
     pve_healers_icon_offset_x = 0,
     pve_healers_icon_offset_y = 0;
+    pve_healers_icon_strata = 4, -- MEDIUM
 
     -- Auras
     auras_filter_player_enabled    = true,

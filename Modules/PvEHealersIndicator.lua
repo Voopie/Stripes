@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('PvEHealersIndicator');
 local GetNpcID = U.GetNpcID;
 
 -- Local Config
-local ENABLED, SOUND_ENABLED, ICON_SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
+local ENABLED, SOUND_ENABLED, ICON_SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y, STRATA;
 
 local TEXTURE = S.Media.Path .. 'Textures\\icons_healers';
 local SOUNDFILE_ID = 567458;
@@ -101,6 +101,12 @@ end
 
 local function Update(unitframe)
     if ENABLED and (unitframe.data.npcId and mobsIDs[unitframe.data.npcId]) then
+        if STRATA == 1 then
+            unitframe.PVEHealers:SetFrameStrata(unitframe.healthBar:GetFrameStrata());
+        else
+            unitframe.PVEHealers:SetFrameStrata(STRATA);
+        end
+
         unitframe.PVEHealers:SetScale(ICON_SCALE);
         unitframe.PVEHealers.icon:ClearAllPoints();
         unitframe.PVEHealers.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
@@ -143,6 +149,7 @@ function Module:UpdateLocalConfig()
     RELATIVE_POINT = O.Lists.frame_points[O.db.pve_healers_icon_relative_point] or 'TOP';
     OFFSET_X       = O.db.pve_healers_icon_offset_x;
     OFFSET_Y       = O.db.pve_healers_icon_offset_y;
+    STRATA         = O.db.pve_healers_icon_strata ~= 1 and O.Lists.frame_strata[O.db.pve_healers_icon_strata] or 1;
 end
 
 function Module:StartUp()
