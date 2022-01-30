@@ -820,6 +820,8 @@ do
             end
 
             self:GetParent():SetValue(value);
+
+            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
         end);
         plusButton:HookScript('OnEnter', function(self)
             self.Background:SetBackdropColor(0.5, 0.5, 0.5, 1);
@@ -859,6 +861,8 @@ do
             end
 
             self:GetParent():SetValue(value);
+
+            PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
         end);
         minusButton:HookScript('OnEnter', function(self)
             self.Background:SetBackdropColor(0.5, 0.5, 0.5, 1);
