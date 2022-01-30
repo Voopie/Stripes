@@ -119,26 +119,26 @@ local function UpdateStyle(unitframe)
         if ICON_RIGHT_SIDE then
             if ICON_LARGE then
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'TOPLEFT', unitframe.healthBar, 'TOPRIGHT', 1, 0.5);
-                PixelUtil.SetPoint(unitframe.castingBar.Icon, 'BOTTOMLEFT', unitframe.castingBar, 'BOTTOMRIGHT', 0, 0);
-                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + BAR_HEIGHT + 2);
+                PixelUtil.SetPoint(unitframe.castingBar.Icon, 'BOTTOMLEFT', unitframe.castingBar, 'BOTTOMRIGHT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
+                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + BAR_HEIGHT + 2 + (BORDER_ENABLED and BORDER_SIZE or 0));
 
                 PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'BOTTOM', 0, 0);
             else
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'LEFT', unitframe.castingBar, 'RIGHT', 0, 0);
-                PixelUtil.SetSize(unitframe.castingBar.Icon, BAR_HEIGHT, BAR_HEIGHT);
+                PixelUtil.SetSize(unitframe.castingBar.Icon, BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0), BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0));
 
                 PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'CENTER', 0, 0);
             end
         else
             if ICON_LARGE then
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'TOPRIGHT', unitframe.healthBar, 'TOPLEFT', -1, 0.5);
-                PixelUtil.SetPoint(unitframe.castingBar.Icon, 'BOTTOMRIGHT', unitframe.castingBar, 'BOTTOMLEFT', 0, 0);
-                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + BAR_HEIGHT + 2);
+                PixelUtil.SetPoint(unitframe.castingBar.Icon, 'BOTTOMRIGHT', unitframe.castingBar, 'BOTTOMLEFT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
+                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0));
 
                 PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'BOTTOM', 0, 0);
             else
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'RIGHT', unitframe.castingBar, 'LEFT', 0, 0);
-                PixelUtil.SetSize(unitframe.castingBar.Icon, BAR_HEIGHT, BAR_HEIGHT);
+                PixelUtil.SetSize(unitframe.castingBar.Icon, BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0), BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0));
 
                 PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'CENTER', 0, 0);
             end
