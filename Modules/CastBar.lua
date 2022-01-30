@@ -133,7 +133,7 @@ local function UpdateStyle(unitframe)
             if ICON_LARGE then
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'TOPRIGHT', unitframe.healthBar, 'TOPLEFT', -1, 0.5);
                 PixelUtil.SetPoint(unitframe.castingBar.Icon, 'BOTTOMRIGHT', unitframe.castingBar, 'BOTTOMLEFT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
-                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0));
+                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + BAR_HEIGHT + 2 + (BORDER_ENABLED and BORDER_SIZE or 0));
 
                 PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'BOTTOM', 0, 0);
             else
