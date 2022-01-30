@@ -546,6 +546,8 @@ local function ResetNameplateData(unitframe)
     unitframe.data.nameTranslitWoRealm = nil;
     unitframe.data.nameTranslitPVP     = nil;
 
+    unitframe.data.level = nil;
+
     unitframe.data.targetName = nil;
 
     unitframe.data.inCombatWithPlayer = nil;

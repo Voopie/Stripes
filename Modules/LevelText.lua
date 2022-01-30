@@ -37,7 +37,7 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    if unitframe.data.unitType == 'SELF' or (SHOW_ONLY_ON_TARGET and not unitframe.data.isTarget) then
+    if unitframe.data.unitType == 'SELF' or not unitframe.data.level or (SHOW_ONLY_ON_TARGET and not unitframe.data.isTarget) then
         unitframe.LevelText.text:SetText('');
         return;
     end
@@ -52,6 +52,11 @@ local function Update(unitframe)
 end
 
 local function UpdateShow(unitframe)
+    if not unitframe.data.level then
+        unitframe.LevelText:Hide();
+        return;
+    end
+
     if HIDE_MAX then
         unitframe.LevelText:SetShown(ENABLED and not (unitframe.data.level == '??' or unitframe.data.level >= D.MaxLevel) and unitframe.data.unitType ~= 'SELF');
     else
