@@ -574,6 +574,12 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
         if self.Icon then
             self.Icon:SetTexture(texture);
+
+            if notInterruptible then
+                self.Icon:SetShown(self.iconWhenNoninterruptible);
+            else
+                self.Icon:SetShown(true);
+            end
         end
 
         if self.Spark then
