@@ -245,9 +245,15 @@ O.Lists = {
         [4] = 'ADD',
         [5] = 'MOD',
     },
+
+    who_mode = {
+        [1] = L['OPTIONS_NAME_WITH_TITLE_MODE_ALL'],
+        [2] = L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_FRIENDLY'],
+        [3] = L['OPTIONS_NAME_WITH_TITLE_MODE_ONLY_ENEMY'],
+    },
 };
 
--- ~516
+-- ~518
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -262,6 +268,7 @@ O.DefaultValues = {
     name_text_truncate               = false,
     name_text_abbreviated            = false,
     name_text_abbreviated_mode       = 1, -- Without space
+    name_text_abbreviated_who_mode   = 1,
     name_text_coloring_mode          = 1, -- NONE
     name_text_coloring_mode_npc      = 1, -- NONE
     faction_icon_enabled             = false,
@@ -285,6 +292,7 @@ O.DefaultValues = {
     name_text_first_mode             = 1,
     name_text_cut_enabled            = false,
     name_text_cut_number             = 12,
+    name_text_cut_who_mode           = 1,
     name_text_frame_strata           = 4, -- MEDIUM
 
     health_text_enabled      = true,

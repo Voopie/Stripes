@@ -210,6 +210,7 @@ L['OPTIONS_NAME_TEXT_ABBREVIATED_WITH_SPACE'] = 'С пробелом';
 L['OPTIONS_NAME_TEXT_ABBREVIATED_LAST_WORD'] = 'Последнее слово';
 L['OPTIONS_NAME_TEXT_ABBREVIATED_FIRST_WORD'] = 'Первое слово';
 L['OPTIONS_NAME_TEXT_ABBREVIATED_MODE_TOOLTIP'] = 'Режим аббревиаций имён NPC';
+L['OPTIONS_NAME_TEXT_ABBREVIATED_WHO_MODE_TOOLTIP'] = 'Тип юнитов, у которых будут аббревиироваться имена';
 L['OPTIONS_NAME_TEXT_COLORING'] = 'Окрашивание игроков';
 L['OPTIONS_NAME_TEXT_COLORING_MODE_TOOLTIP'] = 'Режим окрашивания имени игроков';
 L['OPTIONS_NAME_TEXT_COLORING_MODE_NONE'] = 'Не окрашивать';
@@ -258,6 +259,7 @@ L['OPTIONS_NAME_TEXT_FIRST_MODE_TOOLTIP'] = 'С какого типа перво
 L['OPTIONS_NAME_TEXT_CUT_ENABLED'] = 'Обрезать до';
 L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP'] = 'Принудительная обрезка имени до заданного количества символов';
 L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP'] = 'Количество символов имени, которые нужно оставить';
+L['OPTIONS_NAME_TEXT_CUT_WHO_MODE_TOOLTIP'] = 'Тип юнитов, у которых будут обрезаться имена';
 L['OPTIONS_NAME_TEXT_FRAME_STRATA_TOOLTIP'] = 'Слой текста имени';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Показывать здоровье текстом';

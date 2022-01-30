@@ -24,7 +24,7 @@ local LT = S.Libraries.LT;
 local LDC = S.Libraries.LDC;
 
 -- Local Config
-local POSITION, POSITION_V, OFFSET_X, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE, COLORING_MODE_NPC;
+local POSITION, POSITION_V, OFFSET_X, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, ABRR_UNIT_TYPE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE, COLORING_MODE_NPC;
 local NAME_ONLY_MODE, NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 local NAME_WITH_TITLE_ENABLED, NAME_WITH_TITLE_UNIT_TYPE, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
@@ -33,7 +33,7 @@ local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local CUSTOM_NAME_ENABLED;
 local CLASSIFICATION_INDICATOR_ENABLED, CLASSIFICATION_INDICATOR_STAR, CLASSIFICATION_INDICATOR_SIZE;
 local FIRST_MODE;
-local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
+local NAME_CUT_ENABLED, NAME_CUT_NUMBER, NAME_CUT_UNIT_TYPE;
 local NAME_HOLDER_FRAME_STRATA;
 
 local StripesNameFont      = CreateFont('StripesNameFont');
@@ -49,6 +49,12 @@ local NAME_WITH_TITLE_MODES = {
     [1] = 'ALL',
     [2] = 'FRIENDLY_PLAYER',
     [3] = 'ENEMY_PLAYER',
+};
+
+local WHO_MODES = {
+    [1] = 'ALL',
+    [2] = 'FRIENDLY_NPC',
+    [3] = 'ENEMY_NPC',
 };
 
 local function UpdateFont(unitframe)
@@ -129,7 +135,7 @@ local GetAbbreviatedName = {
             name = firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSub));
         end
 
-        return NAME_CUT_ENABLED and utf8sub(name, 0, NAME_CUT_NUMBER) or name;
+        return name;
     end,
 
     [2] = function(name)
@@ -141,7 +147,7 @@ local GetAbbreviatedName = {
             name = firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace));
         end
 
-        return NAME_CUT_ENABLED and utf8sub(name, 0, NAME_CUT_NUMBER) or name;
+        return name;
     end,
 
     [3] = function(name)
@@ -153,7 +159,7 @@ local GetAbbreviatedName = {
             name = firstLower(AbbrLast(name or ''));
         end
 
-        return NAME_CUT_ENABLED and utf8sub(name, 0, NAME_CUT_NUMBER) or name;
+        return name;
     end,
 
     [4] = function(name)
@@ -165,9 +171,21 @@ local GetAbbreviatedName = {
             name = firstLower(AbbrFirst(name or ''));
         end
 
-        return NAME_CUT_ENABLED and utf8sub(name, 0, NAME_CUT_NUMBER) or name;
+        return name;
     end,
 };
+
+local function GetCuttedName(name)
+    if FIRST_MODE == 1 then
+        name = utf8sub(name, 0, NAME_CUT_NUMBER) or '';
+    elseif FIRST_MODE == 2 then
+        name = firstUpper(utf8sub(name, 0, NAME_CUT_NUMBER) or '');
+    elseif FIRST_MODE == 3 then
+        name = firstLower(utf8sub(name, 0, NAME_CUT_NUMBER) or '');
+    end
+
+    return name;
+end
 
 local function GetCustomName(npcId)
     if npcId and O.db.custom_name_data[npcId] then
@@ -179,11 +197,51 @@ local function UpdateName(unitframe)
     if unitframe.data.commonUnitType == 'NPC' then
         local customName = CUSTOM_NAME_ENABLED and GetCustomName(unitframe.data.npcId);
 
+        -- I don't like this Leaning Tower of Pisa...
         if customName then
             unitframe.name:SetText(customName);
         elseif ABBR_ENABLED then
-            unitframe.name:SetText(GetAbbreviatedName[ABBR_MODE](unitframe.data.name));
-            unitframe.data.nameAbbr = unitframe.name:GetText();
+            if unitframe.data.unitType == ABRR_UNIT_TYPE or ABRR_UNIT_TYPE == 'ALL' then
+                if NAME_CUT_ENABLED and (unitframe.data.unitType == NAME_CUT_UNIT_TYPE or NAME_CUT_UNIT_TYPE == 'ALL') then
+                    unitframe.name:SetText(utf8sub(GetAbbreviatedName[ABBR_MODE](unitframe.data.name) or '', 0, NAME_CUT_NUMBER));
+                else
+                    unitframe.name:SetText(GetAbbreviatedName[ABBR_MODE](unitframe.data.name));
+                end
+
+                unitframe.data.nameAbbr = unitframe.name:GetText();
+            else
+                if NAME_CUT_ENABLED then
+                    if unitframe.data.unitType == NAME_CUT_UNIT_TYPE or NAME_CUT_UNIT_TYPE == 'ALL' then
+                        unitframe.name:SetText(GetCuttedName(unitframe.data.name));
+                        unitframe.data.nameCut = unitframe.name:GetText();
+                    else
+                        unitframe.data.nameCut = nil;
+                    end
+                end
+
+                unitframe.data.nameAbbr = nil;
+            end
+        elseif NAME_CUT_ENABLED then
+            if unitframe.data.unitType == NAME_CUT_UNIT_TYPE or NAME_CUT_UNIT_TYPE == 'ALL' then
+                unitframe.name:SetText(GetCuttedName(unitframe.data.name));
+                unitframe.data.nameCut = unitframe.name:GetText();
+            else
+                unitframe.data.nameCut = nil;
+            end
+        elseif FIRST_MODE ~= 1 then
+            local nameFirst;
+            if FIRST_MODE == 2 then
+                nameFirst = firstUpper(unitframe.data.name);
+            elseif FIRST_MODE == 3 then
+                nameFirst = firstLower(unitframe.data.name);
+            end
+
+            unitframe.name:SetText(nameFirst);
+            unitframe.data.nameFirst = nameFirst;
+        else
+            unitframe.data.nameAbbr  = nil;
+            unitframe.data.nameCut   = nil;
+            unitframe.data.nameFirst = nil;
         end
     end
 
@@ -422,7 +480,15 @@ local function NameOnly_UpdateNameHealth(unitframe)
                 unitframe.name:SetText(GREY_COLOR_START .. GetPlayerName(unitframe));
             end
         elseif not NAME_ONLY_FRIENDLY_PLAYERS_ONLY and unitframe.data.unitType == 'FRIENDLY_NPC' then
-            local name = (ABBR_ENABLED and unitframe.data.nameAbbr ~= '') and unitframe.data.nameAbbr or unitframe.data.name;
+            local name = unitframe.data.name;
+
+            if ABBR_ENABLED and unitframe.data.nameAbbr and unitframe.data.nameAbbr ~= '' then
+                name = unitframe.data.nameAbbr;
+            elseif NAME_CUT_ENABLED and unitframe.data.nameCut and unitframe.data.nameCut ~= '' then
+                name = unitframe.data.nameCut;
+            elseif unitframe.data.nameFirst and unitframe.data.nameFirst ~= '' then
+                name = unitframe.data.nameFirst;
+            end
 
             if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
                 local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
@@ -590,6 +656,7 @@ function Module:UpdateLocalConfig()
     TRUNCATE               = O.db.name_text_truncate;
     ABBR_ENABLED           = O.db.name_text_abbreviated
     ABBR_MODE              = O.db.name_text_abbreviated_mode;
+    ABRR_UNIT_TYPE         = WHO_MODES[O.db.name_text_abbreviated_who_mode];
     SHOW_ARENA_ID          = O.db.name_text_show_arenaid;
     SHOW_ARENA_ID_SOLO     = O.db.name_text_show_arenaid_solo;
     COLORING_MODE          = O.db.name_text_coloring_mode;
@@ -617,7 +684,7 @@ function Module:UpdateLocalConfig()
 
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
 
-    NAME_WITH_TITLE_ENABLED = O.db.name_text_with_title;
+    NAME_WITH_TITLE_ENABLED   = O.db.name_text_with_title;
     NAME_WITH_TITLE_UNIT_TYPE = NAME_WITH_TITLE_MODES[O.db.name_text_with_title_mode];
 
     NAME_WITHOUT_REALM = O.db.name_without_realm;
@@ -640,8 +707,9 @@ function Module:UpdateLocalConfig()
 
     FIRST_MODE = O.db.name_text_first_mode;
 
-    NAME_CUT_ENABLED = O.db.name_text_cut_enabled;
-    NAME_CUT_NUMBER  = O.db.name_text_cut_number;
+    NAME_CUT_ENABLED   = O.db.name_text_cut_enabled;
+    NAME_CUT_NUMBER    = O.db.name_text_cut_number;
+    NAME_CUT_UNIT_TYPE = WHO_MODES[O.db.name_text_cut_who_mode];
 
     NAME_HOLDER_FRAME_STRATA = O.db.name_text_frame_strata ~= 1 and O.Lists.frame_strata[O.db.name_text_frame_strata] or 1;
 

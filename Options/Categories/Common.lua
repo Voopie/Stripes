@@ -111,6 +111,7 @@ panel.Load = function(self)
         O.db.name_text_abbreviated = self:GetChecked();
 
         panel.name_text_abbreviated_mode:SetEnabled(O.db.name_text_abbreviated);
+        panel.name_text_abbreviated_who_mode:SetEnabled(O.db.name_text_abbreviated);
 
         Stripes:UpdateAll();
     end
@@ -128,8 +129,62 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.name_text_abbreviated_who_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_abbreviated_who_mode:SetPosition('LEFT', self.name_text_abbreviated_mode, 'RIGHT', 12, 0);
+    self.name_text_abbreviated_who_mode:SetSize(170, 20);
+    self.name_text_abbreviated_who_mode:SetList(O.Lists.who_mode);
+    self.name_text_abbreviated_who_mode:SetValue(O.db.name_text_abbreviated_who_mode);
+    self.name_text_abbreviated_who_mode:SetTooltip(L['OPTIONS_NAME_TEXT_ABBREVIATED_WHO_MODE_TOOLTIP']);
+    self.name_text_abbreviated_who_mode:AddToSearch(button, L['OPTIONS_NAME_TEXT_ABBREVIATED_WHO_MODE_TOOLTIP'], self.Tabs[1]);
+    self.name_text_abbreviated_who_mode:SetEnabled(O.db.name_text_abbreviated);
+    self.name_text_abbreviated_who_mode.OnValueChangedCallback = function(_, value)
+        O.db.name_text_abbreviated_who_mode = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+
+    self.name_text_cut_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.name_text_cut_enabled:SetPosition('TOPLEFT', self.name_text_abbreviated, 'BOTTOMLEFT', 0, -8);
+    self.name_text_cut_enabled:SetLabel(L['OPTIONS_NAME_TEXT_CUT_ENABLED']);
+    self.name_text_cut_enabled:SetTooltip(L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP']);
+    self.name_text_cut_enabled:SetChecked(O.db.name_text_cut_enabled);
+    self.name_text_cut_enabled:AddToSearch(button, L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.name_text_cut_enabled.Callback = function(self)
+        O.db.name_text_cut_enabled = self:GetChecked();
+
+        panel.name_text_cut_number:SetEnabled(O.db.name_text_cut_enabled);
+        panel.name_text_cut_who_mode:SetEnabled(O.db.name_text_cut_enabled);
+
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_cut_number = E.CreateSlider(self.TabsFrames['NameTab'].Content);
+    self.name_text_cut_number:SetPosition('LEFT', self.name_text_cut_enabled.Label, 'RIGHT', 12, 0);
+    self.name_text_cut_number:SetW(150.5);
+    self.name_text_cut_number:SetValues(O.db.name_text_cut_number, 2, 50, 1);
+    self.name_text_cut_number:SetTooltip(L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP']);
+    self.name_text_cut_number:AddToSearch(button, L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP'], self.Tabs[1]);
+    self.name_text_cut_number:SetEnabled(O.db.name_text_cut_enabled);
+    self.name_text_cut_number.OnValueChangedCallback = function(_, value)
+        O.db.name_text_cut_number = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_cut_who_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_cut_who_mode:SetPosition('LEFT', self.name_text_cut_number, 'RIGHT', 12, 0);
+    self.name_text_cut_who_mode:SetSize(170, 20);
+    self.name_text_cut_who_mode:SetList(O.Lists.who_mode);
+    self.name_text_cut_who_mode:SetValue(O.db.name_text_cut_who_mode);
+    self.name_text_cut_who_mode:SetTooltip(L['OPTIONS_NAME_TEXT_CUT_WHO_MODE_TOOLTIP']);
+    self.name_text_cut_who_mode:AddToSearch(button, L['OPTIONS_NAME_TEXT_CUT_WHO_MODE_TOOLTIP'], self.Tabs[1]);
+    self.name_text_cut_who_mode:SetEnabled(O.db.name_text_cut_enabled);
+    self.name_text_cut_who_mode.OnValueChangedCallback = function(_, value)
+        O.db.name_text_cut_who_mode = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.name_text_first_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_first_mode:SetPosition('TOPLEFT', self.name_text_abbreviated, 'BOTTOMLEFT', 0, -8);
+    self.name_text_first_mode:SetPosition('TOPLEFT', self.name_text_cut_enabled, 'BOTTOMLEFT', 0, -8);
     self.name_text_first_mode:SetSize(160, 20);
     self.name_text_first_mode:SetList(O.Lists.name_text_first_mode);
     self.name_text_first_mode:SetValue(O.db.name_text_first_mode);
@@ -141,30 +196,9 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.name_text_cut_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_cut_enabled:SetPosition('TOPLEFT', self.name_text_first_mode, 'BOTTOMLEFT', 0, -8);
-    self.name_text_cut_enabled:SetLabel(L['OPTIONS_NAME_TEXT_CUT_ENABLED']);
-    self.name_text_cut_enabled:SetTooltip(L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP']);
-    self.name_text_cut_enabled:SetChecked(O.db.name_text_cut_enabled);
-    self.name_text_cut_enabled:AddToSearch(button, L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP'], self.Tabs[1]);
-    self.name_text_cut_enabled.Callback = function(self)
-        O.db.name_text_cut_enabled = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
-    self.name_text_cut_number = E.CreateSlider(self.TabsFrames['NameTab'].Content);
-    self.name_text_cut_number:SetPosition('LEFT', self.name_text_cut_enabled.Label, 'RIGHT', 12, 0);
-    self.name_text_cut_number:SetW(150.5);
-    self.name_text_cut_number:SetValues(O.db.name_text_cut_number, 2, 50, 1);
-    self.name_text_cut_number:SetTooltip(L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP']);
-    self.name_text_cut_number:AddToSearch(button, L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP'], self.Tabs[1]);
-    self.name_text_cut_number.OnValueChangedCallback = function(_, value)
-        O.db.name_text_cut_number = tonumber(value);
-        Stripes:UpdateAll();
-    end
 
     local Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.name_text_cut_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_first_mode, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.name_text_font_value = E.CreateDropdown('font', self.TabsFrames['NameTab'].Content);

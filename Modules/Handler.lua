@@ -537,7 +537,9 @@ local function ResetNameplateData(unitframe)
 
     unitframe.data.className = nil;
 
-    unitframe.data.nameAbbr = '';
+    unitframe.data.nameAbbr = nil;
+    unitframe.data.nameCut = nil;
+    unitframe.data.nameFirst = nil;
     unitframe.data.namePVP = nil;
     unitframe.data.nameWoRealm = nil;
     unitframe.data.nameTranslit        = nil;
@@ -571,7 +573,6 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
     NP[nameplate].data.npcId    = not NP[nameplate].data.isPlayer and GetNpcIDByGUID(NP[nameplate].data.unitGUID, true) or 0;
 
     NP[nameplate].data.name     = GetUnitName(unit, true);
-    NP[nameplate].data.nameAbbr = '';
 
     NP[nameplate].data.subLabel = not NP[nameplate].data.isPlayer and GetNpcSubLabelByID(NP[nameplate].data.npcId) or nil;
     if NP[nameplate].data.subLabel == UNKNOWN or string_find(NP[nameplate].data.subLabel or '', '??', 1, true) then

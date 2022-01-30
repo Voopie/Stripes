@@ -210,6 +210,7 @@ L['OPTIONS_NAME_TEXT_ABBREVIATED_WITH_SPACE'] = 'Mit Leerzeichen';
 L['OPTIONS_NAME_TEXT_ABBREVIATED_LAST_WORD'] = 'Letztes Wort';
 L['OPTIONS_NAME_TEXT_ABBREVIATED_FIRST_WORD'] = 'Erstes Wort';
 L['OPTIONS_NAME_TEXT_ABBREVIATED_MODE_TOOLTIP'] = 'NPC-Namensabkürzungsmodus';
+L['OPTIONS_NAME_TEXT_ABBREVIATED_WHO_MODE_TOOLTIP'] = 'Art der Einheiten, deren Namen abgekürzt werden';
 L['OPTIONS_NAME_TEXT_COLORING'] = 'Färben der Spielernamen';
 L['OPTIONS_NAME_TEXT_COLORING_MODE_TOOLTIP'] = 'Färbemodus für Spielernamen';
 L['OPTIONS_NAME_TEXT_COLORING_MODE_NONE'] = 'Nicht färben';
@@ -258,6 +259,7 @@ L['OPTIONS_NAME_TEXT_FIRST_MODE_TOOLTIP'] = 'Welche Art von Anfangsbuchstaben so
 L['OPTIONS_NAME_TEXT_CUT_ENABLED'] = 'Trimmen auf';
 L['OPTIONS_NAME_TEXT_CUT_ENABLED_TOOLTIP'] = 'Erzwungenes Abschneiden des Namens auf eine bestimmte Anzahl von Zeichen';
 L['OPTIONS_NAME_TEXT_CUT_NUMBER_TOOLTIP'] = 'Anzahl der zu verlassenden Zeichen des Namens';
+L['OPTIONS_NAME_TEXT_CUT_WHO_MODE_TOOLTIP'] = 'Art der Einheiten, deren Namen geschnitten werden sollen';
 L['OPTIONS_NAME_TEXT_FRAME_STRATA_TOOLTIP'] = 'Strata des Namenstextes';
 
 L['OPTIONS_SHOW_HEALTH_TEXT'] = 'Gesundheitstext anzeigen';
