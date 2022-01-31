@@ -973,6 +973,7 @@ L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Показывать эффе�
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Показывать пользовательские ауры';
 L['OPTIONS_AURAS_CUSTOM_SCALE_TOOLTIP'] = 'Масштаб пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_SPACING_X_TOOLTIP'] = 'Горизонтальный промежуток между пользовательскими аурами';
 L['OPTIONS_AURAS_CUSTOM_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение пользовательских аур';
 L['OPTIONS_AURAS_CUSTOM_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение пользовательских аур';
 L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED'] = 'Оставшееся время';

@@ -22,6 +22,7 @@ local SCALE, SQUARE, OFFSET_X, OFFSET_Y, BUFFFRAME_OFFSET_Y;
 local BORDER_HIDE, BORDER_COLOR;
 local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
+local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
 
 local StripesAurasCustomCooldownFont = CreateFont('StripesAurasCustomCooldownFont');
@@ -188,7 +189,7 @@ local function Update(unitframe)
         end
 
         aura:ClearAllPoints();
-        aura:SetPoint('TOPRIGHT', -((buffIndex-1)*22), 0);
+        aura:SetPoint('TOPRIGHT', -((buffIndex-1) * (20 + SPACING_X)), 0);
 
         aura:SetID(spell.index);
 
@@ -340,6 +341,8 @@ function Module:UpdateLocalConfig()
     TEXT_COUNT_COLOR[2] = O.db.auras_custom_count_color[2];
     TEXT_COUNT_COLOR[3] = O.db.auras_custom_count_color[3];
     TEXT_COUNT_COLOR[4] = O.db.auras_custom_count_color[4] or 1;
+
+    SPACING_X = O.db.auras_custom_spacing_x or 2;
 
     DRAW_EDGE  = O.db.auras_custom_draw_edge;
     DRAW_SWIPE = O.db.auras_custom_draw_swipe;

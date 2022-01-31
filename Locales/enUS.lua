@@ -973,6 +973,7 @@ L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on important 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Show custom auras';
 L['OPTIONS_AURAS_CUSTOM_SCALE_TOOLTIP'] = 'Scale of custom auras';
+L['OPTIONS_AURAS_CUSTOM_SPACING_X_TOOLTIP'] = 'Horizontal spacing between custom auras';
 L['OPTIONS_AURAS_CUSTOM_OFFSET_X_TOOLTIP'] = 'Horizontal offset of custom auras';
 L['OPTIONS_AURAS_CUSTOM_OFFSET_Y_TOOLTIP'] = 'Vertical offset of custom auras';
 L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED'] = 'Show countdown';

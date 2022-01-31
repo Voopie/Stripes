@@ -973,6 +973,7 @@ L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von wich
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Auren anzeigen';
 L['OPTIONS_AURAS_CUSTOM_SCALE_TOOLTIP'] = 'Maßstab der benutzerdefinierten Auren';
+L['OPTIONS_AURAS_CUSTOM_SPACING_X_TOOLTIP'] = 'Horizontale Abstände zwischen benutzerdefinierten Auren';
 L['OPTIONS_AURAS_CUSTOM_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz der benutzerdefinierten Auren';
 L['OPTIONS_AURAS_CUSTOM_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz der benutzerdefinierten Auren';
 L['OPTIONS_AURAS_CUSTOM_COUNTDOWN_ENABLED'] = 'Countdown anzeigen';
