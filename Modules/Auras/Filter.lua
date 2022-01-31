@@ -39,6 +39,13 @@ local function UpdateBlacklistCache()
             end
         end
     end
+
+    -- For deleted entries
+    for spellName, spellId in pairs(blacklistAurasNameCache) do
+        if not O.db.auras_blacklist[spellName] or not O.db.auras_blacklist[spellId] then
+            blacklistAurasNameCache[spellName] = nil;
+        end
+    end
 end
 
 local function FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPersonal, nameplateShowAll)
