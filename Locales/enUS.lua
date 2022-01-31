@@ -71,6 +71,9 @@ L['FRAME_POINT_TOPRIGHT'] = 'Top right';
 L['FRAME_STRATA'] = 'Strata';
 L['FRAME_STRATA_INHERIT'] = 'Inherit';
 
+L['AURAS_DIRECTON_LEFT_TO_RIGHT'] = 'Left to right';
+L['AURAS_DIRECTON_RIGHT_TO_LEFT'] = 'Right to left';
+
 L['AURAS_SORT_EXPIRES_ASC'] = 'By less time';
 L['AURAS_SORT_EXPIRES_DESC'] = 'By longer time';
 
@@ -850,6 +853,8 @@ L['OPTIONS_AURAS_DRAW_SWIPE'] = 'Swipe';
 L['OPTIONS_AURAS_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on auras';
 L['OPTIONS_AURAS_DRAW_EDGE'] = 'Edge';
 L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on auras';
+L['OPTIONS_AURAS_DIRECTION'] = 'Growth direction';
+L['OPTIONS_AURAS_DIRECTION_TOOLTIP'] = 'Auras growth direction';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Show auras that can be dispelled';
@@ -888,10 +893,13 @@ L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE'] = 'Swipe';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on dispellable auras';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE'] = 'Edge';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on dispellable auras';
+L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION'] = 'Growth direction';
+L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION_TOOLTIP'] = 'Dispellable auras growth direction';
 
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED_TOOLTIP'] = 'Show special auras that will be shown in mythic+ dungeons';
 L['OPTIONS_AURAS_MYTHICPLUS_SCALE_TOOLTIP'] = 'Scale of mythic+ auras';
+L['OPTIONS_AURAS_MYTHICPLUS_SPACING_X_TOOLTIP'] = 'Horizontal spacing between mythic+ auras';
 L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_X_TOOLTIP'] = 'Horizontal offset of mythic+ auras';
 L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_Y_TOOLTIP'] = 'Vertical offset of mythic+ auras';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNTDOWN_ENABLED'] = 'Show countdown';
@@ -919,6 +927,8 @@ L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE'] = 'Swipe';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on mythic+ auras';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE'] = 'Edge';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on mythic+ auras';
+L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION'] = 'Growth direction';
+L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Mythic+ auras growth direction';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Show important auras (stuns, crowd control, disorient etc)';

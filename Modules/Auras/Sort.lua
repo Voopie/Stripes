@@ -8,7 +8,7 @@ local select, ipairs, tonumber, table_sort, table_wipe = select, ipairs, tonumbe
 local UnitAura = UnitAura;
 
 -- Local Config
-local ENABLED, SORT_METHOD;
+local ENABLED, SORT_METHOD, AURAS_DIRECTION;
 
 local function SortMethodFunction(a, b)
     if not a.expires or not b.expires then
@@ -53,8 +53,16 @@ local function SortBuffs(unitframe)
 
         for i, data in ipairs(unitframe.SortBuffs) do
             if unitframe.BuffFrame.buffList[data.buffIndex] then
-                unitframe.BuffFrame.buffList[data.buffIndex].layoutIndex = i;
-                unitframe.BuffFrame:Layout();
+                -- unitframe.BuffFrame.buffList[data.buffIndex].layoutIndex = i;
+                -- unitframe.BuffFrame:Layout();
+
+                unitframe.BuffFrame.buffList[data.buffIndex]:ClearAllPoints();
+
+                if AURAS_DIRECTION == 1 then
+                    unitframe.BuffFrame.buffList[data.buffIndex]:SetPoint('TOPLEFT', (i - 1) * (20 + (unitframe.BuffFrame.spacing or 4)), 0);
+                else
+                    unitframe.BuffFrame.buffList[data.buffIndex]:SetPoint('TOPRIGHT', -((i - 1) * (20 + (unitframe.BuffFrame.spacing or 4))), 0);
+                end
             end
         end
     end
@@ -75,6 +83,7 @@ end
 function Module:UpdateLocalConfig()
     ENABLED     = O.db.auras_sort_enabled;
     SORT_METHOD = O.db.auras_sort_method;
+    AURAS_DIRECTION = O.db.auras_direction;
 end
 
 function Module:StartUp()

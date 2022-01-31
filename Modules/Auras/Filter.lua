@@ -8,7 +8,7 @@ local ipairs = ipairs;
 local CooldownFrame_Set, AuraUtil_ForEachAura = CooldownFrame_Set, AuraUtil.ForEachAura;
 
 -- Local Config
-local ENABLED, BLACKLIST_ENABLED, SPACING_X;
+local ENABLED, BLACKLIST_ENABLED, SPACING_X, AURAS_DIRECTION;
 local DRAW_EDGE;
 
 local units = {
@@ -99,7 +99,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
 		AuraUtil_ForEachAura(unit, filter, BUFF_MAX_DISPLAY, function(...)
 			name, texture, count, _, duration, expirationTime, caster, _, nameplateShowPersonal, spellId, _, _, _, nameplateShowAll = ...;
 
-			if FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPersonal, nameplateShowAll or showAll, duration) then
+			if FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPersonal, nameplateShowAll or showAll) then
 				if not self.buffList[buffIndex] then
 					self.buffList[buffIndex] = CreateFrame('Frame', nil, self, 'NameplateBuffButtonTemplate');
 					self.buffList[buffIndex]:SetMouseClickEnabled(false);
@@ -138,9 +138,21 @@ local function UpdateBuffs(self, unit, filter, showAll)
 				break;
 			end
 		end
+
+		if buffIndex > 1 then
+			for i = 1, buffIndex - 1 do
+				self.buffList[i]:ClearAllPoints();
+
+				if AURAS_DIRECTION == 1 then
+					self.buffList[i]:SetPoint('TOPLEFT', (i - 1) * (20 + (SPACING_X or 4)), 0);
+				else
+					self.buffList[i]:SetPoint('TOPRIGHT', -((i - 1) * (20 + (SPACING_X or 4))), 0);
+				end
+			end
+		end
 	end
 
-	self:Layout();
+	-- self:Layout();
 end
 
 local function Update(unitframe)
@@ -166,6 +178,7 @@ function Module:UpdateLocalConfig()
     BLACKLIST_ENABLED = O.db.auras_blacklist_enabled;
 	SPACING_X         = O.db.auras_spacing_x or 4;
 	DRAW_EDGE         = O.db.auras_draw_edge;
+	AURAS_DIRECTION   = O.db.auras_direction;
 
     UpdateBlacklistCache();
 end

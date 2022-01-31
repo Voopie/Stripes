@@ -948,8 +948,21 @@ panel.Load = function(self)
 
     self:UpdateBlackListScroll();
 
+    self.auras_show_debuffs_on_friendly = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_show_debuffs_on_friendly:SetPosition('TOPLEFT', self.auras_filter_player_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_show_debuffs_on_friendly:SetLabel(L['OPTIONS_AURAS_SHOW_DEBUFFS_ON_FRIENDLY']);
+    self.auras_show_debuffs_on_friendly:AddToSearch(button, nil, self.Tabs[1]);
+    self.auras_show_debuffs_on_friendly:SetChecked(O.db.auras_show_debuffs_on_friendly);
+    self.auras_show_debuffs_on_friendly.Callback = function(self)
+        O.db.auras_show_debuffs_on_friendly = self:GetChecked();
+
+        C_CVar.SetCVar('nameplateShowDebuffsOnFriendly', O.db.auras_show_debuffs_on_friendly and 1 or 0);
+
+        Stripes:UpdateAll();
+    end
+
     self.auras_square = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_square:SetPosition('TOPLEFT', self.auras_filter_player_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_square:SetPosition('TOPLEFT', self.auras_show_debuffs_on_friendly, 'BOTTOMLEFT', 0, -8);
     self.auras_square:SetLabel(L['OPTIONS_AURAS_SQUARE']);
     self.auras_square:SetTooltip(L['OPTIONS_AURAS_SQUARE_TOOLTIP']);
     self.auras_square:AddToSearch(button, L['OPTIONS_AURAS_SQUARE_TOOLTIP'], self.Tabs[1]);
@@ -981,46 +994,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.auras_pandemic_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_pandemic_enabled:SetPosition('TOPLEFT', self.auras_square, 'BOTTOMLEFT', 0, -8);
-    self.auras_pandemic_enabled:SetLabel(L['OPTIONS_AURAS_PANDEMIC_ENABLED']);
-    self.auras_pandemic_enabled:SetTooltip(L['OPTIONS_AURAS_PANDEMIC_ENABLED_TOOLTIP']);
-    self.auras_pandemic_enabled:AddToSearch(button, L['OPTIONS_AURAS_PANDEMIC_ENABLED'], self.Tabs[1]);
-    self.auras_pandemic_enabled:SetChecked(O.db.auras_pandemic_enabled);
-    self.auras_pandemic_enabled.Callback = function(self)
-        O.db.auras_pandemic_enabled = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
-    self.auras_pandemic_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.auras_pandemic_color:SetPosition('LEFT', self.auras_pandemic_enabled.Label, 'RIGHT', 12, 0);
-    self.auras_pandemic_color:SetTooltip(L['OPTIONS_AURAS_PANDEMIC_COLOR_TOOLTIP']);
-    self.auras_pandemic_color:AddToSearch(button, L['OPTIONS_AURAS_PANDEMIC_COLOR_TOOLTIP'], self.Tabs[1]);
-    self.auras_pandemic_color:SetValue(unpack(O.db.auras_pandemic_color));
-    self.auras_pandemic_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.auras_pandemic_color[1] = r;
-        O.db.auras_pandemic_color[2] = g;
-        O.db.auras_pandemic_color[3] = b;
-        O.db.auras_pandemic_color[4] = a or 1;
-
-        Stripes:UpdateAll();
-    end
-
-    self.auras_show_debuffs_on_friendly = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_show_debuffs_on_friendly:SetPosition('TOPLEFT', self.auras_pandemic_enabled, 'BOTTOMLEFT', 0, -8);
-    self.auras_show_debuffs_on_friendly:SetLabel(L['OPTIONS_AURAS_SHOW_DEBUFFS_ON_FRIENDLY']);
-    self.auras_show_debuffs_on_friendly:AddToSearch(button, nil, self.Tabs[1]);
-    self.auras_show_debuffs_on_friendly:SetChecked(O.db.auras_show_debuffs_on_friendly);
-    self.auras_show_debuffs_on_friendly.Callback = function(self)
-        O.db.auras_show_debuffs_on_friendly = self:GetChecked();
-
-        C_CVar.SetCVar('nameplateShowDebuffsOnFriendly', O.db.auras_show_debuffs_on_friendly and 1 or 0);
-
+    self.auras_direction = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.auras_direction:SetPosition('TOPLEFT', self.auras_square, 'BOTTOMLEFT', 0, -8);
+    self.auras_direction:SetSize(180, 20);
+    self.auras_direction:SetList(O.Lists.auras_horizontal_direction);
+    self.auras_direction:SetLabel(L['OPTIONS_AURAS_DIRECTION']);
+    self.auras_direction:SetTooltip(L['OPTIONS_AURAS_DIRECTION_TOOLTIP']);
+    self.auras_direction:AddToSearch(button, L['OPTIONS_AURAS_DIRECTION_TOOLTIP'], self.Tabs[1]);
+    self.auras_direction:SetValue(O.db.auras_direction);
+    self.auras_direction.OnValueChangedCallback = function(_, value)
+        O.db.auras_direction = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_sort_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_sort_enabled:SetPosition('TOPLEFT', self.auras_show_debuffs_on_friendly, 'BOTTOMLEFT', 0, -8);
+    self.auras_sort_enabled:SetPosition('TOPLEFT', self.auras_direction, 'BOTTOMLEFT', 0, -8);
     self.auras_sort_enabled:SetLabel(L['OPTIONS_AURAS_SORT_ENABLED']);
     self.auras_sort_enabled:SetTooltip(L['OPTIONS_AURAS_SORT_ENABLED_TOOLTIP']);
     self.auras_sort_enabled:AddToSearch(button, nil, self.Tabs[1]);
@@ -1046,8 +1034,33 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_pandemic_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_pandemic_enabled:SetPosition('TOPLEFT', self.auras_sort_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_pandemic_enabled:SetLabel(L['OPTIONS_AURAS_PANDEMIC_ENABLED']);
+    self.auras_pandemic_enabled:SetTooltip(L['OPTIONS_AURAS_PANDEMIC_ENABLED_TOOLTIP']);
+    self.auras_pandemic_enabled:AddToSearch(button, L['OPTIONS_AURAS_PANDEMIC_ENABLED'], self.Tabs[1]);
+    self.auras_pandemic_enabled:SetChecked(O.db.auras_pandemic_enabled);
+    self.auras_pandemic_enabled.Callback = function(self)
+        O.db.auras_pandemic_enabled = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.auras_pandemic_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.auras_pandemic_color:SetPosition('LEFT', self.auras_pandemic_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_pandemic_color:SetTooltip(L['OPTIONS_AURAS_PANDEMIC_COLOR_TOOLTIP']);
+    self.auras_pandemic_color:AddToSearch(button, L['OPTIONS_AURAS_PANDEMIC_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.auras_pandemic_color:SetValue(unpack(O.db.auras_pandemic_color));
+    self.auras_pandemic_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.auras_pandemic_color[1] = r;
+        O.db.auras_pandemic_color[2] = g;
+        O.db.auras_pandemic_color[3] = b;
+        O.db.auras_pandemic_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
     self.auras_hpbar_color_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_hpbar_color_enabled:SetPosition('TOPLEFT', self.auras_sort_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_hpbar_color_enabled:SetPosition('LEFT', self.auras_pandemic_color, 'RIGHT', 12, 0);
     self.auras_hpbar_color_enabled:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED']);
     self.auras_hpbar_color_enabled:SetTooltip(L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP']);
     self.auras_hpbar_color_enabled:AddToSearch(button, L['OPTIONS_AURAS_HPBAR_COLOR_ENABLED_TOOLTIP'], self.Tabs[1]);
@@ -1142,7 +1155,7 @@ panel.Load = function(self)
     self:UpdateHPBarColorScroll();
 
     self.auras_masque_support = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_masque_support:SetPosition('TOPLEFT', self.auras_hpbar_color_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_masque_support:SetPosition('TOPLEFT', self.auras_pandemic_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_masque_support:SetLabel(L['OPTIONS_AURAS_MASQUE_SUPPORT']);
     self.auras_masque_support:SetTooltip(L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP']);
     self.auras_masque_support:AddToSearch(button, L['OPTIONS_AURAS_MASQUE_SUPPORT_TOOLTIP'], self.Tabs[1]);
@@ -1612,8 +1625,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_spellsteal_direction = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
+    self.auras_spellsteal_direction:SetPosition('TOPLEFT', self.auras_spellsteal_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_spellsteal_direction:SetSize(180, 20);
+    self.auras_spellsteal_direction:SetList(O.Lists.auras_horizontal_direction);
+    self.auras_spellsteal_direction:SetLabel(L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION']);
+    self.auras_spellsteal_direction:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION_TOOLTIP']);
+    self.auras_spellsteal_direction:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION_TOOLTIP'], self.Tabs[2]);
+    self.auras_spellsteal_direction:SetValue(O.db.auras_spellsteal_direction);
+    self.auras_spellsteal_direction.OnValueChangedCallback = function(_, value)
+        O.db.auras_spellsteal_direction = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellstealTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_direction, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_spellsteal_spacing_x = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
@@ -1963,12 +1989,38 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_mythicplus_direction = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_direction:SetPosition('TOPLEFT', self.auras_mythicplus_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_mythicplus_direction:SetSize(180, 20);
+    self.auras_mythicplus_direction:SetList(O.Lists.auras_horizontal_direction);
+    self.auras_mythicplus_direction:SetLabel(L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION']);
+    self.auras_mythicplus_direction:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP']);
+    self.auras_mythicplus_direction:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_direction:SetValue(O.db.auras_mythicplus_direction);
+    self.auras_mythicplus_direction.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_direction = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_direction, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.auras_mythicplus_spacing_x = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_spacing_x:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_mythicplus_spacing_x:SetW(133);
+    self.auras_mythicplus_spacing_x:SetValues(O.db.auras_mythicplus_spacing_x, 0, 20, 1);
+    self.auras_mythicplus_spacing_x:SetLabel(L['SPACING']);
+    self.auras_mythicplus_spacing_x:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_SPACING_X_TOOLTIP']);
+    self.auras_mythicplus_spacing_x:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_SPACING_X_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_spacing_x.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_spacing_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.auras_mythicplus_scale = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_scale:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_mythicplus_scale:SetPosition('LEFT', self.auras_mythicplus_spacing_x, 'RIGHT', 16, 0);
+    self.auras_mythicplus_scale:SetW(133);
     self.auras_mythicplus_scale:SetValues(O.db.auras_mythicplus_scale, 0.25, 4, 0.05);
     self.auras_mythicplus_scale:SetLabel(L['SCALE']);
     self.auras_mythicplus_scale:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_SCALE_TOOLTIP']);
@@ -1980,6 +2032,7 @@ panel.Load = function(self)
 
     self.auras_mythicplus_offset_x = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
     self.auras_mythicplus_offset_x:SetPosition('LEFT', self.auras_mythicplus_scale, 'RIGHT', 16, 0);
+    self.auras_mythicplus_offset_x:SetW(133.5);
     self.auras_mythicplus_offset_x:SetValues(O.db.auras_mythicplus_offset_x, -200, 200, 1);
     self.auras_mythicplus_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.auras_mythicplus_offset_x:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_X_TOOLTIP']);
@@ -1991,6 +2044,7 @@ panel.Load = function(self)
 
     self.auras_mythicplus_offset_y = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
     self.auras_mythicplus_offset_y:SetPosition('LEFT', self.auras_mythicplus_offset_x, 'RIGHT', 16, 0);
+    self.auras_mythicplus_offset_y:SetW(133.5);
     self.auras_mythicplus_offset_y:SetValues(O.db.auras_mythicplus_offset_y, -200, 200, 1);
     self.auras_mythicplus_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_mythicplus_offset_y:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_Y_TOOLTIP']);
@@ -2001,7 +2055,7 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_scale, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_spacing_x, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_mythicplus_countdown_enabled = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);

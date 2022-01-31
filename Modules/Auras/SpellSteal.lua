@@ -27,6 +27,7 @@ local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
+local AURAS_DIRECTION;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -56,6 +57,8 @@ local function CreateAnchor(unitframe)
 end
 
 local function UpdateAnchor(unitframe)
+    unitframe.AurasSpellSteal:ClearAllPoints();
+
     if not unitframe.BuffFrame.buffList[1] or not unitframe.BuffFrame.buffList[1]:IsShown() then
         if ShouldShowName(unitframe) then
             if STATIC_POSITION then
@@ -74,7 +77,7 @@ local function UpdateAnchor(unitframe)
             end
         end
 
-        PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, 0);
+        PixelUtil.SetPoint(unitframe.AurasSpellSteal, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
     else
         if STATIC_POSITION then
             PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1 + OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
@@ -82,7 +85,7 @@ local function UpdateAnchor(unitframe)
             unitframe.AurasSpellSteal:SetPoint('BOTTOM', unitframe.BuffFrame, 'TOP', OFFSET_X, 4 + OFFSET_Y);
         end
 
-        PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, 0);
+        PixelUtil.SetPoint(unitframe.AurasSpellSteal, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
     end
 end
 
@@ -168,6 +171,14 @@ local function Update(unitframe)
                 unitframe.AurasSpellSteal.buffList[buffIndex] = aura;
             end
 
+            aura:ClearAllPoints();
+
+            if AURAS_DIRECTION == 1 then
+                aura:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + (SPACING_X or 4)), 0);
+            else
+                aura:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + (SPACING_X or 4))), 0);
+            end
+
             aura:SetID(index);
 
             aura.Icon:SetTexture(texture);
@@ -217,7 +228,7 @@ local function Update(unitframe)
         end
     end
 
-    unitframe.AurasSpellSteal:Layout();
+    -- unitframe.AurasSpellSteal:Layout();
 end
 
 local function UpdateStyle(unitframe)
@@ -355,6 +366,8 @@ function Module:UpdateLocalConfig()
 
     DRAW_EDGE  = O.db.auras_spellsteal_draw_edge;
     DRAW_SWIPE = O.db.auras_spellsteal_draw_swipe;
+
+    AURAS_DIRECTION = O.db.auras_spellsteal_direction;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);

@@ -71,6 +71,9 @@ L['FRAME_POINT_TOPRIGHT'] = 'Сверху справа';
 L['FRAME_STRATA'] = 'Слой';
 L['FRAME_STRATA_INHERIT'] = 'Наследовать';
 
+L['AURAS_DIRECTON_LEFT_TO_RIGHT'] = 'Слева направо';
+L['AURAS_DIRECTON_RIGHT_TO_LEFT'] = 'Справа налево';
+
 L['AURAS_SORT_EXPIRES_ASC'] = 'По меньшему времени';
 L['AURAS_SORT_EXPIRES_DESC'] = 'По большему времени';
 
@@ -850,6 +853,8 @@ L['OPTIONS_AURAS_DRAW_SWIPE'] = 'Затемнение';
 L['OPTIONS_AURAS_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффект затемнения (swipe) на аурах';
 L['OPTIONS_AURAS_DRAW_EDGE'] = 'Грань';
 L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на аурах';
+L['OPTIONS_AURAS_DIRECTION'] = 'Направление роста';
+L['OPTIONS_AURAS_DIRECTION_TOOLTIP'] = 'Направление роста аур';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';
@@ -888,10 +893,13 @@ L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE'] = 'Затемнение';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффект затемнения (swipe) на развеиваемых аурах';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE'] = 'Грань';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на развеиваемых аурах';
+L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION'] = 'Направление роста';
+L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION_TOOLTIP'] = 'Направление роста развеиваемых аур';
 
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED_TOOLTIP'] = 'Показывать особые ауры, которые будут показываться в эпохальных+ подземельях';
 L['OPTIONS_AURAS_MYTHICPLUS_SCALE_TOOLTIP'] = 'Масштаб развеиваемых эпохальных+ аур';
+L['OPTIONS_AURAS_MYTHICPLUS_SPACING_X_TOOLTIP'] = 'Горизонтальный промежуток между эпохальными+ аурами';
 L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение эпохальных+ аур';
 L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение эпохальных+ аур';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNTDOWN_ENABLED'] = 'Оставшееся время';
@@ -919,6 +927,8 @@ L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE'] = 'Затемнение';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффект затемнения (swipe) на эпохальных+ аурах';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE'] = 'Грань';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на эпохальных+ аурах';
+L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION'] = 'Направление роста';
+L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Направление роста эпохальных+ аур';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Показывать важные ауры (оглушения, контроль и т.п.)';

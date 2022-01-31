@@ -71,6 +71,9 @@ L['FRAME_POINT_TOPRIGHT'] = 'Oben rechts';
 L['FRAME_STRATA'] = 'Ebene';
 L['FRAME_STRATA_INHERIT'] = 'Übertragen';
 
+L['AURAS_DIRECTON_LEFT_TO_RIGHT'] = 'Von links nach rechts';
+L['AURAS_DIRECTON_RIGHT_TO_LEFT'] = 'Von rechts nach links';
+
 L['AURAS_SORT_EXPIRES_ASC'] = 'Weniger Zeit';
 L['AURAS_SORT_EXPIRES_DESC'] = 'Längere Zeit';
 
@@ -850,6 +853,8 @@ L['OPTIONS_AURAS_DRAW_SWIPE'] = 'Dimmen';
 L['OPTIONS_AURAS_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) auf Auren anzeigen';
 L['OPTIONS_AURAS_DRAW_EDGE'] = 'Fläche';
 L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) bei Auren anzeigen';
+L['OPTIONS_AURAS_DIRECTION'] = 'Richtung des Wachstums';
+L['OPTIONS_AURAS_DIRECTION_TOOLTIP'] = 'Wachstumsrichtung der Auren';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Auren anzeigen, die gebannt werden können';
@@ -888,10 +893,13 @@ L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE'] = 'Dimmen';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) der zerstreubaren Auren anzeigen';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE'] = 'Fläche';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) der zerstreubaren Auren anzeigen';
+L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION'] = 'Richtung des Wachstums';
+L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION_TOOLTIP'] = 'Zerstörbare Auren Wachstumsrichtung';
 
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED_TOOLTIP'] = 'Zeige spezielle Auren, die in mythischen+ Dungeons angezeigt werden';
 L['OPTIONS_AURAS_MYTHICPLUS_SCALE_TOOLTIP'] = 'Skala der mythischen+ Auren';
+L['OPTIONS_AURAS_MYTHICPLUS_SPACING_X_TOOLTIP'] = 'Horizontale Abstände zwischen mythischen+ Auren';
 L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz von mythischen+ Auren';
 L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz von mythischen+ Auren';
 L['OPTIONS_AURAS_MYTHICPLUS_COUNTDOWN_ENABLED'] = 'Countdown anzeigen';
@@ -919,6 +927,8 @@ L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE'] = 'Dimmen';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) von mythischen+ Auren anzeigen';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE'] = 'Fläche';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von mythischen+ Auren anzeigen';
+L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION'] = 'Richtung des Wachstums';
+L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Mythische+ Auren Wachstumsrichtung';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Wichtige Auren anzeigen (Betäubung, Massenkontrolle, Desorientierung usw.)';

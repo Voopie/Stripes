@@ -23,7 +23,9 @@ local OFFSET_X, OFFSET_Y;
 local BORDER_HIDE, BORDER_COLOR;
 local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
+local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
+local AURAS_DIRECTION;
 
 local StripesAurasMythicPlusCooldownFont = CreateFont('StripesAurasMythicPlusCooldownFont');
 local StripesAurasMythicPlusCountFont    = CreateFont('StripesAurasMythicPlusCountFont');
@@ -45,10 +47,12 @@ local HelpfulList = {
     [326450] = true, -- Halls of Atonement (Loyal Beasts)
     [328015] = true, -- Plaguefall (Wonder Grow)
     [343470] = true, -- The Necrotic Wake (Skeletal Marauder)
+    
 };
 
 local HarmfulList = {
     [323059] = true, -- Mists of Tirna Scithe (Droman's Wrath)
+    [1490] = true,
 };
 
 local PlayerState = D.Player.State;
@@ -77,18 +81,22 @@ end
 local function UpdateAnchor(unitframe)
     local unit = unitframe.data.unit;
 
+    unitframe.AurasMythicPlus:ClearAllPoints();
+
     if unit and ShouldShowName(unitframe) then
         local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
         local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
-        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', 1 + OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
     else
         local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
-        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
     end
+
+    PixelUtil.SetPoint(unitframe.AurasMythicPlus, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
 end
 
 local function Update(unitframe)
-    if not ENABLED or not PlayerState.inMythic or not unitframe.data.unit or unitframe.data.unitType == 'SELF' then
+    if not ENABLED or not unitframe.data.unit or unitframe.data.unitType == 'SELF' then
         unitframe.AurasMythicPlus:SetShown(false);
         return;
     end
@@ -199,7 +207,12 @@ local function Update(unitframe)
         end
 
         aura:ClearAllPoints();
-        aura:SetPoint('TOPRIGHT', -((buffIndex-1)*22), 0);
+
+        if AURAS_DIRECTION == 1 then
+            aura:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + (SPACING_X or 4)), 0);
+        else
+            aura:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + (SPACING_X or 4))), 0);
+        end
 
         aura:SetID(spell.index);
 
@@ -241,7 +254,7 @@ local function Update(unitframe)
 end
 
 local function UpdateStyle(unitframe)
-    for _, aura in ipairs(unitframe.ImportantAuras.buffList) do
+    for _, aura in ipairs(unitframe.AurasMythicPlus.buffList) do
         if Stripes.Masque then
             if MASQUE_SUPPORT then
                 Stripes.MasqueAurasMythicGroup:RemoveButton(aura);
@@ -290,6 +303,9 @@ end
 
 function Module:UnitAdded(unitframe)
     CreateAnchor(unitframe);
+
+    unitframe.AurasMythicPlus.spacing = SPACING_X;
+
     Update(unitframe);
 end
 
@@ -304,6 +320,8 @@ function Module:UnitAura(unitframe)
 end
 
 function Module:Update(unitframe)
+    unitframe.AurasMythicPlus.spacing = SPACING_X;
+
     Update(unitframe);
     UpdateStyle(unitframe);
 end
@@ -354,8 +372,12 @@ function Module:UpdateLocalConfig()
     TEXT_COUNT_COLOR[3] = O.db.auras_mythicplus_count_color[3];
     TEXT_COUNT_COLOR[4] = O.db.auras_mythicplus_count_color[4] or 1;
 
+    SPACING_X = O.db.auras_mythicplus_spacing_x or 4;
+
     DRAW_EDGE  = O.db.auras_mythicplus_draw_edge;
     DRAW_SWIPE = O.db.auras_mythicplus_draw_swipe;
+
+    AURAS_DIRECTION = O.db.auras_mythicplus_direction;
 
     UpdateFontObject(StripesAurasMythicPlusCooldownFont, O.db.auras_mythicplus_cooldown_font_value, O.db.auras_mythicplus_cooldown_font_size, O.db.auras_mythicplus_cooldown_font_flag, O.db.auras_mythicplus_cooldown_font_shadow);
     UpdateFontObject(StripesAurasMythicPlusCountFont, O.db.auras_mythicplus_count_font_value, O.db.auras_mythicplus_count_font_size, O.db.auras_mythicplus_count_font_flag, O.db.auras_mythicplus_count_font_shadow);
