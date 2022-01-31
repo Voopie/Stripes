@@ -8,7 +8,7 @@ local select, ipairs, tonumber, table_sort, table_wipe = select, ipairs, tonumbe
 local UnitAura = UnitAura;
 
 -- Local Config
-local ENABLED, SORT_METHOD, AURAS_DIRECTION;
+local IS_ACTIVE, ENABLED, SORT_METHOD, AURAS_DIRECTION;
 
 local function SortMethodFunction(a, b)
     if not a.expires or not b.expires then
@@ -23,7 +23,7 @@ local function SortMethodFunction(a, b)
 end
 
 local function SortBuffs(unitframe)
-    if not ENABLED or unitframe.data.unitType == 'SELF' then
+    if not IS_ACTIVE or not ENABLED or unitframe.data.unitType == 'SELF' then
         return;
     end
 
@@ -81,8 +81,9 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    ENABLED     = O.db.auras_sort_enabled;
-    SORT_METHOD = O.db.auras_sort_method;
+    IS_ACTIVE       = O.db.auras_is_active;
+    ENABLED         = O.db.auras_sort_enabled;
+    SORT_METHOD     = O.db.auras_sort_method;
     AURAS_DIRECTION = O.db.auras_direction;
 end
 

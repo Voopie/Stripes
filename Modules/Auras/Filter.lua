@@ -8,7 +8,7 @@ local ipairs = ipairs;
 local CooldownFrame_Set, AuraUtil_ForEachAura = CooldownFrame_Set, AuraUtil.ForEachAura;
 
 -- Local Config
-local ENABLED, BLACKLIST_ENABLED, SPACING_X, AURAS_DIRECTION;
+local IS_ACTIVE, ENABLED, BLACKLIST_ENABLED, SPACING_X, AURAS_DIRECTION;
 local DRAW_EDGE;
 
 local units = {
@@ -159,6 +159,7 @@ local function Update(unitframe)
     unitframe.BuffFrame.ShouldShowBuff = FilterShouldShowBuff;
     unitframe.BuffFrame.UpdateBuffs    = UpdateBuffs;
 	unitframe.BuffFrame.spacing        = SPACING_X;
+	unitframe.BuffFrame.isActive       = IS_ACTIVE;
 
     if unitframe.BuffFrame.unit and unitframe.BuffFrame.filter then
         unitframe.BuffFrame:UpdateBuffs(unitframe.BuffFrame.unit, unitframe.BuffFrame.filter, unitframe.data.unitType == 'FRIENDLY_PLAYER');
@@ -174,6 +175,7 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
+	IS_ACTIVE         = O.db.auras_is_active;
     ENABLED           = O.db.auras_filter_player_enabled;
     BLACKLIST_ENABLED = O.db.auras_blacklist_enabled;
 	SPACING_X         = O.db.auras_spacing_x or 4;

@@ -842,11 +842,22 @@ panel.Load = function(self)
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
 
+    self.auras_is_active = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_is_active:SetPosition('TOPLEFT', self.TabsFrames['CommonTab'].Content, 'TOPLEFT', 0, -4);
+    self.auras_is_active:SetLabel(L['OPTIONS_AURAS_IS_ACTIVE']);
+    self.auras_is_active:SetTooltip(L['OPTIONS_AURAS_IS_ACTIVE_TOOLTIP']);
+    self.auras_is_active:AddToSearch(button, L['OPTIONS_AURAS_IS_ACTIVE_TOOLTIP'], self.Tabs[1]);
+    self.auras_is_active:SetChecked(O.db.auras_is_active);
+    self.auras_is_active.Callback = function(self)
+        O.db.auras_is_active = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.auras_filter_player_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_filter_player_enabled:SetPosition('TOPLEFT', self.TabsFrames['CommonTab'].Content, 'TOPLEFT', 0, -4);
+    self.auras_filter_player_enabled:SetPosition('TOPLEFT', self.auras_is_active, 'BOTTOMLEFT', 0, -8);
     self.auras_filter_player_enabled:SetLabel(L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED']);
     self.auras_filter_player_enabled:SetTooltip(L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED_TOOLTIP']);
-    self.auras_filter_player_enabled:AddToSearch(button, nil, self.Tabs[1]);
+    self.auras_filter_player_enabled:AddToSearch(button, L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED_TOOLTIP'], self.Tabs[1]);
     self.auras_filter_player_enabled:SetChecked(O.db.auras_filter_player_enabled);
     self.auras_filter_player_enabled.Callback = function(self)
         O.db.auras_filter_player_enabled = self:GetChecked();
@@ -948,21 +959,8 @@ panel.Load = function(self)
 
     self:UpdateBlackListScroll();
 
-    self.auras_show_debuffs_on_friendly = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_show_debuffs_on_friendly:SetPosition('TOPLEFT', self.auras_filter_player_enabled, 'BOTTOMLEFT', 0, -8);
-    self.auras_show_debuffs_on_friendly:SetLabel(L['OPTIONS_AURAS_SHOW_DEBUFFS_ON_FRIENDLY']);
-    self.auras_show_debuffs_on_friendly:AddToSearch(button, nil, self.Tabs[1]);
-    self.auras_show_debuffs_on_friendly:SetChecked(O.db.auras_show_debuffs_on_friendly);
-    self.auras_show_debuffs_on_friendly.Callback = function(self)
-        O.db.auras_show_debuffs_on_friendly = self:GetChecked();
-
-        C_CVar.SetCVar('nameplateShowDebuffsOnFriendly', O.db.auras_show_debuffs_on_friendly and 1 or 0);
-
-        Stripes:UpdateAll();
-    end
-
     self.auras_square = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_square:SetPosition('TOPLEFT', self.auras_show_debuffs_on_friendly, 'BOTTOMLEFT', 0, -8);
+    self.auras_square:SetPosition('TOPLEFT', self.auras_filter_player_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_square:SetLabel(L['OPTIONS_AURAS_SQUARE']);
     self.auras_square:SetTooltip(L['OPTIONS_AURAS_SQUARE_TOOLTIP']);
     self.auras_square:AddToSearch(button, L['OPTIONS_AURAS_SQUARE_TOOLTIP'], self.Tabs[1]);
@@ -991,6 +989,20 @@ panel.Load = function(self)
     self.auras_border_hide:SetChecked(O.db.auras_masque_support);
     self.auras_border_hide.Callback = function(self)
         O.db.auras_border_hide = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.auras_show_debuffs_on_friendly = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_show_debuffs_on_friendly:SetPosition('LEFT', self.auras_border_hide.Label, 'RIGHT', 12, 0);
+    self.auras_show_debuffs_on_friendly:SetLabel(L['OPTIONS_AURAS_SHOW_DEBUFFS_ON_FRIENDLY']);
+    self.auras_show_debuffs_on_friendly:SetTooltip(L['OPTIONS_AURAS_SHOW_DEBUFFS_ON_FRIENDLY_TOOLTIP']);
+    self.auras_show_debuffs_on_friendly:AddToSearch(button, nil, self.Tabs[1]);
+    self.auras_show_debuffs_on_friendly:SetChecked(O.db.auras_show_debuffs_on_friendly);
+    self.auras_show_debuffs_on_friendly.Callback = function(self)
+        O.db.auras_show_debuffs_on_friendly = self:GetChecked();
+
+        C_CVar.SetCVar('nameplateShowDebuffsOnFriendly', O.db.auras_show_debuffs_on_friendly and 1 or 0);
+
         Stripes:UpdateAll();
     end
 
@@ -1490,7 +1502,7 @@ panel.Load = function(self)
     Delimiter:SetW(self:GetWidth());
 
     self.auras_expire_glow_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_expire_glow_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.auras_expire_glow_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -2);
     self.auras_expire_glow_enabled:SetLabel(L['OPTIONS_AURAS_EXPIRE_GLOW_ENABLED']);
     self.auras_expire_glow_enabled:SetTooltip(L['OPTIONS_AURAS_EXPIRE_GLOW_ENABLED_TOOLTIP']);
     self.auras_expire_glow_enabled:AddToSearch(button, L['OPTIONS_AURAS_EXPIRE_GLOW_ENABLED_TOOLTIP'], self.Tabs[1]);

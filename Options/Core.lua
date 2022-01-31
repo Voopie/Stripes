@@ -258,7 +258,7 @@ O.Lists = {
     },
 };
 
--- ~522
+-- ~523
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -666,6 +666,7 @@ O.DefaultValues = {
     pve_healers_icon_strata = 4, -- MEDIUM
 
     -- Auras
+    auras_is_active                = true,
     auras_filter_player_enabled    = true,
     auras_blacklist_enabled        = false,
     auras_blacklist                = {},
