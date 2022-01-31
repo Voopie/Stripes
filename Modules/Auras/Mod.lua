@@ -94,13 +94,13 @@ local function UpdateAnchor(unitframe)
     if unit and ShouldShowName(unitframe) then
         local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
         local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
-        PixelUtil.SetPoint(unitframe.BuffFrame, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', BUFFFRAME_OFFSET_X, 0);
         PixelUtil.SetPoint(unitframe.BuffFrame, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     else
         local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
-        PixelUtil.SetPoint(unitframe.BuffFrame, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', BUFFFRAME_OFFSET_X, 0);
         PixelUtil.SetPoint(unitframe.BuffFrame, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     end
+
+    PixelUtil.SetPoint(unitframe.BuffFrame, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', BUFFFRAME_OFFSET_X, 0);
 end
 
 local function UpdateStyle(unitframe)

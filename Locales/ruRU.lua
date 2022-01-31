@@ -1013,6 +1013,8 @@ L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE'] = 'Затемнение';
 L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффект затемнения (swipe) на пользовательских аурах';
 L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE'] = 'Грань';
 L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на пользовательских аурах';
+L['OPTIONS_AURAS_CUSTOM_DIRECTION'] = 'Направление роста';
+L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Направление роста пользовательских аур';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';

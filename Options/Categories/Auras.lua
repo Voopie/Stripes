@@ -2740,8 +2740,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_custom_direction = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_direction:SetPosition('TOPLEFT', self.auras_custom_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_custom_direction:SetSize(180, 20);
+    self.auras_custom_direction:SetList(O.Lists.auras_horizontal_direction);
+    self.auras_custom_direction:SetLabel(L['OPTIONS_AURAS_CUSTOM_DIRECTION']);
+    self.auras_custom_direction:SetTooltip(L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP']);
+    self.auras_custom_direction:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_direction:SetValue(O.db.auras_custom_direction);
+    self.auras_custom_direction.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_direction = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_custom_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_custom_direction, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_custom_spacing_x = E.CreateSlider(self.TabsFrames['CustomTab'].Content);

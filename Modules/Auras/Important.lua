@@ -264,7 +264,6 @@ local function UpdateStyle(unitframe)
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
         aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
-
     end
 
     if Stripes.Masque and MASQUE_SUPPORT then

@@ -258,7 +258,7 @@ O.Lists = {
     },
 };
 
--- ~525
+-- ~526
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -838,6 +838,7 @@ O.DefaultValues = {
     auras_custom_helpful              = false,
     auras_custom_to_blacklist         = true,
     auras_custom_spacing_x = 2,
+    auras_custom_direction = 2,
 
     custom_color_enabled = false,
     custom_color_data    = {},

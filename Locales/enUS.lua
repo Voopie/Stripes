@@ -1013,6 +1013,8 @@ L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE'] = 'Swipe';
 L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on custom auras';
 L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE'] = 'Edge';
 L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on custom auras';
+L['OPTIONS_AURAS_CUSTOM_DIRECTION'] = 'Growth direction';
+L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Custom auras growth direction';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Enable';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Enable custom health bar colors';

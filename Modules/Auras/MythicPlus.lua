@@ -207,9 +207,9 @@ local function Update(unitframe)
         aura:ClearAllPoints();
 
         if AURAS_DIRECTION == 1 then
-            aura:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + (SPACING_X or 4)), 0);
+            aura:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + SPACING_X), 0);
         else
-            aura:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + (SPACING_X or 4))), 0);
+            aura:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + SPACING_X)), 0);
         end
 
         aura:SetID(spell.index);

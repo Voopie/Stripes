@@ -76,17 +76,15 @@ local function UpdateAnchor(unitframe)
                 PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             end
         end
-
-        PixelUtil.SetPoint(unitframe.AurasSpellSteal, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
     else
         if STATIC_POSITION then
             PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', 1 + OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
         else
             unitframe.AurasSpellSteal:SetPoint('BOTTOM', unitframe.BuffFrame, 'TOP', OFFSET_X, 4 + OFFSET_Y);
         end
-
-        PixelUtil.SetPoint(unitframe.AurasSpellSteal, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
     end
+
+    PixelUtil.SetPoint(unitframe.AurasSpellSteal, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
 end
 
 local function UpdateGlow(aura)
@@ -174,9 +172,9 @@ local function Update(unitframe)
             aura:ClearAllPoints();
 
             if AURAS_DIRECTION == 1 then
-                aura:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + (SPACING_X or 4)), 0);
+                aura:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + SPACING_X), 0);
             else
-                aura:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + (SPACING_X or 4))), 0);
+                aura:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + SPACING_X)), 0);
             end
 
             aura:SetID(index);

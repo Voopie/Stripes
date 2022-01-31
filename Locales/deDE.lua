@@ -1013,6 +1013,8 @@ L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE'] = 'Dimmen';
 L['OPTIONS_AURAS_CUSTOM_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) von benutzerdefinierten Auren anzeigen';
 L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE'] = 'Fläche';
 L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von benutzerdefinierten Auren anzeigen';
+L['OPTIONS_AURAS_CUSTOM_DIRECTION'] = 'Richtung des Wachstums';
+L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Benutzerdefinierte Auren Wachstumsrichtung';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Aktivieren';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Farben der Gesundheitsleiste aktivieren';

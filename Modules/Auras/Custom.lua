@@ -24,6 +24,7 @@ local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
+local AURAS_DIRECTION;
 
 local StripesAurasCustomCooldownFont = CreateFont('StripesAurasCustomCooldownFont');
 local StripesAurasCustomCountFont    = CreateFont('StripesAurasCustomCountFont');
@@ -57,6 +58,8 @@ local function CreateAnchor(unitframe)
 end
 
 local function UpdateAnchor(unitframe)
+    unitframe.AurasCustom:ClearAllPoints();
+
     if unitframe.AurasMythicPlus and unitframe.AurasMythicPlus:IsShown() then
         PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.AurasMythicPlus, 'TOP', 0, 4);
     else
@@ -65,12 +68,14 @@ local function UpdateAnchor(unitframe)
         if unit and ShouldShowName(unitframe) then
             local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
             local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
-            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 1 + OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
         else
             local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
-            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+            PixelUtil.SetPoint(unitframe.AurasCustom, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
         end
     end
+
+    PixelUtil.SetPoint(unitframe.AurasCustom, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
 end
 
 local function Update(unitframe)
@@ -189,7 +194,12 @@ local function Update(unitframe)
         end
 
         aura:ClearAllPoints();
-        aura:SetPoint('TOPRIGHT', -((buffIndex-1) * (20 + SPACING_X)), 0);
+
+        if AURAS_DIRECTION == 1 then
+            aura:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + SPACING_X), 0);
+        else
+            aura:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + SPACING_X)), 0);
+        end
 
         aura:SetID(spell.index);
 
@@ -346,6 +356,8 @@ function Module:UpdateLocalConfig()
 
     DRAW_EDGE  = O.db.auras_custom_draw_edge;
     DRAW_SWIPE = O.db.auras_custom_draw_swipe;
+
+    AURAS_DIRECTION = O.db.auras_custom_direction;
 
     UpdateFontObject(StripesAurasCustomCooldownFont, O.db.auras_custom_cooldown_font_value, O.db.auras_custom_cooldown_font_size, O.db.auras_custom_cooldown_font_flag, O.db.auras_custom_cooldown_font_shadow);
     UpdateFontObject(StripesAurasCustomCountFont, O.db.auras_custom_count_font_value, O.db.auras_custom_count_font_size, O.db.auras_custom_count_font_flag, O.db.auras_custom_count_font_shadow);

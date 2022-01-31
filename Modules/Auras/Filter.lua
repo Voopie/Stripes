@@ -144,9 +144,9 @@ local function UpdateBuffs(self, unit, filter, showAll)
                 self.buffList[i]:ClearAllPoints();
 
                 if AURAS_DIRECTION == 1 then
-                    self.buffList[i]:SetPoint('TOPLEFT', (i - 1) * (20 + (SPACING_X or 4)), 0);
+                    self.buffList[i]:SetPoint('TOPLEFT', (i - 1) * (20 + SPACING_X), 0);
                 else
-                    self.buffList[i]:SetPoint('TOPRIGHT', -((i - 1) * (20 + (SPACING_X or 4))), 0);
+                    self.buffList[i]:SetPoint('TOPRIGHT', -((i - 1) * (20 + SPACING_X)), 0);
                 end
             end
         end
