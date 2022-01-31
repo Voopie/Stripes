@@ -240,6 +240,8 @@ local function UpdateStyle(unitframe)
 
                 aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
                 aura.Border:SetDrawLayer('BACKGROUND');
+
+                aura.Icon:SetDrawLayer('ARTWORK');
             end
         end
 
@@ -273,10 +275,6 @@ local function UpdateStyle(unitframe)
         StopGlow(aura);
         UpdateGlow(aura);
     end
-
-    if Stripes.Masque and MASQUE_SUPPORT then
-        Stripes.MasqueAurasSpellstealGroup:ReSkin();
-    end
 end
 
 function Module:UnitAdded(unitframe)
@@ -298,6 +296,10 @@ function Module:UnitAura(unitframe)
 end
 
 function Module:Update(unitframe)
+    if Stripes.Masque and MASQUE_SUPPORT then
+        Stripes.MasqueAurasSpellstealGroup:ReSkin();
+    end
+
     unitframe.AurasSpellSteal.spacing = SPACING_X;
 
     Update(unitframe);

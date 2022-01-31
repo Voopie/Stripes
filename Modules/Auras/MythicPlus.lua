@@ -262,6 +262,8 @@ local function UpdateStyle(unitframe)
 
                 aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
                 aura.Border:SetDrawLayer('BACKGROUND');
+
+                aura.Icon:SetDrawLayer('ARTWORK');
             end
         end
 
@@ -293,10 +295,6 @@ local function UpdateStyle(unitframe)
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
         aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
     end
-
-    if Stripes.Masque and MASQUE_SUPPORT then
-        Stripes.MasqueAurasMythicGroup:ReSkin();
-    end
 end
 
 function Module:UnitAdded(unitframe)
@@ -318,6 +316,10 @@ function Module:UnitAura(unitframe)
 end
 
 function Module:Update(unitframe)
+    if Stripes.Masque and MASQUE_SUPPORT then
+        Stripes.MasqueAurasMythicGroup:ReSkin();
+    end
+
     unitframe.AurasMythicPlus.spacing = SPACING_X;
 
     Update(unitframe);

@@ -70,6 +70,7 @@ local function UpdateBuffs(unitframe)
             aura.Cooldown:GetRegions():ClearAllPoints();
             aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
             aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+            aura.Cooldown:GetRegions():SetDrawLayer('OVERLAY', 7);
 
             aura.CountFrame.Count:ClearAllPoints();
             aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
@@ -114,6 +115,8 @@ local function UpdateStyle(unitframe)
 
                 aura.Border:SetColorTexture(0, 0, 0, 1);
                 aura.Border:SetDrawLayer('BACKGROUND');
+
+                aura.Icon:SetDrawLayer('ARTWORK');
             end
         end
 
@@ -139,14 +142,11 @@ local function UpdateStyle(unitframe)
         aura.Cooldown:GetRegions():ClearAllPoints();
         aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
         aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+        aura.Cooldown:GetRegions():SetDrawLayer('OVERLAY', 7);
 
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
         aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
-    end
-
-    if Stripes.Masque and MASQUE_SUPPORT then
-        Stripes.MasqueAurasGroup:ReSkin();
     end
 end
 
@@ -164,6 +164,10 @@ function Module:UnitAura(unitframe)
 end
 
 function Module:Update(unitframe)
+    if Stripes.Masque and MASQUE_SUPPORT then
+        Stripes.MasqueAurasGroup:ReSkin();
+    end
+
     UpdateBuffs(unitframe);
     UpdateAnchor(unitframe);
     UpdateStyle(unitframe);
