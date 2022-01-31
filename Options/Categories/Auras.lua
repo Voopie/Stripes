@@ -853,8 +853,48 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_direction = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.auras_direction:SetPosition('TOPLEFT', self.auras_is_active, 'BOTTOMLEFT', 0, -8);
+    self.auras_direction:SetSize(180, 20);
+    self.auras_direction:SetList(O.Lists.auras_horizontal_direction);
+    self.auras_direction:SetLabel(L['OPTIONS_AURAS_DIRECTION']);
+    self.auras_direction:SetTooltip(L['OPTIONS_AURAS_DIRECTION_TOOLTIP']);
+    self.auras_direction:AddToSearch(button, L['OPTIONS_AURAS_DIRECTION_TOOLTIP'], self.Tabs[1]);
+    self.auras_direction:SetValue(O.db.auras_direction);
+    self.auras_direction.OnValueChangedCallback = function(_, value)
+        O.db.auras_direction = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.auras_sort_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.auras_sort_enabled:SetPosition('TOPLEFT', self.auras_direction, 'BOTTOMLEFT', 0, -8);
+    self.auras_sort_enabled:SetLabel(L['OPTIONS_AURAS_SORT_ENABLED']);
+    self.auras_sort_enabled:SetTooltip(L['OPTIONS_AURAS_SORT_ENABLED_TOOLTIP']);
+    self.auras_sort_enabled:AddToSearch(button, nil, self.Tabs[1]);
+    self.auras_sort_enabled:SetChecked(O.db.auras_sort_enabled);
+    self.auras_sort_enabled.Callback = function(self)
+        O.db.auras_sort_enabled = self:GetChecked();
+
+        panel.auras_sort_method:SetEnabled(O.db.auras_sort_enabled);
+
+        Stripes:UpdateAll();
+    end
+
+    self.auras_sort_method = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.auras_sort_method:SetPosition('LEFT', self.auras_sort_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_sort_method:SetSize(180, 20);
+    self.auras_sort_method:SetList(O.Lists.auras_sort_method);
+    self.auras_sort_method:SetTooltip(L['OPTIONS_AURAS_SORT_TOOLTIP']);
+    self.auras_sort_method:AddToSearch(button, L['OPTIONS_AURAS_SORT_TOOLTIP'], self.Tabs[1]);
+    self.auras_sort_method:SetValue(O.db.auras_sort_method);
+    self.auras_sort_method:SetEnabled(O.db.auras_sort_enabled);
+    self.auras_sort_method.OnValueChangedCallback = function(_, value)
+        O.db.auras_sort_method = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.auras_filter_player_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_filter_player_enabled:SetPosition('TOPLEFT', self.auras_is_active, 'BOTTOMLEFT', 0, -8);
+    self.auras_filter_player_enabled:SetPosition('TOPLEFT', self.auras_sort_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_filter_player_enabled:SetLabel(L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED']);
     self.auras_filter_player_enabled:SetTooltip(L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED_TOOLTIP']);
     self.auras_filter_player_enabled:AddToSearch(button, L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED_TOOLTIP'], self.Tabs[1]);
@@ -1006,48 +1046,8 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.auras_direction = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.auras_direction:SetPosition('TOPLEFT', self.auras_square, 'BOTTOMLEFT', 0, -8);
-    self.auras_direction:SetSize(180, 20);
-    self.auras_direction:SetList(O.Lists.auras_horizontal_direction);
-    self.auras_direction:SetLabel(L['OPTIONS_AURAS_DIRECTION']);
-    self.auras_direction:SetTooltip(L['OPTIONS_AURAS_DIRECTION_TOOLTIP']);
-    self.auras_direction:AddToSearch(button, L['OPTIONS_AURAS_DIRECTION_TOOLTIP'], self.Tabs[1]);
-    self.auras_direction:SetValue(O.db.auras_direction);
-    self.auras_direction.OnValueChangedCallback = function(_, value)
-        O.db.auras_direction = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.auras_sort_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_sort_enabled:SetPosition('TOPLEFT', self.auras_direction, 'BOTTOMLEFT', 0, -8);
-    self.auras_sort_enabled:SetLabel(L['OPTIONS_AURAS_SORT_ENABLED']);
-    self.auras_sort_enabled:SetTooltip(L['OPTIONS_AURAS_SORT_ENABLED_TOOLTIP']);
-    self.auras_sort_enabled:AddToSearch(button, nil, self.Tabs[1]);
-    self.auras_sort_enabled:SetChecked(O.db.auras_sort_enabled);
-    self.auras_sort_enabled.Callback = function(self)
-        O.db.auras_sort_enabled = self:GetChecked();
-
-        panel.auras_sort_method:SetEnabled(O.db.auras_sort_enabled);
-
-        Stripes:UpdateAll();
-    end
-
-    self.auras_sort_method = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.auras_sort_method:SetPosition('LEFT', self.auras_sort_enabled.Label, 'RIGHT', 12, 0);
-    self.auras_sort_method:SetSize(180, 20);
-    self.auras_sort_method:SetList(O.Lists.auras_sort_method);
-    self.auras_sort_method:SetTooltip(L['OPTIONS_AURAS_SORT_TOOLTIP']);
-    self.auras_sort_method:AddToSearch(button, L['OPTIONS_AURAS_SORT_TOOLTIP'], self.Tabs[1]);
-    self.auras_sort_method:SetValue(O.db.auras_sort_method);
-    self.auras_sort_method:SetEnabled(O.db.auras_sort_enabled);
-    self.auras_sort_method.OnValueChangedCallback = function(_, value)
-        O.db.auras_sort_method = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
     self.auras_pandemic_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_pandemic_enabled:SetPosition('TOPLEFT', self.auras_sort_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_pandemic_enabled:SetPosition('TOPLEFT', self.auras_square, 'BOTTOMLEFT', 0, -8);
     self.auras_pandemic_enabled:SetLabel(L['OPTIONS_AURAS_PANDEMIC_ENABLED']);
     self.auras_pandemic_enabled:SetTooltip(L['OPTIONS_AURAS_PANDEMIC_ENABLED_TOOLTIP']);
     self.auras_pandemic_enabled:AddToSearch(button, L['OPTIONS_AURAS_PANDEMIC_ENABLED'], self.Tabs[1]);
