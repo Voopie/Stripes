@@ -232,6 +232,8 @@ local function UpdateStyle(unitframe)
             if MASQUE_SUPPORT then
                 Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
                 Stripes.MasqueAurasImportantGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+
+                aura.Border:SetDrawLayer('BACKGROUND');
             else
                 Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
 
@@ -239,6 +241,8 @@ local function UpdateStyle(unitframe)
                 aura.Border:SetDrawLayer('BACKGROUND');
 
                 aura.Icon:SetDrawLayer('ARTWORK');
+
+                aura.Cooldown:SetAllPoints();
             end
         end
 
