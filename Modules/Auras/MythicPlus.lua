@@ -47,12 +47,10 @@ local HelpfulList = {
     [326450] = true, -- Halls of Atonement (Loyal Beasts)
     [328015] = true, -- Plaguefall (Wonder Grow)
     [343470] = true, -- The Necrotic Wake (Skeletal Marauder)
-    
 };
 
 local HarmfulList = {
     [323059] = true, -- Mists of Tirna Scithe (Droman's Wrath)
-    [1490] = true,
 };
 
 local PlayerState = D.Player.State;
@@ -96,7 +94,7 @@ local function UpdateAnchor(unitframe)
 end
 
 local function Update(unitframe)
-    if not ENABLED or not unitframe.data.unit or unitframe.data.unitType == 'SELF' then
+    if not ENABLED or not PlayerState.inMythic or not unitframe.data.unit or unitframe.data.unitType == 'SELF' then
         unitframe.AurasMythicPlus:SetShown(false);
         return;
     end
