@@ -38,7 +38,7 @@ L['FONT_SIZE_SHORT'] = 'Größe';
 L['FONT_FLAG'] = 'Kontur';
 L['FONT_FLAG_SHORT'] = 'Konturauswahl';
 L['FONT_SHADOW'] = 'Schrift Schattierung';
-L['FONT_SHADOW_SHORT'] = 'Schattierung';
+L['FONT_SHADOW_SHORT'] = 'Schatten';
 
 L['FONT_FLAG_NONE'] = '--Auswählen--';
 L['FONT_FLAG_OUTLINE'] = 'Umriss';
@@ -326,7 +326,7 @@ L['OPTIONS_HEALTH_BAR_CLASS_COLOR_ENEMY_TOOLTIP'] = 'Gesundheitsleiste feindlich
 L['OPTIONS_HEADER_BORDER'] = 'Umrandung';
 L['OPTIONS_HEALTH_BAR_BORDER_HIDE'] = 'Rand ausblenden';
 L['OPTIONS_HEALTH_BAR_BORDER_HIDE_TOOLTIP'] = 'Rahmen um den Gesundheitsbalken ausblenden';
-L['OPTIONS_HEALTH_BAR_BORDER_SAME_COLOR'] = 'Gleiche Farbe wie der Gesundheitsbalken';
+L['OPTIONS_HEALTH_BAR_BORDER_SAME_COLOR'] = 'Gleiche Farbe';
 L['OPTIONS_HEALTH_BAR_BORDER_SAME_COLOR_TOOLTIP'] = 'Dieselbe Farbe wie der Gesundheitsbalken für den Rand verwenden';
 L['OPTIONS_HEALTH_BAR_BORDER_COLOR'] = 'Standard';
 L['OPTIONS_HEALTH_BAR_BORDER_COLOR_TOOLTIP'] = 'Standard-Rahmenfarbe des Gesundheitsbalkens';
