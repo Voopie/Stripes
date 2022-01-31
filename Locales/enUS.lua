@@ -936,6 +936,7 @@ L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Mythic+ auras growth directio
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Show important auras (stuns, crowd control, disorient etc)';
 L['OPTIONS_AURAS_IMPORTANT_SCALE_TOOLTIP'] = 'Scale of important auras';
+L['OPTIONS_AURAS_IMPORTANT_SPACING_X_TOOLTIP'] = 'Horizontal spacing between important auras';
 L['OPTIONS_AURAS_IMPORTANT_OFFSET_X_TOOLTIP'] = 'Horizontal offset of important auras';
 L['OPTIONS_AURAS_IMPORTANT_OFFSET_Y_TOOLTIP'] = 'Vertical offset of important auras';
 L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED'] = 'Show countdown';

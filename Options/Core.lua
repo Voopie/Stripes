@@ -258,7 +258,7 @@ O.Lists = {
     },
 };
 
--- ~523
+-- ~524
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -806,6 +806,7 @@ O.DefaultValues = {
     auras_important_castername_font_size   = 6,
     auras_important_castername_font_flag   = 1, -- NONE
     auras_important_castername_font_shadow = true,
+    auras_important_spacing_x = 2,
 
     auras_custom_enabled              = true,
     auras_custom_draw_swipe           = true,

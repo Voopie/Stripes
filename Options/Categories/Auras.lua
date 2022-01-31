@@ -2344,8 +2344,21 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.auras_important_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.auras_important_spacing_x = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_spacing_x:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_important_spacing_x:SetW(133);
+    self.auras_important_spacing_x:SetValues(O.db.auras_important_spacing_x, 0, 20, 1);
+    self.auras_important_spacing_x:SetLabel(L['SPACING']);
+    self.auras_important_spacing_x:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_SPACING_X_TOOLTIP']);
+    self.auras_important_spacing_x:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_SPACING_X_TOOLTIP'], self.Tabs[4]);
+    self.auras_important_spacing_x.OnValueChangedCallback = function(_, value)
+        O.db.auras_important_spacing_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.auras_important_scale = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_scale:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_important_scale:SetPosition('LEFT', self.auras_important_spacing_x, 'RIGHT', 16, 0);
+    self.auras_important_scale:SetW(133);
     self.auras_important_scale:SetValues(O.db.auras_important_scale, 0.25, 4, 0.05);
     self.auras_important_scale:SetLabel(L['SCALE']);
     self.auras_important_scale:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_SCALE_TOOLTIP']);
@@ -2357,6 +2370,7 @@ panel.Load = function(self)
 
     self.auras_important_offset_x = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
     self.auras_important_offset_x:SetPosition('LEFT', self.auras_important_scale, 'RIGHT', 16, 0);
+    self.auras_important_offset_x:SetW(133.5);
     self.auras_important_offset_x:SetValues(O.db.auras_important_offset_x, -200, 200, 1);
     self.auras_important_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.auras_important_offset_x:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_OFFSET_X_TOOLTIP']);
@@ -2368,6 +2382,7 @@ panel.Load = function(self)
 
     self.auras_important_offset_y = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
     self.auras_important_offset_y:SetPosition('LEFT', self.auras_important_offset_x, 'RIGHT', 16, 0);
+    self.auras_important_offset_y:SetW(133.5);
     self.auras_important_offset_y:SetValues(O.db.auras_important_offset_y, -200, 200, 1);
     self.auras_important_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_important_offset_y:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_OFFSET_Y_TOOLTIP']);
@@ -2378,7 +2393,7 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_important_scale, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_important_spacing_x, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_important_countdown_enabled = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);

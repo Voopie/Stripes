@@ -936,6 +936,7 @@ L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Направление рос
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Показывать важные ауры (оглушения, контроль и т.п.)';
 L['OPTIONS_AURAS_IMPORTANT_SCALE_TOOLTIP'] = 'Масштаб важных аур';
+L['OPTIONS_AURAS_IMPORTANT_SPACING_X_TOOLTIP'] = 'Горизонтальный промежуток между важными аурами';
 L['OPTIONS_AURAS_IMPORTANT_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение важных аур';
 L['OPTIONS_AURAS_IMPORTANT_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение важных аур';
 L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED'] = 'Оставшееся время';

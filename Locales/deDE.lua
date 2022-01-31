@@ -936,6 +936,7 @@ L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Mythische+ Auren Wachstumsric
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Wichtige Auren anzeigen (Betäubung, Massenkontrolle, Desorientierung usw.)';
 L['OPTIONS_AURAS_IMPORTANT_SCALE_TOOLTIP'] = 'Skala der wichtigen Auren';
+L['OPTIONS_AURAS_IMPORTANT_SPACING_X_TOOLTIP'] = 'Horizontale Abstände zwischen wichtigen Auren';
 L['OPTIONS_AURAS_IMPORTANT_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz von wichtigen Auren';
 L['OPTIONS_AURAS_IMPORTANT_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz von wichtigen Auren';
 L['OPTIONS_AURAS_IMPORTANT_COUNTDOWN_ENABLED'] = 'Countdown anzeigen';
