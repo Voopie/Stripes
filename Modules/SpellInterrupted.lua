@@ -46,6 +46,7 @@ local durations = {
 };
 
 local auras = {
+    [  1330] = true, -- Garrote - Rogue (Assa)
     [ 31935] = true, -- Avenger's Shield - Paladin (Protection)
     [204490] = true, -- Sigil of Silence - Demon Hunter (Vengeance)
     [202137] = true, -- Sigil of Silence - Demon Hunter (Vengeance)
