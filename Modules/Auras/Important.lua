@@ -65,8 +65,6 @@ local additionalAuras = {
     -- Other
     [228626] = true, -- Haunted Urn (De Other Side) (Stun)
     [348723] = true, -- Haunted Urn (De Other Side) (Stun) ???
-
-    [1490]  = true,
 };
 
 local function CreateAnchor(unitframe)
