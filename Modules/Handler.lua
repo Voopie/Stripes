@@ -1,6 +1,5 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Stripes = S:NewNameplateModule('Handler');
-Stripes.Updater = CreateFrame('Frame');
 
 -- Lua API
 local pairs, string_find, string_lower, math_ceil, math_max = pairs, string.find, string.lower, math.ceil, math.max;
@@ -46,6 +45,10 @@ local NAME_ONLY_FRIENDLY_UNIT_TYPES = {
     ['FRIENDLY_NPC']    = true,
 };
 
+
+-- Updater
+Stripes.Updater = CreateFrame('Frame');
+
 local UPDATER_INTERVAL = 0.2;
 local updaterElapsed   = 0;
 
@@ -66,6 +69,10 @@ Stripes.Updater.Remove = function(_, name)
     end
 end
 
+Stripes.Updater.GetElementsCount = function()
+    return U.TableCount(UpdaterList);
+end
+
 Stripes.Updater.OnUpdate = function(_, elapsed)
     updaterElapsed = updaterElapsed + elapsed;
 
@@ -81,6 +88,8 @@ Stripes.Updater.OnUpdate = function(_, elapsed)
         end
     end
 end
+
+Stripes.Updater:SetScript('OnUpdate', Stripes.Updater.OnUpdate);
 
 local function SetCVar(key, value)
 	if C_CVar.GetCVar(key) ~= tostring(value) then
@@ -126,12 +135,10 @@ Stripes.UpdateFontObject = function(fontObject, fontValue, fontSize, fontFlag, f
     fontObject:SetShadowColor(0, 0, 0);
 end
 
-local SSN = _G.ShouldShowName;
-local function ShouldShowName(unitframe)
+local SSN = ShouldShowName;
+Stripes.ShouldShowName = function(unitframe)
     return NAME_TEXT_ENABLED and (unitframe.unit and SSN(unitframe));
 end
-
-Stripes.ShouldShowName = ShouldShowName;
 
 local function IsNameOnlyMode()
     return NAME_ONLY_FRIENDLY_ENABLED;
@@ -200,15 +207,11 @@ local function UpdateAbsorbs(unitframe)
     unitframe.data.absorbAmount = UnitGetTotalAbsorbs(unitframe.data.unit) or 0;
 end
 
-local function UpdateStatus(unitframe)
+local function UpdateUnitReaction(unitframe)
     local unit = unitframe.data.unit;
 
-    unitframe.data.name         = GetUnitName(unit, true);
     unitframe.data.reaction     = UnitReaction(PLAYER_UNIT, unit);
     unitframe.data.factionGroup = UnitFactionGroup(unit);
-    unitframe.data.isPlayer     = UnitIsPlayer(unit);
-
-    unitframe.data.canAttack = UnitCanAttack(PLAYER_UNIT, unit);
 
     if UnitIsUnit(unit, PLAYER_UNIT) then
         unitframe.data.unitType = 'SELF';
@@ -239,6 +242,16 @@ local function UpdateStatus(unitframe)
 
         unitframe.data.commonReaction = 'ENEMY';
     end
+end
+
+local function UpdateStatus(unitframe)
+    local unit = unitframe.data.unit;
+
+    unitframe.data.name      = GetUnitName(unit, true);
+    unitframe.data.isPlayer  = UnitIsPlayer(unit);
+    unitframe.data.canAttack = UnitCanAttack(PLAYER_UNIT, unit);
+
+    UpdateUnitReaction(unitframe);
 
     if unitframe.data.commonUnitType == 'PLAYER' then
         unitframe.data.nameWoRealm, unitframe.data.realm = UnitName(unit);
@@ -264,6 +277,26 @@ end
 
 local function UpdateTarget(unitframe)
     unitframe.data.isTarget = (UnitGUID('target') or '') == unitframe.data.unitGUID;
+end
+
+local function UpdateClassName(unitframe)
+    unitframe.data.className = unitframe.data.isPlayer and UnitClassBase(unitframe.data.unit) or nil;
+end
+
+local function UpdateNpcId(unitframe)
+    unitframe.data.npcId = not unitframe.data.isPlayer and GetNpcIDByGUID(unitframe.data.unitGUID, true) or 0;
+end
+
+local function UpdateSubLabel(unitframe)
+    unitframe.data.subLabel = not unitframe.data.isPlayer and GetNpcSubLabelByID(unitframe.data.npcId) or nil;
+
+    if unitframe.data.subLabel == UNKNOWN or string_find(unitframe.data.subLabel or '', '??', 1, true) then
+        unitframe.data.subLabel = nil;
+    end
+end
+
+local function UpdateUnitColor(unitframe)
+    unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB = GetUnitColor(unitframe.data.unit, 2);
 end
 
 local function CVarsReset()
@@ -567,83 +600,22 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
 
     NP[nameplate].data.unit      = unit;
     NP[nameplate].data.unitGUID  = UnitGUID(unit);
-    NP[nameplate].data.isPlayer  = UnitIsPlayer(unit);
-    NP[nameplate].data.className = NP[nameplate].data.isPlayer and UnitClassBase(unit) or nil;
 
-    NP[nameplate].data.widgetsOnly = UnitNameplateShowsWidgetsOnly(unit);
-
-    NP[nameplate].data.npcId    = not NP[nameplate].data.isPlayer and GetNpcIDByGUID(NP[nameplate].data.unitGUID, true) or 0;
-
-    NP[nameplate].data.name     = GetUnitName(unit, true);
-
-    NP[nameplate].data.subLabel = not NP[nameplate].data.isPlayer and GetNpcSubLabelByID(NP[nameplate].data.npcId) or nil;
-    if NP[nameplate].data.subLabel == UNKNOWN or string_find(NP[nameplate].data.subLabel or '', '??', 1, true) then
-        NP[nameplate].data.subLabel = nil;
-    end
-
-    NP[nameplate].data.healthCurrent = UnitHealth(unit) or 0;
-    NP[nameplate].data.healthMax     = math_max(UnitHealthMax(unit) or 1, 1);
-    NP[nameplate].data.healthPerF    = 100 * (NP[nameplate].data.healthCurrent / NP[nameplate].data.healthMax);
-    NP[nameplate].data.healthPer     = math_ceil(NP[nameplate].data.healthPerF);
-
-    NP[nameplate].data.absorbAmount = UnitGetTotalAbsorbs(unit) or 0;
-
-    NP[nameplate].data.level, NP[nameplate].data.classification, NP[nameplate].data.diff = GetUnitLevel(unit);
-    NP[nameplate].data.colorR, NP[nameplate].data.colorG, NP[nameplate].data.colorB      = GetUnitColor(unit, 2);
-
-    NP[nameplate].data.reaction     = UnitReaction(PLAYER_UNIT, unit);
-    NP[nameplate].data.factionGroup = UnitFactionGroup(unit);
-
-    NP[nameplate].data.minus = UnitClassification(unit) == 'minus';
+    UpdateStatus(NP[nameplate]);
+    UpdateClassName(NP[nameplate]);
+    UpdateWidgetStatus(NP[nameplate]);
+    UpdateNpcId(NP[nameplate]);
+    UpdateUnitColor(NP[nameplate]);
+    UpdateSubLabel(NP[nameplate]);
+    UpdateHealth(NP[nameplate]);
+    UpdateAbsorbs(NP[nameplate])
+    UpdateClassification(NP[nameplate]);
+    UpdateConnection(NP[nameplate]);
+    UpdateTarget(NP[nameplate]);
 
     NP[nameplate].data.creatureType = not NP[nameplate].data.isPlayer and UnitCreatureType(unit) or nil;
-
-    NP[nameplate].data.canAttack = UnitCanAttack(PLAYER_UNIT, unit);
-
-    NP[nameplate].data.isConnected = UnitIsConnected(unit);
-
+    NP[nameplate].data.minus = UnitClassification(unit) == 'minus';
     NP[nameplate].data.targetName = UnitName(unit .. 'target');
-
-    NP[nameplate].data.isTarget = (UnitGUID('target') or '') == NP[nameplate].data.unitGUID;
-
-    if UnitIsUnit(unit, PLAYER_UNIT) then
-        NP[nameplate].data.unitType = 'SELF';
-        NP[nameplate].data.commonUnitType = 'SELF';
-        NP[nameplate].data.commonReaction = 'FRIENDLY';
-    elseif UnitIsPVPSanctuary(unit) and not UnitIsEnemy(PLAYER_UNIT, unit) then
-        NP[nameplate].data.unitType = 'FRIENDLY_PLAYER';
-        NP[nameplate].data.commonUnitType = 'PLAYER';
-        NP[nameplate].data.commonReaction = 'FRIENDLY';
-    elseif not UnitIsEnemy(PLAYER_UNIT, unit) and (not NP[nameplate].data.reaction or NP[nameplate].data.reaction > 4) then
-        if NP[nameplate].data.isPlayer then
-            NP[nameplate].data.unitType = 'FRIENDLY_PLAYER';
-            NP[nameplate].data.commonUnitType = 'PLAYER';
-        else
-            NP[nameplate].data.unitType = 'FRIENDLY_NPC';
-            NP[nameplate].data.commonUnitType = 'NPC';
-        end
-
-        NP[nameplate].data.commonReaction = 'FRIENDLY';
-    else
-        if NP[nameplate].data.isPlayer then
-            NP[nameplate].data.unitType = 'ENEMY_PLAYER';
-            NP[nameplate].data.commonUnitType = 'PLAYER';
-        else
-            NP[nameplate].data.unitType = 'ENEMY_NPC';
-            NP[nameplate].data.commonUnitType = 'NPC';
-        end
-
-        NP[nameplate].data.commonReaction = 'ENEMY';
-    end
-
-    if unitframe.data.commonUnitType == 'PLAYER' then
-        unitframe.data.nameWoRealm, unitframe.data.realm = UnitName(unit);
-        unitframe.data.namePVP = UnitPVPName(unit);
-    end
-
-    if NP[nameplate].data.unitType == 'FRIENDLY_PLAYER' then
-        NP[nameplate].data.guild   = UnitInGuild(unit);
-    end
 
     if NP[nameplate].data.widgetsOnly then
         NP[nameplate].data.previousType = nil;
@@ -725,7 +697,7 @@ function Stripes:UpdateLocalConfig()
     NAME_ONLY_FRIENDLY_ENABLED      = O.db.name_only_friendly_enabled;
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
 
-    Stripes.Updater:SetScript('OnUpdate', U.TableCount(UpdaterList) > 0 and Stripes.Updater.OnUpdate or nil);
+    Stripes.Updater:SetShown(Stripes.Updater.GetElementsCount() > 0);
 end
 
 function Stripes:StartUp()
