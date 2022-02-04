@@ -242,6 +242,7 @@ local function UpdateStyle(unitframe)
 
                 aura.Icon:SetDrawLayer('ARTWORK');
 
+                aura.Cooldown:ClearAllPoints();
                 aura.Cooldown:SetAllPoints();
             end
         end
