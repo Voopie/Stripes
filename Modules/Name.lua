@@ -19,6 +19,9 @@ local IsNameOnlyMode = S:GetNameplateModule('Handler').IsNameOnlyMode;
 local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyModeAndFriendly;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
+-- Nameplates
+local NP = S.NamePlates;
+
 -- Libraries
 local LT = S.Libraries.LT;
 local LDC = S.Libraries.LDC;
@@ -642,6 +645,8 @@ function Module:Update(unitframe)
     NameOnly_UpdateGuildName(unitframe);
 
     UpdateRaidTargetIcon(unitframe);
+
+    UpdateClassificationIndicator(unitframe);
 
     UpdateAnchor(unitframe);
 end
