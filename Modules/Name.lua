@@ -557,7 +557,7 @@ local function UpdateClassificationIndicator(unitframe)
         return;
     end
 
-    if unitframe.optionTable.showPvPClassificationIndicator and CompactUnitFrame_UpdatePvPClassificationIndicator(unitframe) then
+    if unitframe.optionTable.showPvPClassificationIndicator and unitframe.unit and CompactUnitFrame_UpdatePvPClassificationIndicator(unitframe) then
         unitframe.classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
 
         if unitframe.classificationIndicator.wasChanged then
