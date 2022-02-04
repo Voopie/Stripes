@@ -3,7 +3,7 @@ local Module = S:NewNameplateModule('Auras_Important');
 local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
-local bit_band = bit.band;
+local bit_band, math_max = bit.band, math.max;
 
 -- Wow API
 local CooldownFrame_Set, UnitName, AuraUtil_ForEachAura = CooldownFrame_Set, UnitName, AuraUtil.ForEachAura;
@@ -30,14 +30,17 @@ local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
+local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y, BUFFFRAME_OFFSET_Y;
 
 local StripesAurasImportantCooldownFont = CreateFont('StripesAurasImportantCooldownFont');
 local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCountFont');
 local StripesAurasImportantCasterFont   = CreateFont('StripesAurasImportantCasterFont');
 
 local MAX_AURAS = 3;
+local MAX_OFFSET_Y = -9;
 local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HARMFUL';
+local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 
 local glowType  = 1; -- PIXEL
 local glowColor = { 1, 0.3, 0, 1 };
@@ -62,6 +65,8 @@ local additionalAuras = {
     -- Other
     [228626] = true, -- Haunted Urn (De Other Side) (Stun)
     [348723] = true, -- Haunted Urn (De Other Side) (Stun) ???
+
+    [1490]  = true,
 };
 
 local function CreateAnchor(unitframe)
@@ -78,7 +83,19 @@ local function CreateAnchor(unitframe)
 end
 
 local function UpdateAnchor(unitframe)
-    unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.BuffFrame, 'TOPLEFT', OFFSET_X, 4 + (SQUARE and 6 or 0) + OFFSET_Y);
+    if unitframe.BuffFrame.buffList[1] and unitframe.BuffFrame.buffList[1]:IsShown() then
+        unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.BuffFrame, 'TOPLEFT', OFFSET_X, 4 + (SQUARE and 6 or 0) + OFFSET_Y);
+    else
+        if ShouldShowName(unitframe) then
+            local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
+            local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
+            unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+        else
+            local offset = unitframe.BuffFrame:GetBaseYOffset() + (UnitIsUnit(unitframe.data.unit, 'target') and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
+            unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', OFFSET_X, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+        end
+    end
+
     unitframe.ImportantAuras:SetWidth(unitframe.healthBar:GetWidth());
 end
 
@@ -341,6 +358,10 @@ function Module:UpdateLocalConfig()
 
     DRAW_EDGE  = O.db.auras_important_draw_edge;
     DRAW_SWIPE = O.db.auras_important_draw_swipe;
+
+    NAME_TEXT_POSITION_V = O.db.name_text_position_v;
+    NAME_TEXT_OFFSET_Y   = O.db.name_text_offset_y;
+    BUFFFRAME_OFFSET_Y   = O.db.auras_offset_y;
 
     UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
     UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);
