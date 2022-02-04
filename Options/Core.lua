@@ -859,8 +859,8 @@ O.DefaultValues = {
     color_category_data = {},
 };
 
-local PROFILE_DEFAULT_ID = '1';
-local PROFILE_DEFAULT_NAME = L['OPTIONS_PROFILE_DEFAULT_NAME'];
+O.PROFILE_DEFAULT_ID = '1';
+O.PROFILE_DEFAULT_NAME = L['OPTIONS_PROFILE_DEFAULT_NAME'];
 
 function Module:IsNameExists(name)
     for _, data in pairs(StripesDB.profiles) do
@@ -905,7 +905,7 @@ function Module:StartUp()
 
     if not StripesDB.characters[D.Player.NameWithRealm] then
         StripesDB.characters[D.Player.NameWithRealm] = {
-            profileId = PROFILE_DEFAULT_ID,
+            profileId = O.PROFILE_DEFAULT_ID,
         };
     end
 
@@ -924,7 +924,7 @@ function Module:StartUp()
         StripesDB.profiles[profileId] = U.Merge(O.DefaultValues, StripesDB.profiles[profileId]);
     end
 
-    StripesDB.profiles[profileId].profileName = profileName or PROFILE_DEFAULT_NAME;
+    StripesDB.profiles[profileId].profileName = profileName or O.PROFILE_DEFAULT_NAME;
 
     O.db = StripesDB.profiles[profileId];
     O.activeProfileId   = profileId;

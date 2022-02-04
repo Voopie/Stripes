@@ -9,7 +9,6 @@ local LibSerialize = S.Libraries.LibSerialize;
 local LibDeflate   = S.Libraries.LibDeflate;
 local DEFLATE_CONFIG = { level = 6 };
 local ENCODE_PREFIX = '!S:1!';
-local PROFILE_DEFAULT_ID = '1';
 
 local MAX_LETTERS = 42;
 
@@ -45,7 +44,7 @@ local function UpdateRemoveProfilesDropdown()
     wipe(removeProfilesList);
 
     for id, data in pairs(StripesDB.profiles) do
-        if id ~= PROFILE_DEFAULT_ID then
+        if id ~= O.PROFILE_DEFAULT_ID then
             table.insert(removeProfilesList, data.profileName);
         end
     end
@@ -67,11 +66,11 @@ local function UpdateProfilesDropdown()
     end
 
     table.sort(profilesList, function(a, b)
-        if a == L['OPTIONS_PROFILE_DEFAULT_NAME'] then
+        if a == O.PROFILE_DEFAULT_NAME then
             return true;
         end
 
-        if b == L['OPTIONS_PROFILE_DEFAULT_NAME'] then
+        if b == O.PROFILE_DEFAULT_NAME then
             return false;
         end
 
@@ -154,7 +153,7 @@ local function CopyFromActive(name)
 
     panel.CreateNewProfileEditBox:SetText('');
     panel.ActiveProfileValue:SetText(O.activeProfileName);
-    panel.EditActiveProfileName:SetShown(O.activeProfileId ~= PROFILE_DEFAULT_ID);
+    panel.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
 
     O.frame.TopBar.CurrentProfileName:SetText(O.activeProfileName);
 end
@@ -182,7 +181,7 @@ local function CreateDefaultProfile(name)
 
     panel.CreateNewProfileEditBox:SetText('');
     panel.ActiveProfileValue:SetText(O.activeProfileName);
-    panel.EditActiveProfileName:SetShown(O.activeProfileId ~= PROFILE_DEFAULT_ID);
+    panel.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
 
     O.UpdatePanelAll();
     S:GetNameplateModule('Handler'):CVarsUpdate();
@@ -210,7 +209,7 @@ local function ImportProfile(name, data)
 
     panel.CreateNewProfileEditBox:SetText('');
     panel.ActiveProfileValue:SetText(O.activeProfileName);
-    panel.EditActiveProfileName:SetShown(O.activeProfileId ~= PROFILE_DEFAULT_ID);
+    panel.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
 
     O.UpdatePanelAll();
     S:GetNameplateModule('Handler'):CVarsUpdate();
@@ -244,7 +243,7 @@ Module.ChooseProfileByName = function(name)
 
     UpdateProfilesDropdown();
     panel.ActiveProfileValue:SetText(O.activeProfileName);
-    panel.EditActiveProfileName:SetShown(O.activeProfileId ~= PROFILE_DEFAULT_ID);
+    panel.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
 
     O.UpdatePanelAll();
     S:GetNameplateModule('Handler'):CVarsUpdate();
@@ -274,14 +273,14 @@ local function RemoveProfileByName(name)
 
     for character, data in pairs(StripesDB.characters) do
         if data.profileId == index then
-            StripesDB.characters[character].profileId = PROFILE_DEFAULT_ID;
+            StripesDB.characters[character].profileId = O.PROFILE_DEFAULT_ID;
         end
     end
 
     if O.activeProfileId == index then
-        O.db = StripesDB.profiles[PROFILE_DEFAULT_ID];
-        O.activeProfileId   = PROFILE_DEFAULT_ID;
-        O.activeProfileName = StripesDB.profiles[PROFILE_DEFAULT_ID].profileName;
+        O.db = StripesDB.profiles[O.PROFILE_DEFAULT_ID];
+        O.activeProfileId   = O.PROFILE_DEFAULT_ID;
+        O.activeProfileName = StripesDB.profiles[O.PROFILE_DEFAULT_ID].profileName;
 
         O.UpdatePanelAll();
         S:GetNameplateModule('Handler'):CVarsUpdate();
@@ -292,7 +291,7 @@ local function RemoveProfileByName(name)
     UpdateRemoveProfilesDropdown();
 
     panel.ActiveProfileValue:SetText(O.activeProfileName);
-    panel.EditActiveProfileName:SetShown(O.activeProfileId ~= PROFILE_DEFAULT_ID);
+    panel.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
 
     O.frame.TopBar.CurrentProfileName:SetText(O.activeProfileName);
 
@@ -400,7 +399,7 @@ panel.Load = function(self)
     self.EditActiveProfileName:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.PENCIL_WHITE));
     self.EditActiveProfileName:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     E.CreateTooltip(self.EditActiveProfileName, L['RENAME']);
-    self.EditActiveProfileName:SetShown(O.activeProfileId ~= PROFILE_DEFAULT_ID);
+    self.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
     self.EditActiveProfileName:SetScript('OnClick', function()
         panel.EditActiveProfileName:SetShown(false);
 

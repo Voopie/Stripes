@@ -448,11 +448,11 @@ panel.UpdateProfilesDropdown = function(self)
     end
 
     table.sort(profilesList, function(a, b)
-        if a == L['OPTIONS_PROFILE_DEFAULT_NAME'] then
+        if a == O.PROFILE_DEFAULT_NAME then
             return true;
         end
 
-        if b == L['OPTIONS_PROFILE_DEFAULT_NAME'] then
+        if b == O.PROFILE_DEFAULT_NAME then
             return false;
         end
 
