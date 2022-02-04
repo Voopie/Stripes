@@ -15,11 +15,7 @@ local TARGET_INDICATOR_ENABLED, TARGET_GLOW_ENABLED, HOVER_GLOW_ENABLED;
 local TEXTURE, TARGET_INDICATOR_COLOR, TARGET_GLOW_COLOR;
 local SIZE, X_OFFSET, Y_OFFSET;
 
-local INDICATOR_TEXTURES = O.Lists.target_indicator_texture_path;
-local DEFAULT_INDICATOR = 1;
-
 local GLOW_TEXTURE = S.Media.Path .. 'Textures\\glow';
-
 local GLOW_UPDATE_INTERVAL = 0.1;
 
 local function Glow_Show(unitframe)
@@ -189,7 +185,7 @@ function Module:UpdateLocalConfig()
     SIZE     = O.db.target_indicator_size;
     X_OFFSET = O.db.target_indicator_x_offset;
     Y_OFFSET = O.db.target_indicator_y_offset;
-    TEXTURE  = INDICATOR_TEXTURES[O.db.target_indicator_texture] or INDICATOR_TEXTURES[DEFAULT_INDICATOR];
+    TEXTURE  = O.Lists.target_indicator_texture_path[O.db.target_indicator_texture] or O.Lists.target_indicator_texture_path[1];
 
     TARGET_INDICATOR_COLOR = TARGET_INDICATOR_COLOR or {};
     TARGET_INDICATOR_COLOR[1] = O.db.target_indicator_color[1];
