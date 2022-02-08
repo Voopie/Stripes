@@ -137,7 +137,7 @@ panel.UpdateButtons = function()
             button.index = index;
             button.name  = data.name;
 
-            UpdateButton(button, data);
+            UpdateButton(button);
 
             button:SetShown(true);
         end
