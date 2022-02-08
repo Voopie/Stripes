@@ -258,7 +258,7 @@ O.Lists = {
     },
 };
 
--- ~526
+-- ~527
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -414,6 +414,7 @@ O.DefaultValues = {
     hover_glow_enabled        = true,
     current_target_health_bar_coloring = false,
     current_target_health_bar_color    = { 1, 1, 1, 1 },
+    current_target_health_bar_use_class_color = false,
     current_target_custom_texture_enabled = true,
     current_target_custom_texture_value   = 'Blizzard Bar Fill',
     current_target_custom_texture_overlay = true,

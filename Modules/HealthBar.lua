@@ -384,7 +384,7 @@ end
 
 local function UpdateCurrentTargetColor(unitframe)
     if DB.CURRENT_TARGET_COLOR_ENABLED and unitframe.data.isTarget then
-        local color = DB.CURRENT_TARGET_COLOR;
+        local color = DB.CURRENT_TARGET_USE_CLASS_COLOR and DB.CURRENT_TARGET_CLASS_COLOR or DB.CURRENT_TARGET_COLOR;
         local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
 
         if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
@@ -814,6 +814,16 @@ function Module:UpdateLocalConfig()
     DB.CURRENT_TARGET_COLOR[2] = O.db.current_target_health_bar_color[2];
     DB.CURRENT_TARGET_COLOR[3] = O.db.current_target_health_bar_color[3];
     DB.CURRENT_TARGET_COLOR[4] = O.db.current_target_health_bar_color[4] or 1;
+
+    DB.CURRENT_TARGET_USE_CLASS_COLOR = O.db.current_target_health_bar_use_class_color;
+
+    if DB.CURRENT_TARGET_USE_CLASS_COLOR then
+        DB.CURRENT_TARGET_CLASS_COLOR    = DB.CURRENT_TARGET_CLASS_COLOR or {};
+        DB.CURRENT_TARGET_CLASS_COLOR[1] = D.Player.ClassColor.r;
+        DB.CURRENT_TARGET_CLASS_COLOR[2] = D.Player.ClassColor.g;
+        DB.CURRENT_TARGET_CLASS_COLOR[3] = D.Player.ClassColor.b;
+        DB.CURRENT_TARGET_CLASS_COLOR[4] = D.Player.ClassColor.a or 1;
+    end
 
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED       = O.db.current_target_custom_texture_enabled;
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE         = O.db.current_target_custom_texture_value;
