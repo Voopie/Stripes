@@ -342,10 +342,10 @@ scrollArea:SetPoint('BOTTOMRIGHT', panel.ImportExportFrame, 'BOTTOMRIGHT', 0, 30
 PixelUtil.SetSize(scrollChild, scrollArea:GetWidth(), scrollArea:GetHeight());
 
 panel.ImportExportFrame.okButton = E.CreateButton(panel.ImportExportFrame);
-panel.ImportExportFrame.okButton:SetPosition('BOTTOMLEFT', panel.ImportExportFrame, 'BOTTOMLEFT', 0, 4);
+panel.ImportExportFrame.okButton:SetPosition('BOTTOMLEFT', panel.ImportExportFrame, 'BOTTOMLEFT', 0, 0);
 
 panel.ImportExportFrame.CloseButton = E.CreateButton(panel.ImportExportFrame);
-panel.ImportExportFrame.CloseButton:SetPosition('BOTTOMRIGHT', panel.ImportExportFrame, 'BOTTOMRIGHT', 0, 4);
+panel.ImportExportFrame.CloseButton:SetPosition('BOTTOMRIGHT', panel.ImportExportFrame, 'BOTTOMRIGHT', 0, 0);
 panel.ImportExportFrame.CloseButton:SetLabel(L['OPTIONS_CLOSE']);
 panel.ImportExportFrame.CloseButton:SetShown(false);
 panel.ImportExportFrame.CloseButton:SetScript('OnClick', function()
@@ -566,7 +566,7 @@ panel.Load = function(self)
     end
 
     self.ResetProfileButton = E.CreateButton(self);
-    self.ResetProfileButton:SetPosition('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 0, 4);
+    self.ResetProfileButton:SetPosition('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 0, 0);
     self.ResetProfileButton:SetLabel(L['OPTIONS_PROFILES_RESET_PROFILE_BUTTON']);
     self.ResetProfileButton:SetHighlightColor('cccccc');
     self.ResetProfileButton:SetScript('OnClick', function()
