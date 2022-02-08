@@ -387,6 +387,7 @@ L['OPTIONS_THREAT_COLOR_STATUS_2_TOOLTIP'] = 'Unsicher tankend, andere Einheit h
 L['OPTIONS_THREAT_COLOR_STATUS_3_TOOLTIP'] = 'Sicher tanken, höchste Bedrohung';
 L['OPTIONS_THREAT_COLOR_OFFTANK_TOOLTIP'] = 'Offtank (ein anderer Tankspieler tankt jetzt)';
 L['OPTIONS_THREAT_COLOR_PETTANK_TOOLTIP'] = 'Haustier (Mönchsstatue, Schamanenelementar und andere spielergesteuerte Einheiten) tankt jetzt';
+L['OPTIONS_THREAT_COLOR_PLAYERPETTANK_TOOLTIP'] = 'Dein Haustier tankt jetzt';
 L['OPTIONS_RESET_THREAT_COLORS'] = 'Farben zurücksetzen';
 L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'] = 'Bedrohungsfarben auf Standardwerte zurücksetzen';
 L['OPTIONS_THREAT_PERCENTAGE_ENABLED'] = 'Prozentwerte anzeigen';

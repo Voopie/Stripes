@@ -49,9 +49,10 @@ local statusColors = {
 
 local offTankColor = { 0.60, 0.00, 0.85, 1 };
 local petTankColor = { 0.00, 0.44, 1.00, 1 };
+local playerPetTankColor = { 0.00, 0.44, 1.00, 1 };
 
 local PLAYER_IS_TANK = false;
-local PLAYER_UNIT = 'player';
+local PLAYER_UNIT, PET_UNIT = 'player', 'pet';
 
 local RAID_TARGET_COLORS = {
     [1] = {    1,    1,  0.2, 1 }, -- YELLOW (STAR)
@@ -265,7 +266,7 @@ local function Threat_UpdateColor(unitframe)
     end
 
     local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
-    local offTank, petTank = false, false;
+    local offTank, petTank, playerPetTank = false, false, false;
 
     if not status or status < 3 then
         local tank_unit = unitframe.data.unit .. 'target';
@@ -273,9 +274,14 @@ local function Threat_UpdateColor(unitframe)
             if (UnitInParty(tank_unit) or UnitInRaid(tank_unit)) and UnitGroupRolesAssigned(tank_unit) == 'TANK' then
                 -- group tank
                 offTank = true;
-            elseif not UnitIsPlayer(tank_unit) and UnitPlayerControlled(tank_unit) then
-                -- player controlled npc (pet, vehicle, totem)
-                petTank = true;
+            elseif not UnitIsPlayer(tank_unit) then
+                if UnitIsUnit(tank_unit, PET_UNIT) then
+                    -- player's pet
+                    playerPetTank = true;
+                elseif UnitPlayerControlled(tank_unit) then
+                    -- player controlled npc (pet, vehicle, totem)
+                    petTank = true;
+                end
             end
         end
     end
@@ -285,6 +291,8 @@ local function Threat_UpdateColor(unitframe)
 
         if PLAYER_IS_TANK and offTank then
             r, g, b, a = offTankColor[1], offTankColor[2], offTankColor[3], offTankColor[4];
+        elseif playerPetTank then
+            r, g, b, a = playerPetTankColor[1], playerPetTankColor[2], playerPetTankColor[3], playerPetTankColor[4];
         elseif petTank then
             r, g, b, a = petTankColor[1], petTankColor[2], petTankColor[3], petTankColor[4];
         else
@@ -723,6 +731,11 @@ function Module:UpdateLocalConfig()
     petTankColor[2] = O.db.threat_color_pettank[2];
     petTankColor[3] = O.db.threat_color_pettank[3];
     petTankColor[4] = O.db.threat_color_pettank[4] or 1;
+
+    playerPetTankColor[1] = O.db.threat_color_playerpettank[1];
+    playerPetTankColor[2] = O.db.threat_color_playerpettank[2];
+    playerPetTankColor[3] = O.db.threat_color_playerpettank[3];
+    playerPetTankColor[4] = O.db.threat_color_playerpettank[4] or 1;
 
     DB.TP_ENABLED        = O.db.threat_percentage_enabled;
     DB.TP_COLORING       = O.db.threat_percentage_coloring;

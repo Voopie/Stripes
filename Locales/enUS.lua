@@ -387,6 +387,7 @@ L['OPTIONS_THREAT_COLOR_STATUS_2_TOOLTIP'] = 'Insecurely tanking, another unit h
 L['OPTIONS_THREAT_COLOR_STATUS_3_TOOLTIP'] = 'Securely tanking, highest threat';
 L['OPTIONS_THREAT_COLOR_OFFTANK_TOOLTIP'] = 'Offtank (another tank player is now tanking)';
 L['OPTIONS_THREAT_COLOR_PETTANK_TOOLTIP'] = 'Pet (monk statue, shaman elemental, and other player-controlled units) is now tanking';
+L['OPTIONS_THREAT_COLOR_PLAYERPETTANK_TOOLTIP'] = 'Your pet is now tanking';
 L['OPTIONS_RESET_THREAT_COLORS'] = 'Reset colors';
 L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'] = 'Reset threat colors to default values';
 L['OPTIONS_THREAT_PERCENTAGE_ENABLED'] = 'Show percentages';

@@ -387,6 +387,7 @@ L['OPTIONS_THREAT_COLOR_STATUS_2_TOOLTIP'] = 'Небезопасно, друго
 L['OPTIONS_THREAT_COLOR_STATUS_3_TOOLTIP'] = 'Надежно, самая высокая угроза';
 L['OPTIONS_THREAT_COLOR_OFFTANK_TOOLTIP'] = 'Оффтанк (другой игрок-танк сейчас танкует)';
 L['OPTIONS_THREAT_COLOR_PETTANK_TOOLTIP'] = 'Питомец (статуя монаха, элементаль шамана и другие управляемые игроком юниты) сейчас танкует';
+L['OPTIONS_THREAT_COLOR_PLAYERPETTANK_TOOLTIP'] = 'Ваш питомец сейчас танкует';
 L['OPTIONS_RESET_THREAT_COLORS'] = 'Сбросить цвета';
 L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'] = 'Сбросить цвета угрозы на значения по умолчанию';
 L['OPTIONS_THREAT_PERCENTAGE_ENABLED'] = 'Показывать проценты';

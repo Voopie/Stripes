@@ -813,6 +813,8 @@ panel.Load = function(self)
         panel.threat_color_status_2:SetValue(unpack(defaultStatusColors[2]));
         panel.threat_color_status_3:SetValue(unpack(defaultStatusColors[3]));
         panel.threat_color_offtank:SetValue(unpack(defaultOffTankColor));
+        panel.threat_color_pettank:SetValue(unpack(O.DefaultValues.threat_color_pettank));
+        panel.threat_color_playerpettank:SetValue(unpack(O.DefaultValues.threat_color_playerpettank));
     end
 
     self.threat_color_status_0 = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
@@ -885,8 +887,22 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.threat_color_playerpettank = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
+    self.threat_color_playerpettank:SetPosition('LEFT', self.threat_color_pettank, 'RIGHT', 12, 0);
+    self.threat_color_playerpettank:SetTooltip(L['OPTIONS_THREAT_COLOR_PLAYERPETTANK_TOOLTIP']);
+    self.threat_color_playerpettank:AddToSearch(button, L['OPTIONS_THREAT_COLOR_PLAYERPETTANK_TOOLTIP'], self.Tabs[4]);
+    self.threat_color_playerpettank:SetValue(unpack(O.db.threat_color_playerpettank));
+    self.threat_color_playerpettank.OnValueChanged = function(_, r, g, b, a)
+        O.db.threat_color_playerpettank[1] = r;
+        O.db.threat_color_playerpettank[2] = g;
+        O.db.threat_color_playerpettank[3] = b;
+        O.db.threat_color_playerpettank[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
     self.threat_color_offtank = E.CreateColorPicker(self.TabsFrames['ThreatTab'].Content);
-    self.threat_color_offtank:SetPosition('LEFT', self.threat_color_pettank, 'RIGHT', 12, 0);
+    self.threat_color_offtank:SetPosition('LEFT', self.threat_color_playerpettank, 'RIGHT', 12, 0);
     self.threat_color_offtank:SetTooltip(L['OPTIONS_THREAT_COLOR_OFFTANK_TOOLTIP']);
     self.threat_color_offtank:AddToSearch(button, L['OPTIONS_THREAT_COLOR_OFFTANK_TOOLTIP'], self.Tabs[4]);
     self.threat_color_offtank:SetValue(unpack(O.db.threat_color_offtank));
