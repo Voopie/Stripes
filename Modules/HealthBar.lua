@@ -147,17 +147,30 @@ local function UpdateOverlayHealthBarTexture(unitframe)
 end
 
 -- Execution
-local function Execution_Start(unitframe)
-    unitframe.healthBar:SetStatusBarColor(DB.EXECUTION_COLOR[1], DB.EXECUTION_COLOR[2], DB.EXECUTION_COLOR[3], DB.EXECUTION_COLOR[4]);
+local function Execution_Start(unitframe, onlyGlow)
+    if not onlyGlow then
+        local color = DB.EXECUTION_COLOR;
+        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+        if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+            unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+        end
+    end
 
     if DB.EXECUTION_GLOW then
+        if not unitframe.healthBar.executionGlow then
+            LCG_PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_EXECUTION');
+            unitframe.healthBar.executionGlow = true;
+        end
+    else
         LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
-        LCG_PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_EXECUTION');
+        unitframe.healthBar.executionGlow = nil;
     end
 end
 
 local function Execution_Stop(unitframe)
     LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
+    unitframe.healthBar.executionGlow = nil;
 end
 
 -- Custom Health Bar Color
@@ -364,7 +377,7 @@ local function UpdateRaidTarget(unitframe)
 end
 
 local function UpdateAuraColor(unitframe)
-    if unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored then
+    if unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored then
         unitframe.healthBar.auraColored = nil;
     else
         unitframe.healthBar.auraColored = UpdateAurasColor(unitframe);
@@ -418,17 +431,21 @@ function Module.UpdateHealthBar(unitframe)
     UpdateAuraColor(unitframe);
 
     if unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored or unitframe.healthBar.auraColored then
+        if DB.EXECUTION_ENABLED and (unitframe.data.healthPer <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= DB.EXECUTION_HIGH_PERCENT)) then
+            Execution_Start(unitframe, true);
+        else
+            Execution_Stop(unitframe);
+        end
+
         return;
     end
-
-    -- Stop execution glow
-    Execution_Stop(unitframe);
 
     UpdateHealthColor(unitframe);
 
     if DB.EXECUTION_ENABLED and (unitframe.data.healthPer <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= DB.EXECUTION_HIGH_PERCENT)) then
         Execution_Start(unitframe);
     else
+        Execution_Stop(unitframe);
         Threat_UpdateColor(unitframe);
     end
 end
