@@ -324,10 +324,6 @@ O.frame.Main:SetPosition('TOPLEFT', O.frame.TopBar, 'BOTTOMLEFT', 0, 0);
 O.frame.Main:SetPosition('BOTTOMRIGHT', O.frame, 'BOTTOMRIGHT', 0, 0);
 O.frame.Main:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
 O.frame.Main:SetBackdropColor(0.1, 0.1, 0.1, 1);
-O.frame.Main:EnableMouse(true);
-O.frame.Main:RegisterForDrag('LeftButton');
-O.frame.Main:SetScript('OnDragStart', function() O.frame:StartMoving(); end);
-O.frame.Main:SetScript('OnDragStop', function() O.frame:StopMovingOrSizing(); end);
 
 O.frame.Left = Mixin(CreateFrame('Frame', nil, O.frame.Main, 'BackdropTemplate'), E.PixelPerfectMixin);
 O.frame.Left:SetPosition('TOPLEFT', O.frame.Main, 'TOPLEFT', 0, 0);
