@@ -1200,8 +1200,8 @@ panel.Load = function(self)
 
     self.auras_expire_glow_type = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
     self.auras_expire_glow_type:SetPosition('LEFT', self.auras_expire_glow_color, 'RIGHT', 12, 0);
-    self.auras_expire_glow_type:SetSize(220, 20);
-    self.auras_expire_glow_type:SetList(O.Lists.glow_type);
+    self.auras_expire_glow_type:SetSize(140, 20);
+    self.auras_expire_glow_type:SetList(O.Lists.glow_type_short);
     self.auras_expire_glow_type:SetTooltip(L['OPTIONS_AURAS_EXPIRE_GLOW_TYPE_TOOLTIP']);
     self.auras_expire_glow_type:AddToSearch(button, L['OPTIONS_AURAS_EXPIRE_GLOW_TYPE_TOOLTIP'], self.Tabs[1]);
     self.auras_expire_glow_type:SetValue(O.db.auras_expire_glow_type);
@@ -1213,7 +1213,7 @@ panel.Load = function(self)
 
     self.auras_expire_glow_percent = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.auras_expire_glow_percent:SetPosition('LEFT', self.auras_expire_glow_type, 'RIGHT', 12, 0);
-    self.auras_expire_glow_percent:SetW(100);
+    self.auras_expire_glow_percent:SetW(140);
     self.auras_expire_glow_percent:SetValues(O.db.auras_expire_glow_percent, 1, 100, 1);
     self.auras_expire_glow_percent:SetTooltip(L['OPTIONS_AURAS_EXPIRE_GLOW_PERCENT_TOOLTIP']);
     self.auras_expire_glow_percent:AddToSearch(button, L['OPTIONS_AURAS_EXPIRE_GLOW_PERCENT_TOOLTIP'], self.Tabs[1]);
