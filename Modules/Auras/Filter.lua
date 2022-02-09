@@ -8,7 +8,7 @@ local ipairs = ipairs;
 local CooldownFrame_Set, AuraUtil_ForEachAura = CooldownFrame_Set, AuraUtil.ForEachAura;
 
 -- Local Config
-local IS_ACTIVE, ENABLED, BLACKLIST_ENABLED, SPACING_X, AURAS_DIRECTION;
+local IS_ACTIVE, ENABLED, BLACKLIST_ENABLED, SPACING_X, AURAS_DIRECTION, AURAS_MAX_DISPLAY;
 local DRAW_EDGE;
 
 local units = {
@@ -135,7 +135,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
 
             index = index + 1;
 
-            return buffIndex > BUFF_MAX_DISPLAY;
+            return buffIndex > AURAS_MAX_DISPLAY;
         end);
 
         for i = buffIndex, BUFF_MAX_DISPLAY do
@@ -188,6 +188,7 @@ function Module:UpdateLocalConfig()
     SPACING_X         = O.db.auras_spacing_x or 4;
     DRAW_EDGE         = O.db.auras_draw_edge;
     AURAS_DIRECTION   = O.db.auras_direction;
+    AURAS_MAX_DISPLAY = O.db.auras_max_display;
 
     UpdateBlacklistCache();
 end

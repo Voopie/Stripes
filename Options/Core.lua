@@ -258,7 +258,7 @@ O.Lists = {
     },
 };
 
--- ~528
+-- ~533
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -695,6 +695,7 @@ O.DefaultValues = {
     auras_draw_swipe               = true,
     auras_draw_edge                = true,
     auras_direction                = 1,
+    auras_max_display              = 32, -- BUFF_MAX_DISPLAY
 
     auras_countdown_enabled     = true,
     auras_cooldown_font_value     = 'BigNoodleToo Titling',
@@ -748,6 +749,7 @@ O.DefaultValues = {
     auras_spellsteal_count_offset_y       = -2,
     auras_spellsteal_count_color          = { 1, 1, 1, 1 },
     auras_spellsteal_direction            = 1,
+    auras_spellsteal_max_display          = 32,
 
     auras_mythicplus_enabled              = true,
     auras_mythicplus_draw_swipe           = true,
@@ -777,6 +779,7 @@ O.DefaultValues = {
     auras_mythicplus_border_color         = { 0.80, 0.05, 0.05, 1 },
     auras_mythicplus_spacing_x            = 4,
     auras_mythicplus_direction            = 2,
+    auras_mythicplus_max_display          = 32,
 
     auras_important_enabled                = true,
     auras_important_draw_swipe             = true,
@@ -809,6 +812,7 @@ O.DefaultValues = {
     auras_important_castername_font_flag   = 1, -- NONE
     auras_important_castername_font_shadow = true,
     auras_important_spacing_x = 2,
+    auras_important_max_display = 3,
 
     auras_custom_enabled              = true,
     auras_custom_draw_swipe           = true,
@@ -841,6 +845,7 @@ O.DefaultValues = {
     auras_custom_to_blacklist         = true,
     auras_custom_spacing_x = 2,
     auras_custom_direction = 2,
+    auras_custom_max_display = 32,
 
     custom_color_enabled = false,
     custom_color_data    = {},

@@ -31,12 +31,12 @@ local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
 local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y, BUFFFRAME_OFFSET_Y;
+local AURAS_MAX_DISPLAY;
 
 local StripesAurasImportantCooldownFont = CreateFont('StripesAurasImportantCooldownFont');
 local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCountFont');
 local StripesAurasImportantCasterFont   = CreateFont('StripesAurasImportantCasterFont');
 
-local MAX_AURAS = 3;
 local MAX_OFFSET_Y = -9;
 local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HARMFUL';
@@ -217,7 +217,7 @@ local function Update(unitframe)
 
         index = index + 1;
 
-        return buffIndex >= MAX_AURAS;
+        return buffIndex >= AURAS_MAX_DISPLAY;
     end);
 
     for i = buffIndex, BUFF_MAX_DISPLAY do
@@ -360,6 +360,8 @@ function Module:UpdateLocalConfig()
     NAME_TEXT_POSITION_V = O.db.name_text_position_v;
     NAME_TEXT_OFFSET_Y   = O.db.name_text_offset_y;
     BUFFFRAME_OFFSET_Y   = O.db.auras_offset_y;
+
+    AURAS_MAX_DISPLAY = O.db.auras_important_max_display;
 
     UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
     UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);

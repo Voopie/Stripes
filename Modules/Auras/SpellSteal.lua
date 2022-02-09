@@ -27,7 +27,7 @@ local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
-local AURAS_DIRECTION;
+local AURAS_DIRECTION, AURAS_MAX_DISPLAY;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -203,7 +203,7 @@ local function Update(unitframe)
 
         index = index + 1;
 
-        return buffIndex > BUFF_MAX_DISPLAY;
+        return buffIndex > AURAS_MAX_DISPLAY;
     end);
 
     for i = buffIndex, BUFF_MAX_DISPLAY do
@@ -373,6 +373,7 @@ function Module:UpdateLocalConfig()
     DRAW_SWIPE = O.db.auras_spellsteal_draw_swipe;
 
     AURAS_DIRECTION = O.db.auras_spellsteal_direction;
+    AURAS_MAX_DISPLAY = O.db.auras_spellsteal_max_display;
 
     UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
     UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);

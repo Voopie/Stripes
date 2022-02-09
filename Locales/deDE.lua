@@ -28,6 +28,7 @@ L['CUSTOM_COLOR_CATEGORY'] = 'Benutzerdefinierte Farbkategorie';
 L['NOT_CHOSEN'] = 'Nicht ausgewählt';
 L['SPACING'] = 'Abstände';
 L['BACKGROUND'] = 'Hintergrund';
+L['MAX_SHORT'] = 'Max .';
 
 L['MISSING_TEXTURE'] = 'Fehlende Textur';
 L['MISSING_FONT'] = 'Fehlende Schriftart';
@@ -861,6 +862,7 @@ L['OPTIONS_AURAS_DRAW_EDGE'] = 'Fläche';
 L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) bei Auren anzeigen';
 L['OPTIONS_AURAS_DIRECTION'] = 'Richtung des Wachstums';
 L['OPTIONS_AURAS_DIRECTION_TOOLTIP'] = 'Wachstumsrichtung der Auren';
+L['OPTIONS_AURAS_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl der angezeigten Auren';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Auren anzeigen, die gebannt werden können';
@@ -901,6 +903,7 @@ L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE'] = 'Fläche';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) der zerstreubaren Auren anzeigen';
 L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION'] = 'Richtung des Wachstums';
 L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION_TOOLTIP'] = 'Zerstörbare Auren Wachstumsrichtung';
+L['OPTIONS_AURAS_SPELLSTEAL_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl der angezeigten zerstörbaren Auren';
 
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED_TOOLTIP'] = 'Zeige spezielle Auren, die in mythischen+ Dungeons angezeigt werden';
@@ -935,6 +938,7 @@ L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE'] = 'Fläche';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von mythischen+ Auren anzeigen';
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION'] = 'Richtung des Wachstums';
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Mythische+ Auren Wachstumsrichtung';
+L['OPTIONS_AURAS_MYTHICPLUS_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl von angezeigten mythischen+ Auren';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Wichtige Auren anzeigen (Betäubung, Massenkontrolle, Desorientierung usw.)';
@@ -972,6 +976,7 @@ L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE'] = 'Dimmen';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) von wichtigen Auren anzeigen';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE'] = 'Fläche';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von wichtigen Auren anzeigen';
+L['OPTIONS_AURAS_IMPORTANT_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl der angezeigten wichtigen Auren';
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Auren anzeigen';
@@ -1018,6 +1023,7 @@ L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE'] = 'Fläche';
 L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von benutzerdefinierten Auren anzeigen';
 L['OPTIONS_AURAS_CUSTOM_DIRECTION'] = 'Richtung des Wachstums';
 L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Benutzerdefinierte Auren Wachstumsrichtung';
+L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl von angezeigten benutzerdefinierten Auren';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Aktivieren';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Farben der Gesundheitsleiste aktivieren';

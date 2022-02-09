@@ -28,6 +28,7 @@ L['CUSTOM_COLOR_CATEGORY'] = 'Своя цветовая категория';
 L['NOT_CHOSEN'] = 'Не выбрано';
 L['SPACING'] = 'Промежуток';
 L['BACKGROUND'] = 'Фон';
+L['MAX_SHORT'] = 'Макс.';
 
 L['MISSING_TEXTURE'] = 'Нет текстуры';
 L['MISSING_FONT'] = 'Нет шрифта';
@@ -861,6 +862,7 @@ L['OPTIONS_AURAS_DRAW_EDGE'] = 'Грань';
 L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на аурах';
 L['OPTIONS_AURAS_DIRECTION'] = 'Направление роста';
 L['OPTIONS_AURAS_DIRECTION_TOOLTIP'] = 'Направление роста аур';
+L['OPTIONS_AURAS_MAX_DISPLAY_TOOLTIP'] = 'Максимальное количество отображаемых аур';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Показывать ауры, которые можно развеять';
@@ -901,6 +903,7 @@ L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE'] = 'Грань';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на развеиваемых аурах';
 L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION'] = 'Направление роста';
 L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION_TOOLTIP'] = 'Направление роста развеиваемых аур';
+L['OPTIONS_AURAS_SPELLSTEAL_MAX_DISPLAY_TOOLTIP'] = 'Максимальное количество отображаемых развеиваемых аур';
 
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED_TOOLTIP'] = 'Показывать особые ауры, которые будут показываться в эпохальных+ подземельях';
@@ -935,6 +938,7 @@ L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE'] = 'Грань';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на эпохальных+ аурах';
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION'] = 'Направление роста';
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Направление роста эпохальных+ аур';
+L['OPTIONS_AURAS_MYTHICPLUS_MAX_DISPLAY_TOOLTIP'] = 'Максимальное количество отображаемых эпохальных+ аур';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Показывать важные ауры (оглушения, контроль и т.п.)';
@@ -972,6 +976,7 @@ L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE'] = 'Затемнение';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффект затемнения (swipe) на важных аурах';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE'] = 'Грань';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на важных аурах';
+L['OPTIONS_AURAS_IMPORTANT_MAX_DISPLAY_TOOLTIP'] = 'Максимальное количество отображаемых важных аур';
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Показывать пользовательские ауры';
@@ -1018,6 +1023,7 @@ L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE'] = 'Грань';
 L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на пользовательских аурах';
 L['OPTIONS_AURAS_CUSTOM_DIRECTION'] = 'Направление роста';
 L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Направление роста пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Максимальное количество отображаемых пользовательских аур';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';

@@ -1244,9 +1244,21 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.auras_masque_support, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.auras_max_display = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.auras_max_display:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_max_display:SetW(104);
+    self.auras_max_display:SetValues(O.db.auras_max_display, 1, 32, 1);
+    self.auras_max_display:SetLabel(L['MAX_SHORT']);
+    self.auras_max_display:SetTooltip(L['OPTIONS_AURAS_MAX_DISPLAY_TOOLTIP']);
+    self.auras_max_display:AddToSearch(button, L['OPTIONS_AURAS_MAX_DISPLAY_TOOLTIP'], self.Tabs[1]);
+    self.auras_max_display.OnValueChangedCallback = function(_, value)
+        O.db.auras_max_display = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.auras_spacing_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.auras_spacing_x:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
-    self.auras_spacing_x:SetW(133);
+    self.auras_spacing_x:SetPosition('LEFT', self.auras_max_display, 'RIGHT', 16, 0);
+    self.auras_spacing_x:SetW(104);
     self.auras_spacing_x:SetValues(O.db.auras_spacing_x, 0, 20, 1);
     self.auras_spacing_x:SetLabel(L['SPACING']);
     self.auras_spacing_x:SetTooltip(L['OPTIONS_AURAS_SPACING_X_TOOLTIP']);
@@ -1258,7 +1270,7 @@ panel.Load = function(self)
 
     self.auras_scale = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.auras_scale:SetPosition('LEFT', self.auras_spacing_x, 'RIGHT', 16, 0);
-    self.auras_scale:SetW(133);
+    self.auras_scale:SetW(104);
     self.auras_scale:SetValues(O.db.auras_scale, 0.25, 3, 0.05);
     self.auras_scale:SetLabel(L['SCALE']);
     self.auras_scale:SetTooltip(L['OPTIONS_AURAS_SCALE_TOOLTIP']);
@@ -1270,7 +1282,7 @@ panel.Load = function(self)
 
     self.auras_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.auras_offset_x:SetPosition('LEFT', self.auras_scale, 'RIGHT', 16, 0);
-    self.auras_offset_x:SetW(133.5);
+    self.auras_offset_x:SetW(104);
     self.auras_offset_x:SetValues(O.db.auras_offset_x, -200, 200, 1);
     self.auras_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.auras_offset_x:SetTooltip(L['OPTIONS_AURAS_OFFSET_X_TOOLTIP']);
@@ -1282,7 +1294,7 @@ panel.Load = function(self)
 
     self.auras_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.auras_offset_y:SetPosition('LEFT', self.auras_offset_x, 'RIGHT', 16, 0);
-    self.auras_offset_y:SetW(133.5);
+    self.auras_offset_y:SetW(104);
     self.auras_offset_y:SetValues(O.db.auras_offset_y, -200, 200, 1);
     self.auras_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_offset_y:SetTooltip(L['OPTIONS_AURAS_OFFSET_Y_TOOLTIP']);
@@ -1293,7 +1305,7 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_spacing_x, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_max_display, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_countdown_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -1651,9 +1663,21 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_direction, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.auras_spellsteal_max_display = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
+    self.auras_spellsteal_max_display:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_spellsteal_max_display:SetW(104);
+    self.auras_spellsteal_max_display:SetValues(O.db.auras_spellsteal_max_display, 1, 32, 1);
+    self.auras_spellsteal_max_display:SetLabel(L['MAX_SHORT']);
+    self.auras_spellsteal_max_display:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_MAX_DISPLAY_TOOLTIP']);
+    self.auras_spellsteal_max_display:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_MAX_DISPLAY_TOOLTIP'], self.Tabs[2]);
+    self.auras_spellsteal_max_display.OnValueChangedCallback = function(_, value)
+        O.db.auras_spellsteal_max_display = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.auras_spellsteal_spacing_x = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_spacing_x:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
-    self.auras_spellsteal_spacing_x:SetW(133);
+    self.auras_spellsteal_spacing_x:SetPosition('LEFT', self.auras_spellsteal_max_display, 'RIGHT', 16, 0);
+    self.auras_spellsteal_spacing_x:SetW(104);
     self.auras_spellsteal_spacing_x:SetValues(O.db.auras_spellsteal_spacing_x, 0, 20, 1);
     self.auras_spellsteal_spacing_x:SetLabel(L['SPACING']);
     self.auras_spellsteal_spacing_x:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_SPACING_X_TOOLTIP']);
@@ -1665,7 +1689,7 @@ panel.Load = function(self)
 
     self.auras_spellsteal_scale = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
     self.auras_spellsteal_scale:SetPosition('LEFT', self.auras_spellsteal_spacing_x, 'RIGHT', 16, 0);
-    self.auras_spellsteal_scale:SetW(133);
+    self.auras_spellsteal_scale:SetW(104);
     self.auras_spellsteal_scale:SetValues(O.db.auras_spellsteal_scale, 0.25, 4, 0.05);
     self.auras_spellsteal_scale:SetLabel(L['SCALE']);
     self.auras_spellsteal_scale:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_SCALE_TOOLTIP']);
@@ -1677,7 +1701,7 @@ panel.Load = function(self)
 
     self.auras_spellsteal_offset_x = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
     self.auras_spellsteal_offset_x:SetPosition('LEFT', self.auras_spellsteal_scale, 'RIGHT', 16, 0);
-    self.auras_spellsteal_offset_x:SetW(133.5);
+    self.auras_spellsteal_offset_x:SetW(104);
     self.auras_spellsteal_offset_x:SetValues(O.db.auras_spellsteal_offset_x, -200, 200, 1);
     self.auras_spellsteal_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.auras_spellsteal_offset_x:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_X_TOOLTIP']);
@@ -1689,7 +1713,7 @@ panel.Load = function(self)
 
     self.auras_spellsteal_offset_y = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
     self.auras_spellsteal_offset_y:SetPosition('LEFT', self.auras_spellsteal_offset_x, 'RIGHT', 16, 0);
-    self.auras_spellsteal_offset_y:SetW(133.5);
+    self.auras_spellsteal_offset_y:SetW(104);
     self.auras_spellsteal_offset_y:SetValues(O.db.auras_spellsteal_offset_y, -200, 200, 1);
     self.auras_spellsteal_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_spellsteal_offset_y:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_OFFSET_Y_TOOLTIP']);
@@ -1700,7 +1724,7 @@ panel.Load = function(self)
     end
 
     self.auras_spellsteal_static_position = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_static_position:SetPosition('TOPLEFT', self.auras_spellsteal_spacing_x, 'BOTTOMLEFT', 0, -14);
+    self.auras_spellsteal_static_position:SetPosition('TOPLEFT', self.auras_spellsteal_max_display, 'BOTTOMLEFT', 0, -14);
     self.auras_spellsteal_static_position:SetLabel(L['OPTIONS_AURAS_SPELLSTEAL_STATIC_POSITION']);
     self.auras_spellsteal_static_position:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_STATIC_POSITION_TOOLTIP']);
     self.auras_spellsteal_static_position:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_STATIC_POSITION_TOOLTIP'], self.Tabs[2]);
@@ -2015,9 +2039,21 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_direction, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.auras_mythicplus_max_display = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_max_display:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_mythicplus_max_display:SetW(104);
+    self.auras_mythicplus_max_display:SetValues(O.db.auras_mythicplus_max_display, 1, 32, 1);
+    self.auras_mythicplus_max_display:SetLabel(L['MAX_SHORT']);
+    self.auras_mythicplus_max_display:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_MAX_DISPLAY_TOOLTIP']);
+    self.auras_mythicplus_max_display:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_MAX_DISPLAY_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_max_display.OnValueChangedCallback = function(_, value)
+        O.db.auras_mythicplus_max_display = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.auras_mythicplus_spacing_x = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_spacing_x:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
-    self.auras_mythicplus_spacing_x:SetW(133);
+    self.auras_mythicplus_spacing_x:SetPosition('LEFT', self.auras_mythicplus_max_display, 'RIGHT', 16, 0);
+    self.auras_mythicplus_spacing_x:SetW(104);
     self.auras_mythicplus_spacing_x:SetValues(O.db.auras_mythicplus_spacing_x, 0, 20, 1);
     self.auras_mythicplus_spacing_x:SetLabel(L['SPACING']);
     self.auras_mythicplus_spacing_x:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_SPACING_X_TOOLTIP']);
@@ -2029,7 +2065,7 @@ panel.Load = function(self)
 
     self.auras_mythicplus_scale = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
     self.auras_mythicplus_scale:SetPosition('LEFT', self.auras_mythicplus_spacing_x, 'RIGHT', 16, 0);
-    self.auras_mythicplus_scale:SetW(133);
+    self.auras_mythicplus_scale:SetW(104);
     self.auras_mythicplus_scale:SetValues(O.db.auras_mythicplus_scale, 0.25, 4, 0.05);
     self.auras_mythicplus_scale:SetLabel(L['SCALE']);
     self.auras_mythicplus_scale:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_SCALE_TOOLTIP']);
@@ -2041,7 +2077,7 @@ panel.Load = function(self)
 
     self.auras_mythicplus_offset_x = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
     self.auras_mythicplus_offset_x:SetPosition('LEFT', self.auras_mythicplus_scale, 'RIGHT', 16, 0);
-    self.auras_mythicplus_offset_x:SetW(133.5);
+    self.auras_mythicplus_offset_x:SetW(104);
     self.auras_mythicplus_offset_x:SetValues(O.db.auras_mythicplus_offset_x, -200, 200, 1);
     self.auras_mythicplus_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.auras_mythicplus_offset_x:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_X_TOOLTIP']);
@@ -2053,7 +2089,7 @@ panel.Load = function(self)
 
     self.auras_mythicplus_offset_y = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
     self.auras_mythicplus_offset_y:SetPosition('LEFT', self.auras_mythicplus_offset_x, 'RIGHT', 16, 0);
-    self.auras_mythicplus_offset_y:SetW(133.5);
+    self.auras_mythicplus_offset_y:SetW(104);
     self.auras_mythicplus_offset_y:SetValues(O.db.auras_mythicplus_offset_y, -200, 200, 1);
     self.auras_mythicplus_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_mythicplus_offset_y:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_OFFSET_Y_TOOLTIP']);
@@ -2064,7 +2100,7 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_spacing_x, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_max_display, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_mythicplus_countdown_enabled = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
@@ -2341,9 +2377,21 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.auras_important_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.auras_important_max_display = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_max_display:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_important_max_display:SetW(104);
+    self.auras_important_max_display:SetValues(O.db.auras_important_max_display, 1, 32, 1);
+    self.auras_important_max_display:SetLabel(L['MAX_SHORT']);
+    self.auras_important_max_display:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_MAX_DISPLAY_TOOLTIP']);
+    self.auras_important_max_display:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_MAX_DISPLAY_TOOLTIP'], self.Tabs[4]);
+    self.auras_important_max_display.OnValueChangedCallback = function(_, value)
+        O.db.auras_important_max_display = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.auras_important_spacing_x = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_spacing_x:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
-    self.auras_important_spacing_x:SetW(133);
+    self.auras_important_spacing_x:SetPosition('LEFT', self.auras_important_max_display, 'RIGHT', 16, 0);
+    self.auras_important_spacing_x:SetW(104);
     self.auras_important_spacing_x:SetValues(O.db.auras_important_spacing_x, 0, 20, 1);
     self.auras_important_spacing_x:SetLabel(L['SPACING']);
     self.auras_important_spacing_x:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_SPACING_X_TOOLTIP']);
@@ -2355,7 +2403,7 @@ panel.Load = function(self)
 
     self.auras_important_scale = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
     self.auras_important_scale:SetPosition('LEFT', self.auras_important_spacing_x, 'RIGHT', 16, 0);
-    self.auras_important_scale:SetW(133);
+    self.auras_important_scale:SetW(104);
     self.auras_important_scale:SetValues(O.db.auras_important_scale, 0.25, 4, 0.05);
     self.auras_important_scale:SetLabel(L['SCALE']);
     self.auras_important_scale:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_SCALE_TOOLTIP']);
@@ -2367,7 +2415,7 @@ panel.Load = function(self)
 
     self.auras_important_offset_x = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
     self.auras_important_offset_x:SetPosition('LEFT', self.auras_important_scale, 'RIGHT', 16, 0);
-    self.auras_important_offset_x:SetW(133.5);
+    self.auras_important_offset_x:SetW(104);
     self.auras_important_offset_x:SetValues(O.db.auras_important_offset_x, -200, 200, 1);
     self.auras_important_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.auras_important_offset_x:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_OFFSET_X_TOOLTIP']);
@@ -2379,7 +2427,7 @@ panel.Load = function(self)
 
     self.auras_important_offset_y = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
     self.auras_important_offset_y:SetPosition('LEFT', self.auras_important_offset_x, 'RIGHT', 16, 0);
-    self.auras_important_offset_y:SetW(133.5);
+    self.auras_important_offset_y:SetW(104);
     self.auras_important_offset_y:SetValues(O.db.auras_important_offset_y, -200, 200, 1);
     self.auras_important_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_important_offset_y:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_OFFSET_Y_TOOLTIP']);
@@ -2390,7 +2438,7 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_important_spacing_x, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_important_max_display, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_important_countdown_enabled = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
@@ -2754,9 +2802,21 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.auras_custom_direction, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.auras_custom_max_display = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
+    self.auras_custom_max_display:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
+    self.auras_custom_max_display:SetW(104);
+    self.auras_custom_max_display:SetValues(O.db.auras_custom_max_display, 1, 32, 1);
+    self.auras_custom_max_display:SetLabel(L['MAX_SHORT']);
+    self.auras_custom_max_display:SetTooltip(L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP']);
+    self.auras_custom_max_display:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'], self.Tabs[5]);
+    self.auras_custom_max_display.OnValueChangedCallback = function(_, value)
+        O.db.auras_custom_max_display = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.auras_custom_spacing_x = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_spacing_x:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -18);
-    self.auras_custom_spacing_x:SetW(133);
+    self.auras_custom_spacing_x:SetPosition('LEFT', self.auras_custom_max_display, 'RIGHT', 16, 0);
+    self.auras_custom_spacing_x:SetW(104);
     self.auras_custom_spacing_x:SetValues(O.db.auras_custom_spacing_x, 0, 20, 1);
     self.auras_custom_spacing_x:SetLabel(L['SPACING']);
     self.auras_custom_spacing_x:SetTooltip(L['OPTIONS_AURAS_CUSTOM_SPACING_X_TOOLTIP']);
@@ -2768,7 +2828,7 @@ panel.Load = function(self)
 
     self.auras_custom_scale = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
     self.auras_custom_scale:SetPosition('LEFT', self.auras_custom_spacing_x, 'RIGHT', 16, 0);
-    self.auras_custom_scale:SetW(133);
+    self.auras_custom_scale:SetW(104);
     self.auras_custom_scale:SetValues(O.db.auras_custom_scale, 0.25, 4, 0.05);
     self.auras_custom_scale:SetLabel(L['SCALE']);
     self.auras_custom_scale:SetTooltip(L['OPTIONS_AURAS_CUSTOM_SCALE_TOOLTIP']);
@@ -2780,7 +2840,7 @@ panel.Load = function(self)
 
     self.auras_custom_offset_x = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
     self.auras_custom_offset_x:SetPosition('LEFT', self.auras_custom_scale, 'RIGHT', 16, 0);
-    self.auras_custom_offset_x:SetW(133.5);
+    self.auras_custom_offset_x:SetW(104);
     self.auras_custom_offset_x:SetValues(O.db.auras_custom_offset_x, -200, 200, 1);
     self.auras_custom_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.auras_custom_offset_x:SetTooltip(L['OPTIONS_AURAS_CUSTOM_OFFSET_X_TOOLTIP']);
@@ -2792,7 +2852,7 @@ panel.Load = function(self)
 
     self.auras_custom_offset_y = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
     self.auras_custom_offset_y:SetPosition('LEFT', self.auras_custom_offset_x, 'RIGHT', 16, 0);
-    self.auras_custom_offset_y:SetW(133.5);
+    self.auras_custom_offset_y:SetW(104);
     self.auras_custom_offset_y:SetValues(O.db.auras_custom_offset_y, -200, 200, 1);
     self.auras_custom_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.auras_custom_offset_y:SetTooltip(L['OPTIONS_AURAS_CUSTOM_OFFSET_Y_TOOLTIP']);
@@ -2803,7 +2863,7 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_custom_spacing_x, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_custom_max_display, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_custom_countdown_enabled = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);

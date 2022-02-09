@@ -28,6 +28,7 @@ L['CUSTOM_COLOR_CATEGORY'] = 'Custom color category';
 L['NOT_CHOSEN'] = 'Not chosen';
 L['SPACING'] = 'Spacing';
 L['BACKGROUND'] = 'Background';
+L['MAX_SHORT'] = 'Max';
 
 L['MISSING_TEXTURE'] = 'Missing texture';
 L['MISSING_FONT'] = 'Missing font';
@@ -861,6 +862,7 @@ L['OPTIONS_AURAS_DRAW_EDGE'] = 'Edge';
 L['OPTIONS_AURAS_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on auras';
 L['OPTIONS_AURAS_DIRECTION'] = 'Growth direction';
 L['OPTIONS_AURAS_DIRECTION_TOOLTIP'] = 'Auras growth direction';
+L['OPTIONS_AURAS_MAX_DISPLAY_TOOLTIP'] = 'Maximum number of displayed auras';
 
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_SPELLSTEAL_ENABLED_TOOLTIP'] = 'Show auras that can be dispelled';
@@ -901,6 +903,7 @@ L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE'] = 'Edge';
 L['OPTIONS_AURAS_SPELLSTEAL_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on dispellable auras';
 L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION'] = 'Growth direction';
 L['OPTIONS_AURAS_SPELLSTEAL_DIRECTION_TOOLTIP'] = 'Dispellable auras growth direction';
+L['OPTIONS_AURAS_SPELLSTEAL_MAX_DISPLAY_TOOLTIP'] = 'Maximum number of displayed dispellable auras';
 
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_MYTHICPLUS_ENABLED_TOOLTIP'] = 'Show special auras that will be shown in mythic+ dungeons';
@@ -935,6 +938,7 @@ L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE'] = 'Edge';
 L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on mythic+ auras';
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION'] = 'Growth direction';
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Mythic+ auras growth direction';
+L['OPTIONS_AURAS_MYTHICPLUS_MAX_DISPLAY_TOOLTIP'] = 'Maximum number of displayed mythic+ auras';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Show important auras (stuns, crowd control, disorient etc)';
@@ -972,6 +976,7 @@ L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE'] = 'Swipe';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on important auras';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE'] = 'Edge';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on important auras';
+L['OPTIONS_AURAS_IMPORTANT_MAX_DISPLAY_TOOLTIP'] = 'Maximum number of displayed important auras';
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Show custom auras';
@@ -1018,6 +1023,7 @@ L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE'] = 'Edge';
 L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on custom auras';
 L['OPTIONS_AURAS_CUSTOM_DIRECTION'] = 'Growth direction';
 L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Custom auras growth direction';
+L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Maximum number of displayed custom auras';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Enable';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Enable custom health bar colors';

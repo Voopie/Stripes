@@ -25,7 +25,7 @@ local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
-local AURAS_DIRECTION;
+local AURAS_DIRECTION, AURAS_MAX_DISPLAY;
 
 local StripesAurasMythicPlusCooldownFont = CreateFont('StripesAurasMythicPlusCooldownFont');
 local StripesAurasMythicPlusCountFont    = CreateFont('StripesAurasMythicPlusCountFont');
@@ -228,6 +228,10 @@ local function Update(unitframe)
         aura:SetShown(true);
 
         buffIndex = buffIndex + 1;
+
+        if buffIndex > AURAS_MAX_DISPLAY then
+            break;
+        end
     end
 
     for i = buffIndex, BUFF_MAX_DISPLAY do
@@ -383,6 +387,7 @@ function Module:UpdateLocalConfig()
     DRAW_SWIPE = O.db.auras_mythicplus_draw_swipe;
 
     AURAS_DIRECTION = O.db.auras_mythicplus_direction;
+    AURAS_MAX_DISPLAY = O.db.auras_mythicplus_max_display;
 
     UpdateFontObject(StripesAurasMythicPlusCooldownFont, O.db.auras_mythicplus_cooldown_font_value, O.db.auras_mythicplus_cooldown_font_size, O.db.auras_mythicplus_cooldown_font_flag, O.db.auras_mythicplus_cooldown_font_shadow);
     UpdateFontObject(StripesAurasMythicPlusCountFont, O.db.auras_mythicplus_count_font_value, O.db.auras_mythicplus_count_font_size, O.db.auras_mythicplus_count_font_flag, O.db.auras_mythicplus_count_font_shadow);

@@ -24,7 +24,7 @@ local MASQUE_SUPPORT;
 local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
-local AURAS_DIRECTION;
+local AURAS_DIRECTION, AURAS_MAX_DISPLAY;
 
 local StripesAurasCustomCooldownFont = CreateFont('StripesAurasCustomCooldownFont');
 local StripesAurasCustomCountFont    = CreateFont('StripesAurasCustomCountFont');
@@ -217,6 +217,10 @@ local function Update(unitframe)
         aura:SetShown(true);
 
         buffIndex = buffIndex + 1;
+
+        if buffIndex > AURAS_MAX_DISPLAY then
+            break;
+        end
     end
 
     for i = buffIndex, BUFF_MAX_DISPLAY do
@@ -365,6 +369,7 @@ function Module:UpdateLocalConfig()
     DRAW_SWIPE = O.db.auras_custom_draw_swipe;
 
     AURAS_DIRECTION = O.db.auras_custom_direction;
+    AURAS_MAX_DISPLAY = O.db.auras_custom_max_display;
 
     UpdateFontObject(StripesAurasCustomCooldownFont, O.db.auras_custom_cooldown_font_value, O.db.auras_custom_cooldown_font_size, O.db.auras_custom_cooldown_font_flag, O.db.auras_custom_cooldown_font_shadow);
     UpdateFontObject(StripesAurasCustomCountFont, O.db.auras_custom_count_font_value, O.db.auras_custom_count_font_size, O.db.auras_custom_count_font_flag, O.db.auras_custom_count_font_shadow);
