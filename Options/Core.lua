@@ -420,7 +420,12 @@ O.DefaultValues = {
     current_target_custom_texture_value   = 'Blizzard Bar Fill',
     current_target_custom_texture_overlay = true,
     current_target_custom_texture_overlay_alpha = 0.25,
-    current_target_custom_texture_overlay_alpha_mode = 4,
+    current_target_custom_texture_overlay_alpha_mode = 4, -- ADD
+    current_focus_custom_texture_enabled = false,
+    current_focus_custom_texture_value   = 'Bars',
+    current_focus_custom_texture_overlay = true,
+    current_focus_custom_texture_overlay_alpha = 0.5,
+    current_focus_custom_texture_overlay_alpha_mode = 2, -- BLEND
 
     execution_enabled      = false,
     execution_low_percent  = 30,

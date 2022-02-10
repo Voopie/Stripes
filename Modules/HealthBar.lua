@@ -129,21 +129,13 @@ local function UpdateHealthColor(frame)
     if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
         frame.healthBar:SetStatusBarColor(r, g, b, a);
 
-        if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
+        if (DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY) or (DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY) then
             if frame.optionTable.colorHealthWithExtendedColors then
                 frame.selectionHighlight:SetVertexColor(r, g, b);
             else
                 frame.selectionHighlight:SetVertexColor(1, 1, 1);
             end
         end
-    end
-end
-
-local function UpdateOverlayHealthBarTexture(unitframe)
-    if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY and unitframe.selectionHighlight then
-        unitframe.selectionHighlight:SetBlendMode(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
-        unitframe.selectionHighlight:SetAlpha(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA);
-        unitframe.selectionHighlight:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
     end
 end
 
@@ -601,11 +593,31 @@ local function UpdateTexture(unitframe)
     if unitframe.data.unitType == 'SELF' then
         unitframe.healthBar:SetStatusBarTexture(DEFAULT_STATUSBAR_TEXTURE);
     else
-        if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and unitframe.data.isTarget then
+        if unitframe.data.isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED then
+            if DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY then
+                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
+
+                if unitframe.selectionHighlight then
+                    unitframe.selectionHighlight:SetBlendMode(DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
+                    unitframe.selectionHighlight:SetAlpha(DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA);
+                    unitframe.selectionHighlight:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE));
+                    unitframe.selectionHighlight:Show();
+                end
+            else
+                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE));
+
+                if unitframe.selectionHighlight then
+                    unitframe.selectionHighlight:Hide();
+                end
+            end
+        elseif unitframe.data.isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED then
             if DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
                 unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
 
                 if unitframe.selectionHighlight then
+                    unitframe.selectionHighlight:SetBlendMode(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
+                    unitframe.selectionHighlight:SetAlpha(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA);
+                    unitframe.selectionHighlight:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
                     unitframe.selectionHighlight:Show();
                 end
             else
@@ -669,8 +681,6 @@ function Module:UnitAdded(unitframe)
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
 
-    UpdateOverlayHealthBarTexture(unitframe);
-
     Module.UpdateHealthBar(unitframe);
 end
 
@@ -697,8 +707,6 @@ function Module:Update(unitframe)
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
-
-    UpdateOverlayHealthBarTexture(unitframe);
 
     Module.UpdateHealthBar(unitframe);
 end
@@ -859,7 +867,13 @@ function Module:UpdateLocalConfig()
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE         = O.db.current_target_custom_texture_value;
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY       = O.db.current_target_custom_texture_overlay;
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA = O.db.current_target_custom_texture_overlay_alpha;
-    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE = O.Lists.alpha_mode[O.db.current_target_custom_texture_overlay_alpha_mode] or 'BLEND';
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE = O.Lists.alpha_mode[O.db.current_target_custom_texture_overlay_alpha_mode] or 'ADD';
+
+    DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED       = O.db.current_focus_custom_texture_enabled;
+    DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE         = O.db.current_focus_custom_texture_value;
+    DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY       = O.db.current_focus_custom_texture_overlay;
+    DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA = O.db.current_focus_custom_texture_overlay_alpha;
+    DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE = O.Lists.alpha_mode[O.db.current_focus_custom_texture_overlay_alpha_mode] or 'BLEND';
 
     DB.HEALTH_BAR_BACKGROUND_TEXTURE  = O.db.health_bar_background_texture_value;
     DB.HEALTH_BAR_BACKGROUND_COLOR    = DB.HEALTH_BAR_BACKGROUND_COLOR or {};
@@ -895,8 +909,16 @@ end
 
 function Module:RAID_TARGET_UPDATE()
     for _, unitframe in pairs(NP) do
-        if unitframe:IsShown() then
+        if unitframe.isActive and unitframe:IsShown() then
             UpdateRaidTargetColor(unitframe);
+        end
+    end
+end
+
+function Module:PLAYER_FOCUS_CHANGED()
+    for _, unitframe in pairs(NP) do
+        if unitframe.isActive and unitframe:IsShown() then
+            UpdateTexture(unitframe);
         end
     end
 end
@@ -910,15 +932,16 @@ function Module:StartUp()
     self:RegisterEvent('PLAYER_ROLES_ASSIGNED'); -- Just to be sure...
 
     self:RegisterEvent('RAID_TARGET_UPDATE');
+    self:RegisterEvent('PLAYER_FOCUS_CHANGED');
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
-        if not DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or not DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
+        if (not DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and not DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED) or (not DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY and not DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY) then
             if unitframe.selectionHighlight then
                 unitframe.selectionHighlight:Hide();
             end
         end
 
-        if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED then
+        if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED then
             UpdateTexture(unitframe);
         end
 

@@ -726,7 +726,7 @@ panel.Load = function(self)
     self.current_target_custom_texture_overlay:SetPosition('TOPLEFT', self.current_target_custom_texture_enabled, 'BOTTOMLEFT', 0, -12);
     self.current_target_custom_texture_overlay:SetLabel(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY']);
     self.current_target_custom_texture_overlay:SetTooltip(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_TOOLTIP']);
-    self.current_target_custom_texture_overlay:AddToSearch(button, nil, self.Tabs[3]);
+    self.current_target_custom_texture_overlay:AddToSearch(button, L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_TOOLTIP'], self.Tabs[3]);
     self.current_target_custom_texture_overlay:SetChecked(O.db.current_target_custom_texture_overlay);
     self.current_target_custom_texture_overlay:SetEnabled(O.db.current_target_custom_texture_enabled);
     self.current_target_custom_texture_overlay.Callback = function(self)
@@ -758,6 +758,79 @@ panel.Load = function(self)
     self.current_target_custom_texture_overlay_alpha_mode:SetEnabled(O.db.current_target_custom_texture_enabled);
     self.current_target_custom_texture_overlay_alpha_mode.OnValueChangedCallback = function(_, value)
         O.db.current_target_custom_texture_overlay_alpha_mode = value;
+        Stripes:UpdateAll();
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['TargetIndicatorTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.current_target_custom_texture_overlay, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
+    self.current_focus_custom_texture_enabled = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_focus_custom_texture_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.current_focus_custom_texture_enabled:SetLabel(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED']);
+    self.current_focus_custom_texture_enabled:SetTooltip(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED_TOOLTIP']);
+    self.current_focus_custom_texture_enabled:AddToSearch(button, nil, self.Tabs[3]);
+    self.current_focus_custom_texture_enabled:SetChecked(O.db.current_focus_custom_texture_enabled);
+    self.current_focus_custom_texture_enabled.Callback = function(self)
+        O.db.current_focus_custom_texture_enabled = self:GetChecked();
+
+        panel.current_focus_custom_texture_value:SetEnabled(O.db.current_focus_custom_texture_enabled);
+        panel.current_focus_custom_texture_overlay:SetEnabled(O.db.current_focus_custom_texture_enabled);
+        panel.current_focus_custom_texture_overlay_alpha:SetEnabled(O.db.current_focus_custom_texture_enabled);
+        panel.current_focus_custom_texture_overlay_alpha_mode:SetEnabled(O.db.current_focus_custom_texture_enabled);
+
+        Stripes:UpdateAll();
+    end
+
+    self.current_focus_custom_texture_value = E.CreateDropdown('statusbar', self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_focus_custom_texture_value:SetPosition('LEFT', self.current_focus_custom_texture_enabled.Label, 'RIGHT', 12, 0);
+    self.current_focus_custom_texture_value:SetSize(200, 20);
+    self.current_focus_custom_texture_value:SetList(LSM:HashTable('statusbar'));
+    self.current_focus_custom_texture_value:SetValue(O.db.current_focus_custom_texture_value);
+    self.current_focus_custom_texture_value:SetTooltip(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE_TOOLTIP']);
+    self.current_focus_custom_texture_value:AddToSearch(button, L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE_TOOLTIP'], self.Tabs[3]);
+    self.current_focus_custom_texture_value:SetEnabled(O.db.current_focus_custom_texture_enabled);
+    self.current_focus_custom_texture_value.OnValueChangedCallback = function(_, value)
+        O.db.current_focus_custom_texture_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.current_focus_custom_texture_overlay = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_focus_custom_texture_overlay:SetPosition('TOPLEFT', self.current_focus_custom_texture_enabled, 'BOTTOMLEFT', 0, -12);
+    self.current_focus_custom_texture_overlay:SetLabel(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY']);
+    self.current_focus_custom_texture_overlay:SetTooltip(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_TOOLTIP']);
+    self.current_focus_custom_texture_overlay:AddToSearch(button, L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_TOOLTIP'], self.Tabs[3]);
+    self.current_focus_custom_texture_overlay:SetChecked(O.db.current_focus_custom_texture_overlay);
+    self.current_focus_custom_texture_overlay:SetEnabled(O.db.current_focus_custom_texture_enabled);
+    self.current_focus_custom_texture_overlay.Callback = function(self)
+        O.db.current_focus_custom_texture_overlay = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.current_focus_custom_texture_overlay_alpha = E.CreateSlider(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_focus_custom_texture_overlay_alpha:SetPosition('LEFT', self.current_focus_custom_texture_overlay.Label, 'RIGHT', 12, 0);
+    self.current_focus_custom_texture_overlay_alpha:SetW(140.5);
+    self.current_focus_custom_texture_overlay_alpha:SetLabel(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA']);
+    self.current_focus_custom_texture_overlay_alpha:SetLabelPosition('LEFT');
+    self.current_focus_custom_texture_overlay_alpha:SetTooltip(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP']);
+    self.current_focus_custom_texture_overlay_alpha:AddToSearch(button, L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP'], self.Tabs[3]);
+    self.current_focus_custom_texture_overlay_alpha:SetValues(O.db.current_focus_custom_texture_overlay_alpha, 0.1, 1, 0.05);
+    self.current_focus_custom_texture_overlay_alpha:SetEnabled(O.db.current_focus_custom_texture_enabled);
+    self.current_focus_custom_texture_overlay_alpha.OnValueChangedCallback = function(_, value)
+        O.db.current_focus_custom_texture_overlay_alpha = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.current_focus_custom_texture_overlay_alpha_mode = E.CreateDropdown('plain', self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_focus_custom_texture_overlay_alpha_mode:SetPosition('LEFT', self.current_focus_custom_texture_overlay_alpha, 'RIGHT', 12, 0);
+    self.current_focus_custom_texture_overlay_alpha_mode:SetSize(100, 20);
+    self.current_focus_custom_texture_overlay_alpha_mode:SetList(O.Lists.alpha_mode);
+    self.current_focus_custom_texture_overlay_alpha_mode:SetValue(O.db.current_focus_custom_texture_overlay_alpha_mode);
+    self.current_focus_custom_texture_overlay_alpha_mode:SetTooltip(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE_TOOLTIP']);
+    self.current_focus_custom_texture_overlay_alpha_mode:AddToSearch(button, L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE_TOOLTIP'], self.Tabs[3]);
+    self.current_focus_custom_texture_overlay_alpha_mode:SetEnabled(O.db.current_focus_custom_texture_enabled);
+    self.current_focus_custom_texture_overlay_alpha_mode.OnValueChangedCallback = function(_, value)
+        O.db.current_focus_custom_texture_overlay_alpha_mode = value;
         Stripes:UpdateAll();
     end
 

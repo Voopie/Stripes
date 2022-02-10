@@ -279,6 +279,10 @@ local function UpdateTarget(unitframe)
     unitframe.data.isTarget = (UnitGUID('target') or '') == unitframe.data.unitGUID;
 end
 
+local function UpdateFocus(unitframe)
+    unitframe.data.isFocus = unitframe.displayedUnit and UnitIsUnit(unitframe.displayedUnit, 'focus');
+end
+
 local function UpdateClassName(unitframe)
     unitframe.data.className = unitframe.data.isPlayer and UnitClassBase(unitframe.data.unit) or nil;
 end
@@ -584,6 +588,9 @@ local function ResetNameplateData(unitframe)
     unitframe.data.targetName = nil;
 
     unitframe.data.inCombatWithPlayer = nil;
+
+    unitframe.data.isTarget = nil;
+    unitframe.data.isFocus  = nil;
 end
 
 function Stripes:NAME_PLATE_UNIT_ADDED(unit)
@@ -612,6 +619,7 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
     UpdateClassification(NP[nameplate]);
     UpdateConnection(NP[nameplate]);
     UpdateTarget(NP[nameplate]);
+    UpdateFocus(NP[nameplate]);
 
     NP[nameplate].data.creatureType = not NP[nameplate].data.isPlayer and UnitCreatureType(unit) or nil;
     NP[nameplate].data.minus = UnitClassification(unit) == 'minus';
@@ -675,6 +683,14 @@ function Stripes:UNIT_FACTION(unit)
     UpdateLevel(NP[nameplate]);
 end
 
+function Stripes:PLAYER_FOCUS_CHANGED()
+    for _, unitframe in pairs(NP) do
+        if unitframe.isActive and unitframe:IsShown() then
+            UpdateFocus(unitframe);
+        end
+    end
+end
+
 function Stripes:PLAYER_LOGIN()
     CVarsUpdate();
 end
@@ -718,6 +734,7 @@ function Stripes:StartUp()
     self:RegisterEvent('UNIT_AURA');
     self:RegisterEvent('UNIT_LEVEL');
     self:RegisterEvent('UNIT_FACTION');
+    self:RegisterEvent('PLAYER_FOCUS_CHANGED');
 
     hooksecurefunc(C_CVar, 'SetCVar', HookSetCVar);
 
