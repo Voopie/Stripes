@@ -450,9 +450,21 @@ local function HookSetCVar(name, value)
     elseif name == 'nameplateShowEnemies' then
         O.frame.Right.Visibility.show_enemy:SetChecked(value == '1');
         O.db.show_enemy = value == '1';
+
+        O.frame.Right.Visibility.show_enemy_minions:SetEnabled(O.db.show_enemy);
+        O.frame.Right.Visibility.show_enemy_guardians:SetEnabled(O.db.show_enemy);
+        O.frame.Right.Visibility.show_enemy_minus:SetEnabled(O.db.show_enemy);
+        O.frame.Right.Visibility.show_enemy_pets:SetEnabled(O.db.show_enemy);
+        O.frame.Right.Visibility.show_enemy_totems:SetEnabled(O.db.show_enemy);
     elseif name == 'nameplateShowFriends' then
         O.frame.Right.Visibility.show_friendly:SetChecked(value == '1');
         O.db.show_friendly = value == '1';
+
+        O.frame.Right.Visibility.show_friendly_minions:SetEnabled(O.db.show_friendly);
+        O.frame.Right.Visibility.show_friendly_guardians:SetEnabled(O.db.show_friendly);
+        O.frame.Right.Visibility.show_friendly_npcs:SetEnabled(O.db.show_friendly);
+        O.frame.Right.Visibility.show_friendly_pets:SetEnabled(O.db.show_friendly);
+        O.frame.Right.Visibility.show_friendly_totems:SetEnabled(O.db.show_friendly);
     elseif name == 'nameplateShowSelf' then
         O.frame.Right.Visibility.show_personal:SetChecked(value == '1');
         O.db.show_personal = value == '1';
