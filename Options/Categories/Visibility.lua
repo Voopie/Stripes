@@ -413,7 +413,6 @@ panel.Load = function(self)
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
 
-    local LAST_show_enemy = O.db.show_enemy;
     self.show_enemy = E.CreateCheckButton(self.TabsFrames['EnemyTab'].Content);
     self.show_enemy:SetPosition('TOPLEFT', self.TabsFrames['EnemyTab'].Content, 'TOPLEFT', 0, -4);
     self.show_enemy:SetLabel(L['OPTIONS_VISIBILITY_SHOW_ENEMY']);
@@ -421,10 +420,11 @@ panel.Load = function(self)
     self.show_enemy:AddToSearch(button, L['OPTIONS_VISIBILITY_SHOW_ENEMY_TOOLTIP'], self.Tabs[2]);
     self.show_enemy:SetChecked(O.db.show_enemy);
     self.show_enemy:SetEnabled(not O.db.show_enemy_only_in_combat);
+    self.show_enemy.LastValue = O.db.show_enemy;
     self.show_enemy.Callback = function(self)
         O.db.show_enemy = self:GetChecked();
 
-        LAST_show_enemy = O.db.show_enemy;
+        self.LastValue = O.db.show_enemy;
 
         panel.show_enemy_minions:SetEnabled(O.db.show_enemy);
         panel.show_enemy_guardians:SetEnabled(O.db.show_enemy);
@@ -448,9 +448,9 @@ panel.Load = function(self)
 
         if O.db.show_enemy_only_in_combat then
             C_CVar.SetCVar('nameplateShowEnemies', 0);
-            panel.show_enemy:SetChecked(LAST_show_enemy);
+            panel.show_enemy:SetChecked(panel.show_enemy.LastValue);
         else
-            C_CVar.SetCVar('nameplateShowEnemies', LAST_show_enemy and 1 or 0);
+            C_CVar.SetCVar('nameplateShowEnemies', panel.show_enemy.LastValue and 1 or 0);
         end
 
         panel.show_enemy:SetEnabled(not O.db.show_enemy_only_in_combat);
@@ -529,7 +529,6 @@ panel.Load = function(self)
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
 
-    local LAST_show_friendly = O.db.show_friendly;
     self.show_friendly = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
     self.show_friendly:SetPosition('TOPLEFT', self.TabsFrames['FriendlyTab'].Content, 'TOPLEFT', 0, -4);
     self.show_friendly:SetLabel(L['OPTIONS_VISIBILITY_SHOW_FRIENDLY']);
@@ -537,10 +536,11 @@ panel.Load = function(self)
     self.show_friendly:AddToSearch(button, L['OPTIONS_VISIBILITY_SHOW_FRIENDLY_TOOLTIP'], self.Tabs[3]);
     self.show_friendly:SetChecked(O.db.show_friendly);
     self.show_friendly:SetEnabled(not O.db.show_friendly_only_in_combat);
+    self.show_friendly.LastValue = O.db.show_friendly;
     self.show_friendly.Callback = function(self)
         O.db.show_friendly = self:GetChecked();
 
-        LAST_show_friendly = O.db.show_friendly;
+        self.LastValue = O.db.show_friendly;
 
         panel.show_friendly_minions:SetEnabled(O.db.show_friendly);
         panel.show_friendly_guardians:SetEnabled(O.db.show_friendly);
@@ -564,9 +564,9 @@ panel.Load = function(self)
 
         if O.db.show_friendly_only_in_combat then
             C_CVar.SetCVar('nameplateShowFriends', 0);
-            panel.show_friendly:SetChecked(LAST_show_friendly);
+            panel.show_friendly:SetChecked(panel.show_friendly.LastValue);
         else
-            C_CVar.SetCVar('nameplateShowFriends', LAST_show_friendly and 1 or 0);
+            C_CVar.SetCVar('nameplateShowFriends', panel.show_friendly.LastValue and 1 or 0);
         end
 
         panel.show_friendly:SetEnabled(not O.db.show_friendly_only_in_combat);
