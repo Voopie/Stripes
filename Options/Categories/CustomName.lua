@@ -217,14 +217,25 @@ local function UpdateRow(frame)
     frame.tooltip = string.format(LIST_TOOLTIP_PATTERN, frame.npc_name, frame.npc_id);
 end
 
+local sortedData = {};
 panel.UpdateScroll = function()
     wipe(DataRows);
+    wipe(sortedData);
+
+    for _, data in pairs(O.db.custom_name_data) do
+        table.insert(sortedData, data);
+    end
+
+    table.sort(sortedData, function(a, b)
+        return a.new_name < b.new_name;
+    end);
+
     framePool:ReleaseAll();
 
     local index = 0;
     local frame, isNew;
 
-    for npc_id, data in pairs(O.db.custom_name_data) do
+    for _, data in ipairs(sortedData) do
         index = index + 1;
 
         frame, isNew = framePool:Acquire();
@@ -236,7 +247,7 @@ panel.UpdateScroll = function()
         end
 
         frame.index    = index;
-        frame.npc_id   = npc_id;
+        frame.npc_id   = data.npc_id;
         frame.npc_name = data.npc_name;
         frame.new_name = data.new_name;
         frame.enabled  = data.enabled;
