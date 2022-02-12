@@ -234,27 +234,44 @@ panel.UpdateScroll = function()
 
     local index = 0;
     local frame, isNew;
+    local found;
 
     for _, data in ipairs(sortedData) do
-        index = index + 1;
+        if panel.searchWordLower then
+            found = string.find(string.lower(data.npc_name), panel.searchWordLower, 1, true);
 
-        frame, isNew = framePool:Acquire();
+            if not found then
+                found = string.find(string.lower(data.new_name), panel.searchWordLower, 1, true);
+            end
 
-        table.insert(DataRows, frame);
-
-        if isNew then
-            CreateRow(frame);
+            if not found then
+                found = string.find(data.npc_id, panel.searchWordLower, 1, true);
+            end
+        else
+            found = true;
         end
 
-        frame.index    = index;
-        frame.npc_id   = data.npc_id;
-        frame.npc_name = data.npc_name;
-        frame.new_name = data.new_name;
-        frame.enabled  = data.enabled;
+        if found then
+            index = index + 1;
 
-        UpdateRow(frame);
+            frame, isNew = framePool:Acquire();
 
-        frame:SetShown(true);
+            table.insert(DataRows, frame);
+
+            if isNew then
+                CreateRow(frame);
+            end
+
+            frame.index    = index;
+            frame.npc_id   = data.npc_id;
+            frame.npc_name = data.npc_name;
+            frame.new_name = data.new_name;
+            frame.enabled  = data.enabled;
+
+            UpdateRow(frame);
+
+            frame:SetShown(true);
+        end
     end
 
     PixelUtil.SetSize(panel.CustomNameScrollArea.scrollChild, panel.CustomNameEditFrame:GetWidth(), panel.CustomNameEditFrame:GetHeight() - (panel.CustomNameEditFrame:GetHeight() % ROW_HEIGHT));
@@ -489,8 +506,55 @@ panel.Load = function(self)
         end
     end);
 
+    self.SearchEditBox = E.CreateEditBox(self);
+    self.SearchEditBox:SetPosition('TOPLEFT', EditBox, 'BOTTOMLEFT', 0, -11);
+    self.SearchEditBox:SetSize(160, 22);
+    self.SearchEditBox:SetUseLastValue(false);
+    self.SearchEditBox:SetInstruction(L['SEARCH']);
+    self.SearchEditBox:SetScript('OnEnterPressed', function(self)
+        panel.searchWordLower = string.lower(strtrim(self:GetText()) or '');
+
+        if panel.searchWordLower == '' then
+            panel.searchWordLower = nil;
+            panel.ResetSearchEditBox:SetShown(false);
+        end
+
+        if panel.searchWordLower then
+            panel.ResetSearchEditBox:SetShown(true);
+        end
+
+        panel.UpdateScroll();
+    end);
+    self.SearchEditBox.FocusGainedCallback = function()
+        panel.ResetSearchEditBox:SetShown(true);
+    end
+    self.SearchEditBox.FocusLostCallback = function(self)
+        panel.ResetSearchEditBox:SetShown(self:GetText() ~= '');
+    end
+    self.SearchEditBox.OnTextChangedCallback = function(self)
+        if self:GetText() ~= '' then
+            panel.ResetSearchEditBox:SetShown(true);
+        else
+            panel.ResetSearchEditBox:SetShown(false);
+        end
+    end
+
+    self.ResetSearchEditBox = E.CreateTextureButton(self.SearchEditBox, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.CROSS_WHITE);
+    self.ResetSearchEditBox:SetPosition('RIGHT', self.SearchEditBox, 'RIGHT', 0, 0);
+    self.ResetSearchEditBox:SetSize(12, 12);
+    self.ResetSearchEditBox:SetShown(false);
+    self.ResetSearchEditBox:SetScript('OnClick', function(self)
+        panel.searchWordLower = nil;
+
+        panel.SearchEditBox:SetText('');
+        panel.SearchEditBox.Instruction:SetShown(true);
+        panel:UpdateScroll();
+
+        self:SetShown(false);
+    end);
+
     self.CustomNameEditFrame = CreateFrame('Frame', nil, self, 'BackdropTemplate');
-    self.CustomNameEditFrame:SetPoint('TOPLEFT', EditBox, 'BOTTOMLEFT', -5, -8);
+    self.CustomNameEditFrame:SetPoint('TOPLEFT', self.SearchEditBox, 'BOTTOMLEFT', -5, -8);
     self.CustomNameEditFrame:SetPoint('BOTTOMRIGHT', O.frame.Right.CustomName, 'BOTTOMRIGHT', 0, 0);
     self.CustomNameEditFrame:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.CustomNameEditFrame:SetBackdropColor(0.15, 0.15, 0.15, 1);
@@ -536,7 +600,7 @@ panel.Load = function(self)
     self.ListButtonPool = CreateFramePool('Button', self.ListScrollChild, 'BackdropTemplate');
 
     self.ProfilesDropdown = E.CreateDropdown('plain', self);
-    self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.CustomNameEditFrame, 'TOPRIGHT', 0, 8);
+    self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.CustomNameEditFrame, 'TOPRIGHT', 0, 40);
     self.ProfilesDropdown:SetSize(157, 22);
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
         local index = S:GetModule('Options'):FindIndexByName(name);
