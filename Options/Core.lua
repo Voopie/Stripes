@@ -258,7 +258,7 @@ O.Lists = {
     },
 };
 
--- ~539
+-- ~542
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -421,6 +421,9 @@ O.DefaultValues = {
     current_target_custom_texture_overlay = true,
     current_target_custom_texture_overlay_alpha = 0.25,
     current_target_custom_texture_overlay_alpha_mode = 4, -- ADD
+    current_focus_health_bar_coloring = false,
+    current_focus_health_bar_color    = { 1, 1, 1, 1 },
+    current_focus_health_bar_use_class_color = false,
     current_focus_custom_texture_enabled = false,
     current_focus_custom_texture_value   = 'Bars',
     current_focus_custom_texture_overlay = true,

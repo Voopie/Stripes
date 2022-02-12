@@ -646,8 +646,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    local Delimiter = E.CreateDelimiter(self.TabsFrames['TargetIndicatorTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.target_glow_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.current_target_health_bar_coloring = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
-    self.current_target_health_bar_coloring:SetPosition('TOPLEFT', self.target_glow_enabled, 'BOTTOMLEFT', 0, -12);
+    self.current_target_health_bar_coloring:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.current_target_health_bar_coloring:SetLabel(L['OPTIONS_CURRENT_TARGET_HEALTH_BAR_COLORING']);
     self.current_target_health_bar_coloring:SetTooltip(L['OPTIONS_CURRENT_TARGET_HEALTH_BAR_COLORING_TOOLTIP']);
     self.current_target_health_bar_coloring:AddToSearch(button, nil, self.Tabs[3]);
@@ -688,12 +692,8 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    local Delimiter = E.CreateDelimiter(self.TabsFrames['TargetIndicatorTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.current_target_health_bar_coloring, 'BOTTOMLEFT', 0, -4);
-    Delimiter:SetW(self:GetWidth());
-
     self.current_target_custom_texture_enabled = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
-    self.current_target_custom_texture_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.current_target_custom_texture_enabled:SetPosition('TOPLEFT', self.current_target_health_bar_coloring, 'BOTTOMLEFT', 0, -12);
     self.current_target_custom_texture_enabled:SetLabel(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED']);
     self.current_target_custom_texture_enabled:SetTooltip(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED_TOOLTIP']);
     self.current_target_custom_texture_enabled:AddToSearch(button, nil, self.Tabs[3]);
@@ -765,8 +765,50 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.current_target_custom_texture_overlay, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
+    self.current_focus_health_bar_coloring = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_focus_health_bar_coloring:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.current_focus_health_bar_coloring:SetLabel(L['OPTIONS_CURRENT_FOCUS_HEALTH_BAR_COLORING']);
+    self.current_focus_health_bar_coloring:SetTooltip(L['OPTIONS_CURRENT_FOCUS_HEALTH_BAR_COLORING_TOOLTIP']);
+    self.current_focus_health_bar_coloring:AddToSearch(button, nil, self.Tabs[3]);
+    self.current_focus_health_bar_coloring:SetChecked(O.db.current_focus_health_bar_coloring);
+    self.current_focus_health_bar_coloring.Callback = function(self)
+        O.db.current_focus_health_bar_coloring = self:GetChecked();
+
+        panel.current_focus_health_bar_color:SetEnabled(O.db.current_focus_health_bar_coloring);
+        panel.current_focus_health_bar_use_class_color:SetEnabled(O.db.current_focus_health_bar_coloring);
+
+        Stripes:UpdateAll();
+    end
+
+    self.current_focus_health_bar_color = E.CreateColorPicker(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_focus_health_bar_color:SetPosition('LEFT', self.current_focus_health_bar_coloring.Label, 'RIGHT', 12, 0);
+    self.current_focus_health_bar_color:SetTooltip(L['OPTIONS_CURRENT_FOCUS_HEALTH_BAR_COLOR_TOOLTIP']);
+    self.current_focus_health_bar_color:AddToSearch(button, L['OPTIONS_CURRENT_FOCUS_HEALTH_BAR_COLOR_TOOLTIP'], self.Tabs[3]);
+    self.current_focus_health_bar_color:SetValue(unpack(O.db.current_focus_health_bar_color));
+    self.current_focus_health_bar_color:SetEnabled(O.db.current_focus_health_bar_coloring);
+    self.current_focus_health_bar_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.current_focus_health_bar_color[1] = r;
+        O.db.current_focus_health_bar_color[2] = g;
+        O.db.current_focus_health_bar_color[3] = b;
+        O.db.current_focus_health_bar_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.current_focus_health_bar_use_class_color = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.current_focus_health_bar_use_class_color:SetPosition('LEFT', self.current_focus_health_bar_color, 'RIGHT', 16, 0);
+    self.current_focus_health_bar_use_class_color:SetLabel(L['OPTIONS_CURRENT_FOCUS_HEALTH_BAR_USE_CLASS_COLOR']);
+    self.current_focus_health_bar_use_class_color:SetTooltip(L['OPTIONS_CURRENT_FOCUS_HEALTH_BAR_USE_CLASS_COLOR_TOOLTIP']);
+    self.current_focus_health_bar_use_class_color:AddToSearch(button, L['OPTIONS_CURRENT_FOCUS_HEALTH_BAR_USE_CLASS_COLOR_TOOLTIP'], self.Tabs[3]);
+    self.current_focus_health_bar_use_class_color:SetChecked(O.db.current_focus_health_bar_use_class_color);
+    self.current_focus_health_bar_use_class_color:SetEnabled(O.db.current_focus_health_bar_coloring);
+    self.current_focus_health_bar_use_class_color.Callback = function(self)
+        O.db.current_focus_health_bar_use_class_color = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.current_focus_custom_texture_enabled = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
-    self.current_focus_custom_texture_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.current_focus_custom_texture_enabled:SetPosition('TOPLEFT', self.current_focus_health_bar_coloring, 'BOTTOMLEFT', 0, -12);
     self.current_focus_custom_texture_enabled:SetLabel(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED']);
     self.current_focus_custom_texture_enabled:SetTooltip(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED_TOOLTIP']);
     self.current_focus_custom_texture_enabled:AddToSearch(button, nil, self.Tabs[3]);

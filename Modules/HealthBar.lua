@@ -405,6 +405,15 @@ local function UpdateCurrentTargetColor(unitframe)
         end
 
         unitframe.healthBar.currentTargetColored = true;
+    elseif DB.CURRENT_FOCUS_COLOR_ENABLED and unitframe.data.isFocus then
+        local color = DB.CURRENT_FOCUS_USE_CLASS_COLOR and DB.CURRENT_FOCUS_CLASS_COLOR or DB.CURRENT_FOCUS_COLOR;
+        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+        if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+            unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+        end
+
+        unitframe.healthBar.currentTargetColored = true;
     else
         unitframe.healthBar.currentTargetColored = nil;
     end
@@ -869,6 +878,23 @@ function Module:UpdateLocalConfig()
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA = O.db.current_target_custom_texture_overlay_alpha;
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE = O.Lists.alpha_mode[O.db.current_target_custom_texture_overlay_alpha_mode] or 'ADD';
 
+    DB.CURRENT_FOCUS_COLOR_ENABLED = O.db.current_focus_health_bar_coloring;
+    DB.CURRENT_FOCUS_COLOR    = DB.CURRENT_FOCUS_COLOR or {};
+    DB.CURRENT_FOCUS_COLOR[1] = O.db.current_focus_health_bar_color[1];
+    DB.CURRENT_FOCUS_COLOR[2] = O.db.current_focus_health_bar_color[2];
+    DB.CURRENT_FOCUS_COLOR[3] = O.db.current_focus_health_bar_color[3];
+    DB.CURRENT_FOCUS_COLOR[4] = O.db.current_focus_health_bar_color[4] or 1;
+
+    DB.CURRENT_FOCUS_USE_CLASS_COLOR = O.db.current_focus_health_bar_use_class_color;
+
+    if DB.CURRENT_FOCUS_USE_CLASS_COLOR then
+        DB.CURRENT_FOCUS_CLASS_COLOR    = DB.CURRENT_FOCUS_CLASS_COLOR or {};
+        DB.CURRENT_FOCUS_CLASS_COLOR[1] = D.Player.ClassColor.r;
+        DB.CURRENT_FOCUS_CLASS_COLOR[2] = D.Player.ClassColor.g;
+        DB.CURRENT_FOCUS_CLASS_COLOR[3] = D.Player.ClassColor.b;
+        DB.CURRENT_FOCUS_CLASS_COLOR[4] = D.Player.ClassColor.a or 1;
+    end
+
     DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED       = O.db.current_focus_custom_texture_enabled;
     DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE         = O.db.current_focus_custom_texture_value;
     DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY       = O.db.current_focus_custom_texture_overlay;
@@ -919,6 +945,7 @@ function Module:PLAYER_FOCUS_CHANGED()
     for _, unitframe in pairs(NP) do
         if unitframe.isActive and unitframe:IsShown() then
             UpdateTexture(unitframe);
+            Module.UpdateHealthBar(unitframe);
         end
     end
 end
@@ -945,7 +972,7 @@ function Module:StartUp()
             UpdateTexture(unitframe);
         end
 
-        if DB.CURRENT_TARGET_COLOR_ENABLED then
+        if DB.CURRENT_TARGET_COLOR_ENABLED or DB.CURRENT_FOCUS_COLOR_ENABLED then
             Module.UpdateHealthBar(unitframe);
         end
     end);
