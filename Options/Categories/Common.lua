@@ -867,7 +867,7 @@ panel.Load = function(self)
     self.level_text_hide_max = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
     self.level_text_hide_max:SetPosition('LEFT', self.level_text_show_only_on_target.Label, 'RIGHT', 12, 0);
     self.level_text_hide_max:SetLabel(L['OPTIONS_LEVEL_TEXT_HIDE_MAX']);
-    self.level_text_hide_max:SetTooltip(L['OPTIONS_LEVEL_TEXT_HIDE_MAX_TOOLTIP'] .. ' (' .. GetMaxLevelForLatestExpansion() .. ')');
+    self.level_text_hide_max:SetTooltip(L['OPTIONS_LEVEL_TEXT_HIDE_MAX_TOOLTIP'] .. ' (' .. D.MaxLevel .. ')');
     self.level_text_hide_max:SetChecked(O.db.level_text_hide_max);
     self.level_text_hide_max:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_HIDE_MAX_TOOLTIP'], self.Tabs[3]);
     self.level_text_hide_max:SetEnabled(O.db.level_text_enabled);
@@ -1016,4 +1016,13 @@ panel.Load = function(self)
         O.db.level_text_y_offset = tonumber(value);
         Stripes:UpdateAll();
     end
+end
+
+function Module:UpdateLevelMaxTooltip()
+    panel.level_text_hide_max:SetTooltip(L['OPTIONS_LEVEL_TEXT_HIDE_MAX_TOOLTIP'] .. ' (' .. D.MaxLevel .. ')');
+end
+
+function Module:StartUp()
+    self:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateLevelMaxTooltip');
+    self:RegisterEvent('MAX_EXPANSION_LEVEL_UPDATED', 'UpdateLevelMaxTooltip');
 end

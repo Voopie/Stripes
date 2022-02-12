@@ -396,6 +396,8 @@ local raidDifficultyIDs = {
 function Data:PLAYER_ENTERING_WORLD()
     UpdatePlayer();
 
+    D.MaxLevel = GetMaxLevelForLatestExpansion();
+
     if U.IsInInstance() then
         D.Player.State.inInstance = true;
 
