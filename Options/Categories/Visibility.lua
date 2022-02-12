@@ -244,8 +244,12 @@ panel.Load = function(self)
         C_CVar.SetCVar('nameplateResourceOnTarget', O.db.show_personal_resource_ontarget and 1 or 0);
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.show_personal_resource_ontarget, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.classification_indicator_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.classification_indicator_enabled:SetPosition('TOPLEFT', self.show_personal_resource_ontarget, 'BOTTOMLEFT', 0, -8);
+    self.classification_indicator_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
     self.classification_indicator_enabled:SetLabel(L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED']);
     self.classification_indicator_enabled:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP']);
     self.classification_indicator_enabled:AddToSearch(button, L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'], self.Tabs[1]);
