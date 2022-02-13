@@ -256,6 +256,7 @@ O.frame.SearchEditbox = E.CreateEditBox(O.frame.TopBar);
 O.frame.SearchEditbox:SetPosition('LEFT', O.frame.TopBar, 'LEFT', 11, 0);
 O.frame.SearchEditbox:SetSize(184, 30);
 O.frame.SearchEditbox:SetShown(false);
+O.frame.SearchEditbox.Background:SetBackdropColor(0.075, 0.075, 0.075, 1);
 O.frame.SearchEditbox:SetTextInsets(4, 20, 0, 0);
 O.frame.SearchEditbox:HookScript('OnEnterPressed', function(self)
     self:SetShown(false);
