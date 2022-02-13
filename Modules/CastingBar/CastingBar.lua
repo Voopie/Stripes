@@ -99,20 +99,28 @@ end
 local CustomCastsData = {};
 
 local function UpdateCustomCast(self)
-    local spellId = self.spellID;
+    local spellId  = self.spellID;
+    local castData = spellId and CustomCastsData[spellId];
 
-    if not spellId or not O.db.castbar_custom_casts_enabled or not CustomCastsData[spellId] or not CustomCastsData[spellId].enabled then
+    if not CUSTOM_CASTS_ENABLED or not spellId or not castData or not castData.enabled then
         GlowStopAll(self);
         return;
     end
 
-    if CustomCastsData[spellId].color_enabled or CustomCastsData[spellId].custom_color_enabled then
-        self:SetStatusBarColor(CustomCastsData[spellId].color[1], CustomCastsData[spellId].color[2], CustomCastsData[spellId].color[3], CustomCastsData[spellId].color[4] or 1);
+    if castData.color_enabled or castData.custom_color_enabled then
+        self:SetStatusBarColor(castData.color[1], castData.color[2], castData.color[3], castData.color[4] or 1);
     end
 
-    if CustomCastsData[spellId].glow_enabled then
+    if castData.new_name and castData.new_name ~= castData.name then
+        if self.Text then
+            self.spellName = castData.new_name;
+            self.Text:SetText(self.spellName);
+        end
+    end
+
+    if castData.glow_enabled then
         GlowStopAll(self);
-        GlowStart(self, CustomCastsData[spellId].glow_type);
+        GlowStart(self, castData.glow_type);
     end
 end
 
@@ -160,6 +168,8 @@ local function UpdateCastTargetName(self)
 end
 
 function Module:UpdateLocalConfig()
+    CUSTOM_CASTS_ENABLED    = O.db.castbar_custom_casts_enabled;
+
     NAME_TRANSLIT           = O.db.name_text_translit;
     NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
 end
@@ -413,7 +423,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.casting = true;
         self.castID = castID;
         self.spellID = spellID;
-        self.spellName = name;
+        self.spellName = text;
         self.channeling = nil;
         self.fadeOut = nil;
 
@@ -514,7 +524,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
         end
     elseif event == 'UNIT_SPELLCAST_DELAYED' then
         if self:IsShown() then
-            local name, _, _, startTime, endTime, isTradeSkill, _, notInterruptible = UnitCastingInfo(unit);
+            local name, text, _, startTime, endTime, isTradeSkill, _, notInterruptible = UnitCastingInfo(unit);
             if not name or (not self.showTradeSkills and isTradeSkill) then
                 -- if there is no name, there is no bar
                 self:Hide();
@@ -542,7 +552,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
                 self.flash = nil;
                 self.fadeOut = nil;
                 self.notInterruptible = nil;
-                self.spellName = name;
+                self.spellName = text;
             end
 
             self.notInterruptible = notInterruptible;
@@ -593,7 +603,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.channeling = true;
         self.fadeOut = nil;
         self.spellID = spellID;
-        self.spellName = name;
+        self.spellName = text;
         self.notInterruptible = notInterruptible;
         self.startTime = startTime;
         self.endTime   = endTime;
@@ -624,7 +634,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
         end
     elseif event == 'UNIT_SPELLCAST_CHANNEL_UPDATE' then
         if self:IsShown() then
-            local name, _, _, startTime, endTime, isTradeSkill = UnitChannelInfo(unit);
+            local name, text, _, startTime, endTime, isTradeSkill = UnitChannelInfo(unit);
 
             if not name or (not self.showTradeSkills and isTradeSkill) then
                 -- if there is no name, there is no bar
@@ -640,7 +650,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self.startTime = startTime;
             self.endTime   = endTime;
 
-            self.spellName = name;
+            self.spellName = text;
 
             if self.TargetText then
                 UpdateCastTargetName(self);

@@ -541,7 +541,8 @@ L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR_TOOLTIP'] = 'Der Zauberstab wechse
 L['OPTIONS_CAST_BAR_USE_INTERRUPT_NOT_READY_COLOR_TOOLTIP'] = 'Farbe des Zauberstabs «Nicht bereit zur Unterbrechung» verwenden';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED'] = 'Aktivieren';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Effekte für bestimmte Zaubersprüche aktivieren';
-L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID'] = 'Geben Sie den Namen oder die ID des Zaubers ein';
+L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID'] = 'Geben Sie die Zauber-ID ein';
+L['OPTIONS_CAST_BAR_CUSTOM_CASTS_NEW_NAME'] = 'Besonderer Name';
 L['OPTIONS_CAST_BAR_FRAME_STRATA_TOOLTIP'] = 'Strata für Zauberbalken';
 L['OPTIONS_CAST_BAR_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz der Zauberbalken';
 

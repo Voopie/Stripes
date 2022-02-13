@@ -541,7 +541,8 @@ L['OPTIONS_CAST_BAR_INTERRUPT_NOT_READY_COLOR_TOOLTIP'] = 'Полоса закл
 L['OPTIONS_CAST_BAR_USE_INTERRUPT_NOT_READY_COLOR_TOOLTIP'] = 'Использовать цвет «Не готово к прерыванию»';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED'] = 'Включить';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED_TOOLTIP'] = 'Включить пользовательские эффекты для заданных заклинаний';
-L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID'] = 'Введите название или ID заклинания';
+L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID'] = 'Введите ID заклинания';
+L['OPTIONS_CAST_BAR_CUSTOM_CASTS_NEW_NAME'] = 'Своё название';
 L['OPTIONS_CAST_BAR_FRAME_STRATA_TOOLTIP'] = 'Слой полосы заклинания';
 L['OPTIONS_CAST_BAR_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение полосы заклинания';
 

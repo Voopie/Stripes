@@ -109,7 +109,7 @@ local DataCustomCastsRow = {};
 
 local ExtendedOptions = CreateFrame('Frame', nil, panel, 'BackdropTemplate');
 ExtendedOptions:SetFrameLevel(100);
-ExtendedOptions:SetSize(260, 280);
+ExtendedOptions:SetSize(260, 320);
 ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
 ExtendedOptions:SetClampedToScreen(true);
 ExtendedOptions:SetShown(false);
@@ -134,6 +134,8 @@ ExtendedOptions.UpdateAll = function(self, frame)
     self.Icon:SetTexture(frame.icon);
     self.NameText:SetText(frame.name .. '  |cffaaaaaa[' .. frame.id .. ']|r');
 
+    self.NewNameBox:SetText(frame.new_name or frame.name);
+
     self:SetPoint('TOPLEFT', self.anchor, 'TOPRIGHT', 0, 0);
     self:SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
     self:SetBackdropBorderColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
@@ -157,8 +159,36 @@ ExtendedOptions.Delimiter = E.CreateDelimiter(ExtendedOptions);
 ExtendedOptions.Delimiter:SetPosition('TOPLEFT', ExtendedOptions.Icon, 'BOTTOMLEFT', -7, 0);
 ExtendedOptions.Delimiter:SetW(ExtendedOptions:GetWidth() - 16);
 
+ExtendedOptions.NewNameText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+ExtendedOptions.NewNameText:SetPoint('TOPLEFT', ExtendedOptions.Delimiter, 'BOTTOMLEFT', 7, -2);
+ExtendedOptions.NewNameText:SetText(L['OPTIONS_CAST_BAR_CUSTOM_CASTS_NEW_NAME']);
+
+ExtendedOptions.NewNameBox = E.CreateEditBox(ExtendedOptions);
+ExtendedOptions.NewNameBox:SetPosition('TOPLEFT', ExtendedOptions.NewNameText, 'BOTTOMLEFT', 7, -4);
+ExtendedOptions.NewNameBox:SetSize(220, 22);
+ExtendedOptions.NewNameBox.useLastValue = false;
+ExtendedOptions.NewNameBox:SetScript('OnEnterPressed', function(self)
+    local newName = strtrim(self:GetText());
+
+    if not newName or newName == '' then
+        return;
+    end
+
+    if O.db.castbar_custom_casts_data[ExtendedOptions.id] then
+        O.db.castbar_custom_casts_data[ExtendedOptions.id].new_name = newName;
+
+        panel:UpdateCustomCastsScroll();
+        S:GetNameplateModule('Handler'):UpdateAll();
+
+        ExtendedOptions:SetBackdropBorderColor(ExtendedOptions.anchor.highlightColor[1], ExtendedOptions.anchor.highlightColor[2], ExtendedOptions.anchor.highlightColor[3], ExtendedOptions.anchor.highlightColor[4]);
+        ExtendedOptions:Update();
+
+        self:ClearFocus();
+    end
+end);
+
 ExtendedOptions.CategoryText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
-ExtendedOptions.CategoryText:SetPoint('TOPLEFT', ExtendedOptions.Delimiter, 'BOTTOMLEFT', 7, -2);
+ExtendedOptions.CategoryText:SetPoint('TOPLEFT', ExtendedOptions.NewNameBox, 'BOTTOMLEFT', -7, -12);
 ExtendedOptions.CategoryText:SetText(L['CATEGORY']);
 
 ExtendedOptions.Category = E.CreateDropdown('plain', ExtendedOptions);
@@ -206,7 +236,6 @@ ExtendedOptions.ColorCategory.OnValueChangedCallback = function(_, index)
     S:GetNameplateModule('Handler'):UpdateAll();
 
     ExtendedOptions:SetBackdropBorderColor(ExtendedOptions.anchor.highlightColor[1], ExtendedOptions.anchor.highlightColor[2], ExtendedOptions.anchor.highlightColor[3], ExtendedOptions.anchor.highlightColor[4]);
-
     ExtendedOptions:Update();
 end
 
@@ -242,7 +271,6 @@ ExtendedOptions.CustomColorCategory.OnValueChangedCallback = function(_, index)
     S:GetNameplateModule('Handler'):UpdateAll();
 
     ExtendedOptions:SetBackdropBorderColor(ExtendedOptions.anchor.highlightColor[1], ExtendedOptions.anchor.highlightColor[2], ExtendedOptions.anchor.highlightColor[3], ExtendedOptions.anchor.highlightColor[4]);
-
     ExtendedOptions:Update();
 end
 
@@ -407,7 +435,11 @@ local function CreateCustomCastRow(frame)
             self.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
         end
 
-        self.NameText:SetText(self.name);
+        if self.new_name and self.name == self.new_name then
+            self.NameText:SetText(self.name);
+        else
+            self.NameText:SetText(self.new_name .. ' |cffaaaaaa[' .. self.name .. ']|r');
+        end
 
         GameTooltip_Hide();
     end);
@@ -435,7 +467,13 @@ local function UpdateCustomCastRow(frame)
     frame.EnableCheckBox:SetChecked(frame.enabled);
     frame.CategoryNameText:SetText(frame.category_list[frame.category_id]);
     frame.Icon:SetTexture(frame.icon);
-    frame.NameText:SetText(frame.name);
+
+    if frame.new_name and frame.name == frame.new_name then
+        frame.NameText:SetText(frame.name);
+    else
+        frame.NameText:SetText(frame.new_name .. ' |cffaaaaaa[' .. frame.name .. ']|r');
+    end
+
     frame.ColorLine:SetColorTexture(frame.color[1], frame.color[2], frame.color[3], frame.color[4]);
     frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4] = frame.color[1], frame.color[2], frame.color[3], 0.5;
 
@@ -559,6 +597,16 @@ panel.UpdateCustomCastsScroll = function()
 
             frame.category_id   = O.db.castbar_custom_casts_data[id].category_id;
             frame.category_list = panel:GetCategoriesDropdown();
+
+            if not O.db.castbar_custom_casts_data[id].name then
+                O.db.castbar_custom_casts_data[id].name = name;
+            end
+
+            if not O.db.castbar_custom_casts_data[id].new_name then
+                O.db.castbar_custom_casts_data[id].new_name = name;
+            end
+
+            frame.new_name = O.db.castbar_custom_casts_data[id].new_name;
 
             UpdateCustomCastRow(frame);
 
