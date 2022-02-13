@@ -921,7 +921,7 @@ do
 
     E.CreateEditBox = function(parent)
         local editbox = Mixin(CreateFrame('EditBox', nil, parent, 'InputBoxTemplate'), E.PixelPerfectMixin);
-
+        editbox:SetFrameLevel(editbox:GetFrameLevel() + 1);
         editbox:SetSize(30, 25);
 
         editbox:SetFontObject('StripesOptionsNormalFont');
