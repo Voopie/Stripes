@@ -195,7 +195,7 @@ Stripes.UpdateSizesSafe = UpdateSizesSafe;
 local function UpdateHealth(unitframe)
     unitframe.data.healthCurrent = UnitHealth(unitframe.data.unit) or 0;
     unitframe.data.healthMax     = math_max(UnitHealthMax(unitframe.data.unit) or 1, 1);
-    unitframe.data.healthPerF    = 100 * (unitframe.data.healthCurrent / unitframe.data.healthMax)
+    unitframe.data.healthPerF    = 100 * (unitframe.data.healthCurrent / unitframe.data.healthMax);
     unitframe.data.healthPer     = math_ceil(unitframe.data.healthPerF);
 end
 
@@ -276,7 +276,7 @@ local function UpdateConnection(unitframe)
 end
 
 local function UpdateTarget(unitframe)
-    unitframe.data.isTarget = (UnitGUID('target') or '') == unitframe.data.unitGUID;
+    unitframe.data.isTarget = unitframe.displayedUnit and UnitIsUnit(unitframe.displayedUnit, 'target');
 end
 
 local function UpdateFocus(unitframe)
