@@ -53,9 +53,6 @@ local function SortBuffs(unitframe)
 
         for i, data in ipairs(unitframe.SortBuffs) do
             if unitframe.BuffFrame.buffList[data.buffIndex] then
-                -- unitframe.BuffFrame.buffList[data.buffIndex].layoutIndex = i;
-                -- unitframe.BuffFrame:Layout();
-
                 unitframe.BuffFrame.buffList[data.buffIndex]:ClearAllPoints();
 
                 if AURAS_DIRECTION == 1 then
