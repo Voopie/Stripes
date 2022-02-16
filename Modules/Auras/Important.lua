@@ -370,6 +370,5 @@ end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', UpdateAnchor);
 end
