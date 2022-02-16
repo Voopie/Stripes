@@ -1,9 +1,7 @@
 <Ui>
     <Script file="Auras.lua" />
-    <Script file="Pandemic.lua" />
     <Script file="MythicPlus.lua" />
     <Script file="SpellSteal.lua" />
     <Script file="Important.lua" />
-
     <Script file="Custom.lua" />
 </Ui>
