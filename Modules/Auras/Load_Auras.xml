@@ -1,7 +1,5 @@
 <Ui>
-    <Script file="Filter.lua" />
-    <Script file="Mod.lua" />
-    <Script file="Sort.lua" />
+    <Script file="Auras.lua" />
     <Script file="Pandemic.lua" />
     <Script file="MythicPlus.lua" />
     <Script file="SpellSteal.lua" />
