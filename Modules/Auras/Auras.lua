@@ -213,16 +213,6 @@ local function UpdateBuffs(self, unit, filter, showAll)
                     aura:SetMouseClickEnabled(false);
                     aura.layoutIndex = buffIndex;
 
-                    if BORDER_COLOR_ENABLED then
-                        if debuffType then
-                            aura.Border:SetColorTexture(DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b, 1);
-                        else
-                            aura.Border:SetColorTexture(0, 0, 0, 1);
-                        end
-                    else
-                        aura.Border:SetColorTexture(0, 0, 0, 1);
-                    end
-
                     aura.Border:SetShown(not BORDER_HIDE);
 
                     aura:SetScale(SCALE);
@@ -309,6 +299,16 @@ local function UpdateBuffs(self, unit, filter, showAll)
                 end
 
                 CooldownFrame_Set(aura.Cooldown, expirationTime - duration, duration, duration > 0, DRAW_EDGE);
+
+                if BORDER_COLOR_ENABLED then
+                    if debuffType then
+                        aura.Border:SetColorTexture(DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b, 1);
+                    else
+                        aura.Border:SetColorTexture(0, 0, 0, 1);
+                    end
+                else
+                    aura.Border:SetColorTexture(0, 0, 0, 1);
+                end
 
                 aura:Show();
 
