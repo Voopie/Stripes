@@ -217,7 +217,7 @@ local function Update(unitframe)
 
         index = index + 1;
 
-        return buffIndex >= AURAS_MAX_DISPLAY;
+        return buffIndex > AURAS_MAX_DISPLAY;
     end);
 
     for i = buffIndex, BUFF_MAX_DISPLAY do
