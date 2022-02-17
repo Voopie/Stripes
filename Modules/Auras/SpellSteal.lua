@@ -225,8 +225,6 @@ local function Update(unitframe)
             unitframe.AurasSpellSteal:SetShown(false);
         end
     end
-
-    -- unitframe.AurasSpellSteal:Layout();
 end
 
 local function UpdateStyle(unitframe)

@@ -95,17 +95,6 @@ local function IsOnPandemic(aura)
     return remTimeMs > 0 and remTimeMs <= durationMs/100*PANDEMIC_PERCENT;
 end
 
-local function IsOnExpireGlow(aura)
-    if not EXPIRE_GLOW_ENABLED then
-        return;
-    end
-
-    local startTimeMs, durationMs = aura.Cooldown:GetCooldownTimes();
-    local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
-
-    return remTimeMs > 0 and remTimeMs <= durationMs/100*EXPIRE_GLOW_PERCENT;
-end
-
 local function ResetPandemic(unitframe)
     if unitframe.BuffFrame and unitframe.BuffFrame.buffList then
         for _, aura in ipairs(unitframe.BuffFrame.buffList) do
@@ -115,6 +104,17 @@ local function ResetPandemic(unitframe)
             aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
         end
     end
+end
+
+local function IsOnExpireGlow(aura)
+    if not EXPIRE_GLOW_ENABLED then
+        return;
+    end
+
+    local startTimeMs, durationMs = aura.Cooldown:GetCooldownTimes();
+    local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
+
+    return remTimeMs > 0 and remTimeMs <= durationMs/100*EXPIRE_GLOW_PERCENT;
 end
 
 local function SortMethodFunction(a, b)
