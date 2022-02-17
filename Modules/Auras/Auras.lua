@@ -448,12 +448,6 @@ function Module:UnitAdded(unitframe)
     end
 
     Update(unitframe);
-
-    if Stripes.Masque and MASQUE_SUPPORT then
-        Stripes.MasqueAurasGroup:ReSkin();
-    end
-
-    UpdateStyle(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
