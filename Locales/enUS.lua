@@ -991,6 +991,11 @@ L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP'] = 'Show swipe effect on importan
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE'] = 'Edge';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on important auras';
 L['OPTIONS_AURAS_IMPORTANT_MAX_DISPLAY_TOOLTIP'] = 'Maximum number of displayed important auras';
+L['OPTIONS_AURAS_IMPORTANT_BORDER_COLOR_TOOLTIP'] = 'Border color of important auras';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_ENABLED'] = 'Glow';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_ENABLED_TOOLTIP'] = 'Show glow on important auras';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_TYPE_TOOLTIP'] = 'Type of important auras glow';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_COLOR_TOOLTIP'] = 'Color of important auras glow';
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Show custom auras';

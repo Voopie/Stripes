@@ -258,7 +258,7 @@ O.Lists = {
     },
 };
 
--- ~542
+-- ~546
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -821,6 +821,10 @@ O.DefaultValues = {
     auras_important_castername_font_shadow = true,
     auras_important_spacing_x = 2,
     auras_important_max_display = 3,
+    auras_important_border_color = { 0, 0, 0, 1 },
+    auras_important_glow_enabled = true,
+    auras_important_glow_type    = 1, -- PIXEL
+    auras_important_glow_color   = { 1, 0.3, 0, 1 },
 
     auras_custom_enabled              = true,
     auras_custom_draw_swipe           = true,

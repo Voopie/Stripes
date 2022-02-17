@@ -991,6 +991,11 @@ L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP'] = 'Показывать эффе
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE'] = 'Грань';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект грани (edge) на важных аурах';
 L['OPTIONS_AURAS_IMPORTANT_MAX_DISPLAY_TOOLTIP'] = 'Максимальное количество отображаемых важных аур';
+L['OPTIONS_AURAS_IMPORTANT_BORDER_COLOR_TOOLTIP'] = 'Цвет границ важных аур';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_ENABLED'] = 'Свечение';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_ENABLED_TOOLTIP'] = 'Включить свечение важных аур';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_TYPE_TOOLTIP'] = 'Тип свечения важных аур';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_COLOR_TOOLTIP'] = 'Цвет свечения важных аур';
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Показывать пользовательские ауры';

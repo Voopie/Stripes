@@ -2373,6 +2373,63 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_important_border_color = E.CreateColorPicker(self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_border_color:SetPosition('LEFT', self.auras_important_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_important_border_color:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_BORDER_COLOR_TOOLTIP']);
+    self.auras_important_border_color:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_BORDER_COLOR_TOOLTIP'], self.Tabs[4]);
+    self.auras_important_border_color:SetValue(unpack(O.db.auras_important_border_color));
+    self.auras_important_border_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.auras_important_border_color[1] = r;
+        O.db.auras_important_border_color[2] = g;
+        O.db.auras_important_border_color[3] = b;
+        O.db.auras_important_border_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.auras_important_glow_enabled = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_glow_enabled:SetPosition('LEFT', self.auras_important_border_color, 'RIGHT', 12, 0);
+    self.auras_important_glow_enabled:SetLabel(L['OPTIONS_AURAS_IMPORTANT_GLOW_ENABLED']);
+    self.auras_important_glow_enabled:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_GLOW_ENABLED_TOOLTIP']);
+    self.auras_important_glow_enabled:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_GLOW_ENABLED_TOOLTIP'], self.Tabs[4]);
+    self.auras_important_glow_enabled:SetChecked(O.db.auras_important_glow_enabled);
+    self.auras_important_glow_enabled.Callback = function(self)
+        O.db.auras_important_glow_enabled = self:GetChecked();
+
+        panel.auras_important_glow_type:SetEnabled(O.db.auras_important_glow_enabled);
+        panel.auras_important_glow_color:SetEnabled(O.db.auras_important_glow_enabled);
+
+        Stripes:UpdateAll();
+    end
+
+    self.auras_important_glow_type = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_glow_type:SetPosition('LEFT', self.auras_important_glow_enabled.Label, 'RIGHT', 12, 0);
+    self.auras_important_glow_type:SetSize(220, 20);
+    self.auras_important_glow_type:SetList(O.Lists.glow_type);
+    self.auras_important_glow_type:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_GLOW_TYPE_TOOLTIP']);
+    self.auras_important_glow_type:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_GLOW_TYPE_TOOLTIP'], self.Tabs[4]);
+    self.auras_important_glow_type:SetValue(O.db.auras_important_glow_type);
+    self.auras_important_glow_type:SetEnabled(O.db.auras_important_glow_enabled);
+    self.auras_important_glow_type.OnValueChangedCallback = function(_, value)
+        O.db.auras_important_glow_type = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.auras_important_glow_color = E.CreateColorPicker(self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_glow_color:SetPosition('LEFT', self.auras_important_glow_type, 'RIGHT', 12, 0);
+    self.auras_important_glow_color:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_GLOW_COLOR_TOOLTIP']);
+    self.auras_important_glow_color:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_GLOW_COLOR_TOOLTIP'], self.Tabs[4]);
+    self.auras_important_glow_color:SetValue(unpack(O.db.auras_important_glow_color));
+    self.auras_important_glow_color:SetEnabled(O.db.auras_important_glow_enabled);
+    self.auras_important_glow_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.auras_important_glow_color[1] = r;
+        O.db.auras_important_glow_color[2] = g;
+        O.db.auras_important_glow_color[3] = b;
+        O.db.auras_important_glow_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.auras_important_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());

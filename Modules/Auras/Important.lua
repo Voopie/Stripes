@@ -11,8 +11,9 @@ local CooldownFrame_Set, UnitName, AuraUtil_ForEachAura = CooldownFrame_Set, Uni
 -- Sripes API
 local GetUnitColor = U.GetUnitColor;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
-local GlowStart, GlowStopType = U.GlowStart, U.GlowStopType;
+local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
 
+-- Libraries
 local LPS = S.Libraries.LPS;
 local LPS_GetSpellInfo = LPS.GetSpellInfo;
 local CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.ROOT, LPS.constants.STUN);
@@ -32,6 +33,8 @@ local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
 local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y, BUFFFRAME_OFFSET_Y;
 local AURAS_MAX_DISPLAY;
+local GLOW_ENABLED, GLOW_TYPE, GLOW_COLOR;
+local BORDER_COLOR;
 
 local StripesAurasImportantCooldownFont = CreateFont('StripesAurasImportantCooldownFont');
 local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCountFont');
@@ -41,9 +44,6 @@ local MAX_OFFSET_Y = -9;
 local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HARMFUL';
 local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
-
-local glowType  = 1; -- PIXEL
-local glowColor = { 1, 0.3, 0, 1 };
 
 local additionalAuras = {
     -- Druid
@@ -143,6 +143,7 @@ local function Update(unitframe)
 
                 aura:SetScale(SCALE);
 
+                aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
                 aura.Border:SetShown(not BORDER_HIDE);
 
                 aura.Cooldown:SetDrawEdge(DRAW_EDGE);
@@ -164,6 +165,10 @@ local function Update(unitframe)
                 aura.CasterName = aura:CreateFontString(nil, 'ARTWORK');
                 PixelUtil.SetPoint(aura.CasterName, 'BOTTOM', aura, 'TOP', 0, 2);
                 aura.CasterName:SetFontObject(StripesAurasImportantCasterFont);
+
+                if GLOW_ENABLED then
+                    GlowStart(aura, GLOW_TYPE, GLOW_COLOR);
+                end
 
                 if MASQUE_SUPPORT and Stripes.Masque then
                     Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
@@ -193,9 +198,6 @@ local function Update(unitframe)
             end
 
             CooldownFrame_Set(aura.Cooldown, expirationTime - duration, duration, duration > 0, DRAW_EDGE);
-
-            GlowStopType(aura, glowType);
-            GlowStart(aura, glowType, glowColor);
 
             if CASTER_NAME_SHOW then
                 local unitname = source and UnitName(source);
@@ -252,7 +254,7 @@ local function UpdateStyle(unitframe)
             else
                 Stripes.MasqueAurasImportantGroup:RemoveButton(aura);
 
-                aura.Border:SetColorTexture(0, 0, 0, 1);
+                aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
                 aura.Border:SetDrawLayer('BACKGROUND');
 
                 aura.Icon:SetDrawLayer('ARTWORK');
@@ -274,6 +276,9 @@ local function UpdateStyle(unitframe)
             aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
         end
 
+        aura.Border:SetShown(not BORDER_HIDE);
+        aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+
         aura.Cooldown:SetDrawEdge(DRAW_EDGE);
         aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
@@ -286,6 +291,13 @@ local function UpdateStyle(unitframe)
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
         aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
+
+        if GLOW_ENABLED then
+            GlowStopAll(aura);
+            GlowStart(aura, GLOW_TYPE, GLOW_COLOR);
+        else
+            GlowStopAll(aura);
+        end
     end
 end
 
@@ -362,6 +374,20 @@ function Module:UpdateLocalConfig()
     BUFFFRAME_OFFSET_Y   = O.db.auras_offset_y;
 
     AURAS_MAX_DISPLAY = O.db.auras_important_max_display;
+
+    GLOW_ENABLED = O.db.auras_important_glow_enabled;
+    GLOW_TYPE    = O.db.auras_important_glow_type;
+    GLOW_COLOR    = GLOW_COLOR or {};
+    GLOW_COLOR[1] = O.db.auras_important_glow_color[1];
+    GLOW_COLOR[2] = O.db.auras_important_glow_color[2];
+    GLOW_COLOR[3] = O.db.auras_important_glow_color[3];
+    GLOW_COLOR[4] = O.db.auras_important_glow_color[4] or 1;
+
+    BORDER_COLOR    = BORDER_COLOR or {};
+    BORDER_COLOR[1] = O.db.auras_important_border_color[1];
+    BORDER_COLOR[2] = O.db.auras_important_border_color[2];
+    BORDER_COLOR[3] = O.db.auras_important_border_color[3];
+    BORDER_COLOR[4] = O.db.auras_important_border_color[4] or 1;
 
     UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
     UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);

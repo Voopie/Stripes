@@ -991,6 +991,11 @@ L['OPTIONS_AURAS_IMPORTANT_DRAW_SWIPE_TOOLTIP'] = 'Dimmen-Effekt (Swipe) von wic
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE'] = 'Fläche';
 L['OPTIONS_AURAS_IMPORTANT_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von wichtigen Auren anzeigen';
 L['OPTIONS_AURAS_IMPORTANT_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl der angezeigten wichtigen Auren';
+L['OPTIONS_AURAS_IMPORTANT_BORDER_COLOR_TOOLTIP'] = 'Farbe der Ränder wichtiger Auren';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_ENABLED'] = 'Glühen';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_ENABLED_TOOLTIP'] = 'Glühen auf wichtigen Auren anzeigen';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_TYPE_TOOLTIP'] = 'Art der wichtigen Auren leuchten';
+L['OPTIONS_AURAS_IMPORTANT_GLOW_COLOR_TOOLTIP'] = 'Farbe der wichtigen Auren leuchten';
 
 L['OPTIONS_AURAS_CUSTOM_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_CUSTOM_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Auren anzeigen';

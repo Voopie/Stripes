@@ -179,6 +179,9 @@ local function Update(unitframe)
                 aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
             end
 
+            aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+            aura.Border:SetShown(not BORDER_HIDE);
+
             aura.Cooldown:SetDrawEdge(DRAW_EDGE);
             aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
             aura.Cooldown:SetCountdownFont('StripesAurasMythicPlusCooldownFont');
@@ -192,9 +195,6 @@ local function Update(unitframe)
             aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
             aura.CountFrame.Count:SetFontObject(StripesAurasMythicPlusCountFont);
             aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
-
-            aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
-            aura.Border:SetShown(not BORDER_HIDE);
 
             if MASQUE_SUPPORT and Stripes.Masque then
                 Stripes.MasqueAurasMythicGroup:RemoveButton(aura);
