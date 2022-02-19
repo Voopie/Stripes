@@ -3,10 +3,10 @@ local Module = S:NewNameplateModule('Auras');
 local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
-local select, ipairs, math_max, table_wipe, table_sort, bit_band = select, ipairs, math.max, wipe, table.sort, bit.band;
+local ipairs, tonumber, math_max, table_wipe, table_sort, bit_band = ipairs, tonumber, math.max, wipe, table.sort, bit.band;
 
 -- Wow API
-local UnitIsUnit, UnitAura, GetCVarBool, CooldownFrame_Set, AuraUtil_ForEachAura = UnitIsUnit, UnitAura, GetCVarBool, CooldownFrame_Set, AuraUtil.ForEachAura;
+local UnitIsUnit, GetCVarBool, CooldownFrame_Set, AuraUtil_ForEachAura = UnitIsUnit, GetCVarBool, CooldownFrame_Set, AuraUtil.ForEachAura;
 
 -- Stripes API
 local ShouldShowName   = S:GetNameplateModule('Handler').ShouldShowName;
@@ -98,7 +98,6 @@ end
 local function ResetPandemic(unitframe)
     if unitframe.BuffFrame and unitframe.BuffFrame.buffList then
         for _, aura in ipairs(unitframe.BuffFrame.buffList) do
-            aura.spellId = nil;
             GlowStopAll(aura);
 
             aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
@@ -287,6 +286,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
                 end
 
                 aura:SetID(index);
+
                 aura.spellId = spellId;
                 aura.expirationTime = expirationTime;
 
