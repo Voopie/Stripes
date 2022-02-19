@@ -288,6 +288,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
 
                 aura:SetID(index);
                 aura.spellId = spellId;
+                aura.expirationTime = expirationTime;
 
                 aura.Icon:SetTexture(texture);
 
@@ -338,14 +339,11 @@ local function UpdateBuffs(self, unit, filter, showAll)
                     table_wipe(unitframe.SortBuffs);
                 end
 
-                local sExpirationTime;
                 for sBuffIndex, sAura in ipairs(self.buffList) do
                     if self.buffList[sBuffIndex]:IsShown() then
-                        sExpirationTime = select(6, UnitAura(self.unit, sAura:GetID(), self.filter));
-
                         unitframe.SortBuffs[sBuffIndex]           = unitframe.SortBuffs[sBuffIndex] or {};
                         unitframe.SortBuffs[sBuffIndex].buffIndex = sBuffIndex;
-                        unitframe.SortBuffs[sBuffIndex].expires   = tonumber(sExpirationTime) or 0;
+                        unitframe.SortBuffs[sBuffIndex].expires   = tonumber(sAura.expirationTime) or 0;
                     end
                 end
 
