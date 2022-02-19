@@ -429,6 +429,7 @@ local function UpdateStyle(unitframe)
         aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
         aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
+        aura.Cooldown:SetCountdownFont('StripesAurasModCooldownFont');
         aura.Cooldown:GetRegions():ClearAllPoints();
         aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
         aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
@@ -436,6 +437,7 @@ local function UpdateStyle(unitframe)
 
         aura.CountFrame.Count:ClearAllPoints();
         aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+        aura.CountFrame.Count:SetFontObject(StripesAurasModCountFont);
         aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
     end
 end
