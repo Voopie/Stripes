@@ -1026,7 +1026,7 @@ panel.Load = function(self)
     self.auras_border_hide:SetLabel(L['OPTIONS_AURAS_BORDER_HIDE']);
     self.auras_border_hide:SetTooltip(L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP']);
     self.auras_border_hide:AddToSearch(button, L['OPTIONS_AURAS_BORDER_HIDE_TOOLTIP'], self.Tabs[1]);
-    self.auras_border_hide:SetChecked(O.db.auras_masque_support);
+    self.auras_border_hide:SetChecked(O.db.auras_border_hide);
     self.auras_border_hide.Callback = function(self)
         O.db.auras_border_hide = self:GetChecked();
         Stripes:UpdateAll();
