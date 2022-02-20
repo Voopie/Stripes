@@ -173,6 +173,84 @@ local function UpdateAnchor(self)
     PixelUtil.SetPoint(self, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', self:GetParent().healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', BUFFFRAME_OFFSET_X, 0);
 end
 
+local function UpdateAuraStyle(aura, withoutMasque)
+    aura.Border:SetShown(not BORDER_HIDE);
+
+    aura:SetScale(SCALE);
+
+    if SQUARE then
+        aura:SetSize(20, 20);
+        aura.Icon:SetSize(18, 18);
+        aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+    else
+        aura:SetSize(20, 14);
+        aura.Icon:SetSize(18, 12);
+        aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
+    end
+
+    aura.Cooldown:SetFrameStrata('HIGH');
+    aura.Cooldown:SetDrawEdge(DRAW_EDGE);
+    aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
+    aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+    aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+
+    aura.Cooldown:SetCountdownFont('StripesAurasModCooldownFont');
+    aura.Cooldown:GetRegions():ClearAllPoints();
+    aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+    aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+    aura.Cooldown:GetRegions():SetDrawLayer('OVERLAY', 7);
+
+    aura.CountFrame:SetFrameStrata('HIGH');
+    aura.CountFrame.Count:ClearAllPoints();
+    aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+    aura.CountFrame.Count:SetFontObject(StripesAurasModCountFont);
+    aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
+
+    aura:HookScript('OnUpdate', function(self, elapsed)
+        self.elapsed = (self.elapsed or 0) + elapsed;
+
+        if self.elapsed < UPDATE_INTERVAL then
+            return;
+        end
+
+        if self.spellId and IsOnPandemic(self) then
+            local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellId);
+            if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
+                self.spellId = GetTrulySpellId(self.spellId);
+
+                if self.spellId and (pandemicKnownSpells[self.spellId] or S_IsSpellKnown(self.spellId)) then
+                    self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
+
+                    if not pandemicKnownSpells[self.spellId] then
+                        pandemicKnownSpells[self.spellId] = true;
+                    end
+                end
+            end
+        else
+            self.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+        end
+
+        if IsOnExpireGlow(self) then
+            GlowStart(self, EXPIRE_GLOW_TYPE, EXPIRE_GLOW_COLOR);
+        else
+            GlowStopAll(self);
+        end
+
+        self.elapsed = 0;
+    end);
+
+    aura.Cooldown:HookScript('OnCooldownDone', function(self)
+        GlowStopAll(self:GetParent());
+    end);
+
+    if not withoutMasque then
+        if MASQUE_SUPPORT and Stripes.Masque then
+            Stripes.MasqueAurasGroup:RemoveButton(aura);
+            Stripes.MasqueAurasGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+        end
+    end
+end
+
 local function UpdateBuffs(self, unit, filter, showAll)
     if not self.isActive then
         for i = 1, BUFF_MAX_DISPLAY do
@@ -207,82 +285,25 @@ local function UpdateBuffs(self, unit, filter, showAll)
             if FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPersonal, nameplateShowAll or showAll) then
                 aura = self.buffList[buffIndex];
 
+                if aura then
+                    if aura.Cooldown.noCooldownCount == nil then
+                        aura.needUpdate = true;
+                    end
+                end
+
                 if not aura then
                     aura = CreateFrame('Frame', nil, self, 'NameplateBuffButtonTemplate');
                     aura:SetMouseClickEnabled(false);
                     aura.layoutIndex = buffIndex;
 
-                    aura.Border:SetShown(not BORDER_HIDE);
-
-                    aura:SetScale(SCALE);
-
-                    if SQUARE then
-                        aura:SetSize(20, 20);
-                        aura.Icon:SetSize(18, 18);
-                        aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
-                    end
-
-                    aura.Cooldown:SetFrameStrata('HIGH');
-                    aura.Cooldown:SetDrawEdge(DRAW_EDGE);
-                    aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
-                    aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-                    aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
-
-                    aura.Cooldown:SetCountdownFont('StripesAurasModCooldownFont');
-                    aura.Cooldown:GetRegions():ClearAllPoints();
-                    aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-                    aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
-                    aura.Cooldown:GetRegions():SetDrawLayer('OVERLAY', 7);
-
-                    aura.CountFrame:SetFrameStrata('HIGH');
-                    aura.CountFrame.Count:ClearAllPoints();
-                    aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
-                    aura.CountFrame.Count:SetFontObject(StripesAurasModCountFont);
-                    aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
-
-                    aura:HookScript('OnUpdate', function(self, elapsed)
-                        self.elapsed = (self.elapsed or 0) + elapsed;
-
-                        if self.elapsed < UPDATE_INTERVAL then
-                            return;
-                        end
-
-                        if self.spellId and IsOnPandemic(self) then
-                            local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellId);
-                            if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
-                                self.spellId = GetTrulySpellId(self.spellId);
-
-                                if self.spellId and (pandemicKnownSpells[self.spellId] or S_IsSpellKnown(self.spellId)) then
-                                    self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
-
-                                    if not pandemicKnownSpells[self.spellId] then
-                                        pandemicKnownSpells[self.spellId] = true;
-                                    end
-                                end
-                            end
-                        else
-                            self.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
-                        end
-
-                        if IsOnExpireGlow(self) then
-                            GlowStart(self, EXPIRE_GLOW_TYPE, EXPIRE_GLOW_COLOR);
-                        else
-                            GlowStopAll(self);
-                        end
-
-                        self.elapsed = 0;
-                    end);
-
-                    aura.Cooldown:HookScript('OnCooldownDone', function(self)
-                        GlowStopAll(self:GetParent());
-                    end);
-
-                    if MASQUE_SUPPORT and Stripes.Masque then
-                        Stripes.MasqueAurasGroup:RemoveButton(aura);
-                        Stripes.MasqueAurasGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
-                    end
+                    UpdateAuraStyle(aura);
 
                     self.buffList[buffIndex] = aura;
+                end
+
+                if aura.needUpdate then
+                    UpdateAuraStyle(aura);
+                    aura.needUpdate = nil;
                 end
 
                 aura:SetID(index);
@@ -378,11 +399,11 @@ local function UpdateBuffs(self, unit, filter, showAll)
 end
 
 local function Update(unitframe)
+    unitframe.BuffFrame.spacing        = SPACING_X;
+    unitframe.BuffFrame.isActive       = BUFFFRAME_IS_ACTIVE;
     unitframe.BuffFrame.UpdateAnchor   = UpdateAnchor;
     unitframe.BuffFrame.ShouldShowBuff = FilterShouldShowBuff;
     unitframe.BuffFrame.UpdateBuffs    = UpdateBuffs;
-    unitframe.BuffFrame.spacing        = SPACING_X;
-    unitframe.BuffFrame.isActive       = BUFFFRAME_IS_ACTIVE;
 
     if unitframe.BuffFrame.unit and unitframe.BuffFrame.filter then
         unitframe.BuffFrame:UpdateBuffs(unitframe.BuffFrame.unit, unitframe.BuffFrame.filter, unitframe.data.unitType == 'FRIENDLY_PLAYER');
@@ -410,35 +431,7 @@ local function UpdateStyle(unitframe)
             end
         end
 
-        aura:SetScale(SCALE);
-
-        aura.Border:SetShown(not BORDER_HIDE);
-
-        if SQUARE then
-            aura:SetSize(20, 20);
-            aura.Icon:SetSize(18, 18);
-            aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
-        else
-            aura:SetSize(20, 14);
-            aura.Icon:SetSize(18, 12);
-            aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
-        end
-
-        aura.Cooldown:SetDrawEdge(DRAW_EDGE);
-        aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
-        aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-        aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
-
-        aura.Cooldown:SetCountdownFont('StripesAurasModCooldownFont');
-        aura.Cooldown:GetRegions():ClearAllPoints();
-        aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-        aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
-        aura.Cooldown:GetRegions():SetDrawLayer('OVERLAY', 7);
-
-        aura.CountFrame.Count:ClearAllPoints();
-        aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
-        aura.CountFrame.Count:SetFontObject(StripesAurasModCountFont);
-        aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
+        UpdateAuraStyle(aura, true);
     end
 end
 
