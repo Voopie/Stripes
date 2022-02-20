@@ -206,42 +206,46 @@ local function UpdateAuraStyle(aura, withoutMasque)
     aura.CountFrame.Count:SetFontObject(StripesAurasModCountFont);
     aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
-    aura:HookScript('OnUpdate', function(self, elapsed)
-        self.elapsed = (self.elapsed or 0) + elapsed;
+    if not aura.Hooked then
+        aura:HookScript('OnUpdate', function(self, elapsed)
+            self.elapsed = (self.elapsed or 0) + elapsed;
 
-        if self.elapsed < UPDATE_INTERVAL then
-            return;
-        end
+            if self.elapsed < UPDATE_INTERVAL then
+                return;
+            end
 
-        if self.spellId and IsOnPandemic(self) then
-            local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellId);
-            if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
-                self.spellId = GetTrulySpellId(self.spellId);
+            if self.spellId and IsOnPandemic(self) then
+                local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellId);
+                if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
+                    self.spellId = GetTrulySpellId(self.spellId);
 
-                if self.spellId and (pandemicKnownSpells[self.spellId] or S_IsSpellKnown(self.spellId)) then
-                    self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
+                    if self.spellId and (pandemicKnownSpells[self.spellId] or S_IsSpellKnown(self.spellId)) then
+                        self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
 
-                    if not pandemicKnownSpells[self.spellId] then
-                        pandemicKnownSpells[self.spellId] = true;
+                        if not pandemicKnownSpells[self.spellId] then
+                            pandemicKnownSpells[self.spellId] = true;
+                        end
                     end
                 end
+            else
+                self.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
             end
-        else
-            self.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
-        end
 
-        if IsOnExpireGlow(self) then
-            GlowStart(self, EXPIRE_GLOW_TYPE, EXPIRE_GLOW_COLOR);
-        else
-            GlowStopAll(self);
-        end
+            if IsOnExpireGlow(self) then
+                GlowStart(self, EXPIRE_GLOW_TYPE, EXPIRE_GLOW_COLOR);
+            else
+                GlowStopAll(self);
+            end
 
-        self.elapsed = 0;
-    end);
+            self.elapsed = 0;
+        end);
 
-    aura.Cooldown:HookScript('OnCooldownDone', function(self)
-        GlowStopAll(self:GetParent());
-    end);
+        aura.Cooldown:HookScript('OnCooldownDone', function(self)
+            GlowStopAll(self:GetParent());
+        end);
+
+        aura.Hooked = true;
+    end
 
     if not withoutMasque then
         if MASQUE_SUPPORT and Stripes.Masque then
@@ -285,10 +289,8 @@ local function UpdateBuffs(self, unit, filter, showAll)
             if FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPersonal, nameplateShowAll or showAll) then
                 aura = self.buffList[buffIndex];
 
-                if aura then
-                    if aura.Cooldown.noCooldownCount == nil then
-                        aura.needUpdate = true;
-                    end
+                if aura and aura.Cooldown.noCooldownCount == nil then
+                    aura.needUpdate = true;
                 end
 
                 if not aura then
@@ -297,6 +299,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
                     aura.layoutIndex = buffIndex;
 
                     UpdateAuraStyle(aura);
+                    aura.needUpdate = nil;
 
                     self.buffList[buffIndex] = aura;
                 end
