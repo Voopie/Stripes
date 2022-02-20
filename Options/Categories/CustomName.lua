@@ -16,6 +16,7 @@ local LIST_TOOLTIP_PATTERN = '|cffff6666%s|r  |cffffffff| |r |cffffb833%s|r';
 
 local modelBlacklist = {
     [120651] = true,
+    [179733] = true,
 };
 
 local HolderModelFrame = CreateFrame('Frame', nil, UIParent, 'BackdropTemplate');

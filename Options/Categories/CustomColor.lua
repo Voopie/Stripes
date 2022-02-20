@@ -20,6 +20,7 @@ panel.categoryId = 0;
 
 local modelBlacklist = {
     [120651] = true,
+    [179733] = true,
 };
 
 local HolderModelFrame = CreateFrame('Frame', nil, UIParent, 'BackdropTemplate');
