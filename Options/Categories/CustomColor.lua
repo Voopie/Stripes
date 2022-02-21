@@ -18,10 +18,6 @@ local LIST_TOOLTIP_PATTERN = '|cffff6666%s|r  |cffffffff| |r |cffffb833%s|r';
 
 panel.categoryId = 0;
 
-local modelBlacklist = {
-    [120651] = true,
-    [179733] = true,
-};
 
 local HolderModelFrame = CreateFrame('Frame', nil, UIParent, 'BackdropTemplate');
 HolderModelFrame:SetClipsChildren(true);
@@ -366,7 +362,7 @@ local function CreateRow(frame)
         if ExtendedOptions:IsShown() then
             GameTooltip_Hide();
         else
-            if not modelBlacklist[self.npc_id] then
+            if not D.ModelBlacklist[self.npc_id] then
                 ModelFrame:SetCreature(self.npc_id);
                 GameTooltip_InsertFrame(GameTooltip, HolderModelFrame, 0);
                 HolderModelFrame:SetSize(GameTooltip:GetWidth(), GameTooltip:GetWidth() * 2);
@@ -597,7 +593,7 @@ local function CreateListRow(b)
             return;
         end
 
-        if modelBlacklist[self.npc_id] then
+        if D.ModelBlacklist[self.npc_id] then
             return;
         end
 

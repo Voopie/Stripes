@@ -14,11 +14,6 @@ local DELAY_SECONDS = 0.2;
 local DEFAULT_LIST_VALUE = 1;
 local LIST_TOOLTIP_PATTERN = '|cffff6666%s|r  |cffffffff| |r |cffffb833%s|r';
 
-local modelBlacklist = {
-    [120651] = true,
-    [179733] = true,
-};
-
 local HolderModelFrame = CreateFrame('Frame', nil, UIParent, 'BackdropTemplate');
 HolderModelFrame:SetClipsChildren(true);
 HolderModelFrame:SetFrameStrata('TOOLTIP');
@@ -174,7 +169,7 @@ local function CreateRow(frame)
     E.CreateTooltip(frame, nil, nil, true);
 
     frame:HookScript('OnEnter', function(self)
-        if modelBlacklist[self.npc_id] then
+        if D.ModelBlacklist[self.npc_id] then
             return;
         end
 
@@ -334,7 +329,7 @@ local function CreateListRow(b)
             return;
         end
 
-        if modelBlacklist[self.npc_id] then
+        if D.ModelBlacklist[self.npc_id] then
             return;
         end
 

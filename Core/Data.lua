@@ -252,7 +252,13 @@ D.MythicPlusPercentage = {
     [162763] = { count = 8,  normal = 271, teeming = 1000 },
     [163089] = { count = 1,  normal = 271, teeming = 1000 },
     [167534] = { count = 20, normal = 271, teeming = 1000 },
-}
+};
+
+
+D.ModelBlacklist = {
+    [120651] = true,
+    [179733] = true,
+};
 
 D.NPCs = {
     -- Common
