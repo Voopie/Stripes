@@ -258,7 +258,7 @@ O.Lists = {
     },
 };
 
--- ~546
+-- ~559
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -368,6 +368,20 @@ O.DefaultValues = {
     health_bar_color_enemy_player    = { 1, 0, 0, 1 },
     health_bar_color_enemy_npc       = { 1, 0, 0, 1 },
     health_bar_color_neutral_npc     = { 1, 1, 0, 1 },
+
+    health_bar_color_class_use         = false,
+    health_bar_color_class_DEATHKNIGHT = { 0.77, 0.12, 0.23, 1 },
+    health_bar_color_class_DEMONHUNTER = { 0.64, 0.19, 0.79, 1 },
+    health_bar_color_class_DRUID       = { 1.00, 0.49, 0.04, 1 },
+    health_bar_color_class_HUNTER      = { 0.67, 0.83, 0.45, 1 },
+    health_bar_color_class_MAGE        = { 0.25, 0.78, 0.92, 1 },
+    health_bar_color_class_MONK        = { 0.00, 1.00, 0.60, 1 },
+    health_bar_color_class_PALADIN     = { 0.96, 0.55, 0.73, 1 },
+    health_bar_color_class_PRIEST      = { 1.00, 1.00, 1.00, 1 },
+    health_bar_color_class_ROGUE       = { 1.00, 0.96, 0.41, 1 },
+    health_bar_color_class_SHAMAN      = { 0.00, 0.44, 0.87, 1 },
+    health_bar_color_class_WARLOCK     = { 0.53, 0.53, 0.93, 1 },
+    health_bar_color_class_WARRIOR     = { 0.78, 0.61, 0.43, 1 },
 
     absorb_bar_enabled = true,
     absorb_bar_at_top  = false,

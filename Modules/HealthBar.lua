@@ -91,9 +91,19 @@ local function UpdateHealthColor(frame)
             local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
             r, g, b, a = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b, healthBarColorOverride.a or 1;
         else
-            local classColor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[UnitClassBase(frame.displayedUnit)];
-            if (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.displayedUnit) or UnitTreatAsPlayerForDisplay(frame.displayedUnit)) and classColor and frame.optionTable.useClassColors and IsUseClassColor(frame) then
-                r, g, b = classColor.r, classColor.g, classColor.b;
+            if (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.displayedUnit) or UnitTreatAsPlayerForDisplay(frame.displayedUnit)) and frame.optionTable.useClassColors and IsUseClassColor(frame) then
+                local classColor;
+                if DB.HEALTH_BAR_COLOR_CLASS_USE then
+                    classColor = O.db['health_bar_color_class_' .. UnitClassBase(frame.displayedUnit)];
+                    if classColor then
+                        r, g, b, a = classColor[1], classColor[2], classColor[3], classColor[4] or 1;
+                    else
+                        r, g, b, a = 0.8, 0.8, 0.8, 1;
+                    end
+                else
+                    classColor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[UnitClassBase(frame.displayedUnit)];
+                    r, g, b, a = classColor.r, classColor.g, classColor.b, 1;
+                end
             elseif CompactUnitFrame_IsTapDenied(frame) then
                 r, g, b, a = DB.HPBAR_COLOR_TAPPED[1], DB.HPBAR_COLOR_TAPPED[2], DB.HPBAR_COLOR_TAPPED[3], DB.HPBAR_COLOR_TAPPED[4];
             elseif frame.optionTable.colorHealthBySelection then
@@ -907,6 +917,8 @@ function Module:UpdateLocalConfig()
     DB.HEALTH_BAR_BACKGROUND_COLOR[2] = O.db.health_bar_background_color[2];
     DB.HEALTH_BAR_BACKGROUND_COLOR[3] = O.db.health_bar_background_color[3];
     DB.HEALTH_BAR_BACKGROUND_COLOR[4] = O.db.health_bar_background_color[4] or 1;
+
+    DB.HEALTH_BAR_COLOR_CLASS_USE = O.db.health_bar_color_class_use;
 end
 
 function Module:PLAYER_LOGIN()

@@ -536,6 +536,220 @@ panel.Load = function(self)
         panel.health_bar_color_dc:SetValue(unpack(O.DefaultValues.health_bar_color_dc));
     end
 
+    local ClassColorsHeader = E.CreateHeader(self.TabsFrames['ColorsTab'].Content, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_HEADER']);
+    ClassColorsHeader:SetPosition('TOPLEFT', self.health_bar_color_tapped, 'BOTTOMLEFT', 0, -4);
+    ClassColorsHeader:SetW(self:GetWidth());
+
+    self.health_bar_color_class_use = E.CreateCheckButton(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_use:SetPosition('TOPLEFT', ClassColorsHeader, 'BOTTOMLEFT', 5, -4);
+    self.health_bar_color_class_use:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_USE']);
+    self.health_bar_color_class_use:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_USE_TOOLTIP']);
+    self.health_bar_color_class_use:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_USE_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_use:SetChecked(O.db.health_bar_color_class_use);
+    self.health_bar_color_class_use.Callback = function(self)
+        O.db.health_bar_color_class_use = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_DEATHKNIGHT = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_DEATHKNIGHT:SetPosition('TOPLEFT', self.health_bar_color_class_use, 'BOTTOMLEFT', -5, -12);
+    self.health_bar_color_class_DEATHKNIGHT:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_DEATHKNIGHT']);
+    self.health_bar_color_class_DEATHKNIGHT:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_DEATHKNIGHT_TOOLTIP']);
+    self.health_bar_color_class_DEATHKNIGHT:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_DEATHKNIGHT_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_DEATHKNIGHT:SetValue(unpack(O.db.health_bar_color_class_DEATHKNIGHT));
+    self.health_bar_color_class_DEATHKNIGHT.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_DEATHKNIGHT[1] = r;
+        O.db.health_bar_color_class_DEATHKNIGHT[2] = g;
+        O.db.health_bar_color_class_DEATHKNIGHT[3] = b;
+        O.db.health_bar_color_class_DEATHKNIGHT[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_DEMONHUNTER = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_DEMONHUNTER:SetPosition('LEFT', self.health_bar_color_class_DEATHKNIGHT.Label, 'RIGHT', 48, 0);
+    self.health_bar_color_class_DEMONHUNTER:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_DEMONHUNTER']);
+    self.health_bar_color_class_DEMONHUNTER:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_DEMONHUNTER_TOOLTIP']);
+    self.health_bar_color_class_DEMONHUNTER:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_DEMONHUNTER_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_DEMONHUNTER:SetValue(unpack(O.db.health_bar_color_class_DEMONHUNTER));
+    self.health_bar_color_class_DEMONHUNTER.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_DEMONHUNTER[1] = r;
+        O.db.health_bar_color_class_DEMONHUNTER[2] = g;
+        O.db.health_bar_color_class_DEMONHUNTER[3] = b;
+        O.db.health_bar_color_class_DEMONHUNTER[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_DRUID = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_DRUID:SetPosition('LEFT', self.health_bar_color_class_DEMONHUNTER.Label, 'RIGHT', 48, 0);
+    self.health_bar_color_class_DRUID:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_DRUID']);
+    self.health_bar_color_class_DRUID:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_DRUID_TOOLTIP']);
+    self.health_bar_color_class_DRUID:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_DRUID_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_DRUID:SetValue(unpack(O.db.health_bar_color_class_DRUID));
+    self.health_bar_color_class_DRUID.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_DRUID[1] = r;
+        O.db.health_bar_color_class_DRUID[2] = g;
+        O.db.health_bar_color_class_DRUID[3] = b;
+        O.db.health_bar_color_class_DRUID[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_HUNTER = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_HUNTER:SetPosition('TOPLEFT', self.health_bar_color_class_DEATHKNIGHT, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_color_class_HUNTER:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_HUNTER']);
+    self.health_bar_color_class_HUNTER:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_HUNTER_TOOLTIP']);
+    self.health_bar_color_class_HUNTER:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_HUNTER_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_HUNTER:SetValue(unpack(O.db.health_bar_color_class_HUNTER));
+    self.health_bar_color_class_HUNTER.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_HUNTER[1] = r;
+        O.db.health_bar_color_class_HUNTER[2] = g;
+        O.db.health_bar_color_class_HUNTER[3] = b;
+        O.db.health_bar_color_class_HUNTER[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_MAGE = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_MAGE:SetPosition('TOPLEFT', self.health_bar_color_class_DEMONHUNTER, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_color_class_MAGE:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_MAGE']);
+    self.health_bar_color_class_MAGE:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_MAGE_TOOLTIP']);
+    self.health_bar_color_class_MAGE:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_MAGE_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_MAGE:SetValue(unpack(O.db.health_bar_color_class_MAGE));
+    self.health_bar_color_class_MAGE.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_MAGE[1] = r;
+        O.db.health_bar_color_class_MAGE[2] = g;
+        O.db.health_bar_color_class_MAGE[3] = b;
+        O.db.health_bar_color_class_MAGE[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_MONK = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_MONK:SetPosition('TOPLEFT', self.health_bar_color_class_DRUID, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_color_class_MONK:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_MONK']);
+    self.health_bar_color_class_MONK:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_MONK_TOOLTIP']);
+    self.health_bar_color_class_MONK:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_MONK_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_MONK:SetValue(unpack(O.db.health_bar_color_class_MONK));
+    self.health_bar_color_class_MONK.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_MONK[1] = r;
+        O.db.health_bar_color_class_MONK[2] = g;
+        O.db.health_bar_color_class_MONK[3] = b;
+        O.db.health_bar_color_class_MONK[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_PALADIN = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_PALADIN:SetPosition('TOPLEFT', self.health_bar_color_class_HUNTER, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_color_class_PALADIN:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_PALADIN']);
+    self.health_bar_color_class_PALADIN:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_PALADIN_TOOLTIP']);
+    self.health_bar_color_class_PALADIN:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_PALADIN_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_PALADIN:SetValue(unpack(O.db.health_bar_color_class_PALADIN));
+    self.health_bar_color_class_PALADIN.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_PALADIN[1] = r;
+        O.db.health_bar_color_class_PALADIN[2] = g;
+        O.db.health_bar_color_class_PALADIN[3] = b;
+        O.db.health_bar_color_class_PALADIN[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_PRIEST = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_PRIEST:SetPosition('TOPLEFT', self.health_bar_color_class_MAGE, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_color_class_PRIEST:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_PRIEST']);
+    self.health_bar_color_class_PRIEST:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_PRIEST_TOOLTIP']);
+    self.health_bar_color_class_PRIEST:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_PRIEST_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_PRIEST:SetValue(unpack(O.db.health_bar_color_class_PRIEST));
+    self.health_bar_color_class_PRIEST.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_PRIEST[1] = r;
+        O.db.health_bar_color_class_PRIEST[2] = g;
+        O.db.health_bar_color_class_PRIEST[3] = b;
+        O.db.health_bar_color_class_PRIEST[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_ROGUE = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_ROGUE:SetPosition('TOPLEFT', self.health_bar_color_class_MONK, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_color_class_ROGUE:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_ROGUE']);
+    self.health_bar_color_class_ROGUE:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_ROGUE_TOOLTIP']);
+    self.health_bar_color_class_ROGUE:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_ROGUE_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_ROGUE:SetValue(unpack(O.db.health_bar_color_class_ROGUE));
+    self.health_bar_color_class_ROGUE.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_ROGUE[1] = r;
+        O.db.health_bar_color_class_ROGUE[2] = g;
+        O.db.health_bar_color_class_ROGUE[3] = b;
+        O.db.health_bar_color_class_ROGUE[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_SHAMAN = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_SHAMAN:SetPosition('TOPLEFT', self.health_bar_color_class_PALADIN, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_color_class_SHAMAN:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_SHAMAN']);
+    self.health_bar_color_class_SHAMAN:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_SHAMAN_TOOLTIP']);
+    self.health_bar_color_class_SHAMAN:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_SHAMAN_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_SHAMAN:SetValue(unpack(O.db.health_bar_color_class_SHAMAN));
+    self.health_bar_color_class_SHAMAN.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_SHAMAN[1] = r;
+        O.db.health_bar_color_class_SHAMAN[2] = g;
+        O.db.health_bar_color_class_SHAMAN[3] = b;
+        O.db.health_bar_color_class_SHAMAN[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_WARLOCK = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_WARLOCK:SetPosition('TOPLEFT', self.health_bar_color_class_PRIEST, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_color_class_WARLOCK:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARLOCK']);
+    self.health_bar_color_class_WARLOCK:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARLOCK_TOOLTIP']);
+    self.health_bar_color_class_WARLOCK:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARLOCK_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_WARLOCK:SetValue(unpack(O.db.health_bar_color_class_WARLOCK));
+    self.health_bar_color_class_WARLOCK.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_WARLOCK[1] = r;
+        O.db.health_bar_color_class_WARLOCK[2] = g;
+        O.db.health_bar_color_class_WARLOCK[3] = b;
+        O.db.health_bar_color_class_WARLOCK[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_class_WARRIOR = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_WARRIOR:SetPosition('TOPLEFT', self.health_bar_color_class_ROGUE, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_color_class_WARRIOR:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARRIOR']);
+    self.health_bar_color_class_WARRIOR:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARRIOR_TOOLTIP']);
+    self.health_bar_color_class_WARRIOR:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARRIOR_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_WARRIOR:SetValue(unpack(O.db.health_bar_color_class_WARRIOR));
+    self.health_bar_color_class_WARRIOR.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_WARRIOR[1] = r;
+        O.db.health_bar_color_class_WARRIOR[2] = g;
+        O.db.health_bar_color_class_WARRIOR[3] = b;
+        O.db.health_bar_color_class_WARRIOR[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    local ResetHealthBarClassColorsButton = E.CreateTextureButton(self.TabsFrames['ColorsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);
+    ResetHealthBarClassColorsButton:SetPosition('TOPRIGHT', ClassColorsHeader, 'BOTTOMRIGHT', -8, -4);
+    ResetHealthBarClassColorsButton:SetTooltip(L['OPTIONS_HEALTH_BAR_CLASS_COLORS_RESET_TOOLTIP']);
+    ResetHealthBarClassColorsButton:AddToSearch(button, L['OPTIONS_HEALTH_BAR_CLASS_COLORS_RESET_TOOLTIP'], self.Tabs[2]);
+    ResetHealthBarClassColorsButton.Callback = function()
+        panel.health_bar_color_class_DEATHKNIGHT:SetValue(unpack(O.DefaultValues.health_bar_color_class_DEATHKNIGHT));
+        panel.health_bar_color_class_DEMONHUNTER:SetValue(unpack(O.DefaultValues.health_bar_color_class_DEMONHUNTER));
+        panel.health_bar_color_class_DRUID:SetValue(unpack(O.DefaultValues.health_bar_color_class_DRUID));
+        panel.health_bar_color_class_HUNTER:SetValue(unpack(O.DefaultValues.health_bar_color_class_HUNTER));
+        panel.health_bar_color_class_MAGE:SetValue(unpack(O.DefaultValues.health_bar_color_class_MAGE));
+        panel.health_bar_color_class_MONK:SetValue(unpack(O.DefaultValues.health_bar_color_class_MONK));
+        panel.health_bar_color_class_PALADIN:SetValue(unpack(O.DefaultValues.health_bar_color_class_PALADIN));
+        panel.health_bar_color_class_PRIEST:SetValue(unpack(O.DefaultValues.health_bar_color_class_PRIEST));
+        panel.health_bar_color_class_ROGUE:SetValue(unpack(O.DefaultValues.health_bar_color_class_ROGUE));
+        panel.health_bar_color_class_SHAMAN:SetValue(unpack(O.DefaultValues.health_bar_color_class_SHAMAN));
+        panel.health_bar_color_class_WARLOCK:SetValue(unpack(O.DefaultValues.health_bar_color_class_WARLOCK));
+        panel.health_bar_color_class_WARRIOR:SetValue(unpack(O.DefaultValues.health_bar_color_class_WARRIOR));
+    end
+
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     -- Target Indicator Tab ------------------------------------------------------------------------------------------------------------

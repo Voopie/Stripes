@@ -160,16 +160,28 @@ do
             end
         end
 
-        class = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class];
+        if O.db.health_bar_color_class_use then
+            class = O.db['health_bar_color_class_' .. class];
+        else
+            class = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class];
+        end
 
         if not class then
             class = CreateColor(0.8, 0.8, 0.8);
         end
 
         if str == 2 then
-            return class.r, class.g, class.b;
+            if class[1] then
+                return class[1], class[2], class[3];
+            else
+                return class.r, class.g, class.b;
+            end
         elseif str then
-            return string_format('%02x%02x%02x', class.r * 255, class.g * 255, class.b * 255);
+            if class[1] then
+                return string_format('%02x%02x%02x', class[1] * 255, class[2] * 255, class[3] * 255);
+            else
+                return string_format('%02x%02x%02x', class.r * 255, class.g * 255, class.b * 255);
+            end
         else
             return class;
         end
