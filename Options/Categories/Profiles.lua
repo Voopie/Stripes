@@ -36,10 +36,7 @@ StaticPopupDialogs['STRIPES_RESET_PROFILE_TO_DEFAULT'] = {
     preferredIndex = STATICPOPUPS_NUMDIALOGS,
 };
 
-local profilesList = {};
 local removeProfilesList = {};
-local chosen;
-
 local function UpdateRemoveProfilesDropdown()
     wipe(removeProfilesList);
 
@@ -58,36 +55,43 @@ local function UpdateRemoveProfilesDropdown()
     panel.RemoveProfilesDropdown:SetValue(nil);
 end
 
-local function UpdateProfilesDropdown()
-    wipe(profilesList);
+do
+    local profilesList = {};
+    local chosen;
+    Module.UpdateProfilesDropdown = function(dropdown, withoutChosen)
+        wipe(profilesList);
 
-    for _, data in pairs(StripesDB.profiles) do
-        table.insert(profilesList, data.profileName);
+        for _, data in pairs(StripesDB.profiles) do
+            table.insert(profilesList, data.profileName);
+        end
+
+        table.sort(profilesList, function(a, b)
+            if a == O.PROFILE_DEFAULT_NAME then
+                return true;
+            end
+
+            if b == O.PROFILE_DEFAULT_NAME then
+                return false;
+            end
+
+            return a < b;
+        end);
+
+        chosen = nil;
+
+        if not withoutChosen then
+            for i, name in ipairs(profilesList) do
+                if name == O.activeProfileName then
+                    chosen = i;
+                    break;
+                end
+            end
+        end
+
+        dropdown:SetEnabled(#profilesList > 1);
+        dropdown:SetList(profilesList);
+        dropdown:SetValue(chosen);
     end
-
-    table.sort(profilesList, function(a, b)
-        if a == O.PROFILE_DEFAULT_NAME then
-            return true;
-        end
-
-        if b == O.PROFILE_DEFAULT_NAME then
-            return false;
-        end
-
-        return a < b;
-    end);
-
-    chosen = nil;
-    for i, name in ipairs(profilesList) do
-        if name == O.activeProfileName then
-            chosen = i;
-            break;
-        end
-    end
-
-    panel.ProfilesDropdown:SetEnabled(#profilesList > 1);
-    panel.ProfilesDropdown:SetList(profilesList);
-    panel.ProfilesDropdown:SetValue(chosen);
 end
 
 local function UpdateElementsVisibility()
@@ -122,7 +126,7 @@ local function EditActiveProfileName(profileId, newProfileName)
 
     O.activeProfileName = newProfileName;
 
-    UpdateProfilesDropdown();
+    Module.UpdateProfilesDropdown(panel.ProfilesDropdown);
     UpdateRemoveProfilesDropdown();
 
     O.frame.TopBar.CurrentProfileName:SetText(O.activeProfileName);
@@ -148,7 +152,7 @@ local function CopyFromActive(name)
 
     StripesDB.characters[D.Player.NameWithRealm].profileId = index;
 
-    UpdateProfilesDropdown();
+    Module.UpdateProfilesDropdown(panel.ProfilesDropdown);
     UpdateRemoveProfilesDropdown();
 
     panel.CreateNewProfileEditBox:SetText('');
@@ -176,7 +180,7 @@ local function CreateDefaultProfile(name)
 
     StripesDB.characters[D.Player.NameWithRealm].profileId = index;
 
-    UpdateProfilesDropdown();
+    Module.UpdateProfilesDropdown(panel.ProfilesDropdown);
     UpdateRemoveProfilesDropdown();
 
     panel.CreateNewProfileEditBox:SetText('');
@@ -204,7 +208,7 @@ local function ImportProfile(name, data)
 
     StripesDB.characters[D.Player.NameWithRealm].profileId = index;
 
-    UpdateProfilesDropdown();
+    Module.UpdateProfilesDropdown(panel.ProfilesDropdown);
     UpdateRemoveProfilesDropdown();
 
     panel.CreateNewProfileEditBox:SetText('');
@@ -241,7 +245,7 @@ Module.ChooseProfileByName = function(name)
 
     StripesDB.characters[D.Player.NameWithRealm].profileId = index;
 
-    UpdateProfilesDropdown();
+    Module.UpdateProfilesDropdown(panel.ProfilesDropdown);
     panel.ActiveProfileValue:SetText(O.activeProfileName);
     panel.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
 
@@ -287,7 +291,7 @@ local function RemoveProfileByName(name)
         S:GetNameplateModule('Handler'):UpdateAll();
     end
 
-    UpdateProfilesDropdown();
+    Module.UpdateProfilesDropdown(panel.ProfilesDropdown);
     UpdateRemoveProfilesDropdown();
 
     panel.ActiveProfileValue:SetText(O.activeProfileName);
@@ -438,7 +442,7 @@ panel.Load = function(self)
     self.ProfilesDropdown = E.CreateDropdown('plain', self);
     self.ProfilesDropdown:SetPosition('LEFT', self.ChooseProfileText, 'RIGHT', 12, 0);
     self.ProfilesDropdown:SetSize(200, 20);
-    UpdateProfilesDropdown();
+    Module.UpdateProfilesDropdown(self.ProfilesDropdown);
     self.ProfilesDropdown.OnValueChangedCallback = function(_, _, name)
         Module.ChooseProfileByName(name);
     end

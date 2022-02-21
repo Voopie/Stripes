@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_Auras');
+local Profile = S:GetModule('Options_Categories_Profiles');
 
 local LSM = S.Libraries.LSM;
 
@@ -434,36 +435,6 @@ panel.UpdateScroll = function()
     end
 
     PixelUtil.SetSize(panel.auras_custom_scrollchild, panel.auras_custom_editframe:GetWidth(), panel.auras_custom_editframe:GetHeight() - (panel.auras_custom_editframe:GetHeight() % ROW_HEIGHT + 8));
-end
-
-local profilesList = {};
-
-panel.UpdateProfilesDropdown = function(self)
-    wipe(profilesList);
-
-    for _, data in pairs(StripesDB.profiles) do
-        if data.profileName ~= O.activeProfileName then
-            table.insert(profilesList, data.profileName);
-        end
-    end
-
-    table.sort(profilesList, function(a, b)
-        if a == O.PROFILE_DEFAULT_NAME then
-            return true;
-        end
-
-        if b == O.PROFILE_DEFAULT_NAME then
-            return false;
-        end
-
-        return a < b;
-    end);
-
-    if self.ProfilesDropdown then
-        self.ProfilesDropdown:SetEnabled(#profilesList > 1);
-        self.ProfilesDropdown:SetList(profilesList);
-        self.ProfilesDropdown:SetValue(nil);
-    end
 end
 
 local DataBlackListRows = {};
@@ -3288,8 +3259,7 @@ end
 
 panel.OnShow = function(self)
     Module:RegisterEvent('MODIFIER_STATE_CHANGED');
-
-    self:UpdateProfilesDropdown();
+    Profile.UpdateProfilesDropdown(self.ProfilesDropdown, true);
 end
 
 panel.OnHide = function()

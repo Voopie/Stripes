@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_CustomColor');
+local Profile = S:GetModule('Options_Categories_Profiles');
 
 O.frame.Left.CustomColor, O.frame.Right.CustomColor = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_CUSTOMCOLOR']), 'customcolor', 7);
 local button = O.frame.Left.CustomColor;
@@ -657,36 +658,6 @@ panel.UpdateListScroll = function(id)
     PixelUtil.SetSize(panel.ListScrollArea.scrollChild, panel.ListScroll:GetWidth(), panel.ListScroll:GetHeight() - (panel.ListScroll:GetHeight() % ROW_HEIGHT));
 end
 
-local profilesList = {};
-
-panel.UpdateProfilesDropdown = function(self)
-    wipe(profilesList);
-
-    for _, data in pairs(StripesDB.profiles) do
-        if data.profileName ~= O.activeProfileName then
-            table.insert(profilesList, data.profileName);
-        end
-    end
-
-    table.sort(profilesList, function(a, b)
-        if a == O.PROFILE_DEFAULT_NAME then
-            return true;
-        end
-
-        if b == O.PROFILE_DEFAULT_NAME then
-            return false;
-        end
-
-        return a < b;
-    end);
-
-    if self.ProfilesDropdown then
-        self.ProfilesDropdown:SetEnabled(#profilesList > 1);
-        self.ProfilesDropdown:SetList(profilesList);
-        self.ProfilesDropdown:SetValue(nil);
-    end
-end
-
 panel.CategoriesDropdown = {};
 panel.GetCategoriesDropdown = function(self)
     wipe(self.CategoriesDropdown);
@@ -1183,8 +1154,7 @@ end
 
 panel.OnShow = function(self)
     Module:RegisterEvent('MODIFIER_STATE_CHANGED');
-
-    self:UpdateProfilesDropdown();
+    Profile.UpdateProfilesDropdown(self.ProfilesDropdown, true);
 end
 
 panel.OnShowOnce = function(self)

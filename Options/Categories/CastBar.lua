@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_CastBar');
+local Profile = S:GetModule('Options_Categories_Profiles');
 
 -- WoW API
 local GetSpellInfo = GetSpellInfo;
@@ -74,35 +75,6 @@ local function AddCustomCast(spellId)
         glow_enabled   = true,
         glow_type      = 1,
     };
-end
-
-local profilesList = {};
-panel.UpdateProfilesDropdown = function(self)
-    wipe(profilesList);
-
-    for _, data in pairs(StripesDB.profiles) do
-        if data.profileName ~= O.activeProfileName then
-            table.insert(profilesList, data.profileName);
-        end
-    end
-
-    table.sort(profilesList, function(a, b)
-        if a == O.PROFILE_DEFAULT_NAME then
-            return true;
-        end
-
-        if b == O.PROFILE_DEFAULT_NAME then
-            return false;
-        end
-
-        return a < b;
-    end);
-
-    if self.ProfilesDropdown then
-        self.ProfilesDropdown:SetEnabled(#profilesList > 1);
-        self.ProfilesDropdown:SetList(profilesList);
-        self.ProfilesDropdown:SetValue(nil);
-    end
 end
 
 local DataCustomCastsRow = {};
@@ -1823,8 +1795,7 @@ end
 
 panel.OnShow = function(self)
     Module:RegisterEvent('MODIFIER_STATE_CHANGED');
-
-    self:UpdateProfilesDropdown();
+    Profile.UpdateProfilesDropdown(self.ProfilesDropdown, true);
 end
 
 panel.OnShowOnce = function(self)
