@@ -1,4 +1,6 @@
 <Ui>
+    <Script file="Profiles.lua" />
+
     <Script file="Home.lua" />
     <Script file="Common.lua" />
     <Script file="Sizes.lua" />
@@ -11,6 +13,5 @@
     <Script file="MythicPlus.lua" />
     <Script file="Useful.lua" />
     <Script file="Global.lua" />
-    <Script file="Profiles.lua" />
     <Script file="Info.lua" />
 </Ui>
