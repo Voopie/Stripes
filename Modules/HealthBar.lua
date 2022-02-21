@@ -5,8 +5,8 @@ local Module = S:NewNameplateModule('HealthBar');
 local unpack = unpack;
 
 -- WoW API
-local UnitIsConnected, UnitClassBase, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
-      UnitIsConnected, UnitClassBase, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
+local UnitIsConnected, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
+      UnitIsConnected, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer;
 local GetRaidTargetIndex = GetRaidTargetIndex;
 
@@ -94,15 +94,19 @@ local function UpdateHealthColor(frame)
             if (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.displayedUnit) or UnitTreatAsPlayerForDisplay(frame.displayedUnit)) and frame.optionTable.useClassColors and IsUseClassColor(frame) then
                 local classColor;
                 if DB.HEALTH_BAR_COLOR_CLASS_USE then
-                    classColor = O.db['health_bar_color_class_' .. UnitClassBase(frame.displayedUnit)];
+                    classColor = O.db['health_bar_color_class_' .. frame.data.className];
                     if classColor then
                         r, g, b, a = classColor[1], classColor[2], classColor[3], classColor[4] or 1;
-                    else
-                        r, g, b, a = 0.8, 0.8, 0.8, 1;
                     end
                 else
-                    classColor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[UnitClassBase(frame.displayedUnit)];
-                    r, g, b, a = classColor.r, classColor.g, classColor.b, 1;
+                    classColor = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[frame.data.className];
+                    if classColor then
+                        r, g, b, a = classColor.r, classColor.g, classColor.b, 1;
+                    end
+                end
+
+                if not r then
+                    r, g, b, a = 0.8, 0.8, 0.8, 1;
                 end
             elseif CompactUnitFrame_IsTapDenied(frame) then
                 r, g, b, a = DB.HPBAR_COLOR_TAPPED[1], DB.HPBAR_COLOR_TAPPED[2], DB.HPBAR_COLOR_TAPPED[3], DB.HPBAR_COLOR_TAPPED[4];
