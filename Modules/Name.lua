@@ -273,9 +273,9 @@ local function DefaultColor(frame)
         return;
     end
 
-	if frame.UpdateNameOverride and frame:UpdateNameOverride() then
-		return;
-	end
+    if frame.UpdateNameOverride and frame:UpdateNameOverride() then
+        return;
+    end
 
     if UnitIsTapped(frame.data.unit) then
         frame.name:SetVertexColor(0.5, 0.5, 0.5);

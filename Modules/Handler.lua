@@ -92,9 +92,9 @@ end
 Stripes.Updater:SetScript('OnUpdate', Stripes.Updater.OnUpdate);
 
 local function SetCVar(key, value)
-	if C_CVar.GetCVar(key) ~= tostring(value) then
-		C_CVar.SetCVar(key, value);
-	end
+    if C_CVar.GetCVar(key) ~= tostring(value) then
+        C_CVar.SetCVar(key, value);
+    end
 end
 
 Stripes.SetCVar = SetCVar;

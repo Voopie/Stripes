@@ -19,7 +19,6 @@ local LIST_TOOLTIP_PATTERN = '|cffff6666%s|r  |cffffffff| |r |cffffb833%s|r';
 
 panel.categoryId = 0;
 
-
 local HolderModelFrame = CreateFrame('Frame', nil, UIParent, 'BackdropTemplate');
 HolderModelFrame:SetClipsChildren(true);
 HolderModelFrame:SetFrameStrata('TOOLTIP');
