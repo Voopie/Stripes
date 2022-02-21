@@ -5,8 +5,8 @@ local Module = S:NewNameplateModule('HealthBar');
 local unpack = unpack;
 
 -- WoW API
-local UnitIsConnected, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
-      UnitIsConnected, UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
+local UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
+      UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer;
 local GetRaidTargetIndex = GetRaidTargetIndex;
 
@@ -84,14 +84,14 @@ local function UpdateHealthColor(frame)
 
     local r, g, b, a;
 
-    if not UnitIsConnected(frame.displayedUnit) then
+    if not frame.data.isConnected then
         r, g, b, a = DB.HPBAR_COLOR_DC[1], DB.HPBAR_COLOR_DC[2], DB.HPBAR_COLOR_DC[3], DB.HPBAR_COLOR_DC[4];
     else
         if frame.optionTable.healthBarColorOverride then
             local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
             r, g, b, a = healthBarColorOverride.r, healthBarColorOverride.g, healthBarColorOverride.b, healthBarColorOverride.a or 1;
         else
-            if (frame.optionTable.allowClassColorsForNPCs or UnitIsPlayer(frame.displayedUnit) or UnitTreatAsPlayerForDisplay(frame.displayedUnit)) and frame.optionTable.useClassColors and IsUseClassColor(frame) then
+            if (frame.optionTable.allowClassColorsForNPCs or frame.data.isPlayer or UnitTreatAsPlayerForDisplay(frame.displayedUnit)) and frame.optionTable.useClassColors and IsUseClassColor(frame) then
                 local classColor;
                 if DB.HEALTH_BAR_COLOR_CLASS_USE then
                     classColor = O.db['health_bar_color_class_' .. frame.data.className];
@@ -113,7 +113,7 @@ local function UpdateHealthColor(frame)
             elseif frame.optionTable.colorHealthBySelection then
                 if frame.optionTable.considerSelectionInCombatAsHostile and CompactUnitFrame_IsOnThreatListWithPlayer(frame.displayedUnit) then
                     r, g, b, a = DB.HPBAR_COLOR_ENEMY_NPC[1], DB.HPBAR_COLOR_ENEMY_NPC[2], DB.HPBAR_COLOR_ENEMY_NPC[3], DB.HPBAR_COLOR_ENEMY_NPC[4];
-                elseif UnitIsPlayer(frame.displayedUnit) and UnitIsFriend(PLAYER_UNIT, frame.displayedUnit) then
+                elseif frame.data.isPlayer and UnitIsFriend(PLAYER_UNIT, frame.displayedUnit) then
                     r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_PLAYER[1], DB.HPBAR_COLOR_FRIENDLY_PLAYER[2], DB.HPBAR_COLOR_FRIENDLY_PLAYER[3], DB.HPBAR_COLOR_FRIENDLY_PLAYER[4];
                 else
                     local selectionType = UnitSelectionType(frame.displayedUnit, frame.optionTable.colorHealthWithExtendedColors);
