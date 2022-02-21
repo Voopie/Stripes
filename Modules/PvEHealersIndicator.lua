@@ -77,6 +77,7 @@ local mobsIDs = {
 
     [177817] = true, -- Tazavesh (Lower): Support Officer
     [178141] = true, -- Tazavesh (Upper): Murkbrine Scalebinder
+    [179733] = true, -- Tazavesh (Upper): Invigorating Fish Stick
     [180432] = true, -- Tazavesh (Upper): Devoted Accomplice
 };
 
