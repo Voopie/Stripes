@@ -257,6 +257,9 @@ D.MythicPlusPercentage = {
 D.ModelBlacklist = {
     [120651] = true,
     [179733] = true,
+    [185683] = true,
+    [185680] = true,
+    [185685] = true,
 };
 
 D.NPCs = {
