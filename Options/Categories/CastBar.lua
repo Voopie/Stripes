@@ -994,12 +994,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -6);
-    Delimiter:SetW(self:GetWidth());
+    local CastTargetHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_CAST_BAR_TARGET_HEADER']);
+    CastTargetHeader:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -6);
+    CastTargetHeader:SetW(self:GetWidth());
 
     self.castbar_target_name_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_target_name_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.castbar_target_name_enabled:SetPosition('TOPLEFT', CastTargetHeader, 'BOTTOMLEFT', 0, -4);
     self.castbar_target_name_enabled:SetLabel(L['OPTIONS_CAST_BAR_TARGET_ENABLED']);
     self.castbar_target_name_enabled:SetChecked(O.db.castbar_target_name_enabled);
     self.castbar_target_name_enabled:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_ENABLED_TOOLTIP']);
