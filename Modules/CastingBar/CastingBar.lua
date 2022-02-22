@@ -12,12 +12,11 @@ local GetUnitColor = U.GetUnitColor;
 local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Libraries
-local LCG = S.Libraries.LCG;
 local LT = S.Libraries.LT;
 local LDC = S.Libraries.LDC;
 
 -- Local config
-local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
+local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS, CUSTOM_CASTS_ENABLED;
 
 -- In fact, this is a copy paste from Blizzard/CastingBarFrame.lua
 
