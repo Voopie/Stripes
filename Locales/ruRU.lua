@@ -100,7 +100,7 @@ L['DUNGEON_SL_TTVM'] = 'Тайный рынок Тазавеш';
 
 L['RAID_SL_CN'] = 'Замок Нафрия';
 L['RAID_SL_SOD'] = 'Святилище Господства';
--- L['RAID_SL_SOTFO'] = 'Гробница Предвечных';
+L['RAID_SL_SOTFO'] = 'Гробница Предвечных';
 
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C для копирования';
 
