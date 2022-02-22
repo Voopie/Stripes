@@ -1,9 +1,9 @@
-## Interface: 90105
+## Interface: 90200
 ## Author: Voopie
 ## Title: Stripes
 ## Notes: Yet another nameplates customization addon
 ## Notes-ruRU: Еще один аддон для кастомизации неймплейтов 
-## Version: 1.21
+## Version: 1.22
 ## SavedVariables: StripesDB
 
 Stripes.xml
