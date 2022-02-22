@@ -168,6 +168,7 @@ L['OPTIONS_HOME_DELETE_TIP'] = 'Rechtsklick um zu löschen was du möchtest.';
 L['OPTIONS_PROFILE_DEFAULT_NAME'] = 'Standard';
 L['OPTIONS_PROFILES_ACTIVE_PROFILE'] = 'Aktives Profil:';
 L['OPTIONS_PROFILES_CHOOSE_PROFILE'] = 'Profil auswählen';
+L['OPTIONS_PROFILES_NEW_PROFILE'] = 'Neues Profil';
 L['OPTIONS_PROFILES_CREATE_NEW_ENTER_NAME'] = 'Gib einen Namen ein';
 L['OPTIONS_PROFILES_COPY_FROM_ACTIVE_BUTTON_LABEL'] = 'Kopieren von Aktiven Profil';
 L['OPTIONS_PROFILES_CREATE_DEFAULT_PROFILE_BUTTON_LABEL'] = 'Erstelle Standardprofil';

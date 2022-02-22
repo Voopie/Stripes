@@ -432,7 +432,6 @@ panel.Load = function(self)
         EditActiveProfileName(panel.EditNameEditBox.profileId, panel.EditNameEditBox:GetText());
     end);
 
-
     self.ChooseProfileText = Mixin(self:CreateFontString(nil, 'ARTWORK', 'StripesMediumNormalSemiBoldFont'), E.PixelPerfectMixin);
     self.ChooseProfileText:SetPosition('TOPLEFT', self.ActiveProfile, 'BOTTOMLEFT', 0, -16);
     self.ChooseProfileText:SetJustifyH('LEFT');
@@ -451,8 +450,14 @@ panel.Load = function(self)
     Delimiter:SetPosition('TOPLEFT', self.ChooseProfileText, 'BOTTOMLEFT', -4, -8);
     Delimiter:SetW(self:GetWidth());
 
+    self.NewProfileText = Mixin(self:CreateFontString(nil, 'ARTWORK', 'StripesMediumNormalSemiBoldFont'), E.PixelPerfectMixin);
+    self.NewProfileText:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 4, -4);
+    self.NewProfileText:SetJustifyH('LEFT');
+    self.NewProfileText:SetTextColor(0.15, 0.90, 0.35);
+    self.NewProfileText:SetText(L['OPTIONS_PROFILES_NEW_PROFILE']);
+
     self.CreateNewProfileEditBox = E.CreateEditBox(self);
-    self.CreateNewProfileEditBox:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 9, -8);
+    self.CreateNewProfileEditBox:SetPosition('TOPLEFT', self.NewProfileText, 'BOTTOMLEFT', 5, -8);
     self.CreateNewProfileEditBox:SetSize(180, 22)
     self.CreateNewProfileEditBox:SetFont(self.ActiveProfileValue:GetFont());
     self.CreateNewProfileEditBox:SetInstruction(L['OPTIONS_PROFILES_CREATE_NEW_ENTER_NAME']);

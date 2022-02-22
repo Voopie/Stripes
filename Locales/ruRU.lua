@@ -168,6 +168,7 @@ L['OPTIONS_HOME_DELETE_TIP'] = 'Кликни правой - удалишь, чт
 L['OPTIONS_PROFILE_DEFAULT_NAME'] = 'По умолчанию';
 L['OPTIONS_PROFILES_ACTIVE_PROFILE'] = 'Активный профиль:';
 L['OPTIONS_PROFILES_CHOOSE_PROFILE'] = 'Выбрать другой профиль';
+L['OPTIONS_PROFILES_NEW_PROFILE'] = 'Новый профиль';
 L['OPTIONS_PROFILES_CREATE_NEW_ENTER_NAME'] = 'Придумайте название';
 L['OPTIONS_PROFILES_COPY_FROM_ACTIVE_BUTTON_LABEL'] = 'Копировать из активного';
 L['OPTIONS_PROFILES_CREATE_DEFAULT_PROFILE_BUTTON_LABEL'] = 'Создать новый';
