@@ -21,7 +21,7 @@ local CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LP
 local CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
 -- Local Config
-local BUFFFRAME_IS_ACTIVE, FILTER_PLAYER_ENABLED, BLACKLIST_ENABLED, SPACING_X, AURAS_DIRECTION, AURAS_MAX_DISPLAY;
+local BUFFFRAME_IS_ACTIVE, FILTER_PLAYER_ENABLED, XLIST_MODE, SPACING_X, AURAS_DIRECTION, AURAS_MAX_DISPLAY;
 local DRAW_EDGE, DRAW_SWIPE;
 local BORDER_COLOR_ENABLED, BORDER_HIDE;
 local NAME_TEXT_POSITION_V, NAME_TEXT_OFFSET_Y;
@@ -54,8 +54,9 @@ local units = {
 };
 
 local blacklistAurasNameCache = {};
+local whitelistAurasNameCache = {};
 
-local function CacheFindAuraNameById(id)
+local function BlacklistCacheFindAuraNameById(id)
     for name, sid in pairs(blacklistAurasNameCache) do
         if sid == id then
             return name;
@@ -68,7 +69,7 @@ local function UpdateBlacklistCache()
 
     for spellId, data in pairs(O.db.auras_blacklist) do
         if not data.enabled then
-            name = type(spellId) == 'string' and spellId or CacheFindAuraNameById(spellId);
+            name = type(spellId) == 'string' and spellId or BlacklistCacheFindAuraNameById(spellId);
 
             if name then
                 blacklistAurasNameCache[name] = nil;
@@ -80,6 +81,35 @@ local function UpdateBlacklistCache()
     for spellName, spellId in pairs(blacklistAurasNameCache) do
         if not O.db.auras_blacklist[spellName] or not O.db.auras_blacklist[spellId] then
             blacklistAurasNameCache[spellName] = nil;
+        end
+    end
+end
+
+local function WhitelistCacheFindAuraNameById(id)
+    for name, sid in pairs(whitelistAurasNameCache) do
+        if sid == id then
+            return name;
+        end
+    end
+end
+
+local function UpdateWhitelistCache()
+    local name;
+
+    for spellId, data in pairs(O.db.auras_whitelist) do
+        if not data.enabled then
+            name = type(spellId) == 'string' and spellId or WhitelistCacheFindAuraNameById(spellId);
+
+            if name then
+                whitelistAurasNameCache[name] = nil;
+            end
+        end
+    end
+
+    -- For deleted entries
+    for spellName, spellId in pairs(whitelistAurasNameCache) do
+        if not O.db.auras_whitelist[spellName] or not O.db.auras_whitelist[spellId] then
+            whitelistAurasNameCache[spellName] = nil;
         end
     end
 end
@@ -133,20 +163,28 @@ local function FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPe
         return false;
     end
 
-    if BLACKLIST_ENABLED then
+    if XLIST_MODE == 2 then -- BLACKLIST
         if blacklistAurasNameCache[name] then
             return false;
-        end
-
-        if O.db.auras_blacklist[name] and O.db.auras_blacklist[name].enabled then
+        elseif O.db.auras_blacklist[name] and O.db.auras_blacklist[name].enabled then
+            blacklistAurasNameCache[name] = spellId;
+            return false;
+        elseif spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
             blacklistAurasNameCache[name] = spellId;
             return false;
         end
-
-        if spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
-            blacklistAurasNameCache[name] = spellId;
-            return false;
+    elseif XLIST_MODE == 3 then -- WHITELIST
+        if whitelistAurasNameCache[name] then
+            return true;
+        elseif O.db.auras_whitelist[name] and O.db.auras_whitelist[name].enabled then
+            whitelistAurasNameCache[name] = spellId;
+            return true;
+        elseif spellId and O.db.auras_whitelist[spellId] and O.db.auras_whitelist[spellId].enabled then
+            whitelistAurasNameCache[name] = spellId;
+            return true;
         end
+
+        return false;
     end
 
     if FILTER_PLAYER_ENABLED and self:GetParent().data.unitType ~= 'SELF' then
@@ -465,7 +503,7 @@ end
 function Module:UpdateLocalConfig()
     BUFFFRAME_IS_ACTIVE   = O.db.auras_is_active;
     FILTER_PLAYER_ENABLED = O.db.auras_filter_player_enabled;
-    BLACKLIST_ENABLED     = O.db.auras_blacklist_enabled;
+    XLIST_MODE            = O.db.auras_xlist_mode;
 
     SPACING_X         = O.db.auras_spacing_x or 4;
     AURAS_DIRECTION   = O.db.auras_direction;
@@ -535,6 +573,7 @@ function Module:UpdateLocalConfig()
     UpdateFontObject(StripesAurasModCountFont, O.db.auras_count_font_value, O.db.auras_count_font_size, O.db.auras_count_font_flag, O.db.auras_count_font_shadow);
 
     UpdateBlacklistCache();
+    UpdateWhitelistCache();
 end
 
 function Module:PLAYER_SPECIALIZATION_CHANGED(unit)

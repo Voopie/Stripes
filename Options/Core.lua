@@ -256,6 +256,12 @@ O.Lists = {
         [1] = L['AURAS_DIRECTON_LEFT_TO_RIGHT'],
         [2] = L['AURAS_DIRECTON_RIGHT_TO_LEFT'],
     },
+
+    auras_xlist_mode = {
+        [1] = L['AURAS_XLIST_MODE_NONE'],
+        [2] = L['AURAS_XLIST_MODE_BLACKLIST'],
+        [3] = L['AURAS_XLIST_MODE_WHITELIST'],
+    }
 };
 
 -- ~559
@@ -692,7 +698,8 @@ O.DefaultValues = {
     -- Auras
     auras_is_active                = true,
     auras_filter_player_enabled    = true,
-    auras_blacklist_enabled        = false,
+    auras_xlist_mode                = 1, -- NONE
+    auras_whitelist                = {},
     auras_blacklist                = {},
     auras_border_color_enabled     = true,
     auras_show_debuffs_on_friendly = C_CVar.GetCVar('nameplateShowDebuffsOnFriendly') == '1',
