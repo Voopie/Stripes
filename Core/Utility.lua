@@ -342,6 +342,30 @@ U.GetInterruptSpellId = function()
     return spellId;
 end
 
+do
+    local bestIcon = {};
+    U.GetIconFromSpellCache = function(name)
+        if bestIcon[name] then
+            return bestIcon[name];
+        end
+
+        local icons = StripesDB.spellCache and StripesDB.spellCache.data and StripesDB.spellCache.data[name];
+        local bestMatch = nil;
+
+        if icons and icons.spells then
+            for spellId, _ in pairs(icons.spells) do
+                if not bestMatch or (type(spellId) == 'number' and IsSpellKnown(spellId)) then
+                    bestMatch = spellId;
+                end
+            end
+        end
+
+        bestIcon[name] = bestMatch and icons.spells[bestMatch];
+
+        return bestIcon[name];
+    end
+end
+
 U.IsInInstance = function()
     local inInstance, instanceType = IsInInstance();
 

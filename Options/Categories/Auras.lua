@@ -2,6 +2,8 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_Auras');
 local Profile = S:GetModule('Options_Categories_Profiles');
 
+local GetIconFromSpellCache = U.GetIconFromSpellCache;
+
 local LSM = S.Libraries.LSM;
 
 O.frame.Left.Auras, O.frame.Right.Auras = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_AURAS']), 'auras', 6);
@@ -44,30 +46,6 @@ local function ToggleTooltip_Show(self)
     GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
     GameTooltip:AddLine(self.tooltip, 1, 0.85, 0, false);
     GameTooltip:Show();
-end
-
-local bestIcon = {};
-local function GetIconFromCache(name)
-    if bestIcon[name] then
-        return bestIcon[name];
-    end
-
-    local icons = StripesDB.spellCache.data[name];
-    local bestMatch = nil;
-
-    if icons then
-        if icons.spells then
-            for spellId, _ in pairs(icons.spells) do
-                if not bestMatch or (type(spellId) == 'number' and IsSpellKnown(spellId)) then
-                    bestMatch = spellId;
-                end
-            end
-        end
-    end
-
-    bestIcon[name] = bestMatch and icons.spells[bestMatch];
-
-    return bestIcon[name];
 end
 
 local function AddCustomAura(id, byName, name)
@@ -403,7 +381,7 @@ panel.UpdateScroll = function()
     for _, id in pairs(sortedCustomData) do
         if type(id) == 'string' then
             name = id;
-            icon = GetIconFromCache(name);
+            icon = GetIconFromSpellCache(name);
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -579,7 +557,7 @@ panel.UpdateBlackListScroll = function()
     for _, id in pairs(sortedBlackListData) do
         if type(id) == 'string' then
             name = id;
-            icon = GetIconFromCache(name);
+            icon = GetIconFromSpellCache(name);
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -752,7 +730,7 @@ panel.UpdateWhiteListScroll = function()
     for _, id in pairs(sortedWhiteListData) do
         if type(id) == 'string' then
             name = id;
-            icon = GetIconFromCache(name);
+            icon = GetIconFromSpellCache(name);
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -943,7 +921,7 @@ panel.UpdateHPBarColorScroll = function()
     for _, id in pairs(sortedHBBarColorData) do
         if type(id) == 'string' then
             name = id;
-            icon = GetIconFromCache(name);
+            icon = GetIconFromSpellCache(name);
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -1110,12 +1088,10 @@ panel.Load = function(self)
         if id and id ~= 0 and GetSpellInfo(id) then
             saveId = id;
         else
-            if StripesDB.spellCache.data[text] then
-                byNameIcon = GetIconFromCache(text);
+            byNameIcon = GetIconFromSpellCache(text);
 
-                if byNameIcon then
-                    byName = true;
-                end
+            if byNameIcon then
+                byName = true;
             end
         end
 
@@ -1199,12 +1175,10 @@ panel.Load = function(self)
         if id and id ~= 0 and GetSpellInfo(id) then
             saveId = id;
         else
-            if StripesDB.spellCache.data[text] then
-                byNameIcon = GetIconFromCache(text);
+            byNameIcon = GetIconFromSpellCache(text);
 
-                if byNameIcon then
-                    byName = true;
-                end
+            if byNameIcon then
+                byName = true;
             end
         end
 
@@ -1372,12 +1346,10 @@ panel.Load = function(self)
         if id and id ~= 0 and GetSpellInfo(id) then
             saveId = id;
         else
-            if StripesDB.spellCache.data[text] then
-                byNameIcon = GetIconFromCache(text);
+            byNameIcon = GetIconFromSpellCache(text);
 
-                if byNameIcon then
-                    byName = true;
-                end
+            if byNameIcon then
+                byName = true;
             end
         end
 
@@ -3440,12 +3412,10 @@ panel.Load = function(self)
         if id and id ~= 0 and GetSpellInfo(id) then
             saveId = id;
         else
-            if StripesDB.spellCache.data[text] then
-                byNameIcon = GetIconFromCache(text);
+            byNameIcon = GetIconFromSpellCache(text);
 
-                if byNameIcon then
-                    byName = true;
-                end
+            if byNameIcon then
+                byName = true;
             end
         end
 
