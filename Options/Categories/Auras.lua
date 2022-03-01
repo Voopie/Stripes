@@ -1110,7 +1110,7 @@ panel.Load = function(self)
     end);
 
     self.WhiteListScroll = Mixin(CreateFrame('Frame', nil, self.WhiteList, 'BackdropTemplate'), E.PixelPerfectMixin);
-    self.WhiteListScroll:SetPoint('TOPLEFT', self.WhiteList , 'TOPLEFT', 6, -60);
+    self.WhiteListScroll:SetPoint('TOPLEFT', self.WhiteList , 'TOPLEFT', 6, -50);
     self.WhiteListScroll:SetPoint('BOTTOMRIGHT', self.WhiteList, 'BOTTOMRIGHT', -6, 6);
     self.WhiteListScroll:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.WhiteListScroll:SetBackdropColor(0.15, 0.15, 0.15, 1);
@@ -1197,7 +1197,7 @@ panel.Load = function(self)
     end);
 
     self.BlackListScroll = Mixin(CreateFrame('Frame', nil, self.BlackList, 'BackdropTemplate'), E.PixelPerfectMixin);
-    self.BlackListScroll:SetPoint('TOPLEFT', self.BlackList , 'TOPLEFT', 6, -60);
+    self.BlackListScroll:SetPoint('TOPLEFT', self.BlackList, 'TOPLEFT', 6, -50);
     self.BlackListScroll:SetPoint('BOTTOMRIGHT', self.BlackList, 'BOTTOMRIGHT', -6, 6);
     self.BlackListScroll:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.BlackListScroll:SetBackdropColor(0.15, 0.15, 0.15, 1);
@@ -1368,7 +1368,7 @@ panel.Load = function(self)
     end);
 
     self.HPBarColorListScroll = Mixin(CreateFrame('Frame', nil, self.HPBarColorList, 'BackdropTemplate'), E.PixelPerfectMixin);
-    self.HPBarColorListScroll:SetPoint('TOPLEFT', self.HPBarColorList , 'TOPLEFT', 6, -60);
+    self.HPBarColorListScroll:SetPoint('TOPLEFT', self.HPBarColorList , 'TOPLEFT', 6, -50);
     self.HPBarColorListScroll:SetPoint('BOTTOMRIGHT', self.HPBarColorList, 'BOTTOMRIGHT', -6, 6);
     self.HPBarColorListScroll:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.HPBarColorListScroll:SetBackdropColor(0.15, 0.15, 0.15, 1);
