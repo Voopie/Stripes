@@ -207,7 +207,7 @@ local function CreateCustomAuraRow(frame)
             ToggleTooltip_Show(self);
         end
 
-        panel:UpdateScroll();
+        panel:UpdateCustomScroll();
         panel:UpdateBlackListScroll();
 
         S:GetNameplateModule('Handler'):UpdateAll();
@@ -263,7 +263,7 @@ local function CreateCustomAuraRow(frame)
                 O.db.auras_blacklist[id] = nil;
             end
 
-            panel:UpdateScroll();
+            panel:UpdateCustomScroll();
             panel:UpdateBlackListScroll();
 
             S:GetNameplateModule('Handler'):UpdateAll();
@@ -352,7 +352,7 @@ local function UpdateCustomAuraRow(frame)
 end
 
 local sortedCustomData = {};
-panel.UpdateScroll = function()
+panel.UpdateCustomScroll = function()
     wipe(DataCustomAuraRows);
     wipe(sortedCustomData);
 
@@ -469,7 +469,7 @@ local function CreateBlackListRow(frame)
         if O.db.auras_blacklist[self:GetParent().id] then
             O.db.auras_blacklist[self:GetParent().id] = nil;
 
-            panel:UpdateScroll();
+            panel:UpdateCustomScroll();
             panel:UpdateBlackListScroll();
 
             S:GetNameplateModule('Handler'):UpdateAll();
@@ -642,7 +642,7 @@ local function CreateWhiteListRow(frame)
         if O.db.auras_whitelist[self:GetParent().id] then
             O.db.auras_whitelist[self:GetParent().id] = nil;
 
-            panel:UpdateScroll();
+            panel:UpdateCustomScroll();
             panel:UpdateWhiteListScroll();
 
             S:GetNameplateModule('Handler'):UpdateAll();
@@ -1122,8 +1122,6 @@ panel.Load = function(self)
 
     self.WhiteListButtonPool = CreateFramePool('Button', self.WhiteListScrollChild, 'BackdropTemplate');
 
-    self:UpdateWhiteListScroll();
-
     self.BlackListButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
     self.BlackListButton:SetPosition('LEFT', self.WhiteListButton, 'RIGHT', 13, 0);
     self.BlackListButton:SetScale(0.8);
@@ -1208,8 +1206,6 @@ panel.Load = function(self)
     PixelUtil.SetPoint(self.BlackListScrollArea.ScrollBar, 'BOTTOMLEFT', self.BlackListScrollArea, 'BOTTOMRIGHT', -8, 0);
 
     self.BlackListButtonPool = CreateFramePool('Button', self.BlackListScrollChild, 'BackdropTemplate');
-
-    self:UpdateBlackListScroll();
 
     self.auras_square = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.auras_square:SetPosition('TOPLEFT', self.auras_xlist_mode, 'BOTTOMLEFT', 0, -8);
@@ -1379,8 +1375,6 @@ panel.Load = function(self)
     PixelUtil.SetPoint(self.HPBarColorListScrollArea.ScrollBar, 'BOTTOMLEFT', self.HPBarColorListScrollArea, 'BOTTOMRIGHT', -8, 0);
 
     self.HPBarColorButtonPool = CreateFramePool('Button', self.HPBarColorListScrollChild, 'BackdropTemplate');
-
-    self:UpdateHPBarColorScroll();
 
     self.auras_expire_glow_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.auras_expire_glow_enabled:SetPosition('TOPLEFT', self.auras_pandemic_enabled, 'BOTTOMLEFT', 0, -8);
@@ -3427,7 +3421,7 @@ panel.Load = function(self)
 
         AddCustomAura(tonumber(saveId), byName, text);
 
-        panel:UpdateScroll();
+        panel:UpdateCustomScroll();
         panel:UpdateBlackListScroll();
 
         self:SetText('');
@@ -3471,8 +3465,6 @@ panel.Load = function(self)
 
     aurasCustomFramePool = CreateFramePool('Frame', self.auras_custom_scrollchild, 'BackdropTemplate');
 
-    self:UpdateScroll();
-
     self.ProfilesDropdown = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
     self.ProfilesDropdown:SetPosition('BOTTOMRIGHT', self.auras_custom_editframe, 'TOPRIGHT', 0, 8);
     self.ProfilesDropdown:SetSize(157, 22);
@@ -3492,7 +3484,7 @@ panel.Load = function(self)
 
         self:SetValue(nil);
 
-        panel:UpdateScroll();
+        panel:UpdateCustomScroll();
     end
 
     self.CopyFromProfileText = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
@@ -3510,7 +3502,7 @@ panel.OnHide = function()
 end
 
 panel.Update = function(self)
-    self:UpdateScroll();
+    self:UpdateCustomScroll();
     self:UpdateBlackListScroll();
     self:UpdateWhiteListScroll();
     self:UpdateHPBarColorScroll();
@@ -3522,4 +3514,12 @@ function Module:MODIFIER_STATE_CHANGED(key, down)
     else
         panel.CopyFromProfileText:SetText(L['OPTIONS_COPY_FROM_PROFILE']);
     end
+end
+
+function Module:PLAYER_LOGIN()
+    panel:Update();
+end
+
+function Module:StartUp()
+    self:RegisterEvent('PLAYER_LOGIN');
 end
