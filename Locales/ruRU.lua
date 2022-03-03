@@ -23,8 +23,7 @@ L['ENABLE'] = 'Включить';
 L['FORMAT'] = 'Формат';
 L['SEARCH'] = 'Поиск';
 L['CATEGORY'] = 'Категория';
-L['COLOR_CATEGORY'] = 'Цветовая категория';
-L['CUSTOM_COLOR_CATEGORY'] = 'Своя цветовая категория';
+L['GLOW_COLOR'] = 'Цвет свечения';
 L['NOT_CHOSEN'] = 'Не выбрано';
 L['SPACING'] = 'Промежуток';
 L['BACKGROUND'] = 'Фон';
@@ -1097,7 +1096,7 @@ L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'Из цели';
 L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'Из списка';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Введите имя и нажмите Enter';
-L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Открыть ассоциативный список цветов';
+L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Открыть список цветов';
 
 L['OPTIONS_CATEGORY_ENTER_NAME'] = 'Введите имя и нажмите Enter';
 L['OPTIONS_CATEGORY_ALL'] = 'Все';

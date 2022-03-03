@@ -1,6 +1,7 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Categories_CastBar');
 local Profile = S:GetModule('Options_Categories_Profiles');
+local Colors = S:GetModule('Options_Colors');
 
 -- WoW API
 local GetSpellInfo = GetSpellInfo;
@@ -60,17 +61,14 @@ local function AddCustomCast(spellId)
     end
 
     O.db.castbar_custom_casts_data[spellId] = {
-        id             = spellId,
+        enabled = true,
 
-        enabled        = true,
+        id = spellId,
 
-        category_id    = 0,
+        category_id  = 0,
 
-        color_enabled         = false,
-        color_category        = 0,
-        custom_color_enabled  = false,
-        custom_color_category = 0,
-        color                 = { 0.1, 0.1, 0.1, 1 },
+        color_enabled = false,
+        color_name    = 'Maroon',
 
         glow_enabled   = true,
         glow_type      = 1,
@@ -81,40 +79,42 @@ local DataCustomCastsRow = {};
 
 local ExtendedOptions = CreateFrame('Frame', nil, panel, 'BackdropTemplate');
 ExtendedOptions:SetFrameLevel(100);
-ExtendedOptions:SetSize(260, 320);
+ExtendedOptions:SetSize(260, 300);
 ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
 ExtendedOptions:SetClampedToScreen(true);
 ExtendedOptions:SetShown(false);
 
 ExtendedOptions.Update = function(self)
-    self.ColorCategory:SetList(self.anchor.color_list, S:GetModule('Options_ColorCategory'):GetPredefinedList());
-    self.ColorCategory:SetValue(self.anchor.color_category);
-    self.CustomColorCategory:SetList(self.anchor.custom_color_list, O.db.color_category_data);
-    self.CustomColorCategory:SetValue(self.anchor.custom_color_category);
+    self.ColorName:SetList(Colors:GetList());
+    self.ColorName:SetValue(self.anchor.color_name);
 end
 
 ExtendedOptions.UpdateAll = function(self, frame)
-    self.id = frame.id;
+    self.id     = frame.id;
     self.anchor = frame;
-    self.ColorCategory:SetList(frame.color_list, S:GetModule('Options_ColorCategory'):GetPredefinedList());
-    self.ColorCategory:SetValue(frame.color_category);
-    self.CustomColorCategory:SetList(frame.custom_color_list, O.db.color_category_data);
-    self.CustomColorCategory:SetValue(frame.custom_color_category);
-    self.GlowType:SetValue(frame.glow_type);
-    self.Category:SetList(frame.category_list);
-    self.Category:SetValue(frame.category_id);
+
     self.Icon:SetTexture(frame.icon);
     self.NameText:SetText(frame.name .. '  |cffaaaaaa[' .. frame.id .. ']|r');
+
+    self.Category:SetList(frame.category_list);
+    self.Category:SetValue(frame.category_id);
+
+
+    self.ColorName:SetList(Colors:GetList());
+    self.ColorName:SetValue(frame.color_name);
+    self.ColorNameEnabled:SetChecked(frame.color_enabled);
+
+    self.GlowType:SetValue(frame.glow_type);
 
     self.NewNameBox:SetText(frame.new_name or frame.name);
 
     self:SetPoint('TOPLEFT', self.anchor, 'TOPRIGHT', 0, 0);
-    self:SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
-    self:SetBackdropBorderColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
+    self:SetBackdropColor(unpack(frame.backgroundColor));
+    self:SetBackdropBorderColor(unpack(frame.highlightColor));
     self:Show();
 
     frame.isHighlighted = true;
-    frame:SetBackdropColor(frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4]);
+    frame:SetBackdropColor(unpack(frame.highlightColor));
     frame.ToggleExtendedOptions:SetVertexColor(1, 0.85, 0, 1);
 end
 
@@ -152,7 +152,7 @@ ExtendedOptions.NewNameBox:SetScript('OnEnterPressed', function(self)
         panel:UpdateCustomCastsScroll();
         S:GetNameplateModule('Handler'):UpdateAll();
 
-        ExtendedOptions:SetBackdropBorderColor(ExtendedOptions.anchor.highlightColor[1], ExtendedOptions.anchor.highlightColor[2], ExtendedOptions.anchor.highlightColor[3], ExtendedOptions.anchor.highlightColor[4]);
+        ExtendedOptions:SetBackdropBorderColor(unpack(ExtendedOptions.anchor.highlightColor));
         ExtendedOptions:Update();
 
         self:ClearFocus();
@@ -175,79 +175,37 @@ ExtendedOptions.Category.OnValueChangedCallback = function(_, value)
     end
 end
 
-ExtendedOptions.ColorCategoryText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
-ExtendedOptions.ColorCategoryText:SetPoint('TOPLEFT', ExtendedOptions.Category, 'BOTTOMLEFT', 0, -12);
-ExtendedOptions.ColorCategoryText:SetText(L['COLOR_CATEGORY']);
+ExtendedOptions.ColorNameText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+ExtendedOptions.ColorNameText:SetPoint('TOPLEFT', ExtendedOptions.Category, 'BOTTOMLEFT', 0, -12);
+ExtendedOptions.ColorNameText:SetText(L['COLOR']);
 
-ExtendedOptions.ColorCategory = E.CreateDropdown('color', ExtendedOptions);
-ExtendedOptions.ColorCategory:SetPosition('TOPLEFT', ExtendedOptions.ColorCategoryText, 'BOTTOMLEFT', 0, -4);
-ExtendedOptions.ColorCategory:SetSize(140, 20);
-ExtendedOptions.ColorCategory.OnValueChangedCallback = function(_, index)
-    index = tonumber(index);
-    local predefinedList = S:GetModule('Options_ColorCategory'):GetPredefinedList();
-
-    O.db.castbar_custom_casts_data[ExtendedOptions.id].color_enabled  = index ~= 0;
-    O.db.castbar_custom_casts_data[ExtendedOptions.id].color_category = index;
-
-    if predefinedList[index] then
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[1] = predefinedList[index].color[1];
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[2] = predefinedList[index].color[2];
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[3] = predefinedList[index].color[3];
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[4] = predefinedList[index].color[4] or 1;
-
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].custom_color_enabled  = false;
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].custom_color_category = 0;
-    else
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[1] = 0.1;
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[2] = 0.1;
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[3] = 0.1;
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[4] = 1;
-    end
+ExtendedOptions.ColorName = E.CreateDropdown('color', ExtendedOptions);
+ExtendedOptions.ColorName:SetPosition('TOPLEFT', ExtendedOptions.ColorNameText, 'BOTTOMLEFT', 0, -4);
+ExtendedOptions.ColorName:SetSize(140, 20);
+ExtendedOptions.ColorName.OnValueChangedCallback = function(_, name)
+    O.db.castbar_custom_casts_data[ExtendedOptions.id].color_name = name;
 
     panel:UpdateCustomCastsScroll();
     S:GetNameplateModule('Handler'):UpdateAll();
 
-    ExtendedOptions:SetBackdropBorderColor(ExtendedOptions.anchor.highlightColor[1], ExtendedOptions.anchor.highlightColor[2], ExtendedOptions.anchor.highlightColor[3], ExtendedOptions.anchor.highlightColor[4]);
+    ExtendedOptions:SetBackdropBorderColor(unpack(ExtendedOptions.anchor.highlightColor));
     ExtendedOptions:Update();
 end
 
-ExtendedOptions.CustomColorCategoryText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
-ExtendedOptions.CustomColorCategoryText:SetPoint('TOPLEFT', ExtendedOptions.ColorCategory, 'BOTTOMLEFT', 0, -12);
-ExtendedOptions.CustomColorCategoryText:SetText(L['CUSTOM_COLOR_CATEGORY']);
-
-ExtendedOptions.CustomColorCategory = E.CreateDropdown('color', ExtendedOptions);
-ExtendedOptions.CustomColorCategory:SetPosition('TOPLEFT', ExtendedOptions.CustomColorCategoryText, 'BOTTOMLEFT', 0, -4);
-ExtendedOptions.CustomColorCategory:SetSize(140, 20);
-ExtendedOptions.CustomColorCategory.OnValueChangedCallback = function(_, index)
-    index = tonumber(index);
-
-    O.db.castbar_custom_casts_data[ExtendedOptions.id].custom_color_enabled  = index ~= 0;
-    O.db.castbar_custom_casts_data[ExtendedOptions.id].custom_color_category = index;
-
-    if O.db.color_category_data[index] then
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[1] = O.db.color_category_data[index].color[1];
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[2] = O.db.color_category_data[index].color[2];
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[3] = O.db.color_category_data[index].color[3];
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[4] = O.db.color_category_data[index].color[4] or 1;
-
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color_enabled  = false;
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color_category = 0;
-    else
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[1] = 0.1;
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[2] = 0.1;
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[3] = 0.1;
-        O.db.castbar_custom_casts_data[ExtendedOptions.id].color[4] = 1;
-    end
+ExtendedOptions.ColorNameEnabled = E.CreateCheckButton(ExtendedOptions);
+ExtendedOptions.ColorNameEnabled:SetPosition('LEFT', ExtendedOptions.ColorName, 'RIGHT', 12, 0);
+ExtendedOptions.ColorNameEnabled.Callback = function(self)
+    O.db.castbar_custom_casts_data[ExtendedOptions.id].color_enabled = self:GetChecked();
 
     panel:UpdateCustomCastsScroll();
     S:GetNameplateModule('Handler'):UpdateAll();
 
-    ExtendedOptions:SetBackdropBorderColor(ExtendedOptions.anchor.highlightColor[1], ExtendedOptions.anchor.highlightColor[2], ExtendedOptions.anchor.highlightColor[3], ExtendedOptions.anchor.highlightColor[4]);
+    ExtendedOptions:SetBackdropBorderColor(unpack(ExtendedOptions.anchor.highlightColor));
     ExtendedOptions:Update();
 end
 
 ExtendedOptions.GlowTypeText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
-ExtendedOptions.GlowTypeText:SetPoint('TOPLEFT', ExtendedOptions.CustomColorCategory, 'BOTTOMLEFT', 0, -12);
+ExtendedOptions.GlowTypeText:SetPoint('TOPLEFT', ExtendedOptions.ColorName, 'BOTTOMLEFT', 0, -12);
 ExtendedOptions.GlowTypeText:SetText(L['GLOW_TYPE']);
 
 ExtendedOptions.GlowType = E.CreateDropdown('plain', ExtendedOptions);
@@ -283,7 +241,7 @@ end);
 local function ExtendedOptionsHide()
     ExtendedOptions:SetShown(false);
     ExtendedOptions.anchor.isHighlighted = false;
-    ExtendedOptions.anchor:SetBackdropColor(ExtendedOptions.anchor.backgroundColor[1], ExtendedOptions.anchor.backgroundColor[2], ExtendedOptions.anchor.backgroundColor[3], ExtendedOptions.anchor.backgroundColor[4]);
+    ExtendedOptions.anchor:SetBackdropColor(unpack(ExtendedOptions.anchor.backgroundColor));
     ExtendedOptions.anchor.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
 end
 
@@ -347,7 +305,7 @@ local function CreateCustomCastRow(frame)
             ExtendedOptions:SetShown(false);
 
             self.isHighlighted = false;
-            self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+            self:SetBackdropColor(unpack(self.backgroundColor));
             self.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
         else
             ExtendedOptions:UpdateAll(self);
@@ -388,11 +346,7 @@ local function CreateCustomCastRow(frame)
         self:SetBackdropColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
         self.ToggleExtendedOptions:SetVertexColor(1, 0.85, 0, 1);
 
-        if self.color_enabled then
-            self.NameText:SetText(self.name .. '    |cffaaaaaa' .. self.id .. ' | ' .. self.color_list[self.color_category] .. ' | ' .. O.Lists.glow_type_short_with_none[self.glow_type] .. '|r');
-        else
-            self.NameText:SetText(self.name .. '    |cffaaaaaa' .. self.id .. ' | ' .. self.custom_color_list[self.custom_color_category] .. ' | ' .. O.Lists.glow_type_short_with_none[self.glow_type] .. '|r');
-        end
+        self.NameText:SetText(self.name .. '    |cffaaaaaa' .. self.id .. ' | ' .. (self.color_enabled and self.color_name or L['NO']) .. ' | ' .. O.Lists.glow_type_short_with_none[self.glow_type] .. '|r');
 
         if self.id then
             GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
@@ -446,8 +400,19 @@ local function UpdateCustomCastRow(frame)
         frame.NameText:SetText(frame.new_name .. ' |cffaaaaaa[' .. frame.name .. ']|r');
     end
 
-    frame.ColorLine:SetColorTexture(frame.color[1], frame.color[2], frame.color[3], frame.color[4]);
-    frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4] = frame.color[1], frame.color[2], frame.color[3], 0.5;
+    if frame.color_enabled then
+        local color = Colors:Get(frame.color_name);
+        if color then
+            frame.ColorLine:SetColorTexture(unpack(color));
+            frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4] = color[1], color[2], color[3], 0.5;
+        else
+            frame.ColorLine:SetColorTexture(0.1, 0.1, 0.1, 1);
+            frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4] = 0.1, 0.1, 0.1, 0.5;
+        end
+    else
+        frame.ColorLine:SetColorTexture(0.1, 0.1, 0.1, 1);
+        frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4] = 0.1, 0.1, 0.1, 0.5;
+    end
 
     frame.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
 
@@ -468,9 +433,6 @@ panel.UpdateCustomCastsScroll = function()
     table.sort(sortedData, function(a, b)
         return (GetSpellInfo(a)) < (GetSpellInfo(b));
     end);
-
-    local predefinedList = S:GetModule('Options_ColorCategory'):GetPredefinedList();
-    local customList     = S:GetModule('Options_ColorCategory'):GetCustomList();
 
     panel.CastBarCustomCastsFramePool:ReleaseAll();
 
@@ -511,55 +473,16 @@ panel.UpdateCustomCastsScroll = function()
             frame.name           = name;
             frame.icon           = icon;
             frame.enabled        = data.enabled;
+
             frame.glow_enabled   = data.glow_type ~= 0;
             frame.glow_type      = data.glow_type;
 
-            -- Migration on the fly. lol.
-            local custom_color_category = data.custom_color_category or data.color_category or 0;
+            frame.color_enabled = O.db.castbar_custom_casts_data[id].color_enabled;
 
-            if customList[custom_color_category] then
-                O.db.castbar_custom_casts_data[data.id].custom_color_enabled  = true;
-                O.db.castbar_custom_casts_data[data.id].custom_color_category = custom_color_category;
-
-                O.db.castbar_custom_casts_data[data.id].color[1] = customList[custom_color_category].color[1];
-                O.db.castbar_custom_casts_data[data.id].color[2] = customList[custom_color_category].color[2];
-                O.db.castbar_custom_casts_data[data.id].color[3] = customList[custom_color_category].color[3];
-                O.db.castbar_custom_casts_data[data.id].color[4] = customList[custom_color_category].color[4] or 1;
-
-                O.db.castbar_custom_casts_data[data.id].color_enabled  = false;
-                O.db.castbar_custom_casts_data[data.id].color_category = 0;
-            elseif predefinedList[data.color_category] then
-                O.db.castbar_custom_casts_data[data.id].color_enabled  = true;
-                O.db.castbar_custom_casts_data[data.id].color_category = data.color_category;
-
-                O.db.castbar_custom_casts_data[data.id].color[1] = predefinedList[data.color_category].color[1];
-                O.db.castbar_custom_casts_data[data.id].color[2] = predefinedList[data.color_category].color[2];
-                O.db.castbar_custom_casts_data[data.id].color[3] = predefinedList[data.color_category].color[3];
-                O.db.castbar_custom_casts_data[data.id].color[4] = predefinedList[data.color_category].color[4] or 1;
-
-                O.db.castbar_custom_casts_data[data.id].custom_color_enabled  = false;
-                O.db.castbar_custom_casts_data[data.id].custom_color_category = 0;
-            else
-                O.db.castbar_custom_casts_data[data.id].color_enabled         = false;
-                O.db.castbar_custom_casts_data[data.id].color_category        = 0;
-                O.db.castbar_custom_casts_data[data.id].custom_color_enabled  = false;
-                O.db.castbar_custom_casts_data[data.id].custom_color_category = 0;
-
-                O.db.castbar_custom_casts_data[data.id].color[1] = 0.1;
-                O.db.castbar_custom_casts_data[data.id].color[2] = 0.1;
-                O.db.castbar_custom_casts_data[data.id].color[3] = 0.1;
-                O.db.castbar_custom_casts_data[data.id].color[4] = 1;
+            if not O.db.castbar_custom_casts_data[data.id].color_name or not Colors:Get(O.db.castbar_custom_casts_data[data.id].color_name) then
+                O.db.castbar_custom_casts_data[data.id].color_name = 'Maroon';
             end
-
-            frame.color_enabled  = O.db.castbar_custom_casts_data[id].color_enabled;
-            frame.color_category = O.db.castbar_custom_casts_data[id].color_category or 0;
-
-            frame.custom_color_enabled  = O.db.castbar_custom_casts_data[data.id].custom_color_enabled;
-            frame.custom_color_category = O.db.castbar_custom_casts_data[data.id].custom_color_category or 0;
-
-            frame.color             = O.db.castbar_custom_casts_data[data.id].color;
-            frame.color_list        = S:GetModule('Options_ColorCategory'):GetPredefinedDropdownList();
-            frame.custom_color_list = S:GetModule('Options_ColorCategory'):GetCustomDropdownList();
+            frame.color_name = O.db.castbar_custom_casts_data[data.id].color_name;
 
             if O.db.castbar_custom_casts_category_data[data.category_id] then
                 O.db.castbar_custom_casts_data[id].category_id = data.category_id;
@@ -1665,7 +1588,7 @@ panel.Load = function(self)
     self.OpenCategoryList.Callback = function()
         panel.CategoryList:SetShown(not panel.CategoryList:IsShown());
 
-        S:GetModule('Options_ColorCategory'):HideListFrame();
+        Colors:HideListFrame();
     end
 
     self.castbar_custom_casts_editframe = CreateFrame('Frame', nil, self.TabsFrames['CustomCastsTab'].Content, 'BackdropTemplate');
@@ -1715,8 +1638,8 @@ panel.Load = function(self)
 
         self:SetValue(nil);
 
-        S:GetModule('Options_ColorCategory'):UpdateAllLists();
-        S:GetModule('Options_ColorCategory'):UpdateListScroll();
+        Colors:UpdateAllLists();
+        Colors:UpdateListScroll();
 
         panel:UpdateCategoryListScroll();
         panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName);
@@ -1733,7 +1656,7 @@ panel.Load = function(self)
     self.ColorCategoryToggleButton:SetTooltip(L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME']);
     self.ColorCategoryToggleButton:SetSize(19, 18);
     self.ColorCategoryToggleButton.Callback = function()
-        S:GetModule('Options_ColorCategory'):ToggleListFrame();
+        Colors:ToggleListFrame();
 
         panel.CategoryList:SetShown(false);
     end
@@ -1790,7 +1713,7 @@ panel.Load = function(self)
 
     self.CategoryListButtonPool = CreateFramePool('Button', self.CategoryListScrollChild, 'BackdropTemplate');
 
-    S:GetModule('Options_ColorCategory'):AddScroll(self.UpdateCustomCastsScroll);
+    Colors:AddScroll(self.UpdateCustomCastsScroll);
 end
 
 panel.OnShow = function(self)
@@ -1808,8 +1731,8 @@ panel.OnHide = function()
 end
 
 panel.Update = function(self)
-    S:GetModule('Options_ColorCategory'):UpdateAllLists();
-    S:GetModule('Options_ColorCategory'):UpdateListScroll();
+    Colors:UpdateAllLists();
+    Colors:UpdateListScroll();
 
     self:UpdateCategoryListScroll();
     self.CategoryDropdown:SetList(self:GetCategoriesDropdown(), SortCategoryByName);

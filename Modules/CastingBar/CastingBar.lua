@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('CastingBar');
+local Colors = S:GetModule('Options_Colors');
 
 -- WoW API
 local UnitName, UnitExists, UnitIsUnit = UnitName, UnitExists, UnitIsUnit;
@@ -106,8 +107,13 @@ local function UpdateCustomCast(self)
         return;
     end
 
-    if castData.color_enabled or castData.custom_color_enabled then
-        self:SetStatusBarColor(castData.color[1], castData.color[2], castData.color[3], castData.color[4] or 1);
+    if castData.color_enabled then
+        local color = Colors:Get(castData.color_name);
+        local cR, cG, cB, cA = self:GetStatusBarColor();
+
+        if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+            self:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+        end
     end
 
     if castData.new_name and castData.new_name ~= castData.name then

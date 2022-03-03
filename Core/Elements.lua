@@ -1691,29 +1691,18 @@ do
         },
 
         ['color'] = {
-            SetList = function(self, itemsTable, colorList)
+            SetList = function(self, itemsTable)
                 self.subType     = 'number';
-                self.itemsTable  = itemsTable or S:GetModule('Options_ColorCategory'):GetPredefinedDropdownList();
+                self.itemsTable  = itemsTable or S:GetModule('Options_Colors'):GetList();
                 self.sortedTable = self.sortedTable or {};
-                self.colorList   = colorList or S:GetModule('Options_ColorCategory'):GetPredefinedList();
 
                 wipe(self.sortedTable);
 
-                for k, d in pairs(self.itemsTable) do
-                    table.insert(self.sortedTable, { key = k, name = d });
+                for k, _ in pairs(self.itemsTable) do
+                    self.sortedTable[#self.sortedTable + 1] = k;
                 end
 
-                table.sort(self.sortedTable, function(a, b)
-                    if a.name == L['NO'] then
-                        return true;
-                    end
-
-                    if b.name == L['NO'] then
-                        return false;
-                    end
-
-                    return a.name < b.name;
-                end);
+                table.sort(self.sortedTable, textSort);
             end,
 
             UpdateList = function(self)
@@ -1723,7 +1712,7 @@ do
 
                 DropdownList.buttonPool:ReleaseAll();
 
-                for _, d in ipairs(self.sortedTable) do
+                for index, name in ipairs(self.sortedTable) do
                     itemCounter = itemCounter + 1;
                     itemButton, isNew = DropdownList.buttonPool:Acquire();
 
@@ -1746,29 +1735,23 @@ do
                     itemButton:SetScript('OnClick', function(self)
                         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
-                        container:SetValue(self.Key);
+                        container:SetValue(self.Value);
                         DropdownList:SetShown(false);
 
                         if container.OnValueChangedCallback then
-                            container:OnValueChangedCallback(self.Key);
+                            container:OnValueChangedCallback(self.Value);
                         end
                     end);
 
                     PixelUtil.SetHeight(itemButton, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
 
-                    if d.key == 0 then
-                        itemButton.Text:SetText(L['NO']);
-                        itemButton.Color:Hide();
-                        itemButton.Value = L['NO'];
-                    else
-                        itemButton.Text:SetText(self.colorList[d.key].name);
-                        itemButton.Color:SetVertexColor(unpack(self.colorList[d.key].color));
-                        itemButton.Color:Show();
-                        itemButton.Value = self.colorList[d.key].name;
-                    end
+                    itemButton.Text:SetText(name);
+                    itemButton.Color:SetVertexColor(unpack(self.itemsTable[name]));
+                    itemButton.Color:Show();
 
-                    itemButton.Key = d.key;
+                    itemButton.Key   = index;
+                    itemButton.Value = name;
 
                     itemButton:SetShown(true);
                 end
@@ -1777,7 +1760,7 @@ do
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
                         button.SelectedIcon:SetShown(false);
 
-                        if button.Key == self.currentValue then
+                        if button.Value == self.currentValue then
                             button.SelectedIcon:SetShown(true);
                         end
                     end
@@ -1801,7 +1784,7 @@ do
                 for button, _ in DropdownList.buttonPool:EnumerateActive() do
                     button.SelectedIcon:SetShown(false);
 
-                    if button.Key == value then
+                    if button.Value == value then
                         button.SelectedIcon:SetShown(true);
                     end
                 end
@@ -1810,15 +1793,10 @@ do
             end,
 
             UpdateHeader = function(self)
-                if self.currentValue or self.currentValue == 0 then
-                    if self.currentValue == 0 then
-                        self.holderButton.Text:SetText(L['NO']);
-                        self.holderButton.Color:SetShown(false);
-                    else
-                        self.holderButton.Text:SetText(self.colorList[self.currentValue].name);
-                        self.holderButton.Color:SetVertexColor(unpack(self.colorList[self.currentValue].color));
-                        self.holderButton.Color:SetShown(true);
-                    end
+                if self.currentValue then
+                    self.holderButton.Text:SetText(self.currentValue);
+                    self.holderButton.Color:SetVertexColor(unpack(self.itemsTable[self.currentValue]));
+                    self.holderButton.Color:SetShown(true);
                 end
             end,
         },

@@ -23,8 +23,7 @@ L['ENABLE'] = 'Enable';
 L['FORMAT'] = 'Format';
 L['SEARCH'] = 'Search';
 L['CATEGORY'] = 'Category';
-L['COLOR_CATEGORY'] = 'Color category';
-L['CUSTOM_COLOR_CATEGORY'] = 'Custom color category';
+L['GLOW_COLOR'] = 'Glow color';
 L['NOT_CHOSEN'] = 'Not chosen';
 L['SPACING'] = 'Spacing';
 L['BACKGROUND'] = 'Background';
@@ -1097,7 +1096,7 @@ L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'From target';
 L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'From list';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Type a name and press Enter';
-L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Open the associated list of colors';
+L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Open color list';
 
 L['OPTIONS_CATEGORY_ENTER_NAME'] = 'Type a name and press Enter';
 L['OPTIONS_CATEGORY_ALL'] = 'All';

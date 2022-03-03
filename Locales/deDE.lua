@@ -23,8 +23,7 @@ L['ENABLE'] = 'Aktivieren';
 L['FORMAT'] = 'Format';
 L['SEARCH'] = 'Suche';
 L['CATEGORY'] = 'Kategorie';
-L['COLOR_CATEGORY'] = 'Farbkategorie';
-L['CUSTOM_COLOR_CATEGORY'] = 'Benutzerdefinierte Farbkategorie';
+L['GLOW_COLOR'] = 'Glühende Farbe';
 L['NOT_CHOSEN'] = 'Nicht ausgewählt';
 L['SPACING'] = 'Abstände';
 L['BACKGROUND'] = 'Hintergrund';
@@ -1097,7 +1096,7 @@ L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'Vom Ziel';
 L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'Von Liste';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Geben Sie einen Namen ein und drücken Sie die Eingabetaste';
-L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Öffnen Sie die zugehörige Liste der Farben';
+L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Farbliste öffnen';
 
 L['OPTIONS_CATEGORY_ENTER_NAME'] = 'Geben Sie einen Namen ein und drücken Sie Enter';
 L['OPTIONS_CATEGORY_ALL'] = 'Alle';

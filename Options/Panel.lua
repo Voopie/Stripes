@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Options_Panel');
+local Colors = S:GetModule('Options_Colors');
 
 local isNeedReload, isFirstTimeOpened = false, false;
 local wasHidedInCombat, wasNotified = false, false;
@@ -132,7 +133,7 @@ O.CloseOptions = function()
     end
 
     E.DropDown_CloseNotActive();
-    S:GetModule('Options_ColorCategory'):HideListFrame();
+    Colors:HideListFrame();
 end
 
 O.ToggleOptions = function()
@@ -211,7 +212,7 @@ local function ToggleMinimizedOptions()
         O.frame:SetH(40);
         O.frame.Main:SetShown(false);
 
-        S:GetModule('Options_ColorCategory'):HideListFrame();
+        Colors:HideListFrame();
     else
         O.frame:SetH(600);
         O.frame.Main:SetShown(true);
@@ -374,7 +375,7 @@ O.CreateTab = function(parentPanel, name, text, callback)
 
         parentPanel.tabClicked = true;
 
-        S:GetModule('Options_ColorCategory'):HideListFrame();
+        Colors:HideListFrame();
     end);
 
     if callback then
@@ -496,7 +497,7 @@ O.CreateLeftButton = function(text, name, order, panel, hideButton)
 
         O.ShowRightPanel(panel);
 
-        S:GetModule('Options_ColorCategory'):HideListFrame();
+        Colors:HideListFrame();
 
         if self.Callback then
             self:Callback();

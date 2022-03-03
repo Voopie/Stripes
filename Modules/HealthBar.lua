@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('HealthBar');
+local Colors = S:GetModule('Options_Colors');
 
 -- Lua API
 local unpack = unpack;
@@ -190,8 +191,8 @@ local function UpdateCustomHealthBarColor(unitframe)
         LCG.ButtonGlow_Stop(unitframe.healthBar);
 
         if DB.CUSTOM_HP_ENABLED and DB.CUSTOM_HP_DATA[unitframe.data.npcId] and DB.CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
-            if DB.CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled or DB.CUSTOM_HP_DATA[unitframe.data.npcId].custom_color_enabled then
-                local color = DB.CUSTOM_HP_DATA[unitframe.data.npcId].color;
+            if DB.CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled then
+                local color = Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].color_name);
                 local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
 
                 if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
@@ -205,9 +206,9 @@ local function UpdateCustomHealthBarColor(unitframe)
 
             if DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_enabled then
                 if DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 1 then
-                    LCG.PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
+                    LCG.PixelGlow_Start(unitframe.healthBar, Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
                 elseif DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 2 then
-                    LCG.AutoCastGlow_Start(unitframe.healthBar, nil, nil, nil, nil, nil, nil, 'S_CUSTOMHP');
+                    LCG.AutoCastGlow_Start(unitframe.healthBar, Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
                 elseif DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 3 then
                     LCG.ButtonGlow_Start(unitframe.healthBar);
                 end

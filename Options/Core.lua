@@ -896,7 +896,7 @@ O.DefaultValues = {
     custom_name_enabled = false,
     custom_name_data    = {},
 
-    color_category_data = {},
+    colors_data = {},
 };
 
 O.PROFILE_DEFAULT_ID = '1';
@@ -973,4 +973,22 @@ function Module:StartUp()
     for pId, data in pairs(StripesDB.profiles) do
         StripesDB.profiles[pId] = U.Merge(O.DefaultValues, data);
     end
+
+    local majorVersion, minorVersion = strsplit('.', (StripesDB.version or S.Version));
+    majorVersion, minorVersion = tonumber(majorVersion), tonumber(minorVersion);
+
+    -- migration of created colors
+    if majorVersion == 1 and minorVersion < 23 then
+        for pId, _ in pairs(StripesDB.profiles) do
+            if StripesDB.profiles[pId].color_category_data then
+                for _, d in ipairs(StripesDB.profiles[pId].color_category_data) do
+                    StripesDB.profiles[pId].colors_data[d.name] = { d.color[1] or 1, d.color[2] or 1, d.color[3] or 1, d.color[4] or 1 };
+                end
+
+                StripesDB.profiles[pId].color_category_data = nil;
+            end
+        end
+    end
+
+    StripesDB.version = S.Version;
 end

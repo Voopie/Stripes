@@ -1,136 +1,93 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
-local Module = S:NewModule('Options_ColorCategory');
+local Module = S:NewModule('Options_Colors');
 
 local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
 local ROW_HEIGHT = 28;
 local CATEGORY_MAX_LETTERS = 25;
 
-local PREDEFINED_COLORS = {
-    {
-        name  = 'White',
-        color = { 1, 1, 1, 1 },
-    },
+local PREDEFINED_COLORS_ASSOC = {
+    ['White'] = { 1, 1, 1, 1 },
+    ['Silver'] = { 0.75, 0.75, 0.75, 1 },
+    ['Gray'] = { 0.5, 0.5, 0.5, 1 },
+    ['Black'] = { 0, 0, 0, 1 },
+    ['Red'] = { 1, 0, 0, 1 },
+    ['Orange Red'] = { 1, 0.27, 0, 1 },
+    ['Maroon'] = { 0.5, 0, 0, 1 },
+    ['Saddle Brown'] = { 0.55, 0.27, 0.07, 1 },
+    ['Yellow'] = { 1, 1, 0, 1 },
+    ['Moccasin'] = { 1, 0.89, 0.71, 1 },
+    ['Meadowlark'] = { 0.93, 0.86, 0.33, 1 },
+    ['Olive'] = { 0.5, 0.5, 0, 1 },
+    ['Lime'] = { 0, 1, 0, 1 },
+    ['Green'] = { 0, 0.5, 0, 1 },
+    ['Aqua'] = { 0, 1, 1, 1 },
+    ['Teal'] = { 0, 0.5, 0.5, 1 },
+    ['Blue'] = { 0, 0, 1, 1 },
+    ['Navy'] = { 0, 0, 0.5, 1 },
+    ['Fuchsia'] = { 1, 0, 1, 1 },
+    ['Purple'] = { 0.5, 0, 0.5, 1 },
+    ['Ultra Violet'] = { 0.42, 0.36, 0.58, 1 },
+    ['Dark Orange'] = { 1, 0.55, 0, 1 },
+    ['Coral'] = { 1, 0.5, 0.31, 1 },
+    ['Aquamarine'] = { 0.5, 1, 0.83, 1 },
+    ['Slate Gray'] = { 0.44, 0.5, 0.56, 1 },
+};
 
-    {
-        name  = 'Silver',
-        color = { 0.75, 0.75, 0.75, 1 },
-    },
+function Module:IsExists(name)
+    if PREDEFINED_COLORS_ASSOC[name] then
+        return true;
+    end
 
-    {
-        name  = 'Gray',
-        color = { 0.5, 0.5, 0.5, 1 },
-    },
+    if O.db.colors_data[name] then
+        return true;
+    end
 
-    {
-        name  = 'Black',
-        color = { 0, 0, 0, 1 },
-    },
+    return false;
+end
 
-    {
-        name  = 'Red',
-        color = { 1, 0, 0, 1 },
-    },
+function Module:Add(name, r, g, b, a)
+    if string.lower(name) == string.lower(L['NO']) then
+        return;
+    end
 
-    {
-        name  = 'Orange Red',
-        color = { 1, 0.27, 0, 1 },
-    },
+    if self:IsExists(name) then
+        return;
+    end
 
-    {
-        name  = 'Maroon',
-        color = { 0.5, 0, 0, 1},
-    },
+    O.db.colors_data[name] = { r or 1, g or 1, b or 1, a or 1 };
+end
 
-    {
-        name  = 'Saddle Brown',
-        color = { 0.55, 0.27, 0.07, 1 },
-    },
+function Module:Remove(name)
+    O.db.colors_data[name] = nil;
+end
 
-    {
-        name  = 'Yellow',
-        color = { 1, 1, 0, 1},
-    },
+function Module:Get(name)
+    return PREDEFINED_COLORS_ASSOC[name] or O.db.colors_data[name];
+end
 
-    {
-        name  = 'Moccasin',
-        color = { 1, 0.89, 0.71, 1 },
-    },
+function Module:UpdateName(editbox, name, newName)
+    newName = strtrim(newName);
 
-    {
-        name  = 'Meadowlark',
-        color = { 0.93, 0.86, 0.33, 1 },
-    },
+    if not newName or newName == '' or string.lower(newName) == string.lower(L['NO']) then
+        return editbox:SetShown(false);
+    end
 
-    {
-        name  = 'Olive',
-        color = { 0.5, 0.5, 0, 1 },
-    },
+    if not name or not O.db.colors_data[name] then
+        return editbox:SetShown(false);
+    end
 
-    {
-        name  = 'Lime',
-        color = { 0, 1, 0, 1 },
-    },
+    if O.db.colors_data[newName] then
+        return editbox:SetShown(false);
+    end
 
-    {
-        name  = 'Green',
-        color = { 0, 0.5, 0, 1 },
-    },
+    O.db.colors_data[newName] = U.DeepCopy(O.db.colors_data[name]);
+    O.db.colors_data[name] = nil;
 
-    {
-        name  = 'Aqua',
-        color = { 0, 1, 1, 1 },
-    },
+    Module:UpdateAllLists();
+    Module:UpdateListScroll();
 
-    {
-        name  = 'Teal',
-        color = { 0, 0.5, 0.5, 1 },
-    },
-
-    {
-        name  = 'Blue',
-        color = { 0, 0, 1, 1 },
-    },
-
-    {
-        name  = 'Navy',
-        color = { 0, 0, 0.5, 1 },
-    },
-
-    {
-        name  = 'Fuchsia',
-        color = { 1, 0, 1, 1 },
-    },
-
-    {
-        name  = 'Purple',
-        color = { 0.5, 0, 0.5 },
-    },
-
-    {
-        name  = 'Ultra Violet',
-        color = { 0.42, 0.36, 0.58, 1  },
-    },
-
-    {
-        name  = 'Dark Orange',
-        color = { 1, 0.55, 0, 1  },
-    },
-
-    {
-        name  = 'Coral',
-        color = { 1, 0.5, 0.31, 1  },
-    },
-
-    {
-        name = 'Aquamarine',
-        color = { 0.5, 1, 0.83, 1  },
-    },
-
-    {
-        name = 'Slate Gray',
-        color = { 0.44, 0.5, 0.56, 1  },
-    },
-}
+    editbox:SetShown(false);
+end
 
 local List = Mixin(CreateFrame('Frame', nil, O.frame, 'BackdropTemplate'), E.PixelPerfectMixin);
 List:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
@@ -157,8 +114,7 @@ EditBox:SetScript('OnEnterPressed', function(self)
         return;
     end
 
-    Module.AddColorCategory(name);
-
+    Module:Add(name);
     Module:UpdateAllLists();
     Module:UpdateListScroll();
 
@@ -179,50 +135,7 @@ PixelUtil.SetPoint(ListScrollArea.ScrollBar, 'BOTTOMLEFT', ListScrollArea, 'BOTT
 
 local ListButtonPool = CreateFramePool('Button', ListScrollChild, 'BackdropTemplate');
 
-Module.AddColorCategory = function(name)
-    if string.lower(name) == string.lower(L['NO']) then
-        return;
-    end
-
-    for _, data in ipairs(O.db.color_category_data) do
-        if data.name == name then
-            return;
-        end
-    end
-
-    table.insert(O.db.color_category_data, { name = name, color = { 1, 1, 1, 1 } });
-end
-
-Module.UpdateName = function(editbox, index, newName)
-    newName = strtrim(newName);
-
-    if not newName or newName == '' or string.lower(newName) == string.lower(L['NO']) then
-        return editbox:SetShown(false);
-    end
-
-    if not index or not O.db.color_category_data[index] then
-        return editbox:SetShown(false);
-    end
-
-    if O.db.color_category_data[index].name == newName then
-        return editbox:SetShown(false);
-    end
-
-    for _, data in ipairs(O.db.color_category_data) do
-        if data.name == newName then
-            return editbox:SetShown(false);
-        end
-    end
-
-    O.db.color_category_data[index].name = newName;
-
-    Module:UpdateAllLists();
-    Module:UpdateListScroll();
-    editbox:SetShown(false);
-end
-
 local DataListRows = {};
-
 local CreateListRow = function(frame)
     frame:SetBackdrop(BACKDROP);
     frame.backgroundColor = frame.backgroundColor or {};
@@ -230,15 +143,15 @@ local CreateListRow = function(frame)
     frame.ColorPicker = E.CreateColorPicker(frame);
     frame.ColorPicker:SetPosition('LEFT', frame, 'LEFT', 4, 0);
     frame.ColorPicker.OnValueChanged = function(self, r, g, b, a)
-        local index = self:GetParent().dbIndex;
-        if not index then
+        local name = self:GetParent().name;
+        if not name then
             return;
         end
 
-        O.db.color_category_data[index].color[1] = r;
-        O.db.color_category_data[index].color[2] = g;
-        O.db.color_category_data[index].color[3] = b;
-        O.db.color_category_data[index].color[4] = a or 1;
+        O.db.colors_data[name][1] = r;
+        O.db.colors_data[name][2] = g;
+        O.db.colors_data[name][3] = b;
+        O.db.colors_data[name][4] = a or 1;
 
         Module:UpdateAllLists();
         Module:UpdateOtherScrolls();
@@ -247,7 +160,7 @@ local CreateListRow = function(frame)
         self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
     end);
     frame.ColorPicker:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(frame.backgroundColor[1], frame.backgroundColor[2], frame.backgroundColor[3], frame.backgroundColor[4]);
+        self:GetParent():SetBackdropColor(unpack(frame.backgroundColor));
     end);
 
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
@@ -260,12 +173,12 @@ local CreateListRow = function(frame)
     frame.EditBox:SetSize(170, ROW_HEIGHT);
     frame.EditBox:SetShown(false);
     frame.EditBox:SetScript('OnEnterPressed', function(self)
-        local index = self:GetParent().dbIndex;
-        if not index then
+        local name = self:GetParent().name;
+        if not name then
             return;
         end
 
-        Module.UpdateName(self, index, self:GetText());
+        Module:UpdateName(self, name, self:GetText());
     end);
     frame.EditBox.FocusLostCallback = function(self)
         self:SetShown(false);
@@ -281,13 +194,12 @@ local CreateListRow = function(frame)
     frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
     frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     frame.RemoveButton:SetScript('OnClick', function(self)
-        local index = self:GetParent().dbIndex;
-        if not index then
+        local name = self:GetParent().name;
+        if not name then
             return;
         end
 
-        table.remove(O.db.color_category_data, index);
-
+        Module:Remove(name);
         Module:UpdateAllLists();
         Module:UpdateListScroll();
     end);
@@ -295,7 +207,7 @@ local CreateListRow = function(frame)
         self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
     end);
     frame.RemoveButton:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
+        self:GetParent():SetBackdropColor(unpack(self:GetParent().backgroundColor));
     end);
 
     frame.EditButton = E.CreateTextureButton(frame, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.PENCIL_WHITE);
@@ -312,7 +224,7 @@ local CreateListRow = function(frame)
     end);
 
     frame.EditButton:HookScript('OnLeave', function(self)
-        self:GetParent():SetBackdropColor(self:GetParent().backgroundColor[1], self:GetParent().backgroundColor[2], self:GetParent().backgroundColor[3], self:GetParent().backgroundColor[4]);
+        self:GetParent():SetBackdropColor(unpack(self:GetParent().backgroundColor));
     end);
 
     frame:HookScript('OnDoubleClick', function(self)
@@ -327,7 +239,7 @@ local CreateListRow = function(frame)
     end);
 
     frame:HookScript('OnLeave', function(self)
-        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
+        self:SetBackdropColor(unpack(self.backgroundColor));
     end);
 end
 
@@ -354,25 +266,22 @@ local UpdateListRow = function(frame)
     frame.ColorPicker:SetValue(unpack(frame.color));
 end
 
-local colorCategorySortedData = {};
+local ColorsSortedData = {};
 Module.UpdateListScroll = function()
     wipe(DataListRows);
-    wipe(colorCategorySortedData);
+    wipe(ColorsSortedData);
 
-    for index, data in pairs(O.db.color_category_data) do
-        data.index = index;
-        table.insert(colorCategorySortedData, data);
+    for name, _ in pairs(O.db.colors_data) do
+        table.insert(ColorsSortedData, name);
     end
 
-    table.sort(colorCategorySortedData, function(a, b)
-        return a.name < b.name;
-    end);
+    table.sort(ColorsSortedData);
 
     ListButtonPool:ReleaseAll();
 
     local frame, isNew;
 
-    for index, data in ipairs(colorCategorySortedData) do
+    for index, name in ipairs(ColorsSortedData) do
         frame, isNew = ListButtonPool:Acquire();
 
         table.insert(DataListRows, frame);
@@ -382,9 +291,8 @@ Module.UpdateListScroll = function()
         end
 
         frame.index   = index;
-        frame.dbIndex = data.index;
-        frame.name    = data.name;
-        frame.color   = data.color;
+        frame.name    = name;
+        frame.color   = O.db.colors_data[name];
 
         UpdateListRow(frame);
 
@@ -408,58 +316,25 @@ function Module:UpdateOtherScrolls()
     end
 end
 
-function Module:GetPredefinedList()
-    return PREDEFINED_COLORS;
+Module.CombinedList = {};
+function Module:GetList()
+    return self.CombinedList;
 end
 
-Module.PredefinedDropdownList = {};
-function Module:UpdatePredefinedDropdownList()
-    wipe(self.PredefinedDropdownList);
+function Module:UpdateCombinedList()
+    wipe(self.CombinedList);
 
-    for index, data in ipairs(PREDEFINED_COLORS) do
-        self.PredefinedDropdownList[index] = data.name;
+    for name, color in pairs(PREDEFINED_COLORS_ASSOC) do
+        self.CombinedList[name] = color;
     end
 
-    self.PredefinedDropdownList[0] = L['NO'];
-end
-
-function Module:GetPredefinedDropdownList()
-    return self.PredefinedDropdownList;
-end
-
-Module.CustomList = {};
-function Module:UpdateCustomList()
-    wipe(self.CustomList);
-
-    for _, data in ipairs(O.db.color_category_data) do
-        table.insert(self.CustomList, { name = data.name, color = data.color });
+    for name, color in pairs(O.db.colors_data) do
+        self.CombinedList[name] = color;
     end
-end
-
-function Module:GetCustomList()
-    return self.CustomList;
-end
-
-Module.CustomDropdownList = {};
-function Module:UpdateCustomDropdownList()
-    wipe(self.CustomDropdownList);
-
-    for index, data in ipairs(O.db.color_category_data) do
-        self.CustomDropdownList[index] = data.name;
-    end
-
-    self.CustomDropdownList[0] = L['NO'];
-end
-
-function Module:GetCustomDropdownList()
-    return self.CustomDropdownList;
 end
 
 function Module:UpdateAllLists()
-    self:UpdatePredefinedDropdownList();
-
-    self:UpdateCustomList();
-    self:UpdateCustomDropdownList();
+    self:UpdateCombinedList();
 end
 
 function Module:ToggleListFrame()
