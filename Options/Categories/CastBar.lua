@@ -1615,17 +1615,17 @@ panel.Load = function(self)
         end
 
         if isShiftKeyDown then
-            wipe(StripesDB.profiles[O.activeProfileId].color_category_data);
+            wipe(StripesDB.profiles[O.activeProfileId].colors_data);
             wipe(StripesDB.profiles[O.activeProfileId].castbar_custom_casts_category_data);
             wipe(StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data);
 
-            StripesDB.profiles[O.activeProfileId].color_category_data                = U.DeepCopy(StripesDB.profiles[index].color_category_data);
+            StripesDB.profiles[O.activeProfileId].colors_data                        = U.DeepCopy(StripesDB.profiles[index].colors_data);
             StripesDB.profiles[O.activeProfileId].castbar_custom_casts_category_data = U.DeepCopy(StripesDB.profiles[index].castbar_custom_casts_category_data);
             StripesDB.profiles[O.activeProfileId].castbar_custom_casts_data          = U.DeepCopy(StripesDB.profiles[index].castbar_custom_casts_data);
         else
             -- Colors
-            for _, data in ipairs(StripesDB.profiles[index].color_category_data) do
-                table.insert(StripesDB.profiles[O.activeProfileId].color_category_data, data);
+            for n, c in pairs(StripesDB.profiles[index].colors_data) do
+                StripesDB.profiles[O.activeProfileId].colors_data[n] = { c[1] or 1, c[2] or 1, c[3] or 1, c[4] or 1 };
             end
 
             -- Categories
