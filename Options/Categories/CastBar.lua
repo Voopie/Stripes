@@ -44,18 +44,6 @@ local DEFAULT_GLOW_COLOR_NAME = 'Yellow';
 local DEFAULT_CB_COLOR_NAME = 'Maroon';
 
 local function SortCategoryByName(a, b)
-    if a.value == b.value then
-        return true;
-    end
-
-    if a.value == CATEGORY_ALL_NAME then
-        return true;
-    end
-
-    if b.value == CATEGORY_ALL_NAME then
-        return false;
-    end
-
     return a.value < b.value;
 end
 

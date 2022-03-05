@@ -43,18 +43,6 @@ ModelFrame:SetPoint('CENTER', HolderModelFrame, 'CENTER', 0, 0);
 ModelFrame:SetSize(150, 300);
 
 local function SortCategoryByName(a, b)
-    if a.value == b.value then
-        return true;
-    end
-
-    if a.value == CATEGORY_ALL_NAME then
-        return true;
-    end
-
-    if b.value == CATEGORY_ALL_NAME then
-        return false;
-    end
-
     return a.value < b.value;
 end
 
