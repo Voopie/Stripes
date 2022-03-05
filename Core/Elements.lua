@@ -1226,8 +1226,9 @@ do
 
     local kinds = {
         ['plain'] = {
-            SetList = function(self, itemsTable, sortFunc)
-                self.subType     = 'number';
+            SetList = function(self, itemsTable, sortFunc, byValue)
+                self.byValue     = byValue;
+                self.subType     = byValue and 'string' or 'number';
                 self.itemsTable  = itemsTable or {};
                 self.sortedTable = self.sortedTable or {};
 
@@ -1276,7 +1277,7 @@ do
                     itemButton:SetScript('OnClick', function(self)
                         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
-                        container:SetValue(self.Key);
+                        container:SetValue(container.byValue and self.Value or self.Key);
                         DropdownList:SetShown(false);
 
                         if container.OnValueChangedCallback then
@@ -1302,8 +1303,14 @@ do
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
                         button.SelectedIcon:SetShown(false);
 
-                        if button.Key == self.currentValue then
-                            button.SelectedIcon:SetShown(true);
+                        if self.byValue then
+                            if button.Value == self.currentValue then
+                                button.SelectedIcon:SetShown(true);
+                            end
+                        else
+                            if button.Key == self.currentValue then
+                                button.SelectedIcon:SetShown(true);
+                            end
                         end
                     end
                 end
@@ -1332,9 +1339,16 @@ do
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
                         button.SelectedIcon:SetShown(false);
 
-                        if button.Key == self.currentValue then
-                            button.SelectedIcon:SetShown(true);
-                            self.holderButton.Text:SetText(button.Value);
+                        if self.byValue then
+                            if button.Value == self.currentValue then
+                                button.SelectedIcon:SetShown(true);
+                                self.holderButton.Text:SetText(button.Value);
+                            end
+                        else
+                            if button.Key == self.currentValue then
+                                button.SelectedIcon:SetShown(true);
+                                self.holderButton.Text:SetText(button.Value);
+                            end
                         end
                     end
                 end
@@ -1343,7 +1357,11 @@ do
             end,
 
             UpdateHeader = function(self)
-                self.holderButton.Text:SetText(self.itemsTable and (self.itemsTable[self.currentValue] or ''));
+                if self.byValue then
+                    self.holderButton.Text:SetText(self.currentValue or '');
+                else
+                    self.holderButton.Text:SetText(self.itemsTable and (self.itemsTable[self.currentValue] or ''));
+                end
             end,
         },
 

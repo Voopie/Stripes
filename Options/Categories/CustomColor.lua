@@ -18,7 +18,11 @@ local DELAY_SECONDS = 0.25;
 local DEFAULT_LIST_VALUE = 1;
 local LIST_TOOLTIP_PATTERN = '|cffff6666%s|r  |cffffffff| |r |cffffb833%s|r';
 
-panel.categoryId = 0;
+local CATEGORY_ALL_NAME = O.CATEGORY_ALL_NAME;
+local DEFAULT_GLOW_COLOR_NAME = 'Yellow';
+local DEFAULT_HB_COLOR_NAME = 'Teal';
+
+panel.categoryName = CATEGORY_ALL_NAME;
 
 local HolderModelFrame = CreateFrame('Frame', nil, UIParent, 'BackdropTemplate');
 HolderModelFrame:SetClipsChildren(true);
@@ -43,11 +47,11 @@ local function SortCategoryByName(a, b)
         return true;
     end
 
-    if a.value == L['OPTIONS_CATEGORY_ALL'] then
+    if a.value == CATEGORY_ALL_NAME then
         return true;
     end
 
-    if b.value == L['OPTIONS_CATEGORY_ALL'] then
+    if b.value == CATEGORY_ALL_NAME then
         return false;
     end
 
@@ -64,14 +68,14 @@ local function Add(id, name)
             npc_id   = id,
             npc_name = name,
 
-            category_id = 0,
+            category_name = CATEGORY_ALL_NAME,
 
             color_enabled = true,
-            color_name    = 'Teal',
+            color_name    = DEFAULT_HB_COLOR_NAME,
 
             glow_enabled    = false,
             glow_type       = 0,
-            glow_color_name = 'Yellow',
+            glow_color_name = DEFAULT_GLOW_COLOR_NAME,
         };
     end
 end
@@ -98,8 +102,8 @@ ExtendedOptions.UpdateAll = function(self, frame)
 
     self.NameText:SetText(frame.name .. '  |cffaaaaaa[' .. frame.npc_id .. ']|r');
 
-    self.Category:SetList(frame.category_list);
-    self.Category:SetValue(frame.category_id);
+    self.Category:SetList(frame.category_list, nil, true);
+    self.Category:SetValue(frame.category_name);
 
     self.ColorName:SetList(Colors:GetList());
     self.ColorName:SetValue(frame.color_name);
@@ -134,11 +138,9 @@ ExtendedOptions.CategoryText:SetText(L['CATEGORY']);
 ExtendedOptions.Category = E.CreateDropdown('plain', ExtendedOptions);
 ExtendedOptions.Category:SetPosition('TOPLEFT', ExtendedOptions.CategoryText, 'BOTTOMLEFT', 0, -4);
 ExtendedOptions.Category:SetSize(140, 20);
-ExtendedOptions.Category.OnValueChangedCallback = function(_, category_id)
-    category_id = tonumber(category_id);
-
+ExtendedOptions.Category.OnValueChangedCallback = function(_, _, value)
     if O.db.custom_color_data[ExtendedOptions.id] then
-        O.db.custom_color_data[ExtendedOptions.id].category_id = category_id;
+        O.db.custom_color_data[ExtendedOptions.id].category_name = value;
         panel:UpdateScroll();
     end
 end
@@ -372,7 +374,7 @@ local function UpdateRow(frame)
     end
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
-    frame.CategoryNameText:SetText(frame.category_list[frame.category_id]);
+    frame.CategoryNameText:SetText(frame.category_name);
     frame.NameText:SetText(frame.name);
 
     if frame.color_enabled then
@@ -425,8 +427,8 @@ panel.UpdateScroll = function()
             if not found then
                 found = string.find(data.npc_id, panel.searchWordLower, 1, true);
             end
-        elseif panel.categoryId then
-            found = (panel.categoryId == 0 or (panel.categoryId == 0 and not data.category_id) or data.category_id == panel.categoryId);
+        elseif panel.categoryName then
+            found = (panel.categoryName == CATEGORY_ALL_NAME or (panel.categoryName == CATEGORY_ALL_NAME and not data.category_name) or data.category_name == panel.categoryName);
         else
             found = true;
         end
@@ -451,7 +453,7 @@ panel.UpdateScroll = function()
             frame.glow_type    = data.glow_type or 0;
 
             if not O.db.custom_color_data[data.npc_id].glow_color_name or not Colors:Get(O.db.custom_color_data[data.npc_id].glow_color_name) then
-                O.db.custom_color_data[data.npc_id].glow_color_name = 'Yellow';
+                O.db.custom_color_data[data.npc_id].glow_color_name = DEFAULT_GLOW_COLOR_NAME;
             end
 
             frame.glow_color_name = O.db.custom_color_data[data.npc_id].glow_color_name;
@@ -459,18 +461,18 @@ panel.UpdateScroll = function()
             frame.color_enabled  = O.db.custom_color_data[data.npc_id].color_enabled;
 
             if not O.db.custom_color_data[data.npc_id].color_name or not Colors:Get(O.db.custom_color_data[data.npc_id].color_name) then
-                O.db.custom_color_data[data.npc_id].color_name = 'Teal';
+                O.db.custom_color_data[data.npc_id].color_name = DEFAULT_HB_COLOR_NAME;
             end
 
             frame.color_name = O.db.custom_color_data[data.npc_id].color_name;
 
-            if O.db.custom_color_category_data[data.category_id] then
-                O.db.custom_color_data[data.npc_id].category_id = data.category_id;
+            if O.db.custom_color_categories_data[data.category_name] then
+                O.db.custom_color_data[data.npc_id].category_name = data.category_name;
             else
-                O.db.custom_color_data[data.npc_id].category_id = 0;
+                O.db.custom_color_data[data.npc_id].category_name = CATEGORY_ALL_NAME;
             end
 
-            frame.category_id   = O.db.custom_color_data[data.npc_id].category_id;
+            frame.category_name = O.db.custom_color_data[data.npc_id].category_name;
             frame.category_list = panel:GetCategoriesDropdown();
 
             UpdateRow(frame);
@@ -591,8 +593,8 @@ panel.UpdateListScroll = function(id)
             CreateListRow(b);
         end
 
-        b.index   = index;
-        b.npc_id  = npc_id;
+        b.index  = index;
+        b.npc_id = npc_id;
 
         UpdateListRow(b);
 
@@ -606,11 +608,13 @@ panel.CategoriesDropdown = {};
 panel.GetCategoriesDropdown = function(self)
     wipe(self.CategoriesDropdown);
 
-    for index, data in ipairs(O.db.custom_color_category_data) do
-        self.CategoriesDropdown[index] = data.name;
+    local index = 1;
+    for name, _ in pairs(O.db.custom_color_categories_data) do
+        self.CategoriesDropdown[index] = name;
+        index = index + 1;
     end
 
-    self.CategoriesDropdown[0] = L['OPTIONS_CATEGORY_ALL'];
+    self.CategoriesDropdown[0] = CATEGORY_ALL_NAME;
 
     return self.CategoriesDropdown;
 end
@@ -631,33 +635,37 @@ panel.CreateCategoryListRow = function(frame)
     frame.EditBox:SetMaxLetters(CATEGORY_MAX_LETTERS);
     frame.EditBox:SetShown(false);
     frame.EditBox:SetScript('OnEnterPressed', function(self)
-        local index   = self:GetParent().dbIndex;
+        local name = self:GetParent().name;
+
+        if not name or not O.db.custom_color_categories_data[name] then
+            return self:SetShown(false);
+        end
+
         local newName = strtrim(self:GetText());
 
-        if not newName or newName == '' or string.lower(newName) == string.lower(L['OPTIONS_CATEGORY_ALL']) then
+        if not newName or newName == '' or string.lower(newName) == string.lower(CATEGORY_ALL_NAME) then
             return self:SetShown(false);
         end
 
-        if not index or not O.db.custom_color_category_data[index] then
-            return self:SetShown(false);
-        end
+        O.db.custom_color_categories_data[newName] = true;
+        O.db.custom_color_categories_data[name] = nil;
 
-        if O.db.custom_color_category_data[index].name == newName then
-            return self:SetShown(false);
-        end
-
-        for _, data in ipairs(O.db.custom_color_category_data) do
-            if data.name == newName then
-                return self:SetShown(false);
+        for id, _ in pairs(O.db.custom_color_data) do
+            if O.db.custom_color_data[id].category_name == name then
+                O.db.custom_color_data[id].category_name = newName;
             end
         end
 
-        O.db.custom_color_category_data[index].name = newName;
+        if panel.categoryName == name then
+            panel.categoryName = newName;
+        end
 
         panel.UpdateScroll();
         panel.UpdateCategoryListScroll();
-        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName);
-        panel.CategoryDropdown:SetValue(panel.CategoryDropdown:GetValue());
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName, true);
+        if panel.CategoryDropdown:GetValue() == name then
+            panel.CategoryDropdown:SetValue(newName);
+        end
 
         self:SetShown(false);
     end);
@@ -675,12 +683,12 @@ panel.CreateCategoryListRow = function(frame)
     frame.RemoveButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.TRASH_WHITE));
     frame.RemoveButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
     frame.RemoveButton:SetScript('OnClick', function(self)
-        table.remove(O.db.custom_color_category_data, self:GetParent().dbIndex);
+        O.db.custom_color_categories_data[self:GetParent().name] = nil;
 
         panel.UpdateScroll();
         panel.UpdateCategoryListScroll();
-        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName);
-        panel.CategoryDropdown:SetValue(0);
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName, true);
+        panel.CategoryDropdown:SetValue(CATEGORY_ALL_NAME);
     end);
     frame.RemoveButton:HookScript('OnEnter', function(self)
         self:GetParent():SetBackdropColor(0.3, 0.3, 0.3, 1);
@@ -749,20 +757,19 @@ panel.UpdateCategoryListScroll = function()
     wipe(DataCategoryListRows);
     wipe(categorySortedData);
 
-    for index, data in pairs(O.db.custom_color_category_data) do
-        data.index = index;
-        table.insert(categorySortedData, data);
+    for name, _ in pairs(O.db.custom_color_categories_data) do
+        table.insert(categorySortedData, name);
     end
 
     table.sort(categorySortedData, function(a, b)
-        return a.name < b.name;
+        return a < b;
     end);
 
     panel.CategoryListButtonPool:ReleaseAll();
 
     local frame, isNew;
 
-    for index, data in ipairs(categorySortedData) do
+    for index, name in ipairs(categorySortedData) do
         frame, isNew = panel.CategoryListButtonPool:Acquire();
 
         table.insert(DataCategoryListRows, frame);
@@ -771,9 +778,8 @@ panel.UpdateCategoryListScroll = function()
             panel.CreateCategoryListRow(frame);
         end
 
-        frame.index   = index;
-        frame.dbIndex = data.index;
-        frame.name    = data.name;
+        frame.index = index;
+        frame.name  = name;
 
         panel.UpdateCategoryListRow(frame);
 
@@ -915,10 +921,10 @@ panel.Load = function(self)
     self.CategoryDropdown = E.CreateDropdown('plain', self);
     self.CategoryDropdown:SetPosition('LEFT', self.SearchEditBox, 'RIGHT', 11, 0);
     self.CategoryDropdown:SetSize(160, 22);
-    self.CategoryDropdown:SetList(self:GetCategoriesDropdown(), SortCategoryByName);
-    self.CategoryDropdown:SetValue(0);
-    self.CategoryDropdown.OnValueChangedCallback = function(_, value)
-        panel.categoryId = tonumber(value);
+    self.CategoryDropdown:SetList(self:GetCategoriesDropdown(), SortCategoryByName, true);
+    self.CategoryDropdown:SetValue(CATEGORY_ALL_NAME);
+    self.CategoryDropdown.OnValueChangedCallback = function(_, _, value)
+        panel.categoryName = value;
         panel:UpdateScroll();
     end
 
@@ -992,12 +998,12 @@ panel.Load = function(self)
 
         if isShiftKeyDown then
             wipe(StripesDB.profiles[O.activeProfileId].colors_data);
-            wipe(StripesDB.profiles[O.activeProfileId].custom_color_category_data);
+            wipe(StripesDB.profiles[O.activeProfileId].custom_color_categories_data);
             wipe(StripesDB.profiles[O.activeProfileId].custom_color_data);
 
-            StripesDB.profiles[O.activeProfileId].colors_data                = U.DeepCopy(StripesDB.profiles[index].colors_data);
-            StripesDB.profiles[O.activeProfileId].custom_color_category_data = U.DeepCopy(StripesDB.profiles[index].custom_color_category_data);
-            StripesDB.profiles[O.activeProfileId].custom_color_data          = U.DeepCopy(StripesDB.profiles[index].custom_color_data);
+            StripesDB.profiles[O.activeProfileId].colors_data                  = U.DeepCopy(StripesDB.profiles[index].colors_data);
+            StripesDB.profiles[O.activeProfileId].custom_color_categories_data = U.DeepCopy(StripesDB.profiles[index].custom_color_categories_data);
+            StripesDB.profiles[O.activeProfileId].custom_color_data            = U.DeepCopy(StripesDB.profiles[index].custom_color_data);
         else
             -- Colors
             for n, c in pairs(StripesDB.profiles[index].colors_data) do
@@ -1005,8 +1011,8 @@ panel.Load = function(self)
             end
 
             -- Categories
-            for _, data in ipairs(StripesDB.profiles[index].custom_color_category_data) do
-                table.insert(StripesDB.profiles[O.activeProfileId].custom_color_category_data, data);
+            for n, _ in pairs(StripesDB.profiles[index].custom_color_categories_data) do
+                StripesDB.profiles[O.activeProfileId].custom_color_categories_data[n] = true;
             end
 
             StripesDB.profiles[O.activeProfileId].custom_color_data = U.Merge(StripesDB.profiles[index].custom_color_data, StripesDB.profiles[O.activeProfileId].custom_color_data);
@@ -1018,7 +1024,7 @@ panel.Load = function(self)
         Colors:UpdateListScroll();
 
         panel:UpdateCategoryListScroll();
-        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName);
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName, true);
 
         Stripes:UpdateAll();
     end
@@ -1062,13 +1068,13 @@ panel.Load = function(self)
     self.CategoryEditbox:SetScript('OnEnterPressed', function(self)
         local name = strtrim(self:GetText());
 
-        if not name or name == '' or string.lower(name) == string.lower(L['OPTIONS_CATEGORY_ALL']) then
+        if not name or name == '' or string.lower(name) == string.lower(CATEGORY_ALL_NAME) then
             self:SetText('');
             self:ClearFocus();
             return;
         end
 
-        table.insert(O.db.custom_color_category_data, { name = name });
+        O.db.custom_color_categories_data[name] = true;
 
         self:SetText('');
         self:ClearFocus();
@@ -1076,7 +1082,7 @@ panel.Load = function(self)
         panel:UpdateScroll();
         panel:UpdateCategoryListScroll();
 
-        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName);
+        panel.CategoryDropdown:SetList(panel:GetCategoriesDropdown(), SortCategoryByName, true);
         panel.CategoryDropdown:SetValue(panel.CategoryDropdown:GetValue());
     end);
 
@@ -1122,7 +1128,7 @@ panel.Update = function(self)
     Colors:UpdateListScroll();
 
     self:UpdateCategoryListScroll();
-    self.CategoryDropdown:SetList(self:GetCategoriesDropdown(), SortCategoryByName);
+    self.CategoryDropdown:SetList(self:GetCategoriesDropdown(), SortCategoryByName, true);
 end
 
 function Module:MODIFIER_STATE_CHANGED(key, down)

@@ -5,6 +5,133 @@ local BACKDROP = { bgFile = 'Interface\\Buttons\\WHITE8x8' };
 local ROW_HEIGHT = 28;
 local CATEGORY_MAX_LETTERS = 25;
 
+Module.PREDEFINED_COLORS_OLD = {
+    {
+        name  = 'White',
+        color = { 1, 1, 1, 1 },
+    },
+
+    {
+        name  = 'Silver',
+        color = { 0.75, 0.75, 0.75, 1 },
+    },
+
+    {
+        name  = 'Gray',
+        color = { 0.5, 0.5, 0.5, 1 },
+    },
+
+    {
+        name  = 'Black',
+        color = { 0, 0, 0, 1 },
+    },
+
+    {
+        name  = 'Red',
+        color = { 1, 0, 0, 1 },
+    },
+
+    {
+        name  = 'Orange Red',
+        color = { 1, 0.27, 0, 1 },
+    },
+
+    {
+        name  = 'Maroon',
+        color = { 0.5, 0, 0, 1},
+    },
+
+    {
+        name  = 'Saddle Brown',
+        color = { 0.55, 0.27, 0.07, 1 },
+    },
+
+    {
+        name  = 'Yellow',
+        color = { 1, 1, 0, 1},
+    },
+
+    {
+        name  = 'Moccasin',
+        color = { 1, 0.89, 0.71, 1 },
+    },
+
+    {
+        name  = 'Meadowlark',
+        color = { 0.93, 0.86, 0.33, 1 },
+    },
+
+    {
+        name  = 'Olive',
+        color = { 0.5, 0.5, 0, 1 },
+    },
+
+    {
+        name  = 'Lime',
+        color = { 0, 1, 0, 1 },
+    },
+
+    {
+        name  = 'Green',
+        color = { 0, 0.5, 0, 1 },
+    },
+
+    {
+        name  = 'Aqua',
+        color = { 0, 1, 1, 1 },
+    },
+
+    {
+        name  = 'Teal',
+        color = { 0, 0.5, 0.5, 1 },
+    },
+
+    {
+        name  = 'Blue',
+        color = { 0, 0, 1, 1 },
+    },
+
+    {
+        name  = 'Navy',
+        color = { 0, 0, 0.5, 1 },
+    },
+
+    {
+        name  = 'Fuchsia',
+        color = { 1, 0, 1, 1 },
+    },
+
+    {
+        name  = 'Purple',
+        color = { 0.5, 0, 0.5 },
+    },
+
+    {
+        name  = 'Ultra Violet',
+        color = { 0.42, 0.36, 0.58, 1  },
+    },
+
+    {
+        name  = 'Dark Orange',
+        color = { 1, 0.55, 0, 1  },
+    },
+
+    {
+        name  = 'Coral',
+        color = { 1, 0.5, 0.31, 1  },
+    },
+
+    {
+        name = 'Aquamarine',
+        color = { 0.5, 1, 0.83, 1  },
+    },
+
+    {
+        name = 'Slate Gray',
+        color = { 0.44, 0.5, 0.56, 1  },
+    },
+}
+
 local PREDEFINED_COLORS_ASSOC = {
     ['White'] = { 1, 1, 1, 1 },
     ['Silver'] = { 0.75, 0.75, 0.75, 1 },

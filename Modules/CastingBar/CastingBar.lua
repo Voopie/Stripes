@@ -125,7 +125,7 @@ local function UpdateCustomCast(self)
 
     if castData.glow_enabled then
         GlowStopAll(self);
-        GlowStart(self, castData.glow_type);
+        GlowStart(self, castData.glow_type, Colors:Get(castData.glow_color_name));
     end
 end
 
