@@ -49,52 +49,59 @@ panel.Load = function(self)
     end
 
     self.mythic_plus_percentage_font_value = E.CreateDropdown('font', self);
-    self.mythic_plus_percentage_font_value:SetPosition('TOPLEFT', self.mythic_plus_percentage_enabled, 'BOTTOMLEFT', 0, -12);
     self.mythic_plus_percentage_font_value:SetSize(160, 20);
     self.mythic_plus_percentage_font_value:SetList(LSM:HashTable('font'));
     self.mythic_plus_percentage_font_value:SetValue(O.db.mythic_plus_percentage_font_value);
     self.mythic_plus_percentage_font_value:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_VALUE']);
-    self.mythic_plus_percentage_font_value:AddToSearch(button, L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_VALUE']);
     self.mythic_plus_percentage_font_value.OnValueChangedCallback = function(_, value)
         O.db.mythic_plus_percentage_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.mythic_plus_percentage_font_size = E.CreateSlider(self);
-    self.mythic_plus_percentage_font_size:SetPosition('LEFT', self.mythic_plus_percentage_font_value, 'RIGHT', 12, 0);
     self.mythic_plus_percentage_font_size:SetValues(O.db.mythic_plus_percentage_font_size, 3, 28, 1);
     self.mythic_plus_percentage_font_size:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SIZE']);
-    self.mythic_plus_percentage_font_size:AddToSearch(button, L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SIZE']);
     self.mythic_plus_percentage_font_size.OnValueChangedCallback = function(_, value)
         O.db.mythic_plus_percentage_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.mythic_plus_percentage_font_flag = E.CreateDropdown('plain', self);
-    self.mythic_plus_percentage_font_flag:SetPosition('LEFT', self.mythic_plus_percentage_font_size, 'RIGHT', 12, 0);
     self.mythic_plus_percentage_font_flag:SetSize(160, 20);
     self.mythic_plus_percentage_font_flag:SetList(O.Lists.font_flags_localized);
     self.mythic_plus_percentage_font_flag:SetValue(O.db.mythic_plus_percentage_font_flag);
     self.mythic_plus_percentage_font_flag:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_FLAG']);
-    self.mythic_plus_percentage_font_flag:AddToSearch(button, L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_FLAG']);
     self.mythic_plus_percentage_font_flag.OnValueChangedCallback = function(_, value)
         O.db.mythic_plus_percentage_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.mythic_plus_percentage_font_shadow = E.CreateCheckButton(self);
-    self.mythic_plus_percentage_font_shadow:SetPosition('LEFT', self.mythic_plus_percentage_font_flag, 'RIGHT', 12, 0);
     self.mythic_plus_percentage_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.mythic_plus_percentage_font_shadow:SetChecked(O.db.mythic_plus_percentage_font_shadow);
     self.mythic_plus_percentage_font_shadow:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SHADOW']);
-    self.mythic_plus_percentage_font_shadow:AddToSearch(button, L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_FONT_SHADOW']);
     self.mythic_plus_percentage_font_shadow.Callback = function(self)
         O.db.mythic_plus_percentage_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.PercentageFontOptions = E.CreatePopOptions(self);
+    self.PercentageFontOptions:SetH(60);
+    self.PercentageFontOptions:Add(self.mythic_plus_percentage_font_value):SetPosition('TOPLEFT', self.PercentageFontOptions, 'TOPLEFT', 8, -20);
+    self.PercentageFontOptions:Add(self.mythic_plus_percentage_font_size):SetPosition('LEFT', self.mythic_plus_percentage_font_value, 'RIGHT', 12, 0);
+    self.PercentageFontOptions:Add(self.mythic_plus_percentage_font_flag):SetPosition('LEFT', self.mythic_plus_percentage_font_size, 'RIGHT', 12, 0);
+    self.PercentageFontOptions:Add(self.mythic_plus_percentage_font_shadow):SetPosition('LEFT', self.mythic_plus_percentage_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowPercentageFontOptionsButton = E.CreateButton(self);
+    self.ShowPercentageFontOptionsButton:SetPosition('LEFT', self.mythic_plus_percentage_use_mode, 'RIGHT', 16, 0);
+    self.ShowPercentageFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowPercentageFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowPercentageFontOptionsButton:SetScript('OnClick', function()
+        self.PercentageFontOptions:Show();
+    end);
+
     local ExplosiveOrbsHeader = E.CreateHeader(self, L['OPTIONS_HEADER_EXPLOSIVE_ORBS']);
-    ExplosiveOrbsHeader:SetPosition('TOPLEFT', self.mythic_plus_percentage_font_value, 'BOTTOMLEFT', 0, -8);
+    ExplosiveOrbsHeader:SetPosition('TOPLEFT', self.mythic_plus_percentage_enabled, 'BOTTOMLEFT', 0, -8);
     ExplosiveOrbsHeader:SetW(self:GetWidth());
 
     self.explosive_orbs_crosshair = E.CreateCheckButton(self);

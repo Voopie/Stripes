@@ -272,13 +272,6 @@ panel.Load = function(self)
         O.db.absorb_text_enabled = self:GetChecked();
 
         panel.absorb_text_color:SetEnabled(O.db.absorb_text_enabled);
-        panel.absorb_text_font_value:SetEnabled(O.db.absorb_text_enabled);
-        panel.absorb_text_font_size:SetEnabled(O.db.absorb_text_enabled);
-        panel.absorb_text_font_flag:SetEnabled(O.db.absorb_text_enabled);
-        panel.absorb_text_font_shadow:SetEnabled(O.db.absorb_text_enabled);
-        panel.absorb_text_anchor:SetEnabled(O.db.absorb_text_enabled);
-        panel.absorb_text_x_offset:SetEnabled(O.db.absorb_text_enabled);
-        panel.absorb_text_y_offset:SetEnabled(O.db.absorb_text_enabled);
 
         Stripes:UpdateAll();
     end
@@ -299,93 +292,101 @@ panel.Load = function(self)
     end
 
     self.absorb_text_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
-    self.absorb_text_font_value:SetPosition('TOPLEFT', self.absorb_text_enabled, 'BOTTOMLEFT', 0, -12);
     self.absorb_text_font_value:SetSize(160, 20);
     self.absorb_text_font_value:SetList(LSM:HashTable('font'));
     self.absorb_text_font_value:SetValue(O.db.absorb_text_font_value);
     self.absorb_text_font_value:SetTooltip(L['OPTIONS_ABSORB_TEXT_FONT_VALUE']);
-    self.absorb_text_font_value:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_FONT_VALUE'], self.Tabs[1]);
-    self.absorb_text_font_value:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_font_value.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.absorb_text_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.absorb_text_font_size:SetPosition('LEFT', self.absorb_text_font_value, 'RIGHT', 12, 0);
     self.absorb_text_font_size:SetValues(O.db.absorb_text_font_size, 3, 28, 1);
     self.absorb_text_font_size:SetTooltip(L['OPTIONS_ABSORB_TEXT_FONT_SIZE']);
-    self.absorb_text_font_size:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_FONT_SIZE'], self.Tabs[1]);
-    self.absorb_text_font_size:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_font_size.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.absorb_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.absorb_text_font_flag:SetPosition('LEFT', self.absorb_text_font_size, 'RIGHT', 12, 0);
     self.absorb_text_font_flag:SetSize(160, 20);
     self.absorb_text_font_flag:SetList(O.Lists.font_flags_localized);
     self.absorb_text_font_flag:SetValue(O.db.absorb_text_font_flag);
     self.absorb_text_font_flag:SetTooltip(L['OPTIONS_ABSORB_TEXT_FONT_FLAG']);
-    self.absorb_text_font_flag:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_FONT_FLAG'], self.Tabs[1]);
-    self.absorb_text_font_flag:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_font_flag.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.absorb_text_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.absorb_text_font_shadow:SetPosition('LEFT', self.absorb_text_font_flag, 'RIGHT', 12, 0);
     self.absorb_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.absorb_text_font_shadow:SetChecked(O.db.absorb_text_font_shadow);
     self.absorb_text_font_shadow:SetTooltip(L['OPTIONS_ABSORB_TEXT_FONT_SHADOW']);
-    self.absorb_text_font_shadow:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_FONT_SHADOW'], self.Tabs[1]);
-    self.absorb_text_font_shadow:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_font_shadow.Callback = function(self)
         O.db.absorb_text_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AbsorbTextFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.AbsorbTextFontOptions:SetH(60);
+    self.AbsorbTextFontOptions:Add(self.absorb_text_font_value):SetPosition('TOPLEFT', self.AbsorbTextFontOptions, 'TOPLEFT', 8, -20);
+    self.AbsorbTextFontOptions:Add(self.absorb_text_font_size):SetPosition('LEFT', self.absorb_text_font_value, 'RIGHT', 12, 0);
+    self.AbsorbTextFontOptions:Add(self.absorb_text_font_flag):SetPosition('LEFT', self.absorb_text_font_size, 'RIGHT', 12, 0);
+    self.AbsorbTextFontOptions:Add(self.absorb_text_font_shadow):SetPosition('LEFT', self.absorb_text_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAbsorbTextFontOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.ShowAbsorbTextFontOptionsButton:SetPosition('TOPLEFT', self.absorb_text_enabled, 'BOTTOMLEFT', 0, -8);
+    self.ShowAbsorbTextFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAbsorbTextFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAbsorbTextFontOptionsButton:SetScript('OnClick', function()
+        self.AbsorbTextFontOptions:Show();
+    end);
+
     self.absorb_text_anchor = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.absorb_text_anchor:SetPosition('TOPLEFT', self.absorb_text_font_value, 'BOTTOMLEFT', 0, -24);
     self.absorb_text_anchor:SetSize(120, 20);
     self.absorb_text_anchor:SetList(O.Lists.frame_points_simple_localized);
     self.absorb_text_anchor:SetValue(O.db.absorb_text_anchor);
     self.absorb_text_anchor:SetLabel(L['POSITION']);
     self.absorb_text_anchor:SetTooltip(L['OPTIONS_ABSORB_TEXT_ANCHOR_TOOLTIP']);
-    self.absorb_text_anchor:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_ANCHOR_TOOLTIP'], self.Tabs[1]);
-    self.absorb_text_anchor:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_anchor.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_anchor = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.absorb_text_x_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.absorb_text_x_offset:SetPosition('LEFT', self.absorb_text_anchor, 'RIGHT', 16, 0);
     self.absorb_text_x_offset:SetW(137);
     self.absorb_text_x_offset:SetLabel(L['OFFSET_X_SHORT']);
     self.absorb_text_x_offset:SetTooltip(L['OPTIONS_ABSORB_TEXT_X_OFFSET_TOOLTIP']);
-    self.absorb_text_x_offset:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_X_OFFSET_TOOLTIP'], self.Tabs[1]);
     self.absorb_text_x_offset:SetValues(O.db.absorb_text_x_offset, -99, 100, 1);
-    self.absorb_text_x_offset:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_x_offset.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_x_offset = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.absorb_text_y_offset = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.absorb_text_y_offset:SetPosition('LEFT', self.absorb_text_x_offset, 'RIGHT', 16, 0);
     self.absorb_text_y_offset:SetW(137);
     self.absorb_text_y_offset:SetLabel(L['OFFSET_Y_SHORT']);
     self.absorb_text_y_offset:SetTooltip(L['OPTIONS_ABSORB_TEXT_Y_OFFSET_TOOLTIP']);
-    self.absorb_text_y_offset:AddToSearch(button, L['OPTIONS_ABSORB_TEXT_Y_OFFSET_TOOLTIP'], self.Tabs[1]);
     self.absorb_text_y_offset:SetValues(O.db.absorb_text_y_offset, -99, 100, 1);
-    self.absorb_text_y_offset:SetEnabled(O.db.absorb_text_enabled);
     self.absorb_text_y_offset.OnValueChangedCallback = function(_, value)
         O.db.absorb_text_y_offset = tonumber(value);
         Stripes:UpdateAll();
     end
+
+    self.AbsorbTextPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.AbsorbTextPositionOptions:SetH(72);
+    self.AbsorbTextPositionOptions:Add(self.absorb_text_anchor):SetPosition('TOPLEFT', self.AbsorbTextPositionOptions, 'TOPLEFT', 12, -24);
+    self.AbsorbTextPositionOptions:Add(self.absorb_text_x_offset):SetPosition('LEFT', self.absorb_text_anchor, 'RIGHT', 16, 0);
+    self.AbsorbTextPositionOptions:Add(self.absorb_text_y_offset):SetPosition('LEFT', self.absorb_text_x_offset, 'RIGHT', 16, 0);
+
+    self.ShowAbsorbTextPositionOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.ShowAbsorbTextPositionOptionsButton:SetPosition('LEFT', self.ShowAbsorbTextFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAbsorbTextPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAbsorbTextPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAbsorbTextPositionOptionsButton:SetScript('OnClick', function()
+        self.AbsorbTextPositionOptions:Show();
+    end);
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -1270,97 +1271,111 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.threat_percentage_point = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
-    self.threat_percentage_point:SetPosition('TOPLEFT', self.threat_percentage_enabled, 'BOTTOMLEFT', 0, -12);
-    self.threat_percentage_point:SetSize(120, 20);
-    self.threat_percentage_point:SetList(O.Lists.frame_points_localized);
-    self.threat_percentage_point:SetValue(O.db.threat_percentage_point);
-    self.threat_percentage_point:SetLabel(L['POSITION']);
-    self.threat_percentage_point:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_POINT_TOOLTIP']);
-    self.threat_percentage_point:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_POINT_TOOLTIP'], self.Tabs[4]);
-    self.threat_percentage_point.OnValueChangedCallback = function(_, value)
-        O.db.threat_percentage_point = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.threat_percentage_relative_point = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
-    self.threat_percentage_relative_point:SetPosition('LEFT', self.threat_percentage_point, 'RIGHT', 12, 0);
-    self.threat_percentage_relative_point:SetSize(120, 20);
-    self.threat_percentage_relative_point:SetList(O.Lists.frame_points_localized);
-    self.threat_percentage_relative_point:SetValue(O.db.threat_percentage_relative_point);
-    self.threat_percentage_relative_point:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_RELATIVE_POINT_TOOLTIP']);
-    self.threat_percentage_relative_point:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_RELATIVE_POINT_TOOLTIP'], self.Tabs[4]);
-    self.threat_percentage_relative_point.OnValueChangedCallback = function(_, value)
-        O.db.threat_percentage_relative_point = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.threat_percentage_offset_x = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
-    self.threat_percentage_offset_x:SetPosition('LEFT', self.threat_percentage_relative_point, 'RIGHT', 8, 0);
-    self.threat_percentage_offset_x:SetSize(120, 18);
-    self.threat_percentage_offset_x:SetValues(O.db.threat_percentage_offset_x, -50, 50, 1);
-    self.threat_percentage_offset_x:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_OFFSET_X_TOOLTIP']);
-    self.threat_percentage_offset_x:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_OFFSET_X_TOOLTIP'], self.Tabs[4]);
-    self.threat_percentage_offset_x.OnValueChangedCallback = function(_, value)
-        O.db.threat_percentage_offset_x = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.threat_percentage_offset_y = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
-    self.threat_percentage_offset_y:SetPosition('LEFT', self.threat_percentage_offset_x, 'RIGHT', 12, 0);
-    self.threat_percentage_offset_y:SetSize(120, 18);
-    self.threat_percentage_offset_y:SetValues(O.db.threat_percentage_offset_y, -50, 50, 1);
-    self.threat_percentage_offset_y:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_OFFSET_Y_TOOLTIP']);
-    self.threat_percentage_offset_y:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_OFFSET_Y_TOOLTIP'], self.Tabs[4]);
-    self.threat_percentage_offset_y.OnValueChangedCallback = function(_, value)
-        O.db.threat_percentage_offset_y = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
     self.threat_percentage_font_value = E.CreateDropdown('font', self.TabsFrames['ThreatTab'].Content);
-    self.threat_percentage_font_value:SetPosition('TOPLEFT', self.threat_percentage_point, 'BOTTOMLEFT', 0, -16);
     self.threat_percentage_font_value:SetSize(160, 20);
     self.threat_percentage_font_value:SetList(LSM:HashTable('font'));
     self.threat_percentage_font_value:SetValue(O.db.threat_percentage_font_value);
     self.threat_percentage_font_value:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_FONT_VALUE_TOOLTIP']);
-    self.threat_percentage_font_value:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_VALUE_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_font_value.OnValueChangedCallback = function(_, value)
         O.db.threat_percentage_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.threat_percentage_font_size = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
-    self.threat_percentage_font_size:SetPosition('LEFT', self.threat_percentage_font_value, 'RIGHT', 12, 0);
     self.threat_percentage_font_size:SetValues(O.db.threat_percentage_font_size, 3, 28, 1);
     self.threat_percentage_font_size:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_FONT_SIZE_TOOLTIP']);
-    self.threat_percentage_font_size:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_SIZE_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_font_size.OnValueChangedCallback = function(_, value)
         O.db.threat_percentage_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.threat_percentage_font_flag = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
-    self.threat_percentage_font_flag:SetPosition('LEFT', self.threat_percentage_font_size, 'RIGHT', 12, 0);
     self.threat_percentage_font_flag:SetSize(160, 20);
     self.threat_percentage_font_flag:SetList(O.Lists.font_flags_localized);
     self.threat_percentage_font_flag:SetValue(O.db.threat_percentage_font_flag);
     self.threat_percentage_font_flag:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_FONT_FLAG_TOOLTIP']);
-    self.threat_percentage_font_flag:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_FLAG_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_font_flag.OnValueChangedCallback = function(_, value)
         O.db.threat_percentage_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.threat_percentage_font_shadow = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
-    self.threat_percentage_font_shadow:SetPosition('LEFT', self.threat_percentage_font_flag, 'RIGHT', 12, 0);
     self.threat_percentage_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.threat_percentage_font_shadow:SetChecked(O.db.threat_percentage_font_shadow);
     self.threat_percentage_font_shadow:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_FONT_SHADOW_TOOLTIP']);
-    self.threat_percentage_font_shadow:AddToSearch(button, L['OPTIONS_THREAT_PERCENTAGE_FONT_SHADOW_TOOLTIP'], self.Tabs[4]);
     self.threat_percentage_font_shadow.Callback = function(self)
         O.db.threat_percentage_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
+
+    self.ThreatTextFontOptions = E.CreatePopOptions(self.TabsFrames['ThreatTab'].Content);
+    self.ThreatTextFontOptions:SetH(60);
+    self.ThreatTextFontOptions:Add(self.threat_percentage_font_value):SetPosition('TOPLEFT', self.ThreatTextFontOptions, 'TOPLEFT', 8, -20);
+    self.ThreatTextFontOptions:Add(self.threat_percentage_font_size):SetPosition('LEFT', self.threat_percentage_font_value, 'RIGHT', 12, 0);
+    self.ThreatTextFontOptions:Add(self.threat_percentage_font_flag):SetPosition('LEFT', self.threat_percentage_font_size, 'RIGHT', 12, 0);
+    self.ThreatTextFontOptions:Add(self.threat_percentage_font_shadow):SetPosition('LEFT', self.threat_percentage_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowThreatTextFontOptionsButton = E.CreateButton(self.TabsFrames['ThreatTab'].Content);
+    self.ShowThreatTextFontOptionsButton:SetPosition('TOPLEFT', self.threat_percentage_enabled, 'BOTTOMLEFT', 0, -8);
+    self.ShowThreatTextFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowThreatTextFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowThreatTextFontOptionsButton:SetScript('OnClick', function()
+        self.ThreatTextFontOptions:Show();
+    end);
+
+    self.threat_percentage_point = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_point:SetSize(120, 20);
+    self.threat_percentage_point:SetList(O.Lists.frame_points_localized);
+    self.threat_percentage_point:SetValue(O.db.threat_percentage_point);
+    self.threat_percentage_point:SetLabel(L['POSITION']);
+    self.threat_percentage_point:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_POINT_TOOLTIP']);
+    self.threat_percentage_point.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.threat_percentage_relative_point = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_relative_point:SetSize(120, 20);
+    self.threat_percentage_relative_point:SetList(O.Lists.frame_points_localized);
+    self.threat_percentage_relative_point:SetValue(O.db.threat_percentage_relative_point);
+    self.threat_percentage_relative_point:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_RELATIVE_POINT_TOOLTIP']);
+    self.threat_percentage_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_relative_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.threat_percentage_offset_x = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_offset_x:SetSize(120, 18);
+    self.threat_percentage_offset_x:SetValues(O.db.threat_percentage_offset_x, -50, 50, 1);
+    self.threat_percentage_offset_x:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_OFFSET_X_TOOLTIP']);
+    self.threat_percentage_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.threat_percentage_offset_y = E.CreateSlider(self.TabsFrames['ThreatTab'].Content);
+    self.threat_percentage_offset_y:SetSize(120, 18);
+    self.threat_percentage_offset_y:SetValues(O.db.threat_percentage_offset_y, -50, 50, 1);
+    self.threat_percentage_offset_y:SetTooltip(L['OPTIONS_THREAT_PERCENTAGE_OFFSET_Y_TOOLTIP']);
+    self.threat_percentage_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.threat_percentage_offset_y = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.ThreatTextPositionOptions = E.CreatePopOptions(self.TabsFrames['ThreatTab'].Content);
+    self.ThreatTextPositionOptions:SetH(60);
+    self.ThreatTextPositionOptions:Add(self.threat_percentage_point):SetPosition('TOPLEFT', self.ThreatTextPositionOptions, 'TOPLEFT', 12, -20);
+    self.ThreatTextPositionOptions:Add(self.threat_percentage_relative_point):SetPosition('LEFT', self.threat_percentage_point, 'RIGHT', 12, 0);
+    self.ThreatTextPositionOptions:Add(self.threat_percentage_offset_x):SetPosition('LEFT', self.threat_percentage_relative_point, 'RIGHT', 8, 0);
+    self.ThreatTextPositionOptions:Add(self.threat_percentage_offset_y):SetPosition('LEFT', self.threat_percentage_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowThreatTextPositionOptionsButton = E.CreateButton(self.TabsFrames['ThreatTab'].Content);
+    self.ShowThreatTextPositionOptionsButton:SetPosition('LEFT', self.ShowThreatTextFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowThreatTextPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowThreatTextPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowThreatTextPositionOptionsButton:SetScript('OnClick', function()
+        self.ThreatTextPositionOptions:Show();
+    end);
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------

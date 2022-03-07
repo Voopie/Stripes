@@ -1567,7 +1567,7 @@ panel.Load = function(self)
     self.auras_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_cooldown_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.auras_cooldown_color:SetPosition('LEFT', self.auras_countdown_text, 'RIGHT', 12, 0);
+    self.auras_cooldown_color:SetPosition('TOPLEFT', self.auras_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.auras_cooldown_color:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_COLOR_TOOLTIP']);
     self.auras_cooldown_color:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_COLOR_TOOLTIP'], self.Tabs[1]);
     self.auras_cooldown_color:SetValue(unpack(O.db.auras_cooldown_color));
@@ -1581,77 +1581,79 @@ panel.Load = function(self)
     end
 
     self.auras_cooldown_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
-    self.auras_cooldown_font_value:SetPosition('TOPLEFT', self.auras_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.auras_cooldown_font_value:SetSize(160, 20);
     self.auras_cooldown_font_value:SetList(LSM:HashTable('font'));
     self.auras_cooldown_font_value:SetValue(O.db.auras_cooldown_font_value);
     self.auras_cooldown_font_value:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_FONT_VALUE']);
-    self.auras_cooldown_font_value:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_FONT_VALUE'], self.Tabs[1]);
     self.auras_cooldown_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_cooldown_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.auras_cooldown_font_size:SetPosition('LEFT', self.auras_cooldown_font_value, 'RIGHT', 12, 0);
     self.auras_cooldown_font_size:SetValues(O.db.auras_cooldown_font_size, 3, 28, 1);
     self.auras_cooldown_font_size:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_FONT_SIZE']);
-    self.auras_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_FONT_SIZE'], self.Tabs[1]);
     self.auras_cooldown_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_cooldown_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.auras_cooldown_font_flag:SetPosition('LEFT', self.auras_cooldown_font_size, 'RIGHT', 12, 0);
     self.auras_cooldown_font_flag:SetSize(160, 20);
     self.auras_cooldown_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_cooldown_font_flag:SetValue(O.db.auras_cooldown_font_flag);
     self.auras_cooldown_font_flag:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_FONT_FLAG']);
-    self.auras_cooldown_font_flag:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_FONT_FLAG'], self.Tabs[1]);
     self.auras_cooldown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_cooldown_font_shadow:SetPosition('LEFT', self.auras_cooldown_font_flag, 'RIGHT', 12, 0);
     self.auras_cooldown_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_cooldown_font_shadow:SetChecked(O.db.auras_cooldown_font_shadow);
     self.auras_cooldown_font_shadow:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_FONT_SHADOW']);
-    self.auras_cooldown_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_FONT_SHADOW'], self.Tabs[1]);
     self.auras_cooldown_font_shadow.Callback = function(self)
         O.db.auras_cooldown_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AurasCooldownFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.AurasCooldownFontOptions:SetH(60);
+    self.AurasCooldownFontOptions:Add(self.auras_cooldown_font_value):SetPosition('TOPLEFT', self.AurasCooldownFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasCooldownFontOptions:Add(self.auras_cooldown_font_size):SetPosition('LEFT', self.auras_cooldown_font_value, 'RIGHT', 12, 0);
+    self.AurasCooldownFontOptions:Add(self.auras_cooldown_font_flag):SetPosition('LEFT', self.auras_cooldown_font_size, 'RIGHT', 12, 0);
+    self.AurasCooldownFontOptions:Add(self.auras_cooldown_font_shadow):SetPosition('LEFT', self.auras_cooldown_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasCooldownFontOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.ShowAurasCooldownFontOptionsButton:SetPosition('LEFT', self.auras_cooldown_color, 'RIGHT', 12, 0);
+    self.ShowAurasCooldownFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasCooldownFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasCooldownFontOptionsButton:SetScript('OnClick', function()
+        self.AurasCooldownFontOptions:Show();
+    end);
+
     self.auras_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.auras_cooldown_point:SetPosition('TOPLEFT', self.auras_cooldown_font_value, 'BOTTOMLEFT', 0, -12);
     self.auras_cooldown_point:SetSize(120, 20);
     self.auras_cooldown_point:SetList(O.Lists.frame_points_localized);
     self.auras_cooldown_point:SetValue(O.db.auras_cooldown_point);
     self.auras_cooldown_point:SetLabel(L['POSITION']);
     self.auras_cooldown_point:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_POINT_TOOLTIP']);
-    self.auras_cooldown_point:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_POINT_TOOLTIP'], self.Tabs[1]);
     self.auras_cooldown_point.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.auras_cooldown_relative_point:SetPosition('LEFT', self.auras_cooldown_point, 'RIGHT', 12, 0);
     self.auras_cooldown_relative_point:SetSize(120, 20);
     self.auras_cooldown_relative_point:SetList(O.Lists.frame_points_localized);
     self.auras_cooldown_relative_point:SetValue(O.db.auras_cooldown_relative_point);
     self.auras_cooldown_relative_point:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_RELATIVE_POINT_TOOLTIP']);
-    self.auras_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[1]);
     self.auras_cooldown_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_cooldown_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_cooldown_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.auras_cooldown_offset_x:SetPosition('LEFT', self.auras_cooldown_relative_point, 'RIGHT', 8, 0);
     self.auras_cooldown_offset_x:SetSize(120, 18);
     self.auras_cooldown_offset_x:SetValues(O.db.auras_cooldown_offset_x, -50, 50, 1);
     self.auras_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_OFFSET_X_TOOLTIP']);
@@ -1661,7 +1663,6 @@ panel.Load = function(self)
     end
 
     self.auras_cooldown_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.auras_cooldown_offset_y:SetPosition('LEFT', self.auras_cooldown_offset_x, 'RIGHT', 12, 0);
     self.auras_cooldown_offset_y:SetSize(120, 18);
     self.auras_cooldown_offset_y:SetValues(O.db.auras_cooldown_offset_y, -50, 50, 1);
     self.auras_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_COOLDOWN_OFFSET_Y_TOOLTIP']);
@@ -1670,16 +1671,31 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.AurasCooldownPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.AurasCooldownPositionOptions:SetH(60);
+    self.AurasCooldownPositionOptions:Add(self.auras_cooldown_point):SetPosition('TOPLEFT', self.AurasCooldownPositionOptions, 'TOPLEFT', 12, -20);
+    self.AurasCooldownPositionOptions:Add(self.auras_cooldown_relative_point):SetPosition('LEFT', self.auras_cooldown_point, 'RIGHT', 12, 0);
+    self.AurasCooldownPositionOptions:Add(self.auras_cooldown_offset_x):SetPosition('LEFT', self.auras_cooldown_relative_point, 'RIGHT', 8, 0)
+    self.AurasCooldownPositionOptions:Add(self.auras_cooldown_offset_y):SetPosition('LEFT', self.auras_cooldown_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowAurasCooldownPositionOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.ShowAurasCooldownPositionOptionsButton:SetPosition('LEFT', self.ShowAurasCooldownFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAurasCooldownPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAurasCooldownPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasCooldownPositionOptionsButton:SetScript('OnClick', function()
+        self.AurasCooldownPositionOptions:Show();
+    end);
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_cooldown_point, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_cooldown_color, 'BOTTOMLEFT', 0, 0);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_count_text = E.CreateFontString(self.TabsFrames['CommonTab'].Content);
-    self.auras_count_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -2);
+    self.auras_count_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.auras_count_text:SetText(L['OPTIONS_AURAS_COUNT_TEXT']);
 
     self.auras_count_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
-    self.auras_count_color:SetPosition('LEFT', self.auras_count_text, 'RIGHT', 12, 0);
+    self.auras_count_color:SetPosition('TOPLEFT', self.auras_count_text, 'BOTTOMLEFT', 0, -4);
     self.auras_count_color:SetTooltip(L['OPTIONS_AURAS_COUNT_COLOR_TOOLTIP']);
     self.auras_count_color:AddToSearch(button, L['OPTIONS_AURAS_COUNT_COLOR_TOOLTIP'], self.Tabs[1]);
     self.auras_count_color:SetValue(unpack(O.db.auras_count_color));
@@ -1693,77 +1709,79 @@ panel.Load = function(self)
     end
 
     self.auras_count_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
-    self.auras_count_font_value:SetPosition('TOPLEFT', self.auras_count_text, 'BOTTOMLEFT', 0, -4);
     self.auras_count_font_value:SetSize(160, 20);
     self.auras_count_font_value:SetList(LSM:HashTable('font'));
     self.auras_count_font_value:SetValue(O.db.auras_count_font_value);
     self.auras_count_font_value:SetTooltip(L['OPTIONS_AURAS_COUNT_FONT_VALUE']);
-    self.auras_count_font_value:AddToSearch(button, L['OPTIONS_AURAS_COUNT_FONT_VALUE'], self.Tabs[1]);
     self.auras_count_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_count_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_count_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.auras_count_font_size:SetPosition('LEFT', self.auras_count_font_value, 'RIGHT', 12, 0);
     self.auras_count_font_size:SetValues(O.db.auras_count_font_size, 3, 28, 1);
     self.auras_count_font_size:SetTooltip(L['OPTIONS_AURAS_COUNT_FONT_SIZE']);
-    self.auras_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_COUNT_FONT_SIZE'], self.Tabs[1]);
     self.auras_count_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_count_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_count_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.auras_count_font_flag:SetPosition('LEFT', self.auras_count_font_size, 'RIGHT', 12, 0);
     self.auras_count_font_flag:SetSize(160, 20);
     self.auras_count_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_count_font_flag:SetValue(O.db.auras_count_font_flag);
     self.auras_count_font_flag:SetTooltip(L['OPTIONS_AURAS_COUNT_FONT_FLAG']);
-    self.auras_count_font_flag:AddToSearch(button, L['OPTIONS_AURAS_COUNT_FONT_FLAG'], self.Tabs[1]);
     self.auras_count_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_count_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_count_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.auras_count_font_shadow:SetPosition('LEFT', self.auras_count_font_flag, 'RIGHT', 12, 0);
     self.auras_count_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_count_font_shadow:SetChecked(O.db.auras_count_font_shadow);
     self.auras_count_font_shadow:SetTooltip(L['OPTIONS_AURAS_COUNT_FONT_SHADOW']);
-    self.auras_count_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_COUNT_FONT_SHADOW'], self.Tabs[1]);
     self.auras_count_font_shadow.Callback = function(self)
         O.db.auras_count_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AurasCountFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.AurasCountFontOptions:SetH(60);
+    self.AurasCountFontOptions:Add(self.auras_count_font_value):SetPosition('TOPLEFT', self.AurasCountFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasCountFontOptions:Add(self.auras_count_font_size):SetPosition('LEFT', self.auras_count_font_value, 'RIGHT', 12, 0);
+    self.AurasCountFontOptions:Add(self.auras_count_font_flag):SetPosition('LEFT', self.auras_count_font_size, 'RIGHT', 12, 0);
+    self.AurasCountFontOptions:Add(self.auras_count_font_shadow):SetPosition('LEFT', self.auras_count_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasCountFontOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.ShowAurasCountFontOptionsButton:SetPosition('LEFT', self.auras_count_color, 'RIGHT', 12, 0);
+    self.ShowAurasCountFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasCountFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasCountFontOptionsButton:SetScript('OnClick', function()
+        self.AurasCountFontOptions:Show();
+    end);
+
     self.auras_count_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.auras_count_point:SetPosition('TOPLEFT', self.auras_count_font_value, 'BOTTOMLEFT', 0, -12);
     self.auras_count_point:SetSize(120, 20);
     self.auras_count_point:SetList(O.Lists.frame_points_localized);
     self.auras_count_point:SetValue(O.db.auras_count_point);
     self.auras_count_point:SetLabel(L['POSITION']);
     self.auras_count_point:SetTooltip(L['OPTIONS_AURAS_COUNT_POINT_TOOLTIP']);
-    self.auras_count_point:AddToSearch(button, L['OPTIONS_AURAS_COUNT_POINT_TOOLTIP'], self.Tabs[1]);
     self.auras_count_point.OnValueChangedCallback = function(_, value)
         O.db.auras_count_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.auras_count_relative_point:SetPosition('LEFT', self.auras_count_point, 'RIGHT', 12, 0);
     self.auras_count_relative_point:SetSize(120, 20);
     self.auras_count_relative_point:SetList(O.Lists.frame_points_localized);
     self.auras_count_relative_point:SetValue(O.db.auras_count_relative_point);
     self.auras_count_relative_point:SetTooltip(L['OPTIONS_AURAS_COUNT_RELATIVE_POINT_TOOLTIP']);
-    self.auras_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[1]);
     self.auras_count_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_count_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_count_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.auras_count_offset_x:SetPosition('LEFT', self.auras_count_relative_point, 'RIGHT', 8, 0);
     self.auras_count_offset_x:SetSize(120, 18);
     self.auras_count_offset_x:SetValues(O.db.auras_count_offset_x, -50, 50, 1);
     self.auras_count_offset_x:SetTooltip(L['OPTIONS_AURAS_COUNT_OFFSET_X_TOOLTIP']);
@@ -1773,7 +1791,6 @@ panel.Load = function(self)
     end
 
     self.auras_count_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.auras_count_offset_y:SetPosition('LEFT', self.auras_count_offset_x, 'RIGHT', 12, 0);
     self.auras_count_offset_y:SetSize(120, 18);
     self.auras_count_offset_y:SetValues(O.db.auras_count_offset_y, -50, 50, 1);
     self.auras_count_offset_y:SetTooltip(L['OPTIONS_AURAS_COUNT_OFFSET_Y_TOOLTIP']);
@@ -1781,6 +1798,25 @@ panel.Load = function(self)
         O.db.auras_count_offset_y = tonumber(value);
         Stripes:UpdateAll();
     end
+
+    self.AurasCountPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.AurasCountPositionOptions:SetH(60);
+    self.AurasCountPositionOptions:Add(self.auras_count_point):SetPosition('TOPLEFT', self.AurasCountPositionOptions, 'TOPLEFT', 12, -20);
+    self.AurasCountPositionOptions:Add(self.auras_count_relative_point):SetPosition('LEFT', self.auras_count_point, 'RIGHT', 12, 0);
+    self.AurasCountPositionOptions:Add(self.auras_count_offset_x):SetPosition('LEFT', self.auras_count_relative_point, 'RIGHT', 8, 0)
+    self.AurasCountPositionOptions:Add(self.auras_count_offset_y):SetPosition('LEFT', self.auras_count_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowAurasCountPositionOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.ShowAurasCountPositionOptionsButton:SetPosition('LEFT', self.ShowAurasCountFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAurasCountPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAurasCountPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasCountPositionOptionsButton:SetScript('OnClick', function()
+        self.AurasCountPositionOptions:Show();
+    end);
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_count_color, 'BOTTOMLEFT', 0, 0);
+    Delimiter:SetW(self:GetWidth());
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -1982,11 +2018,11 @@ panel.Load = function(self)
     end
 
     self.auras_spellsteal_countdown_text = E.CreateFontString(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_countdown_text:SetPosition('TOPLEFT', self.auras_spellsteal_countdown_enabled, 'BOTTOMLEFT', 0, -16);
+    self.auras_spellsteal_countdown_text:SetPosition('TOPLEFT', self.auras_spellsteal_countdown_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_spellsteal_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_spellsteal_cooldown_color = E.CreateColorPicker(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_cooldown_color:SetPosition('LEFT', self.auras_spellsteal_countdown_text, 'RIGHT', 12, 0);
+    self.auras_spellsteal_cooldown_color:SetPosition('TOPLEFT', self.auras_spellsteal_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.auras_spellsteal_cooldown_color:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_COLOR_TOOLTIP']);
     self.auras_spellsteal_cooldown_color:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_COLOR_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_color:SetValue(unpack(O.db.auras_spellsteal_cooldown_color));
@@ -2000,77 +2036,79 @@ panel.Load = function(self)
     end
 
     self.auras_spellsteal_cooldown_font_value = E.CreateDropdown('font', self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_cooldown_font_value:SetPosition('TOPLEFT', self.auras_spellsteal_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.auras_spellsteal_cooldown_font_value:SetSize(160, 20);
     self.auras_spellsteal_cooldown_font_value:SetList(LSM:HashTable('font'));
     self.auras_spellsteal_cooldown_font_value:SetValue(O.db.auras_spellsteal_cooldown_font_value);
     self.auras_spellsteal_cooldown_font_value:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_VALUE']);
-    self.auras_spellsteal_cooldown_font_value:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_VALUE'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_font_size = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_cooldown_font_size:SetPosition('LEFT', self.auras_spellsteal_cooldown_font_value, 'RIGHT', 12, 0);
     self.auras_spellsteal_cooldown_font_size:SetValues(O.db.auras_spellsteal_cooldown_font_size, 3, 28, 1);
     self.auras_spellsteal_cooldown_font_size:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_SIZE']);
-    self.auras_spellsteal_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_SIZE'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_font_flag = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_cooldown_font_flag:SetPosition('LEFT', self.auras_spellsteal_cooldown_font_size, 'RIGHT', 12, 0);
     self.auras_spellsteal_cooldown_font_flag:SetSize(160, 20);
     self.auras_spellsteal_cooldown_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_spellsteal_cooldown_font_flag:SetValue(O.db.auras_spellsteal_cooldown_font_flag);
     self.auras_spellsteal_cooldown_font_flag:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_FLAG']);
-    self.auras_spellsteal_cooldown_font_flag:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_FLAG'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_cooldown_font_shadow:SetPosition('LEFT', self.auras_spellsteal_cooldown_font_flag, 'RIGHT', 12, 0);
     self.auras_spellsteal_cooldown_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_spellsteal_cooldown_font_shadow:SetChecked(O.db.auras_spellsteal_cooldown_font_shadow);
     self.auras_spellsteal_cooldown_font_shadow:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_SHADOW']);
-    self.auras_spellsteal_cooldown_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_FONT_SHADOW'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_font_shadow.Callback = function(self)
         O.db.auras_spellsteal_cooldown_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AurasSpellstealCooldownFontOptions = E.CreatePopOptions(self.TabsFrames['SpellstealTab'].Content);
+    self.AurasSpellstealCooldownFontOptions:SetH(60);
+    self.AurasSpellstealCooldownFontOptions:Add(self.auras_spellsteal_cooldown_font_value):SetPosition('TOPLEFT', self.AurasSpellstealCooldownFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasSpellstealCooldownFontOptions:Add(self.auras_spellsteal_cooldown_font_size):SetPosition('LEFT', self.auras_spellsteal_cooldown_font_value, 'RIGHT', 12, 0);
+    self.AurasSpellstealCooldownFontOptions:Add(self.auras_spellsteal_cooldown_font_flag):SetPosition('LEFT', self.auras_spellsteal_cooldown_font_size, 'RIGHT', 12, 0);
+    self.AurasSpellstealCooldownFontOptions:Add(self.auras_spellsteal_cooldown_font_shadow):SetPosition('LEFT', self.auras_spellsteal_cooldown_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasSpellstealCooldownFontOptionsButton = E.CreateButton(self.TabsFrames['SpellstealTab'].Content);
+    self.ShowAurasSpellstealCooldownFontOptionsButton:SetPosition('LEFT', self.auras_spellsteal_cooldown_color, 'RIGHT', 12, 0);
+    self.ShowAurasSpellstealCooldownFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasSpellstealCooldownFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasSpellstealCooldownFontOptionsButton:SetScript('OnClick', function()
+        self.AurasSpellstealCooldownFontOptions:Show();
+    end);
+
     self.auras_spellsteal_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_cooldown_point:SetPosition('TOPLEFT', self.auras_spellsteal_cooldown_font_value, 'BOTTOMLEFT', 0, -12);
     self.auras_spellsteal_cooldown_point:SetSize(120, 20);
     self.auras_spellsteal_cooldown_point:SetList(O.Lists.frame_points_localized);
     self.auras_spellsteal_cooldown_point:SetValue(O.db.auras_spellsteal_cooldown_point);
     self.auras_spellsteal_cooldown_point:SetLabel(L['POSITION']);
     self.auras_spellsteal_cooldown_point:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_POINT_TOOLTIP']);
-    self.auras_spellsteal_cooldown_point:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_POINT_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_point.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_cooldown_relative_point:SetPosition('LEFT', self.auras_spellsteal_cooldown_point, 'RIGHT', 12, 0);
     self.auras_spellsteal_cooldown_relative_point:SetSize(120, 20);
     self.auras_spellsteal_cooldown_relative_point:SetList(O.Lists.frame_points_localized);
     self.auras_spellsteal_cooldown_relative_point:SetValue(O.db.auras_spellsteal_cooldown_relative_point);
     self.auras_spellsteal_cooldown_relative_point:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_RELATIVE_POINT_TOOLTIP']);
-    self.auras_spellsteal_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_cooldown_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_cooldown_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_cooldown_offset_x = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_cooldown_offset_x:SetPosition('LEFT', self.auras_spellsteal_cooldown_relative_point, 'RIGHT', 8, 0);
     self.auras_spellsteal_cooldown_offset_x:SetSize(120, 18);
     self.auras_spellsteal_cooldown_offset_x:SetValues(O.db.auras_spellsteal_cooldown_offset_x, -50, 50, 1);
     self.auras_spellsteal_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_OFFSET_X_TOOLTIP']);
@@ -2080,7 +2118,6 @@ panel.Load = function(self)
     end
 
     self.auras_spellsteal_cooldown_offset_y = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_cooldown_offset_y:SetPosition('LEFT', self.auras_spellsteal_cooldown_offset_x, 'RIGHT', 12, 0);
     self.auras_spellsteal_cooldown_offset_y:SetSize(120, 18);
     self.auras_spellsteal_cooldown_offset_y:SetValues(O.db.auras_spellsteal_cooldown_offset_y, -50, 50, 1);
     self.auras_spellsteal_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COOLDOWN_OFFSET_Y_TOOLTIP']);
@@ -2089,16 +2126,31 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.AurasSpellstealCooldownPositionOptions = E.CreatePopOptions(self.TabsFrames['SpellstealTab'].Content);
+    self.AurasSpellstealCooldownPositionOptions:SetH(60);
+    self.AurasSpellstealCooldownPositionOptions:Add(self.auras_spellsteal_cooldown_point):SetPosition('TOPLEFT', self.AurasSpellstealCooldownPositionOptions, 'TOPLEFT', 12, -20);
+    self.AurasSpellstealCooldownPositionOptions:Add(self.auras_spellsteal_cooldown_relative_point):SetPosition('LEFT', self.auras_spellsteal_cooldown_point, 'RIGHT', 12, 0);
+    self.AurasSpellstealCooldownPositionOptions:Add(self.auras_spellsteal_cooldown_offset_x):SetPosition('LEFT', self.auras_spellsteal_cooldown_relative_point, 'RIGHT', 8, 0)
+    self.AurasSpellstealCooldownPositionOptions:Add(self.auras_spellsteal_cooldown_offset_y):SetPosition('LEFT', self.auras_spellsteal_cooldown_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowAurasSpellstealCooldownPositionOptionsButton = E.CreateButton(self.TabsFrames['SpellstealTab'].Content);
+    self.ShowAurasSpellstealCooldownPositionOptionsButton:SetPosition('LEFT', self.ShowAurasSpellstealCooldownFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAurasSpellstealCooldownPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAurasSpellstealCooldownPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasSpellstealCooldownPositionOptionsButton:SetScript('OnClick', function()
+        self.AurasSpellstealCooldownPositionOptions:Show();
+    end);
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellstealTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_cooldown_point, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_cooldown_color, 'BOTTOMLEFT', 0, 0);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_spellsteal_count_text = E.CreateFontString(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -2);
+    self.auras_spellsteal_count_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.auras_spellsteal_count_text:SetText(L['OPTIONS_AURAS_COUNT_TEXT']);
 
     self.auras_spellsteal_count_color = E.CreateColorPicker(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_color:SetPosition('LEFT', self.auras_spellsteal_count_text, 'RIGHT', 12, 0);
+    self.auras_spellsteal_count_color:SetPosition('TOPLEFT', self.auras_spellsteal_count_text, 'BOTTOMLEFT', 0, -4);
     self.auras_spellsteal_count_color:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_COLOR_TOOLTIP']);
     self.auras_spellsteal_count_color:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_COLOR_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_count_color:SetValue(unpack(O.db.auras_spellsteal_count_color));
@@ -2112,77 +2164,79 @@ panel.Load = function(self)
     end
 
     self.auras_spellsteal_count_font_value = E.CreateDropdown('font', self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_font_value:SetPosition('TOPLEFT', self.auras_spellsteal_count_text, 'BOTTOMLEFT', 0, -4);
     self.auras_spellsteal_count_font_value:SetSize(160, 20);
     self.auras_spellsteal_count_font_value:SetList(LSM:HashTable('font'));
     self.auras_spellsteal_count_font_value:SetValue(O.db.auras_spellsteal_count_font_value);
     self.auras_spellsteal_count_font_value:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_VALUE']);
-    self.auras_spellsteal_count_font_value:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_VALUE'], self.Tabs[2]);
     self.auras_spellsteal_count_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_font_size = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_font_size:SetPosition('LEFT', self.auras_spellsteal_count_font_value, 'RIGHT', 12, 0);
     self.auras_spellsteal_count_font_size:SetValues(O.db.auras_spellsteal_count_font_size, 3, 28, 1);
     self.auras_spellsteal_count_font_size:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_SIZE']);
-    self.auras_spellsteal_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_SIZE'], self.Tabs[2]);
     self.auras_spellsteal_count_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_font_flag = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_font_flag:SetPosition('LEFT', self.auras_spellsteal_count_font_size, 'RIGHT', 12, 0);
     self.auras_spellsteal_count_font_flag:SetSize(160, 20);
     self.auras_spellsteal_count_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_spellsteal_count_font_flag:SetValue(O.db.auras_spellsteal_count_font_flag);
     self.auras_spellsteal_count_font_flag:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_FLAG']);
-    self.auras_spellsteal_count_font_flag:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_FLAG'], self.Tabs[2]);
     self.auras_spellsteal_count_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_font_shadow:SetPosition('LEFT', self.auras_spellsteal_count_font_flag, 'RIGHT', 12, 0);
     self.auras_spellsteal_count_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_spellsteal_count_font_shadow:SetChecked(O.db.auras_spellsteal_count_font_shadow);
     self.auras_spellsteal_count_font_shadow:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_SHADOW']);
-    self.auras_spellsteal_count_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_FONT_SHADOW'], self.Tabs[2]);
     self.auras_spellsteal_count_font_shadow.Callback = function(self)
         O.db.auras_spellsteal_count_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AurasSpellstealCountFontOptions = E.CreatePopOptions(self.TabsFrames['SpellstealTab'].Content);
+    self.AurasSpellstealCountFontOptions:SetH(60);
+    self.AurasSpellstealCountFontOptions:Add(self.auras_spellsteal_count_font_value):SetPosition('TOPLEFT', self.AurasSpellstealCountFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasSpellstealCountFontOptions:Add(self.auras_spellsteal_count_font_size):SetPosition('LEFT', self.auras_spellsteal_count_font_value, 'RIGHT', 12, 0);
+    self.AurasSpellstealCountFontOptions:Add(self.auras_spellsteal_count_font_flag):SetPosition('LEFT', self.auras_spellsteal_count_font_size, 'RIGHT', 12, 0);
+    self.AurasSpellstealCountFontOptions:Add(self.auras_spellsteal_count_font_shadow):SetPosition('LEFT', self.auras_spellsteal_count_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasSpellstealCountFontOptionsButton = E.CreateButton(self.TabsFrames['SpellstealTab'].Content);
+    self.ShowAurasSpellstealCountFontOptionsButton:SetPosition('LEFT', self.auras_spellsteal_count_color, 'RIGHT', 12, 0);
+    self.ShowAurasSpellstealCountFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasSpellstealCountFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasSpellstealCountFontOptionsButton:SetScript('OnClick', function()
+        self.AurasSpellstealCountFontOptions:Show();
+    end);
+
     self.auras_spellsteal_count_point = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_point:SetPosition('TOPLEFT', self.auras_spellsteal_count_font_value, 'BOTTOMLEFT', 0, -12);
     self.auras_spellsteal_count_point:SetSize(120, 20);
     self.auras_spellsteal_count_point:SetList(O.Lists.frame_points_localized);
     self.auras_spellsteal_count_point:SetValue(O.db.auras_spellsteal_count_point);
     self.auras_spellsteal_count_point:SetLabel(L['POSITION']);
     self.auras_spellsteal_count_point:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_POINT_TOOLTIP']);
-    self.auras_spellsteal_count_point:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_POINT_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_count_point.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_relative_point:SetPosition('LEFT', self.auras_spellsteal_count_point, 'RIGHT', 12, 0);
     self.auras_spellsteal_count_relative_point:SetSize(120, 20);
     self.auras_spellsteal_count_relative_point:SetList(O.Lists.frame_points_localized);
     self.auras_spellsteal_count_relative_point:SetValue(O.db.auras_spellsteal_count_relative_point);
     self.auras_spellsteal_count_relative_point:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_RELATIVE_POINT_TOOLTIP']);
-    self.auras_spellsteal_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_SPELLSTEAL_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[2]);
     self.auras_spellsteal_count_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_spellsteal_count_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_spellsteal_count_offset_x = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_offset_x:SetPosition('LEFT', self.auras_spellsteal_count_relative_point, 'RIGHT', 8, 0);
     self.auras_spellsteal_count_offset_x:SetSize(120, 18);
     self.auras_spellsteal_count_offset_x:SetValues(O.db.auras_spellsteal_count_offset_x, -50, 50, 1);
     self.auras_spellsteal_count_offset_x:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_OFFSET_X_TOOLTIP']);
@@ -2192,7 +2246,6 @@ panel.Load = function(self)
     end
 
     self.auras_spellsteal_count_offset_y = E.CreateSlider(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_count_offset_y:SetPosition('LEFT', self.auras_spellsteal_count_offset_x, 'RIGHT', 12, 0);
     self.auras_spellsteal_count_offset_y:SetSize(120, 18);
     self.auras_spellsteal_count_offset_y:SetValues(O.db.auras_spellsteal_count_offset_y, -50, 50, 1);
     self.auras_spellsteal_count_offset_y:SetTooltip(L['OPTIONS_AURAS_SPELLSTEAL_COUNT_OFFSET_Y_TOOLTIP']);
@@ -2200,6 +2253,25 @@ panel.Load = function(self)
         O.db.auras_spellsteal_count_offset_y = tonumber(value);
         Stripes:UpdateAll();
     end
+
+    self.AurasSpellstealCountPositionOptions = E.CreatePopOptions(self.TabsFrames['SpellstealTab'].Content);
+    self.AurasSpellstealCountPositionOptions:SetH(60);
+    self.AurasSpellstealCountPositionOptions:Add(self.auras_spellsteal_count_point):SetPosition('TOPLEFT', self.AurasSpellstealCountPositionOptions, 'TOPLEFT', 12, -20);
+    self.AurasSpellstealCountPositionOptions:Add(self.auras_spellsteal_count_relative_point):SetPosition('LEFT', self.auras_spellsteal_count_point, 'RIGHT', 12, 0);
+    self.AurasSpellstealCountPositionOptions:Add(self.auras_spellsteal_count_offset_x):SetPosition('LEFT', self.auras_spellsteal_count_relative_point, 'RIGHT', 8, 0)
+    self.AurasSpellstealCountPositionOptions:Add(self.auras_spellsteal_count_offset_y):SetPosition('LEFT', self.auras_spellsteal_count_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowAurasSpellstealCountPositionOptionsButton = E.CreateButton(self.TabsFrames['SpellstealTab'].Content);
+    self.ShowAurasSpellstealCountPositionOptionsButton:SetPosition('LEFT', self.ShowAurasSpellstealCountFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAurasSpellstealCountPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAurasSpellstealCountPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasSpellstealCountPositionOptionsButton:SetScript('OnClick', function()
+        self.AurasSpellstealCountPositionOptions:Show();
+    end);
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['SpellstealTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_count_color, 'BOTTOMLEFT', 0, 0);
+    Delimiter:SetW(self:GetWidth());
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -2347,11 +2419,11 @@ panel.Load = function(self)
     end
 
     self.auras_mythicplus_countdown_text = E.CreateFontString(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_countdown_text:SetPosition('TOPLEFT', self.auras_mythicplus_countdown_enabled, 'BOTTOMLEFT', 0, -16);
+    self.auras_mythicplus_countdown_text:SetPosition('TOPLEFT', self.auras_mythicplus_countdown_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_mythicplus_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_mythicplus_cooldown_color = E.CreateColorPicker(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_cooldown_color:SetPosition('LEFT', self.auras_mythicplus_countdown_text, 'RIGHT', 12, 0);
+    self.auras_mythicplus_cooldown_color:SetPosition('TOPLEFT', self.auras_mythicplus_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.auras_mythicplus_cooldown_color:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_COLOR_TOOLTIP']);
     self.auras_mythicplus_cooldown_color:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_COLOR_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_color:SetValue(unpack(O.db.auras_mythicplus_cooldown_color));
@@ -2365,77 +2437,79 @@ panel.Load = function(self)
     end
 
     self.auras_mythicplus_cooldown_font_value = E.CreateDropdown('font', self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_cooldown_font_value:SetPosition('TOPLEFT', self.auras_mythicplus_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.auras_mythicplus_cooldown_font_value:SetSize(160, 20);
     self.auras_mythicplus_cooldown_font_value:SetList(LSM:HashTable('font'));
     self.auras_mythicplus_cooldown_font_value:SetValue(O.db.auras_mythicplus_cooldown_font_value);
     self.auras_mythicplus_cooldown_font_value:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_VALUE']);
-    self.auras_mythicplus_cooldown_font_value:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_VALUE'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_font_size = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_cooldown_font_size:SetPosition('LEFT', self.auras_mythicplus_cooldown_font_value, 'RIGHT', 12, 0);
     self.auras_mythicplus_cooldown_font_size:SetValues(O.db.auras_mythicplus_cooldown_font_size, 3, 28, 1);
     self.auras_mythicplus_cooldown_font_size:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_SIZE']);
-    self.auras_mythicplus_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_SIZE'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_font_flag = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_cooldown_font_flag:SetPosition('LEFT', self.auras_mythicplus_cooldown_font_size, 'RIGHT', 12, 0);
     self.auras_mythicplus_cooldown_font_flag:SetSize(160, 20);
     self.auras_mythicplus_cooldown_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_mythicplus_cooldown_font_flag:SetValue(O.db.auras_mythicplus_cooldown_font_flag);
     self.auras_mythicplus_cooldown_font_flag:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_FLAG']);
-    self.auras_mythicplus_cooldown_font_flag:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_FLAG'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_cooldown_font_shadow:SetPosition('LEFT', self.auras_mythicplus_cooldown_font_flag, 'RIGHT', 12, 0);
     self.auras_mythicplus_cooldown_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_mythicplus_cooldown_font_shadow:SetChecked(O.db.auras_mythicplus_cooldown_font_shadow);
     self.auras_mythicplus_cooldown_font_shadow:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_SHADOW']);
-    self.auras_mythicplus_cooldown_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_FONT_SHADOW'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_font_shadow.Callback = function(self)
         O.db.auras_mythicplus_cooldown_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AurasMythicPlusCooldownFontOptions = E.CreatePopOptions(self.TabsFrames['MythicPlusTab'].Content);
+    self.AurasMythicPlusCooldownFontOptions:SetH(60);
+    self.AurasMythicPlusCooldownFontOptions:Add(self.auras_mythicplus_cooldown_font_value):SetPosition('TOPLEFT', self.AurasMythicPlusCooldownFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasMythicPlusCooldownFontOptions:Add(self.auras_mythicplus_cooldown_font_size):SetPosition('LEFT', self.auras_mythicplus_cooldown_font_value, 'RIGHT', 12, 0);
+    self.AurasMythicPlusCooldownFontOptions:Add(self.auras_mythicplus_cooldown_font_flag):SetPosition('LEFT', self.auras_mythicplus_cooldown_font_size, 'RIGHT', 12, 0);
+    self.AurasMythicPlusCooldownFontOptions:Add(self.auras_mythicplus_cooldown_font_shadow):SetPosition('LEFT', self.auras_mythicplus_cooldown_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasMythicPlusCooldownFontOptionsButton = E.CreateButton(self.TabsFrames['MythicPlusTab'].Content);
+    self.ShowAurasMythicPlusCooldownFontOptionsButton:SetPosition('LEFT', self.auras_mythicplus_cooldown_color, 'RIGHT', 12, 0);
+    self.ShowAurasMythicPlusCooldownFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasMythicPlusCooldownFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasMythicPlusCooldownFontOptionsButton:SetScript('OnClick', function()
+        self.AurasMythicPlusCooldownFontOptions:Show();
+    end);
+
     self.auras_mythicplus_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_cooldown_point:SetPosition('TOPLEFT', self.auras_mythicplus_cooldown_font_value, 'BOTTOMLEFT', 0, -12);
     self.auras_mythicplus_cooldown_point:SetSize(120, 20);
     self.auras_mythicplus_cooldown_point:SetList(O.Lists.frame_points_localized);
     self.auras_mythicplus_cooldown_point:SetValue(O.db.auras_mythicplus_cooldown_point);
     self.auras_mythicplus_cooldown_point:SetLabel(L['POSITION']);
     self.auras_mythicplus_cooldown_point:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_POINT_TOOLTIP']);
-    self.auras_mythicplus_cooldown_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_POINT_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_point.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_cooldown_relative_point:SetPosition('LEFT', self.auras_mythicplus_cooldown_point, 'RIGHT', 12, 0);
     self.auras_mythicplus_cooldown_relative_point:SetSize(120, 20);
     self.auras_mythicplus_cooldown_relative_point:SetList(O.Lists.frame_points_localized);
     self.auras_mythicplus_cooldown_relative_point:SetValue(O.db.auras_mythicplus_cooldown_relative_point);
     self.auras_mythicplus_cooldown_relative_point:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_RELATIVE_POINT_TOOLTIP']);
-    self.auras_mythicplus_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_cooldown_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_cooldown_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_cooldown_offset_x = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_cooldown_offset_x:SetPosition('LEFT', self.auras_mythicplus_cooldown_relative_point, 'RIGHT', 8, 0);
     self.auras_mythicplus_cooldown_offset_x:SetSize(120, 18);
     self.auras_mythicplus_cooldown_offset_x:SetValues(O.db.auras_mythicplus_cooldown_offset_x, -50, 50, 1);
     self.auras_mythicplus_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_OFFSET_X_TOOLTIP']);
@@ -2445,7 +2519,6 @@ panel.Load = function(self)
     end
 
     self.auras_mythicplus_cooldown_offset_y = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_cooldown_offset_y:SetPosition('LEFT', self.auras_mythicplus_cooldown_offset_x, 'RIGHT', 12, 0);
     self.auras_mythicplus_cooldown_offset_y:SetSize(120, 18);
     self.auras_mythicplus_cooldown_offset_y:SetValues(O.db.auras_mythicplus_cooldown_offset_y, -50, 50, 1);
     self.auras_mythicplus_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COOLDOWN_OFFSET_Y_TOOLTIP']);
@@ -2454,16 +2527,31 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.AurasMythicPlusCooldownPositionOptions = E.CreatePopOptions(self.TabsFrames['MythicPlusTab'].Content);
+    self.AurasMythicPlusCooldownPositionOptions:SetH(60);
+    self.AurasMythicPlusCooldownPositionOptions:Add(self.auras_mythicplus_cooldown_point):SetPosition('TOPLEFT', self.AurasMythicPlusCooldownPositionOptions, 'TOPLEFT', 12, -20);
+    self.AurasMythicPlusCooldownPositionOptions:Add(self.auras_mythicplus_cooldown_relative_point):SetPosition('LEFT', self.auras_mythicplus_cooldown_point, 'RIGHT', 12, 0);
+    self.AurasMythicPlusCooldownPositionOptions:Add(self.auras_mythicplus_cooldown_offset_x):SetPosition('LEFT', self.auras_mythicplus_cooldown_relative_point, 'RIGHT', 8, 0)
+    self.AurasMythicPlusCooldownPositionOptions:Add(self.auras_mythicplus_cooldown_offset_y):SetPosition('LEFT', self.auras_mythicplus_cooldown_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowAurasMythicPlusCooldownPositionOptionsButton = E.CreateButton(self.TabsFrames['MythicPlusTab'].Content);
+    self.ShowAurasMythicPlusCooldownPositionOptionsButton:SetPosition('LEFT', self.ShowAurasMythicPlusCooldownFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAurasMythicPlusCooldownPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAurasMythicPlusCooldownPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasMythicPlusCooldownPositionOptionsButton:SetScript('OnClick', function()
+        self.AurasMythicPlusCooldownPositionOptions:Show();
+    end);
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_cooldown_point, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_cooldown_color, 'BOTTOMLEFT', 0, 0);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_mythicplus_count_text = E.CreateFontString(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -2);
+    self.auras_mythicplus_count_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.auras_mythicplus_count_text:SetText(L['OPTIONS_AURAS_COUNT_TEXT']);
 
     self.auras_mythicplus_count_color = E.CreateColorPicker(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_color:SetPosition('LEFT', self.auras_mythicplus_count_text, 'RIGHT', 12, 0);
+    self.auras_mythicplus_count_color:SetPosition('TOPLEFT', self.auras_mythicplus_count_text, 'BOTTOMLEFT', 0, -4);
     self.auras_mythicplus_count_color:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_COLOR_TOOLTIP']);
     self.auras_mythicplus_count_color:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_COLOR_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_count_color:SetValue(unpack(O.db.auras_mythicplus_count_color));
@@ -2477,77 +2565,79 @@ panel.Load = function(self)
     end
 
     self.auras_mythicplus_count_font_value = E.CreateDropdown('font', self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_font_value:SetPosition('TOPLEFT', self.auras_mythicplus_count_text, 'BOTTOMLEFT', 0, -4);
     self.auras_mythicplus_count_font_value:SetSize(160, 20);
     self.auras_mythicplus_count_font_value:SetList(LSM:HashTable('font'));
     self.auras_mythicplus_count_font_value:SetValue(O.db.auras_mythicplus_count_font_value);
     self.auras_mythicplus_count_font_value:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_VALUE']);
-    self.auras_mythicplus_count_font_value:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_VALUE'], self.Tabs[3]);
     self.auras_mythicplus_count_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_font_size = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_font_size:SetPosition('LEFT', self.auras_mythicplus_count_font_value, 'RIGHT', 12, 0);
     self.auras_mythicplus_count_font_size:SetValues(O.db.auras_mythicplus_count_font_size, 3, 28, 1);
     self.auras_mythicplus_count_font_size:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_SIZE']);
-    self.auras_mythicplus_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_SIZE'], self.Tabs[3]);
     self.auras_mythicplus_count_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_font_flag = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_font_flag:SetPosition('LEFT', self.auras_mythicplus_count_font_size, 'RIGHT', 12, 0);
     self.auras_mythicplus_count_font_flag:SetSize(160, 20);
     self.auras_mythicplus_count_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_mythicplus_count_font_flag:SetValue(O.db.auras_mythicplus_count_font_flag);
     self.auras_mythicplus_count_font_flag:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_FLAG']);
-    self.auras_mythicplus_count_font_flag:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_FLAG'], self.Tabs[3]);
     self.auras_mythicplus_count_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_font_shadow = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_font_shadow:SetPosition('LEFT', self.auras_mythicplus_count_font_flag, 'RIGHT', 12, 0);
     self.auras_mythicplus_count_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_mythicplus_count_font_shadow:SetChecked(O.db.auras_mythicplus_count_font_shadow);
     self.auras_mythicplus_count_font_shadow:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_SHADOW']);
-    self.auras_mythicplus_count_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_FONT_SHADOW'], self.Tabs[3]);
     self.auras_mythicplus_count_font_shadow.Callback = function(self)
         O.db.auras_mythicplus_count_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AurasMythicPlusCountFontOptions = E.CreatePopOptions(self.TabsFrames['MythicPlusTab'].Content);
+    self.AurasMythicPlusCountFontOptions:SetH(60);
+    self.AurasMythicPlusCountFontOptions:Add(self.auras_mythicplus_count_font_value):SetPosition('TOPLEFT', self.AurasMythicPlusCountFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasMythicPlusCountFontOptions:Add(self.auras_mythicplus_count_font_size):SetPosition('LEFT', self.auras_mythicplus_count_font_value, 'RIGHT', 12, 0);
+    self.AurasMythicPlusCountFontOptions:Add(self.auras_mythicplus_count_font_flag):SetPosition('LEFT', self.auras_mythicplus_count_font_size, 'RIGHT', 12, 0);
+    self.AurasMythicPlusCountFontOptions:Add(self.auras_mythicplus_count_font_shadow):SetPosition('LEFT', self.auras_mythicplus_count_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasMythicPlusCountFontOptionsButton = E.CreateButton(self.TabsFrames['MythicPlusTab'].Content);
+    self.ShowAurasMythicPlusCountFontOptionsButton:SetPosition('LEFT', self.auras_mythicplus_count_color, 'RIGHT', 12, 0);
+    self.ShowAurasMythicPlusCountFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasMythicPlusCountFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasMythicPlusCountFontOptionsButton:SetScript('OnClick', function()
+        self.AurasMythicPlusCountFontOptions:Show();
+    end);
+
     self.auras_mythicplus_count_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_point:SetPosition('TOPLEFT', self.auras_mythicplus_count_font_value, 'BOTTOMLEFT', 0, -12);
     self.auras_mythicplus_count_point:SetSize(120, 20);
     self.auras_mythicplus_count_point:SetList(O.Lists.frame_points_localized);
     self.auras_mythicplus_count_point:SetValue(O.db.auras_mythicplus_count_point);
     self.auras_mythicplus_count_point:SetLabel(L['POSITION']);
     self.auras_mythicplus_count_point:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_POINT_TOOLTIP']);
-    self.auras_mythicplus_count_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_POINT_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_count_point.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_relative_point:SetPosition('LEFT', self.auras_mythicplus_count_point, 'RIGHT', 12, 0);
     self.auras_mythicplus_count_relative_point:SetSize(120, 20);
     self.auras_mythicplus_count_relative_point:SetList(O.Lists.frame_points_localized);
     self.auras_mythicplus_count_relative_point:SetValue(O.db.auras_mythicplus_count_relative_point);
     self.auras_mythicplus_count_relative_point:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_RELATIVE_POINT_TOOLTIP']);
-    self.auras_mythicplus_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[3]);
     self.auras_mythicplus_count_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_mythicplus_count_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_mythicplus_count_offset_x = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_offset_x:SetPosition('LEFT', self.auras_mythicplus_count_relative_point, 'RIGHT', 8, 0);
     self.auras_mythicplus_count_offset_x:SetSize(120, 18);
     self.auras_mythicplus_count_offset_x:SetValues(O.db.auras_mythicplus_count_offset_x, -50, 50, 1);
     self.auras_mythicplus_count_offset_x:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_X_TOOLTIP']);
@@ -2557,7 +2647,6 @@ panel.Load = function(self)
     end
 
     self.auras_mythicplus_count_offset_y = E.CreateSlider(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_count_offset_y:SetPosition('LEFT', self.auras_mythicplus_count_offset_x, 'RIGHT', 12, 0);
     self.auras_mythicplus_count_offset_y:SetSize(120, 18);
     self.auras_mythicplus_count_offset_y:SetValues(O.db.auras_mythicplus_count_offset_y, -50, 50, 1);
     self.auras_mythicplus_count_offset_y:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_COUNT_OFFSET_Y_TOOLTIP']);
@@ -2565,6 +2654,25 @@ panel.Load = function(self)
         O.db.auras_mythicplus_count_offset_y = tonumber(value);
         Stripes:UpdateAll();
     end
+
+    self.AurasMythicPlusCountPositionOptions = E.CreatePopOptions(self.TabsFrames['MythicPlusTab'].Content);
+    self.AurasMythicPlusCountPositionOptions:SetH(60);
+    self.AurasMythicPlusCountPositionOptions:Add(self.auras_mythicplus_count_point):SetPosition('TOPLEFT', self.AurasMythicPlusCountPositionOptions, 'TOPLEFT', 12, -20);
+    self.AurasMythicPlusCountPositionOptions:Add(self.auras_mythicplus_count_relative_point):SetPosition('LEFT', self.auras_mythicplus_count_point, 'RIGHT', 12, 0);
+    self.AurasMythicPlusCountPositionOptions:Add(self.auras_mythicplus_count_offset_x):SetPosition('LEFT', self.auras_mythicplus_count_relative_point, 'RIGHT', 8, 0)
+    self.AurasMythicPlusCountPositionOptions:Add(self.auras_mythicplus_count_offset_y):SetPosition('LEFT', self.auras_mythicplus_count_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowAurasMythicPlusCountPositionOptionsButton = E.CreateButton(self.TabsFrames['MythicPlusTab'].Content);
+    self.ShowAurasMythicPlusCountPositionOptionsButton:SetPosition('LEFT', self.ShowAurasMythicPlusCountFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAurasMythicPlusCountPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAurasMythicPlusCountPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasMythicPlusCountPositionOptionsButton:SetScript('OnClick', function()
+        self.AurasMythicPlusCountPositionOptions:Show();
+    end);
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_count_color, 'BOTTOMLEFT', 0, 0);
+    Delimiter:SetW(self:GetWidth());
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -2742,11 +2850,11 @@ panel.Load = function(self)
     end
 
     self.auras_important_countdown_text = E.CreateFontString(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_countdown_text:SetPosition('TOPLEFT', self.auras_important_countdown_enabled, 'BOTTOMLEFT', 0, -16);
+    self.auras_important_countdown_text:SetPosition('TOPLEFT', self.auras_important_countdown_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_important_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_important_cooldown_color = E.CreateColorPicker(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_cooldown_color:SetPosition('LEFT', self.auras_important_countdown_text, 'RIGHT', 12, 0);
+    self.auras_important_cooldown_color:SetPosition('TOPLEFT', self.auras_important_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.auras_important_cooldown_color:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_COLOR_TOOLTIP']);
     self.auras_important_cooldown_color:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_COLOR_TOOLTIP'], self.Tabs[4]);
     self.auras_important_cooldown_color:SetValue(unpack(O.db.auras_important_cooldown_color));
@@ -2760,77 +2868,79 @@ panel.Load = function(self)
     end
 
     self.auras_important_cooldown_font_value = E.CreateDropdown('font', self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_cooldown_font_value:SetPosition('TOPLEFT', self.auras_important_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.auras_important_cooldown_font_value:SetSize(160, 20);
     self.auras_important_cooldown_font_value:SetList(LSM:HashTable('font'));
     self.auras_important_cooldown_font_value:SetValue(O.db.auras_important_cooldown_font_value);
     self.auras_important_cooldown_font_value:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_VALUE']);
-    self.auras_important_cooldown_font_value:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_VALUE'], self.Tabs[4]);
     self.auras_important_cooldown_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_font_size = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_cooldown_font_size:SetPosition('LEFT', self.auras_important_cooldown_font_value, 'RIGHT', 12, 0);
     self.auras_important_cooldown_font_size:SetValues(O.db.auras_important_cooldown_font_size, 3, 28, 1);
     self.auras_important_cooldown_font_size:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_SIZE']);
-    self.auras_important_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_SIZE'], self.Tabs[4]);
     self.auras_important_cooldown_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_font_flag = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_cooldown_font_flag:SetPosition('LEFT', self.auras_important_cooldown_font_size, 'RIGHT', 12, 0);
     self.auras_important_cooldown_font_flag:SetSize(160, 20);
     self.auras_important_cooldown_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_important_cooldown_font_flag:SetValue(O.db.auras_important_cooldown_font_flag);
     self.auras_important_cooldown_font_flag:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_FLAG']);
-    self.auras_important_cooldown_font_flag:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_FLAG'], self.Tabs[4]);
     self.auras_important_cooldown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_cooldown_font_shadow:SetPosition('LEFT', self.auras_important_cooldown_font_flag, 'RIGHT', 12, 0);
     self.auras_important_cooldown_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_important_cooldown_font_shadow:SetChecked(O.db.auras_important_cooldown_font_shadow);
     self.auras_important_cooldown_font_shadow:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_SHADOW']);
-    self.auras_important_cooldown_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_FONT_SHADOW'], self.Tabs[4]);
     self.auras_important_cooldown_font_shadow.Callback = function(self)
         O.db.auras_important_cooldown_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AurasImportantCooldownFontOptions = E.CreatePopOptions(self.TabsFrames['ImportantTab'].Content);
+    self.AurasImportantCooldownFontOptions:SetH(60);
+    self.AurasImportantCooldownFontOptions:Add(self.auras_important_cooldown_font_value):SetPosition('TOPLEFT', self.AurasImportantCooldownFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasImportantCooldownFontOptions:Add(self.auras_important_cooldown_font_size):SetPosition('LEFT', self.auras_important_cooldown_font_value, 'RIGHT', 12, 0);
+    self.AurasImportantCooldownFontOptions:Add(self.auras_important_cooldown_font_flag):SetPosition('LEFT', self.auras_important_cooldown_font_size, 'RIGHT', 12, 0);
+    self.AurasImportantCooldownFontOptions:Add(self.auras_important_cooldown_font_shadow):SetPosition('LEFT', self.auras_important_cooldown_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasImportantCooldownFontOptionsButton = E.CreateButton(self.TabsFrames['ImportantTab'].Content);
+    self.ShowAurasImportantCooldownFontOptionsButton:SetPosition('LEFT', self.auras_important_cooldown_color, 'RIGHT', 12, 0);
+    self.ShowAurasImportantCooldownFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasImportantCooldownFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasImportantCooldownFontOptionsButton:SetScript('OnClick', function()
+        self.AurasImportantCooldownFontOptions:Show();
+    end);
+
     self.auras_important_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_cooldown_point:SetPosition('TOPLEFT', self.auras_important_cooldown_font_value, 'BOTTOMLEFT', 0, -12);
     self.auras_important_cooldown_point:SetSize(120, 20);
     self.auras_important_cooldown_point:SetList(O.Lists.frame_points_localized);
     self.auras_important_cooldown_point:SetValue(O.db.auras_important_cooldown_point);
     self.auras_important_cooldown_point:SetLabel(L['POSITION']);
     self.auras_important_cooldown_point:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_POINT_TOOLTIP']);
-    self.auras_important_cooldown_point:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_POINT_TOOLTIP'], self.Tabs[4]);
     self.auras_important_cooldown_point.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_cooldown_relative_point:SetPosition('LEFT', self.auras_important_cooldown_point, 'RIGHT', 12, 0);
     self.auras_important_cooldown_relative_point:SetSize(120, 20);
     self.auras_important_cooldown_relative_point:SetList(O.Lists.frame_points_localized);
     self.auras_important_cooldown_relative_point:SetValue(O.db.auras_important_cooldown_relative_point);
     self.auras_important_cooldown_relative_point:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_RELATIVE_POINT_TOOLTIP']);
-    self.auras_important_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[4]);
     self.auras_important_cooldown_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_important_cooldown_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_important_cooldown_offset_x = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_cooldown_offset_x:SetPosition('LEFT', self.auras_important_cooldown_relative_point, 'RIGHT', 8, 0);
     self.auras_important_cooldown_offset_x:SetSize(120, 18);
     self.auras_important_cooldown_offset_x:SetValues(O.db.auras_important_cooldown_offset_x, -50, 50, 1);
     self.auras_important_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_OFFSET_X_TOOLTIP']);
@@ -2840,7 +2950,6 @@ panel.Load = function(self)
     end
 
     self.auras_important_cooldown_offset_y = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_cooldown_offset_y:SetPosition('LEFT', self.auras_important_cooldown_offset_x, 'RIGHT', 12, 0);
     self.auras_important_cooldown_offset_y:SetSize(120, 18);
     self.auras_important_cooldown_offset_y:SetValues(O.db.auras_important_cooldown_offset_y, -50, 50, 1);
     self.auras_important_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COOLDOWN_OFFSET_Y_TOOLTIP']);
@@ -2849,16 +2958,31 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.AurasImportantCooldownPositionOptions = E.CreatePopOptions(self.TabsFrames['ImportantTab'].Content);
+    self.AurasImportantCooldownPositionOptions:SetH(60);
+    self.AurasImportantCooldownPositionOptions:Add(self.auras_important_cooldown_point):SetPosition('TOPLEFT', self.AurasImportantCooldownPositionOptions, 'TOPLEFT', 12, -20);
+    self.AurasImportantCooldownPositionOptions:Add(self.auras_important_cooldown_relative_point):SetPosition('LEFT', self.auras_important_cooldown_point, 'RIGHT', 12, 0);
+    self.AurasImportantCooldownPositionOptions:Add(self.auras_important_cooldown_offset_x):SetPosition('LEFT', self.auras_important_cooldown_relative_point, 'RIGHT', 8, 0)
+    self.AurasImportantCooldownPositionOptions:Add(self.auras_important_cooldown_offset_y):SetPosition('LEFT', self.auras_important_cooldown_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowAurasImportantCooldownPositionOptionsButton = E.CreateButton(self.TabsFrames['ImportantTab'].Content);
+    self.ShowAurasImportantCooldownPositionOptionsButton:SetPosition('LEFT', self.ShowAurasImportantCooldownFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAurasImportantCooldownPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAurasImportantCooldownPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasImportantCooldownPositionOptionsButton:SetScript('OnClick', function()
+        self.AurasImportantCooldownPositionOptions:Show();
+    end);
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_important_cooldown_point, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_important_cooldown_color, 'BOTTOMLEFT', 0, 0);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_important_count_text = E.CreateFontString(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -2);
+    self.auras_important_count_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.auras_important_count_text:SetText(L['OPTIONS_AURAS_COUNT_TEXT']);
 
     self.auras_important_count_color = E.CreateColorPicker(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_color:SetPosition('LEFT', self.auras_important_count_text, 'RIGHT', 12, 0);
+    self.auras_important_count_color:SetPosition('TOPLEFT', self.auras_important_count_text, 'BOTTOMLEFT', 0, -4);
     self.auras_important_count_color:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_COLOR_TOOLTIP']);
     self.auras_important_count_color:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_COLOR_TOOLTIP'], self.Tabs[4]);
     self.auras_important_count_color:SetValue(unpack(O.db.auras_important_count_color));
@@ -2872,77 +2996,79 @@ panel.Load = function(self)
     end
 
     self.auras_important_count_font_value = E.CreateDropdown('font', self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_font_value:SetPosition('TOPLEFT', self.auras_important_count_text, 'BOTTOMLEFT', 0, -4);
     self.auras_important_count_font_value:SetSize(160, 20);
     self.auras_important_count_font_value:SetList(LSM:HashTable('font'));
     self.auras_important_count_font_value:SetValue(O.db.auras_important_count_font_value);
     self.auras_important_count_font_value:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_VALUE']);
-    self.auras_important_count_font_value:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_VALUE'], self.Tabs[4]);
     self.auras_important_count_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_important_count_font_size = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_font_size:SetPosition('LEFT', self.auras_important_count_font_value, 'RIGHT', 12, 0);
     self.auras_important_count_font_size:SetValues(O.db.auras_important_count_font_size, 3, 28, 1);
     self.auras_important_count_font_size:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_SIZE']);
-    self.auras_important_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_SIZE'], self.Tabs[4]);
     self.auras_important_count_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_important_count_font_flag = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_font_flag:SetPosition('LEFT', self.auras_important_count_font_size, 'RIGHT', 12, 0);
     self.auras_important_count_font_flag:SetSize(160, 20);
     self.auras_important_count_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_important_count_font_flag:SetValue(O.db.auras_important_count_font_flag);
     self.auras_important_count_font_flag:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_FLAG']);
-    self.auras_important_count_font_flag:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_FLAG'], self.Tabs[4]);
     self.auras_important_count_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_important_count_font_shadow = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_font_shadow:SetPosition('LEFT', self.auras_important_count_font_flag, 'RIGHT', 12, 0);
     self.auras_important_count_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_important_count_font_shadow:SetChecked(O.db.auras_important_count_font_shadow);
     self.auras_important_count_font_shadow:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_SHADOW']);
-    self.auras_important_count_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_FONT_SHADOW'], self.Tabs[4]);
     self.auras_important_count_font_shadow.Callback = function(self)
         O.db.auras_important_count_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AurasImportantCountFontOptions = E.CreatePopOptions(self.TabsFrames['ImportantTab'].Content);
+    self.AurasImportantCountFontOptions:SetH(60);
+    self.AurasImportantCountFontOptions:Add(self.auras_important_count_font_value):SetPosition('TOPLEFT', self.AurasImportantCountFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasImportantCountFontOptions:Add(self.auras_important_count_font_size):SetPosition('LEFT', self.auras_important_count_font_value, 'RIGHT', 12, 0);
+    self.AurasImportantCountFontOptions:Add(self.auras_important_count_font_flag):SetPosition('LEFT', self.auras_important_count_font_size, 'RIGHT', 12, 0);
+    self.AurasImportantCountFontOptions:Add(self.auras_important_count_font_shadow):SetPosition('LEFT', self.auras_important_count_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasImportantCountFontOptionsButton = E.CreateButton(self.TabsFrames['ImportantTab'].Content);
+    self.ShowAurasImportantCountFontOptionsButton:SetPosition('LEFT', self.auras_important_count_color, 'RIGHT', 12, 0);
+    self.ShowAurasImportantCountFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasImportantCountFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasImportantCountFontOptionsButton:SetScript('OnClick', function()
+        self.AurasImportantCountFontOptions:Show();
+    end);
+
     self.auras_important_count_point = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_point:SetPosition('TOPLEFT', self.auras_important_count_font_value, 'BOTTOMLEFT', 0, -12);
     self.auras_important_count_point:SetSize(120, 20);
     self.auras_important_count_point:SetList(O.Lists.frame_points_localized);
     self.auras_important_count_point:SetValue(O.db.auras_important_count_point);
     self.auras_important_count_point:SetLabel(L['POSITION']);
     self.auras_important_count_point:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_POINT_TOOLTIP']);
-    self.auras_important_count_point:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_POINT_TOOLTIP'], self.Tabs[4]);
     self.auras_important_count_point.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_important_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_relative_point:SetPosition('LEFT', self.auras_important_count_point, 'RIGHT', 12, 0);
     self.auras_important_count_relative_point:SetSize(120, 20);
     self.auras_important_count_relative_point:SetList(O.Lists.frame_points_localized);
     self.auras_important_count_relative_point:SetValue(O.db.auras_important_count_relative_point);
     self.auras_important_count_relative_point:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_RELATIVE_POINT_TOOLTIP']);
-    self.auras_important_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[4]);
     self.auras_important_count_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_important_count_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_important_count_offset_x = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_offset_x:SetPosition('LEFT', self.auras_important_count_relative_point, 'RIGHT', 8, 0);
     self.auras_important_count_offset_x:SetSize(120, 18);
     self.auras_important_count_offset_x:SetValues(O.db.auras_important_count_offset_x, -50, 50, 1);
     self.auras_important_count_offset_x:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_OFFSET_X_TOOLTIP']);
@@ -2952,7 +3078,6 @@ panel.Load = function(self)
     end
 
     self.auras_important_count_offset_y = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_count_offset_y:SetPosition('LEFT', self.auras_important_count_offset_x, 'RIGHT', 12, 0);
     self.auras_important_count_offset_y:SetSize(120, 18);
     self.auras_important_count_offset_y:SetValues(O.db.auras_important_count_offset_y, -50, 50, 1);
     self.auras_important_count_offset_y:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_COUNT_OFFSET_Y_TOOLTIP']);
@@ -2961,13 +3086,31 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.AurasImportantCountPositionOptions = E.CreatePopOptions(self.TabsFrames['ImportantTab'].Content);
+    self.AurasImportantCountPositionOptions:SetH(60);
+    self.AurasImportantCountPositionOptions:Add(self.auras_important_count_point):SetPosition('TOPLEFT', self.AurasImportantCountPositionOptions, 'TOPLEFT', 12, -20);
+    self.AurasImportantCountPositionOptions:Add(self.auras_important_count_relative_point):SetPosition('LEFT', self.auras_important_count_point, 'RIGHT', 12, 0);
+    self.AurasImportantCountPositionOptions:Add(self.auras_important_count_offset_x):SetPosition('LEFT', self.auras_important_count_relative_point, 'RIGHT', 8, 0)
+    self.AurasImportantCountPositionOptions:Add(self.auras_important_count_offset_y):SetPosition('LEFT', self.auras_important_count_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowAurasImportantCountPositionOptionsButton = E.CreateButton(self.TabsFrames['ImportantTab'].Content);
+    self.ShowAurasImportantCountPositionOptionsButton:SetPosition('LEFT', self.ShowAurasImportantCountFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAurasImportantCountPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAurasImportantCountPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasImportantCountPositionOptionsButton:SetScript('OnClick', function()
+        self.AurasImportantCountPositionOptions:Show();
+    end);
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_important_count_point, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_important_count_color, 'BOTTOMLEFT', 0, 0);
     Delimiter:SetW(self:GetWidth());
 
+    self.auras_important_castername_text = E.CreateFontString(self.TabsFrames['ImportantTab'].Content);
+    self.auras_important_castername_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
+    self.auras_important_castername_text:SetText(L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_TEXT']);
+
     self.auras_important_castername_show = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_castername_show:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.auras_important_castername_show:SetLabel(L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_SHOW']);
+    self.auras_important_castername_show:SetPosition('TOPLEFT', self.auras_important_castername_text, 'BOTTOMLEFT', 5, -4);
     self.auras_important_castername_show:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_SHOW_TOOLTIP']);
     self.auras_important_castername_show:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_SHOW_TOOLTIP'], self.Tabs[4]);
     self.auras_important_castername_show:SetChecked(O.db.auras_important_castername_show);
@@ -2977,49 +3120,60 @@ panel.Load = function(self)
     end
 
     self.auras_important_castername_font_value = E.CreateDropdown('font', self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_castername_font_value:SetPosition('TOPLEFT', self.auras_important_castername_show, 'BOTTOMLEFT', 0, -8);
     self.auras_important_castername_font_value:SetSize(160, 20);
     self.auras_important_castername_font_value:SetList(LSM:HashTable('font'));
     self.auras_important_castername_font_value:SetValue(O.db.auras_important_castername_font_value);
     self.auras_important_castername_font_value:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_VALUE']);
-    self.auras_important_castername_font_value:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_VALUE'], self.Tabs[4]);
     self.auras_important_castername_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_important_castername_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_important_castername_font_size = E.CreateSlider(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_castername_font_size:SetPosition('LEFT', self.auras_important_castername_font_value, 'RIGHT', 12, 0);
     self.auras_important_castername_font_size:SetValues(O.db.auras_important_castername_font_size, 3, 28, 1);
     self.auras_important_castername_font_size:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SIZE']);
-    self.auras_important_castername_font_size:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SIZE'], self.Tabs[4]);
     self.auras_important_castername_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_important_castername_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_important_castername_font_flag = E.CreateDropdown('plain', self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_castername_font_flag:SetPosition('LEFT', self.auras_important_castername_font_size, 'RIGHT', 12, 0);
     self.auras_important_castername_font_flag:SetSize(160, 20);
     self.auras_important_castername_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_important_castername_font_flag:SetValue(O.db.auras_important_castername_font_flag);
     self.auras_important_castername_font_flag:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_FLAG']);
-    self.auras_important_castername_font_flag:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_FLAG'], self.Tabs[4]);
     self.auras_important_castername_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_important_castername_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_important_castername_font_shadow = E.CreateCheckButton(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_castername_font_shadow:SetPosition('LEFT', self.auras_important_castername_font_flag, 'RIGHT', 12, 0);
     self.auras_important_castername_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_important_castername_font_shadow:SetChecked(O.db.auras_important_castername_font_shadow);
     self.auras_important_castername_font_shadow:SetTooltip(L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW']);
-    self.auras_important_castername_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_FONT_SHADOW'], self.Tabs[4]);
     self.auras_important_castername_font_shadow.Callback = function(self)
         O.db.auras_important_castername_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
+
+    self.AurasImportantCasterNameFontOptions = E.CreatePopOptions(self.TabsFrames['ImportantTab'].Content);
+    self.AurasImportantCasterNameFontOptions:SetH(60);
+    self.AurasImportantCasterNameFontOptions:Add(self.auras_important_castername_font_value):SetPosition('TOPLEFT', self.AurasImportantCasterNameFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasImportantCasterNameFontOptions:Add(self.auras_important_castername_font_size):SetPosition('LEFT', self.auras_important_castername_font_value, 'RIGHT', 12, 0);
+    self.AurasImportantCasterNameFontOptions:Add(self.auras_important_castername_font_flag):SetPosition('LEFT', self.auras_important_castername_font_size, 'RIGHT', 12, 0);
+    self.AurasImportantCasterNameFontOptions:Add(self.auras_important_castername_font_shadow):SetPosition('LEFT', self.auras_important_castername_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasImportantCasterNameFontOptionsButton = E.CreateButton(self.TabsFrames['ImportantTab'].Content);
+    self.ShowAurasImportantCasterNameFontOptionsButton:SetPosition('LEFT', self.auras_important_castername_show.Label, 'RIGHT', 12, 0);
+    self.ShowAurasImportantCasterNameFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasImportantCasterNameFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasImportantCasterNameFontOptionsButton:SetScript('OnClick', function()
+        self.AurasImportantCasterNameFontOptions:Show();
+    end);
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_important_castername_show, 'BOTTOMLEFT', -5, -4);
+    Delimiter:SetW(self:GetWidth());
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -3167,11 +3321,11 @@ panel.Load = function(self)
     end
 
     self.auras_custom_countdown_text = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_countdown_text:SetPosition('TOPLEFT', self.auras_custom_countdown_enabled, 'BOTTOMLEFT', 0, -16);
+    self.auras_custom_countdown_text:SetPosition('TOPLEFT', self.auras_custom_countdown_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_custom_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_custom_cooldown_color = E.CreateColorPicker(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_cooldown_color:SetPosition('LEFT', self.auras_custom_countdown_text, 'RIGHT', 12, 0);
+    self.auras_custom_cooldown_color:SetPosition('TOPLEFT', self.auras_custom_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.auras_custom_cooldown_color:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_COLOR_TOOLTIP']);
     self.auras_custom_cooldown_color:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_COLOR_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_cooldown_color:SetValue(unpack(O.db.auras_custom_cooldown_color));
@@ -3185,77 +3339,79 @@ panel.Load = function(self)
     end
 
     self.auras_custom_cooldown_font_value = E.CreateDropdown('font', self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_cooldown_font_value:SetPosition('TOPLEFT', self.auras_custom_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.auras_custom_cooldown_font_value:SetSize(160, 20);
     self.auras_custom_cooldown_font_value:SetList(LSM:HashTable('font'));
     self.auras_custom_cooldown_font_value:SetValue(O.db.auras_custom_cooldown_font_value);
     self.auras_custom_cooldown_font_value:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_VALUE']);
-    self.auras_custom_cooldown_font_value:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_VALUE'], self.Tabs[5]);
     self.auras_custom_cooldown_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_font_size = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_cooldown_font_size:SetPosition('LEFT', self.auras_custom_cooldown_font_value, 'RIGHT', 12, 0);
     self.auras_custom_cooldown_font_size:SetValues(O.db.auras_custom_cooldown_font_size, 3, 28, 1);
     self.auras_custom_cooldown_font_size:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SIZE']);
-    self.auras_custom_cooldown_font_size:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SIZE'], self.Tabs[5]);
     self.auras_custom_cooldown_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_font_flag = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_cooldown_font_flag:SetPosition('LEFT', self.auras_custom_cooldown_font_size, 'RIGHT', 12, 0);
     self.auras_custom_cooldown_font_flag:SetSize(160, 20);
     self.auras_custom_cooldown_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_custom_cooldown_font_flag:SetValue(O.db.auras_custom_cooldown_font_flag);
     self.auras_custom_cooldown_font_flag:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_FLAG']);
-    self.auras_custom_cooldown_font_flag:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_FLAG'], self.Tabs[5]);
     self.auras_custom_cooldown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_font_shadow = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_cooldown_font_shadow:SetPosition('LEFT', self.auras_custom_cooldown_font_flag, 'RIGHT', 12, 0);
     self.auras_custom_cooldown_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_custom_cooldown_font_shadow:SetChecked(O.db.auras_custom_cooldown_font_shadow);
     self.auras_custom_cooldown_font_shadow:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SHADOW']);
-    self.auras_custom_cooldown_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_FONT_SHADOW'], self.Tabs[5]);
     self.auras_custom_cooldown_font_shadow.Callback = function(self)
         O.db.auras_custom_cooldown_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AurasCustomCooldownFontOptions = E.CreatePopOptions(self.TabsFrames['CustomTab'].Content);
+    self.AurasCustomCooldownFontOptions:SetH(60);
+    self.AurasCustomCooldownFontOptions:Add(self.auras_custom_cooldown_font_value):SetPosition('TOPLEFT', self.AurasCustomCooldownFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasCustomCooldownFontOptions:Add(self.auras_custom_cooldown_font_size):SetPosition('LEFT', self.auras_custom_cooldown_font_value, 'RIGHT', 12, 0);
+    self.AurasCustomCooldownFontOptions:Add(self.auras_custom_cooldown_font_flag):SetPosition('LEFT', self.auras_custom_cooldown_font_size, 'RIGHT', 12, 0);
+    self.AurasCustomCooldownFontOptions:Add(self.auras_custom_cooldown_font_shadow):SetPosition('LEFT', self.auras_custom_cooldown_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasCustomCooldownFontOptionsButton = E.CreateButton(self.TabsFrames['CustomTab'].Content);
+    self.ShowAurasCustomCooldownFontOptionsButton:SetPosition('LEFT', self.auras_custom_cooldown_color, 'RIGHT', 12, 0);
+    self.ShowAurasCustomCooldownFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasCustomCooldownFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasCustomCooldownFontOptionsButton:SetScript('OnClick', function()
+        self.AurasCustomCooldownFontOptions:Show();
+    end);
+
     self.auras_custom_cooldown_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_cooldown_point:SetPosition('TOPLEFT', self.auras_custom_cooldown_font_value, 'BOTTOMLEFT', 0, -12);
     self.auras_custom_cooldown_point:SetSize(120, 20);
     self.auras_custom_cooldown_point:SetList(O.Lists.frame_points_localized);
     self.auras_custom_cooldown_point:SetValue(O.db.auras_custom_cooldown_point);
     self.auras_custom_cooldown_point:SetLabel(L['POSITION']);
     self.auras_custom_cooldown_point:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_POINT_TOOLTIP']);
-    self.auras_custom_cooldown_point:AddToSearch(button, L['OPTIONS_CUSTOM_AURAS_COOLDOWN_POINT_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_cooldown_point.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_relative_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_cooldown_relative_point:SetPosition('LEFT', self.auras_custom_cooldown_point, 'RIGHT', 12, 0);
     self.auras_custom_cooldown_relative_point:SetSize(120, 20);
     self.auras_custom_cooldown_relative_point:SetList(O.Lists.frame_points_localized);
     self.auras_custom_cooldown_relative_point:SetValue(O.db.auras_custom_cooldown_relative_point);
     self.auras_custom_cooldown_relative_point:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_RELATIVE_POINT_TOOLTIP']);
-    self.auras_custom_cooldown_relative_point:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COOLDOWN_RELATIVE_POINT_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_cooldown_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_cooldown_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_custom_cooldown_offset_x = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_cooldown_offset_x:SetPosition('LEFT', self.auras_custom_cooldown_relative_point, 'RIGHT', 8, 0);
     self.auras_custom_cooldown_offset_x:SetSize(120, 18);
     self.auras_custom_cooldown_offset_x:SetValues(O.db.auras_custom_cooldown_offset_x, -50, 50, 1);
     self.auras_custom_cooldown_offset_x:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_OFFSET_X_TOOLTIP']);
@@ -3265,7 +3421,6 @@ panel.Load = function(self)
     end
 
     self.auras_custom_cooldown_offset_y = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_cooldown_offset_y:SetPosition('LEFT', self.auras_custom_cooldown_offset_x, 'RIGHT', 12, 0);
     self.auras_custom_cooldown_offset_y:SetSize(120, 18);
     self.auras_custom_cooldown_offset_y:SetValues(O.db.auras_custom_cooldown_offset_y, -50, 50, 1);
     self.auras_custom_cooldown_offset_y:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COOLDOWN_OFFSET_Y_TOOLTIP']);
@@ -3274,16 +3429,31 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.AurasCustomCooldownPositionOptions = E.CreatePopOptions(self.TabsFrames['CustomTab'].Content);
+    self.AurasCustomCooldownPositionOptions:SetH(60);
+    self.AurasCustomCooldownPositionOptions:Add(self.auras_custom_cooldown_point):SetPosition('TOPLEFT', self.AurasCustomCooldownPositionOptions, 'TOPLEFT', 12, -20);
+    self.AurasCustomCooldownPositionOptions:Add(self.auras_custom_cooldown_relative_point):SetPosition('LEFT', self.auras_custom_cooldown_point, 'RIGHT', 12, 0);
+    self.AurasCustomCooldownPositionOptions:Add(self.auras_custom_cooldown_offset_x):SetPosition('LEFT', self.auras_custom_cooldown_relative_point, 'RIGHT', 8, 0)
+    self.AurasCustomCooldownPositionOptions:Add(self.auras_custom_cooldown_offset_y):SetPosition('LEFT', self.auras_custom_cooldown_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowAurasCustomCooldownPositionOptionsButton = E.CreateButton(self.TabsFrames['CustomTab'].Content);
+    self.ShowAurasCustomCooldownPositionOptionsButton:SetPosition('LEFT', self.ShowAurasCustomCooldownFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAurasCustomCooldownPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAurasCustomCooldownPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasCustomCooldownPositionOptionsButton:SetScript('OnClick', function()
+        self.AurasCustomCooldownPositionOptions:Show();
+    end);
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_custom_cooldown_point, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.auras_custom_cooldown_color, 'BOTTOMLEFT', 0, 0);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_custom_count_text = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -2);
+    self.auras_custom_count_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.auras_custom_count_text:SetText(L['OPTIONS_AURAS_COUNT_TEXT']);
 
     self.auras_custom_count_color = E.CreateColorPicker(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_color:SetPosition('LEFT', self.auras_custom_count_text, 'RIGHT', 12, 0);
+    self.auras_custom_count_color:SetPosition('TOPLEFT', self.auras_custom_count_text, 'BOTTOMLEFT', 0, -4);
     self.auras_custom_count_color:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_COLOR_TOOLTIP']);
     self.auras_custom_count_color:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_COLOR_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_count_color:SetValue(unpack(O.db.auras_custom_count_color));
@@ -3297,77 +3467,79 @@ panel.Load = function(self)
     end
 
     self.auras_custom_count_font_value = E.CreateDropdown('font', self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_font_value:SetPosition('TOPLEFT', self.auras_custom_count_text, 'BOTTOMLEFT', 0, -4);
     self.auras_custom_count_font_value:SetSize(160, 20);
     self.auras_custom_count_font_value:SetList(LSM:HashTable('font'));
     self.auras_custom_count_font_value:SetValue(O.db.auras_custom_count_font_value);
     self.auras_custom_count_font_value:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_VALUE']);
-    self.auras_custom_count_font_value:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_VALUE'], self.Tabs[5]);
     self.auras_custom_count_font_value.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.auras_custom_count_font_size = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_font_size:SetPosition('LEFT', self.auras_custom_count_font_value, 'RIGHT', 12, 0);
     self.auras_custom_count_font_size:SetValues(O.db.auras_custom_count_font_size, 3, 28, 1);
     self.auras_custom_count_font_size:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SIZE']);
-    self.auras_custom_count_font_size:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SIZE'], self.Tabs[5]);
     self.auras_custom_count_font_size.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_custom_count_font_flag = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_font_flag:SetPosition('LEFT', self.auras_custom_count_font_size, 'RIGHT', 12, 0);
     self.auras_custom_count_font_flag:SetSize(160, 20);
     self.auras_custom_count_font_flag:SetList(O.Lists.font_flags_localized);
     self.auras_custom_count_font_flag:SetValue(O.db.auras_custom_count_font_flag);
     self.auras_custom_count_font_flag:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_FLAG']);
-    self.auras_custom_count_font_flag:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_FLAG'], self.Tabs[5]);
     self.auras_custom_count_font_flag.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_custom_count_font_shadow = E.CreateCheckButton(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_font_shadow:SetPosition('LEFT', self.auras_custom_count_font_flag, 'RIGHT', 12, 0);
     self.auras_custom_count_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.auras_custom_count_font_shadow:SetChecked(O.db.auras_custom_count_font_shadow);
     self.auras_custom_count_font_shadow:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SHADOW']);
-    self.auras_custom_count_font_shadow:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_FONT_SHADOW'], self.Tabs[5]);
     self.auras_custom_count_font_shadow.Callback = function(self)
         O.db.auras_custom_count_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.AurasCustomCountFontOptions = E.CreatePopOptions(self.TabsFrames['CustomTab'].Content);
+    self.AurasCustomCountFontOptions:SetH(60);
+    self.AurasCustomCountFontOptions:Add(self.auras_custom_count_font_value):SetPosition('TOPLEFT', self.AurasCustomCountFontOptions, 'TOPLEFT', 8, -20);
+    self.AurasCustomCountFontOptions:Add(self.auras_custom_count_font_size):SetPosition('LEFT', self.auras_custom_count_font_value, 'RIGHT', 12, 0);
+    self.AurasCustomCountFontOptions:Add(self.auras_custom_count_font_flag):SetPosition('LEFT', self.auras_custom_count_font_size, 'RIGHT', 12, 0);
+    self.AurasCustomCountFontOptions:Add(self.auras_custom_count_font_shadow):SetPosition('LEFT', self.auras_custom_count_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowAurasCustomCountFontOptionsButton = E.CreateButton(self.TabsFrames['CustomTab'].Content);
+    self.ShowAurasCustomCountFontOptionsButton:SetPosition('LEFT', self.auras_custom_count_color, 'RIGHT', 12, 0);
+    self.ShowAurasCustomCountFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowAurasCustomCountFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasCustomCountFontOptionsButton:SetScript('OnClick', function()
+        self.AurasCustomCountFontOptions:Show();
+    end);
+
     self.auras_custom_count_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_point:SetPosition('TOPLEFT', self.auras_custom_count_font_value, 'BOTTOMLEFT', 0, -12);
     self.auras_custom_count_point:SetSize(120, 20);
     self.auras_custom_count_point:SetList(O.Lists.frame_points_localized);
     self.auras_custom_count_point:SetValue(O.db.auras_custom_count_point);
     self.auras_custom_count_point:SetLabel(L['POSITION']);
     self.auras_custom_count_point:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_POINT_TOOLTIP']);
-    self.auras_custom_count_point:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_POINT_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_count_point.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_custom_count_relative_point = E.CreateDropdown('plain', self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_relative_point:SetPosition('LEFT', self.auras_custom_count_point, 'RIGHT', 12, 0);
     self.auras_custom_count_relative_point:SetSize(120, 20);
     self.auras_custom_count_relative_point:SetList(O.Lists.frame_points_localized);
     self.auras_custom_count_relative_point:SetValue(O.db.auras_custom_count_relative_point);
     self.auras_custom_count_relative_point:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_RELATIVE_POINT_TOOLTIP']);
-    self.auras_custom_count_relative_point:AddToSearch(button, L['OPTIONS_AURAS_CUSTOM_COUNT_RELATIVE_POINT_TOOLTIP'], self.Tabs[5]);
     self.auras_custom_count_relative_point.OnValueChangedCallback = function(_, value)
         O.db.auras_custom_count_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.auras_custom_count_offset_x = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_offset_x:SetPosition('LEFT', self.auras_custom_count_relative_point, 'RIGHT', 8, 0);
     self.auras_custom_count_offset_x:SetSize(120, 18);
     self.auras_custom_count_offset_x:SetValues(O.db.auras_custom_count_offset_x, -50, 50, 1);
     self.auras_custom_count_offset_x:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_OFFSET_X_TOOLTIP']);
@@ -3377,7 +3549,6 @@ panel.Load = function(self)
     end
 
     self.auras_custom_count_offset_y = E.CreateSlider(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_count_offset_y:SetPosition('LEFT', self.auras_custom_count_offset_x, 'RIGHT', 12, 0);
     self.auras_custom_count_offset_y:SetSize(120, 18);
     self.auras_custom_count_offset_y:SetValues(O.db.auras_custom_count_offset_y, -50, 50, 1);
     self.auras_custom_count_offset_y:SetTooltip(L['OPTIONS_AURAS_CUSTOM_COUNT_OFFSET_Y_TOOLTIP']);
@@ -3386,8 +3557,23 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.AurasCustomCountPositionOptions = E.CreatePopOptions(self.TabsFrames['CustomTab'].Content);
+    self.AurasCustomCountPositionOptions:SetH(60);
+    self.AurasCustomCountPositionOptions:Add(self.auras_custom_count_point):SetPosition('TOPLEFT', self.AurasCustomCountPositionOptions, 'TOPLEFT', 12, -20);
+    self.AurasCustomCountPositionOptions:Add(self.auras_custom_count_relative_point):SetPosition('LEFT', self.auras_custom_count_point, 'RIGHT', 12, 0);
+    self.AurasCustomCountPositionOptions:Add(self.auras_custom_count_offset_x):SetPosition('LEFT', self.auras_custom_count_relative_point, 'RIGHT', 8, 0)
+    self.AurasCustomCountPositionOptions:Add(self.auras_custom_count_offset_y):SetPosition('LEFT', self.auras_custom_count_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowAurasCustomCountPositionOptionsButton = E.CreateButton(self.TabsFrames['CustomTab'].Content);
+    self.ShowAurasCustomCountPositionOptionsButton:SetPosition('LEFT', self.ShowAurasCustomCountFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowAurasCustomCountPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowAurasCustomCountPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowAurasCustomCountPositionOptionsButton:SetScript('OnClick', function()
+        self.AurasCustomCountPositionOptions:Show();
+    end);
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.auras_custom_count_point, 'BOTTOMLEFT', 0, -8);
+    Delimiter:SetPosition('TOPLEFT', self.auras_custom_count_color, 'BOTTOMLEFT', 0, 0);
     Delimiter:SetW(self:GetWidth());
 
     self.auras_custom_editbox = E.CreateEditBox(self.TabsFrames['CustomTab'].Content);

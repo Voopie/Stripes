@@ -42,8 +42,144 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    local Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_enabled, 'BOTTOMLEFT', 0, -2);
+    Delimiter:SetW(self:GetWidth());
+
+    self.name_text_font_value = E.CreateDropdown('font', self.TabsFrames['NameTab'].Content);
+    self.name_text_font_value:SetSize(160, 20);
+    self.name_text_font_value:SetList(LSM:HashTable('font'));
+    self.name_text_font_value:SetValue(O.db.name_text_font_value);
+    self.name_text_font_value:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_VALUE']);
+    self.name_text_font_value.OnValueChangedCallback = function(_, value)
+        O.db.name_text_font_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_font_size = E.CreateSlider(self.TabsFrames['NameTab'].Content);
+    self.name_text_font_size:SetValues(O.db.name_text_font_size, 3, 28, 1);
+    self.name_text_font_size:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_SIZE']);
+    self.name_text_font_size.OnValueChangedCallback = function(_, value)
+        O.db.name_text_font_size = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_font_flag:SetSize(160, 20);
+    self.name_text_font_flag:SetList(O.Lists.font_flags_localized);
+    self.name_text_font_flag:SetValue(O.db.name_text_font_flag);
+    self.name_text_font_flag:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_FLAG']);
+    self.name_text_font_flag.OnValueChangedCallback = function(_, value)
+        O.db.name_text_font_flag = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_font_shadow = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.name_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
+    self.name_text_font_shadow:SetChecked(O.db.name_text_font_shadow);
+    self.name_text_font_shadow:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_SHADOW']);
+    self.name_text_font_shadow.Callback = function(self)
+        O.db.name_text_font_shadow = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.NameFontOptions = E.CreatePopOptions(self.TabsFrames['NameTab'].Content);
+    self.NameFontOptions:SetH(60);
+    self.NameFontOptions:Add(self.name_text_font_value):SetPosition('TOPLEFT', self.NameFontOptions, 'TOPLEFT', 8, -20);
+    self.NameFontOptions:Add(self.name_text_font_size):SetPosition('LEFT', self.name_text_font_value, 'RIGHT', 12, 0);
+    self.NameFontOptions:Add(self.name_text_font_flag):SetPosition('LEFT', self.name_text_font_size, 'RIGHT', 12, 0);
+    self.NameFontOptions:Add(self.name_text_font_shadow):SetPosition('LEFT', self.name_text_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowNameFontOptionsButton = E.CreateButton(self.TabsFrames['NameTab'].Content);
+    self.ShowNameFontOptionsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.ShowNameFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowNameFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowNameFontOptionsButton:SetScript('OnClick', function()
+        self.NameFontOptions:Show();
+    end);
+
+    self.name_text_position_v = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_position_v:SetSize(100, 20);
+    self.name_text_position_v:SetList(O.Lists.name_position_v);
+    self.name_text_position_v:SetValue(O.db.name_text_position_v);
+    self.name_text_position_v:SetLabel(L['POSITION']);
+    self.name_text_position_v:SetTooltip(L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP']);
+    self.name_text_position_v.OnValueChangedCallback = function(_, value)
+        O.db.name_text_position_v = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_position = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_position:SetSize(100, 20);
+    self.name_text_position:SetList(O.Lists.name_position);
+    self.name_text_position:SetValue(O.db.name_text_position);
+    self.name_text_position:SetTooltip(L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP']);
+    self.name_text_position.OnValueChangedCallback = function(_, value)
+        O.db.name_text_position = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_offset_x = E.CreateSlider(self.TabsFrames['NameTab'].Content);
+    self.name_text_offset_x:SetW(80);
+    self.name_text_offset_x:SetValues(O.db.name_text_offset_x, -100, 100, 1);
+    self.name_text_offset_x:SetTooltip(L['OPTIONS_NAME_TEXT_OFFSET_X_TOOLTIP']);
+    self.name_text_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.name_text_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_offset_y = E.CreateSlider(self.TabsFrames['NameTab'].Content);
+    self.name_text_offset_y:SetW(80);
+    self.name_text_offset_y:SetValues(O.db.name_text_offset_y, -100, 100, 1);
+    self.name_text_offset_y:SetTooltip(L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP']);
+    self.name_text_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.name_text_offset_y = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_truncate = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.name_text_truncate:SetLabel(L['OPTIONS_NAME_TEXT_TRUNCATE']);
+    self.name_text_truncate:SetTooltip(L['OPTIONS_NAME_TEXT_TRUNCATE_TOOLTIP']);
+    self.name_text_truncate:SetChecked(O.db.name_text_truncate);
+    self.name_text_truncate.Callback = function(self)
+        O.db.name_text_truncate = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.name_text_frame_strata = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.name_text_frame_strata:SetSize(160, 20);
+    self.name_text_frame_strata:SetList(O.Lists.frame_strata);
+    self.name_text_frame_strata:SetValue(O.db.name_text_frame_strata);
+    self.name_text_frame_strata:SetLabel(L['FRAME_STRATA']);
+    self.name_text_frame_strata:SetTooltip(L['OPTIONS_NAME_TEXT_FRAME_STRATA_TOOLTIP']);
+    self.name_text_frame_strata.OnValueChangedCallback = function(_, value)
+        O.db.name_text_frame_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.NamePositionOptions = E.CreatePopOptions(self.TabsFrames['NameTab'].Content);
+    self.NamePositionOptions:SetH(120);
+    self.NamePositionOptions:Add(self.name_text_position_v):SetPosition('TOPLEFT', self.NamePositionOptions, 'TOPLEFT', 12, -30);
+    self.NamePositionOptions:Add(self.name_text_position):SetPosition('LEFT', self.name_text_position_v, 'RIGHT', 12, 0);
+    self.NamePositionOptions:Add(self.name_text_offset_x):SetPosition('LEFT', self.name_text_position, 'RIGHT', 12, 0);
+    self.NamePositionOptions:Add(self.name_text_offset_y):SetPosition('LEFT', self.name_text_offset_x, 'RIGHT', 12, 0);
+    self.NamePositionOptions:Add(self.name_text_truncate):SetPosition('LEFT', self.name_text_offset_y, 'RIGHT', 12, 0);
+    self.NamePositionOptions:Add(self.name_text_frame_strata):SetPosition('TOPLEFT', self.name_text_position_v, 'BOTTOMLEFT', 0, -12);
+
+    self.ShowNamePositionOptionsButton = E.CreateButton(self.TabsFrames['NameTab'].Content);
+    self.ShowNamePositionOptionsButton:SetPosition('LEFT', self.ShowNameFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowNamePositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowNamePositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowNamePositionOptionsButton:SetScript('OnClick', function()
+        self.NamePositionOptions:Show();
+    end);
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.ShowNameFontOptionsButton, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.name_without_realm = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_without_realm:SetPosition('LEFT', self.name_text_enabled.Label, 'RIGHT', 12, 0);
+    self.name_without_realm:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.name_without_realm:SetLabel(L['OPTIONS_NAME_WITHOUT_REALM']);
     self.name_without_realm:SetChecked(O.db.name_without_realm);
     self.name_without_realm:SetTooltip(L['OPTIONS_NAME_WITHOUT_REALM_TOOLTIP']);
@@ -81,7 +217,7 @@ panel.Load = function(self)
     end
 
     self.name_text_translit = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_translit:SetPosition('TOPLEFT', self.name_text_enabled, 'BOTTOMLEFT', 0, -8);
+    self.name_text_translit:SetPosition('TOPLEFT', self.name_without_realm, 'BOTTOMLEFT', 0, -8);
     self.name_text_translit:SetLabel(L['OPTIONS_NAME_TEXT_TRANSLIT']);
     self.name_text_translit:SetChecked(O.db.name_text_translit);
     self.name_text_translit:SetTooltip(L['OPTIONS_NAME_TEXT_TRANSLIT_TOOLTIP']);
@@ -142,7 +278,6 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-
     self.name_text_cut_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
     self.name_text_cut_enabled:SetPosition('TOPLEFT', self.name_text_abbreviated, 'BOTTOMLEFT', 0, -8);
     self.name_text_cut_enabled:SetLabel(L['OPTIONS_NAME_TEXT_CUT_ENABLED']);
@@ -183,8 +318,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.name_text_cut_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.name_text_first_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_first_mode:SetPosition('TOPLEFT', self.name_text_cut_enabled, 'BOTTOMLEFT', 0, -8);
+    self.name_text_first_mode:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.name_text_first_mode:SetSize(160, 20);
     self.name_text_first_mode:SetList(O.Lists.name_text_first_mode);
     self.name_text_first_mode:SetValue(O.db.name_text_first_mode);
@@ -196,133 +335,8 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-
-    local Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
+    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.name_text_first_mode, 'BOTTOMLEFT', 0, -4);
-    Delimiter:SetW(self:GetWidth());
-
-    self.name_text_font_value = E.CreateDropdown('font', self.TabsFrames['NameTab'].Content);
-    self.name_text_font_value:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.name_text_font_value:SetSize(160, 20);
-    self.name_text_font_value:SetList(LSM:HashTable('font'));
-    self.name_text_font_value:SetValue(O.db.name_text_font_value);
-    self.name_text_font_value:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_VALUE']);
-    self.name_text_font_value:AddToSearch(button, L['OPTIONS_NAME_TEXT_FONT_VALUE'], self.Tabs[1]);
-    self.name_text_font_value.OnValueChangedCallback = function(_, value)
-        O.db.name_text_font_value = value;
-        Stripes:UpdateAll();
-    end
-
-    self.name_text_font_size = E.CreateSlider(self.TabsFrames['NameTab'].Content);
-    self.name_text_font_size:SetPosition('LEFT', self.name_text_font_value, 'RIGHT', 12, 0);
-    self.name_text_font_size:SetValues(O.db.name_text_font_size, 3, 28, 1);
-    self.name_text_font_size:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_SIZE']);
-    self.name_text_font_size:AddToSearch(button, L['OPTIONS_NAME_TEXT_FONT_SIZE'], self.Tabs[1]);
-    self.name_text_font_size.OnValueChangedCallback = function(_, value)
-        O.db.name_text_font_size = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.name_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_font_flag:SetPosition('LEFT', self.name_text_font_size, 'RIGHT', 12, 0);
-    self.name_text_font_flag:SetSize(160, 20);
-    self.name_text_font_flag:SetList(O.Lists.font_flags_localized);
-    self.name_text_font_flag:SetValue(O.db.name_text_font_flag);
-    self.name_text_font_flag:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_FLAG']);
-    self.name_text_font_flag:AddToSearch(button, L['OPTIONS_NAME_TEXT_FONT_FLAG'], self.Tabs[1]);
-    self.name_text_font_flag.OnValueChangedCallback = function(_, value)
-        O.db.name_text_font_flag = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.name_text_font_shadow = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_font_shadow:SetPosition('LEFT', self.name_text_font_flag, 'RIGHT', 12, 0);
-    self.name_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
-    self.name_text_font_shadow:SetChecked(O.db.name_text_font_shadow);
-    self.name_text_font_shadow:SetTooltip(L['OPTIONS_NAME_TEXT_FONT_SHADOW']);
-    self.name_text_font_shadow:AddToSearch(button, L['OPTIONS_NAME_TEXT_FONT_SHADOW'], self.Tabs[1]);
-    self.name_text_font_shadow.Callback = function(self)
-        O.db.name_text_font_shadow = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
-    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.name_text_font_value, 'BOTTOMLEFT', 0, -4);
-    Delimiter:SetW(self:GetWidth());
-
-    self.name_text_position_v = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_position_v:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.name_text_position_v:SetSize(100, 20);
-    self.name_text_position_v:SetList(O.Lists.name_position_v);
-    self.name_text_position_v:SetValue(O.db.name_text_position_v);
-    self.name_text_position_v:SetLabel(L['POSITION']);
-    self.name_text_position_v:SetTooltip(L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP']);
-    self.name_text_position_v:AddToSearch(button, L['OPTIONS_NAME_TEXT_POSITION_V_TOOLTIP'], self.Tabs[1]);
-    self.name_text_position_v.OnValueChangedCallback = function(_, value)
-        O.db.name_text_position_v = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.name_text_position = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_position:SetPosition('LEFT', self.name_text_position_v, 'RIGHT', 12, 0);
-    self.name_text_position:SetSize(100, 20);
-    self.name_text_position:SetList(O.Lists.name_position);
-    self.name_text_position:SetValue(O.db.name_text_position);
-    self.name_text_position:SetTooltip(L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP']);
-    self.name_text_position:AddToSearch(button, L['OPTIONS_NAME_TEXT_POSITION_TOOLTIP'], self.Tabs[1]);
-    self.name_text_position.OnValueChangedCallback = function(_, value)
-        O.db.name_text_position = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.name_text_offset_x = E.CreateSlider(self.TabsFrames['NameTab'].Content);
-    self.name_text_offset_x:SetPosition('LEFT', self.name_text_position, 'RIGHT', 12, 0);
-    self.name_text_offset_x:SetW(80);
-    self.name_text_offset_x:SetValues(O.db.name_text_offset_x, -100, 100, 1);
-    self.name_text_offset_x:SetTooltip(L['OPTIONS_NAME_TEXT_OFFSET_X_TOOLTIP']);
-    self.name_text_offset_x:AddToSearch(button, L['OPTIONS_NAME_TEXT_OFFSET_X_TOOLTIP'], self.Tabs[1]);
-    self.name_text_offset_x.OnValueChangedCallback = function(_, value)
-        O.db.name_text_offset_x = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.name_text_offset_y = E.CreateSlider(self.TabsFrames['NameTab'].Content);
-    self.name_text_offset_y:SetPosition('LEFT', self.name_text_offset_x, 'RIGHT', 12, 0);
-    self.name_text_offset_y:SetW(80);
-    self.name_text_offset_y:SetValues(O.db.name_text_offset_y, -100, 100, 1);
-    self.name_text_offset_y:SetTooltip(L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP']);
-    self.name_text_offset_y:AddToSearch(button, L['OPTIONS_NAME_TEXT_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
-    self.name_text_offset_y.OnValueChangedCallback = function(_, value)
-        O.db.name_text_offset_y = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.name_text_truncate = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_truncate:SetPosition('LEFT', self.name_text_offset_y, 'RIGHT', 12, 0);
-    self.name_text_truncate:SetLabel(L['OPTIONS_NAME_TEXT_TRUNCATE']);
-    self.name_text_truncate:SetTooltip(L['OPTIONS_NAME_TEXT_TRUNCATE_TOOLTIP']);
-    self.name_text_truncate:SetChecked(O.db.name_text_truncate);
-    self.name_text_truncate:AddToSearch(button, L['OPTIONS_NAME_TEXT_TRUNCATE_TOOLTIP'], self.Tabs[1]);
-    self.name_text_truncate.Callback = function(self)
-        O.db.name_text_truncate = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
-    self.name_text_frame_strata = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
-    self.name_text_frame_strata:SetPosition('TOPLEFT', self.name_text_position_v, 'BOTTOMLEFT', 0, -12);
-    self.name_text_frame_strata:SetSize(160, 20);
-    self.name_text_frame_strata:SetList(O.Lists.frame_strata);
-    self.name_text_frame_strata:SetValue(O.db.name_text_frame_strata);
-    self.name_text_frame_strata:SetLabel(L['FRAME_STRATA']);
-    self.name_text_frame_strata:SetTooltip(L['OPTIONS_NAME_TEXT_FRAME_STRATA_TOOLTIP']);
-    self.name_text_frame_strata:AddToSearch(button, L['OPTIONS_NAME_TEXT_FRAME_STRATA_TOOLTIP'], self.Tabs[1]);
-    self.name_text_frame_strata.OnValueChangedCallback = function(_, value)
-        O.db.name_text_frame_strata = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.name_text_frame_strata, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.name_text_coloring_mode = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
@@ -405,8 +419,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.class_icon_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.name_text_show_arenaid = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.name_text_show_arenaid:SetPosition('TOPLEFT', self.class_icon_enabled, 'BOTTOMLEFT', 0, -8);
+    self.name_text_show_arenaid:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.name_text_show_arenaid:SetLabel(L['OPTIONS_NAME_TEXT_SHOW_ARENAID']);
     self.name_text_show_arenaid:SetTooltip(L['OPTIONS_NAME_TEXT_SHOW_ARENAID_TOOLTIP']);
     self.name_text_show_arenaid:SetChecked(O.db.name_text_show_arenaid);
@@ -431,16 +449,16 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.name_text_show_arenaid, 'BOTTOMLEFT', 0, -4);
-    Delimiter:SetW(self:GetWidth());
+    local TargetNameHeader = E.CreateHeader(self.TabsFrames['NameTab'].Content, L['OPTIONS_TARGET_NAME_HEADER']);
+    TargetNameHeader:SetPosition('TOPLEFT', self.name_text_show_arenaid, 'BOTTOMLEFT', 0, -4);
+    TargetNameHeader:SetW(self:GetWidth());
 
     self.target_name_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
-    self.target_name_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.target_name_enabled:SetLabel(L['OPTIONS_TARGET_NAME_ENABLED']);
+    self.target_name_enabled:SetPosition('TOPLEFT', TargetNameHeader, 'BOTTOMLEFT', 0, -4);
+    self.target_name_enabled:SetLabel(L['OPTIONS_SHOW']);
     self.target_name_enabled:SetTooltip(L['OPTIONS_TARGET_NAME_ENABLED_TOOLTIP']);
     self.target_name_enabled:SetChecked(O.db.target_name_enabled);
-    self.target_name_enabled:AddToSearch(button, nil, self.Tabs[1]);
+    self.target_name_enabled:AddToSearch(button, L['OPTIONS_TARGET_NAME_ENABLED_TOOLTIP'], self.Tabs[1]);
     self.target_name_enabled.Callback = function(self)
         O.db.target_name_enabled = self:GetChecked();
 
@@ -530,8 +548,81 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['HealthTextTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.health_text_enabled, 'BOTTOMLEFT', 0, -2);
+    Delimiter:SetW(self:GetWidth());
+
+    self.health_text_font_value = E.CreateDropdown('font', self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_font_value:SetSize(160, 20);
+    self.health_text_font_value:SetList(LSM:HashTable('font'));
+    self.health_text_font_value:SetValue(O.db.health_text_font_value);
+    self.health_text_font_value:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_VALUE']);
+    self.health_text_font_value.OnValueChangedCallback = function(_, value)
+        O.db.health_text_font_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.health_text_font_size = E.CreateSlider(self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_font_size:SetValues(O.db.health_text_font_size, 3, 28, 1);
+    self.health_text_font_size:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_SIZE']);
+    self.health_text_font_size.OnValueChangedCallback = function(_, value)
+        O.db.health_text_font_size = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.health_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_font_flag:SetSize(160, 20);
+    self.health_text_font_flag:SetList(O.Lists.font_flags_localized);
+    self.health_text_font_flag:SetValue(O.db.health_text_font_flag);
+    self.health_text_font_flag:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_FLAG']);
+    self.health_text_font_flag.OnValueChangedCallback = function(_, value)
+        O.db.health_text_font_flag = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.health_text_font_shadow = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
+    self.health_text_font_shadow:SetChecked(O.db.health_text_font_shadow);
+    self.health_text_font_shadow:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_SHADOW']);
+    self.health_text_font_shadow.Callback = function(self)
+        O.db.health_text_font_shadow = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.HealthFontOptions = E.CreatePopOptions(self.TabsFrames['HealthTextTab'].Content);
+    self.HealthFontOptions:SetH(60);
+    self.HealthFontOptions:Add(self.health_text_font_value):SetPosition('TOPLEFT', self.HealthFontOptions, 'TOPLEFT', 8, -20);
+    self.HealthFontOptions:Add(self.health_text_font_size):SetPosition('LEFT', self.health_text_font_value, 'RIGHT', 12, 0);
+    self.HealthFontOptions:Add(self.health_text_font_flag):SetPosition('LEFT', self.health_text_font_size, 'RIGHT', 12, 0);
+    self.HealthFontOptions:Add(self.health_text_font_shadow):SetPosition('LEFT', self.health_text_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowHealthFontOptionsButton = E.CreateButton(self.TabsFrames['HealthTextTab'].Content);
+    self.ShowHealthFontOptionsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.ShowHealthFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowHealthFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowHealthFontOptionsButton:SetScript('OnClick', function()
+        self.HealthFontOptions:Show();
+    end);
+
+    self.health_text_frame_strata = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
+    self.health_text_frame_strata:SetPosition('LEFT', self.ShowHealthFontOptionsButton, 'RIGHT', 16, 0);
+    self.health_text_frame_strata:SetSize(160, 20);
+    self.health_text_frame_strata:SetList(O.Lists.frame_strata);
+    self.health_text_frame_strata:SetValue(O.db.health_text_frame_strata);
+    self.health_text_frame_strata:SetLabel(L['FRAME_STRATA']);
+    self.health_text_frame_strata:SetTooltip(L['OPTIONS_HEALTH_TEXT_FRAME_STRATA_TOOLTIP']);
+    self.health_text_frame_strata:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FRAME_STRATA_TOOLTIP'], self.Tabs[2]);
+    self.health_text_frame_strata.OnValueChangedCallback = function(_, value)
+        O.db.health_text_frame_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['HealthTextTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.ShowHealthFontOptionsButton, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.health_text_show_only_on_target = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_show_only_on_target:SetPosition('LEFT', self.health_text_enabled.Label, 'RIGHT', 12, 0);
+    self.health_text_show_only_on_target:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.health_text_show_only_on_target:SetLabel(L['OPTIONS_HEALTH_TEXT_SHOW_ONLY_ON_TARGET']);
     self.health_text_show_only_on_target:SetTooltip(L['OPTIONS_HEALTH_TEXT_SHOW_ONLY_ON_TARGET_TOOLTIP']);
     self.health_text_show_only_on_target:SetChecked(O.db.health_text_show_only_on_target);
@@ -553,7 +644,7 @@ panel.Load = function(self)
     end
 
     self.health_text_show_pct_sign = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_show_pct_sign:SetPosition('TOPLEFT', self.health_text_enabled, 'BOTTOMLEFT', 0, -8);
+    self.health_text_show_pct_sign:SetPosition('TOPLEFT', self.health_text_show_only_on_target, 'BOTTOMLEFT', 0, -8);
     self.health_text_show_pct_sign:SetLabel(L['OPTIONS_HEALTH_TEXT_SHOW_PCT_SIGN']);
     self.health_text_show_pct_sign:SetTooltip(L['OPTIONS_HEALTH_TEXT_SHOW_PCT_SIGN_TOOLTIP']);
     self.health_text_show_pct_sign:SetChecked(O.db.health_text_show_pct_sign);
@@ -588,70 +679,8 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.health_text_frame_strata = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_frame_strata:SetPosition('TOPLEFT', self.health_text_custom_color_enabled, 'BOTTOMLEFT', 0, -10);
-    self.health_text_frame_strata:SetSize(160, 20);
-    self.health_text_frame_strata:SetList(O.Lists.frame_strata);
-    self.health_text_frame_strata:SetValue(O.db.health_text_frame_strata);
-    self.health_text_frame_strata:SetLabel(L['FRAME_STRATA']);
-    self.health_text_frame_strata:SetTooltip(L['OPTIONS_HEALTH_TEXT_FRAME_STRATA_TOOLTIP']);
-    self.health_text_frame_strata:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FRAME_STRATA_TOOLTIP'], self.Tabs[2]);
-    self.health_text_frame_strata.OnValueChangedCallback = function(_, value)
-        O.db.health_text_frame_strata = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
     Delimiter = E.CreateDelimiter(self.TabsFrames['HealthTextTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.health_text_frame_strata, 'BOTTOMLEFT', 0, -4);
-    Delimiter:SetW(self:GetWidth());
-
-    self.health_text_font_value = E.CreateDropdown('font', self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_font_value:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.health_text_font_value:SetSize(160, 20);
-    self.health_text_font_value:SetList(LSM:HashTable('font'));
-    self.health_text_font_value:SetValue(O.db.health_text_font_value);
-    self.health_text_font_value:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_VALUE']);
-    self.health_text_font_value:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FONT_VALUE'], self.Tabs[2]);
-    self.health_text_font_value.OnValueChangedCallback = function(_, value)
-        O.db.health_text_font_value = value;
-        Stripes:UpdateAll();
-    end
-
-    self.health_text_font_size = E.CreateSlider(self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_font_size:SetPosition('LEFT', self.health_text_font_value, 'RIGHT', 12, 0);
-    self.health_text_font_size:SetValues(O.db.health_text_font_size, 3, 28, 1);
-    self.health_text_font_size:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_SIZE']);
-    self.health_text_font_size:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FONT_SIZE'], self.Tabs[2]);
-    self.health_text_font_size.OnValueChangedCallback = function(_, value)
-        O.db.health_text_font_size = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.health_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_font_flag:SetPosition('LEFT', self.health_text_font_size, 'RIGHT', 12, 0);
-    self.health_text_font_flag:SetSize(160, 20);
-    self.health_text_font_flag:SetList(O.Lists.font_flags_localized);
-    self.health_text_font_flag:SetValue(O.db.health_text_font_flag);
-    self.health_text_font_flag:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_FLAG']);
-    self.health_text_font_flag:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FONT_FLAG'], self.Tabs[2]);
-    self.health_text_font_flag.OnValueChangedCallback = function(_, value)
-        O.db.health_text_font_flag = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.health_text_font_shadow = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_font_shadow:SetPosition('LEFT', self.health_text_font_flag, 'RIGHT', 12, 0);
-    self.health_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
-    self.health_text_font_shadow:SetChecked(O.db.health_text_font_shadow);
-    self.health_text_font_shadow:SetTooltip(L['OPTIONS_HEALTH_TEXT_FONT_SHADOW']);
-    self.health_text_font_shadow:AddToSearch(button, L['OPTIONS_HEALTH_TEXT_FONT_SHADOW'], self.Tabs[2]);
-    self.health_text_font_shadow.Callback = function(self)
-        O.db.health_text_font_shadow = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
-    Delimiter = E.CreateDelimiter(self.TabsFrames['HealthTextTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.health_text_font_value, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.health_text_custom_color_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.health_text_block_mode = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
@@ -832,7 +861,6 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     -- Level text Tab ------------------------------------------------------------------------------------------------------------------
@@ -853,8 +881,123 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['LevelTextTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.level_text_enabled, 'BOTTOMLEFT', 0, -2);
+    Delimiter:SetW(self:GetWidth());
+
+    self.level_text_font_value = E.CreateDropdown('font', self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_font_value:SetSize(160, 20);
+    self.level_text_font_value:SetList(LSM:HashTable('font'));
+    self.level_text_font_value:SetValue(O.db.level_text_font_value);
+    self.level_text_font_value:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_VALUE']);
+    self.level_text_font_value.OnValueChangedCallback = function(_, value)
+        O.db.level_text_font_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.level_text_font_size = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_font_size:SetValues(O.db.level_text_font_size, 3, 28, 1);
+    self.level_text_font_size:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_SIZE']);
+    self.level_text_font_size.OnValueChangedCallback = function(_, value)
+        O.db.level_text_font_size = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.level_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_font_flag:SetSize(160, 20);
+    self.level_text_font_flag:SetList(O.Lists.font_flags_localized);
+    self.level_text_font_flag:SetValue(O.db.level_text_font_flag);
+    self.level_text_font_flag:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_FLAG']);
+    self.level_text_font_flag.OnValueChangedCallback = function(_, value)
+        O.db.level_text_font_flag = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.level_text_font_shadow = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
+    self.level_text_font_shadow:SetChecked(O.db.level_text_font_shadow);
+    self.level_text_font_shadow:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_SHADOW']);
+    self.level_text_font_shadow.Callback = function(self)
+        O.db.level_text_font_shadow = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.LevelFontOptions = E.CreatePopOptions(self.TabsFrames['LevelTextTab'].Content);
+    self.LevelFontOptions:SetH(60);
+    self.LevelFontOptions:Add(self.level_text_font_value):SetPosition('TOPLEFT', self.LevelFontOptions, 'TOPLEFT', 8, -20);
+    self.LevelFontOptions:Add(self.level_text_font_size):SetPosition('LEFT', self.level_text_font_value, 'RIGHT', 12, 0);
+    self.LevelFontOptions:Add(self.level_text_font_flag):SetPosition('LEFT', self.level_text_font_size, 'RIGHT', 12, 0);
+    self.LevelFontOptions:Add(self.level_text_font_shadow):SetPosition('LEFT', self.level_text_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowLevelFontOptionsButton = E.CreateButton(self.TabsFrames['LevelTextTab'].Content);
+    self.ShowLevelFontOptionsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.ShowLevelFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowLevelFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowLevelFontOptionsButton:SetScript('OnClick', function()
+        self.LevelFontOptions:Show();
+    end);
+
+    self.level_text_anchor = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_anchor:SetSize(120, 20);
+    self.level_text_anchor:SetList(O.Lists.frame_points_simple_localized);
+    self.level_text_anchor:SetValue(O.db.level_text_anchor);
+    self.level_text_anchor:SetLabel(L['POSITION']);
+    self.level_text_anchor:SetTooltip(L['OPTIONS_LEVEL_TEXT_ANCHOR_TOOLTIP']);
+    self.level_text_anchor.OnValueChangedCallback = function(_, value)
+        O.db.level_text_anchor = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.level_text_x_offset = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_x_offset:SetW(137);
+    self.level_text_x_offset:SetTooltip(L['OPTIONS_LEVEL_TEXT_X_OFFSET_TOOLTIP']);
+    self.level_text_x_offset:SetValues(O.db.level_text_x_offset, -99, 100, 1);
+    self.level_text_x_offset.OnValueChangedCallback = function(_, value)
+        O.db.level_text_x_offset = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.level_text_y_offset = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_y_offset:SetW(137);
+    self.level_text_y_offset:SetTooltip(L['OPTIONS_LEVEL_TEXT_Y_OFFSET_TOOLTIP']);
+    self.level_text_y_offset:SetValues(O.db.level_text_y_offset, -99, 100, 1);
+    self.level_text_y_offset.OnValueChangedCallback = function(_, value)
+        O.db.level_text_y_offset = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.level_text_frame_strata = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
+    self.level_text_frame_strata:SetSize(160, 20);
+    self.level_text_frame_strata:SetList(O.Lists.frame_strata);
+    self.level_text_frame_strata:SetValue(O.db.level_text_frame_strata);
+    self.level_text_frame_strata:SetLabel(L['FRAME_STRATA']);
+    self.level_text_frame_strata:SetTooltip(L['OPTIONS_LEVEL_TEXT_FRAME_STRATA_TOOLTIP']);
+    self.level_text_frame_strata.OnValueChangedCallback = function(_, value)
+        O.db.level_text_frame_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.LevelPositionOptions = E.CreatePopOptions(self.TabsFrames['LevelTextTab'].Content);
+    self.LevelPositionOptions:SetH(120);
+    self.LevelPositionOptions:Add(self.level_text_anchor):SetPosition('TOPLEFT', self.LevelPositionOptions, 'TOPLEFT', 12, -30);
+    self.LevelPositionOptions:Add(self.level_text_x_offset):SetPosition('LEFT', self.level_text_anchor, 'RIGHT', 16, 0);
+    self.LevelPositionOptions:Add(self.level_text_y_offset):SetPosition('LEFT', self.level_text_x_offset, 'RIGHT', 16, 0);
+    self.LevelPositionOptions:Add(self.level_text_frame_strata):SetPosition('TOPLEFT', self.level_text_anchor, 'BOTTOMLEFT', 0, -12);
+
+    self.ShowLevelPositionOptionsButton = E.CreateButton(self.TabsFrames['LevelTextTab'].Content);
+    self.ShowLevelPositionOptionsButton:SetPosition('LEFT', self.ShowLevelFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowLevelPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowLevelPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowLevelPositionOptionsButton:SetScript('OnClick', function()
+        self.LevelPositionOptions:Show();
+    end);
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['LevelTextTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.ShowLevelFontOptionsButton, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.level_text_show_only_on_target = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_show_only_on_target:SetPosition('LEFT', self.level_text_enabled.Label, 'RIGHT', 12, 0);
+    self.level_text_show_only_on_target:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.level_text_show_only_on_target:SetLabel(L['OPTIONS_LEVEL_TEXT_SHOW_ONLY_ON_TARGET']);
     self.level_text_show_only_on_target:SetTooltip(L['OPTIONS_LEVEL_TEXT_SHOW_ONLY_ON_TARGET_TOOLTIP']);
     self.level_text_show_only_on_target:SetChecked(O.db.level_text_show_only_on_target);
@@ -877,7 +1020,7 @@ panel.Load = function(self)
     end
 
     self.level_text_use_diff_color = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_use_diff_color:SetPosition('TOPLEFT', self.level_text_enabled, 'BOTTOMLEFT', 0, -8);
+    self.level_text_use_diff_color:SetPosition('TOPLEFT', self.level_text_show_only_on_target, 'BOTTOMLEFT', 0, -8);
     self.level_text_use_diff_color:SetLabel(L['OPTIONS_LEVEL_TEXT_USE_DIFF_COLOR']);
     self.level_text_use_diff_color:SetChecked(O.db.level_text_use_diff_color);
     self.level_text_use_diff_color:SetTooltip(L['OPTIONS_LEVEL_TEXT_USE_DIFF_COLOR_TOOLTIP']);
@@ -913,107 +1056,6 @@ panel.Load = function(self)
         O.db.level_text_custom_color[3] = b;
         O.db.level_text_custom_color[4] = a or 1;
 
-        Stripes:UpdateAll();
-    end
-
-    self.level_text_frame_strata = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_frame_strata:SetPosition('TOPLEFT', self.level_text_use_diff_color, 'BOTTOMLEFT', 0, -10);
-    self.level_text_frame_strata:SetSize(160, 20);
-    self.level_text_frame_strata:SetList(O.Lists.frame_strata);
-    self.level_text_frame_strata:SetValue(O.db.level_text_frame_strata);
-    self.level_text_frame_strata:SetLabel(L['FRAME_STRATA']);
-    self.level_text_frame_strata:SetTooltip(L['OPTIONS_LEVEL_TEXT_FRAME_STRATA_TOOLTIP']);
-    self.level_text_frame_strata:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FRAME_STRATA_TOOLTIP'], self.Tabs[3]);
-    self.level_text_frame_strata.OnValueChangedCallback = function(_, value)
-        O.db.level_text_frame_strata = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    Delimiter = E.CreateDelimiter(self.TabsFrames['LevelTextTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.level_text_frame_strata, 'BOTTOMLEFT', 0, -4);
-    Delimiter:SetW(self:GetWidth());
-
-    self.level_text_font_value = E.CreateDropdown('font', self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_font_value:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.level_text_font_value:SetSize(160, 20);
-    self.level_text_font_value:SetList(LSM:HashTable('font'));
-    self.level_text_font_value:SetValue(O.db.level_text_font_value);
-    self.level_text_font_value:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_VALUE']);
-    self.level_text_font_value:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FONT_VALUE'], self.Tabs[3]);
-    self.level_text_font_value.OnValueChangedCallback = function(_, value)
-        O.db.level_text_font_value = value;
-        Stripes:UpdateAll();
-    end
-
-    self.level_text_font_size = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_font_size:SetPosition('LEFT', self.level_text_font_value, 'RIGHT', 12, 0);
-    self.level_text_font_size:SetValues(O.db.level_text_font_size, 3, 28, 1);
-    self.level_text_font_size:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_SIZE']);
-    self.level_text_font_size:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FONT_SIZE'], self.Tabs[3]);
-    self.level_text_font_size.OnValueChangedCallback = function(_, value)
-        O.db.level_text_font_size = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.level_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_font_flag:SetPosition('LEFT', self.level_text_font_size, 'RIGHT', 12, 0);
-    self.level_text_font_flag:SetSize(160, 20);
-    self.level_text_font_flag:SetList(O.Lists.font_flags_localized);
-    self.level_text_font_flag:SetValue(O.db.level_text_font_flag);
-    self.level_text_font_flag:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_FLAG']);
-    self.level_text_font_flag:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FONT_FLAG'], self.Tabs[3]);
-    self.level_text_font_flag.OnValueChangedCallback = function(_, value)
-        O.db.level_text_font_flag = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.level_text_font_shadow = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_font_shadow:SetPosition('LEFT', self.level_text_font_flag, 'RIGHT', 12, 0);
-    self.level_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
-    self.level_text_font_shadow:SetChecked(O.db.level_text_font_shadow);
-    self.level_text_font_shadow:SetTooltip(L['OPTIONS_LEVEL_TEXT_FONT_SHADOW']);
-    self.level_text_font_shadow:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_FONT_SHADOW'], self.Tabs[3]);
-    self.level_text_font_shadow.Callback = function(self)
-        O.db.level_text_font_shadow = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
-    Delimiter = E.CreateDelimiter(self.TabsFrames['LevelTextTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.level_text_font_value, 'BOTTOMLEFT', 0, -4);
-    Delimiter:SetW(self:GetWidth());
-
-    self.level_text_anchor = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_anchor:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.level_text_anchor:SetSize(120, 20);
-    self.level_text_anchor:SetList(O.Lists.frame_points_simple_localized);
-    self.level_text_anchor:SetValue(O.db.level_text_anchor);
-    self.level_text_anchor:SetLabel(L['POSITION']);
-    self.level_text_anchor:SetTooltip(L['OPTIONS_LEVEL_TEXT_ANCHOR_TOOLTIP']);
-    self.level_text_anchor:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_ANCHOR_TOOLTIP'], self.Tabs[3]);
-    self.level_text_anchor.OnValueChangedCallback = function(_, value)
-        O.db.level_text_anchor = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.level_text_x_offset = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_x_offset:SetPosition('LEFT', self.level_text_anchor, 'RIGHT', 16, 0);
-    self.level_text_x_offset:SetW(137);
-    self.level_text_x_offset:SetTooltip(L['OPTIONS_LEVEL_TEXT_X_OFFSET_TOOLTIP']);
-    self.level_text_x_offset:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_X_OFFSET_TOOLTIP'], self.Tabs[3]);
-    self.level_text_x_offset:SetValues(O.db.level_text_x_offset, -99, 100, 1);
-    self.level_text_x_offset.OnValueChangedCallback = function(_, value)
-        O.db.level_text_x_offset = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.level_text_y_offset = E.CreateSlider(self.TabsFrames['LevelTextTab'].Content);
-    self.level_text_y_offset:SetPosition('LEFT', self.level_text_x_offset, 'RIGHT', 16, 0);
-    self.level_text_y_offset:SetW(137);
-    self.level_text_y_offset:SetTooltip(L['OPTIONS_LEVEL_TEXT_Y_OFFSET_TOOLTIP']);
-    self.level_text_y_offset:AddToSearch(button, L['OPTIONS_LEVEL_TEXT_Y_OFFSET_TOOLTIP'], self.Tabs[3]);
-    self.level_text_y_offset:SetValues(O.db.level_text_y_offset, -99, 100, 1);
-    self.level_text_y_offset.OnValueChangedCallback = function(_, value)
-        O.db.level_text_y_offset = tonumber(value);
         Stripes:UpdateAll();
     end
 end

@@ -582,7 +582,14 @@ do
         end
 
         slider.SetLabel = function(self, label)
+            self.SearchText = label;
+
             self.Text:SetText(label);
+
+            if not self.point then
+                return;
+            end
+
             self.Text:ClearAllPoints();
 
             if self.LabelPostion == 'LEFT' then
@@ -594,8 +601,6 @@ do
                 PixelUtil.SetPoint(self.Text, 'BOTTOMLEFT', self, 'TOPLEFT', 0, 4);
                 PixelUtil.SetPoint(self, self.point, self.relativeTo, self.relativePoint, self.offsetX, self.offsetY);
             end
-
-            self.SearchText = label;
         end
 
         slider.SetLabelPosition = function(self, position)
@@ -2058,6 +2063,11 @@ do
             end
         end);
 
+        hooksecurefunc(container, 'SetParent', function(self, p)
+            self.holderButton:SetParent(p);
+            self.holderButton:SetFrameLevel(self.holderButton:GetFrameLevel() + 1);
+        end);
+
         container.type = 'DropDown';
 
         return container;
@@ -2391,6 +2401,63 @@ E.CreatePseudoLink = function(parent)
     end);
 
     return link;
+end
+
+do
+    local BACKDROP = {
+        bgFile   = 'Interface\\Buttons\\WHITE8x8',
+        insets   = { left = 0, right = 0, top = 0, bottom = 0 },
+    };
+
+    local FONT_BACKDROP = {
+        bgFile   = 'Interface\\Buttons\\WHITE8x8',
+        insets   = { left = 1, right = 1, top = 1, bottom = 1 },
+    };
+
+    local Fader = CreateFrame('Button', nil, UIParent, 'BackdropTemplate');
+    Fader:SetBackdrop(BACKDROP);
+    Fader:SetBackdropColor(0, 0, 0, 0.75);
+    Fader:Hide();
+    Fader:SetScript('OnClick', function(self)
+        self.Holder:SetShown(false);
+        self:Hide();
+    end);
+
+    E.CreatePopOptions = function(parent)
+        local frame = Mixin(CreateFrame('Button', nil, parent, 'BackdropTemplate'), E.PixelPerfectMixin);
+        frame:SetPosition('CENTER', Fader, 'CENTER', 0, 40);
+        frame:SetSize(600, 300);
+        frame:SetBackdrop(FONT_BACKDROP);
+        frame:SetBackdropColor(0.1, 0.1, 0.1, 1);
+        frame:SetShown(false);
+
+        frame:HookScript('OnShow', function(self)
+            Fader:SetParent(parent);
+            Fader:SetAllPoints(O.frame.Main);
+            Fader:SetFrameLevel(O.frame.Main:GetFrameLevel() + 10);
+            Fader:Show();
+
+            self:SetFrameLevel(O.frame.Main:GetFrameLevel() + 10);
+
+            Fader.Holder = self;
+        end);
+
+        frame:HookScript('OnHide', function(self)
+            Fader:Hide();
+        end);
+
+        frame.Add = function(self, object)
+            if not object then
+                return;
+            end
+
+            object:SetParent(self);
+
+            return object;
+        end
+
+        return frame;
+    end
 end
 
 function Module:StartUp()

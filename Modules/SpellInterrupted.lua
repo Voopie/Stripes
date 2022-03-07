@@ -16,7 +16,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local NP = S.NamePlates;
 
 -- Local Config
-local ENABLED, SIZE, CASTER_NAME_SHOW, FRAME_STRATA;
+local ENABLED, SIZE, COUNTDOWN_ENABLED, CASTER_NAME_SHOW, FRAME_STRATA;
 
 local StripesSpellInterruptedCooldownFont = CreateFont('StripesSpellInterruptedCooldownFont');
 local StripesSpellInterruptedCasterFont   = CreateFont('StripesSpellInterruptedCasterFont');
@@ -76,7 +76,7 @@ local function Create(unitframe)
 
     frame.cooldown = CreateFrame('Cooldown', nil, frame, 'CooldownFrameTemplate');
     frame.cooldown:SetAllPoints(frame.icon);
-    frame.cooldown:SetHideCountdownNumbers(false);
+    frame.cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
     frame.cooldown:GetRegions():SetFontObject(StripesSpellInterruptedCooldownFont);
     frame.cooldown:HookScript('OnCooldownDone', function(self)
         self:GetParent().expTime = 0;
@@ -97,6 +97,8 @@ end
 
 local function Update(unitframe)
     if ENABLED then
+        unitframe.SpellInterrupted.cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+
         if FRAME_STRATA == 1 then
             unitframe.SpellInterrupted:SetFrameStrata(unitframe.SpellInterrupted:GetParent():GetFrameStrata());
         else
@@ -224,10 +226,11 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    ENABLED          = O.db.spell_interrupted_icon;
-    SIZE             = O.db.spell_interrupted_icon_size;
-    CASTER_NAME_SHOW = O.db.spell_interrupted_icon_caster_name_show;
-    FRAME_STRATA     = O.db.spell_interrupted_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.spell_interrupted_icon_frame_strata] or 1;
+    ENABLED           = O.db.spell_interrupted_icon;
+    SIZE              = O.db.spell_interrupted_icon_size;
+    COUNTDOWN_ENABLED = O.db.spell_interrupted_icon_countdown_show;
+    CASTER_NAME_SHOW  = O.db.spell_interrupted_icon_caster_name_show;
+    FRAME_STRATA      = O.db.spell_interrupted_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.spell_interrupted_icon_frame_strata] or 1;
 
     UpdateFontObject(StripesSpellInterruptedCooldownFont, O.db.spell_interrupted_icon_countdown_font_value, O.db.spell_interrupted_icon_countdown_font_size, O.db.spell_interrupted_icon_countdown_font_flag, O.db.spell_interrupted_icon_countdown_font_shadow);
     UpdateFontObject(StripesSpellInterruptedCasterFont, O.db.spell_interrupted_icon_caster_name_font_value, O.db.spell_interrupted_icon_caster_name_font_size, O.db.spell_interrupted_icon_caster_name_font_flag, O.db.spell_interrupted_icon_caster_name_font_shadow);

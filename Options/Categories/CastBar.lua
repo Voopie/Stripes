@@ -841,101 +841,115 @@ panel.Load = function(self)
     CastNameHeader:SetPosition('TOPLEFT', self.castbar_border_enabled, 'BOTTOMLEFT', 0, -4);
     CastNameHeader:SetW(self:GetWidth());
 
-    self.castbar_text_anchor = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_anchor:SetPosition('TOPLEFT', CastNameHeader, 'BOTTOMLEFT', 0, -20);
-    self.castbar_text_anchor:SetSize(120, 20);
-    self.castbar_text_anchor:SetList(O.Lists.frame_points_simple_localized);
-    self.castbar_text_anchor:SetValue(O.db.castbar_text_anchor);
-    self.castbar_text_anchor:SetLabel(L['POSITION']);
-    self.castbar_text_anchor:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_ANCHOR_TOOLTIP']);
-    self.castbar_text_anchor:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_ANCHOR_TOOLTIP'], self.Tabs[1]);
-    self.castbar_text_anchor.OnValueChangedCallback = function(_, value)
-        O.db.castbar_text_anchor = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_text_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_offset_x:SetPosition('LEFT', self.castbar_text_anchor, 'RIGHT', 12, 0);
-    self.castbar_text_offset_x:SetW(116);
-    self.castbar_text_offset_x:SetValues(O.db.castbar_text_offset_x, -100, 100, 1);
-    self.castbar_text_offset_x:SetLabel(L['OFFSET_X_SHORT']);
-    self.castbar_text_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP']);
-    self.castbar_text_offset_x:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP'], self.Tabs[1]);
-    self.castbar_text_offset_x.OnValueChangedCallback = function(_, value)
-        O.db.castbar_text_offset_x = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_text_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_offset_y:SetPosition('LEFT', self.castbar_text_offset_x, 'RIGHT', 12, 0);
-    self.castbar_text_offset_y:SetW(116);
-    self.castbar_text_offset_y:SetValues(O.db.castbar_text_offset_y, -100, 100, 1);
-    self.castbar_text_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
-    self.castbar_text_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP']);
-    self.castbar_text_offset_y:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
-    self.castbar_text_offset_y.OnValueChangedCallback = function(_, value)
-        O.db.castbar_text_offset_y = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_text_truncate = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_truncate:SetPosition('LEFT', self.castbar_text_offset_y, 'RIGHT', 12, 0);
-    self.castbar_text_truncate:SetLabel(L['OPTIONS_CAST_BAR_TEXT_TRUNCATE']);
-    self.castbar_text_truncate:SetChecked(O.db.castbar_text_truncate);
-    self.castbar_text_truncate:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_TRUNCATE_TOOLTIP']);
-    self.castbar_text_truncate:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_TRUNCATE_TOOLTIP'], self.Tabs[1]);
-    self.castbar_text_truncate.Callback = function(self)
-        O.db.castbar_text_truncate = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
     self.castbar_text_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_font_value:SetPosition('TOPLEFT', self.castbar_text_anchor, 'BOTTOMLEFT', 0, -14);
     self.castbar_text_font_value:SetSize(160, 20);
     self.castbar_text_font_value:SetList(LSM:HashTable('font'));
     self.castbar_text_font_value:SetValue(O.db.castbar_text_font_value);
     self.castbar_text_font_value:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_FONT_VALUE']);
-    self.castbar_text_font_value:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_FONT_VALUE'], self.Tabs[1]);
     self.castbar_text_font_value.OnValueChangedCallback = function(_, value)
         O.db.castbar_text_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.castbar_text_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_font_size:SetPosition('LEFT', self.castbar_text_font_value, 'RIGHT', 12, 0);
     self.castbar_text_font_size:SetValues(O.db.castbar_text_font_size, 3, 28, 1);
     self.castbar_text_font_size:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_FONT_SIZE']);
-    self.castbar_text_font_size:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_FONT_SIZE'], self.Tabs[1]);
     self.castbar_text_font_size.OnValueChangedCallback = function(_, value)
         O.db.castbar_text_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.castbar_text_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_font_flag:SetPosition('LEFT', self.castbar_text_font_size, 'RIGHT', 12, 0);
     self.castbar_text_font_flag:SetSize(160, 20);
     self.castbar_text_font_flag:SetList(O.Lists.font_flags_localized);
     self.castbar_text_font_flag:SetValue(O.db.castbar_text_font_flag);
     self.castbar_text_font_flag:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_FONT_FLAG']);
-    self.castbar_text_font_flag:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_FONT_FLAG'], self.Tabs[1]);
     self.castbar_text_font_flag.OnValueChangedCallback = function(_, value)
         O.db.castbar_text_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.castbar_text_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_text_font_shadow:SetPosition('LEFT', self.castbar_text_font_flag, 'RIGHT', 12, 0);
     self.castbar_text_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.castbar_text_font_shadow:SetChecked(O.db.castbar_text_font_shadow);
     self.castbar_text_font_shadow:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_FONT_SHADOW']);
-    self.castbar_text_font_shadow:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_FONT_SHADOW'], self.Tabs[1]);
     self.castbar_text_font_shadow.Callback = function(self)
         O.db.castbar_text_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.CastBarTextFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.CastBarTextFontOptions:SetH(60);
+    self.CastBarTextFontOptions:Add(self.castbar_text_font_value):SetPosition('TOPLEFT', self.CastBarTextFontOptions, 'TOPLEFT', 8, -20);
+    self.CastBarTextFontOptions:Add(self.castbar_text_font_size):SetPosition('LEFT', self.castbar_text_font_value, 'RIGHT', 12, 0);
+    self.CastBarTextFontOptions:Add(self.castbar_text_font_flag):SetPosition('LEFT', self.castbar_text_font_size, 'RIGHT', 12, 0);
+    self.CastBarTextFontOptions:Add(self.castbar_text_font_shadow):SetPosition('LEFT', self.castbar_text_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowCastBarTextFontOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.ShowCastBarTextFontOptionsButton:SetPosition('TOPLEFT', CastNameHeader, 'BOTTOMLEFT', 0, -4);
+    self.ShowCastBarTextFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowCastBarTextFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowCastBarTextFontOptionsButton:SetScript('OnClick', function()
+        self.CastBarTextFontOptions:Show();
+    end);
+
+    self.castbar_text_anchor = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.castbar_text_anchor:SetSize(120, 20);
+    self.castbar_text_anchor:SetList(O.Lists.frame_points_simple_localized);
+    self.castbar_text_anchor:SetValue(O.db.castbar_text_anchor);
+    self.castbar_text_anchor:SetLabel(L['POSITION']);
+    self.castbar_text_anchor:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_ANCHOR_TOOLTIP']);
+    self.castbar_text_anchor.OnValueChangedCallback = function(_, value)
+        O.db.castbar_text_anchor = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_text_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_text_offset_x:SetW(116);
+    self.castbar_text_offset_x:SetValues(O.db.castbar_text_offset_x, -100, 100, 1);
+    self.castbar_text_offset_x:SetLabel(L['OFFSET_X_SHORT']);
+    self.castbar_text_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP']);
+    self.castbar_text_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.castbar_text_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_text_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_text_offset_y:SetW(116);
+    self.castbar_text_offset_y:SetValues(O.db.castbar_text_offset_y, -100, 100, 1);
+    self.castbar_text_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
+    self.castbar_text_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP']);
+    self.castbar_text_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.castbar_text_offset_y = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_text_truncate = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.castbar_text_truncate:SetLabel(L['OPTIONS_CAST_BAR_TEXT_TRUNCATE']);
+    self.castbar_text_truncate:SetChecked(O.db.castbar_text_truncate);
+    self.castbar_text_truncate:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_TRUNCATE_TOOLTIP']);
+    self.castbar_text_truncate.Callback = function(self)
+        O.db.castbar_text_truncate = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.CastBarTextPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.CastBarTextPositionOptions:SetH(72);
+    self.CastBarTextPositionOptions:Add(self.castbar_text_anchor):SetPosition('TOPLEFT', self.CastBarTextPositionOptions, 'TOPLEFT', 12, -24);
+    self.CastBarTextPositionOptions:Add(self.castbar_text_offset_x):SetPosition('LEFT', self.castbar_text_anchor, 'RIGHT', 12, 0);
+    self.CastBarTextPositionOptions:Add(self.castbar_text_offset_y):SetPosition('LEFT', self.castbar_text_offset_x, 'RIGHT', 12, 0);
+    self.CastBarTextPositionOptions:Add(self.castbar_text_truncate):SetPosition('LEFT', self.castbar_text_offset_y, 'RIGHT', 12, 0);
+
+    self.ShowCastBarTextPositionOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.ShowCastBarTextPositionOptionsButton:SetPosition('LEFT', self.ShowCastBarTextFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowCastBarTextPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowCastBarTextPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowCastBarTextPositionOptionsButton:SetScript('OnClick', function()
+        self.CastBarTextPositionOptions:Show();
+    end);
+
     local CastTargetHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_CAST_BAR_TARGET_HEADER']);
-    CastTargetHeader:SetPosition('TOPLEFT', self.castbar_text_font_value, 'BOTTOMLEFT', 0, -6);
+    CastTargetHeader:SetPosition('TOPLEFT', self.ShowCastBarTextFontOptionsButton, 'BOTTOMLEFT', 0, -4);
     CastTargetHeader:SetW(self:GetWidth());
 
     self.castbar_target_name_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -979,121 +993,117 @@ panel.Load = function(self)
     self.castbar_target_name_in_spell_name:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_IN_SPELL_NAME_TOOLTIP'], self.Tabs[1]);
     self.castbar_target_name_in_spell_name.Callback = function(self)
         O.db.castbar_target_name_in_spell_name = self:GetChecked();
-
-        panel.castbar_target_point:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-        panel.castbar_target_relative_point:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-        panel.castbar_target_offset_x:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-        panel.castbar_target_offset_y:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-        panel.castbar_target_font_value:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-        panel.castbar_target_font_size:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-        panel.castbar_target_font_flag:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-        panel.castbar_target_font_shadow:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_target_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.castbar_target_point:SetPosition('TOPLEFT', self.castbar_target_name_enabled, 'BOTTOMLEFT', 0, -14);
-    self.castbar_target_point:SetSize(120, 20);
-    self.castbar_target_point:SetList(O.Lists.frame_points_localized);
-    self.castbar_target_point:SetValue(O.db.castbar_target_point);
-    self.castbar_target_point:SetLabel(L['POSITION']);
-    self.castbar_target_point:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_POINT_TOOLTIP']);
-    self.castbar_target_point:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_POINT_TOOLTIP'], self.Tabs[1]);
-    self.castbar_target_point:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-    self.castbar_target_point.OnValueChangedCallback = function(_, value)
-        O.db.castbar_target_point = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_target_relative_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.castbar_target_relative_point:SetPosition('LEFT', self.castbar_target_point, 'RIGHT', 12, 0);
-    self.castbar_target_relative_point:SetSize(120, 20);
-    self.castbar_target_relative_point:SetList(O.Lists.frame_points_localized);
-    self.castbar_target_relative_point:SetValue(O.db.castbar_target_relative_point);
-    self.castbar_target_relative_point:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_RELATIVE_POINT_TOOLTIP']);
-    self.castbar_target_relative_point:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_RELATIVE_POINT_TOOLTIP'], self.Tabs[1]);
-    self.castbar_target_relative_point:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-    self.castbar_target_relative_point.OnValueChangedCallback = function(_, value)
-        O.db.castbar_target_relative_point = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_target_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_target_offset_x:SetPosition('LEFT', self.castbar_target_relative_point, 'RIGHT', 12, 0);
-    self.castbar_target_offset_x:SetW(116);
-    self.castbar_target_offset_x:SetValues(O.db.castbar_target_offset_x, -100, 100, 1);
-    self.castbar_target_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP']);
-    self.castbar_target_offset_x:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP'], self.Tabs[1]);
-    self.castbar_target_offset_x:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-    self.castbar_target_offset_x.OnValueChangedCallback = function(_, value)
-        O.db.castbar_target_offset_x = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_target_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_target_offset_y:SetPosition('LEFT', self.castbar_target_offset_x, 'RIGHT', 12, 0);
-    self.castbar_target_offset_y:SetW(116);
-    self.castbar_target_offset_y:SetValues(O.db.castbar_target_offset_y, -100, 100, 1);
-    self.castbar_target_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP']);
-    self.castbar_target_offset_y:AddToSearch(button, L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
-    self.castbar_target_offset_y:SetEnabled(not O.db.castbar_target_name_in_spell_name);
-    self.castbar_target_offset_y.OnValueChangedCallback = function(_, value)
-        O.db.castbar_target_offset_y = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.castbar_target_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
-    self.castbar_target_font_value:SetPosition('TOPLEFT', self.castbar_target_point, 'BOTTOMLEFT', 0, -12);
     self.castbar_target_font_value:SetSize(160, 20);
     self.castbar_target_font_value:SetList(LSM:HashTable('font'));
     self.castbar_target_font_value:SetValue(O.db.castbar_target_font_value);
     self.castbar_target_font_value:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_VALUE']);
-    self.castbar_target_font_value:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_VALUE'], self.Tabs[1]);
-    self.castbar_target_font_value:SetEnabled(not O.db.castbar_target_name_in_spell_name);
     self.castbar_target_font_value.OnValueChangedCallback = function(_, value)
         O.db.castbar_target_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.castbar_target_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.castbar_target_font_size:SetPosition('LEFT', self.castbar_target_font_value, 'RIGHT', 12, 0);
     self.castbar_target_font_size:SetValues(O.db.castbar_target_font_size, 3, 28, 1);
     self.castbar_target_font_size:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_SIZE']);
-    self.castbar_target_font_size:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_SIZE'], self.Tabs[1]);
-    self.castbar_target_font_size:SetEnabled(not O.db.castbar_target_name_in_spell_name);
     self.castbar_target_font_size.OnValueChangedCallback = function(_, value)
         O.db.castbar_target_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.castbar_target_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.castbar_target_font_flag:SetPosition('LEFT', self.castbar_target_font_size, 'RIGHT', 12, 0);
     self.castbar_target_font_flag:SetSize(160, 20);
     self.castbar_target_font_flag:SetList(O.Lists.font_flags_localized);
     self.castbar_target_font_flag:SetValue(O.db.castbar_target_font_flag);
     self.castbar_target_font_flag:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_FLAG']);
-    self.castbar_target_font_flag:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_FLAG'], self.Tabs[1]);
-    self.castbar_target_font_flag:SetEnabled(not O.db.castbar_target_name_in_spell_name);
     self.castbar_target_font_flag.OnValueChangedCallback = function(_, value)
         O.db.castbar_target_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.castbar_target_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.castbar_target_font_shadow:SetPosition('LEFT', self.castbar_target_font_flag, 'RIGHT', 12, 0);
     self.castbar_target_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.castbar_target_font_shadow:SetChecked(O.db.castbar_target_font_shadow);
     self.castbar_target_font_shadow:SetTooltip(L['OPTIONS_CAST_BAR_TARGET_FONT_SHADOW']);
-    self.castbar_target_font_shadow:AddToSearch(button, L['OPTIONS_CAST_BAR_TARGET_FONT_SHADOW'], self.Tabs[1]);
-    self.castbar_target_font_shadow:SetEnabled(not O.db.castbar_target_name_in_spell_name);
     self.castbar_target_font_shadow.Callback = function(self)
         O.db.castbar_target_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
+    self.CastBarTargetTextFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.CastBarTargetTextFontOptions:SetH(60);
+    self.CastBarTargetTextFontOptions:Add(self.castbar_target_font_value):SetPosition('TOPLEFT', self.CastBarTargetTextFontOptions, 'TOPLEFT', 8, -20);
+    self.CastBarTargetTextFontOptions:Add(self.castbar_target_font_size):SetPosition('LEFT', self.castbar_target_font_value, 'RIGHT', 12, 0);
+    self.CastBarTargetTextFontOptions:Add(self.castbar_target_font_flag):SetPosition('LEFT', self.castbar_target_font_size, 'RIGHT', 12, 0);
+    self.CastBarTargetTextFontOptions:Add(self.castbar_target_font_shadow):SetPosition('LEFT', self.castbar_target_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowCastBarTargetTextFontOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.ShowCastBarTargetTextFontOptionsButton:SetPosition('TOPLEFT', self.castbar_target_name_enabled, 'BOTTOMLEFT', 0, -10);
+    self.ShowCastBarTargetTextFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowCastBarTargetTextFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowCastBarTargetTextFontOptionsButton:SetScript('OnClick', function()
+        self.CastBarTargetTextFontOptions:Show();
+    end);
+
+    self.castbar_target_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_point:SetSize(120, 20);
+    self.castbar_target_point:SetList(O.Lists.frame_points_localized);
+    self.castbar_target_point:SetValue(O.db.castbar_target_point);
+    self.castbar_target_point:SetLabel(L['POSITION']);
+    self.castbar_target_point:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_POINT_TOOLTIP']);
+    self.castbar_target_point.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_target_relative_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_relative_point:SetSize(120, 20);
+    self.castbar_target_relative_point:SetList(O.Lists.frame_points_localized);
+    self.castbar_target_relative_point:SetValue(O.db.castbar_target_relative_point);
+    self.castbar_target_relative_point:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_RELATIVE_POINT_TOOLTIP']);
+    self.castbar_target_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_relative_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_target_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_offset_x:SetW(116);
+    self.castbar_target_offset_x:SetValues(O.db.castbar_target_offset_x, -100, 100, 1);
+    self.castbar_target_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_X_TOOLTIP']);
+    self.castbar_target_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_target_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.castbar_target_offset_y:SetW(116);
+    self.castbar_target_offset_y:SetValues(O.db.castbar_target_offset_y, -100, 100, 1);
+    self.castbar_target_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TEXT_OFFSET_Y_TOOLTIP']);
+    self.castbar_target_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.castbar_target_offset_y = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.CastBarTargetTextPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.CastBarTargetTextPositionOptions:SetH(60);
+    self.CastBarTargetTextPositionOptions:Add(self.castbar_target_point):SetPosition('TOPLEFT', self.CastBarTargetTextPositionOptions, 'TOPLEFT', 12, -20);
+    self.CastBarTargetTextPositionOptions:Add(self.castbar_target_relative_point):SetPosition('LEFT', self.castbar_target_point, 'RIGHT', 12, 0);
+    self.CastBarTargetTextPositionOptions:Add(self.castbar_target_offset_x):SetPosition('LEFT', self.castbar_target_relative_point, 'RIGHT', 12, 0);
+    self.CastBarTargetTextPositionOptions:Add(self.castbar_target_offset_y):SetPosition('LEFT', self.castbar_target_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowCastBarTargetTextPositionOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.ShowCastBarTargetTextPositionOptionsButton:SetPosition('LEFT', self.ShowCastBarTargetTextFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowCastBarTargetTextPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowCastBarTargetTextPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowCastBarTargetTextPositionOptionsButton:SetScript('OnClick', function()
+        self.CastBarTargetTextPositionOptions:Show();
+    end);
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_target_font_value, 'BOTTOMLEFT', 0, -6);
+    Delimiter:SetPosition('TOPLEFT', self.ShowCastBarTargetTextFontOptionsButton, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_on_hp_bar = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -1365,7 +1375,117 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['TimerTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_timer_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.castbar_timer_enabled, 'BOTTOMLEFT', 0, -2);
+    Delimiter:SetW(self:GetWidth());
+
+    self.castbar_timer_font_value = E.CreateDropdown('font', self.TabsFrames['TimerTab'].Content);
+    self.castbar_timer_font_value:SetSize(160, 20);
+    self.castbar_timer_font_value:SetList(LSM:HashTable('font'));
+    self.castbar_timer_font_value:SetValue(O.db.castbar_timer_font_value);
+    self.castbar_timer_font_value:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_VALUE_TOOLTIP']);
+    self.castbar_timer_font_value.OnValueChangedCallback = function(_, value)
+        O.db.castbar_timer_font_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_timer_font_size = E.CreateSlider(self.TabsFrames['TimerTab'].Content);
+    self.castbar_timer_font_size:SetValues(O.db.castbar_timer_font_size, 3, 28, 1);
+    self.castbar_timer_font_size:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_SIZE_TOOLTIP']);
+    self.castbar_timer_font_size.OnValueChangedCallback = function(_, value)
+        O.db.castbar_timer_font_size = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_timer_font_flag = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
+    self.castbar_timer_font_flag:SetSize(160, 20);
+    self.castbar_timer_font_flag:SetList(O.Lists.font_flags_localized);
+    self.castbar_timer_font_flag:SetValue(O.db.castbar_timer_font_flag);
+    self.castbar_timer_font_flag:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_FLAG_TOOLTIP']);
+    self.castbar_timer_font_flag.OnValueChangedCallback = function(_, value)
+        O.db.castbar_timer_font_flag = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_timer_font_shadow = E.CreateCheckButton(self.TabsFrames['TimerTab'].Content);
+    self.castbar_timer_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
+    self.castbar_timer_font_shadow:SetChecked(O.db.castbar_timer_font_shadow);
+    self.castbar_timer_font_shadow:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_SHADOW_TOOLTIP']);
+    self.castbar_timer_font_shadow.Callback = function(self)
+        O.db.castbar_timer_font_shadow = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.CastBarTimerTextFontOptions = E.CreatePopOptions(self.TabsFrames['TimerTab'].Content);
+    self.CastBarTimerTextFontOptions:SetH(60);
+    self.CastBarTimerTextFontOptions:Add(self.castbar_timer_font_value):SetPosition('TOPLEFT', self.CastBarTimerTextFontOptions, 'TOPLEFT', 8, -20);
+    self.CastBarTimerTextFontOptions:Add(self.castbar_timer_font_size):SetPosition('LEFT', self.castbar_timer_font_value, 'RIGHT', 12, 0);
+    self.CastBarTimerTextFontOptions:Add(self.castbar_timer_font_flag):SetPosition('LEFT', self.castbar_timer_font_size, 'RIGHT', 12, 0);
+    self.CastBarTimerTextFontOptions:Add(self.castbar_timer_font_shadow):SetPosition('LEFT', self.castbar_timer_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowCastBarTimerTextFontOptionsButton = E.CreateButton(self.TabsFrames['TimerTab'].Content);
+    self.ShowCastBarTimerTextFontOptionsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.ShowCastBarTimerTextFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowCastBarTimerTextFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowCastBarTimerTextFontOptionsButton:SetScript('OnClick', function()
+        self.CastBarTimerTextFontOptions:Show();
+    end);
+
+    self.castbar_timer_xside = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
+    self.castbar_timer_xside:SetSize(116, 20);
+    self.castbar_timer_xside:SetList(O.Lists.frame_position_xside);
+    self.castbar_timer_xside:SetValue(O.db.castbar_timer_xside);
+    self.castbar_timer_xside:SetLabel(L['POSITION']);
+    self.castbar_timer_xside:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_XSIDE_TOOLTIP']);
+    self.castbar_timer_xside.OnValueChangedCallback = function(_, value)
+        O.db.castbar_timer_xside = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_timer_anchor = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
+    self.castbar_timer_anchor:SetSize(116, 20);
+    self.castbar_timer_anchor:SetList(O.Lists.frame_points_simple_localized);
+    self.castbar_timer_anchor:SetValue(O.db.castbar_timer_anchor);
+    self.castbar_timer_anchor:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP']);
+    self.castbar_timer_anchor.OnValueChangedCallback = function(_, value)
+        O.db.castbar_timer_anchor = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_timer_offset_x = E.CreateSlider(self.TabsFrames['TimerTab'].Content);
+    self.castbar_timer_offset_x:SetW(116);
+    self.castbar_timer_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP']);
+    self.castbar_timer_offset_x:SetValues(O.db.castbar_timer_offset_x, -99, 100, 1);
+    self.castbar_timer_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.castbar_timer_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.castbar_timer_offset_y = E.CreateSlider(self.TabsFrames['TimerTab'].Content);
+    self.castbar_timer_offset_y:SetW(116);
+    self.castbar_timer_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP']);
+    self.castbar_timer_offset_y:SetValues(O.db.castbar_timer_offset_y, -99, 100, 1);
+    self.castbar_timer_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.castbar_timer_offset_y = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.CastBarTimerTextPositionOptions = E.CreatePopOptions(self.TabsFrames['TimerTab'].Content);
+    self.CastBarTimerTextPositionOptions:SetH(60);
+    self.CastBarTimerTextPositionOptions:Add(self.castbar_timer_xside):SetPosition('TOPLEFT', self.CastBarTimerTextPositionOptions, 'TOPLEFT', 12, -20);
+    self.CastBarTimerTextPositionOptions:Add(self.castbar_timer_anchor):SetPosition('LEFT', self.castbar_timer_xside, 'RIGHT', 12, 0);
+    self.CastBarTimerTextPositionOptions:Add(self.castbar_timer_offset_x):SetPosition('LEFT', self.castbar_timer_anchor, 'RIGHT', 16, 0);
+    self.CastBarTimerTextPositionOptions:Add(self.castbar_timer_offset_y):SetPosition('LEFT', self.castbar_timer_offset_x, 'RIGHT', 16, 0);
+
+    self.ShowCastBarTimerTextPositionOptionsButton = E.CreateButton(self.TabsFrames['TimerTab'].Content);
+    self.ShowCastBarTimerTextPositionOptionsButton:SetPosition('LEFT', self.ShowCastBarTimerTextFontOptionsButton, 'RIGHT', 16, 0);
+    self.ShowCastBarTimerTextPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowCastBarTimerTextPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowCastBarTimerTextPositionOptionsButton:SetScript('OnClick', function()
+        self.CastBarTimerTextPositionOptions:Show();
+    end);
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['TimerTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.ShowCastBarTimerTextFontOptionsButton, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_timer_format = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
@@ -1390,106 +1510,6 @@ panel.Load = function(self)
     self.castbar_timer_only_remaining:SetChecked(O.db.castbar_timer_only_remaining);
     self.castbar_timer_only_remaining.Callback = function(self)
         O.db.castbar_timer_only_remaining = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
-    Delimiter = E.CreateDelimiter(self.TabsFrames['TimerTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_timer_format, 'BOTTOMLEFT', 0, -4);
-    Delimiter:SetW(self:GetWidth());
-
-    self.castbar_timer_xside = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
-    self.castbar_timer_xside:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.castbar_timer_xside:SetSize(116, 20);
-    self.castbar_timer_xside:SetList(O.Lists.frame_position_xside);
-    self.castbar_timer_xside:SetValue(O.db.castbar_timer_xside);
-    self.castbar_timer_xside:SetLabel(L['POSITION']);
-    self.castbar_timer_xside:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_XSIDE_TOOLTIP']);
-    self.castbar_timer_xside:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_XSIDE_TOOLTIP'], self.Tabs[3]);
-    self.castbar_timer_xside.OnValueChangedCallback = function(_, value)
-        O.db.castbar_timer_xside = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_timer_anchor = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
-    self.castbar_timer_anchor:SetPosition('LEFT', self.castbar_timer_xside, 'RIGHT', 12, 0);
-    self.castbar_timer_anchor:SetSize(116, 20);
-    self.castbar_timer_anchor:SetList(O.Lists.frame_points_simple_localized);
-    self.castbar_timer_anchor:SetValue(O.db.castbar_timer_anchor);
-    self.castbar_timer_anchor:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP']);
-    self.castbar_timer_anchor:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_ANCHOR_TOOLTIP'], self.Tabs[3]);
-    self.castbar_timer_anchor.OnValueChangedCallback = function(_, value)
-        O.db.castbar_timer_anchor = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_timer_offset_x = E.CreateSlider(self.TabsFrames['TimerTab'].Content);
-    self.castbar_timer_offset_x:SetPosition('LEFT', self.castbar_timer_anchor, 'RIGHT', 16, 0);
-    self.castbar_timer_offset_x:SetW(116);
-    self.castbar_timer_offset_x:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP']);
-    self.castbar_timer_offset_x:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_OFFSET_X_TOOLTIP'], self.Tabs[3]);
-    self.castbar_timer_offset_x:SetValues(O.db.castbar_timer_offset_x, -99, 100, 1);
-    self.castbar_timer_offset_x.OnValueChangedCallback = function(_, value)
-        O.db.castbar_timer_offset_x = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_timer_offset_y = E.CreateSlider(self.TabsFrames['TimerTab'].Content);
-    self.castbar_timer_offset_y:SetPosition('LEFT', self.castbar_timer_offset_x, 'RIGHT', 16, 0);
-    self.castbar_timer_offset_y:SetW(116);
-    self.castbar_timer_offset_y:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP']);
-    self.castbar_timer_offset_y:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_OFFSET_Y_TOOLTIP'], self.Tabs[3]);
-    self.castbar_timer_offset_y:SetValues(O.db.castbar_timer_offset_y, -99, 100, 1);
-    self.castbar_timer_offset_y.OnValueChangedCallback = function(_, value)
-        O.db.castbar_timer_offset_y = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    Delimiter = E.CreateDelimiter(self.TabsFrames['TimerTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.castbar_timer_xside, 'BOTTOMLEFT', 0, -4);
-    Delimiter:SetW(self:GetWidth());
-
-    self.castbar_timer_font_value = E.CreateDropdown('font', self.TabsFrames['TimerTab'].Content);
-    self.castbar_timer_font_value:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.castbar_timer_font_value:SetSize(160, 20);
-    self.castbar_timer_font_value:SetList(LSM:HashTable('font'));
-    self.castbar_timer_font_value:SetValue(O.db.castbar_timer_font_value);
-    self.castbar_timer_font_value:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_VALUE_TOOLTIP']);
-    self.castbar_timer_font_value:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_VALUE_TOOLTIP'], self.Tabs[3]);
-    self.castbar_timer_font_value.OnValueChangedCallback = function(_, value)
-        O.db.castbar_timer_font_value = value;
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_timer_font_size = E.CreateSlider(self.TabsFrames['TimerTab'].Content);
-    self.castbar_timer_font_size:SetPosition('LEFT', self.castbar_timer_font_value, 'RIGHT', 12, 0);
-    self.castbar_timer_font_size:SetValues(O.db.castbar_timer_font_size, 3, 28, 1);
-    self.castbar_timer_font_size:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_SIZE_TOOLTIP']);
-    self.castbar_timer_font_size:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_SIZE_TOOLTIP'], self.Tabs[3]);
-    self.castbar_timer_font_size.OnValueChangedCallback = function(_, value)
-        O.db.castbar_timer_font_size = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_timer_font_flag = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
-    self.castbar_timer_font_flag:SetPosition('LEFT', self.castbar_timer_font_size, 'RIGHT', 12, 0);
-    self.castbar_timer_font_flag:SetSize(160, 20);
-    self.castbar_timer_font_flag:SetList(O.Lists.font_flags_localized);
-    self.castbar_timer_font_flag:SetValue(O.db.castbar_timer_font_flag);
-    self.castbar_timer_font_flag:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_FLAG_TOOLTIP']);
-    self.castbar_timer_font_flag:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_FLAG_TOOLTIP'], self.Tabs[3]);
-    self.castbar_timer_font_flag.OnValueChangedCallback = function(_, value)
-        O.db.castbar_timer_font_flag = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.castbar_timer_font_shadow = E.CreateCheckButton(self.TabsFrames['TimerTab'].Content);
-    self.castbar_timer_font_shadow:SetPosition('LEFT', self.castbar_timer_font_flag, 'RIGHT', 12, 0);
-    self.castbar_timer_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
-    self.castbar_timer_font_shadow:SetChecked(O.db.castbar_timer_font_shadow);
-    self.castbar_timer_font_shadow:SetTooltip(L['OPTIONS_CAST_BAR_TIMER_FONT_SHADOW_TOOLTIP']);
-    self.castbar_timer_font_shadow:AddToSearch(button, L['OPTIONS_CAST_BAR_TIMER_FONT_SHADOW_TOOLTIP'], self.Tabs[3]);
-    self.castbar_timer_font_shadow.Callback = function(self)
-        O.db.castbar_timer_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 

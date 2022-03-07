@@ -353,54 +353,8 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.raid_target_icon_frame_strata = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.raid_target_icon_frame_strata:SetPosition('LEFT', self.raid_target_icon_scale, 'RIGHT', 12, 0);
-    self.raid_target_icon_frame_strata:SetSize(160, 20);
-    self.raid_target_icon_frame_strata:SetList(O.Lists.frame_strata);
-    self.raid_target_icon_frame_strata:SetValue(O.db.raid_target_icon_frame_strata);
-    self.raid_target_icon_frame_strata:SetLabel(L['FRAME_STRATA']);
-    self.raid_target_icon_frame_strata:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP']);
-    self.raid_target_icon_frame_strata:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP'], self.Tabs[1]);
-    self.raid_target_icon_frame_strata.OnValueChangedCallback = function(_, value)
-        O.db.raid_target_icon_frame_strata = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.raid_target_icon_position = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
-    self.raid_target_icon_position:SetPosition('TOPLEFT', self.raid_target_icon_show, 'BOTTOMLEFT', 0, -12);
-    self.raid_target_icon_position:SetSize(100, 20);
-    self.raid_target_icon_position:SetList(O.Lists.raid_target_icon_position);
-    self.raid_target_icon_position:SetValue(O.db.raid_target_icon_position);
-    self.raid_target_icon_position:SetLabel(L['POSITION']);
-    self.raid_target_icon_position:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP']);
-    self.raid_target_icon_position:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP'], self.Tabs[1]);
-    self.raid_target_icon_position.OnValueChangedCallback = function(_, value)
-        O.db.raid_target_icon_position = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.raid_target_icon_position_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.raid_target_icon_position_offset_x:SetPosition('LEFT', self.raid_target_icon_position, 'RIGHT', 12, 0);
-    self.raid_target_icon_position_offset_x:SetValues(O.db.raid_target_icon_position_offset_x, -50, 50, 1);
-    self.raid_target_icon_position_offset_x:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_X_TOOLTIP']);
-    self.raid_target_icon_position_offset_x:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_X_TOOLTIP'], self.Tabs[1]);
-    self.raid_target_icon_position_offset_x.OnValueChangedCallback = function(_, value)
-        O.db.raid_target_icon_position_offset_x = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.raid_target_icon_position_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.raid_target_icon_position_offset_y:SetPosition('LEFT', self.raid_target_icon_position_offset_x, 'RIGHT', 12, 0);
-    self.raid_target_icon_position_offset_y:SetValues(O.db.raid_target_icon_position_offset_y, -50, 50, 1);
-    self.raid_target_icon_position_offset_y:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_Y_TOOLTIP']);
-    self.raid_target_icon_position_offset_y:AddToSearch(button, L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_Y_TOOLTIP'], self.Tabs[1]);
-    self.raid_target_icon_position_offset_y.OnValueChangedCallback = function(_, value)
-        O.db.raid_target_icon_position_offset_y = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
     self.raid_target_hpbar_coloring = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.raid_target_hpbar_coloring:SetPosition('TOPLEFT', self.raid_target_icon_position, 'BOTTOMLEFT', 0, -12);
+    self.raid_target_hpbar_coloring:SetPosition('TOPLEFT', self.raid_target_icon_show, 'BOTTOMLEFT', 0, -8);
     self.raid_target_hpbar_coloring:SetLabel(L['OPTIONS_RAID_TARGET_HPBAR_COLORING']);
     self.raid_target_hpbar_coloring:SetTooltip(L['OPTIONS_RAID_TARGET_HPBAR_COLORING_TOOLTIP']);
     self.raid_target_hpbar_coloring:AddToSearch(button, L['OPTIONS_RAID_TARGET_HPBAR_COLORING_TOOLTIP'], self.Tabs[1]);
@@ -410,6 +364,58 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.raid_target_icon_position = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.raid_target_icon_position:SetSize(100, 20);
+    self.raid_target_icon_position:SetList(O.Lists.raid_target_icon_position);
+    self.raid_target_icon_position:SetValue(O.db.raid_target_icon_position);
+    self.raid_target_icon_position:SetLabel(L['POSITION']);
+    self.raid_target_icon_position:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_POSITION_TOOLTIP']);
+    self.raid_target_icon_position.OnValueChangedCallback = function(_, value)
+        O.db.raid_target_icon_position = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.raid_target_icon_position_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.raid_target_icon_position_offset_x:SetValues(O.db.raid_target_icon_position_offset_x, -50, 50, 1);
+    self.raid_target_icon_position_offset_x:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_X_TOOLTIP']);
+    self.raid_target_icon_position_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.raid_target_icon_position_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.raid_target_icon_position_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.raid_target_icon_position_offset_y:SetValues(O.db.raid_target_icon_position_offset_y, -50, 50, 1);
+    self.raid_target_icon_position_offset_y:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_POSITION_OFFSET_Y_TOOLTIP']);
+    self.raid_target_icon_position_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.raid_target_icon_position_offset_y = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.raid_target_icon_frame_strata = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.raid_target_icon_frame_strata:SetSize(160, 20);
+    self.raid_target_icon_frame_strata:SetList(O.Lists.frame_strata);
+    self.raid_target_icon_frame_strata:SetValue(O.db.raid_target_icon_frame_strata);
+    self.raid_target_icon_frame_strata:SetLabel(L['FRAME_STRATA']);
+    self.raid_target_icon_frame_strata:SetTooltip(L['OPTIONS_RAID_TARGET_ICON_FRAME_STRATA_TOOLTIP']);
+    self.raid_target_icon_frame_strata.OnValueChangedCallback = function(_, value)
+        O.db.raid_target_icon_frame_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.RaidTargetPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.RaidTargetPositionOptions:SetH(120);
+    self.RaidTargetPositionOptions:Add(self.raid_target_icon_position):SetPosition('TOPLEFT', self.RaidTargetPositionOptions, 'TOPLEFT', 12, -30);
+    self.RaidTargetPositionOptions:Add(self.raid_target_icon_position_offset_x):SetPosition('LEFT', self.raid_target_icon_position, 'RIGHT', 12, 0);
+    self.RaidTargetPositionOptions:Add(self.raid_target_icon_position_offset_y):SetPosition('LEFT', self.raid_target_icon_position_offset_x, 'RIGHT', 12, 0);
+    self.RaidTargetPositionOptions:Add(self.raid_target_icon_frame_strata):SetPosition('TOPLEFT', self.raid_target_icon_position, 'BOTTOMLEFT', 0, -12);
+
+    self.RaidTargetPositionOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
+    self.RaidTargetPositionOptionsButton:SetPosition('LEFT', self.raid_target_icon_scale, 'RIGHT', 16, 0);
+    self.RaidTargetPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.RaidTargetPositionOptionsButton:SetHighlightColor('cccccc');
+    self.RaidTargetPositionOptionsButton:SetScript('OnClick', function()
+        self.RaidTargetPositionOptions:Show();
+    end);
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------

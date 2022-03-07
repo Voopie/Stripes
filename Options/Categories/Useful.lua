@@ -181,51 +181,58 @@ panel.Load = function(self)
     Delimiter:SetW(self:GetWidth());
 
     self.combat_indicator_point = E.CreateDropdown('plain', self.TabsFrames['CombatIndicatorTab'].Content);
-    self.combat_indicator_point:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.combat_indicator_point:SetSize(120, 20);
     self.combat_indicator_point:SetList(O.Lists.frame_points_localized);
     self.combat_indicator_point:SetValue(O.db.combat_indicator_point);
     self.combat_indicator_point:SetLabel(L['POSITION']);
     self.combat_indicator_point:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_POINT_TOOLTIP']);
-    self.combat_indicator_point:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_POINT_TOOLTIP'], self.Tabs[2]);
     self.combat_indicator_point.OnValueChangedCallback = function(_, value)
         O.db.combat_indicator_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.combat_indicator_relative_point = E.CreateDropdown('plain', self.TabsFrames['CombatIndicatorTab'].Content);
-    self.combat_indicator_relative_point:SetPosition('LEFT', self.combat_indicator_point, 'RIGHT', 12, 0);
     self.combat_indicator_relative_point:SetSize(120, 20);
     self.combat_indicator_relative_point:SetList(O.Lists.frame_points_localized);
     self.combat_indicator_relative_point:SetValue(O.db.combat_indicator_relative_point);
     self.combat_indicator_relative_point:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_RELATIVE_POINT_TOOLTIP']);
-    self.combat_indicator_relative_point:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_RELATIVE_POINT_TOOLTIP'], self.Tabs[2]);
     self.combat_indicator_relative_point.OnValueChangedCallback = function(_, value)
         O.db.combat_indicator_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.combat_indicator_offset_x = E.CreateSlider(self.TabsFrames['CombatIndicatorTab'].Content);
-    self.combat_indicator_offset_x:SetPosition('LEFT', self.combat_indicator_relative_point, 'RIGHT', 8, 0);
     self.combat_indicator_offset_x:SetSize(120, 18);
     self.combat_indicator_offset_x:SetValues(O.db.combat_indicator_offset_x, -50, 50, 1);
     self.combat_indicator_offset_x:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP']);
-    self.combat_indicator_offset_x:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_OFFSET_X_TOOLTIP'], self.Tabs[2]);
     self.combat_indicator_offset_x.OnValueChangedCallback = function(_, value)
         O.db.combat_indicator_offset_x = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.combat_indicator_offset_y = E.CreateSlider(self.TabsFrames['CombatIndicatorTab'].Content);
-    self.combat_indicator_offset_y:SetPosition('LEFT', self.combat_indicator_offset_x, 'RIGHT', 12, 0);
     self.combat_indicator_offset_y:SetSize(120, 18);
     self.combat_indicator_offset_y:SetValues(O.db.combat_indicator_offset_y, -50, 50, 1);
     self.combat_indicator_offset_y:SetTooltip(L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP']);
-    self.combat_indicator_offset_y:AddToSearch(button, L['OPTIONS_COMBAT_INDICATOR_OFFSET_Y_TOOLTIP'], self.Tabs[2]);
     self.combat_indicator_offset_y.OnValueChangedCallback = function(_, value)
         O.db.combat_indicator_offset_y = tonumber(value);
         Stripes:UpdateAll();
     end
+
+    self.CombatIndicatorPositionOptions = E.CreatePopOptions(self.TabsFrames['CombatIndicatorTab'].Content);
+    self.CombatIndicatorPositionOptions:SetH(60);
+    self.CombatIndicatorPositionOptions:Add(self.combat_indicator_point):SetPosition('TOPLEFT', self.CombatIndicatorPositionOptions, 'TOPLEFT', 12, -20);
+    self.CombatIndicatorPositionOptions:Add(self.combat_indicator_relative_point):SetPosition('LEFT', self.combat_indicator_point, 'RIGHT', 12, 0);
+    self.CombatIndicatorPositionOptions:Add(self.combat_indicator_offset_x):SetPosition('LEFT', self.combat_indicator_relative_point, 'RIGHT', 8, 0);
+    self.CombatIndicatorPositionOptions:Add(self.combat_indicator_offset_y):SetPosition('LEFT', self.combat_indicator_offset_x, 'RIGHT', 12, 0);
+
+    self.ShowCombatIndicatorPositionOptionsButton = E.CreateButton(self.TabsFrames['CombatIndicatorTab'].Content);
+    self.ShowCombatIndicatorPositionOptionsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.ShowCombatIndicatorPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.ShowCombatIndicatorPositionOptionsButton:SetHighlightColor('cccccc');
+    self.ShowCombatIndicatorPositionOptionsButton:SetScript('OnClick', function()
+        self.CombatIndicatorPositionOptions:Show();
+    end);
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -274,8 +281,19 @@ panel.Load = function(self)
     Delimiter:SetW(self:GetWidth());
 
     self.spell_interrupted_countdown_text = E.CreateFontString(self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_countdown_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.spell_interrupted_countdown_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.spell_interrupted_countdown_text:SetText(L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_TEXT']);
+
+    self.spell_interrupted_icon_countdown_show = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.spell_interrupted_icon_countdown_show:SetPosition('TOPLEFT', self.spell_interrupted_countdown_text, 'BOTTOMLEFT', 0, -4);
+    self.spell_interrupted_icon_countdown_show:SetLabel(L['OPTIONS_SHOW']);
+    self.spell_interrupted_icon_countdown_show:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_SHOW_TOOLTIP']);
+    self.spell_interrupted_icon_countdown_show:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_SHOW_TOOLTIP'], self.Tabs[3]);
+    self.spell_interrupted_icon_countdown_show:SetChecked(O.db.spell_interrupted_icon_countdown_show);
+    self.spell_interrupted_icon_countdown_show.Callback = function(self)
+        O.db.spell_interrupted_icon_countdown_show = self:GetChecked();
+        Stripes:UpdateAll();
+    end
 
     self.spell_interrupted_icon_countdown_font_value = E.CreateDropdown('font', self.TabsFrames['SpellInterruptedTab'].Content);
     self.spell_interrupted_icon_countdown_font_value:SetPosition('TOPLEFT', self.spell_interrupted_countdown_text, 'BOTTOMLEFT', 0, -4);
@@ -322,9 +340,32 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.SpellInterruptedIconFontOptions = E.CreatePopOptions(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.SpellInterruptedIconFontOptions:SetH(60);
+    self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_value):SetPosition('TOPLEFT', self.SpellInterruptedIconFontOptions, 'TOPLEFT', 8, -20);
+    self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_size):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_value, 'RIGHT', 12, 0);
+    self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_flag):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_size, 'RIGHT', 12, 0);
+    self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_shadow):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowSpellInterruptedIconOptionsButton = E.CreateButton(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.ShowSpellInterruptedIconOptionsButton:SetPosition('LEFT', self.spell_interrupted_icon_countdown_show.Label, 'RIGHT', 16, 0);
+    self.ShowSpellInterruptedIconOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowSpellInterruptedIconOptionsButton:SetHighlightColor('cccccc');
+    self.ShowSpellInterruptedIconOptionsButton:SetScript('OnClick', function()
+        self.SpellInterruptedIconFontOptions:Show();
+    end);
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['SpellInterruptedTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.spell_interrupted_icon_countdown_show, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
+    self.spell_interrupted_icon_caster_name_text = E.CreateFontString(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.spell_interrupted_icon_caster_name_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
+    self.spell_interrupted_icon_caster_name_text:SetText(L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_TEXT']);
+
     self.spell_interrupted_icon_caster_name_show = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_icon_caster_name_show:SetPosition('TOPLEFT', self.spell_interrupted_icon_countdown_font_value, 'BOTTOMLEFT', 0, -12);
-    self.spell_interrupted_icon_caster_name_show:SetLabel(L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_SHOW']);
+    self.spell_interrupted_icon_caster_name_show:SetPosition('TOPLEFT', self.spell_interrupted_icon_caster_name_text, 'BOTTOMLEFT', 0, -4);
+    self.spell_interrupted_icon_caster_name_show:SetLabel(L['OPTIONS_SHOW']);
     self.spell_interrupted_icon_caster_name_show:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_SHOW_TOOLTIP']);
     self.spell_interrupted_icon_caster_name_show:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_CASTER_NAME_SHOW_TOOLTIP'], self.Tabs[3]);
     self.spell_interrupted_icon_caster_name_show:SetChecked(O.db.spell_interrupted_icon_caster_name_show);
@@ -378,6 +419,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.SpellInterruptedIconCasterNameFontOptions = E.CreatePopOptions(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.SpellInterruptedIconCasterNameFontOptions:SetH(60);
+    self.SpellInterruptedIconCasterNameFontOptions:Add(self.spell_interrupted_icon_caster_name_font_value):SetPosition('TOPLEFT', self.SpellInterruptedIconCasterNameFontOptions, 'TOPLEFT', 8, -20);
+    self.SpellInterruptedIconCasterNameFontOptions:Add(self.spell_interrupted_icon_caster_name_font_size):SetPosition('LEFT', self.spell_interrupted_icon_caster_name_font_value, 'RIGHT', 12, 0);
+    self.SpellInterruptedIconCasterNameFontOptions:Add(self.spell_interrupted_icon_caster_name_font_flag):SetPosition('LEFT', self.spell_interrupted_icon_caster_name_font_size, 'RIGHT', 12, 0);
+    self.SpellInterruptedIconCasterNameFontOptions:Add(self.spell_interrupted_icon_caster_name_font_shadow):SetPosition('LEFT', self.spell_interrupted_icon_caster_name_font_flag, 'RIGHT', 12, 0);
+
+    self.ShowSpellInterruptedIconCasterNameFontOptionsButton = E.CreateButton(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.ShowSpellInterruptedIconCasterNameFontOptionsButton:SetPosition('LEFT', self.spell_interrupted_icon_caster_name_show.Label, 'RIGHT', 16, 0);
+    self.ShowSpellInterruptedIconCasterNameFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
+    self.ShowSpellInterruptedIconCasterNameFontOptionsButton:SetHighlightColor('cccccc');
+    self.ShowSpellInterruptedIconCasterNameFontOptionsButton:SetScript('OnClick', function()
+        self.SpellInterruptedIconCasterNameFontOptions:Show();
+    end);
+
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     -- Healers Marks Tab ---------------------------------------------------------------------------------------------------------------
@@ -411,7 +467,7 @@ panel.Load = function(self)
     end
 
     self.pvp_healers_icon_scale = E.CreateSlider(self.TabsFrames['HealersMarksTab'].Content);
-    self.pvp_healers_icon_scale:SetPosition('TOPLEFT', self.pvp_healers_enabled, 'BOTTOMLEFT', 0, -12);
+    self.pvp_healers_icon_scale:SetPosition('TOPLEFT', self.pvp_healers_enabled, 'BOTTOMLEFT', 0, -8);
     self.pvp_healers_icon_scale:SetValues(O.db.pvp_healers_icon_scale, 0.25, 4, 0.05);
     self.pvp_healers_icon_scale:SetLabel(L['SCALE']);
     self.pvp_healers_icon_scale:SetLabelPosition('LEFT');
@@ -422,71 +478,76 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.pvp_healers_icon_strata = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
-    self.pvp_healers_icon_strata:SetPosition('LEFT', self.pvp_healers_icon_scale, 'RIGHT', 16, 0);
-    self.pvp_healers_icon_strata:SetSize(160, 20);
-    self.pvp_healers_icon_strata:SetList(O.Lists.frame_strata);
-    self.pvp_healers_icon_strata:SetValue(O.db.pvp_healers_icon_strata);
-    self.pvp_healers_icon_strata:SetLabel(L['FRAME_STRATA']);
-    self.pvp_healers_icon_strata:SetTooltip(L['OPTIONS_PVP_HEALERS_ICON_STRATA_TOOLTIP']);
-    self.pvp_healers_icon_strata:AddToSearch(button, L['OPTIONS_PVP_HEALERS_ICON_STRATA_TOOLTIP'], self.Tabs[4]);
-    self.pvp_healers_icon_strata.OnValueChangedCallback = function(_, value)
-        O.db.pvp_healers_icon_strata = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-
     self.pvp_healers_icon_point = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
-    self.pvp_healers_icon_point:SetPosition('TOPLEFT', self.pvp_healers_icon_scale, 'BOTTOMLEFT', 0 - self.pvp_healers_icon_scale.Text:GetStringWidth() - 6, -22);
     self.pvp_healers_icon_point:SetSize(120, 20);
     self.pvp_healers_icon_point:SetList(O.Lists.frame_points_localized);
     self.pvp_healers_icon_point:SetValue(O.db.pvp_healers_icon_point);
     self.pvp_healers_icon_point:SetLabel(L['POSITION']);
     self.pvp_healers_icon_point:SetTooltip(L['OPTIONS_PVP_HEALERS_POINT_TOOLTIP']);
-    self.pvp_healers_icon_point:AddToSearch(button, L['OPTIONS_PVP_HEALERS_POINT_TOOLTIP'], self.Tabs[4]);
     self.pvp_healers_icon_point.OnValueChangedCallback = function(_, value)
         O.db.pvp_healers_icon_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.pvp_healers_icon_relative_point = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
-    self.pvp_healers_icon_relative_point:SetPosition('LEFT', self.pvp_healers_icon_point, 'RIGHT', 12, 0);
     self.pvp_healers_icon_relative_point:SetSize(120, 20);
     self.pvp_healers_icon_relative_point:SetList(O.Lists.frame_points_localized);
     self.pvp_healers_icon_relative_point:SetValue(O.db.pvp_healers_icon_relative_point);
     self.pvp_healers_icon_relative_point:SetTooltip(L['OPTIONS_PVP_HEALERS_RELATIVE_POINT_TOOLTIP']);
-    self.pvp_healers_icon_relative_point:AddToSearch(button, L['OPTIONS_PVP_HEALERS_RELATIVE_POINT_TOOLTIP'], self.Tabs[4]);
     self.pvp_healers_icon_relative_point.OnValueChangedCallback = function(_, value)
         O.db.pvp_healers_icon_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.pvp_healers_icon_offset_x = E.CreateSlider(self.TabsFrames['HealersMarksTab'].Content);
-    self.pvp_healers_icon_offset_x:SetPosition('LEFT', self.pvp_healers_icon_relative_point, 'RIGHT', 16, 0);
     self.pvp_healers_icon_offset_x:SetSize(120, 18);
     self.pvp_healers_icon_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.pvp_healers_icon_offset_x:SetTooltip(L['OPTIONS_PVP_HEALERS_OFFSET_X_TOOLTIP']);
     self.pvp_healers_icon_offset_x:SetValues(O.db.pvp_healers_icon_offset_x, -200, 200, 1);
-    self.pvp_healers_icon_offset_x:AddToSearch(button, L['OPTIONS_PVP_HEALERS_OFFSET_X_TOOLTIP'], self.Tabs[4]);
     self.pvp_healers_icon_offset_x.OnValueChangedCallback = function(_, value)
         O.db.pvp_healers_icon_offset_x = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.pvp_healers_icon_offset_y = E.CreateSlider(self.TabsFrames['HealersMarksTab'].Content);
-    self.pvp_healers_icon_offset_y:SetPosition('LEFT', self.pvp_healers_icon_offset_x, 'RIGHT', 16, 0);
     self.pvp_healers_icon_offset_y:SetSize(120, 18);
     self.pvp_healers_icon_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.pvp_healers_icon_offset_y:SetTooltip(L['OPTIONS_PVP_HEALERS_OFFSET_Y_TOOLTIP']);
     self.pvp_healers_icon_offset_y:SetValues(O.db.pvp_healers_icon_offset_y, -200, 200, 1);
-    self.pvp_healers_icon_offset_y:AddToSearch(button, L['OPTIONS_PVP_HEALERS_OFFSET_Y_TOOLTIP'], self.Tabs[4]);
     self.pvp_healers_icon_offset_y.OnValueChangedCallback = function(_, value)
         O.db.pvp_healers_icon_offset_y = tonumber(value);
         Stripes:UpdateAll();
     end
 
+    self.pvp_healers_icon_strata = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
+    self.pvp_healers_icon_strata:SetSize(160, 20);
+    self.pvp_healers_icon_strata:SetList(O.Lists.frame_strata);
+    self.pvp_healers_icon_strata:SetValue(O.db.pvp_healers_icon_strata);
+    self.pvp_healers_icon_strata:SetLabel(L['FRAME_STRATA']);
+    self.pvp_healers_icon_strata:SetTooltip(L['OPTIONS_PVP_HEALERS_ICON_STRATA_TOOLTIP']);
+    self.pvp_healers_icon_strata.OnValueChangedCallback = function(_, value)
+        O.db.pvp_healers_icon_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.PvPHealersIconPositionOptions = E.CreatePopOptions(self.TabsFrames['HealersMarksTab'].Content);
+    self.PvPHealersIconPositionOptions:SetH(120);
+    self.PvPHealersIconPositionOptions:Add(self.pvp_healers_icon_point):SetPosition('TOPLEFT', self.PvPHealersIconPositionOptions, 'TOPLEFT', 12, -30);
+    self.PvPHealersIconPositionOptions:Add(self.pvp_healers_icon_relative_point):SetPosition('LEFT', self.pvp_healers_icon_point, 'RIGHT', 12, 0);
+    self.PvPHealersIconPositionOptions:Add(self.pvp_healers_icon_offset_x):SetPosition('LEFT', self.pvp_healers_icon_relative_point, 'RIGHT', 12, 0);
+    self.PvPHealersIconPositionOptions:Add(self.pvp_healers_icon_offset_y):SetPosition('LEFT', self.pvp_healers_icon_offset_x, 'RIGHT', 12, 0);
+    self.PvPHealersIconPositionOptions:Add(self.pvp_healers_icon_strata):SetPosition('TOPLEFT', self.pvp_healers_icon_point, 'BOTTOMLEFT', 0, -16);
+
+    self.PvPHealersIconPositonOptionsButton = E.CreateButton(self.TabsFrames['HealersMarksTab'].Content);
+    self.PvPHealersIconPositonOptionsButton:SetPosition('LEFT', self.pvp_healers_icon_scale, 'RIGHT', 16, 0);
+    self.PvPHealersIconPositonOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.PvPHealersIconPositonOptionsButton:SetHighlightColor('cccccc');
+    self.PvPHealersIconPositonOptionsButton:SetScript('OnClick', function()
+        self.PvPHealersIconPositionOptions:Show();
+    end);
+
     local PVEHeader = E.CreateHeader(self.TabsFrames['HealersMarksTab'].Content, L['OPTIONS_PVE_HEALERS_HEADER']);
-    PVEHeader:SetPosition('TOPLEFT', self.pvp_healers_icon_point, 'BOTTOMLEFT', 0, -8);
+    PVEHeader:SetPosition('TOPLEFT', self.pvp_healers_icon_scale, 'BOTTOMLEFT', 0 - self.pvp_healers_icon_scale.Text:GetStringWidth() - 6, -8);
     PVEHeader:SetW(self:GetWidth());
 
     self.pve_healers_enabled = E.CreateCheckButton(self.TabsFrames['HealersMarksTab'].Content);
@@ -512,7 +573,7 @@ panel.Load = function(self)
     end
 
     self.pve_healers_icon_scale = E.CreateSlider(self.TabsFrames['HealersMarksTab'].Content);
-    self.pve_healers_icon_scale:SetPosition('TOPLEFT', self.pve_healers_enabled, 'BOTTOMLEFT', 0, -12);
+    self.pve_healers_icon_scale:SetPosition('TOPLEFT', self.pve_healers_enabled, 'BOTTOMLEFT', 0, -8);
     self.pve_healers_icon_scale:SetValues(O.db.pve_healers_icon_scale, 0.25, 4, 0.05);
     self.pve_healers_icon_scale:SetLabel(L['SCALE']);
     self.pve_healers_icon_scale:SetLabelPosition('LEFT');
@@ -523,65 +584,71 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.pve_healers_icon_strata = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
-    self.pve_healers_icon_strata:SetPosition('LEFT', self.pve_healers_icon_scale, 'RIGHT', 16, 0);
-    self.pve_healers_icon_strata:SetSize(160, 20);
-    self.pve_healers_icon_strata:SetList(O.Lists.frame_strata);
-    self.pve_healers_icon_strata:SetValue(O.db.pve_healers_icon_strata);
-    self.pve_healers_icon_strata:SetLabel(L['FRAME_STRATA']);
-    self.pve_healers_icon_strata:SetTooltip(L['OPTIONS_PVE_HEALERS_ICON_STRATA_TOOLTIP']);
-    self.pve_healers_icon_strata:AddToSearch(button, L['OPTIONS_PVE_HEALERS_ICON_STRATA_TOOLTIP'], self.Tabs[4]);
-    self.pve_healers_icon_strata.OnValueChangedCallback = function(_, value)
-        O.db.pve_healers_icon_strata = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
     self.pve_healers_icon_point = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
-    self.pve_healers_icon_point:SetPosition('TOPLEFT', self.pve_healers_icon_scale, 'BOTTOMLEFT', 0 - self.pve_healers_icon_scale.Text:GetStringWidth() - 6, -22);
     self.pve_healers_icon_point:SetSize(120, 20);
     self.pve_healers_icon_point:SetList(O.Lists.frame_points_localized);
     self.pve_healers_icon_point:SetValue(O.db.pve_healers_icon_point);
     self.pve_healers_icon_point:SetLabel(L['POSITION']);
     self.pve_healers_icon_point:SetTooltip(L['OPTIONS_PVE_HEALERS_POINT_TOOLTIP']);
-    self.pve_healers_icon_point:AddToSearch(button, L['OPTIONS_PVE_HEALERS_POINT_TOOLTIP'], self.Tabs[4]);
     self.pve_healers_icon_point.OnValueChangedCallback = function(_, value)
         O.db.pve_healers_icon_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.pve_healers_icon_relative_point = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
-    self.pve_healers_icon_relative_point:SetPosition('LEFT', self.pve_healers_icon_point, 'RIGHT', 12, 0);
     self.pve_healers_icon_relative_point:SetSize(120, 20);
     self.pve_healers_icon_relative_point:SetList(O.Lists.frame_points_localized);
     self.pve_healers_icon_relative_point:SetValue(O.db.pve_healers_icon_relative_point);
     self.pve_healers_icon_relative_point:SetTooltip(L['OPTIONS_PVE_HEALERS_RELATIVE_POINT_TOOLTIP']);
-    self.pve_healers_icon_relative_point:AddToSearch(button, L['OPTIONS_PVE_HEALERS_RELATIVE_POINT_TOOLTIP'], self.Tabs[4]);
     self.pve_healers_icon_relative_point.OnValueChangedCallback = function(_, value)
         O.db.pve_healers_icon_relative_point = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.pve_healers_icon_offset_x = E.CreateSlider(self.TabsFrames['HealersMarksTab'].Content);
-    self.pve_healers_icon_offset_x:SetPosition('LEFT', self.pve_healers_icon_relative_point, 'RIGHT', 16, 0);
     self.pve_healers_icon_offset_x:SetSize(120, 18);
     self.pve_healers_icon_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.pve_healers_icon_offset_x:SetTooltip(L['OPTIONS_PVE_HEALERS_OFFSET_X_TOOLTIP']);
     self.pve_healers_icon_offset_x:SetValues(O.db.pve_healers_icon_offset_x, -200, 200, 1);
-    self.pve_healers_icon_offset_x:AddToSearch(button, L['OPTIONS_PVE_HEALERS_OFFSET_X_TOOLTIP'], self.Tabs[4]);
     self.pve_healers_icon_offset_x.OnValueChangedCallback = function(_, value)
         O.db.pve_healers_icon_offset_x = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.pve_healers_icon_offset_y = E.CreateSlider(self.TabsFrames['HealersMarksTab'].Content);
-    self.pve_healers_icon_offset_y:SetPosition('LEFT', self.pve_healers_icon_offset_x, 'RIGHT', 16, 0);
     self.pve_healers_icon_offset_y:SetSize(120, 18);
     self.pve_healers_icon_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.pve_healers_icon_offset_y:SetTooltip(L['OPTIONS_PVE_HEALERS_OFFSET_Y_TOOLTIP']);
     self.pve_healers_icon_offset_y:SetValues(O.db.pve_healers_icon_offset_y, -200, 200, 1);
-    self.pve_healers_icon_offset_y:AddToSearch(button, L['OPTIONS_PVE_HEALERS_OFFSET_Y_TOOLTIP'], self.Tabs[4]);
     self.pve_healers_icon_offset_y.OnValueChangedCallback = function(_, value)
         O.db.pve_healers_icon_offset_y = tonumber(value);
         Stripes:UpdateAll();
     end
+
+    self.pve_healers_icon_strata = E.CreateDropdown('plain', self.TabsFrames['HealersMarksTab'].Content);
+    self.pve_healers_icon_strata:SetSize(160, 20);
+    self.pve_healers_icon_strata:SetList(O.Lists.frame_strata);
+    self.pve_healers_icon_strata:SetValue(O.db.pve_healers_icon_strata);
+    self.pve_healers_icon_strata:SetLabel(L['FRAME_STRATA']);
+    self.pve_healers_icon_strata:SetTooltip(L['OPTIONS_PVE_HEALERS_ICON_STRATA_TOOLTIP']);
+    self.pve_healers_icon_strata.OnValueChangedCallback = function(_, value)
+        O.db.pve_healers_icon_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.PvEHealersIconPositionOptions = E.CreatePopOptions(self.TabsFrames['HealersMarksTab'].Content);
+    self.PvEHealersIconPositionOptions:SetH(120);
+    self.PvEHealersIconPositionOptions:Add(self.pve_healers_icon_point):SetPosition('TOPLEFT', self.PvEHealersIconPositionOptions, 'TOPLEFT', 12, -30);
+    self.PvEHealersIconPositionOptions:Add(self.pve_healers_icon_relative_point):SetPosition('LEFT', self.pve_healers_icon_point, 'RIGHT', 12, 0);
+    self.PvEHealersIconPositionOptions:Add(self.pve_healers_icon_offset_x):SetPosition('LEFT', self.pve_healers_icon_relative_point, 'RIGHT', 12, 0);
+    self.PvEHealersIconPositionOptions:Add(self.pve_healers_icon_offset_y):SetPosition('LEFT', self.pve_healers_icon_offset_x, 'RIGHT', 12, 0);
+    self.PvEHealersIconPositionOptions:Add(self.pve_healers_icon_strata):SetPosition('TOPLEFT', self.pve_healers_icon_point, 'BOTTOMLEFT', 0, -16);
+
+    self.PvEHealersIconPositonOptionsButton = E.CreateButton(self.TabsFrames['HealersMarksTab'].Content);
+    self.PvEHealersIconPositonOptionsButton:SetPosition('LEFT', self.pve_healers_icon_scale, 'RIGHT', 16, 0);
+    self.PvEHealersIconPositonOptionsButton:SetLabel(L['POSITION_OPTIONS']);
+    self.PvEHealersIconPositonOptionsButton:SetHighlightColor('cccccc');
+    self.PvEHealersIconPositonOptionsButton:SetScript('OnClick', function()
+        self.PvEHealersIconPositionOptions:Show();
+    end);
 end
