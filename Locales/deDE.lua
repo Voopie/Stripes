@@ -1105,3 +1105,5 @@ L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Farbliste öffnen';
 L['OPTIONS_CATEGORY_ENTER_NAME'] = 'Geben Sie einen Namen ein und drücken Sie Enter';
 L['OPTIONS_CATEGORY_ALL'] = 'Alle';
 L['OPTIONS_CATEGORY_OPEN_TOOLTIP'] = 'Kategorieliste öffnen';
+
+L['OPTIONS_UPDATE_NPCS_NAMES_TOOLTIP'] = 'NPC-Namen aktualisieren (nützlich, wenn man zwischen den Regionen des Spiels wechselt)';

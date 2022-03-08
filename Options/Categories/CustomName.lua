@@ -159,6 +159,21 @@ local function CreateRow(frame)
         self.EditBox:SetCursorPosition(0);
     end);
 
+    frame:SetScript('OnClick', function(self)
+        if IsShiftKeyDown() then
+            GameTooltip_Hide();
+
+            if O.db.custom_name_data[tonumber(self.npc_id)] then
+                O.db.custom_name_data[tonumber(self.npc_id)] = nil;
+
+                panel:UpdateScroll();
+                S:GetNameplateModule('Handler'):UpdateAll();
+            end
+
+            return;
+        end
+    end);
+
     frame:HookScript('OnEnter', function(self)
         self:SetBackdropColor(0.3, 0.3, 0.3, 1);
     end);
@@ -591,6 +606,36 @@ panel.Load = function(self)
     self.CopyFromProfileText = E.CreateFontString(self);
     self.CopyFromProfileText:SetPosition('BOTTOMLEFT', self.ProfilesDropdown, 'TOPLEFT', 0, 0);
     self.CopyFromProfileText:SetText(L['OPTIONS_COPY_FROM_PROFILE']);
+
+    self.HelpTipButton = E.CreateHelpTipButton(self);
+    self.HelpTipButton:SetPosition('TOPLEFT', self.ProfilesDropdown, 'BOTTOMLEFT', 2, -12);
+    self.HelpTipButton:SetTooltip(L['OPTIONS_SHIFT_CLICK_TO_DELETE']);
+
+    self.UpdateNamesButton = E.CreateTextureButton(self, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE, { 1, 1, 1, 1 });
+    self.UpdateNamesButton:SetPosition('LEFT', self.HelpTipButton, 'RIGHT', 24, 0);
+    self.UpdateNamesButton:SetSize(18, 18);
+    self.UpdateNamesButton:SetTooltip(L['OPTIONS_UPDATE_NPCS_NAMES_TOOLTIP']);
+    self.UpdateNamesButton.Callback = function()
+        local unitName;
+
+        for npc_id, _ in pairs(O.db.custom_name_data) do
+            unitName = U.GetNpcNameByID(npc_id);
+
+            if not unitName then
+                C_Timer.After(DELAY_SECONDS, function()
+                    unitName = U.GetNpcNameByID(npc_id);
+                    Add(npc_id, unitName);
+                    panel.UpdateScroll();
+                    Stripes:UpdateAll();
+                end);
+            else
+                Add(npc_id, unitName);
+            end
+        end
+
+        panel.UpdateScroll();
+        Stripes:UpdateAll();
+    end
 end
 
 panel.OnShow = function(self)

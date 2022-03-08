@@ -1038,6 +1038,32 @@ panel.Load = function(self)
     self.HelpTipButton:SetPosition('TOPLEFT', self.ProfilesDropdown, 'BOTTOMLEFT', 2, -12);
     self.HelpTipButton:SetTooltip(L['OPTIONS_SHIFT_CLICK_TO_DELETE']);
 
+    self.UpdateNamesButton = E.CreateTextureButton(self, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE, { 1, 1, 1, 1 });
+    self.UpdateNamesButton:SetPosition('LEFT', self.HelpTipButton, 'RIGHT', 24, 0);
+    self.UpdateNamesButton:SetSize(18, 18);
+    self.UpdateNamesButton:SetTooltip(L['OPTIONS_UPDATE_NPCS_NAMES_TOOLTIP']);
+    self.UpdateNamesButton.Callback = function()
+        local unitName;
+
+        for npc_id, _ in pairs(O.db.custom_color_data) do
+            unitName = U.GetNpcNameByID(npc_id);
+
+            if not unitName then
+                C_Timer.After(DELAY_SECONDS, function()
+                    unitName = U.GetNpcNameByID(npc_id);
+                    Add(npc_id, unitName);
+                    panel.UpdateScroll();
+                    Stripes:UpdateAll();
+                end);
+            else
+                Add(npc_id, unitName);
+            end
+        end
+
+        panel.UpdateScroll();
+        Stripes:UpdateAll();
+    end
+
     self.CategoryList = Mixin(CreateFrame('Frame', nil, self, 'BackdropTemplate'), E.PixelPerfectMixin);
     self.CategoryList:SetPosition('TOPLEFT', O.frame, 'TOPRIGHT', 0, 0);
     self.CategoryList:SetPosition('BOTTOMLEFT', O.frame, 'BOTTOMRIGHT', 0, 0);
