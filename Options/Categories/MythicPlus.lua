@@ -91,14 +91,8 @@ panel.Load = function(self)
     self.PercentageFontOptions:Add(self.mythic_plus_percentage_font_size):SetPosition('LEFT', self.mythic_plus_percentage_font_value, 'RIGHT', 12, 0);
     self.PercentageFontOptions:Add(self.mythic_plus_percentage_font_flag):SetPosition('LEFT', self.mythic_plus_percentage_font_size, 'RIGHT', 12, 0);
     self.PercentageFontOptions:Add(self.mythic_plus_percentage_font_shadow):SetPosition('LEFT', self.mythic_plus_percentage_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowPercentageFontOptionsButton = E.CreateButton(self);
-    self.ShowPercentageFontOptionsButton:SetPosition('LEFT', self.mythic_plus_percentage_use_mode, 'RIGHT', 16, 0);
-    self.ShowPercentageFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowPercentageFontOptionsButton:SetHighlightColor('cccccc');
-    self.ShowPercentageFontOptionsButton:SetScript('OnClick', function()
-        self.PercentageFontOptions:Show();
-    end);
+    self.PercentageFontOptions.OpenButton:SetPosition('LEFT', self.mythic_plus_percentage_use_mode, 'RIGHT', 16, 0);
+    self.PercentageFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     local ExplosiveOrbsHeader = E.CreateHeader(self, L['OPTIONS_HEADER_EXPLOSIVE_ORBS']);
     ExplosiveOrbsHeader:SetPosition('TOPLEFT', self.mythic_plus_percentage_enabled, 'BOTTOMLEFT', 0, -8);

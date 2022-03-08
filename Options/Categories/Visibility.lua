@@ -408,14 +408,8 @@ panel.Load = function(self)
     self.RaidTargetPositionOptions:Add(self.raid_target_icon_position_offset_x):SetPosition('LEFT', self.raid_target_icon_position, 'RIGHT', 12, 0);
     self.RaidTargetPositionOptions:Add(self.raid_target_icon_position_offset_y):SetPosition('LEFT', self.raid_target_icon_position_offset_x, 'RIGHT', 12, 0);
     self.RaidTargetPositionOptions:Add(self.raid_target_icon_frame_strata):SetPosition('TOPLEFT', self.raid_target_icon_position, 'BOTTOMLEFT', 0, -12);
-
-    self.RaidTargetPositionOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
-    self.RaidTargetPositionOptionsButton:SetPosition('LEFT', self.raid_target_icon_scale, 'RIGHT', 16, 0);
-    self.RaidTargetPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.RaidTargetPositionOptionsButton:SetHighlightColor('cccccc');
-    self.RaidTargetPositionOptionsButton:SetScript('OnClick', function()
-        self.RaidTargetPositionOptions:Show();
-    end);
+    self.RaidTargetPositionOptions.OpenButton:SetPosition('LEFT', self.raid_target_icon_scale, 'RIGHT', 16, 0);
+    self.RaidTargetPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------

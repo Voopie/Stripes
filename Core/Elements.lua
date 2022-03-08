@@ -2460,6 +2460,12 @@ do
             return object;
         end
 
+        frame.OpenButton = E.CreateButton(parent);
+        frame.OpenButton:SetHighlightColor('cccccc');
+        frame.OpenButton:SetScript('OnClick', function()
+            frame:Show();
+        end);
+
         return frame;
     end
 end

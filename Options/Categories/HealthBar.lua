@@ -334,14 +334,8 @@ panel.Load = function(self)
     self.AbsorbTextFontOptions:Add(self.absorb_text_font_size):SetPosition('LEFT', self.absorb_text_font_value, 'RIGHT', 12, 0);
     self.AbsorbTextFontOptions:Add(self.absorb_text_font_flag):SetPosition('LEFT', self.absorb_text_font_size, 'RIGHT', 12, 0);
     self.AbsorbTextFontOptions:Add(self.absorb_text_font_shadow):SetPosition('LEFT', self.absorb_text_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowAbsorbTextFontOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
-    self.ShowAbsorbTextFontOptionsButton:SetPosition('TOPLEFT', self.absorb_text_enabled, 'BOTTOMLEFT', 0, -8);
-    self.ShowAbsorbTextFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowAbsorbTextFontOptionsButton:SetHighlightColor('cccccc');
-    self.ShowAbsorbTextFontOptionsButton:SetScript('OnClick', function()
-        self.AbsorbTextFontOptions:Show();
-    end);
+    self.AbsorbTextFontOptions.OpenButton:SetPosition('TOPLEFT', self.absorb_text_enabled, 'BOTTOMLEFT', 0, -8);
+    self.AbsorbTextFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     self.absorb_text_anchor = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
     self.absorb_text_anchor:SetSize(120, 20);
@@ -379,17 +373,11 @@ panel.Load = function(self)
     self.AbsorbTextPositionOptions:Add(self.absorb_text_anchor):SetPosition('TOPLEFT', self.AbsorbTextPositionOptions, 'TOPLEFT', 12, -24);
     self.AbsorbTextPositionOptions:Add(self.absorb_text_x_offset):SetPosition('LEFT', self.absorb_text_anchor, 'RIGHT', 16, 0);
     self.AbsorbTextPositionOptions:Add(self.absorb_text_y_offset):SetPosition('LEFT', self.absorb_text_x_offset, 'RIGHT', 16, 0);
-
-    self.ShowAbsorbTextPositionOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
-    self.ShowAbsorbTextPositionOptionsButton:SetPosition('LEFT', self.ShowAbsorbTextFontOptionsButton, 'RIGHT', 16, 0);
-    self.ShowAbsorbTextPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.ShowAbsorbTextPositionOptionsButton:SetHighlightColor('cccccc');
-    self.ShowAbsorbTextPositionOptionsButton:SetScript('OnClick', function()
-        self.AbsorbTextPositionOptions:Show();
-    end);
+    self.AbsorbTextPositionOptions.OpenButton:SetPosition('LEFT', self.AbsorbTextFontOptions.OpenButton, 'RIGHT', 16, 0);
+    self.AbsorbTextPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.ShowAbsorbTextFontOptionsButton, 'BOTTOMLEFT', 0, -2);
+    Delimiter:SetPosition('TOPLEFT', self.AbsorbTextFontOptions.OpenButton, 'BOTTOMLEFT', 0, -2);
     Delimiter:SetW(self:GetWidth());
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -1318,14 +1306,8 @@ panel.Load = function(self)
     self.ThreatTextFontOptions:Add(self.threat_percentage_font_size):SetPosition('LEFT', self.threat_percentage_font_value, 'RIGHT', 12, 0);
     self.ThreatTextFontOptions:Add(self.threat_percentage_font_flag):SetPosition('LEFT', self.threat_percentage_font_size, 'RIGHT', 12, 0);
     self.ThreatTextFontOptions:Add(self.threat_percentage_font_shadow):SetPosition('LEFT', self.threat_percentage_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowThreatTextFontOptionsButton = E.CreateButton(self.TabsFrames['ThreatTab'].Content);
-    self.ShowThreatTextFontOptionsButton:SetPosition('TOPLEFT', self.threat_percentage_enabled, 'BOTTOMLEFT', 0, -8);
-    self.ShowThreatTextFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowThreatTextFontOptionsButton:SetHighlightColor('cccccc');
-    self.ShowThreatTextFontOptionsButton:SetScript('OnClick', function()
-        self.ThreatTextFontOptions:Show();
-    end);
+    self.ThreatTextFontOptions.OpenButton:SetPosition('TOPLEFT', self.threat_percentage_enabled, 'BOTTOMLEFT', 0, -8);
+    self.ThreatTextFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     self.threat_percentage_point = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
     self.threat_percentage_point:SetSize(120, 20);
@@ -1372,17 +1354,11 @@ panel.Load = function(self)
     self.ThreatTextPositionOptions:Add(self.threat_percentage_relative_point):SetPosition('LEFT', self.threat_percentage_point, 'RIGHT', 12, 0);
     self.ThreatTextPositionOptions:Add(self.threat_percentage_offset_x):SetPosition('LEFT', self.threat_percentage_relative_point, 'RIGHT', 8, 0);
     self.ThreatTextPositionOptions:Add(self.threat_percentage_offset_y):SetPosition('LEFT', self.threat_percentage_offset_x, 'RIGHT', 12, 0);
-
-    self.ShowThreatTextPositionOptionsButton = E.CreateButton(self.TabsFrames['ThreatTab'].Content);
-    self.ShowThreatTextPositionOptionsButton:SetPosition('LEFT', self.ShowThreatTextFontOptionsButton, 'RIGHT', 16, 0);
-    self.ShowThreatTextPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.ShowThreatTextPositionOptionsButton:SetHighlightColor('cccccc');
-    self.ShowThreatTextPositionOptionsButton:SetScript('OnClick', function()
-        self.ThreatTextPositionOptions:Show();
-    end);
+    self.ThreatTextPositionOptions.OpenButton:SetPosition('LEFT', self.ThreatTextFontOptions.OpenButton, 'RIGHT', 16, 0);
+    self.ThreatTextPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['ThreatTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.ShowThreatTextFontOptionsButton, 'BOTTOMLEFT', 0, -2);
+    Delimiter:SetPosition('TOPLEFT', self.ThreatTextFontOptions.OpenButton, 'BOTTOMLEFT', 0, -2);
     Delimiter:SetW(self:GetWidth());
 
     ------------------------------------------------------------------------------------------------------------------------------------

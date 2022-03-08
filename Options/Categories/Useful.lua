@@ -225,17 +225,11 @@ panel.Load = function(self)
     self.CombatIndicatorPositionOptions:Add(self.combat_indicator_relative_point):SetPosition('LEFT', self.combat_indicator_point, 'RIGHT', 12, 0);
     self.CombatIndicatorPositionOptions:Add(self.combat_indicator_offset_x):SetPosition('LEFT', self.combat_indicator_relative_point, 'RIGHT', 8, 0);
     self.CombatIndicatorPositionOptions:Add(self.combat_indicator_offset_y):SetPosition('LEFT', self.combat_indicator_offset_x, 'RIGHT', 12, 0);
-
-    self.ShowCombatIndicatorPositionOptionsButton = E.CreateButton(self.TabsFrames['CombatIndicatorTab'].Content);
-    self.ShowCombatIndicatorPositionOptionsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.ShowCombatIndicatorPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.ShowCombatIndicatorPositionOptionsButton:SetHighlightColor('cccccc');
-    self.ShowCombatIndicatorPositionOptionsButton:SetScript('OnClick', function()
-        self.CombatIndicatorPositionOptions:Show();
-    end);
+    self.CombatIndicatorPositionOptions.OpenButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.CombatIndicatorPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CombatIndicatorTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.ShowCombatIndicatorPositionOptionsButton, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.CombatIndicatorPositionOptions.OpenButton, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     ------------------------------------------------------------------------------------------------------------------------------------
@@ -350,14 +344,8 @@ panel.Load = function(self)
     self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_size):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_value, 'RIGHT', 12, 0);
     self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_flag):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_size, 'RIGHT', 12, 0);
     self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_shadow):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowSpellInterruptedIconOptionsButton = E.CreateButton(self.TabsFrames['SpellInterruptedTab'].Content);
-    self.ShowSpellInterruptedIconOptionsButton:SetPosition('LEFT', self.spell_interrupted_icon_countdown_show.Label, 'RIGHT', 16, 0);
-    self.ShowSpellInterruptedIconOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowSpellInterruptedIconOptionsButton:SetHighlightColor('cccccc');
-    self.ShowSpellInterruptedIconOptionsButton:SetScript('OnClick', function()
-        self.SpellInterruptedIconFontOptions:Show();
-    end);
+    self.SpellInterruptedIconFontOptions.OpenButton:SetPosition('LEFT', self.spell_interrupted_icon_countdown_show.Label, 'RIGHT', 16, 0);
+    self.SpellInterruptedIconFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellInterruptedTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.spell_interrupted_icon_countdown_show, 'BOTTOMLEFT', 0, -4);
@@ -429,14 +417,8 @@ panel.Load = function(self)
     self.SpellInterruptedIconCasterNameFontOptions:Add(self.spell_interrupted_icon_caster_name_font_size):SetPosition('LEFT', self.spell_interrupted_icon_caster_name_font_value, 'RIGHT', 12, 0);
     self.SpellInterruptedIconCasterNameFontOptions:Add(self.spell_interrupted_icon_caster_name_font_flag):SetPosition('LEFT', self.spell_interrupted_icon_caster_name_font_size, 'RIGHT', 12, 0);
     self.SpellInterruptedIconCasterNameFontOptions:Add(self.spell_interrupted_icon_caster_name_font_shadow):SetPosition('LEFT', self.spell_interrupted_icon_caster_name_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowSpellInterruptedIconCasterNameFontOptionsButton = E.CreateButton(self.TabsFrames['SpellInterruptedTab'].Content);
-    self.ShowSpellInterruptedIconCasterNameFontOptionsButton:SetPosition('LEFT', self.spell_interrupted_icon_caster_name_show.Label, 'RIGHT', 16, 0);
-    self.ShowSpellInterruptedIconCasterNameFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowSpellInterruptedIconCasterNameFontOptionsButton:SetHighlightColor('cccccc');
-    self.ShowSpellInterruptedIconCasterNameFontOptionsButton:SetScript('OnClick', function()
-        self.SpellInterruptedIconCasterNameFontOptions:Show();
-    end);
+    self.SpellInterruptedIconCasterNameFontOptions.OpenButton:SetPosition('LEFT', self.spell_interrupted_icon_caster_name_show.Label, 'RIGHT', 16, 0);
+    self.SpellInterruptedIconCasterNameFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellInterruptedTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.spell_interrupted_icon_caster_name_show, 'BOTTOMLEFT', 0, -4);
@@ -545,14 +527,8 @@ panel.Load = function(self)
     self.PvPHealersIconPositionOptions:Add(self.pvp_healers_icon_offset_x):SetPosition('LEFT', self.pvp_healers_icon_relative_point, 'RIGHT', 12, 0);
     self.PvPHealersIconPositionOptions:Add(self.pvp_healers_icon_offset_y):SetPosition('LEFT', self.pvp_healers_icon_offset_x, 'RIGHT', 12, 0);
     self.PvPHealersIconPositionOptions:Add(self.pvp_healers_icon_strata):SetPosition('TOPLEFT', self.pvp_healers_icon_point, 'BOTTOMLEFT', 0, -16);
-
-    self.PvPHealersIconPositonOptionsButton = E.CreateButton(self.TabsFrames['HealersMarksTab'].Content);
-    self.PvPHealersIconPositonOptionsButton:SetPosition('LEFT', self.pvp_healers_icon_scale, 'RIGHT', 16, 0);
-    self.PvPHealersIconPositonOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.PvPHealersIconPositonOptionsButton:SetHighlightColor('cccccc');
-    self.PvPHealersIconPositonOptionsButton:SetScript('OnClick', function()
-        self.PvPHealersIconPositionOptions:Show();
-    end);
+    self.PvPHealersIconPositionOptions.OpenButton:SetPosition('LEFT', self.pvp_healers_icon_scale, 'RIGHT', 16, 0);
+    self.PvPHealersIconPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     local PVEHeader = E.CreateHeader(self.TabsFrames['HealersMarksTab'].Content, L['OPTIONS_PVE_HEALERS_HEADER']);
     PVEHeader:SetPosition('TOPLEFT', self.pvp_healers_icon_scale, 'BOTTOMLEFT', 0 - self.pvp_healers_icon_scale.Text:GetStringWidth() - 6, -8);
@@ -651,12 +627,6 @@ panel.Load = function(self)
     self.PvEHealersIconPositionOptions:Add(self.pve_healers_icon_offset_x):SetPosition('LEFT', self.pve_healers_icon_relative_point, 'RIGHT', 12, 0);
     self.PvEHealersIconPositionOptions:Add(self.pve_healers_icon_offset_y):SetPosition('LEFT', self.pve_healers_icon_offset_x, 'RIGHT', 12, 0);
     self.PvEHealersIconPositionOptions:Add(self.pve_healers_icon_strata):SetPosition('TOPLEFT', self.pve_healers_icon_point, 'BOTTOMLEFT', 0, -16);
-
-    self.PvEHealersIconPositonOptionsButton = E.CreateButton(self.TabsFrames['HealersMarksTab'].Content);
-    self.PvEHealersIconPositonOptionsButton:SetPosition('LEFT', self.pve_healers_icon_scale, 'RIGHT', 16, 0);
-    self.PvEHealersIconPositonOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.PvEHealersIconPositonOptionsButton:SetHighlightColor('cccccc');
-    self.PvEHealersIconPositonOptionsButton:SetScript('OnClick', function()
-        self.PvEHealersIconPositionOptions:Show();
-    end);
+    self.PvEHealersIconPositionOptions.OpenButton:SetPosition('LEFT', self.pve_healers_icon_scale, 'RIGHT', 16, 0);
+    self.PvEHealersIconPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 end

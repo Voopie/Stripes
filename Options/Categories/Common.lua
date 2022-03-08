@@ -89,14 +89,8 @@ panel.Load = function(self)
     self.NameFontOptions:Add(self.name_text_font_size):SetPosition('LEFT', self.name_text_font_value, 'RIGHT', 12, 0);
     self.NameFontOptions:Add(self.name_text_font_flag):SetPosition('LEFT', self.name_text_font_size, 'RIGHT', 12, 0);
     self.NameFontOptions:Add(self.name_text_font_shadow):SetPosition('LEFT', self.name_text_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowNameFontOptionsButton = E.CreateButton(self.TabsFrames['NameTab'].Content);
-    self.ShowNameFontOptionsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.ShowNameFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowNameFontOptionsButton:SetHighlightColor('cccccc');
-    self.ShowNameFontOptionsButton:SetScript('OnClick', function()
-        self.NameFontOptions:Show();
-    end);
+    self.NameFontOptions.OpenButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.NameFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     self.name_text_position_v = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
     self.name_text_position_v:SetSize(100, 20);
@@ -165,17 +159,11 @@ panel.Load = function(self)
     self.NamePositionOptions:Add(self.name_text_offset_y):SetPosition('LEFT', self.name_text_offset_x, 'RIGHT', 12, 0);
     self.NamePositionOptions:Add(self.name_text_truncate):SetPosition('LEFT', self.name_text_offset_y, 'RIGHT', 12, 0);
     self.NamePositionOptions:Add(self.name_text_frame_strata):SetPosition('TOPLEFT', self.name_text_position_v, 'BOTTOMLEFT', 0, -12);
-
-    self.ShowNamePositionOptionsButton = E.CreateButton(self.TabsFrames['NameTab'].Content);
-    self.ShowNamePositionOptionsButton:SetPosition('LEFT', self.ShowNameFontOptionsButton, 'RIGHT', 16, 0);
-    self.ShowNamePositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.ShowNamePositionOptionsButton:SetHighlightColor('cccccc');
-    self.ShowNamePositionOptionsButton:SetScript('OnClick', function()
-        self.NamePositionOptions:Show();
-    end);
+    self.NamePositionOptions.OpenButton:SetPosition('LEFT', self.NameFontOptions.OpenButton, 'RIGHT', 16, 0);
+    self.NamePositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.ShowNameFontOptionsButton, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.NameFontOptions.OpenButton, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.name_without_realm = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
@@ -595,17 +583,11 @@ panel.Load = function(self)
     self.HealthFontOptions:Add(self.health_text_font_size):SetPosition('LEFT', self.health_text_font_value, 'RIGHT', 12, 0);
     self.HealthFontOptions:Add(self.health_text_font_flag):SetPosition('LEFT', self.health_text_font_size, 'RIGHT', 12, 0);
     self.HealthFontOptions:Add(self.health_text_font_shadow):SetPosition('LEFT', self.health_text_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowHealthFontOptionsButton = E.CreateButton(self.TabsFrames['HealthTextTab'].Content);
-    self.ShowHealthFontOptionsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.ShowHealthFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowHealthFontOptionsButton:SetHighlightColor('cccccc');
-    self.ShowHealthFontOptionsButton:SetScript('OnClick', function()
-        self.HealthFontOptions:Show();
-    end);
+    self.HealthFontOptions.OpenButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.HealthFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     self.health_text_frame_strata = E.CreateDropdown('plain', self.TabsFrames['HealthTextTab'].Content);
-    self.health_text_frame_strata:SetPosition('LEFT', self.ShowHealthFontOptionsButton, 'RIGHT', 16, 0);
+    self.health_text_frame_strata:SetPosition('LEFT', self.HealthFontOptions.OpenButton, 'RIGHT', 16, 0);
     self.health_text_frame_strata:SetSize(160, 20);
     self.health_text_frame_strata:SetList(O.Lists.frame_strata);
     self.health_text_frame_strata:SetValue(O.db.health_text_frame_strata);
@@ -618,7 +600,7 @@ panel.Load = function(self)
     end
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['HealthTextTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.ShowHealthFontOptionsButton, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.HealthFontOptions.OpenButton, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.health_text_show_only_on_target = E.CreateCheckButton(self.TabsFrames['HealthTextTab'].Content);
@@ -928,14 +910,8 @@ panel.Load = function(self)
     self.LevelFontOptions:Add(self.level_text_font_size):SetPosition('LEFT', self.level_text_font_value, 'RIGHT', 12, 0);
     self.LevelFontOptions:Add(self.level_text_font_flag):SetPosition('LEFT', self.level_text_font_size, 'RIGHT', 12, 0);
     self.LevelFontOptions:Add(self.level_text_font_shadow):SetPosition('LEFT', self.level_text_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowLevelFontOptionsButton = E.CreateButton(self.TabsFrames['LevelTextTab'].Content);
-    self.ShowLevelFontOptionsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.ShowLevelFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowLevelFontOptionsButton:SetHighlightColor('cccccc');
-    self.ShowLevelFontOptionsButton:SetScript('OnClick', function()
-        self.LevelFontOptions:Show();
-    end);
+    self.LevelFontOptions.OpenButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.LevelFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     self.level_text_anchor = E.CreateDropdown('plain', self.TabsFrames['LevelTextTab'].Content);
     self.level_text_anchor:SetSize(120, 20);
@@ -983,17 +959,11 @@ panel.Load = function(self)
     self.LevelPositionOptions:Add(self.level_text_x_offset):SetPosition('LEFT', self.level_text_anchor, 'RIGHT', 16, 0);
     self.LevelPositionOptions:Add(self.level_text_y_offset):SetPosition('LEFT', self.level_text_x_offset, 'RIGHT', 16, 0);
     self.LevelPositionOptions:Add(self.level_text_frame_strata):SetPosition('TOPLEFT', self.level_text_anchor, 'BOTTOMLEFT', 0, -12);
-
-    self.ShowLevelPositionOptionsButton = E.CreateButton(self.TabsFrames['LevelTextTab'].Content);
-    self.ShowLevelPositionOptionsButton:SetPosition('LEFT', self.ShowLevelFontOptionsButton, 'RIGHT', 16, 0);
-    self.ShowLevelPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.ShowLevelPositionOptionsButton:SetHighlightColor('cccccc');
-    self.ShowLevelPositionOptionsButton:SetScript('OnClick', function()
-        self.LevelPositionOptions:Show();
-    end);
+    self.LevelPositionOptions.OpenButton:SetPosition('LEFT', self.LevelFontOptions.OpenButton, 'RIGHT', 16, 0);
+    self.LevelPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['LevelTextTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.ShowLevelFontOptionsButton, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.LevelFontOptions.OpenButton, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.level_text_show_only_on_target = E.CreateCheckButton(self.TabsFrames['LevelTextTab'].Content);

@@ -884,14 +884,8 @@ panel.Load = function(self)
     self.CastBarTextFontOptions:Add(self.castbar_text_font_size):SetPosition('LEFT', self.castbar_text_font_value, 'RIGHT', 12, 0);
     self.CastBarTextFontOptions:Add(self.castbar_text_font_flag):SetPosition('LEFT', self.castbar_text_font_size, 'RIGHT', 12, 0);
     self.CastBarTextFontOptions:Add(self.castbar_text_font_shadow):SetPosition('LEFT', self.castbar_text_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowCastBarTextFontOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
-    self.ShowCastBarTextFontOptionsButton:SetPosition('TOPLEFT', CastNameHeader, 'BOTTOMLEFT', 0, -4);
-    self.ShowCastBarTextFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowCastBarTextFontOptionsButton:SetHighlightColor('cccccc');
-    self.ShowCastBarTextFontOptionsButton:SetScript('OnClick', function()
-        self.CastBarTextFontOptions:Show();
-    end);
+    self.CastBarTextFontOptions.OpenButton:SetPosition('TOPLEFT', CastNameHeader, 'BOTTOMLEFT', 0, -4);
+    self.CastBarTextFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     self.castbar_text_anchor = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
     self.castbar_text_anchor:SetSize(120, 20);
@@ -939,17 +933,11 @@ panel.Load = function(self)
     self.CastBarTextPositionOptions:Add(self.castbar_text_offset_x):SetPosition('LEFT', self.castbar_text_anchor, 'RIGHT', 12, 0);
     self.CastBarTextPositionOptions:Add(self.castbar_text_offset_y):SetPosition('LEFT', self.castbar_text_offset_x, 'RIGHT', 12, 0);
     self.CastBarTextPositionOptions:Add(self.castbar_text_truncate):SetPosition('LEFT', self.castbar_text_offset_y, 'RIGHT', 12, 0);
-
-    self.ShowCastBarTextPositionOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
-    self.ShowCastBarTextPositionOptionsButton:SetPosition('LEFT', self.ShowCastBarTextFontOptionsButton, 'RIGHT', 16, 0);
-    self.ShowCastBarTextPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.ShowCastBarTextPositionOptionsButton:SetHighlightColor('cccccc');
-    self.ShowCastBarTextPositionOptionsButton:SetScript('OnClick', function()
-        self.CastBarTextPositionOptions:Show();
-    end);
+    self.CastBarTextPositionOptions.OpenButton:SetPosition('LEFT', self.CastBarTextFontOptions.OpenButton, 'RIGHT', 16, 0);
+    self.CastBarTextPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     local CastTargetHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_CAST_BAR_TARGET_HEADER']);
-    CastTargetHeader:SetPosition('TOPLEFT', self.ShowCastBarTextFontOptionsButton, 'BOTTOMLEFT', 0, -4);
+    CastTargetHeader:SetPosition('TOPLEFT', self.CastBarTextFontOptions.OpenButton, 'BOTTOMLEFT', 0, -4);
     CastTargetHeader:SetW(self:GetWidth());
 
     self.castbar_target_name_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -1039,14 +1027,8 @@ panel.Load = function(self)
     self.CastBarTargetTextFontOptions:Add(self.castbar_target_font_size):SetPosition('LEFT', self.castbar_target_font_value, 'RIGHT', 12, 0);
     self.CastBarTargetTextFontOptions:Add(self.castbar_target_font_flag):SetPosition('LEFT', self.castbar_target_font_size, 'RIGHT', 12, 0);
     self.CastBarTargetTextFontOptions:Add(self.castbar_target_font_shadow):SetPosition('LEFT', self.castbar_target_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowCastBarTargetTextFontOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
-    self.ShowCastBarTargetTextFontOptionsButton:SetPosition('TOPLEFT', self.castbar_target_name_enabled, 'BOTTOMLEFT', 0, -10);
-    self.ShowCastBarTargetTextFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowCastBarTargetTextFontOptionsButton:SetHighlightColor('cccccc');
-    self.ShowCastBarTargetTextFontOptionsButton:SetScript('OnClick', function()
-        self.CastBarTargetTextFontOptions:Show();
-    end);
+    self.CastBarTargetTextFontOptions.OpenButton:SetPosition('TOPLEFT', self.castbar_target_name_enabled, 'BOTTOMLEFT', 0, -10);
+    self.CastBarTargetTextFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     self.castbar_target_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
     self.castbar_target_point:SetSize(120, 20);
@@ -1093,17 +1075,11 @@ panel.Load = function(self)
     self.CastBarTargetTextPositionOptions:Add(self.castbar_target_relative_point):SetPosition('LEFT', self.castbar_target_point, 'RIGHT', 12, 0);
     self.CastBarTargetTextPositionOptions:Add(self.castbar_target_offset_x):SetPosition('LEFT', self.castbar_target_relative_point, 'RIGHT', 12, 0);
     self.CastBarTargetTextPositionOptions:Add(self.castbar_target_offset_y):SetPosition('LEFT', self.castbar_target_offset_x, 'RIGHT', 12, 0);
-
-    self.ShowCastBarTargetTextPositionOptionsButton = E.CreateButton(self.TabsFrames['CommonTab'].Content);
-    self.ShowCastBarTargetTextPositionOptionsButton:SetPosition('LEFT', self.ShowCastBarTargetTextFontOptionsButton, 'RIGHT', 16, 0);
-    self.ShowCastBarTargetTextPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.ShowCastBarTargetTextPositionOptionsButton:SetHighlightColor('cccccc');
-    self.ShowCastBarTargetTextPositionOptionsButton:SetScript('OnClick', function()
-        self.CastBarTargetTextPositionOptions:Show();
-    end);
+    self.CastBarTargetTextPositionOptions.OpenButton:SetPosition('LEFT', self.CastBarTargetTextFontOptions.OpenButton, 'RIGHT', 16, 0);
+    self.CastBarTargetTextPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.ShowCastBarTargetTextFontOptionsButton, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.CastBarTargetTextFontOptions.OpenButton, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_on_hp_bar = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
@@ -1421,14 +1397,8 @@ panel.Load = function(self)
     self.CastBarTimerTextFontOptions:Add(self.castbar_timer_font_size):SetPosition('LEFT', self.castbar_timer_font_value, 'RIGHT', 12, 0);
     self.CastBarTimerTextFontOptions:Add(self.castbar_timer_font_flag):SetPosition('LEFT', self.castbar_timer_font_size, 'RIGHT', 12, 0);
     self.CastBarTimerTextFontOptions:Add(self.castbar_timer_font_shadow):SetPosition('LEFT', self.castbar_timer_font_flag, 'RIGHT', 12, 0);
-
-    self.ShowCastBarTimerTextFontOptionsButton = E.CreateButton(self.TabsFrames['TimerTab'].Content);
-    self.ShowCastBarTimerTextFontOptionsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
-    self.ShowCastBarTimerTextFontOptionsButton:SetLabel(L['FONT_OPTIONS']);
-    self.ShowCastBarTimerTextFontOptionsButton:SetHighlightColor('cccccc');
-    self.ShowCastBarTimerTextFontOptionsButton:SetScript('OnClick', function()
-        self.CastBarTimerTextFontOptions:Show();
-    end);
+    self.CastBarTimerTextFontOptions.OpenButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
+    self.CastBarTimerTextFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     self.castbar_timer_xside = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
     self.castbar_timer_xside:SetSize(116, 20);
@@ -1475,17 +1445,11 @@ panel.Load = function(self)
     self.CastBarTimerTextPositionOptions:Add(self.castbar_timer_anchor):SetPosition('LEFT', self.castbar_timer_xside, 'RIGHT', 12, 0);
     self.CastBarTimerTextPositionOptions:Add(self.castbar_timer_offset_x):SetPosition('LEFT', self.castbar_timer_anchor, 'RIGHT', 16, 0);
     self.CastBarTimerTextPositionOptions:Add(self.castbar_timer_offset_y):SetPosition('LEFT', self.castbar_timer_offset_x, 'RIGHT', 16, 0);
-
-    self.ShowCastBarTimerTextPositionOptionsButton = E.CreateButton(self.TabsFrames['TimerTab'].Content);
-    self.ShowCastBarTimerTextPositionOptionsButton:SetPosition('LEFT', self.ShowCastBarTimerTextFontOptionsButton, 'RIGHT', 16, 0);
-    self.ShowCastBarTimerTextPositionOptionsButton:SetLabel(L['POSITION_OPTIONS']);
-    self.ShowCastBarTimerTextPositionOptionsButton:SetHighlightColor('cccccc');
-    self.ShowCastBarTimerTextPositionOptionsButton:SetScript('OnClick', function()
-        self.CastBarTimerTextPositionOptions:Show();
-    end);
+    self.CastBarTimerTextPositionOptions.OpenButton:SetPosition('LEFT', self.CastBarTimerTextFontOptions.OpenButton, 'RIGHT', 16, 0);
+    self.CastBarTimerTextPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['TimerTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.ShowCastBarTimerTextFontOptionsButton, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.CastBarTimerTextFontOptions.OpenButton, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.castbar_timer_format = E.CreateDropdown('plain', self.TabsFrames['TimerTab'].Content);
