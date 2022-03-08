@@ -1438,7 +1438,6 @@ panel.Load = function(self)
     self.auras_expire_glow_percent_sign:SetText('%');
     self.auras_expire_glow_percent_sign:SetFontObject(O.db.auras_expire_glow_enabled and 'StripesOptionsHighlightFont' or 'StripesOptionsDisabledFont');
 
-
     self.auras_masque_support = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.auras_masque_support:SetPosition('TOPLEFT', self.auras_expire_glow_enabled, 'BOTTOMLEFT', 0, -8);
     self.auras_masque_support:SetLabel(L['OPTIONS_AURAS_MASQUE_SUPPORT']);
@@ -1562,8 +1561,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_countdown_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.auras_countdown_text = E.CreateFontString(self.TabsFrames['CommonTab'].Content);
-    self.auras_countdown_text:SetPosition('TOPLEFT', self.auras_countdown_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_countdown_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.auras_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_cooldown_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
@@ -2017,8 +2020,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['SpellstealTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_spellsteal_countdown_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.auras_spellsteal_countdown_text = E.CreateFontString(self.TabsFrames['SpellstealTab'].Content);
-    self.auras_spellsteal_countdown_text:SetPosition('TOPLEFT', self.auras_spellsteal_countdown_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_spellsteal_countdown_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.auras_spellsteal_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_spellsteal_cooldown_color = E.CreateColorPicker(self.TabsFrames['SpellstealTab'].Content);
@@ -2418,8 +2425,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_countdown_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.auras_mythicplus_countdown_text = E.CreateFontString(self.TabsFrames['MythicPlusTab'].Content);
-    self.auras_mythicplus_countdown_text:SetPosition('TOPLEFT', self.auras_mythicplus_countdown_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_mythicplus_countdown_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.auras_mythicplus_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_mythicplus_cooldown_color = E.CreateColorPicker(self.TabsFrames['MythicPlusTab'].Content);
@@ -2849,8 +2860,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['ImportantTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_important_countdown_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.auras_important_countdown_text = E.CreateFontString(self.TabsFrames['ImportantTab'].Content);
-    self.auras_important_countdown_text:SetPosition('TOPLEFT', self.auras_important_countdown_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_important_countdown_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.auras_important_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_important_cooldown_color = E.CreateColorPicker(self.TabsFrames['ImportantTab'].Content);
@@ -3320,8 +3335,12 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CustomTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.auras_custom_countdown_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     self.auras_custom_countdown_text = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
-    self.auras_custom_countdown_text:SetPosition('TOPLEFT', self.auras_custom_countdown_enabled, 'BOTTOMLEFT', 0, -8);
+    self.auras_custom_countdown_text:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, 0);
     self.auras_custom_countdown_text:SetText(L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
 
     self.auras_custom_cooldown_color = E.CreateColorPicker(self.TabsFrames['CustomTab'].Content);
