@@ -234,6 +234,10 @@ panel.Load = function(self)
         self.CombatIndicatorPositionOptions:Show();
     end);
 
+    Delimiter = E.CreateDelimiter(self.TabsFrames['CombatIndicatorTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.ShowCombatIndicatorPositionOptionsButton, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     -- Spell Interrupted Tab -----------------------------------------------------------------------------------------------------------
@@ -433,6 +437,10 @@ panel.Load = function(self)
     self.ShowSpellInterruptedIconCasterNameFontOptionsButton:SetScript('OnClick', function()
         self.SpellInterruptedIconCasterNameFontOptions:Show();
     end);
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['SpellInterruptedTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.spell_interrupted_icon_caster_name_show, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------

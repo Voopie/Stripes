@@ -388,6 +388,10 @@ panel.Load = function(self)
         self.AbsorbTextPositionOptions:Show();
     end);
 
+    local Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.ShowAbsorbTextFontOptionsButton, 'BOTTOMLEFT', 0, -2);
+    Delimiter:SetW(self:GetWidth());
+
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
     -- Colors Tab ------------------------------------------------------------------------------------------------------------
@@ -1376,6 +1380,10 @@ panel.Load = function(self)
     self.ShowThreatTextPositionOptionsButton:SetScript('OnClick', function()
         self.ThreatTextPositionOptions:Show();
     end);
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['ThreatTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.ShowThreatTextFontOptionsButton, 'BOTTOMLEFT', 0, -2);
+    Delimiter:SetW(self:GetWidth());
 
     ------------------------------------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------------------------------------
