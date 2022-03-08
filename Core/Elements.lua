@@ -606,6 +606,10 @@ do
         slider.SetLabelPosition = function(self, position)
             self.LabelPostion = position;
 
+            if not self.point then
+                return;
+            end
+
             self.Text:ClearAllPoints();
 
             if self.LabelPostion == 'LEFT' then
