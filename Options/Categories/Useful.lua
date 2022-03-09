@@ -315,7 +315,7 @@ panel.Load = function(self)
     self.SpellInterruptedIconPositionOptions:SetH(120);
     self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_point):SetPosition('TOPLEFT', self.SpellInterruptedIconPositionOptions, 'TOPLEFT', 12, -30);
     self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_relative_point):SetPosition('LEFT', self.spell_interrupted_icon_point, 'RIGHT', 12, 0);
-    self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_offset_x):SetPosition('LEFT', self.spell_interrupted_icon_relative_point, 'RIGHT', 8, 0);
+    self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_offset_x):SetPosition('LEFT', self.spell_interrupted_icon_relative_point, 'RIGHT', 12, 0);
     self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_offset_y):SetPosition('LEFT', self.spell_interrupted_icon_offset_x, 'RIGHT', 12, 0);
     self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_frame_strata):SetPosition('TOPLEFT', self.spell_interrupted_icon_point, 'BOTTOMLEFT', 0, -16);
     self.SpellInterruptedIconPositionOptions.OpenButton:SetPosition('LEFT', self.spell_interrupted_icon_size, 'RIGHT', 16, 0);
