@@ -261,18 +261,65 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.spell_interrupted_icon_point = E.CreateDropdown('plain', self.TabsFrames['SpellInterruptedTab'].Content);
+    self.spell_interrupted_icon_point:SetSize(120, 20);
+    self.spell_interrupted_icon_point:SetList(O.Lists.frame_points_localized);
+    self.spell_interrupted_icon_point:SetValue(O.db.spell_interrupted_icon_point);
+    self.spell_interrupted_icon_point:SetLabel(L['POSITION']);
+    self.spell_interrupted_icon_point:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_POINT_TOOLTIP']);
+    self.spell_interrupted_icon_point.OnValueChangedCallback = function(_, value)
+        O.db.spell_interrupted_icon_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.spell_interrupted_icon_relative_point = E.CreateDropdown('plain', self.TabsFrames['SpellInterruptedTab'].Content);
+    self.spell_interrupted_icon_relative_point:SetSize(120, 20);
+    self.spell_interrupted_icon_relative_point:SetList(O.Lists.frame_points_localized);
+    self.spell_interrupted_icon_relative_point:SetValue(O.db.spell_interrupted_icon_relative_point);
+    self.spell_interrupted_icon_relative_point:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_RELATIVE_POINT_TOOLTIP']);
+    self.spell_interrupted_icon_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.spell_interrupted_icon_relative_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.spell_interrupted_icon_offset_x = E.CreateSlider(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.spell_interrupted_icon_offset_x:SetSize(120, 18);
+    self.spell_interrupted_icon_offset_x:SetValues(O.db.spell_interrupted_icon_offset_x, -50, 50, 1);
+    self.spell_interrupted_icon_offset_x:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_OFFSET_X_TOOLTIP']);
+    self.spell_interrupted_icon_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.spell_interrupted_icon_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.spell_interrupted_icon_offset_y = E.CreateSlider(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.spell_interrupted_icon_offset_y:SetSize(120, 18);
+    self.spell_interrupted_icon_offset_y:SetValues(O.db.spell_interrupted_icon_offset_y, -50, 50, 1);
+    self.spell_interrupted_icon_offset_y:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_OFFSET_Y_TOOLTIP']);
+    self.spell_interrupted_icon_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.spell_interrupted_icon_offset_y = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.spell_interrupted_icon_frame_strata = E.CreateDropdown('plain', self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_icon_frame_strata:SetPosition('LEFT', self.spell_interrupted_icon_size, 'RIGHT', 16, 0);
     self.spell_interrupted_icon_frame_strata:SetSize(160, 20);
     self.spell_interrupted_icon_frame_strata:SetList(O.Lists.frame_strata);
     self.spell_interrupted_icon_frame_strata:SetValue(O.db.spell_interrupted_icon_frame_strata);
     self.spell_interrupted_icon_frame_strata:SetLabel(L['FRAME_STRATA']);
     self.spell_interrupted_icon_frame_strata:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_FRAME_STRATA_TOOLTIP']);
-    self.spell_interrupted_icon_frame_strata:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_FRAME_STRATA_TOOLTIP'], self.Tabs[3]);
     self.spell_interrupted_icon_frame_strata.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_frame_strata = tonumber(value);
         Stripes:UpdateAll();
     end
+
+    self.SpellInterruptedIconPositionOptions = E.CreatePopOptions(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.SpellInterruptedIconPositionOptions:SetH(120);
+    self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_point):SetPosition('TOPLEFT', self.SpellInterruptedIconPositionOptions, 'TOPLEFT', 12, -30);
+    self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_relative_point):SetPosition('LEFT', self.spell_interrupted_icon_point, 'RIGHT', 12, 0);
+    self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_offset_x):SetPosition('LEFT', self.spell_interrupted_icon_relative_point, 'RIGHT', 8, 0);
+    self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_offset_y):SetPosition('LEFT', self.spell_interrupted_icon_offset_x, 'RIGHT', 12, 0);
+    self.SpellInterruptedIconPositionOptions:Add(self.spell_interrupted_icon_frame_strata):SetPosition('TOPLEFT', self.spell_interrupted_icon_point, 'BOTTOMLEFT', 0, -16);
+    self.SpellInterruptedIconPositionOptions.OpenButton:SetPosition('LEFT', self.spell_interrupted_icon_size, 'RIGHT', 16, 0);
+    self.SpellInterruptedIconPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellInterruptedTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.spell_interrupted_icon, 'BOTTOMLEFT', 0, -4);

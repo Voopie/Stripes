@@ -11,7 +11,7 @@ NAMESPACE[2]['ruRU'] = {};
 
 local L = NAMESPACE[2]['ruRU'];
 
-L['OPTIONS_TRANSLATED_BY'] = 'Переведено на русский: Рипна-Гордунни';
+L['OPTIONS_TRANSLATED_BY'] = 'Переведено на русский: Ramissa-Silvermoon';
 
 L['RENAME'] = 'Переименовать';
 L['SAVE'] = 'Сохранить';
@@ -797,6 +797,10 @@ L['OPTIONS_SPELL_INTERRUPTED_ICON_TOOLTIP'] = 'Показать иконку п�
 L['OPTIONS_SPELL_INTERRUPTED_ICON_SIZE'] = 'Размер';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_SIZE_TOOLTIP'] = 'Размер иконки прерывания';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_FRAME_STRATA_TOOLTIP'] = 'Слой для иконки прерывания';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_POINT_TOOLTIP'] = 'Точка крепления иконки прерывания';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_RELATIVE_POINT_TOOLTIP'] = 'К какой точке полосы здоровья прикрепить иконку прерывания';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение иконки прерывания';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение иконки прерывания';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_TEXT'] = 'Таймер';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_SHOW_TOOLTIP'] = 'Показывать таймер для иконки прерывания';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_VALUE'] = 'Шрифт таймера иконки прерывания';

@@ -264,7 +264,7 @@ O.Lists = {
     }
 };
 
--- ~560
+-- ~564
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -666,6 +666,10 @@ O.DefaultValues = {
 
     spell_interrupted_icon  = true,
     spell_interrupted_icon_size = 20,
+    spell_interrupted_icon_point = 5, -- BOTTOM
+    spell_interrupted_icon_relative_point = 6, -- TOP
+    spell_interrupted_icon_offset_x = 4,
+    spell_interrupted_icon_offset_y = 0;
     spell_interrupted_icon_frame_strata            = 5, -- HIGH
     spell_interrupted_icon_countdown_show          = true,
     spell_interrupted_icon_countdown_font_value    = 'BigNoodleToo Titling',

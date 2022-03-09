@@ -11,7 +11,7 @@ NAMESPACE[2]['enUS'] = {};
 
 local L = NAMESPACE[2]['enUS'];
 
-L['OPTIONS_TRANSLATED_BY'] = 'Translated into English: Рипна-Гордунни & DeepL';
+L['OPTIONS_TRANSLATED_BY'] = 'Translated into English: Ramissa-Silvermoon & DeepL';
 
 L['RENAME'] = 'Rename';
 L['SAVE'] = 'Save';
@@ -792,11 +792,15 @@ L['OPTIONS_TALKING_HEAD_SUPPRESS'] = 'Disable «talking head»';
 L['OPTIONS_TALKING_HEAD_SUPPRESS_TOOLTIP'] = 'Disable pop-up «talking head» in dungeons / raids';
 L['OPTIONS_TALKING_HEAD_SUPPRESS_ALWAYS'] = 'Always';
 L['OPTIONS_TALKING_HEAD_SUPPRESS_ALWAYS_TOOLTIP'] = 'Turn off the «talking head» completely';
-L['OPTIONS_SPELL_INTERRUPTED_ICON_FRAME_STRATA_TOOLTIP'] = 'Strata for spell interrupt icon';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_FRAME_STRATA_TOOLTIP'] = 'Strata for spell interrupted icon';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_POINT_TOOLTIP'] = 'Point of attachment of spell interrupted icon';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_RELATIVE_POINT_TOOLTIP'] = 'To which point of the health bar attach the spell interrupted icon';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_OFFSET_X_TOOLTIP'] = 'Horizontal offset of spell interrupted icon';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_OFFSET_Y_TOOLTIP'] = 'Vertical offset of spell interrupted icon';
 L['OPTIONS_SPELL_INTERRUPTED_ICON'] = 'Enable';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_SIZE'] = 'Size';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_SIZE_TOOLTIP'] = 'Spell interrupted icon size';
-L['OPTIONS_SPELL_INTERRUPTED_ICON_TOOLTIP'] = 'Show the spell interrupt icon with a timer when the enemy\'s spell was interrupted';
+L['OPTIONS_SPELL_INTERRUPTED_ICON_TOOLTIP'] = 'Show the spell interrupted icon with a timer when the enemy\'s spell was interrupted';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_TEXT'] = 'Countdown';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_SHOW_TOOLTIP'] = 'Show countdown for spell interrupted icon';
 L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_VALUE'] = 'Countdown font of spell interrupted icon';

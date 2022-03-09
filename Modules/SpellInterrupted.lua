@@ -17,6 +17,7 @@ local NP = S.NamePlates;
 
 -- Local Config
 local ENABLED, SIZE, COUNTDOWN_ENABLED, CASTER_NAME_SHOW, FRAME_STRATA;
+local POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
 
 local StripesSpellInterruptedCooldownFont = CreateFont('StripesSpellInterruptedCooldownFont');
 local StripesSpellInterruptedCasterFont   = CreateFont('StripesSpellInterruptedCasterFont');
@@ -65,7 +66,6 @@ local function Create(unitframe)
     frame:SetFrameLevel(frame:GetFrameLevel() + 100);
 
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetPoint('LEFT', unitframe.healthBar, 'RIGHT', 4, 0);
     frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
     frame.icon:SetSize(SIZE, SIZE);
 
@@ -104,6 +104,9 @@ local function Update(unitframe)
         else
             unitframe.SpellInterrupted:SetFrameStrata(FRAME_STRATA);
         end
+
+        unitframe.SpellInterrupted.icon:ClearAllPoints();
+        PixelUtil.SetPoint(unitframe.SpellInterrupted.icon, POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
 
         unitframe.SpellInterrupted.icon:SetSize(SIZE, SIZE);
 
@@ -231,6 +234,11 @@ function Module:UpdateLocalConfig()
     COUNTDOWN_ENABLED = O.db.spell_interrupted_icon_countdown_show;
     CASTER_NAME_SHOW  = O.db.spell_interrupted_icon_caster_name_show;
     FRAME_STRATA      = O.db.spell_interrupted_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.spell_interrupted_icon_frame_strata] or 1;
+
+    POINT          = O.Lists.frame_points[O.db.spell_interrupted_icon_point] or 'LEFT';
+    RELATIVE_POINT = O.Lists.frame_points[O.db.spell_interrupted_icon_relative_point] or 'RIGHT';
+    OFFSET_X       = O.db.spell_interrupted_icon_offset_x;
+    OFFSET_Y       = O.db.spell_interrupted_icon_offset_y;
 
     UpdateFontObject(StripesSpellInterruptedCooldownFont, O.db.spell_interrupted_icon_countdown_font_value, O.db.spell_interrupted_icon_countdown_font_size, O.db.spell_interrupted_icon_countdown_font_flag, O.db.spell_interrupted_icon_countdown_font_shadow);
     UpdateFontObject(StripesSpellInterruptedCasterFont, O.db.spell_interrupted_icon_caster_name_font_value, O.db.spell_interrupted_icon_caster_name_font_size, O.db.spell_interrupted_icon_caster_name_font_flag, O.db.spell_interrupted_icon_caster_name_font_shadow);

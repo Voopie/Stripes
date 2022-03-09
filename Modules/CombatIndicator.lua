@@ -88,9 +88,8 @@ function Module:UpdateLocalConfig()
 
     POINT          = O.Lists.frame_points[O.db.combat_indicator_point] or 'CENTER';
     RELATIVE_POINT = O.Lists.frame_points[O.db.combat_indicator_relative_point] or 'BOTTOM';
-
-    OFFSET_X = O.db.combat_indicator_offset_x;
-    OFFSET_Y = O.db.combat_indicator_offset_y;
+    OFFSET_X       = O.db.combat_indicator_offset_x;
+    OFFSET_Y       = O.db.combat_indicator_offset_y;
 
     SIZE = O.db.combat_indicator_size;
 end
