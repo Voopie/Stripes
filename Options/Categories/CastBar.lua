@@ -368,10 +368,10 @@ local function CreateCustomCastRow(frame)
             self.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
         end
 
-        if self.new_name and self.name == self.new_name then
-            self.NameText:SetText(self.name);
-        else
+        if self.new_name and self.new_name ~= self.name then
             self.NameText:SetText(self.new_name .. ' |cffaaaaaa[' .. self.name .. ']|r');
+        else
+            self.NameText:SetText(self.name);
         end
 
         GameTooltip_Hide();
@@ -401,10 +401,10 @@ local function UpdateCustomCastRow(frame)
     frame.CategoryNameText:SetText(frame.category_name);
     frame.Icon:SetTexture(frame.icon);
 
-    if frame.new_name and frame.name == frame.new_name then
-        frame.NameText:SetText(frame.name);
-    else
+    if frame.new_name and frame.new_name ~= frame.name then
         frame.NameText:SetText(frame.new_name .. ' |cffaaaaaa[' .. frame.name .. ']|r');
+    else
+        frame.NameText:SetText(frame.name);
     end
 
     if frame.color_enabled then
@@ -508,10 +508,6 @@ panel.UpdateCustomCastsScroll = function()
 
             if not O.db.castbar_custom_casts_data[id].name then
                 O.db.castbar_custom_casts_data[id].name = name;
-            end
-
-            if not O.db.castbar_custom_casts_data[id].new_name then
-                O.db.castbar_custom_casts_data[id].new_name = name;
             end
 
             frame.new_name = O.db.castbar_custom_casts_data[id].new_name;
