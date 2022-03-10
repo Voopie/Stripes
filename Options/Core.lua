@@ -943,6 +943,14 @@ do
     end
 end
 
+local function RenameDefaultProfile()
+    StripesDB.profiles[O.PROFILE_DEFAULT_ID].profileName = O.PROFILE_DEFAULT_NAME;
+
+    if O.activeProfileId == O.PROFILE_DEFAULT_ID then
+        O.activeProfileName = O.PROFILE_DEFAULT_NAME;
+    end
+end
+
 local function Migration_ColorsAndCategories()
     for pId, _ in pairs(StripesDB.profiles) do
         -- Color categories
@@ -1072,6 +1080,9 @@ function Module:StartUp()
     for pId, data in pairs(StripesDB.profiles) do
         StripesDB.profiles[pId] = U.Merge(O.DefaultValues, data);
     end
+
+    -- Rename default profile when switching client language
+    RenameDefaultProfile();
 
     local majorVersion, minorVersion = strsplit('.', (StripesDB.version or S.Version));
     majorVersion, minorVersion = tonumber(majorVersion), tonumber(minorVersion);
