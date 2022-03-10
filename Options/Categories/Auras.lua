@@ -3528,10 +3528,6 @@ panel.Load = function(self)
         O.db.auras_custom_to_blacklist = self:GetChecked();
     end
 
-    self.AurasCustomHelpTipButton = E.CreateHelpTipButton(self.TabsFrames['CustomTab'].Content);
-    self.AurasCustomHelpTipButton:SetPosition('LEFT', self.auras_custom_to_blacklist.Label, 'RIGHT', 30, 0);
-    self.AurasCustomHelpTipButton:SetTooltip(L['OPTIONS_AURAS_CUSTOM_HELPTIP']);
-
     self.auras_custom_editframe = CreateFrame('Frame', nil, self.TabsFrames['CustomTab'].Content, 'BackdropTemplate');
     self.auras_custom_editframe:SetPoint('TOPLEFT', self.auras_custom_editbox, 'BOTTOMLEFT', -5, -8);
     self.auras_custom_editframe:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 0, 0);
@@ -3569,6 +3565,10 @@ panel.Load = function(self)
     self.CopyFromProfileText = E.CreateFontString(self.TabsFrames['CustomTab'].Content);
     self.CopyFromProfileText:SetPosition('BOTTOMLEFT', self.ProfilesDropdown, 'TOPLEFT', 0, 0);
     self.CopyFromProfileText:SetText(L['OPTIONS_COPY_FROM_PROFILE']);
+
+    self.AurasCustomHelpTipButton = E.CreateHelpTipButton(self.TabsFrames['CustomTab'].Content);
+    self.AurasCustomHelpTipButton:SetPosition('RIGHT', self.ProfilesDropdown, 'LEFT', -50, 0);
+    self.AurasCustomHelpTipButton:SetTooltip(L['OPTIONS_AURAS_CUSTOM_HELPTIP']);
 end
 
 panel.OnShow = function(self)
