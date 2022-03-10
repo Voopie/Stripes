@@ -9,6 +9,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
 local ENABLED, DB_MODE;
+local POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
 
 local StripesMythicPlusPercentageFont = CreateFont('StripesMythicPlusPercentageFont');
 
@@ -31,7 +32,6 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     frame.text = frame:CreateFontString(nil, 'BACKGROUND', 'StripesMythicPlusPercentageFont');
-    PixelUtil.SetPoint(frame.text, 'TOPRIGHT', frame, 'BOTTOMRIGHT', 0, -1);
     frame.text:SetTextColor(1, 1, 1);
 
     unitframe.MythicPlusPercentage = frame;
@@ -67,6 +67,8 @@ local function Update(unitframe)
     end
 
     if weight and weight > 0 then
+        unitframe.MythicPlusPercentage.text:ClearAllPoints();
+        PixelUtil.SetPoint(unitframe.MythicPlusPercentage.text, POINT, unitframe.MythicPlusPercentage, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
         unitframe.MythicPlusPercentage.text:SetText(string_format(percentPattern, weight));
     else
         unitframe.MythicPlusPercentage.text:SetText(EMPTY_STRING);
@@ -91,6 +93,11 @@ end
 function Module:UpdateLocalConfig()
     ENABLED = O.db.mythic_plus_percentage_enabled;
     DB_MODE = MDTLoaded and O.db.mythic_plus_percentage_use_mode or 1;
+
+    POINT          = O.Lists.frame_points[O.db.mythic_plus_percentage_point] or 'TOPRIGHT';
+    RELATIVE_POINT = O.Lists.frame_points[O.db.mythic_plus_percentage_relative_point] or 'BOTTOMRIGHT';
+    OFFSET_X       = O.db.mythic_plus_percentage_offset_x;
+    OFFSET_Y       = O.db.mythic_plus_percentage_offset_y;
 
     UpdateFontObject(StripesMythicPlusPercentageFont, O.db.mythic_plus_percentage_font_value, O.db.mythic_plus_percentage_font_size, O.db.mythic_plus_percentage_font_flag, O.db.mythic_plus_percentage_font_shadow);
 end

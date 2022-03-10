@@ -94,6 +94,54 @@ panel.Load = function(self)
     self.PercentageFontOptions.OpenButton:SetPosition('LEFT', self.mythic_plus_percentage_use_mode, 'RIGHT', 16, 0);
     self.PercentageFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
+    self.mythic_plus_percentage_point = E.CreateDropdown('plain', self);
+    self.mythic_plus_percentage_point:SetSize(120, 20);
+    self.mythic_plus_percentage_point:SetList(O.Lists.frame_points_localized);
+    self.mythic_plus_percentage_point:SetValue(O.db.mythic_plus_percentage_point);
+    self.mythic_plus_percentage_point:SetLabel(L['POSITION']);
+    self.mythic_plus_percentage_point:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_POINT_TOOLTIP']);
+    self.mythic_plus_percentage_point.OnValueChangedCallback = function(_, value)
+        O.db.mythic_plus_percentage_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.mythic_plus_percentage_relative_point = E.CreateDropdown('plain', self);
+    self.mythic_plus_percentage_relative_point:SetSize(120, 20);
+    self.mythic_plus_percentage_relative_point:SetList(O.Lists.frame_points_localized);
+    self.mythic_plus_percentage_relative_point:SetValue(O.db.mythic_plus_percentage_relative_point);
+    self.mythic_plus_percentage_relative_point:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_RELATIVE_POINT_TOOLTIP']);
+    self.mythic_plus_percentage_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.mythic_plus_percentage_relative_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.mythic_plus_percentage_offset_x = E.CreateSlider(self);
+    self.mythic_plus_percentage_offset_x:SetSize(120, 18);
+    self.mythic_plus_percentage_offset_x:SetValues(O.db.mythic_plus_percentage_offset_x, -50, 50, 1);
+    self.mythic_plus_percentage_offset_x:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_OFFSET_X_TOOLTIP']);
+    self.mythic_plus_percentage_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.mythic_plus_percentage_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.mythic_plus_percentage_offset_y = E.CreateSlider(self);
+    self.mythic_plus_percentage_offset_y:SetSize(120, 18);
+    self.mythic_plus_percentage_offset_y:SetValues(O.db.mythic_plus_percentage_offset_y, -50, 50, 1);
+    self.mythic_plus_percentage_offset_y:SetTooltip(L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_OFFSET_Y_TOOLTIP']);
+    self.mythic_plus_percentage_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.mythic_plus_percentage_offset_y = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.PercentagePositionOptions = E.CreatePopOptions(self);
+    self.PercentagePositionOptions:SetH(60);
+    self.PercentagePositionOptions:Add(self.mythic_plus_percentage_point):SetPosition('TOPLEFT', self.PercentagePositionOptions, 'TOPLEFT', 12, -20);
+    self.PercentagePositionOptions:Add(self.mythic_plus_percentage_relative_point):SetPosition('LEFT', self.mythic_plus_percentage_point, 'RIGHT', 12, 0);
+    self.PercentagePositionOptions:Add(self.mythic_plus_percentage_offset_x):SetPosition('LEFT', self.mythic_plus_percentage_relative_point, 'RIGHT', 12, 0);
+    self.PercentagePositionOptions:Add(self.mythic_plus_percentage_offset_y):SetPosition('LEFT', self.mythic_plus_percentage_offset_x, 'RIGHT', 12, 0);
+    self.PercentagePositionOptions.OpenButton:SetPosition('LEFT', self.PercentageFontOptions.OpenButton, 'RIGHT', 16, 0);
+    self.PercentagePositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
+
     local ExplosiveOrbsHeader = E.CreateHeader(self, L['OPTIONS_HEADER_EXPLOSIVE_ORBS']);
     ExplosiveOrbsHeader:SetPosition('TOPLEFT', self.mythic_plus_percentage_enabled, 'BOTTOMLEFT', 0, -8);
     ExplosiveOrbsHeader:SetW(self:GetWidth());

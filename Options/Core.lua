@@ -264,7 +264,7 @@ O.Lists = {
     }
 };
 
--- ~564
+-- ~568
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -629,6 +629,10 @@ O.DefaultValues = {
     mythic_plus_percentage_font_size   = 8,
     mythic_plus_percentage_font_flag   = 1, -- NONE
     mythic_plus_percentage_font_shadow = true,
+    mythic_plus_percentage_point          = 9, -- TOPRIGHT
+    mythic_plus_percentage_relative_point = 3, -- BOTTOMRIGHT
+    mythic_plus_percentage_offset_x       = 0,
+    mythic_plus_percentage_offset_y       = -1;
 
     explosive_orbs_crosshair = false,
     explosive_orbs_counter   = false,
@@ -666,10 +670,10 @@ O.DefaultValues = {
 
     spell_interrupted_icon  = true,
     spell_interrupted_icon_size = 20,
-    spell_interrupted_icon_point = 5, -- BOTTOM
-    spell_interrupted_icon_relative_point = 6, -- TOP
-    spell_interrupted_icon_offset_x = 4,
-    spell_interrupted_icon_offset_y = 0;
+    spell_interrupted_icon_point          = 5, -- LEFT
+    spell_interrupted_icon_relative_point = 6, -- RIGHT
+    spell_interrupted_icon_offset_x       = 4,
+    spell_interrupted_icon_offset_y       = 0;
     spell_interrupted_icon_frame_strata            = 5, -- HIGH
     spell_interrupted_icon_countdown_show          = true,
     spell_interrupted_icon_countdown_font_value    = 'BigNoodleToo Titling',
