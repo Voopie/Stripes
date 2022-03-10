@@ -912,7 +912,28 @@ O.PROFILE_DEFAULT_ID   = '1';
 O.PROFILE_DEFAULT_NAME = L['OPTIONS_PROFILE_DEFAULT_NAME'];
 O.CATEGORY_ALL_NAME    = ' ';
 
+local RESERVED_PROFILE_NAMES = {
+    ['По умолчанию']   = true, -- ruRU
+    ['Default']        = true, -- enUS
+    ['Standard']       = true, -- deDE
+    ['Predeterminado'] = true, -- esES/esMX
+    ['Défaut']         = true, -- frFR
+    ['Predefinito']    = true, -- itIT
+    ['Predefinição']   = true, -- ptBR
+    ['기본값']         = true, -- koKR
+    ['默认']           = true, -- zhCN
+    ['默認']           = true, -- zhTW
+}
+
 function Module:IsNameExists(name)
+    if name == O.PROFILE_DEFAULT_NAME then
+        return true;
+    end
+
+    if RESERVED_PROFILE_NAMES[name] then
+        return true;
+    end
+
     for _, data in pairs(StripesDB.profiles) do
         if name == data.profileName then
             return true;
