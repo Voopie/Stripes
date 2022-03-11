@@ -6,7 +6,7 @@
 
 ### ***Features:***
 - Customization of nameplates for everyone, not just hardcore players!
-- A wide variety of settings (over 500)
+- A wide variety of settings (over 550)
 - Profiles with exporting / importing
 - It's easier to try once than to read walls of text!
 
