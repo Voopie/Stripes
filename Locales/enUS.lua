@@ -532,7 +532,7 @@ L['OPTIONS_CAST_BAR_BORDER_SIZE_TOOLTIP'] = 'Thickness of the cast bar border';
 L['OPTIONS_CAST_BAR_ON_HP_BAR'] = 'On health bar';
 L['OPTIONS_CAST_BAR_ON_HP_BAR_TOOLTIP'] = 'Show cast bar on health bar';
 L['OPTIONS_CAST_BAR_ICON_LARGE'] = 'Icon: large';
-L['OPTIONS_CAST_BAR_ICON_LARGE_TOOLTIP'] = 'Show a large spell icon |n|n|cffffb833doesn\'t work if «On health bar» is turned on|r';
+L['OPTIONS_CAST_BAR_ICON_LARGE_TOOLTIP'] = 'Show a large spell icon |n|n|cffffb833Doesn\'t work if «On health bar» is turned on|r';
 L['OPTIONS_CAST_BAR_ICON_RIGHT_SIDE'] = 'Icon: right side';
 L['OPTIONS_CAST_BAR_ICON_RIGHT_SIDE_TOOLTIP'] = 'Show spell icon on the right side';
 L['OPTIONS_CAST_BAR_TIMER_ENABLED_TOOLTIP'] = 'Show a timer next to the cast bar';
@@ -580,7 +580,7 @@ L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED_TOOLTIP'] = 'Enable custom effects for 
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID'] = 'Enter the spell ID';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_NEW_NAME'] = 'Custom name';
 L['OPTIONS_CAST_BAR_FRAME_STRATA_TOOLTIP'] = 'Strata for cast bar';
-L['OPTIONS_CAST_BAR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of cast bar';
+L['OPTIONS_CAST_BAR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of the cast bar';
 
 L['OPTIONS_SIZES_TAB_ENEMY'] = 'Enemy';
 L['OPTIONS_SIZES_TAB_FRIENDLY'] = 'Friendly';
