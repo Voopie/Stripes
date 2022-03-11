@@ -1109,11 +1109,11 @@ function Module:StartUp()
     -- Rename default profile when switching client language
     RenameDefaultProfile();
 
-    local majorVersion, minorVersion = strsplit('.', (StripesDB.version or S.Version));
-    majorVersion, minorVersion = tonumber(majorVersion), tonumber(minorVersion);
+    local majorVersion, minorVersion = strsplit('.', (StripesDB.version or ''));
+    majorVersion, minorVersion = tonumber(majorVersion or 0) or 0, tonumber(minorVersion or 0) or 0;
 
-    -- migration to 1.23
-    if majorVersion == 1 and minorVersion < 23 then
+    -- migration to 1.24
+    if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 24) then
         Migration_ColorsAndCategories();
     end
 
