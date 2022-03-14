@@ -264,7 +264,7 @@ O.Lists = {
     }
 };
 
--- ~568
+-- ~570
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -412,6 +412,8 @@ O.DefaultValues = {
     threat_color_offtank         = { 0.60, 0.00, 0.85, 1 },
     threat_color_pettank         = { 0.00, 0.44, 1.00, 1 },
     threat_color_playerpettank   = { 0.00, 0.44, 1.00, 1 },
+    threat_color_prio_high = false,
+    threat_color_prio_high_exclude_tank_role = true,
 
     threat_percentage_enabled        = false,
     threat_percentage_coloring       = true,

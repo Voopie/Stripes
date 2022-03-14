@@ -236,7 +236,7 @@ local function CreateThreatPercentage(unitframe)
 end
 
 local function UpdateThreatPercentage(unitframe, value, r, g, b, a)
-    if not DB.TP_ENABLED or not value then
+    if not value or not DB.TP_ENABLED then
         unitframe.ThreatPercentage.text:SetText('');
         return;
     end
@@ -264,11 +264,42 @@ local function Threat_GetThreatSituationStatus(unit)
         display = lead == 0 and 100 or lead;
     end
 
-    return display, status;
+    return display, status, isTanking;
+end
+
+local function Threat_HighPrioCheck(unitframe)
+    if not DB.THREAT_ENABLED or not DB.THREAT_COLOR_PRIO_HIGH then
+        unitframe.data.tpNeedUpdate = true;
+        return;
+    end
+
+    if PLAYER_IS_TANK and DB.THREAT_COLOR_PRIO_HIGH_EXCLUDE_TANK_ROLE then
+        return;
+    end
+
+    local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
+
+    if display and status == 3 and not IsPlayer(unitframe.data.unit) then
+        local r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
+
+        if UnitIsTapped(unitframe.data.unit) then
+            if DB.THREAT_COLOR_ISTAPPED_BORDER then
+                unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+            end
+        else
+            unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+        end
+
+        UpdateThreatPercentage(unitframe, display, r, g, b, a);
+        unitframe.data.tpNeedUpdate = false;
+
+        return true;
+    end
 end
 
 local function Threat_UpdateColor(unitframe)
     if not DB.THREAT_ENABLED then
+        unitframe.data.tpNeedUpdate = true;
         return;
     end
 
@@ -315,6 +346,47 @@ local function Threat_UpdateColor(unitframe)
         end
 
         UpdateThreatPercentage(unitframe, display, r, g, b, a);
+        unitframe.data.tpNeedUpdate = false;
+    end
+end
+
+local function Threat_UpdatePercentage(unitframe)
+    local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
+
+    if display and not IsPlayer(unitframe.data.unit) then
+        local offTank, petTank, playerPetTank = false, false, false;
+
+        if not status or status < 3 then
+            local tank_unit = unitframe.data.unit .. 'target';
+            if UnitExists(tank_unit) and not UnitIsUnit(tank_unit, PLAYER_UNIT) then
+                if (UnitInParty(tank_unit) or UnitInRaid(tank_unit)) and UnitGroupRolesAssigned(tank_unit) == 'TANK' then
+                    -- group tank
+                    offTank = true;
+                elseif not UnitIsPlayer(tank_unit) then
+                    if UnitIsUnit(tank_unit, PET_UNIT) then
+                        -- player's pet
+                        playerPetTank = true;
+                    elseif UnitPlayerControlled(tank_unit) then
+                        -- player controlled npc (pet, vehicle, totem)
+                        petTank = true;
+                    end
+                end
+            end
+        end
+
+        local r, g, b, a;
+
+        if PLAYER_IS_TANK and offTank then
+            r, g, b, a = offTankColor[1], offTankColor[2], offTankColor[3], offTankColor[4];
+        elseif playerPetTank then
+            r, g, b, a = playerPetTankColor[1], playerPetTankColor[2], playerPetTankColor[3], playerPetTankColor[4];
+        elseif petTank then
+            r, g, b, a = petTankColor[1], petTankColor[2], petTankColor[3], petTankColor[4];
+        else
+            r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
+        end
+
+        UpdateThreatPercentage(unitframe, display, r, g, b, a);
     end
 end
 
@@ -331,7 +403,7 @@ local function GetAuraColor(unit)
         local spellData = O.db.auras_hpbar_color_data[spellId] or O.db.auras_hpbar_color_data[name];
 
         if spellData and spellData.enabled then
-            return unpack(spellData.color);
+            return spellData.color[1], spellData.color[2], spellData.color[3], spellData.color[4] or 1;
         end
     end
 
@@ -446,6 +518,10 @@ end
 
 function Module.UpdateHealthBar(unitframe)
     if not unitframe:IsShown() or unitframe.data.unitType == 'SELF' then
+        return;
+    end
+
+    if Threat_HighPrioCheck(unitframe) then
         return;
     end
 
@@ -706,6 +782,10 @@ function Module:UnitAdded(unitframe)
     UpdateClickableArea(unitframe);
 
     Module.UpdateHealthBar(unitframe);
+
+    if unitframe.data.tpNeedUpdate then
+        Threat_UpdatePercentage(unitframe);
+    end
 end
 
 function Module:UnitRemoved(unitframe)
@@ -714,6 +794,7 @@ function Module:UnitRemoved(unitframe)
     unitframe.healthBar.customColored = nil;
     unitframe.healthBar.raidTargetColored = nil;
     unitframe.healthBar.currentTargetColored = nil;
+    unitframe.data.tpNeedUpdate = nil;
 end
 
 function Module:UnitAura(unitframe)
@@ -733,6 +814,10 @@ function Module:Update(unitframe)
     UpdateClickableArea(unitframe);
 
     Module.UpdateHealthBar(unitframe);
+
+    if unitframe.data.tpNeedUpdate then
+        Threat_UpdatePercentage(unitframe);
+    end
 end
 
 function Module:UpdateLocalConfig()
@@ -741,6 +826,9 @@ function Module:UpdateLocalConfig()
 
     DB.THREAT_ENABLED = O.db.threat_color_enabled;
     DB.THREAT_COLOR_ISTAPPED_BORDER = O.db.threat_color_istapped_border;
+
+    DB.THREAT_COLOR_PRIO_HIGH                   = O.db.threat_color_prio_high;
+    DB.THREAT_COLOR_PRIO_HIGH_EXCLUDE_TANK_ROLE = O.db.threat_color_prio_high_exclude_tank_role;
 
     if not O.db.threat_color_reversed then
         statusColors[0] = O.db.threat_color_status_0;
@@ -1003,5 +1091,11 @@ function Module:StartUp()
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', Module.UpdateHealthBar);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', Module.UpdateHealthBar);
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateAggroFlash', Module.UpdateHealthBar);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateAggroFlash', function(unitframe)
+        Module.UpdateHealthBar(unitframe);
+
+        if unitframe.data.tpNeedUpdate then
+            Threat_UpdatePercentage(unitframe);
+        end
+    end);
 end

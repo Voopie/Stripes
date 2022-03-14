@@ -1101,7 +1101,7 @@ panel.Load = function(self)
     end
 
     self.threat_color_reversed = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
-    self.threat_color_reversed:SetPosition('LEFT', self.threat_color_enabled.Label, 'RIGHT', 12, 0);
+    self.threat_color_reversed:SetPosition('TOPLEFT', self.threat_color_enabled, 'BOTTOMLEFT', 0, -8);
     self.threat_color_reversed:SetLabel(L['OPTIONS_THREAT_COLOR_REVERSED']);
     self.threat_color_reversed:SetTooltip(L['OPTIONS_THREAT_COLOR_REVERSED_TOOLTIP']);
     self.threat_color_reversed:SetChecked(O.db.threat_color_reversed);
@@ -1122,8 +1122,38 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.threat_color_prio_high = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
+    self.threat_color_prio_high:SetPosition('TOPLEFT', self.threat_color_reversed, 'BOTTOMLEFT', 0, -8);
+    self.threat_color_prio_high:SetLabel(L['OPTIONS_THREAT_COLOR_PRIO_HIGH']);
+    self.threat_color_prio_high:SetTooltip(L['OPTIONS_THREAT_COLOR_PRIO_HIGH_TOOLTIP']);
+    self.threat_color_prio_high:SetChecked(O.db.threat_color_prio_high);
+    self.threat_color_prio_high:AddToSearch(button, L['OPTIONS_THREAT_COLOR_PRIO_HIGH_TOOLTIP'], self.Tabs[4]);
+    self.threat_color_prio_high.Callback = function(self)
+        O.db.threat_color_prio_high = self:GetChecked();
+
+        panel.threat_color_prio_high_exclude_tank_role:SetEnabled(O.db.threat_color_prio_high);
+
+        Stripes:UpdateAll();
+    end
+
+    self.threat_color_prio_high_exclude_tank_role = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
+    self.threat_color_prio_high_exclude_tank_role:SetPosition('LEFT', self.threat_color_prio_high.Label, 'RIGHT', 12, 0);
+    self.threat_color_prio_high_exclude_tank_role:SetLabel(L['OPTIONS_THREAT_COLOR_PRIO_HIGH_EXCLUDE_TANK_ROLE']);
+    self.threat_color_prio_high_exclude_tank_role:SetTooltip(L['OPTIONS_THREAT_COLOR_PRIO_HIGH_EXCLUDE_TANK_ROLE_TOOLTIP']);
+    self.threat_color_prio_high_exclude_tank_role:SetChecked(O.db.threat_color_prio_high_exclude_tank_role);
+    self.threat_color_prio_high_exclude_tank_role:AddToSearch(button, L['OPTIONS_THREAT_COLOR_PRIO_HIGH_EXCLUDE_TANK_ROLE_TOOLTIP'], self.Tabs[4]);
+    self.threat_color_prio_high_exclude_tank_role:SetEnabled(O.db.threat_color_prio_high);
+    self.threat_color_prio_high_exclude_tank_role.Callback = function(self)
+        O.db.threat_color_prio_high_exclude_tank_role = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['ThreatTab'].Content);
+    Delimiter:SetPosition('TOPLEFT', self.threat_color_prio_high, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetW(self:GetWidth());
+
     local ResetThreatColorsButton = E.CreateTextureButton(self.TabsFrames['ThreatTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);
-    ResetThreatColorsButton:SetPosition('TOPLEFT', self.threat_color_enabled, 'BOTTOMLEFT', 4, -12);
+    ResetThreatColorsButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 4, -4);
     ResetThreatColorsButton:SetTooltip(L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP']);
     ResetThreatColorsButton:AddToSearch(button, L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'], self.Tabs[4]);
     ResetThreatColorsButton.Callback = function()
