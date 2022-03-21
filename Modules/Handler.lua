@@ -639,17 +639,14 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
 
     if NP[nameplate].data.widgetsOnly then
         NP[nameplate].data.previousType = nil;
-    else
-        NP[nameplate].data.previousType = NP[nameplate].data.unitType;
-    end
-
-    NP[nameplate].isActive = true;
-    S:ForAllNameplateModules('UnitAdded', NP[nameplate]);
-
-    if NP[nameplate].data.widgetsOnly then
         NP[nameplate].isActive = false;
         ResetNameplateData(NP[nameplate]);
         S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
+    else
+        NP[nameplate].data.previousType = NP[nameplate].data.unitType;
+        NP[nameplate]:UnregisterEvent('UNIT_AURA');
+        NP[nameplate].isActive = true;
+        S:ForAllNameplateModules('UnitAdded', NP[nameplate]);
     end
 end
 
@@ -665,8 +662,18 @@ function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
     S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
 end
 
-function Stripes:UNIT_AURA(unit)
+function Stripes:UNIT_AURA(unit, isFullUpdate, updatedAuraInfos)
     local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
+
+    if not nameplate or not NP[nameplate] then
+        return;
+    end
+
+    S:ForAllNameplateModules('UnitAura', NP[nameplate], isFullUpdate, updatedAuraInfos);
+end
+
+function Stripes:PLAYER_TARGET_CHANGED()
+    local nameplate = C_NamePlate_GetNamePlateForUnit('target');
 
     if not nameplate or not NP[nameplate] then
         return;
@@ -744,6 +751,7 @@ function Stripes:StartUp()
     self:RegisterEvent('NAME_PLATE_UNIT_ADDED');
     self:RegisterEvent('NAME_PLATE_UNIT_REMOVED');
     self:RegisterEvent('UNIT_AURA');
+    self:RegisterEvent('PLAYER_TARGET_CHANGED');
     self:RegisterEvent('UNIT_LEVEL');
     self:RegisterEvent('UNIT_FACTION');
     self:RegisterEvent('PLAYER_FOCUS_CHANGED');
