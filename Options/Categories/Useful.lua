@@ -223,7 +223,7 @@ panel.Load = function(self)
     self.CombatIndicatorPositionOptions:SetH(60);
     self.CombatIndicatorPositionOptions:Add(self.combat_indicator_point):SetPosition('TOPLEFT', self.CombatIndicatorPositionOptions, 'TOPLEFT', 12, -20);
     self.CombatIndicatorPositionOptions:Add(self.combat_indicator_relative_point):SetPosition('LEFT', self.combat_indicator_point, 'RIGHT', 12, 0);
-    self.CombatIndicatorPositionOptions:Add(self.combat_indicator_offset_x):SetPosition('LEFT', self.combat_indicator_relative_point, 'RIGHT', 8, 0);
+    self.CombatIndicatorPositionOptions:Add(self.combat_indicator_offset_x):SetPosition('LEFT', self.combat_indicator_relative_point, 'RIGHT', 12, 0);
     self.CombatIndicatorPositionOptions:Add(self.combat_indicator_offset_y):SetPosition('LEFT', self.combat_indicator_offset_x, 'RIGHT', 12, 0);
     self.CombatIndicatorPositionOptions.OpenButton:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -4);
     self.CombatIndicatorPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);

@@ -749,6 +749,10 @@ L['OPTIONS_CLASSIFICATION_INDICATOR_STAR'] = 'Star';
 L['OPTIONS_CLASSIFICATION_INDICATOR_STAR_TOOLTIP'] = 'Show elite enemy indicator in the form of a star';
 L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE'] = 'Size';
 L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE_TOOLTIP'] = 'Size of elite enemy indicator';
+L['OPTIONS_CLASSIFICATION_INDICATOR_POINT_TOOLTIP'] = 'Point of attachment of elite enemy indicator';
+L['OPTIONS_CLASSIFICATION_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'To which point of the health bar attach the elite enemy indicator';
+L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP'] = 'Horizontal offset of elite enemy indicator';
+L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of elite enemy indicator';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Percentage';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Enable';

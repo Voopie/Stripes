@@ -264,7 +264,7 @@ O.Lists = {
     }
 };
 
--- ~570
+-- ~574
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -605,6 +605,10 @@ O.DefaultValues = {
     classification_indicator_enabled = true,
     classification_indicator_star    = false,
     classification_indicator_size    = 14,
+    classification_indicator_point          = 6, -- RIGHT
+    classification_indicator_relative_point = 5, -- LEFT
+    classification_indicator_offset_x       = 0,
+    classification_indicator_offset_y       = 0;
 
     name_only_friendly_enabled               = C_CVar.GetCVar('nameplateShowOnlyNames') == '1',
     name_only_friendly_mode                  = C_CVar.GetCVar('nameplateShowOnlyNames') == '1' and 1 or 2,

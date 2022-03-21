@@ -282,6 +282,54 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.classification_indicator_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.classification_indicator_point:SetSize(120, 20);
+    self.classification_indicator_point:SetList(O.Lists.frame_points_localized);
+    self.classification_indicator_point:SetValue(O.db.classification_indicator_point);
+    self.classification_indicator_point:SetLabel(L['POSITION']);
+    self.classification_indicator_point:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_POINT_TOOLTIP']);
+    self.classification_indicator_point.OnValueChangedCallback = function(_, value)
+        O.db.classification_indicator_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.classification_indicator_relative_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.classification_indicator_relative_point:SetSize(120, 20);
+    self.classification_indicator_relative_point:SetList(O.Lists.frame_points_localized);
+    self.classification_indicator_relative_point:SetValue(O.db.classification_indicator_relative_point);
+    self.classification_indicator_relative_point:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_RELATIVE_POINT_TOOLTIP']);
+    self.classification_indicator_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.classification_indicator_relative_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.classification_indicator_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.classification_indicator_offset_x:SetSize(120, 18);
+    self.classification_indicator_offset_x:SetValues(O.db.classification_indicator_offset_x, -50, 50, 1);
+    self.classification_indicator_offset_x:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP']);
+    self.classification_indicator_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.classification_indicator_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.classification_indicator_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.classification_indicator_offset_y:SetSize(120, 18);
+    self.classification_indicator_offset_y:SetValues(O.db.classification_indicator_offset_y, -50, 50, 1);
+    self.classification_indicator_offset_y:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP']);
+    self.classification_indicator_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.classification_indicator_offset_y = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.ClassificationIndicatorPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.ClassificationIndicatorPositionOptions:SetH(60);
+    self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_point):SetPosition('TOPLEFT', self.ClassificationIndicatorPositionOptions, 'TOPLEFT', 12, -20);
+    self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_relative_point):SetPosition('LEFT', self.classification_indicator_point, 'RIGHT', 12, 0);
+    self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_offset_x):SetPosition('LEFT', self.classification_indicator_relative_point, 'RIGHT', 12, 0);
+    self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_offset_y):SetPosition('LEFT', self.classification_indicator_offset_x, 'RIGHT', 12, 0);
+    self.ClassificationIndicatorPositionOptions.OpenButton:SetPosition('LEFT', self.classification_indicator_size, 'RIGHT', 16, 0);
+    self.ClassificationIndicatorPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.classification_indicator_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());

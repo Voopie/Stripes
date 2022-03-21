@@ -596,6 +596,11 @@ local function UpdateClassificationIndicator(unitframe)
     end
 end
 
+local function UpdateClassificationIndicatorPosition(unitframe)
+    unitframe.classificationIndicator:ClearAllPoints();
+    unitframe.classificationIndicator:SetPoint(CLASSIFICATION_INDICATOR_POINT, unitframe.healthBar, CLASSIFICATION_INDICATOR_RELATIVE_POINT, CLASSIFICATION_INDICATOR_OFFSET_X, CLASSIFICATION_INDICATOR_OFFSET_Y);
+end
+
 local function UpdateNameHolder(unitframe)
     if not unitframe.NameHolder then
         unitframe.NameHolder = CreateFrame('Frame', '$parentNameHolder', unitframe);
@@ -620,6 +625,7 @@ function Module:UnitAdded(unitframe)
 
     UpdateRaidTargetIcon(unitframe);
 
+    UpdateClassificationIndicatorPosition(unitframe);
     UpdateClassificationIndicator(unitframe);
 
     UpdateAnchor(unitframe);
@@ -646,6 +652,7 @@ function Module:Update(unitframe)
 
     UpdateRaidTargetIcon(unitframe);
 
+    UpdateClassificationIndicatorPosition(unitframe);
     UpdateClassificationIndicator(unitframe);
 
     UpdateAnchor(unitframe);
@@ -709,6 +716,10 @@ function Module:UpdateLocalConfig()
     CLASSIFICATION_INDICATOR_ENABLED = O.db.classification_indicator_enabled;
     CLASSIFICATION_INDICATOR_STAR    = O.db.classification_indicator_star;
     CLASSIFICATION_INDICATOR_SIZE    = O.db.classification_indicator_size;
+    CLASSIFICATION_INDICATOR_POINT          = O.Lists.frame_points[O.db.classification_indicator_point] or 'RIGHT';
+    CLASSIFICATION_INDICATOR_RELATIVE_POINT = O.Lists.frame_points[O.db.classification_indicator_relative_point] or 'LEFT';
+    CLASSIFICATION_INDICATOR_OFFSET_X       = O.db.classification_indicator_offset_x;
+    CLASSIFICATION_INDICATOR_OFFSET_Y       = O.db.classification_indicator_offset_y;
 
     FIRST_MODE = O.db.name_text_first_mode;
 

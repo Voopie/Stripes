@@ -749,6 +749,10 @@ L['OPTIONS_CLASSIFICATION_INDICATOR_STAR'] = 'Stern';
 L['OPTIONS_CLASSIFICATION_INDICATOR_STAR_TOOLTIP'] = 'Elite-Feind-Anzeige in Form eines Sterns anzeigen';
 L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE'] = 'Größe';
 L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE_TOOLTIP'] = 'Größe des Elite-Feindindikators';
+L['OPTIONS_CLASSIFICATION_INDICATOR_POINT_TOOLTIP'] = 'Anbringungsort des Elite-Feind-Anzeigers';
+L['OPTIONS_CLASSIFICATION_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'An welchem Punkt des Gesundheitsbalkens wird der Elite-Feindindikator angebracht';
+L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz des Elite-Feind-Anzeigers';
+L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz des Elite-Feind-Anzeigers';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Prozentsatz';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Aktivieren';

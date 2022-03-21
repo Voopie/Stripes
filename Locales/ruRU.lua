@@ -749,6 +749,10 @@ L['OPTIONS_CLASSIFICATION_INDICATOR_STAR'] = 'Звезда';
 L['OPTIONS_CLASSIFICATION_INDICATOR_STAR_TOOLTIP'] = 'Показывать индикатор элитного противника в виде звезды';
 L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE'] = 'Размер';
 L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE_TOOLTIP'] = 'Размер индикатора элитного противника';
+L['OPTIONS_CLASSIFICATION_INDICATOR_POINT_TOOLTIP'] = 'Точка крепления индикатора элитного противника';
+L['OPTIONS_CLASSIFICATION_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'К какой точке полосы здоровья прикрепить индикатор элитного противника';
+L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение индикатора элитного противника';
+L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение индикатора элитного противника';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Проценты';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Включить';
