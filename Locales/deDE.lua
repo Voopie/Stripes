@@ -927,7 +927,7 @@ L['OPTIONS_AURAS_DIRECTION'] = 'Richtung des Wachstums';
 L['OPTIONS_AURAS_DIRECTION_TOOLTIP'] = 'Wachstumsrichtung der Auren';
 L['OPTIONS_AURAS_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl der angezeigten Auren';
 L['OPTIONS_AURAS_XLIST_MODE'] = 'Filter-Modus';
-L['OPTIONS_AURAS_XLIST_MODE_TOOLTIP'] = 'Wählen Sie den Modus, der zum Filtern von Auras verwendet wird|n|n|cffff666Blacklist:|r Auras, die zu dieser Liste hinzugefügt wurden, werden nicht angezeigt|n|n|cff666Whitelist:|r Nur Auras, die zu dieser Liste hinzugefügt wurden, werden angezeigt';
+L['OPTIONS_AURAS_XLIST_MODE_TOOLTIP'] = 'Wählen Sie den Modus, der zum Filtern von Auras verwendet wird|n|n|cffff6666Blacklist:|r Auras, die zu dieser Liste hinzugefügt wurden, werden nicht angezeigt|n|n|cffff6666Whitelist:|r Nur Auras, die zu dieser Liste hinzugefügt wurden, werden angezeigt';
 L['OPTIONS_AURAS_WHITELIST_BUTTON'] = 'Whitelist';
 L['OPTIONS_AURAS_BLACKLIST_BUTTON'] = 'Blacklist';
 
