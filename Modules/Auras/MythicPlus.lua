@@ -93,20 +93,6 @@ local function UpdateAnchor(unitframe)
     PixelUtil.SetPoint(unitframe.AurasMythicPlus, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
 end
 
-local function FilterShouldShowBuff(spellId, isHelpful, isHarmful)
-    if isHelpful and HelpfulList[spellId] then
-        return true;
-    elseif isHarmful and HarmfulList[spellId] then
-        return true;
-    end
-
-    return false;
-end
-
-local function AuraCouldDisplayAsBuff(auraInfo)
-    return FilterShouldShowBuff(auraInfo.spellId, auraInfo.isHelpful, auraInfo.isHarmful);
-end
-
 local function Update(unitframe)
     if not ENABLED or not PlayerState.inMythic or not unitframe.data.unit or unitframe.data.unitType == 'SELF' then
         unitframe.AurasMythicPlus:SetShown(false);
@@ -125,7 +111,7 @@ local function Update(unitframe)
     AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, filterHelpful, BUFF_MAX_DISPLAY, function(...)
         buffName, texture, count, _, duration, expirationTime, _, _, _, spellId = ...;
 
-        if FilterShouldShowBuff(spellId, true, false) then
+        if HelpfulList[spellId] then
             local cCount = count == 0 and 1 or count;
 
             if not unitframe.AurasMythicPlus.buffCompact[spellId] then
@@ -152,7 +138,7 @@ local function Update(unitframe)
     AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, filterHarmful, BUFF_MAX_DISPLAY, function(...)
         buffName, texture, count, _, duration, expirationTime, _, _, _, spellId = ...;
 
-        if FilterShouldShowBuff(spellId, false, true) then
+        if HarmfulList[spellId] then
             local cCount = count == 0 and 1 or count;
 
             if not unitframe.AurasMythicPlus.buffCompact[spellId] then
@@ -269,14 +255,6 @@ local function Update(unitframe)
     end
 end
 
-local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
-    if AuraUtil.ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
-        return;
-    end
-
-    Update(unitframe);
-end
-
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.AurasMythicPlus.buffList) do
         if Stripes.Masque then
@@ -333,7 +311,7 @@ function Module:UnitAdded(unitframe)
 
     unitframe.AurasMythicPlus.spacing = SPACING_X;
 
-    OnUnitAuraUpdate(unitframe);
+    Update(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
@@ -342,8 +320,8 @@ function Module:UnitRemoved(unitframe)
     end
 end
 
-function Module:UnitAura(unitframe, isFullUpdate, updatedAuraInfos)
-    OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos);
+function Module:UnitAura(unitframe)
+    Update(unitframe);
 end
 
 function Module:Update(unitframe)

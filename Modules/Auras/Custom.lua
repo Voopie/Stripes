@@ -78,20 +78,6 @@ local function UpdateAnchor(unitframe)
     PixelUtil.SetPoint(unitframe.AurasCustom, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
 end
 
-local function FilterShouldShowBuff(name, spellId, caster)
-    local spellData = O.db.auras_custom_data[spellId] or O.db.auras_custom_data[name];
-
-    if spellData and spellData.enabled and (not spellData.own_only or (playerUnits[caster] and spellData.own_only)) then
-        return true;
-    end
-
-    return false;
-end
-
-local function AuraCouldDisplayAsBuff(auraInfo)
-    return FilterShouldShowBuff(auraInfo.name, auraInfo.spellId, auraInfo.sourceUnit);
-end
-
 local function Update(unitframe)
     if not ENABLED or unitframe.data.unitType == 'SELF' then
         unitframe.AurasCustom:SetShown(false);
@@ -110,7 +96,9 @@ local function Update(unitframe)
     AuraUtil_ForEachAura(unitframe.AurasCustom.unit, filterHelpful, BUFF_MAX_DISPLAY, function(...)
         buffName, texture, count, _, duration, expirationTime, source, _, _, spellId = ...;
 
-        if FilterShouldShowBuff(buffName, spellId, source) then
+        local spellData = O.db.auras_custom_data[spellId] or O.db.auras_custom_data[buffName];
+
+        if spellData and spellData.enabled and (not spellData.own_only or (playerUnits[source] and spellData.own_only)) then
             local cCount = count == 0 and 1 or count;
 
             if not unitframe.AurasCustom.buffCompact[spellId] then
@@ -137,7 +125,9 @@ local function Update(unitframe)
     AuraUtil_ForEachAura(unitframe.AurasCustom.unit, filterHarmful, BUFF_MAX_DISPLAY, function(...)
         buffName, texture, count, _, duration, expirationTime, source, _, _, spellId = ...;
 
-        if FilterShouldShowBuff(buffName, spellId, source) then
+        local spellData = O.db.auras_custom_data[spellId] or O.db.auras_custom_data[buffName];
+
+        if spellData and spellData.enabled and (not spellData.own_only or (playerUnits[source] and spellData.own_only)) then
             local cCount = count == 0 and 1 or count;
 
             if not unitframe.AurasCustom.buffCompact[spellId] then
@@ -254,14 +244,6 @@ local function Update(unitframe)
     end
 end
 
-local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
-    if AuraUtil.ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
-        return;
-    end
-
-    Update(unitframe);
-end
-
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.AurasCustom.buffList) do
         if Stripes.Masque then
@@ -315,7 +297,7 @@ end
 
 function Module:UnitAdded(unitframe)
     CreateAnchor(unitframe);
-    OnUnitAuraUpdate(unitframe);
+    Update(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
@@ -324,8 +306,8 @@ function Module:UnitRemoved(unitframe)
     end
 end
 
-function Module:UnitAura(unitframe, isFullUpdate, updatedAuraInfos)
-    OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos);
+function Module:UnitAura(unitframe)
+    Update(unitframe);
 end
 
 function Module:Update(unitframe)

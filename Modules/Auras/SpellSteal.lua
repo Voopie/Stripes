@@ -107,10 +107,6 @@ local function StopGlow(aura)
     LCG.ButtonGlow_Stop(aura);
 end
 
-local function FilterShouldShowBuff(isStealable)
-    return isStealable;
-end
-
 local function Update(unitframe)
     if not ENABLED or not unitframe.data.unit or unitframe.data.unitType == 'SELF' then
         unitframe.AurasSpellSteal:SetShown(false);
@@ -129,7 +125,7 @@ local function Update(unitframe)
     AuraUtil_ForEachAura(unitframe.AurasSpellSteal.unit, unitframe.AurasSpellSteal.filter, BUFF_MAX_DISPLAY, function(...)
         _, texture, count, _, duration, expirationTime, _, isStealable = ...;
 
-        if FilterShouldShowBuff(isStealable) then
+        if isStealable then
             aura = unitframe.AurasSpellSteal.buffList[buffIndex];
 
             if not aura then

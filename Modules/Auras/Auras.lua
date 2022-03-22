@@ -158,6 +158,42 @@ local function SortMethodFunction(a, b)
     end
 end
 
+local function FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPersonal, nameplateShowAll)
+    if not name then
+        return false;
+    end
+
+    if XLIST_MODE == 2 then -- BLACKLIST
+        if blacklistAurasNameCache[name] then
+            return false;
+        elseif O.db.auras_blacklist[name] and O.db.auras_blacklist[name].enabled then
+            blacklistAurasNameCache[name] = spellId;
+            return false;
+        elseif spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
+            blacklistAurasNameCache[name] = spellId;
+            return false;
+        end
+    elseif XLIST_MODE == 3 then -- WHITELIST
+        if whitelistAurasNameCache[name] then
+            return true;
+        elseif O.db.auras_whitelist[name] and O.db.auras_whitelist[name].enabled then
+            whitelistAurasNameCache[name] = spellId;
+            return true;
+        elseif spellId and O.db.auras_whitelist[spellId] and O.db.auras_whitelist[spellId].enabled then
+            whitelistAurasNameCache[name] = spellId;
+            return true;
+        end
+
+        return false;
+    end
+
+    if FILTER_PLAYER_ENABLED and self:GetParent().data.unitType ~= 'SELF' then
+        return units[caster];
+    else
+        return nameplateShowAll or (nameplateShowPersonal and units[caster]);
+    end
+end
+
 local function UpdateAnchor(self)
     local unit = self:GetParent().unit;
 
@@ -257,90 +293,6 @@ local function UpdateAuraStyle(aura, withoutMasque)
     end
 end
 
-local function FilterShouldShowBuff(name, spellId, caster, nameplateShowPersonal, nameplateShowAll, isSelf)
-    if not name then
-        return false;
-    end
-
-    if XLIST_MODE == 2 then -- BLACKLIST
-        if blacklistAurasNameCache[name] then
-            return false;
-        elseif O.db.auras_blacklist[name] and O.db.auras_blacklist[name].enabled then
-            blacklistAurasNameCache[name] = spellId;
-            return false;
-        elseif spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
-            blacklistAurasNameCache[name] = spellId;
-            return false;
-        end
-    elseif XLIST_MODE == 3 then -- WHITELIST
-        if whitelistAurasNameCache[name] then
-            return true;
-        elseif O.db.auras_whitelist[name] and O.db.auras_whitelist[name].enabled then
-            whitelistAurasNameCache[name] = spellId;
-            return true;
-        elseif spellId and O.db.auras_whitelist[spellId] and O.db.auras_whitelist[spellId].enabled then
-            whitelistAurasNameCache[name] = spellId;
-            return true;
-        end
-
-        return false;
-    end
-
-    if FILTER_PLAYER_ENABLED and not isSelf then
-        return units[caster];
-    else
-        return nameplateShowAll or (nameplateShowPersonal and units[caster]);
-    end
-end
-
-local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
-    local filter;
-    local showAll = false;
-    local unit = unitframe.data.unit;
-    local isPlayer = UnitIsUnit('player', unit);
-    local reaction = UnitReaction('player', unit);
-    -- Reaction 4 is neutral and less than 4 becomes increasingly more hostile
-    local hostileUnit = reaction and reaction <= 4;
-    local showDebuffsOnFriendly = GetCVarBool('nameplateShowDebuffsOnFriendly');
-    if isPlayer then
-        filter = 'HELPFUL|INCLUDE_NAME_PLATE_ONLY';
-    else
-        if hostileUnit then
-        -- Reaction 4 is neutral and less than 4 becomes increasingly more hostile
-            filter = 'HARMFUL|INCLUDE_NAME_PLATE_ONLY';
-        else
-            if showDebuffsOnFriendly then
-                -- dispellable debuffs
-                filter = 'HARMFUL|RAID';
-                showAll = true;
-            else
-                filter = 'NONE';
-            end
-        end
-    end
-
-    -- Early out if the update cannot affect the nameplate
-    local function AuraCouldDisplayAsBuff(auraInfo)
-        if not FilterShouldShowBuff(auraInfo.name, auraInfo.spellId, auraInfo.sourceUnit, auraInfo.nameplateShowPersonal, auraInfo.nameplateShowAll or showAll, unitframe.data.unitType == 'SELF') then
-            return false;
-        elseif isPlayer then
-            return auraInfo.isHelpful;
-        elseif hostileUnit then
-            return auraInfo.isHarmful;
-        elseif showDebuffsOnFriendly then
-            return auraInfo.isHarmful and auraInfo.isRaid;
-        end
-
-        return false;
-    end
-
-    if filter ~= 'NONE' and AuraUtil.ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
-        return;
-    end
-
-    unitframe.BuffFrame:UpdateBuffs(unit, filter, showAll);
-end
-
 local function UpdateBuffs(self, unit, filter, showAll)
     if not self.isActive then
         for i = 1, BUFF_MAX_DISPLAY do
@@ -359,8 +311,6 @@ local function UpdateBuffs(self, unit, filter, showAll)
 
     self:UpdateAnchor();
 
-    local isSelf = self:GetParent().data.unitType == 'SELF';
-
     if filter == 'NONE' then
         for _, buff in ipairs(self.buffList) do
             buff:Hide();
@@ -374,7 +324,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
         AuraUtil_ForEachAura(unit, filter, BUFF_MAX_DISPLAY, function(...)
             name, texture, count, debuffType, duration, expirationTime, caster, _, nameplateShowPersonal, spellId, _, _, _, nameplateShowAll = ...;
 
-            if FilterShouldShowBuff(name, spellId, caster, nameplateShowPersonal, nameplateShowAll or showAll, isSelf) then
+            if FilterShouldShowBuff(self, name, spellId, caster, nameplateShowPersonal, nameplateShowAll or showAll) then
                 aura = self.buffList[buffIndex];
 
                 if aura and aura.Cooldown.noCooldownCount == nil then
@@ -489,14 +439,16 @@ local function UpdateBuffs(self, unit, filter, showAll)
     end
 end
 
-local function Update(unitframe, isFullUpdate, updatedAuraInfos)
+local function Update(unitframe)
     unitframe.BuffFrame.spacing        = SPACING_X;
     unitframe.BuffFrame.isActive       = BUFFFRAME_IS_ACTIVE;
     unitframe.BuffFrame.UpdateAnchor   = UpdateAnchor;
     unitframe.BuffFrame.ShouldShowBuff = FilterShouldShowBuff;
     unitframe.BuffFrame.UpdateBuffs    = UpdateBuffs;
 
-    OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos);
+    if unitframe.BuffFrame.unit and unitframe.BuffFrame.filter then
+        unitframe.BuffFrame:UpdateBuffs(unitframe.BuffFrame.unit, unitframe.BuffFrame.filter, unitframe.data.unitType == 'FRIENDLY_PLAYER');
+    end
 end
 
 local function UpdateStyle(unitframe)
@@ -534,10 +486,6 @@ end
 
 function Module:UnitRemoved(unitframe)
     ResetPandemic(unitframe);
-end
-
-function Module:UnitAura(unitframe, isFullUpdate, updatedAuraInfos)
-    Update(unitframe, isFullUpdate, updatedAuraInfos);
 end
 
 function Module:Update(unitframe)

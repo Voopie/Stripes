@@ -97,25 +97,6 @@ local function UpdateAnchor(unitframe)
     unitframe.ImportantAuras:SetWidth(unitframe.healthBar:GetWidth());
 end
 
-local function FilterShouldShowBuff(spellId)
-    local spellFound = false;
-
-    if additionalAuras[spellId] then
-        spellFound = true;
-    else
-        local flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
-        if flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0 then
-            spellFound = true;
-        end
-    end
-
-    return spellFound;
-end
-
-local function AuraCouldDisplayAsBuff(auraInfo)
-    return FilterShouldShowBuff(auraInfo.spellId);
-end
-
 local function Update(unitframe)
     if not ENABLED or not unitframe.data.unit or unitframe.data.unitType == 'SELF' then
         if unitframe.ImportantAuras:IsShown() then
@@ -128,6 +109,7 @@ local function Update(unitframe)
     unitframe.ImportantAuras.unit   = unitframe.data.unit;
     unitframe.ImportantAuras.filter = filter;
 
+    local spellFound;
     local buffIndex = 1;
     local index = 1;
 
@@ -135,7 +117,17 @@ local function Update(unitframe)
     AuraUtil_ForEachAura(unitframe.ImportantAuras.unit, unitframe.ImportantAuras.filter, BUFF_MAX_DISPLAY, function(...)
         _, texture, count, _, duration, expirationTime, source, _, _, spellId = ...;
 
-        if FilterShouldShowBuff(spellId) then
+        spellFound = false;
+        if additionalAuras[spellId] then
+            spellFound = true;
+        else
+            local flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
+            if flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0 then
+                spellFound = true;
+            end
+        end
+
+        if spellFound then
             local aura = unitframe.ImportantAuras.buffList[buffIndex];
 
             if not aura then
@@ -251,14 +243,6 @@ local function Update(unitframe)
     end
 end
 
-local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
-    if AuraUtil.ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
-        return;
-    end
-
-    Update(unitframe);
-end
-
 local function UpdateStyle(unitframe)
     for _, aura in ipairs(unitframe.ImportantAuras.buffList) do
         if Stripes.Masque then
@@ -319,7 +303,7 @@ end
 
 function Module:UnitAdded(unitframe)
     CreateAnchor(unitframe);
-    OnUnitAuraUpdate(unitframe);
+    Update(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
@@ -328,8 +312,8 @@ function Module:UnitRemoved(unitframe)
     end
 end
 
-function Module:UnitAura(unitframe, isFullUpdate, updatedAuraInfos)
-    OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos);
+function Module:UnitAura(unitframe)
+    Update(unitframe);
 end
 
 function Module:Update(unitframe)
