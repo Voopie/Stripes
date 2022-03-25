@@ -523,6 +523,10 @@ O.CreateCategory = function(title, name, order, hideButton)
     return button, panel;
 end
 
+O.GetPanel = function(name)
+    return panels[string.lower(name)] or error('Invalid panel name: ' .. name);
+end
+
 O.LoadPanelAll = function()
     for _, panel in pairs(panels) do
         if #panel.TabsData > 0 then

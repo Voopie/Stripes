@@ -430,136 +430,136 @@ local function HookSetCVar(name, value)
     value = tostring(value);
 
     if name == 'ShowClassColorInFriendlyNameplate' then
-        O.frame.Right.HealthBar.health_bar_class_color_friendly:SetChecked(value == '1');
+        O.GetPanel('HealthBar').health_bar_class_color_friendly:SetChecked(value == '1');
         O.db.health_bar_class_color_friendly = value == '1';
     elseif name == 'ShowClassColorInNameplate' then
-        O.frame.Right.HealthBar.health_bar_class_color_enemy:SetChecked(value == '1');
+        O.GetPanel('HealthBar').health_bar_class_color_enemy:SetChecked(value == '1');
         O.db.health_bar_class_color_enemy = value == '1';
     elseif name == 'nameplateOverlapH' then
-        O.frame.Right.Sizes.overlap_h:SetValue(tonumber(value));
+        O.GetPanel('Sizes').overlap_h:SetValue(tonumber(value));
         O.db.overlap_h = tonumber(value);
     elseif name == 'nameplateOverlapV' then
-        O.frame.Right.Sizes.overlap_v:SetValue(tonumber(value));
+        O.GetPanel('Sizes').overlap_v:SetValue(tonumber(value));
         O.db.overlap_v = tonumber(value);
     elseif name == 'nameplateMotion' then
-        O.frame.Right.Visibility.motion:SetValue(tonumber(value) + 1);
+        O.GetPanel('Visibility').motion:SetValue(tonumber(value) + 1);
         O.db.motion = tonumber(value) + 1;
     elseif name == 'nameplateMotionSpeed' then
-        O.frame.Right.Visibility.motion_speed:SetValue(tonumber(value));
+        O.GetPanel('Visibility').motion_speed:SetValue(tonumber(value));
         O.db.motion_speed = tonumber(value);
     elseif name == 'nameplateShowEnemies' then
-        O.frame.Right.Visibility.show_enemy:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_enemy:SetChecked(value == '1');
         O.db.show_enemy = value == '1';
 
-        O.frame.Right.Visibility.show_enemy_minions:SetEnabled(O.db.show_enemy);
-        O.frame.Right.Visibility.show_enemy_guardians:SetEnabled(O.db.show_enemy);
-        O.frame.Right.Visibility.show_enemy_minus:SetEnabled(O.db.show_enemy);
-        O.frame.Right.Visibility.show_enemy_pets:SetEnabled(O.db.show_enemy);
-        O.frame.Right.Visibility.show_enemy_totems:SetEnabled(O.db.show_enemy);
+        O.GetPanel('Visibility').show_enemy_minions:SetEnabled(O.db.show_enemy);
+        O.GetPanel('Visibility').show_enemy_guardians:SetEnabled(O.db.show_enemy);
+        O.GetPanel('Visibility').show_enemy_minus:SetEnabled(O.db.show_enemy);
+        O.GetPanel('Visibility').show_enemy_pets:SetEnabled(O.db.show_enemy);
+        O.GetPanel('Visibility').show_enemy_totems:SetEnabled(O.db.show_enemy);
     elseif name == 'nameplateShowFriends' then
-        O.frame.Right.Visibility.show_friendly:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_friendly:SetChecked(value == '1');
         O.db.show_friendly = value == '1';
 
-        O.frame.Right.Visibility.show_friendly_minions:SetEnabled(O.db.show_friendly);
-        O.frame.Right.Visibility.show_friendly_guardians:SetEnabled(O.db.show_friendly);
-        O.frame.Right.Visibility.show_friendly_npcs:SetEnabled(O.db.show_friendly);
-        O.frame.Right.Visibility.show_friendly_pets:SetEnabled(O.db.show_friendly);
-        O.frame.Right.Visibility.show_friendly_totems:SetEnabled(O.db.show_friendly);
+        O.GetPanel('Visibility').show_friendly_minions:SetEnabled(O.db.show_friendly);
+        O.GetPanel('Visibility').show_friendly_guardians:SetEnabled(O.db.show_friendly);
+        O.GetPanel('Visibility').show_friendly_npcs:SetEnabled(O.db.show_friendly);
+        O.GetPanel('Visibility').show_friendly_pets:SetEnabled(O.db.show_friendly);
+        O.GetPanel('Visibility').show_friendly_totems:SetEnabled(O.db.show_friendly);
     elseif name == 'nameplateShowSelf' then
-        O.frame.Right.Visibility.show_personal:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_personal:SetChecked(value == '1');
         O.db.show_personal = value == '1';
     elseif name == 'nameplateShowEnemyMinions' then
-        O.frame.Right.Visibility.show_enemy_minions:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_enemy_minions:SetChecked(value == '1');
         O.db.show_enemy_minions = value == '1';
     elseif name == 'nameplateShowEnemyGuardians' then
-        O.frame.Right.Visibility.show_enemy_guardians:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_enemy_guardians:SetChecked(value == '1');
         O.db.show_enemy_guardians = value == '1';
     elseif name == 'nameplateShowEnemyMinus' then
-        O.frame.Right.Visibility.show_enemy_minus:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_enemy_minus:SetChecked(value == '1');
         O.db.show_enemy_minus = value == '1';
     elseif name == 'nameplateShowEnemyPets' then
-        O.frame.Right.Visibility.show_enemy_pets:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_enemy_pets:SetChecked(value == '1');
         O.db.show_enemy_pets = value == '1';
     elseif name == 'nameplateShowEnemyTotems' then
-        O.frame.Right.Visibility.show_enemy_totems:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_enemy_totems:SetChecked(value == '1');
         O.db.show_enemy_totems = value == '1';
     elseif name == 'nameplateShowFriendlyMinions' then
-        O.frame.Right.Visibility.show_friendly_minions:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_friendly_minions:SetChecked(value == '1');
         O.db.show_friendly_minions = value == '1';
     elseif name == 'nameplateShowFriendlyGuardians' then
-        O.frame.Right.Visibility.show_friendly_guardians:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_friendly_guardians:SetChecked(value == '1');
         O.db.show_friendly_guardians = value == '1';
     elseif name == 'nameplateShowFriendlyNPCs' then
-        O.frame.Right.Visibility.show_friendly_npcs:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_friendly_npcs:SetChecked(value == '1');
         O.db.show_friendly_npcs = value == '1';
     elseif name == 'nameplateShowFriendlyPets' then
-        O.frame.Right.Visibility.show_friendly_pets:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_friendly_pets:SetChecked(value == '1');
         O.db.show_friendly_pets = value == '1';
     elseif name == 'nameplateShowFriendlyTotems' then
-        O.frame.Right.Visibility.show_friendly_totems:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_friendly_totems:SetChecked(value == '1');
         O.db.show_friendly_totems = value == '1';
     elseif name == 'NameplatePersonalShowAlways' then
-        O.frame.Right.Visibility.show_personal_always:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_personal_always:SetChecked(value == '1');
         O.db.show_personal_always = value == '1';
     elseif name == 'nameplateResourceOnTarget' then
-        O.frame.Right.Visibility.show_personal_resource_ontarget:SetChecked(value == '1');
+        O.GetPanel('Visibility').show_personal_resource_ontarget:SetChecked(value == '1');
         O.db.show_personal_resource_ontarget = value == '1';
     elseif name == 'nameplateShowDebuffsOnFriendly' then
-        O.frame.Right.Auras.auras_show_debuffs_on_friendly:SetChecked(value == '1');
+        O.GetPanel('Auras').auras_show_debuffs_on_friendly:SetChecked(value == '1');
         O.db.auras_show_debuffs_on_friendly = value == '1';
     elseif name == 'nameplateLargerScale' then
-        O.frame.Right.Sizes.scale_large:SetValue(tonumber(value));
+        O.GetPanel('Sizes').scale_large:SetValue(tonumber(value));
         O.db.scale_large = tonumber(value);
     elseif name == 'nameplateGlobalScale' then
-        O.frame.Right.Sizes.scale_global:SetValue(tonumber(value));
+        O.GetPanel('Sizes').scale_global:SetValue(tonumber(value));
         O.db.scale_global = tonumber(value);
     elseif name == 'nameplateSelectedScale' then
-        O.frame.Right.Sizes.scale_selected:SetValue(tonumber(value));
+        O.GetPanel('Sizes').scale_selected:SetValue(tonumber(value));
         O.db.scale_selected = tonumber(value);
     elseif name == 'nameplateSelfScale' then
-        O.frame.Right.Sizes.scale_self:SetValue(tonumber(value));
+        O.GetPanel('Sizes').scale_self:SetValue(tonumber(value));
         O.db.scale_self = tonumber(value);
     elseif name == 'nameplateLargeTopInset' then
-        O.frame.Right.Sizes.large_top_inset:SetValue(tonumber(value));
+        O.GetPanel('Sizes').large_top_inset:SetValue(tonumber(value));
         O.db.large_top_inset = tonumber(value);
     elseif name == 'nameplateLargeBottomInset' then
-        O.frame.Right.Sizes.large_bottom_inset:SetValue(tonumber(value));
+        O.GetPanel('Sizes').large_bottom_inset:SetValue(tonumber(value));
         O.db.large_bottom_inset = tonumber(value);
     elseif name == 'nameplateOtherTopInset' then
-        O.frame.Right.Sizes.other_top_inset:SetValue(tonumber(value));
+        O.GetPanel('Sizes').other_top_inset:SetValue(tonumber(value));
         O.db.other_top_inset = tonumber(value);
     elseif name == 'nameplateOtherBottomInset' then
-        O.frame.Right.Sizes.other_bottom_inset:SetValue(tonumber(value));
+        O.GetPanel('Sizes').other_bottom_inset:SetValue(tonumber(value));
         O.db.other_bottom_inset = tonumber(value);
     elseif name == 'nameplateSelfTopInset' then
-        O.frame.Right.Sizes.self_top_inset:SetValue(tonumber(value));
+        O.GetPanel('Sizes').self_top_inset:SetValue(tonumber(value));
         O.db.self_top_inset = tonumber(value);
     elseif name == 'nameplateSelfBottomInset' then
-        O.frame.Right.Sizes.self_bottom_inset:SetValue(tonumber(value));
+        O.GetPanel('Sizes').self_bottom_inset:SetValue(tonumber(value));
         O.db.self_bottom_inset = tonumber(value);
     elseif name == 'nameplateShowOnlyNames' then
-        O.frame.Right.Visibility.name_only_friendly_mode:SetValue(value == '1' and 1 or 2);
+        O.GetPanel('Visibility').name_only_friendly_mode:SetValue(value == '1' and 1 or 2);
         O.db.name_only_friendly_mode = value == '1' and 1 or 2;
     elseif name == 'NameplatePersonalClickThrough' then
-        O.frame.Right.Sizes.size_self_click_through:SetChecked(value == '1');
+        O.GetPanel('Sizes').size_self_click_through:SetChecked(value == '1');
         O.db.size_self_click_through = value == '1';
     elseif name == 'nameplateSelectedAlpha' then
-        O.frame.Right.Visibility.selected_alpha:SetValue(tonumber(value));
+        O.GetPanel('Visibility').selected_alpha:SetValue(tonumber(value));
         O.db.selected_alpha = tonumber(value);
     elseif name == 'nameplateMaxAlpha' then
-        O.frame.Right.Visibility.max_alpha:SetValue(tonumber(value));
+        O.GetPanel('Visibility').max_alpha:SetValue(tonumber(value));
         O.db.max_alpha = tonumber(value);
     elseif name == 'nameplateMaxAlphaDistance' then
-        O.frame.Right.Visibility.max_alpha_distance:SetValue(tonumber(value));
+        O.GetPanel('Visibility').max_alpha_distance:SetValue(tonumber(value));
         O.db.max_alpha_distance = tonumber(value);
     elseif name == 'nameplateMinAlpha' then
-        O.frame.Right.Visibility.min_alpha:SetValue(tonumber(value));
+        O.GetPanel('Visibility').min_alpha:SetValue(tonumber(value));
         O.db.min_alpha = tonumber(value);
     elseif name == 'nameplateMinAlphaDistance' then
-        O.frame.Right.Visibility.min_alpha_distance:SetValue(tonumber(value));
+        O.GetPanel('Visibility').min_alpha_distance:SetValue(tonumber(value));
         O.db.min_alpha_distance = tonumber(value);
     elseif name == 'nameplateOccludedAlphaMult' then
-        O.frame.Right.Visibility.occluded_alpha_mult:SetValue(tonumber(value));
+        O.GetPanel('Visibility').occluded_alpha_mult:SetValue(tonumber(value));
         O.db.occluded_alpha_mult = tonumber(value);
     elseif name == 'NamePlateVerticalScale' or name == 'NamePlateHorizontalScale' then
         C_Timer.After(0.25, function()
