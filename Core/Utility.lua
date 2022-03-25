@@ -1,7 +1,7 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 
 -- Lua API
-local pairs, ipairs, select, type, unpack, tostring, tonumber, string_format, string_len, string_sub, string_gsub, string_byte, math_floor = pairs, ipairs, select, type, unpack, tostring, tonumber, string.format, string.len, string.sub, string.gsub, string.byte, math.floor;
+local pairs, ipairs, select, type, unpack, tostring, tonumber, string_format, string_find, string_len, string_sub, string_gsub, string_byte, math_floor = pairs, ipairs, select, type, unpack, tostring, tonumber, string.format, string.find, string.len, string.sub, string.gsub, string.byte, math.floor;
 
 -- WoW/Lua API
 local strsplit = strsplit;
@@ -101,31 +101,55 @@ U.IsInArena = function()
 end
 
 do
+    local NAMES_CACHE = {};
+    local SUBLABELS_CACHE = {};
     local UNIT_CREATURE_LINK = 'unit:Creature-0-0-0-0-%d';
     local UNKNOWN = UNKNOWN;
 
     U.GetNpcNameByID = function(id)
         if not id or id == 0 then
-            return UNKNOWN, UNKNOWN;
+            return UNKNOWN;
+        end
+
+        if NAMES_CACHE[id] then
+            return NAMES_CACHE[id];
         end
 
         U.TooltipScanner:ClearLines();
         U.TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
         U.TooltipScanner:SetHyperlink(string_format(UNIT_CREATURE_LINK, id));
 
-        return _G[U.TooltipScanner.Name .. 'TextLeft1']:GetText() or UNKNOWN, _G[U.TooltipScanner.Name .. 'TextLeft2']:GetText() or UNKNOWN;
+        local name = _G[U.TooltipScanner.Name .. 'TextLeft1']:GetText() or UNKNOWN;
+
+        if name ~= UNKNOWN then
+            NAMES_CACHE[id] = name;
+        end
+
+        return name;
     end
 
     U.GetNpcSubLabelByID = function(id)
         if not id or id == 0 then
-            return UNKNOWN;
+            return;
+        end
+
+        if SUBLABELS_CACHE[id] then
+            return SUBLABELS_CACHE[id];
         end
 
         U.TooltipScanner:ClearLines();
         U.TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
         U.TooltipScanner:SetHyperlink(string_format(UNIT_CREATURE_LINK, id));
 
-        return _G[U.TooltipScanner.Name .. 'TextLeft2']:GetText() or UNKNOWN;
+        local sublabel = _G[U.TooltipScanner.Name .. 'TextLeft2']:GetText();
+
+        if not sublabel or string_find(sublabel or '', '??', 1, true) then
+            SUBLABELS_CACHE[id] = nil;
+        else
+            SUBLABELS_CACHE[id] = sublabel;
+        end
+
+        return SUBLABELS_CACHE[id];
     end
 
 end
