@@ -864,7 +864,7 @@ L['OPTIONS_AURAS_TAB_CUSTOM'] = 'Custom';
 
 L['OPTIONS_AURAS_IS_ACTIVE'] = 'Enable';
 L['OPTIONS_AURAS_IS_ACTIVE_TOOLTIP'] = 'Show auras';
-L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED'] = 'No filter';
+L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED'] = 'Show all auras';
 L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED_TOOLTIP'] = 'Show all auras (debuffs) on enemy nameplates';
 L['OPTIONS_AURAS_PANDEMIC_ENABLED'] = 'Pandemic';
 L['OPTIONS_AURAS_PANDEMIC_ENABLED_TOOLTIP'] = 'Enable coloring of auras countdown when 30% or less of the total spell duration is left';

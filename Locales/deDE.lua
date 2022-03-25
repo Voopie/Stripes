@@ -864,7 +864,7 @@ L['OPTIONS_AURAS_TAB_CUSTOM'] = 'Benutzerdefiniert';
 
 L['OPTIONS_AURAS_IS_ACTIVE'] = 'Aktivieren';
 L['OPTIONS_AURAS_IS_ACTIVE_TOOLTIP'] = 'Auren anzeigen';
-L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED'] = 'Kein Filter';
+L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED'] = 'Alle Auren anzeigen';
 L['OPTIONS_AURAS_FILTER_PLAYER_ENABLED_TOOLTIP'] = 'Alle Auren (Schwächungszauber) auf gegnerischen Namensschildern anzeigen';
 L['OPTIONS_AURAS_PANDEMIC_ENABLED'] = 'Pandemie';
 L['OPTIONS_AURAS_PANDEMIC_ENABLED_TOOLTIP'] = 'Einfärbung des Auren-Countdowns aktivieren, wenn 30% oder weniger der Gesamtdauer des Zaubers verbleiben';
