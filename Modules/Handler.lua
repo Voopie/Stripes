@@ -291,27 +291,6 @@ local function UpdateNpcId(unitframe)
     unitframe.data.npcId = not unitframe.data.isPlayer and GetNpcIDByGUID(unitframe.data.unitGUID, true) or 0;
 end
 
-local subLabelCache = {};
-local function UpdateSubLabel(unitframe)
-    if unitframe.data.isPlayer then
-        unitframe.data.subLabel = nil;
-        return;
-    end
-
-    if subLabelCache[unitframe.data.npcId] then
-        unitframe.data.subLabel = subLabelCache[unitframe.data.npcId];
-        return;
-    end
-
-    unitframe.data.subLabel = GetNpcSubLabelByID(unitframe.data.npcId) or nil;
-
-    if unitframe.data.subLabel == UNKNOWN or string_find(unitframe.data.subLabel or '', '??', 1, true) then
-        unitframe.data.subLabel = nil;
-    end
-
-    subLabelCache[unitframe.data.npcId] = unitframe.data.subLabel;
-end
-
 local function UpdateUnitColor(unitframe)
     unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB = GetUnitColor(unitframe.data.unit, 2);
 end
@@ -593,7 +572,6 @@ local function ResetNameplateData(unitframe)
     unitframe.data.npcId = 0;
     unitframe.data.creatureType = nil;
 
-    unitframe.data.subLabel = nil;
     unitframe.data.guild = nil;
     unitframe.data.realm = nil;
 
@@ -638,7 +616,6 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
     UpdateWidgetStatus(NP[nameplate]);
     UpdateNpcId(NP[nameplate]);
     UpdateUnitColor(NP[nameplate]);
-    UpdateSubLabel(NP[nameplate]);
     UpdateHealth(NP[nameplate]);
     UpdateAbsorbs(NP[nameplate])
     UpdateClassification(NP[nameplate]);

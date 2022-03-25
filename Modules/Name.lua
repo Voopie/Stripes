@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Name');
 
 -- Lua API
-local string_format, string_gsub, string_gmatch = string.format, string.gsub, string.gmatch;
+local string_format, string_gsub, string_gmatch, string_find = string.format, string.gsub, string.gmatch, string.find;
 local strlenutf8 = strlenutf8;
 
 -- WoW API
@@ -14,6 +14,7 @@ local firstUpper, firstLower = U.FirstToUpper, U.FirstToLower;
 local GetUnitArenaId = U.GetUnitArenaId;
 local PlayerState = D.Player.State;
 local UnitIsTapped = U.UnitIsTapped;
+local GetNpcSubLabelByID = U.GetNpcSubLabelByID;
 local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
 local IsNameOnlyMode = S:GetNameplateModule('Handler').IsNameOnlyMode;
 local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyModeAndFriendly;
@@ -517,7 +518,7 @@ end
 
 local function NameOnly_UpdateGuildName(unitframe)
     if IsNameOnlyMode() and NAME_ONLY_GUILD_NAME then
-        if unitframe.data.guild and unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+        if unitframe.data.unitType == 'FRIENDLY_PLAYER' and unitframe.data.guild then
             local guild = unitframe.data.guild;
 
             if NAME_TRANSLIT then
@@ -537,11 +538,16 @@ local function NameOnly_UpdateGuildName(unitframe)
             end
 
             unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
-        elseif unitframe.data.subLabel and unitframe.data.unitType == 'FRIENDLY_NPC' then
-            unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, unitframe.data.subLabel));
-            unitframe.GuildName.text:SetTextColor(NAME_ONLY_GUILD_NAME_COLOR[1], NAME_ONLY_GUILD_NAME_COLOR[2], NAME_ONLY_GUILD_NAME_COLOR[3], NAME_ONLY_GUILD_NAME_COLOR[4]);
+        elseif unitframe.data.unitType == 'FRIENDLY_NPC' then
+            local subLabel = GetNpcSubLabelByID(unitframe.data.npcId);
 
-            unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
+            if subLabel then
+                unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, subLabel));
+                unitframe.GuildName.text:SetTextColor(NAME_ONLY_GUILD_NAME_COLOR[1], NAME_ONLY_GUILD_NAME_COLOR[2], NAME_ONLY_GUILD_NAME_COLOR[3], NAME_ONLY_GUILD_NAME_COLOR[4]);
+                unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
+            else
+                unitframe.GuildName:SetShown(false);
+            end
         else
             unitframe.GuildName:SetShown(false);
         end
