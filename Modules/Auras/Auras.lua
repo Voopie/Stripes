@@ -6,7 +6,7 @@ local Stripes = S:GetNameplateModule('Handler');
 local ipairs, tonumber, math_max, table_wipe, table_sort, bit_band = ipairs, tonumber, math.max, wipe, table.sort, bit.band;
 
 -- Wow API
-local UnitIsUnit, GetCVarBool, CooldownFrame_Set, AuraUtil_ForEachAura = UnitIsUnit, GetCVarBool, CooldownFrame_Set, AuraUtil.ForEachAura;
+local UnitIsUnit, GetCVarBool, CooldownFrame_Set, AuraUtil_ForEachAura, AuraUtil_ShouldSkipAuraUpdate = UnitIsUnit, GetCVarBool, CooldownFrame_Set, AuraUtil.ForEachAura, AuraUtil.ShouldSkipAuraUpdate;
 
 -- Stripes API
 local ShouldShowName   = S:GetNameplateModule('Handler').ShouldShowName;
@@ -297,20 +297,16 @@ local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
     local filter;
     local showAll = false;
     local unit = unitframe.data.unit;
-    local isPlayer = UnitIsUnit('player', unit);
-    local reaction = UnitReaction('player', unit);
-    -- Reaction 4 is neutral and less than 4 becomes increasingly more hostile
-    local hostileUnit = reaction and reaction <= 4;
-    local showDebuffsOnFriendly = GetCVarBool('nameplateShowDebuffsOnFriendly');
-    if isPlayer then
+    local isPlayer = unitframe.data.unitType == 'SELF';
+    local hostileUnit = unitframe.data.reaction and unitframe.data.reaction <= 4;
+
+    if unitframe.data.unitType then
         filter = 'HELPFUL|INCLUDE_NAME_PLATE_ONLY';
     else
         if hostileUnit then
-        -- Reaction 4 is neutral and less than 4 becomes increasingly more hostile
             filter = 'HARMFUL|INCLUDE_NAME_PLATE_ONLY';
         else
-            if showDebuffsOnFriendly then
-                -- dispellable debuffs
+            if SHOW_DEBUFFS_ON_FRIENDLY then
                 filter = 'HARMFUL|RAID';
                 showAll = true;
             else
@@ -319,22 +315,21 @@ local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
         end
     end
 
-    -- Early out if the update cannot affect the nameplate
     local function AuraCouldDisplayAsBuff(auraInfo)
-        if not FilterShouldShowBuff(auraInfo.name, auraInfo.spellId, auraInfo.sourceUnit, auraInfo.nameplateShowPersonal, auraInfo.nameplateShowAll or showAll, unitframe.data.unitType == 'SELF') then
+        if not FilterShouldShowBuff(auraInfo.name, auraInfo.spellId, auraInfo.sourceUnit, auraInfo.nameplateShowPersonal, auraInfo.nameplateShowAll or showAll, isPlayer) then
             return false;
         elseif isPlayer then
             return auraInfo.isHelpful;
         elseif hostileUnit then
             return auraInfo.isHarmful;
-        elseif showDebuffsOnFriendly then
+        elseif SHOW_DEBUFFS_ON_FRIENDLY then
             return auraInfo.isHarmful and auraInfo.isRaid;
         end
 
         return false;
     end
 
-    if filter ~= 'NONE' and AuraUtil.ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
+    if filter ~= 'NONE' and AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
         return;
     end
 
@@ -620,6 +615,8 @@ function Module:UpdateLocalConfig()
     EXPIRE_GLOW_TYPE     = O.db.auras_expire_glow_type;
 
     MASQUE_SUPPORT = O.db.auras_masque_support;
+
+    SHOW_DEBUFFS_ON_FRIENDLY = O.db.auras_show_debuffs_on_friendly;
 
     UpdateFontObject(StripesAurasModCooldownFont, O.db.auras_cooldown_font_value, O.db.auras_cooldown_font_size, O.db.auras_cooldown_font_flag, O.db.auras_cooldown_font_shadow);
     UpdateFontObject(StripesAurasModCountFont, O.db.auras_count_font_value, O.db.auras_count_font_size, O.db.auras_count_font_flag, O.db.auras_count_font_shadow);

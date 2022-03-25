@@ -6,7 +6,7 @@ local Stripes = S:GetNameplateModule('Handler');
 local pairs, table_wipe, math_max = pairs, wipe, math.max;
 
 -- WoW API
-local CooldownFrame_Set, GetCVarBool, UnitIsUnit, AuraUtil_ForEachAura = CooldownFrame_Set, GetCVarBool, UnitIsUnit, AuraUtil.ForEachAura;
+local CooldownFrame_Set, GetCVarBool, UnitIsUnit, AuraUtil_ForEachAura, AuraUtil_ShouldSkipAuraUpdate = CooldownFrame_Set, GetCVarBool, UnitIsUnit, AuraUtil.ForEachAura, AuraUtil.ShouldSkipAuraUpdate;
 
 -- Stripes API
 local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
@@ -255,7 +255,7 @@ local function Update(unitframe)
 end
 
 local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
-    if AuraUtil.ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
+    if AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
         return;
     end
 

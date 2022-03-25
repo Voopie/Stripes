@@ -6,7 +6,7 @@ local Stripes = S:GetNameplateModule('Handler');
 local bit_band, math_max = bit.band, math.max;
 
 -- Wow API
-local CooldownFrame_Set, UnitName, AuraUtil_ForEachAura = CooldownFrame_Set, UnitName, AuraUtil.ForEachAura;
+local CooldownFrame_Set, UnitName, AuraUtil_ForEachAura, AuraUtil_ShouldSkipAuraUpdate = CooldownFrame_Set, UnitName, AuraUtil.ForEachAura, AuraUtil.ShouldSkipAuraUpdate;
 
 -- Sripes API
 local GetUnitColor = U.GetUnitColor;
@@ -252,7 +252,7 @@ local function Update(unitframe)
 end
 
 local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
-    if AuraUtil.ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
+    if AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
         return;
     end
 
