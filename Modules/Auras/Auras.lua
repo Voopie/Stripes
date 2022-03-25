@@ -300,7 +300,7 @@ local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
     local isPlayer = unitframe.data.unitType == 'SELF';
     local hostileUnit = unitframe.data.reaction and unitframe.data.reaction <= 4;
 
-    if unitframe.data.unitType then
+    if isPlayer then
         filter = 'HELPFUL|INCLUDE_NAME_PLATE_ONLY';
     else
         if hostileUnit then
