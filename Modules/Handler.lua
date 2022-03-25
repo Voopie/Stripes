@@ -291,12 +291,25 @@ local function UpdateNpcId(unitframe)
     unitframe.data.npcId = not unitframe.data.isPlayer and GetNpcIDByGUID(unitframe.data.unitGUID, true) or 0;
 end
 
+local subLabelCache = {};
 local function UpdateSubLabel(unitframe)
-    unitframe.data.subLabel = not unitframe.data.isPlayer and GetNpcSubLabelByID(unitframe.data.npcId) or nil;
+    if unitframe.data.isPlayer then
+        unitframe.data.subLabel = nil;
+        return;
+    end
+
+    if subLabelCache[unitframe.data.npcId] then
+        unitframe.data.subLabel = subLabelCache[unitframe.data.npcId];
+        return;
+    end
+
+    unitframe.data.subLabel = GetNpcSubLabelByID(unitframe.data.npcId) or nil;
 
     if unitframe.data.subLabel == UNKNOWN or string_find(unitframe.data.subLabel or '', '??', 1, true) then
         unitframe.data.subLabel = nil;
     end
+
+    subLabelCache[unitframe.data.npcId] = unitframe.data.subLabel;
 end
 
 local function UpdateUnitColor(unitframe)
