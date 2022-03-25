@@ -360,7 +360,7 @@ function ModuleMixin:GetUnitFrame(unitframe)
     end
 end
 
-function ModuleMixin:SecureHook(name, func)
+function ModuleMixin:SecureHook(name, func1, func2, func3)
     if not _G[name] then
         return;
     end
@@ -369,18 +369,31 @@ function ModuleMixin:SecureHook(name, func)
         error('SecureHook: «' .. name .. '» was already hooked in «' .. self.Name .. '» module!');
     end
 
-    self.Hooks[name] = func;
+    if func3 then
+        self.Hooks[name] = function(...)
+            func1(...);
+            func2(...);
+            func3(...);
+        end
+    elseif func2 then
+        self.Hooks[name] = function(...)
+            func1(...);
+            func2(...);
+        end
+    else
+        self.Hooks[name] = func1;
+    end
 
-    if type(func) == 'table' then
-        for hookMethod, hookFunc2 in pairs(func) do
+    if type(self.Hooks[name]) == 'table' then
+        for hookMethod, hookFunc2 in pairs(self.Hooks[name]) do
             hooksecurefunc(_G[name], hookMethod, hookFunc2);
         end
     else
-        hooksecurefunc(name, func);
+        hooksecurefunc(name, self.Hooks[name]);
     end
 end
 
-function ModuleMixin:SecureUnitFrameHook(name, func)
+function ModuleMixin:SecureUnitFrameHook(name, func1, func2, func3)
     if not _G[name] then
         return;
     end
@@ -389,10 +402,23 @@ function ModuleMixin:SecureUnitFrameHook(name, func)
         error('SecureUnitFrameHook: «' .. name.. '» was already hooked in «' .. self.Name .. '» module!');
     end
 
-    self.Hooks[name] = func;
+    if func3 then
+        self.Hooks[name] = function(...)
+            func1(...);
+            func2(...);
+            func3(...);
+        end
+    elseif func2 then
+        self.Hooks[name] = function(...)
+            func1(...);
+            func2(...);
+        end
+    else
+        self.Hooks[name] = func1;
+    end
 
-    if type(func) == 'table' then
-        for hookMethod, hookFunc2 in pairs(func) do
+    if type(self.Hooks[name]) == 'table' then
+        for hookMethod, hookFunc2 in pairs(self.Hooks[name]) do
             hooksecurefunc(_G[name], hookMethod, function(unitframe)
                 if self:CheckUnitFrame(unitframe) then
                     hookFunc2(unitframe);
@@ -402,7 +428,7 @@ function ModuleMixin:SecureUnitFrameHook(name, func)
     else
         hooksecurefunc(name, function(unitframe)
             if self:CheckUnitFrame(unitframe) then
-                func(unitframe);
+                self.Hooks[name](unitframe);
             end
         end);
     end
