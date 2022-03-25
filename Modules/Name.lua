@@ -517,6 +517,10 @@ local function NameOnly_CreateGuildName(unitframe)
 end
 
 local function NameOnly_UpdateGuildName(unitframe)
+    if not unitframe.GuildName then
+        return;
+    end
+
     if IsNameOnlyMode() and NAME_ONLY_GUILD_NAME then
         if unitframe.data.unitType == 'FRIENDLY_PLAYER' and unitframe.data.guild then
             local guild = unitframe.data.guild;
@@ -755,6 +759,7 @@ function Module:StartUp()
 
         NameOnly_UpdateHealthBar(unitframe);
         NameOnly_UpdateNameHealth(unitframe);
+        NameOnly_UpdateGuildName(unitframe);
 
         UpdateAnchor(unitframe);
     end);
