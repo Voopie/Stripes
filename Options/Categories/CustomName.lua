@@ -310,7 +310,7 @@ local function CreateListRow(b)
     b:SetScript('OnClick', function(self)
         Add(self.npc_id, self.npc_name);
 
-        panel.UpdateScroll();
+        panel:UpdateScroll();
         S:GetNameplateModule('Handler'):UpdateAll();
     end);
 
@@ -323,6 +323,15 @@ local function CreateListRow(b)
             self.tooltip = string.format(LIST_TOOLTIP_PATTERN, self.npc_name, self.npc_id);
 
             self.NameText:SetText(self.npc_name);
+        end
+
+        if self.npc_name ~= UNKNOWN and not D.ModelBlacklist[self.npc_id] then
+            ModelFrame:SetCreature(self.npc_id);
+            GameTooltip_InsertFrame(GameTooltip, HolderModelFrame, 0);
+            HolderModelFrame:SetSize(GameTooltip:GetWidth(), GameTooltip:GetWidth() * 2);
+            HolderModelFrame:SetPoint('TOPLEFT', GameTooltip, 'BOTTOMLEFT', 0, -1);
+            ModelFrame:SetSize(GameTooltip:GetWidth() - 3, GameTooltip:GetWidth() * 2 - 3);
+            ModelFrame:SetCamDistanceScale(1.2);
         end
     end);
 
@@ -339,23 +348,6 @@ local function CreateListRow(b)
     end);
 
     E.CreateTooltip(b, nil, nil, true);
-
-    b:HookScript('OnEnter', function(self)
-        if self.npc_name == UNKNOWN then
-            return;
-        end
-
-        if D.ModelBlacklist[self.npc_id] then
-            return;
-        end
-
-        ModelFrame:SetCreature(self.npc_id);
-        GameTooltip_InsertFrame(GameTooltip, HolderModelFrame, 0);
-        HolderModelFrame:SetSize(GameTooltip:GetWidth(), GameTooltip:GetWidth() * 2);
-        HolderModelFrame:SetPoint('TOPLEFT', GameTooltip, 'BOTTOMLEFT', 0, -1);
-        ModelFrame:SetSize(GameTooltip:GetWidth() - 3, GameTooltip:GetWidth() * 2 - 3);
-        ModelFrame:SetCamDistanceScale(1.2);
-    end);
 end
 
 local function UpdateListRow(b)
@@ -377,9 +369,6 @@ local function UpdateListRow(b)
         b.backgroundColor[1], b.backgroundColor[2], b.backgroundColor[3], b.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
     end
 
-    b.npc_name = U.GetNpcNameByID(b.npc_id);
-    b.tooltip = string.format(LIST_TOOLTIP_PATTERN, b.npc_name, b.npc_id);
-
     b.NameText:SetText(b.npc_name);
 end
 
@@ -398,8 +387,10 @@ panel.UpdateListScroll = function(id)
             CreateListRow(b);
         end
 
-        b.index   = index;
-        b.npc_id  = npc_id;
+        b.index    = index;
+        b.npc_id   = npc_id;
+        b.npc_name = U.GetNpcNameByID(b.npc_id);
+        b.tooltip  = string.format(LIST_TOOLTIP_PATTERN, b.npc_name, b.npc_id);
 
         UpdateListRow(b);
 
@@ -437,17 +428,26 @@ panel.Load = function(self)
             return;
         end
 
-        U.GetNpcNameByID(unitID);
+        local unitName = U.GetNpcNameByID(unitID);
 
-        C_Timer.After(DELAY_SECONDS, function()
-            local unitName = U.GetNpcNameByID(unitID);
+        if not unitName then
+            C_Timer.After(DELAY_SECONDS, function()
+                unitName = U.GetNpcNameByID(unitID);
+                Add(unitID, unitName);
+
+                panel:UpdateScroll();
+                self:SetText('');
+
+                Stripes:UpdateAll();
+            end);
+        else
             Add(unitID, unitName);
 
-            panel.UpdateScroll();
+            panel:UpdateScroll();
             self:SetText('');
 
             Stripes:UpdateAll();
-        end);
+        end
     end);
 
     local AddFromTargetButton = E.CreateButton(self);
@@ -469,7 +469,7 @@ panel.Load = function(self)
 
         Add(unitID, unitName);
 
-        panel.UpdateScroll();
+        panel:UpdateScroll();
         EditBox:SetText('');
 
         Stripes:UpdateAll();
@@ -505,7 +505,7 @@ panel.Load = function(self)
             panel.ResetSearchEditBox:SetShown(true);
         end
 
-        panel.UpdateScroll();
+        panel:UpdateScroll();
     end);
     self.SearchEditBox.FocusGainedCallback = function()
         panel.ResetSearchEditBox:SetShown(true);
@@ -625,7 +625,7 @@ panel.Load = function(self)
                 C_Timer.After(DELAY_SECONDS, function()
                     unitName = U.GetNpcNameByID(npc_id);
                     Add(npc_id, unitName);
-                    panel.UpdateScroll();
+                    panel:UpdateScroll();
                     Stripes:UpdateAll();
                 end);
             else
@@ -633,7 +633,7 @@ panel.Load = function(self)
             end
         end
 
-        panel.UpdateScroll();
+        panel:UpdateScroll();
         Stripes:UpdateAll();
     end
 end
