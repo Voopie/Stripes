@@ -236,9 +236,14 @@ local function CreateCustomAuraRow(frame)
     frame.IdText:SetSize(60, ROW_HEIGHT);
     frame.IdText:SetTextColor(0.67, 0.67, 0.67);
     hooksecurefunc(frame.IdText, 'SetText', function(self, text)
+        local fontValue, fontSize, fontOutline = self:GetFont();
+
+        if fontSize == 3 then
+            return;
+        end
+
         if self:IsTruncated() then
-            local fv, fs, fo = self:GetFont();
-            self:SetFont(fv, math.max(3, fs - 1), fo);
+            self:SetFont(fontValue, math.max(3, fontSize - 1), fontOutline);
             self:SetText(text);
         end
     end);
