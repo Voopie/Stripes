@@ -17,6 +17,7 @@ local GetQuestDifficultyColor = GetQuestDifficultyColor;
 local IsInGuild, GetGuildInfo = IsInGuild, GetGuildInfo;
 local IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map_GetBestMapForUnit = IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map.GetBestMapForUnit
 local GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell = GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell;
+local AuraUtil_ForEachAura, BUFF_MAX_DISPLAY = AuraUtil.ForEachAura, BUFF_MAX_DISPLAY;
 
 -- WoW C API
 local C_MythicPlus_GetCurrentAffixes, C_ChallengeMode_GetActiveKeystoneInfo = C_MythicPlus.GetCurrentAffixes, C_ChallengeMode.GetActiveKeystoneInfo;
@@ -322,6 +323,38 @@ U.IsAffixActive = function(affixID)
                 return true;
             end
         end
+    end
+
+    return false;
+end
+
+U.UnitHasAura = function(unit, filter, neededAuraId)
+    local buffIndex = 1;
+    local has = false;
+    local name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod;
+
+    local isTable = type(neededAuraId) == 'table';
+
+    AuraUtil_ForEachAura(unit, filter, BUFF_MAX_DISPLAY, function(...)
+        name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = ...;
+
+        if isTable then
+            if neededAuraId[spellId] then
+                has = true;
+                return true;
+            end
+        else
+            if spellId == neededAuraId then
+                has = true;
+                return true;
+            end
+        end
+
+        return buffIndex > BUFF_MAX_DISPLAY;
+    end);
+
+    if has then
+        return name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod;
     end
 
     return false;
