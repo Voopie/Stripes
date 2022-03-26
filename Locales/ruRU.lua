@@ -1096,6 +1096,7 @@ L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Показывать эффект
 L['OPTIONS_AURAS_CUSTOM_DIRECTION'] = 'Направление роста';
 L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Направление роста пользовательских аур';
 L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Максимальное количество отображаемых пользовательских аур';
+L['OPTIONS_AURAS_CUSTOM_ADDED_BY_NAME'] = 'по имени';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';

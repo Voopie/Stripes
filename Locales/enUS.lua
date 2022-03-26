@@ -1096,6 +1096,7 @@ L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on custom auras'
 L['OPTIONS_AURAS_CUSTOM_DIRECTION'] = 'Growth direction';
 L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Custom auras growth direction';
 L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Maximum number of displayed custom auras';
+L['OPTIONS_AURAS_CUSTOM_ADDED_BY_NAME'] = 'by name';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Enable';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Enable custom health bar colors';

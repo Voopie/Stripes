@@ -1096,6 +1096,7 @@ L['OPTIONS_AURAS_CUSTOM_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von benutze
 L['OPTIONS_AURAS_CUSTOM_DIRECTION'] = 'Richtung des Wachstums';
 L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Benutzerdefinierte Auren Wachstumsrichtung';
 L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl von angezeigten benutzerdefinierten Auren';
+L['OPTIONS_AURAS_CUSTOM_ADDED_BY_NAME'] = 'namentlich';
 
 L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Aktivieren';
 L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Farben der Gesundheitsleiste aktivieren';

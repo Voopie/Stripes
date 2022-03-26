@@ -235,6 +235,13 @@ local function CreateCustomAuraRow(frame)
     frame.IdText:SetPoint('LEFT', frame.Icon, 'RIGHT', 10, 0);
     frame.IdText:SetSize(60, ROW_HEIGHT);
     frame.IdText:SetTextColor(0.67, 0.67, 0.67);
+    hooksecurefunc(frame.IdText, 'SetText', function(self, text)
+        if self:IsTruncated() then
+            local fv, fs, fo = self:GetFont();
+            self:SetFont(fv, math.max(3, fs - 1), fo);
+            self:SetText(text);
+        end
+    end);
 
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.IdText, 'RIGHT', 2, 0);
@@ -317,7 +324,7 @@ local function UpdateCustomAuraRow(frame)
 
     frame.EnableCheckBox:SetChecked(frame.enabled);
     frame.Icon:SetTexture(frame.icon);
-    frame.IdText:SetText(type(frame.id) == 'number' and frame.id or 'NA');
+    frame.IdText:SetText(type(frame.id) == 'number' and frame.id or L['OPTIONS_AURAS_CUSTOM_ADDED_BY_NAME']);
     frame.NameText:SetText(frame.name);
 
     if frame.filter == 'HELPFUL' then
