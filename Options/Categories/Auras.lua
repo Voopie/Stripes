@@ -467,7 +467,6 @@ local function CreateBlackListRow(frame)
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
     frame.NameText:SetSize(150, ROW_HEIGHT);
-    frame.NameText:SetWordWrap(false);
     hooksecurefunc(frame.NameText, 'SetText', function(self, text)
         local fontValue, fontSize, fontOutline = self:GetFont();
 
