@@ -2,14 +2,12 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('HealthBar');
 local Colors = S:GetModule('Options_Colors');
 
--- Lua API
-local unpack = unpack;
-
 -- WoW API
 local UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
       UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer;
 local GetRaidTargetIndex = GetRaidTargetIndex;
+local AuraUtil_ForEachAura, BUFF_MAX_DISPLAY = AuraUtil.ForEachAura, BUFF_MAX_DISPLAY;
 
 -- Stripes API
 local UnitIsTapped, IsPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.IsPlayer, U.IsPlayerEffectivelyTank;
@@ -183,7 +181,7 @@ end
 
 -- Custom Health Bar Color
 local function UpdateCustomHealthBarColor(unitframe)
-    if unitframe.healthBar.currentTargetColored then
+    if unitframe.healthBar.highPrioColored or unitframe.healthBar.currentTargetColored then
         unitframe.healthBar.customColored = nil;
     else
         LCG.PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
@@ -267,13 +265,15 @@ local function Threat_GetThreatSituationStatus(unit)
     return display, status, isTanking;
 end
 
-local function Threat_HighPrioCheck(unitframe)
+local function Threat_HighPrioColor(unitframe)
     if not DB.THREAT_ENABLED or not DB.THREAT_COLOR_PRIO_HIGH then
+        unitframe.healthBar.highPrioColored = nil;
         unitframe.data.tpNeedUpdate = true;
         return;
     end
 
     if PLAYER_IS_TANK and DB.THREAT_COLOR_PRIO_HIGH_EXCLUDE_TANK_ROLE then
+        unitframe.healthBar.highPrioColored = nil;
         return;
     end
 
@@ -288,12 +288,13 @@ local function Threat_HighPrioCheck(unitframe)
             end
         else
             unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+            unitframe.healthBar.highPrioColored = true;
         end
 
         UpdateThreatPercentage(unitframe, display, r, g, b, a);
         unitframe.data.tpNeedUpdate = false;
-
-        return true;
+    else
+        unitframe.healthBar.highPrioColored = nil;
     end
 end
 
@@ -392,19 +393,26 @@ end
 
 local function GetAuraColor(unit)
     local _, name, spellId;
+    local buffIndex = 1;
+    local has = false;
+    local color;
 
-    for i = 1, BUFF_MAX_DISPLAY do
-        name, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, i, 'PLAYER HARMFUL');
-
-        if not name or not spellId then
-            return false;
-        end
+    AuraUtil_ForEachAura(unit, 'PLAYER HARMFUL', BUFF_MAX_DISPLAY, function(...)
+        name, _, _, _, _, _, _, _, _, spellId = ...;
 
         local spellData = O.db.auras_hpbar_color_data[spellId] or O.db.auras_hpbar_color_data[name];
 
         if spellData and spellData.enabled then
-            return spellData.color[1], spellData.color[2], spellData.color[3], spellData.color[4] or 1;
+            has = true;
+            color = spellData.color;
+            return true;
         end
+
+        return buffIndex > BUFF_MAX_DISPLAY;
+    end);
+
+    if has then
+        return color[1], color[2], color[3], color[4] or 1;
     end
 
     return false;
@@ -464,7 +472,7 @@ local function UpdateRaidTarget(unitframe)
 end
 
 local function UpdateAuraColor(unitframe)
-    if unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored then
+    if unitframe.healthBar.highPrioColored or unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored then
         unitframe.healthBar.auraColored = nil;
     else
         unitframe.healthBar.auraColored = UpdateAurasColor(unitframe);
@@ -472,7 +480,7 @@ local function UpdateAuraColor(unitframe)
 end
 
 local function UpdateRaidTargetColor(unitframe)
-    if unitframe.healthBar.customColored then
+    if unitframe.healthBar.highPrioColored or unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored then
         unitframe.healthBar.raidTargetColored = nil;
     else
         unitframe.healthBar.raidTargetColored = UpdateRaidTarget(unitframe);
@@ -483,31 +491,36 @@ local function UpdateRaidTargetColor(unitframe)
 end
 
 local function UpdateCurrentTargetColor(unitframe)
-    if DB.CURRENT_TARGET_COLOR_ENABLED and unitframe.data.isTarget then
-        local color = DB.CURRENT_TARGET_USE_CLASS_COLOR and DB.CURRENT_TARGET_CLASS_COLOR or DB.CURRENT_TARGET_COLOR;
-        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
-
-        if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-            unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
-        end
-
-        unitframe.healthBar.currentTargetColored = true;
-    elseif DB.CURRENT_FOCUS_COLOR_ENABLED and unitframe.data.isFocus then
-        local color = DB.CURRENT_FOCUS_USE_CLASS_COLOR and DB.CURRENT_FOCUS_CLASS_COLOR or DB.CURRENT_FOCUS_COLOR;
-        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
-
-        if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-            unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
-        end
-
-        unitframe.healthBar.currentTargetColored = true;
-    else
+    if unitframe.healthBar.highPrioColored then
         unitframe.healthBar.currentTargetColored = nil;
+    else
+        if DB.CURRENT_TARGET_COLOR_ENABLED and unitframe.data.isTarget then
+            local color = DB.CURRENT_TARGET_USE_CLASS_COLOR and DB.CURRENT_TARGET_CLASS_COLOR or DB.CURRENT_TARGET_COLOR;
+            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+            if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+            end
+
+            unitframe.healthBar.currentTargetColored = true;
+        elseif DB.CURRENT_FOCUS_COLOR_ENABLED and unitframe.data.isFocus then
+            local color = DB.CURRENT_FOCUS_USE_CLASS_COLOR and DB.CURRENT_FOCUS_CLASS_COLOR or DB.CURRENT_FOCUS_COLOR;
+            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+            if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+            end
+
+            unitframe.healthBar.currentTargetColored = true;
+        else
+            unitframe.healthBar.currentTargetColored = nil;
+        end
     end
 end
 
 --[[
     Coloring prio:
+    0) Threat High
     1) Current target
     2) Custom
     3) Raid target
@@ -521,16 +534,13 @@ function Module.UpdateHealthBar(unitframe)
         return;
     end
 
-    if Threat_HighPrioCheck(unitframe) then
-        return;
-    end
-
+    Threat_HighPrioColor(unitframe);
     UpdateCurrentTargetColor(unitframe);
     UpdateCustomHealthBarColor(unitframe);
     UpdateRaidTargetColor(unitframe);
     UpdateAuraColor(unitframe);
 
-    if unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored or unitframe.healthBar.auraColored then
+    if unitframe.healthBar.highPrioColored or unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored or unitframe.healthBar.auraColored then
         if DB.EXECUTION_ENABLED and (unitframe.data.healthPer <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= DB.EXECUTION_HIGH_PERCENT)) then
             Execution_Start(unitframe, true);
         else
@@ -789,11 +799,13 @@ function Module:UnitAdded(unitframe)
 end
 
 function Module:UnitRemoved(unitframe)
-    unitframe.data.auraColored = nil;
-    unitframe.data.raidIndex = nil;
-    unitframe.healthBar.customColored = nil;
-    unitframe.healthBar.raidTargetColored = nil;
+    unitframe.healthBar.auraColored          = nil;
+    unitframe.healthBar.customColored        = nil;
+    unitframe.healthBar.raidTargetColored    = nil;
     unitframe.healthBar.currentTargetColored = nil;
+    unitframe.healthBar.highPrioColored      = nil;
+
+    unitframe.data.raidIndex    = nil;
     unitframe.data.tpNeedUpdate = nil;
 end
 
@@ -817,6 +829,47 @@ function Module:Update(unitframe)
 
     if unitframe.data.tpNeedUpdate then
         Threat_UpdatePercentage(unitframe);
+    end
+end
+
+function Module:PLAYER_LOGIN()
+    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+end
+
+function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
+    if unit ~= PLAYER_UNIT then
+        return;
+    end
+
+    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+end
+
+function Module:ROLE_CHANGED_INFORM(changedName, _, _, newRole)
+    if changedName ~= D.Player.Name then
+        return;
+    end
+
+    PLAYER_IS_TANK = newRole == 'TANK';
+end
+
+function Module:PLAYER_ROLES_ASSIGNED()
+    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+end
+
+function Module:RAID_TARGET_UPDATE()
+    for _, unitframe in pairs(NP) do
+        if unitframe.isActive and unitframe:IsShown() then
+            UpdateRaidTargetColor(unitframe);
+        end
+    end
+end
+
+function Module:PLAYER_FOCUS_CHANGED()
+    for _, unitframe in pairs(NP) do
+        if unitframe.isActive and unitframe:IsShown() then
+            UpdateTexture(unitframe);
+            Module.UpdateHealthBar(unitframe);
+        end
     end
 end
 
@@ -1012,47 +1065,6 @@ function Module:UpdateLocalConfig()
     DB.HEALTH_BAR_BACKGROUND_COLOR[4] = O.db.health_bar_background_color[4] or 1;
 
     DB.HEALTH_BAR_COLOR_CLASS_USE = O.db.health_bar_color_class_use;
-end
-
-function Module:PLAYER_LOGIN()
-    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
-end
-
-function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
-    if unit ~= PLAYER_UNIT then
-        return;
-    end
-
-    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
-end
-
-function Module:ROLE_CHANGED_INFORM(changedName, _, _, newRole)
-    if changedName ~= D.Player.Name then
-        return;
-    end
-
-    PLAYER_IS_TANK = newRole == 'TANK';
-end
-
-function Module:PLAYER_ROLES_ASSIGNED()
-    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
-end
-
-function Module:RAID_TARGET_UPDATE()
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe:IsShown() then
-            UpdateRaidTargetColor(unitframe);
-        end
-    end
-end
-
-function Module:PLAYER_FOCUS_CHANGED()
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe:IsShown() then
-            UpdateTexture(unitframe);
-            Module.UpdateHealthBar(unitframe);
-        end
-    end
 end
 
 function Module:StartUp()
