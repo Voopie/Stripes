@@ -1,12 +1,10 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('StealthDetect');
 
--- Lua API
-local select = select;
+-- Stripes API
+local UnitHasAura = U.UnitHasAura;
 
--- WoW API
-local UnitAura = UnitAura;
-
+-- Libraries
 local LCG = S.Libraries.LCG;
 local LCG_PixelGlow_Start = LCG.PixelGlow_Start;
 local LCG_SUFFIX = 'S_STEALTHDETECT';
@@ -24,7 +22,6 @@ local GLOW_COLOR = { 0.64, 0.24, 0.94 };
 
 local stealthed;
 
-local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local FILTER = 'HELPFUL';
 
 local auras = {
@@ -118,24 +115,6 @@ local units = {
     [173051] = true, -- Suppressor Xelors
 };
 
-local function FindAura(unit)
-    local spellId;
-
-    for i = 1, BUFF_MAX_DISPLAY do
-        spellId = select(10, UnitAura(unit, i, FILTER));
-
-        if not spellId then
-            return false;
-        end
-
-        if auras[spellId] then
-            return true;
-        end
-    end
-
-    return false;
-end
-
 local function Create(unitframe)
     if unitframe.StealthDetect then
         return;
@@ -176,7 +155,7 @@ local function Update(unitframe)
             if units[unitframe.data.npcId] then
                 found = true;
             else
-                found = FindAura(unitframe.data.unit);
+                found = UnitHasAura(unitframe.data.unit, FILTER, auras);
             end
 
             if ALWAYS then

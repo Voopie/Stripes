@@ -5,9 +5,10 @@ local Module = S:NewNameplateModule('SpellInterrupted');
 local pairs = pairs;
 
 -- WoW API
-local UnitName, UnitAura, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture = UnitName, UnitAura, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture;
+local UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture = UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture;
 
 -- Stripes API
+local UnitHasAura = U.UnitHasAura;
 local U_GetClassColor = U.GetClassColor;
 local GetUnitColor = U.GetUnitColor;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
@@ -116,36 +117,18 @@ local function Update(unitframe)
     end
 end
 
-local function FindAura(unit)
-    local _, spellId, texture, duration, expirationTime, source;
-
-    for i = 1, BUFF_MAX_DISPLAY do
-        _, texture, _, _, duration, expirationTime, source, _, _, spellId = UnitAura(unit, i, 'HARMFUL');
-
-        if not spellId then
-            return false;
-        end
-
-        if auras[spellId] then
-            return texture, duration, expirationTime, source;
-        end
-    end
-
-    return false;
-end
-
 local function UpdateByAura(unitframe)
     if not ENABLED then
         return;
     end
 
-    local texture, duration, expirationTime, source = FindAura(unitframe.data.unit);
+    local _, icon, _, _, duration, expirationTime, source = UnitHasAura(unitframe.data.unit, 'HARMFUL', auras);
 
-    if not texture then
+    if not icon then
         return;
     end
 
-    unitframe.SpellInterrupted.icon:SetTexture(texture);
+    unitframe.SpellInterrupted.icon:SetTexture(icon);
     CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, expirationTime - duration, duration, duration > 0, true);
 
     unitframe.SpellInterrupted.expTime  = expirationTime;
