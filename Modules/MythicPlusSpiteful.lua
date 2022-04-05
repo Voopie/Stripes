@@ -5,12 +5,8 @@ local Stripes = S:GetNameplateModule('Handler');
 -- WoW API
 local UnitName = UnitName;
 
--- Libraires
-local LCG = S.Libraries.LCG;
-local LCG_ButtonGlow_Start, LCG_ButtonGlow_Stop = LCG.ButtonGlow_Start, LCG.ButtonGlow_Stop;
-
 -- Local config
-local ENABLED, ONLY_ON_ME, GLOW, GLOW_COLOR;
+local ENABLED, ONLY_ON_ME;
 
 local PlayerData = D.Player;
 
@@ -50,29 +46,11 @@ local function Update(unitframe)
     if unitframe:IsShown() then
         if ENABLED and unitframe.data.npcId == SPITEFUL_NPC_ID then
             if ONLY_ON_ME then
-                if unitframe.data.targetName == PlayerData.Name then
-                    if GLOW then
-                        LCG_ButtonGlow_Start(unitframe.Spiteful, GLOW_COLOR);
-                    else
-                        LCG_ButtonGlow_Stop(unitframe.Spiteful);
-                    end
-
-                    unitframe.Spiteful:SetShown(true);
-                else
-                    LCG_ButtonGlow_Stop(unitframe.Spiteful);
-                    unitframe.Spiteful:SetShown(false);
-                end
+                unitframe.Spiteful:SetShown(unitframe.data.targetName == PlayerData.Name);
             else
-                if GLOW then
-                    LCG_ButtonGlow_Start(unitframe.Spiteful, GLOW_COLOR);
-                else
-                    LCG_ButtonGlow_Stop(unitframe.Spiteful);
-                end
-
                 unitframe.Spiteful:SetShown(true);
             end
         else
-            LCG_ButtonGlow_Stop(unitframe.Spiteful);
             unitframe.Spiteful:SetShown(false);
         end
     end
@@ -97,7 +75,6 @@ end
 
 local function Reset(unitframe)
     if unitframe.Spiteful then
-        LCG_ButtonGlow_Stop(unitframe.Spiteful);
         unitframe.Spiteful:SetShown(false);
     end
 end
@@ -118,12 +95,6 @@ end
 function Module:UpdateLocalConfig()
     ENABLED    = O.db.spiteful_enabled;
     ONLY_ON_ME = O.db.spiteful_show_only_on_me;
-    GLOW       = O.db.spiteful_glow;
-    GLOW_COLOR    = GLOW_COLOR or {};
-    GLOW_COLOR[1] = O.db.spiteful_glow_color[1];
-    GLOW_COLOR[2] = O.db.spiteful_glow_color[2];
-    GLOW_COLOR[3] = O.db.spiteful_glow_color[3];
-    GLOW_COLOR[4] = O.db.spiteful_glow_color[4] or 1;
 
     if ENABLED then
         Stripes.Updater:Add('MythicPlusSpiteful', OnUpdate);

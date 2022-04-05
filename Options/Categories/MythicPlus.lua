@@ -217,33 +217,6 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.spiteful_glow = E.CreateCheckButton(self);
-    self.spiteful_glow:SetPosition('LEFT', self.spiteful_show_only_on_me.Label, 'RIGHT', 12, 0);
-    self.spiteful_glow:SetLabel(L['OPTIONS_SPITEFUL_GLOW']);
-    self.spiteful_glow:SetTooltip(L['OPTIONS_SPITEFUL_GLOW_TOOLTIP']);
-    self.spiteful_glow:AddToSearch(button, L['OPTIONS_SPITEFUL_GLOW_TOOLTIP']);
-    self.spiteful_glow:SetChecked(O.db.spiteful_glow);
-    self.spiteful_glow:SetEnabled(O.db.spiteful_enabled);
-    self.spiteful_glow.Callback = function(self)
-        O.db.spiteful_glow = self:GetChecked();
-        Stripes:UpdateAll();
-    end
-
-    self.spiteful_glow_color = E.CreateColorPicker(self);
-    self.spiteful_glow_color:SetPosition('LEFT', self.spiteful_glow.Label, 'RIGHT', 12, 0);
-    self.spiteful_glow_color:SetTooltip(L['OPTIONS_SPITEFUL_GLOW_COLOR_TOOLTIP']);
-    self.spiteful_glow_color:AddToSearch(button, L['OPTIONS_SPITEFUL_GLOW_COLOR_TOOLTIP']);
-    self.spiteful_glow_color:SetValue(unpack(O.db.spiteful_glow_color));
-    self.spiteful_glow_color:SetEnabled(O.db.spiteful_enabled);
-    self.spiteful_glow_color.OnValueChanged = function(_, r, g, b, a)
-        O.db.spiteful_glow_color[1] = r;
-        O.db.spiteful_glow_color[2] = g;
-        O.db.spiteful_glow_color[3] = b;
-        O.db.spiteful_glow_color[4] = a or 1;
-
-        Stripes:UpdateAll();
-    end
-
     self.mythic_plus_questunwatch_enabled = E.CreateCheckButton(self);
     self.mythic_plus_questunwatch_enabled:SetPosition('TOPLEFT', self.spiteful_enabled, 'BOTTOMLEFT', 0, -8);
     self.mythic_plus_questunwatch_enabled:SetLabel(L['OPTIONS_MYTHIC_PLUS_QUESTUNWATCH_ENABLED']);
