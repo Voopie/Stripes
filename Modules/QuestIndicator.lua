@@ -265,6 +265,12 @@ function Module:UnitAdded(unitframe)
     UpdateStyle(unitframe);
 end
 
+function Module:UnitRemoved(unitframe)
+    if unitframe.QuestIndicator then
+        unitframe.QuestIndicator:Hide();
+    end
+end
+
 function Module:Update(unitframe)
     Update(unitframe);
     UpdateStyle(unitframe);
