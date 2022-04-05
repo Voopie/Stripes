@@ -42,7 +42,7 @@ panel.Load = function(self)
     self.heartTexture:SetAllPoints();
     self.heartTexture:SetTexture(S.Media.Icons64.TEXTURE);
     self.heartTexture:SetTexCoord(unpack(S.Media.Icons64.COORDS.HEART_WHITE));
-    self.heartTexture:SetVertexColor(1, 0.13, 0.31);
+    self.heartTexture:SetVertexColor(D.Player.ClassColor:GetRGB());
 
     local animation = self.heart:CreateAnimationGroup();
 
