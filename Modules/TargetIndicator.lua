@@ -150,7 +150,7 @@ local function UpdateMouseoverUnit()
     end
 
     for _, unitframe in pairs(NP) do
-        if not unitframe.data.isTarget and unitframe.data.unitType ~= 'SELF' then
+        if unitframe:IsShown() and not unitframe.data.isTarget and unitframe.data.unitType ~= 'SELF' then
             if MouseOnUnit(unitframe) then
                 Glow_Show(unitframe);
             else
