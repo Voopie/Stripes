@@ -212,7 +212,9 @@ local function UpdateQuestLogIndexCache()
     end
 
     for _, unitframe in pairs(NP) do
-        Update(unitframe, unitframe.data.unit);
+        if unitframe.isActive and unitframe:IsShown() then
+            Update(unitframe, unitframe.data.unit);
+        end
     end
 end
 
@@ -221,7 +223,9 @@ local function UnitQuestLogChanged(unit)
         UpdateQuestLogIndexCache();
     else
         for _, unitframe in pairs(NP) do
-            Update(unitframe);
+            if unitframe.isActive and unitframe:IsShown() then
+                Update(unitframe);
+            end
         end
     end
 end
