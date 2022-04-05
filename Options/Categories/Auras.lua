@@ -235,18 +235,7 @@ local function CreateCustomAuraRow(frame)
     frame.IdText:SetPoint('LEFT', frame.Icon, 'RIGHT', 10, 0);
     frame.IdText:SetSize(60, ROW_HEIGHT);
     frame.IdText:SetTextColor(0.67, 0.67, 0.67);
-    hooksecurefunc(frame.IdText, 'SetText', function(self, text)
-        local fontValue, fontSize, fontOutline = self:GetFont();
-
-        if fontSize == 3 then
-            return;
-        end
-
-        if self:IsTruncated() then
-            self:SetFont(fontValue, math.max(3, fontSize - 0.25), fontOutline);
-            self:SetText(text);
-        end
-    end);
+    U.MakeAutoFontSize(frame.IdText);
 
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.IdText, 'RIGHT', 2, 0);
@@ -467,18 +456,7 @@ local function CreateBlackListRow(frame)
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
     frame.NameText:SetSize(150, ROW_HEIGHT);
-    hooksecurefunc(frame.NameText, 'SetText', function(self, text)
-        local fontValue, fontSize, fontOutline = self:GetFont();
-
-        if fontSize == 3 then
-            return;
-        end
-
-        if self:IsTruncated() then
-            self:SetFont(fontValue, math.max(3, fontSize - 0.25), fontOutline);
-            self:SetText(text);
-        end
-    end);
+    U.MakeAutoFontSize(frame.NameText);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
     frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
@@ -652,18 +630,7 @@ local function CreateWhiteListRow(frame)
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
     frame.NameText:SetSize(150, ROW_HEIGHT);
-    hooksecurefunc(frame.NameText, 'SetText', function(self, text)
-        local fontValue, fontSize, fontOutline = self:GetFont();
-
-        if fontSize == 3 then
-            return;
-        end
-
-        if self:IsTruncated() then
-            self:SetFont(fontValue, math.max(3, fontSize - 0.25), fontOutline);
-            self:SetText(text);
-        end
-    end);
+    U.MakeAutoFontSize(frame.NameText);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
     frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
@@ -838,18 +805,7 @@ local function CreateHPBarColorRow(frame)
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
     frame.NameText:SetSize(120, ROW_HEIGHT);
-    hooksecurefunc(frame.NameText, 'SetText', function(self, text)
-        local fontValue, fontSize, fontOutline = self:GetFont();
-
-        if fontSize == 3 then
-            return;
-        end
-
-        if self:IsTruncated() then
-            self:SetFont(fontValue, math.max(3, fontSize - 0.25), fontOutline);
-            self:SetText(text);
-        end
-    end);
+    U.MakeAutoFontSize(frame.NameText);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
     frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
