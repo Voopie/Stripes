@@ -16,6 +16,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 -- Libraries
 local LCG = S.Libraries.LCG;
 local LCG_PixelGlow_Start, LCG_PixelGlow_Stop = LCG.PixelGlow_Start, LCG.PixelGlow_Stop;
+local LCG_AutoCastGlow_Start, LCG_AutoCastGlow_Stop, LCG_ButtonGlow_Start, LCG_ButtonGlow_Stop = LCG.AutoCastGlow_Start, LCG.AutoCastGlow_Stop, LCG.ButtonGlow_Start, LCG.ButtonGlow_Stop;
 
 local LSM = S.Libraries.LSM;
 local LSM_MEDIATYPE_STATUSBAR = LSM.MediaType.STATUSBAR;
@@ -184,9 +185,9 @@ local function UpdateCustomHealthBarColor(unitframe)
     if unitframe.healthBar.highPrioColored or unitframe.healthBar.currentTargetColored then
         unitframe.healthBar.customColored = nil;
     else
-        LCG.PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
-        LCG.AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
-        LCG.ButtonGlow_Stop(unitframe.healthBar);
+        LCG_PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
+        LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
+        LCG_ButtonGlow_Stop(unitframe.healthBar);
 
         if DB.CUSTOM_HP_ENABLED and DB.CUSTOM_HP_DATA[unitframe.data.npcId] and DB.CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
             if DB.CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled then
@@ -204,11 +205,11 @@ local function UpdateCustomHealthBarColor(unitframe)
 
             if DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_enabled then
                 if DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 1 then
-                    LCG.PixelGlow_Start(unitframe.healthBar, Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
+                    LCG_PixelGlow_Start(unitframe.healthBar, Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
                 elseif DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 2 then
-                    LCG.AutoCastGlow_Start(unitframe.healthBar, Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
+                    LCG_AutoCastGlow_Start(unitframe.healthBar, Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
                 elseif DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 3 then
-                    LCG.ButtonGlow_Start(unitframe.healthBar);
+                    LCG_ButtonGlow_Start(unitframe.healthBar);
                 end
             end
         else
@@ -807,6 +808,12 @@ function Module:UnitRemoved(unitframe)
 
     unitframe.data.raidIndex    = nil;
     unitframe.data.tpNeedUpdate = nil;
+
+    LCG_PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
+    LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
+    LCG_ButtonGlow_Stop(unitframe.healthBar);
+
+    LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
 end
 
 function Module:UnitAura(unitframe)
