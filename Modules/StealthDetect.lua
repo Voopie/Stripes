@@ -194,7 +194,9 @@ end
 
 function Module:UpdateAll()
     for _, unitframe in pairs(NP) do
-        Update(unitframe);
+        if unitframe.isActive and unitframe:IsShown() then
+            Update(unitframe);
+        end
     end
 end
 
