@@ -11,10 +11,8 @@ local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType
 local UnitInGuild = U.UnitInGuild;
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
 
-local UNKNOWN = UNKNOWN;
-
 -- Stripes API
-local GetNpcIDByGUID, GetUnitLevel, GetUnitColor, GetNpcSubLabelByID = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor, U.GetNpcSubLabelByID;
+local GetNpcIDByGUID, GetUnitLevel, GetUnitColor = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor;
 
 -- Libraries
 local LSM = S.Libraries.LSM;
@@ -44,7 +42,6 @@ local NAME_ONLY_FRIENDLY_UNIT_TYPES = {
     ['FRIENDLY_PLAYER'] = true,
     ['FRIENDLY_NPC']    = true,
 };
-
 
 -- Updater
 Stripes.Updater = CreateFrame('Frame');
