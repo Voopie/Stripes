@@ -629,14 +629,18 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
 
     if NP[nameplate].data.widgetsOnly then
         NP[nameplate].data.previousType = nil;
-        NP[nameplate].isActive = false;
-        ResetNameplateData(NP[nameplate]);
-        S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
     else
         NP[nameplate].data.previousType = NP[nameplate].data.unitType;
         NP[nameplate]:UnregisterEvent('UNIT_AURA');
-        NP[nameplate].isActive = true;
-        S:ForAllNameplateModules('UnitAdded', NP[nameplate]);
+    end
+
+    NP[nameplate].isActive = true;
+    S:ForAllNameplateModules('UnitAdded', NP[nameplate]);
+
+    if NP[nameplate].data.widgetsOnly then
+        NP[nameplate].isActive = false;
+        ResetNameplateData(NP[nameplate]);
+        S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
     end
 end
 
