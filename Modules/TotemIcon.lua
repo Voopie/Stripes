@@ -54,7 +54,9 @@ local function Update(unitframe)
 end
 
 local function Hide(unitframe)
-    unitframe.TotemIcon:SetShown(false);
+    if unitframe.TotemIcon then
+        unitframe.TotemIcon:SetShown(false);
+    end
 end
 
 function Module:UnitAdded(unitframe)
