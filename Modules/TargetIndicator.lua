@@ -105,7 +105,7 @@ local function CreateTargetIndicator(unitframe)
     indicator.right:SetTexCoord(1, 0, 0, 1); -- Hor flip
     indicator.right:Hide();
 
-    indicator.glowUp = indicator:CreateTexture(nil, 'BACKGROUND');
+    indicator.glowUp = indicator:CreateTexture(nil, 'BORDER');
     PixelUtil.SetPoint(indicator.glowUp, 'TOPLEFT', unitframe.healthBar, 'TOPLEFT', 0, 6);
     PixelUtil.SetPoint(indicator.glowUp, 'TOPRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, 6);
     PixelUtil.SetHeight(indicator.glowUp, 6);
@@ -113,7 +113,7 @@ local function CreateTargetIndicator(unitframe)
     indicator.glowUp:SetRotation(math_rad(180));
     indicator.glowUp:Hide();
 
-    indicator.glowDown = indicator:CreateTexture(nil, 'BACKGROUND');
+    indicator.glowDown = indicator:CreateTexture(nil, 'BORDER');
     PixelUtil.SetPoint(indicator.glowDown, 'TOPLEFT', unitframe.healthBar, 'BOTTOMLEFT', 0, 0);
     PixelUtil.SetPoint(indicator.glowDown, 'TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', 0, 0);
     PixelUtil.SetHeight(indicator.glowDown, 6);
