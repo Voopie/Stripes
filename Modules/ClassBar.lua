@@ -3,8 +3,13 @@ local Module = S:NewNameplateModule('ClassBar');
 
 -- Local config
 local SCALE, OFFSET_X, OFFSET_Y;
+local SHOW_ON_TARGET;
 
 local function UpdatePosition(unitframe)
+    if not SHOW_ON_TARGET then
+        return;
+    end
+
     if not NamePlateDriverFrame.classNamePlateMechanicFrame then
         return;
     end
@@ -16,7 +21,7 @@ local function UpdatePosition(unitframe)
         end
     else
         NamePlateDriverFrame.classNamePlateMechanicFrame:ClearAllPoints();
-        PixelUtil.SetPoint(NamePlateDriverFrame.classNamePlateMechanicFrame, 'BOTTOM', unitframe, 'TOP', OFFSET_X, 4 + OFFSET_Y);
+        PixelUtil.SetPoint(NamePlateDriverFrame.classNamePlateMechanicFrame, 'BOTTOM', unitframe.name, 'TOP', OFFSET_X, 14 + OFFSET_Y); -- Don't ask me why 14
     end
 end
 
@@ -38,6 +43,8 @@ function Module:UpdateLocalConfig()
     SCALE    = O.db.class_bar_scale;
     OFFSET_X = O.db.class_bar_offset_x;
     OFFSET_Y = O.db.class_bar_offset_y;
+
+    SHOW_ON_TARGET = O.db.show_personal_resource_ontarget;
 
     UpdateScale();
 end
