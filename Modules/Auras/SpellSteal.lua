@@ -37,7 +37,6 @@ local StripesAurasSpellStealCountFont    = CreateFont('StripesAurasSpellStealCou
 
 local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HELPFUL';
-local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 
 local MAX_OFFSET_Y = -9;
 
@@ -64,8 +63,7 @@ local function UpdateAnchor(unitframe)
             if STATIC_POSITION then
                 PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
             else
-                local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
-                local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
+                local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
                 PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             end
         else

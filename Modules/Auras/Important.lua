@@ -43,7 +43,6 @@ local StripesAurasImportantCasterFont   = CreateFont('StripesAurasImportantCaste
 local MAX_OFFSET_Y = -9;
 local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HARMFUL';
-local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 
 local additionalAuras = {
     -- Druid
@@ -85,8 +84,7 @@ local function UpdateAnchor(unitframe)
         unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.BuffFrame, 'TOPLEFT', OFFSET_X, 4 + (SQUARE and 6 or 0) + OFFSET_Y);
     else
         if ShouldShowName(unitframe) then
-            local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
-            local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
+            local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
             unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
         else
             local offset = unitframe.BuffFrame:GetBaseYOffset() + (UnitIsUnit(unitframe.data.unit, 'target') and unitframe.BuffFrame:GetTargetYOffset() or 0.0);

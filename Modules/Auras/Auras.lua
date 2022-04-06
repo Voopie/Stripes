@@ -6,7 +6,7 @@ local Stripes = S:GetNameplateModule('Handler');
 local ipairs, tonumber, math_max, table_wipe, table_sort, bit_band = ipairs, tonumber, math.max, wipe, table.sort, bit.band;
 
 -- Wow API
-local UnitIsUnit, GetCVarBool, CooldownFrame_Set, AuraUtil_ForEachAura, AuraUtil_ShouldSkipAuraUpdate = UnitIsUnit, GetCVarBool, CooldownFrame_Set, AuraUtil.ForEachAura, AuraUtil.ShouldSkipAuraUpdate;
+local UnitIsUnit, CooldownFrame_Set, AuraUtil_ForEachAura, AuraUtil_ShouldSkipAuraUpdate = UnitIsUnit, CooldownFrame_Set, AuraUtil.ForEachAura, AuraUtil.ShouldSkipAuraUpdate;
 
 -- Stripes API
 local ShouldShowName   = S:GetNameplateModule('Handler').ShouldShowName;
@@ -38,7 +38,6 @@ local SHOW_DEBUFFS_ON_FRIENDLY;
 
 local DebuffTypeColor = DebuffTypeColor;
 
-local CVAR_RESOURCE_ON_TARGET = 'nameplateResourceOnTarget';
 local MAX_OFFSET_Y = -9;
 local PANDEMIC_PERCENT = 30;
 local UPDATE_INTERVAL = 0.33;
@@ -165,8 +164,7 @@ local function UpdateAnchor(self)
     self:ClearAllPoints();
 
     if unit and ShouldShowName(self:GetParent()) then
-        local showMechanicOnTarget = GetCVarBool(CVAR_RESOURCE_ON_TARGET) and 10 or 0;
-        local offset = NAME_TEXT_POSITION_V == 1 and (self:GetParent().name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y) + showMechanicOnTarget) or showMechanicOnTarget;
+        local offset = NAME_TEXT_POSITION_V == 1 and (self:GetParent().name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
         PixelUtil.SetPoint(self, 'BOTTOM', self:GetParent().healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     else
         local offset = self:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and self:GetTargetYOffset() or 0.0);
