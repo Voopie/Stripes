@@ -650,7 +650,6 @@ L['OPTIONS_VISIBILITY_TAB_COMMON'] = 'General';
 L['OPTIONS_VISIBILITY_TAB_ENEMY'] = 'Enemy';
 L['OPTIONS_VISIBILITY_TAB_FRIENDLY'] = 'Friendly';
 L['OPTIONS_VISIBILITY_TAB_SELF'] = 'Self';
-L['OPTIONS_VISIBILITY_TAB_CLASS_BAR'] = 'Class bar';
 L['OPTIONS_VISIBILITY_MOTION'] = 'Motion type';
 L['OPTIONS_VISIBILITY_MOTION_TOOLTIP'] = 'Nameplate motion type';
 L['OPTIONS_VISIBILITY_MOTION_SPEED_TOOLTIP'] = 'The speed of placing namplates on their positions|n|n|cffff6666It is not recommended to set a high value!|r';

@@ -22,10 +22,6 @@ panel.TabsData = {
         name  = 'SelfTab',
         title = string.upper(L['OPTIONS_VISIBILITY_TAB_SELF']),
     },
-    [5] = {
-        name  = 'ClassBarTab',
-        title = string.upper(L['OPTIONS_VISIBILITY_TAB_CLASS_BAR']),
-    },
 };
 
 panel.Load = function(self)
@@ -247,6 +243,46 @@ panel.Load = function(self)
 
         C_CVar.SetCVar('nameplateResourceOnTarget', O.db.show_personal_resource_ontarget and 1 or 0);
     end
+
+    self.class_bar_scale = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.class_bar_scale:SetPosition('LEFT', self.show_personal_resource_ontarget.Label, 'RIGHT', 16, 0);
+    self.class_bar_scale:SetW(140);
+    self.class_bar_scale:SetValues(O.db.class_bar_scale, 0.25, 3, 0.05);
+    self.class_bar_scale:SetLabel(L['SCALE']);
+    self.class_bar_scale:SetLabelPosition('LEFT');
+    self.class_bar_scale:SetTooltip(L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP']);
+    self.class_bar_scale:AddToSearch(button, L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP'], self.Tabs[1]);
+    self.class_bar_scale.OnValueChangedCallback = function(_, value)
+        O.db.class_bar_scale = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.class_bar_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.class_bar_offset_x:SetSize(120, 18);
+    self.class_bar_offset_x:SetValues(O.db.class_bar_offset_x, -50, 50, 1);
+    self.class_bar_offset_x:SetLabel(L['OFFSET_X']);
+    self.class_bar_offset_x:SetTooltip(L['OPTIONS_CLASS_BAR_OFFSET_X_TOOLTIP']);
+    self.class_bar_offset_x.OnValueChangedCallback = function(_, value)
+        O.db.class_bar_offset_x = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.class_bar_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.class_bar_offset_y:SetSize(120, 18);
+    self.class_bar_offset_y:SetValues(O.db.class_bar_offset_y, -50, 50, 1);
+    self.class_bar_offset_y:SetLabel(L['OFFSET_Y']);
+    self.class_bar_offset_y:SetTooltip(L['OPTIONS_CLASS_BAR_OFFSET_Y_TOOLTIP']);
+    self.class_bar_offset_y.OnValueChangedCallback = function(_, value)
+        O.db.class_bar_offset_y = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.ClassBarPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.ClassBarPositionOptions:SetH(60);
+    self.ClassBarPositionOptions:Add(self.class_bar_offset_x):SetPosition('TOPLEFT', self.ClassBarPositionOptions, 'TOPLEFT', 12, -26);
+    self.ClassBarPositionOptions:Add(self.class_bar_offset_y):SetPosition('LEFT', self.class_bar_offset_x, 'RIGHT', 12, 0);
+    self.ClassBarPositionOptions.OpenButton:SetPosition('LEFT', self.class_bar_scale, 'RIGHT', 16, 0);
+    self.ClassBarPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['CommonTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.show_personal_resource_ontarget, 'BOTTOMLEFT', 0, -4);
@@ -935,50 +971,4 @@ panel.Load = function(self)
 
         Stripes:UpdateAll();
     end
-
-    ------------------------------------------------------------------------------------------------------------------------------------
-    ------------------------------------------------------------------------------------------------------------------------------------
-    -- Class bar Tab -------------------------------------------------------------------------------------------------------------------
-    ------------------------------------------------------------------------------------------------------------------------------------
-    ------------------------------------------------------------------------------------------------------------------------------------
-
-    self.class_bar_scale = E.CreateSlider(self.TabsFrames['ClassBarTab'].Content);
-    self.class_bar_scale:SetPosition('TOPLEFT', self.TabsFrames['ClassBarTab'].Content, 'TOPLEFT', 0, -8);
-    self.class_bar_scale:SetW(140);
-    self.class_bar_scale:SetValues(O.db.class_bar_scale, 0.25, 3, 0.05);
-    self.class_bar_scale:SetLabel(L['SCALE']);
-    self.class_bar_scale:SetLabelPosition('LEFT');
-    self.class_bar_scale:SetTooltip(L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP']);
-    self.class_bar_scale:AddToSearch(button, L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP'], self.Tabs[5]);
-    self.class_bar_scale.OnValueChangedCallback = function(_, value)
-        O.db.class_bar_scale = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.class_bar_offset_x = E.CreateSlider(self.TabsFrames['ClassBarTab'].Content);
-    self.class_bar_offset_x:SetSize(120, 18);
-    self.class_bar_offset_x:SetValues(O.db.class_bar_offset_x, -50, 50, 1);
-    self.class_bar_offset_x:SetLabel(L['OFFSET_X']);
-    self.class_bar_offset_x:SetTooltip(L['OPTIONS_CLASS_BAR_OFFSET_X_TOOLTIP']);
-    self.class_bar_offset_x.OnValueChangedCallback = function(_, value)
-        O.db.class_bar_offset_x = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.class_bar_offset_y = E.CreateSlider(self.TabsFrames['ClassBarTab'].Content);
-    self.class_bar_offset_y:SetSize(120, 18);
-    self.class_bar_offset_y:SetValues(O.db.class_bar_offset_y, -50, 50, 1);
-    self.class_bar_offset_y:SetLabel(L['OFFSET_Y']);
-    self.class_bar_offset_y:SetTooltip(L['OPTIONS_CLASS_BAR_OFFSET_Y_TOOLTIP']);
-    self.class_bar_offset_y.OnValueChangedCallback = function(_, value)
-        O.db.class_bar_offset_y = tonumber(value);
-        Stripes:UpdateAll();
-    end
-
-    self.ClassBarPositionOptions = E.CreatePopOptions(self.TabsFrames['ClassBarTab'].Content);
-    self.ClassBarPositionOptions:SetH(60);
-    self.ClassBarPositionOptions:Add(self.class_bar_offset_x):SetPosition('TOPLEFT', self.ClassBarPositionOptions, 'TOPLEFT', 12, -26);
-    self.ClassBarPositionOptions:Add(self.class_bar_offset_y):SetPosition('LEFT', self.class_bar_offset_x, 'RIGHT', 12, 0);
-    self.ClassBarPositionOptions.OpenButton:SetPosition('LEFT', self.class_bar_scale, 'RIGHT', 16, 0);
-    self.ClassBarPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 end

@@ -650,7 +650,6 @@ L['OPTIONS_VISIBILITY_TAB_COMMON'] = 'Основное';
 L['OPTIONS_VISIBILITY_TAB_ENEMY'] = 'Враждебные';
 L['OPTIONS_VISIBILITY_TAB_FRIENDLY'] = 'Дружественные';
 L['OPTIONS_VISIBILITY_TAB_SELF'] = 'Свой';
-L['OPTIONS_VISIBILITY_TAB_CLASS_BAR'] = 'Классовый ресурс';
 L['OPTIONS_VISIBILITY_MOTION'] = 'Размещение';
 L['OPTIONS_VISIBILITY_MOTION_TOOLTIP'] = 'Размещение неймплейтов';
 L['OPTIONS_VISIBILITY_MOTION_SPEED_TOOLTIP'] = 'Скорость размещения неймплейтов по своим позициям|n|n|cffff6666Не рекомендуется ставить высокое значение!|r';
