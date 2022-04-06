@@ -650,6 +650,7 @@ L['OPTIONS_VISIBILITY_TAB_COMMON'] = 'General';
 L['OPTIONS_VISIBILITY_TAB_ENEMY'] = 'Enemy';
 L['OPTIONS_VISIBILITY_TAB_FRIENDLY'] = 'Friendly';
 L['OPTIONS_VISIBILITY_TAB_SELF'] = 'Self';
+L['OPTIONS_VISIBILITY_TAB_CLASS_BAR'] = 'Class bar';
 L['OPTIONS_VISIBILITY_MOTION'] = 'Motion type';
 L['OPTIONS_VISIBILITY_MOTION_TOOLTIP'] = 'Nameplate motion type';
 L['OPTIONS_VISIBILITY_MOTION_SPEED_TOOLTIP'] = 'The speed of placing namplates on their positions|n|n|cffff6666It is not recommended to set a high value!|r';
@@ -753,6 +754,9 @@ L['OPTIONS_CLASSIFICATION_INDICATOR_POINT_TOOLTIP'] = 'Point of attachment of el
 L['OPTIONS_CLASSIFICATION_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'To which point of the health bar attach the elite enemy indicator';
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP'] = 'Horizontal offset of elite enemy indicator';
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of elite enemy indicator';
+L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP'] = 'Class bar scale';
+L['OPTIONS_CLASS_BAR_OFFSET_X_TOOLTIP'] = 'Horizontal offset of the class bar';
+L['OPTIONS_CLASS_BAR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of the class bar';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Percentage';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Enable';

@@ -264,7 +264,7 @@ O.Lists = {
     }
 };
 
--- ~572
+-- ~575
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -589,6 +589,10 @@ O.DefaultValues = {
     show_personal                   = false,
     show_personal_always            = false,
     show_personal_resource_ontarget = C_CVar.GetCVar('nameplateResourceOnTarget') == '1',
+
+    class_bar_scale    = 1,
+    class_bar_offset_x = 0,
+    class_bar_offset_y = 0,
 
     hide_non_casting_enabled              = false,
     hide_non_casting_modifier             = 2, -- CTRL

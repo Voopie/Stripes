@@ -650,6 +650,7 @@ L['OPTIONS_VISIBILITY_TAB_COMMON'] = 'Основное';
 L['OPTIONS_VISIBILITY_TAB_ENEMY'] = 'Враждебные';
 L['OPTIONS_VISIBILITY_TAB_FRIENDLY'] = 'Дружественные';
 L['OPTIONS_VISIBILITY_TAB_SELF'] = 'Свой';
+L['OPTIONS_VISIBILITY_TAB_CLASS_BAR'] = 'Классовый ресурс';
 L['OPTIONS_VISIBILITY_MOTION'] = 'Размещение';
 L['OPTIONS_VISIBILITY_MOTION_TOOLTIP'] = 'Размещение неймплейтов';
 L['OPTIONS_VISIBILITY_MOTION_SPEED_TOOLTIP'] = 'Скорость размещения неймплейтов по своим позициям|n|n|cffff6666Не рекомендуется ставить высокое значение!|r';
@@ -753,6 +754,9 @@ L['OPTIONS_CLASSIFICATION_INDICATOR_POINT_TOOLTIP'] = 'Точка креплен
 L['OPTIONS_CLASSIFICATION_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'К какой точке полосы здоровья прикрепить индикатор элитного противника';
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение индикатора элитного противника';
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение индикатора элитного противника';
+L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP'] = 'Масштаб классового ресурса';
+L['OPTIONS_CLASS_BAR_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение классового ресурса';
+L['OPTIONS_CLASS_BAR_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение классового ресурса';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Проценты';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Включить';

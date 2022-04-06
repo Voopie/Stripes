@@ -10,6 +10,7 @@
     <Script file="LevelText.lua" />
     <Script file="HealthBar.lua" />
     
+    <Script file="ClassBar.lua" />
     <Script file="AbsorbBar.lua" />
     <Script file="FactionIcon.lua" />
     <Script file="ClassIcon.lua" />

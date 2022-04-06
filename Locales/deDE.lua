@@ -650,6 +650,7 @@ L['OPTIONS_VISIBILITY_TAB_COMMON'] = 'Allgemein';
 L['OPTIONS_VISIBILITY_TAB_ENEMY'] = 'Feind';
 L['OPTIONS_VISIBILITY_TAB_FRIENDLY'] = 'Freundlich';
 L['OPTIONS_VISIBILITY_TAB_SELF'] = 'Selbst';
+L['OPTIONS_VISIBILITY_TAB_CLASS_BAR'] = 'Klassenressourcenleiste';
 L['OPTIONS_VISIBILITY_MOTION'] = 'Absprache';
 L['OPTIONS_VISIBILITY_MOTION_TOOLTIP'] = 'Anordnung von Typenschildern';
 L['OPTIONS_VISIBILITY_MOTION_SPEED_TOOLTIP'] = 'Geschwindigkeit der Platzierung von Namensschildern auf ihren Positionen|n|n|cffff6666Es wird nicht empfohlen, einen hohen Wert einzustellen!|r';
@@ -753,6 +754,9 @@ L['OPTIONS_CLASSIFICATION_INDICATOR_POINT_TOOLTIP'] = 'Anbringungsort des Elite-
 L['OPTIONS_CLASSIFICATION_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'An welchem Punkt des Gesundheitsbalkens wird der Elite-Feindindikator angebracht';
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz des Elite-Feind-Anzeigers';
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz des Elite-Feind-Anzeigers';
+L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP'] = 'Skala der Klassenressourcen';
+L['OPTIONS_CLASS_BAR_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz der Klassenressourcenleiste';
+L['OPTIONS_CLASS_BAR_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz der Klassenressourcenleiste';
 
 L['OPTIONS_HEADER_PERCENTAGE'] = 'Prozentsatz';
 L['OPTIONS_MYTHIC_PLUS_PERCENTAGE_ENABLED'] = 'Aktivieren';
