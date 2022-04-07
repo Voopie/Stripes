@@ -1131,4 +1131,4 @@ L['OPTIONS_CATEGORY_ENTER_NAME'] = 'Введите имя и нажмите Ente
 L['OPTIONS_CATEGORY_ALL'] = 'Все';
 L['OPTIONS_CATEGORY_OPEN_TOOLTIP'] = 'Открыть список категорий';
 
-L['OPTIONS_UPDATE_NPCS_NAMES_TOOLTIP'] = 'Обновить имена NPC (полезно, когда вы переключаетесь между регионами игры)';
+L['OPTIONS_UPDATE_NPCS_NAMES_TOOLTIP'] = 'Обновить имена NPC (полезно, когда вы переключаетесь между языками игры)';

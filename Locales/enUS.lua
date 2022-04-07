@@ -1131,4 +1131,4 @@ L['OPTIONS_CATEGORY_ENTER_NAME'] = 'Type a name and press Enter';
 L['OPTIONS_CATEGORY_ALL'] = 'All';
 L['OPTIONS_CATEGORY_OPEN_TOOLTIP'] = 'Open category list';
 
-L['OPTIONS_UPDATE_NPCS_NAMES_TOOLTIP'] = 'Update NPC names (useful when you switch between regions of the game)';
+L['OPTIONS_UPDATE_NPCS_NAMES_TOOLTIP'] = 'Update NPC names (useful when you switch between the languages of the game)';
