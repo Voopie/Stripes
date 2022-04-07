@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('ClassBar');
 
 -- Local config
-local SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
+local ALPHA, SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
 local SHOW_ON_TARGET;
 
 local function UpdatePosition(unitframe)
@@ -27,8 +27,9 @@ local function UpdatePosition(unitframe)
     end
 end
 
-local function UpdateScale()
+local function UpdateAlphaAndScale()
     if NamePlateDriverFrame.classNamePlateMechanicFrame then
+        NamePlateDriverFrame.classNamePlateMechanicFrame:SetAlpha(ALPHA);
         NamePlateDriverFrame.classNamePlateMechanicFrame:SetScale(SCALE);
     end
 end
@@ -42,7 +43,8 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    SCALE    = O.db.class_bar_scale;
+    ALPHA = O.db.class_bar_alpha;
+    SCALE = O.db.class_bar_scale;
 
     POINT          = O.Lists.frame_points[O.db.class_bar_point] or 'BOTTOM';
     RELATIVE_POINT = O.Lists.frame_points[O.db.class_bar_relative_point] or 'TOP';
@@ -51,7 +53,7 @@ function Module:UpdateLocalConfig()
 
     SHOW_ON_TARGET = O.db.show_personal_resource_ontarget;
 
-    UpdateScale();
+    UpdateAlphaAndScale();
 end
 
 function Module:StartUp()

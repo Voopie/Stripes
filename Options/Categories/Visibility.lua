@@ -242,11 +242,26 @@ panel.Load = function(self)
         O.db.show_personal_resource_ontarget = self:GetChecked();
 
         C_CVar.SetCVar('nameplateResourceOnTarget', O.db.show_personal_resource_ontarget and 1 or 0);
+
+        Stripes:UpdateAll();
+    end
+
+    self.class_bar_alpha = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.class_bar_alpha:SetPosition('LEFT', self.show_personal_resource_ontarget.Label, 'RIGHT', 12, 0);
+    self.class_bar_alpha:SetW(100);
+    self.class_bar_alpha:SetValues(O.db.class_bar_alpha, 0, 1, 0.05);
+    self.class_bar_alpha:SetLabel(L['ALPHA']);
+    self.class_bar_alpha:SetLabelPosition('LEFT');
+    self.class_bar_alpha:SetTooltip(L['OPTIONS_CLASS_BAR_ALPHA_TOOLTIP']);
+    self.class_bar_alpha:AddToSearch(button, L['OPTIONS_CLASS_BAR_ALPHA_TOOLTIP'], self.Tabs[1]);
+    self.class_bar_alpha.OnValueChangedCallback = function(_, value)
+        O.db.class_bar_alpha = tonumber(value);
+        Stripes:UpdateAll();
     end
 
     self.class_bar_scale = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.class_bar_scale:SetPosition('LEFT', self.show_personal_resource_ontarget.Label, 'RIGHT', 16, 0);
-    self.class_bar_scale:SetW(140);
+    self.class_bar_scale:SetPosition('LEFT', self.class_bar_alpha, 'RIGHT', 12, 0);
+    self.class_bar_scale:SetW(100);
     self.class_bar_scale:SetValues(O.db.class_bar_scale, 0.25, 3, 0.05);
     self.class_bar_scale:SetLabel(L['SCALE']);
     self.class_bar_scale:SetLabelPosition('LEFT');
