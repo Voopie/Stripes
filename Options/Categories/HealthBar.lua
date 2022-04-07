@@ -787,6 +787,17 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.target_indicator_color_as_class = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.target_indicator_color_as_class:SetPosition('LEFT', self.target_indicator_color, 'RIGHT', 12, 0);
+    self.target_indicator_color_as_class:SetLabel(L['OPTIONS_TARGET_INDICATOR_COLOR_AS_CLASS']);
+    self.target_indicator_color_as_class:SetTooltip(L['OPTIONS_TARGET_INDICATOR_COLOR_AS_CLASS_TOOLTIP']);
+    self.target_indicator_color_as_class:AddToSearch(button, L['OPTIONS_TARGET_INDICATOR_COLOR_AS_CLASS_TOOLTIP'], self.Tabs[3]);
+    self.target_indicator_color_as_class:SetChecked(O.db.target_indicator_color_as_class);
+    self.target_indicator_color_as_class.Callback = function(self)
+        O.db.target_indicator_color_as_class = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.target_indicator_size = E.CreateSlider(self.TabsFrames['TargetIndicatorTab'].Content);
     self.target_indicator_size:SetPosition('TOPLEFT', self.target_indicator_enabled, 'BOTTOMLEFT', 0, -12);
     self.target_indicator_size:SetValues(O.db.target_indicator_size, 1, 64, 1);
@@ -850,6 +861,17 @@ panel.Load = function(self)
         O.db.target_glow_color[3] = b;
         O.db.target_glow_color[4] = a or 1;
 
+        Stripes:UpdateAll();
+    end
+
+    self.target_glow_color_as_class = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.target_glow_color_as_class:SetPosition('LEFT', self.target_glow_color, 'RIGHT', 12, 0);
+    self.target_glow_color_as_class:SetLabel(L['OPTIONS_TARGET_GLOW_COLOR_AS_CLASS']);
+    self.target_glow_color_as_class:SetTooltip(L['OPTIONS_TARGET_GLOW_COLOR_AS_CLASS_TOOLTIP']);
+    self.target_glow_color_as_class:AddToSearch(button, L['OPTIONS_TARGET_GLOW_COLOR_AS_CLASS_TOOLTIP'], self.Tabs[3]);
+    self.target_glow_color_as_class:SetChecked(O.db.target_glow_color_as_class);
+    self.target_glow_color_as_class.Callback = function(self)
+        O.db.target_glow_color_as_class = self:GetChecked();
         Stripes:UpdateAll();
     end
 

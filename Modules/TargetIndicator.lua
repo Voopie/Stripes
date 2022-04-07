@@ -188,16 +188,32 @@ function Module:UpdateLocalConfig()
     TEXTURE  = O.Lists.target_indicator_texture_path[O.db.target_indicator_texture] or O.Lists.target_indicator_texture_path[1];
 
     TARGET_INDICATOR_COLOR = TARGET_INDICATOR_COLOR or {};
-    TARGET_INDICATOR_COLOR[1] = O.db.target_indicator_color[1];
-    TARGET_INDICATOR_COLOR[2] = O.db.target_indicator_color[2];
-    TARGET_INDICATOR_COLOR[3] = O.db.target_indicator_color[3];
-    TARGET_INDICATOR_COLOR[4] = O.db.target_indicator_color[4] or 1;
+
+    if O.db.target_indicator_color_as_class then
+        TARGET_INDICATOR_COLOR[1] = D.Player.ClassColor.r;
+        TARGET_INDICATOR_COLOR[2] = D.Player.ClassColor.g;
+        TARGET_INDICATOR_COLOR[3] = D.Player.ClassColor.b;
+        TARGET_INDICATOR_COLOR[4] = D.Player.ClassColor.a or 1;
+    else
+        TARGET_INDICATOR_COLOR[1] = O.db.target_indicator_color[1];
+        TARGET_INDICATOR_COLOR[2] = O.db.target_indicator_color[2];
+        TARGET_INDICATOR_COLOR[3] = O.db.target_indicator_color[3];
+        TARGET_INDICATOR_COLOR[4] = O.db.target_indicator_color[4] or 1;
+    end
 
     TARGET_GLOW_COLOR = TARGET_GLOW_COLOR or {};
-    TARGET_GLOW_COLOR[1] = O.db.target_glow_color[1];
-    TARGET_GLOW_COLOR[2] = O.db.target_glow_color[2];
-    TARGET_GLOW_COLOR[3] = O.db.target_glow_color[3];
-    TARGET_GLOW_COLOR[4] = O.db.target_glow_color[4] or 1;
+
+    if O.db.target_glow_color_as_class then
+        TARGET_GLOW_COLOR[1] = D.Player.ClassColor.r;
+        TARGET_GLOW_COLOR[2] = D.Player.ClassColor.g;
+        TARGET_GLOW_COLOR[3] = D.Player.ClassColor.b;
+        TARGET_GLOW_COLOR[4] = D.Player.ClassColor.a or 1;
+    else
+        TARGET_GLOW_COLOR[1] = O.db.target_glow_color[1];
+        TARGET_GLOW_COLOR[2] = O.db.target_glow_color[2];
+        TARGET_GLOW_COLOR[3] = O.db.target_glow_color[3];
+        TARGET_GLOW_COLOR[4] = O.db.target_glow_color[4] or 1;
+    end
 end
 
 function Module:StartUp()
