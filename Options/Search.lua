@@ -6,7 +6,7 @@ local string_find, string_lower = string.find, string.lower;
 
 local LCG = S.Libraries.LCG;
 
-local USE_FUZZY = false; -- very good but too much garbage...
+local USE_FUZZY = true; -- very good but too much garbage...
 local MAX_NUM_RESULTS = 5;
 local GLOW_TIME_SECONDS = 5;
 local BUTTON_HEIGHT = 28;
@@ -311,25 +311,21 @@ function Module:Find(editbox, str)
 
             table.sort(filtered, function(a, b) return a[3] > b[3]; end);
 
-            local text;
             for _, result in ipairs(filtered) do
                 numResults = numResults + 1;
-                text = strsplit('|n', prepareFuzzy[result[1]]);
 
-                self:AddButton(text, GetCallback(prepareFuzzy[result[1]]), numResults, editbox);
+                self:AddButton(prepareFuzzy[result[1]], GetCallback(prepareFuzzy[result[1]]), numResults, editbox);
 
                 if numResults == MAX_NUM_RESULTS then
                     break;
                 end
             end
         else
-            local text;
             for name, func in pairs(self:GetList()) do
                 if L[name] and string_find(string_lower(L[name]), str, 1, true) then
                     numResults = numResults + 1;
-                    text = strsplit('|n', L[name]);
 
-                    self:AddButton(text, func, numResults, editbox);
+                    self:AddButton(L[name], func, numResults, editbox);
 
                     if numResults == MAX_NUM_RESULTS then
                         break;
