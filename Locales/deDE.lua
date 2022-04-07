@@ -754,6 +754,8 @@ L['OPTIONS_CLASSIFICATION_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'An welchem Punkt
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz des Elite-Feind-Anzeigers';
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz des Elite-Feind-Anzeigers';
 L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP'] = 'Skala der Klassenressourcen';
+L['OPTIONS_CLASS_BAR_POINT_TOOLTIP'] = 'Befestigungspunkt der Klassenressourcenleiste';
+L['OPTIONS_CLASS_BAR_RELATIVE_POINT_TOOLTIP'] = 'An welchem Punkt des Gesundheitsbalkens wird der Klassenressourcenbalken angebracht';
 L['OPTIONS_CLASS_BAR_OFFSET_X_TOOLTIP'] = 'Horizontaler Versatz der Klassenressourcenleiste';
 L['OPTIONS_CLASS_BAR_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz der Klassenressourcenleiste';
 

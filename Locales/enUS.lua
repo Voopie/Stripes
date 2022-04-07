@@ -754,6 +754,8 @@ L['OPTIONS_CLASSIFICATION_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'To which point o
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP'] = 'Horizontal offset of elite enemy indicator';
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of elite enemy indicator';
 L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP'] = 'Class bar scale';
+L['OPTIONS_CLASS_BAR_POINT_TOOLTIP'] = 'Point of attachment of the class bar';
+L['OPTIONS_CLASS_BAR_RELATIVE_POINT_TOOLTIP'] = 'To which point of the health bar attach the class bar';
 L['OPTIONS_CLASS_BAR_OFFSET_X_TOOLTIP'] = 'Horizontal offset of the class bar';
 L['OPTIONS_CLASS_BAR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of the class bar';
 

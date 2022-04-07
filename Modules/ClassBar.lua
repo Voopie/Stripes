@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('ClassBar');
 
 -- Local config
-local SCALE, OFFSET_X, OFFSET_Y;
+local SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
 local SHOW_ON_TARGET;
 
 local function UpdatePosition(unitframe)
@@ -20,8 +20,10 @@ local function UpdatePosition(unitframe)
             NamePlateDriverFrame.classNamePlateMechanicFrame:SetPoint('TOP', NamePlateDriverFrame.classNamePlatePowerBar, 'BOTTOM', 0, NamePlateDriverFrame.classNamePlateMechanicFrame.paddingOverride or -4);
         end
     else
-        NamePlateDriverFrame.classNamePlateMechanicFrame:ClearAllPoints();
-        PixelUtil.SetPoint(NamePlateDriverFrame.classNamePlateMechanicFrame, 'BOTTOM', unitframe.name, 'TOP', OFFSET_X, 14 + OFFSET_Y); -- Don't ask me why 14
+        if unitframe.data.isTarget then
+            NamePlateDriverFrame.classNamePlateMechanicFrame:ClearAllPoints();
+            PixelUtil.SetPoint(NamePlateDriverFrame.classNamePlateMechanicFrame, POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+        end
     end
 end
 
@@ -41,8 +43,11 @@ end
 
 function Module:UpdateLocalConfig()
     SCALE    = O.db.class_bar_scale;
-    OFFSET_X = O.db.class_bar_offset_x;
-    OFFSET_Y = O.db.class_bar_offset_y;
+
+    POINT          = O.Lists.frame_points[O.db.class_bar_point] or 'BOTTOM';
+    RELATIVE_POINT = O.Lists.frame_points[O.db.class_bar_relative_point] or 'TOP';
+    OFFSET_X       = O.db.class_bar_offset_x;
+    OFFSET_Y       = O.db.class_bar_offset_y;
 
     SHOW_ON_TARGET = O.db.show_personal_resource_ontarget;
 

@@ -257,6 +257,27 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.class_bar_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.class_bar_point:SetSize(120, 20);
+    self.class_bar_point:SetList(O.Lists.frame_points_localized);
+    self.class_bar_point:SetValue(O.db.class_bar_point);
+    self.class_bar_point:SetLabel(L['POSITION']);
+    self.class_bar_point:SetTooltip(L['OPTIONS_CLASS_BAR_POINT_TOOLTIP']);
+    self.class_bar_point.OnValueChangedCallback = function(_, value)
+        O.db.class_bar_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.class_bar_relative_point = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.class_bar_relative_point:SetSize(120, 20);
+    self.class_bar_relative_point:SetList(O.Lists.frame_points_localized);
+    self.class_bar_relative_point:SetValue(O.db.class_bar_relative_point);
+    self.class_bar_relative_point:SetTooltip(L['OPTIONS_CLASS_BAR_RELATIVE_POINT_TOOLTIP']);
+    self.class_bar_relative_point.OnValueChangedCallback = function(_, value)
+        O.db.class_bar_relative_point = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.class_bar_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.class_bar_offset_x:SetSize(120, 18);
     self.class_bar_offset_x:SetValues(O.db.class_bar_offset_x, -50, 50, 1);
@@ -279,7 +300,9 @@ panel.Load = function(self)
 
     self.ClassBarPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.ClassBarPositionOptions:SetH(60);
-    self.ClassBarPositionOptions:Add(self.class_bar_offset_x):SetPosition('TOPLEFT', self.ClassBarPositionOptions, 'TOPLEFT', 12, -26);
+    self.ClassBarPositionOptions:Add(self.class_bar_point):SetPosition('TOPLEFT', self.ClassBarPositionOptions, 'TOPLEFT', 12, -26);
+    self.ClassBarPositionOptions:Add(self.class_bar_relative_point):SetPosition('LEFT', self.class_bar_point, 'RIGHT', 12, 0);
+    self.ClassBarPositionOptions:Add(self.class_bar_offset_x):SetPosition('LEFT', self.class_bar_relative_point, 'RIGHT', 12, 0);
     self.ClassBarPositionOptions:Add(self.class_bar_offset_y):SetPosition('LEFT', self.class_bar_offset_x, 'RIGHT', 12, 0);
     self.ClassBarPositionOptions.OpenButton:SetPosition('LEFT', self.class_bar_scale, 'RIGHT', 16, 0);
     self.ClassBarPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);

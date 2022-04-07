@@ -754,6 +754,8 @@ L['OPTIONS_CLASSIFICATION_INDICATOR_RELATIVE_POINT_TOOLTIP'] = 'К какой т
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение индикатора элитного противника';
 L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение индикатора элитного противника';
 L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP'] = 'Масштаб классового ресурса';
+L['OPTIONS_CLASS_BAR_POINT_TOOLTIP'] = 'Точка крепления классового ресурса';
+L['OPTIONS_CLASS_BAR_RELATIVE_POINT_TOOLTIP'] = 'К какой точке полосы здоровья прикрепить классовый ресурс';
 L['OPTIONS_CLASS_BAR_OFFSET_X_TOOLTIP'] = 'Горизонтальное смещение классового ресурса';
 L['OPTIONS_CLASS_BAR_OFFSET_Y_TOOLTIP'] = 'Вертикальное смещение классового ресурса';
 
