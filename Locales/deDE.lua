@@ -11,7 +11,7 @@ NAMESPACE[2]['deDE'] = {};
 
 local L = NAMESPACE[2]['deDE'];
 
-L['OPTIONS_TRANSLATED_BY'] = 'Übersetzt ins Deutsche: NephX26 & DeepL';
+L['OPTIONS_TRANSLATED_BY'] = 'Übersetzt ins Deutsche: NephX26 & |cffb2cbe3DeepL|r';
 
 L['RENAME'] = 'Umbenennen';
 L['SAVE'] = 'Speichern';

@@ -55,24 +55,23 @@ panel.Load = function(self)
     self.heartTexture:SetTexCoord(unpack(S.Media.Icons64.COORDS.HEART_WHITE));
     self.heartTexture:SetVertexColor(D.Player.ClassColor:GetRGB());
 
-    local animation = self.heart:CreateAnimationGroup();
+    local heartAnimation = self.heart:CreateAnimationGroup();
 
-    local scale = animation:CreateAnimation('Scale');
-    scale:SetOrder(1);
-    scale:SetDuration(0.1);
-    scale:SetScale(1.8, 1.8);
+    local scaleUp = heartAnimation:CreateAnimation('Scale');
+    scaleUp:SetOrder(1);
+    scaleUp:SetDuration(0.1);
+    scaleUp:SetScale(1.8, 1.8);
 
-    local scale2 = animation:CreateAnimation('Scale');
-    scale2:SetOrder(2);
-    scale2:SetDuration(0.5);
-    scale2:SetScale(0.5, 0.5);
+    local scaleDown = heartAnimation:CreateAnimation('Scale');
+    scaleDown:SetOrder(2);
+    scaleDown:SetDuration(0.5);
+    scaleDown:SetScale(0.5, 0.5);
 
-    animation:SetLooping('REPEAT');
-
-    animation:Play();
+    heartAnimation:SetLooping('REPEAT');
+    heartAnimation:Play();
 
     self.TranslationCreditText = Mixin(self:CreateFontString(nil, 'ARTWORK', 'StripesCategoryButtonNormalFont'), E.PixelPerfectMixin);
-    self.TranslationCreditText:SetPosition('BOTTOM', self, 'BOTTOM', 0, 16);
+    self.TranslationCreditText:SetPosition('BOTTOM', self, 'BOTTOM', 0, 12);
     self.TranslationCreditText:SetFont(self.TranslationCreditText:GetFont(), 16);
     self.TranslationCreditText:SetText(L['OPTIONS_TRANSLATED_BY']);
     self.TranslationCreditText:SetShown(S.ClientLocale ~= 'ruRU');

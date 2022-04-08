@@ -11,7 +11,7 @@ NAMESPACE[2]['enUS'] = {};
 
 local L = NAMESPACE[2]['enUS'];
 
-L['OPTIONS_TRANSLATED_BY'] = 'Translated into English: Ramissa-Silvermoon & DeepL';
+L['OPTIONS_TRANSLATED_BY'] = 'Translated into English: |cffa330c9Ramissa-Silvermoon|r & |cffb2cbe3DeepL|r';
 
 L['RENAME'] = 'Rename';
 L['SAVE'] = 'Save';

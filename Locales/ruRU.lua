@@ -11,7 +11,7 @@ NAMESPACE[2]['ruRU'] = {};
 
 local L = NAMESPACE[2]['ruRU'];
 
-L['OPTIONS_TRANSLATED_BY'] = 'Переведено на русский: Ramissa-Silvermoon';
+L['OPTIONS_TRANSLATED_BY'] = 'Переведено на русский: |cffa330c9Ramissa-Silvermoon|r';
 
 L['RENAME'] = 'Переименовать';
 L['SAVE'] = 'Сохранить';
