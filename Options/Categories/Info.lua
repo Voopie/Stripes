@@ -5,7 +5,6 @@ O.frame.Left.Info, O.frame.Right.Info = O.CreateCategory(string.upper(L['OPTIONS
 local panel = O.frame.Right.Info;
 
 panel.Load = function(self)
-
     self.VersionText = Mixin(self:CreateFontString(nil, 'ARTWORK', 'StripesCategoryButtonNormalFont'), E.PixelPerfectMixin);
     self.VersionText:SetPosition('CENTER', self, 'CENTER', 0, 60);
     self.VersionText:SetText(string.format('|cff%s%s:|r %s', S.Media.Colors.HEX.LIGHTORANGE, L['OPTIONS_INFO_VERSION'], S.Version));
@@ -28,8 +27,20 @@ panel.Load = function(self)
     self.AndText:SetPosition('CENTER', self, 'CENTER', 0, 0);
     self.AndText:SetText('&');
 
+    self.Portrait = Mixin(CreateFrame('Button', nil, self), E.PixelPerfectMixin);
+    self.Portrait:SetPosition('TOP', self.AndText, 'BOTTOM', 0, -14);
+    self.Portrait:SetSize(48, 48);
+    self.Portrait.texture = self.Portrait:CreateTexture(nil, 'ARTWORK');
+    self.Portrait.texture:SetAllPoints();
+
+    self.Portrait.circleTexture = self.Portrait:CreateTexture(nil, 'BORDER', nil, 7);
+    self.Portrait.circleTexture:SetPoint('TOPLEFT', -3, 3);
+    self.Portrait.circleTexture:SetPoint('BOTTOMRIGHT', 3, -3);
+    self.Portrait.circleTexture:SetTexture('Interface/CHARACTERFRAME/TempPortraitAlphaMask');
+    self.Portrait.circleTexture:SetVertexColor(D.Player.ClassColor:GetRGB());
+
     self.characterText = Mixin(self:CreateFontString(nil, 'ARTWORK', 'StripesCategoryButtonNormalFont'), E.PixelPerfectMixin);
-    self.characterText:SetPosition('TOP', self.AndText, 'BOTTOM', 0, -14);
+    self.characterText:SetPosition('TOP', self.Portrait, 'BOTTOM', 0, -14);
     self.characterText:SetFont(self.characterText:GetFont(), 16);
     self.characterText:SetTextColor(D.Player.ClassColor:GetRGB());
     self.characterText:SetText(D.Player.Name .. '-' .. D.Player.Realm);
@@ -65,4 +76,8 @@ panel.Load = function(self)
     self.TranslationCreditText:SetFont(self.TranslationCreditText:GetFont(), 16);
     self.TranslationCreditText:SetText(L['OPTIONS_TRANSLATED_BY']);
     self.TranslationCreditText:SetShown(S.ClientLocale ~= 'ruRU');
+end
+
+panel.OnShow = function(self)
+    SetPortraitTexture(self.Portrait.texture, 'player');
 end
