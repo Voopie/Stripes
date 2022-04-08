@@ -643,7 +643,7 @@ U.GlowStopAll = function(frame, glowKey)
     LCG.ButtonGlow_Stop(frame);
 end
 
-U.MakeAutoFontSize = function(fontString, fontSizeStep)
+U.MakeAutoFontSize = function(fontString, fontSizeStep, fontSizeMinLimit)
     if not fontString or fontString.autoFontSize then
         return;
     end
@@ -653,12 +653,12 @@ U.MakeAutoFontSize = function(fontString, fontSizeStep)
     hooksecurefunc(fontString, 'SetText', function(self, text)
         local fontValue, fontSize, fontOutline = self:GetFont();
 
-        if fontSize == 3 then
+        if fontSize == 3 or fontSize <= fontSizeMinLimit then
             return;
         end
 
         if self:IsTruncated() then
-            self:SetFont(fontValue, math.max(3, fontSize - fontSizeStep), fontOutline);
+            self:SetFont(fontValue, math.max(fontSizeMinLimit or 3, fontSize - fontSizeStep), fontOutline);
             self:SetText(text);
         end
     end);
