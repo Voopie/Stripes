@@ -649,16 +649,17 @@ U.MakeAutoFontSize = function(fontString, fontSizeStep, fontSizeMinLimit)
     end
 
     fontSizeStep = fontSizeStep or 0.25;
+    fontSizeMinLimit = math.max(3, (fontSizeMinLimit or 3));
 
     hooksecurefunc(fontString, 'SetText', function(self, text)
         local fontValue, fontSize, fontOutline = self:GetFont();
 
-        if fontSize == 3 or fontSize <= fontSizeMinLimit then
+        if fontSize == fontSizeMinLimit then
             return;
         end
 
         if self:IsTruncated() then
-            self:SetFont(fontValue, math.max(fontSizeMinLimit or 3, fontSize - fontSizeStep), fontOutline);
+            self:SetFont(fontValue, math.max(fontSizeMinLimit, fontSize - fontSizeStep), fontOutline);
             self:SetText(text);
         end
     end);
