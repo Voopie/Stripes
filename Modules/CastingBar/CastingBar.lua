@@ -520,6 +520,8 @@ function StripesCastingBar_OnEvent(self, event, ...)
                 self.TargetText:Hide();
             end
 
+            GlowStopAll(self);
+
             self.casting = nil;
             self.channeling = nil;
             self.fadeOut = true;
