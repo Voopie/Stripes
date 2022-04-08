@@ -3,7 +3,7 @@
 ## Title: Stripes
 ## Notes: Yet another nameplates customization addon
 ## Notes-ruRU: Еще один аддон для кастомизации неймплейтов 
-## Version: 1.25
+## Version: 1.26
 ## SavedVariables: StripesDB
 
 Stripes.xml
