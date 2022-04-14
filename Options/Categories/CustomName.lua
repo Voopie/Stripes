@@ -174,17 +174,11 @@ local function CreateRow(frame)
         end
     end);
 
-    frame:HookScript('OnEnter', function(self)
-        self:SetBackdropColor(0.3, 0.3, 0.3, 1);
-    end);
-
-    frame:HookScript('OnLeave', function(self)
-        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
-    end);
-
     E.CreateTooltip(frame, nil, nil, true);
 
     frame:HookScript('OnEnter', function(self)
+        self:SetBackdropColor(0.3, 0.3, 0.3, 1);
+
         if D.ModelBlacklist[self.npc_id] then
             return;
         end
@@ -195,6 +189,10 @@ local function CreateRow(frame)
         HolderModelFrame:SetPoint('TOPLEFT', GameTooltip, 'BOTTOMLEFT', 0, -1);
         ModelFrame:SetSize(GameTooltip:GetWidth() - 3, GameTooltip:GetWidth() * 2 - 3);
         ModelFrame:SetCamDistanceScale(1.2);
+    end);
+
+    frame:HookScript('OnLeave', function(self)
+        self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
     end);
 end
 
@@ -314,6 +312,8 @@ local function CreateListRow(b)
         S:GetNameplateModule('Handler'):UpdateAll();
     end);
 
+    E.CreateTooltip(b, nil, nil, true);
+
     b:HookScript('OnEnter', function(self)
         self:SetBackdropColor(0.3, 0.3, 0.3, 1);
         self.PlusSign:SetShown(true);
@@ -346,8 +346,6 @@ local function CreateListRow(b)
             self.NameText:SetText(self.npc_name);
         end
     end);
-
-    E.CreateTooltip(b, nil, nil, true);
 end
 
 local function UpdateListRow(b)

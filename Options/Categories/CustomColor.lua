@@ -491,19 +491,21 @@ local function CreateListRow(b)
     b.NameText:SetH(ROW_HEIGHT / 2);
 
     b:SetScript('OnClick', function(self)
-        Add(self.npc_id, self.name);
+        Add(self.npc_id, self.npc_name);
 
         panel:UpdateScroll();
         S:GetNameplateModule('Handler'):UpdateAll();
     end);
 
+    E.CreateTooltip(b, nil, nil, true);
+
     b:HookScript('OnEnter', function(self)
         self:SetBackdropColor(0.3, 0.3, 0.3, 1);
         self.PlusSign:SetShown(true);
 
-        if self.name == UNKNOWN then
-            self.name = U.GetNpcNameByID(self.npc_id);
-            self.tooltip = string.format(LIST_TOOLTIP_PATTERN, self.name, self.npc_id);
+        if self.npc_name == UNKNOWN then
+            self.npc_name = U.GetNpcNameByID(self.npc_id);
+            self.tooltip = string.format(LIST_TOOLTIP_PATTERN, self.npc_name, self.npc_id);
 
             self.NameText:SetText(self.name);
         end
@@ -522,15 +524,13 @@ local function CreateListRow(b)
         self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
         self.PlusSign:SetShown(false);
 
-        if self.name == UNKNOWN then
-            self.name = U.GetNpcNameByID(self.npc_id);
-            self.tooltip = string.format(LIST_TOOLTIP_PATTERN, self.name, self.npc_id);
+        if self.npc_name == UNKNOWN then
+            self.npc_name = U.GetNpcNameByID(self.npc_id);
+            self.tooltip = string.format(LIST_TOOLTIP_PATTERN, self.npc_name, self.npc_id);
 
-            self.NameText:SetText(self.name);
+            self.NameText:SetText(self.npc_name);
         end
     end);
-
-    E.CreateTooltip(b, nil, nil, true);
 end
 
 local function UpdateListRow(b)
@@ -552,7 +552,7 @@ local function UpdateListRow(b)
         b.backgroundColor[1], b.backgroundColor[2], b.backgroundColor[3], b.backgroundColor[4] = 0.075, 0.075, 0.075, 1;
     end
 
-    b.NameText:SetText(b.name);
+    b.NameText:SetText(b.npc_name);
 end
 
 panel.UpdateListScroll = function(id)
@@ -570,10 +570,10 @@ panel.UpdateListScroll = function(id)
             CreateListRow(b);
         end
 
-        b.index   = index;
-        b.npc_id  = npc_id;
-        b.name    = U.GetNpcNameByID(b.npc_id);
-        b.tooltip = string.format(LIST_TOOLTIP_PATTERN, b.name, b.npc_id);
+        b.index    = index;
+        b.npc_id   = npc_id;
+        b.npc_name = U.GetNpcNameByID(b.npc_id);
+        b.tooltip  = string.format(LIST_TOOLTIP_PATTERN, b.npc_name, b.npc_id);
 
         UpdateListRow(b);
 
