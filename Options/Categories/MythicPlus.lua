@@ -199,8 +199,6 @@ panel.Load = function(self)
         O.db.spiteful_enabled = self:GetChecked();
 
         panel.spiteful_show_only_on_me:SetEnabled(O.db.spiteful_enabled);
-        panel.spiteful_glow:SetEnabled(O.db.spiteful_enabled);
-        panel.spiteful_glow_color:SetEnabled(O.db.spiteful_enabled);
 
         Stripes:UpdateAll();
     end
