@@ -143,13 +143,13 @@ local function UpdateHealthColor(frame)
     if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
         frame.healthBar:SetStatusBarColor(r, g, b, a);
 
-        if (DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY) or (DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY) then
-            if frame.optionTable.colorHealthWithExtendedColors then
-                frame.selectionHighlight:SetVertexColor(r, g, b);
-            else
-                frame.selectionHighlight:SetVertexColor(1, 1, 1);
-            end
-        end
+        -- if (DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY) or (DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY) then
+        --     if frame.optionTable.colorHealthWithExtendedColors then
+        --         frame.selectionHighlight:SetVertexColor(r, g, b);
+        --     else
+        --         frame.selectionHighlight:SetVertexColor(1, 1, 1);
+        --     end
+        -- end
     end
 end
 
@@ -700,54 +700,6 @@ local function UpdateClickableArea(unitframe)
     unitframe.ClickableArea:SetShown(true);
 end
 
-local function UpdateTexture(unitframe)
-    if unitframe.data.unitType == 'SELF' then
-        unitframe.healthBar:SetStatusBarTexture(DEFAULT_STATUSBAR_TEXTURE);
-    else
-        if unitframe.data.isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED then
-            if DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY then
-                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
-
-                if unitframe.selectionHighlight then
-                    unitframe.selectionHighlight:SetBlendMode(DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
-                    unitframe.selectionHighlight:SetAlpha(DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA);
-                    unitframe.selectionHighlight:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE));
-                    unitframe.selectionHighlight:Show();
-                end
-            else
-                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE));
-
-                if unitframe.selectionHighlight then
-                    unitframe.selectionHighlight:Hide();
-                end
-            end
-        elseif unitframe.data.isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED then
-            if DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
-                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
-
-                if unitframe.selectionHighlight then
-                    unitframe.selectionHighlight:SetBlendMode(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
-                    unitframe.selectionHighlight:SetAlpha(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA);
-                    unitframe.selectionHighlight:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
-                    unitframe.selectionHighlight:Show();
-                end
-            else
-                unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
-
-                if unitframe.selectionHighlight then
-                    unitframe.selectionHighlight:Hide();
-                end
-            end
-        else
-            if unitframe.selectionHighlight then
-                unitframe.selectionHighlight:Hide();
-            end
-
-            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
-        end
-    end
-end
-
 local function CreateCustomBorder(unitframe)
     if not unitframe.healthBar.CustomBorderTexture then
         unitframe.healthBar.CustomBorderTexture = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
@@ -778,6 +730,78 @@ local function UpdateBackgroundTexture(unitframe)
     unitframe.healthBar.background:SetVertexColor(DB.HEALTH_BAR_BACKGROUND_COLOR[1], DB.HEALTH_BAR_BACKGROUND_COLOR[2], DB.HEALTH_BAR_BACKGROUND_COLOR[3], DB.HEALTH_BAR_BACKGROUND_COLOR[4]);
 end
 
+local function CreateExtraTexture(unitframe)
+    if unitframe.healthBar.ExtraTexture then
+        return;
+    end
+
+    unitframe.healthBar.ExtraTexture = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
+    unitframe.healthBar.ExtraTexture:SetAllPoints();
+    unitframe.healthBar.ExtraTexture:Hide();
+end
+
+local function UpdateExtraTargetTexture(unitframe)
+    if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED then
+        if DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
+            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
+
+            unitframe.healthBar.ExtraTexture:SetBlendMode(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
+            unitframe.healthBar.ExtraTexture:SetAlpha(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA);
+            unitframe.healthBar.ExtraTexture:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
+            unitframe.healthBar.ExtraTexture:Show();
+        else
+            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
+            unitframe.healthBar.ExtraTexture:Hide();
+        end
+    else
+        unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
+        unitframe.healthBar.ExtraTexture:Hide();
+    end
+end
+
+local function UpdateExtraFocusTexture(unitframe)
+    if DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED then
+        if DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY then
+            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
+
+            unitframe.healthBar.ExtraTexture:SetBlendMode(DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
+            unitframe.healthBar.ExtraTexture:SetAlpha(DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA);
+            unitframe.healthBar.ExtraTexture:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE));
+            unitframe.healthBar.ExtraTexture:Show();
+        else
+            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE));
+            unitframe.healthBar.ExtraTexture:Hide();
+        end
+    else
+        if unitframe.data.isTarget then
+            UpdateExtraTargetTexture(unitframe);
+        else
+            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
+            unitframe.healthBar.ExtraTexture:Hide();
+        end
+    end
+end
+
+local function UpdateExtraTexture(unitframe)
+    if not unitframe.healthBar.ExtraTexture then
+        return;
+    end
+
+    if unitframe.data.unitType == 'SELF' then
+        unitframe.healthBar:SetStatusBarTexture(DEFAULT_STATUSBAR_TEXTURE);
+        unitframe.healthBar.ExtraTexture:Hide();
+    else
+        if unitframe.data.isFocus then
+            UpdateExtraFocusTexture(unitframe);
+        elseif unitframe.data.isTarget then
+            UpdateExtraTargetTexture(unitframe);
+        else
+            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
+            unitframe.healthBar.ExtraTexture:Hide();
+        end
+    end
+end
+
 function Module:UnitAdded(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
     unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
@@ -786,7 +810,8 @@ function Module:UnitAdded(unitframe)
     UpdateThreatPercentage(unitframe);
     CreateCustomBorder(unitframe);
     UpdateCustomBorder(unitframe);
-    UpdateTexture(unitframe);
+    CreateExtraTexture(unitframe);
+    UpdateExtraTexture(unitframe);
     UpdateBackgroundTexture(unitframe);
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
@@ -826,7 +851,7 @@ function Module:Update(unitframe)
 
     UpdateThreatPercentagePosition(unitframe);
     UpdateCustomBorder(unitframe);
-    UpdateTexture(unitframe);
+    UpdateExtraTexture(unitframe);
     UpdateBackgroundTexture(unitframe);
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
@@ -874,7 +899,7 @@ end
 function Module:PLAYER_FOCUS_CHANGED()
     for _, unitframe in pairs(NP) do
         if unitframe.isActive and unitframe:IsShown() then
-            UpdateTexture(unitframe);
+            UpdateExtraTexture(unitframe);
             Module.UpdateHealthBar(unitframe);
         end
     end
@@ -1093,7 +1118,7 @@ function Module:StartUp()
         end
 
         if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED then
-            UpdateTexture(unitframe);
+            UpdateExtraTexture(unitframe);
         end
 
         if DB.CURRENT_TARGET_COLOR_ENABLED or DB.CURRENT_FOCUS_COLOR_ENABLED then
