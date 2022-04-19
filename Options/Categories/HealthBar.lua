@@ -970,7 +970,7 @@ panel.Load = function(self)
     self.current_target_custom_texture_overlay_alpha:SetLabelPosition('LEFT');
     self.current_target_custom_texture_overlay_alpha:SetTooltip(L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP']);
     self.current_target_custom_texture_overlay_alpha:AddToSearch(button, L['OPTIONS_CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP'], self.Tabs[3]);
-    self.current_target_custom_texture_overlay_alpha:SetValues(O.db.current_target_custom_texture_overlay_alpha, 0.1, 1, 0.05);
+    self.current_target_custom_texture_overlay_alpha:SetValues(O.db.current_target_custom_texture_overlay_alpha, 0.05, 1, 0.05);
     self.current_target_custom_texture_overlay_alpha:SetEnabled(O.db.current_target_custom_texture_enabled);
     self.current_target_custom_texture_overlay_alpha.OnValueChangedCallback = function(_, value)
         O.db.current_target_custom_texture_overlay_alpha = tonumber(value);
@@ -1085,7 +1085,7 @@ panel.Load = function(self)
     self.current_focus_custom_texture_overlay_alpha:SetLabelPosition('LEFT');
     self.current_focus_custom_texture_overlay_alpha:SetTooltip(L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP']);
     self.current_focus_custom_texture_overlay_alpha:AddToSearch(button, L['OPTIONS_CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_TOOLTIP'], self.Tabs[3]);
-    self.current_focus_custom_texture_overlay_alpha:SetValues(O.db.current_focus_custom_texture_overlay_alpha, 0.1, 1, 0.05);
+    self.current_focus_custom_texture_overlay_alpha:SetValues(O.db.current_focus_custom_texture_overlay_alpha, 0.05, 1, 0.05);
     self.current_focus_custom_texture_overlay_alpha:SetEnabled(O.db.current_focus_custom_texture_enabled);
     self.current_focus_custom_texture_overlay_alpha.OnValueChangedCallback = function(_, value)
         O.db.current_focus_custom_texture_overlay_alpha = tonumber(value);
