@@ -142,14 +142,6 @@ local function UpdateHealthColor(frame)
     local cR, cG, cB, cA = frame.healthBar:GetStatusBarColor();
     if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
         frame.healthBar:SetStatusBarColor(r, g, b, a);
-
-        -- if (DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY) or (DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY) then
-        --     if frame.optionTable.colorHealthWithExtendedColors then
-        --         frame.selectionHighlight:SetVertexColor(r, g, b);
-        --     else
-        --         frame.selectionHighlight:SetVertexColor(1, 1, 1);
-        --     end
-        -- end
     end
 end
 
@@ -806,6 +798,10 @@ function Module:UnitAdded(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
     unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
 
+    if unitframe.selectionHighlight then
+        unitframe.selectionHighlight:SetAlpha(0);
+    end
+
     CreateThreatPercentage(unitframe);
     UpdateThreatPercentage(unitframe);
     CreateCustomBorder(unitframe);
@@ -1111,12 +1107,6 @@ function Module:StartUp()
     self:RegisterEvent('PLAYER_FOCUS_CHANGED');
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
-        if (not DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED and not DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED) or (not DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY and not DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY) then
-            if unitframe.selectionHighlight then
-                unitframe.selectionHighlight:Hide();
-            end
-        end
-
         if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED then
             UpdateExtraTexture(unitframe);
         end
