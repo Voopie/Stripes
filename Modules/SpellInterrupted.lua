@@ -10,6 +10,7 @@ local UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture = Unit
 -- Stripes API
 local UnitHasAura = U.UnitHasAura;
 local U_GetClassColor = U.GetClassColor;
+local U_UnitIsPetByGUID = U.UnitIsPetByGUID;
 local GetUnitColor = U.GetUnitColor;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
@@ -145,7 +146,7 @@ local function UpdateByAura(unitframe)
     unitframe.SpellInterrupted:SetShown(true);
 end
 
-local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID)
+local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName)
     if not spellId then
         unitframe.SpellInterrupted.expTime  = 0;
         unitframe.SpellInterrupted.destGUID = nil;
@@ -168,6 +169,10 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID)
             unitframe.SpellInterrupted.casterName:SetText(name);
             unitframe.SpellInterrupted.casterName:SetTextColor(U_GetClassColor(englishClass, 2));
             unitframe.SpellInterrupted.casterName:SetShown(true);
+        elseif U_UnitIsPetByGUID(sourceGUID) then
+            unitframe.SpellInterrupted.casterName:SetText(sourceName);
+            unitframe.SpellInterrupted.casterName:SetTextColor(U_GetClassColor(sourceName, 2));
+            unitframe.SpellInterrupted.casterName:SetShown(true);
         else
             unitframe.SpellInterrupted.casterName:SetShown(false);
         end
@@ -179,12 +184,12 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID)
 end
 
 function Module:COMBAT_LOG_EVENT_UNFILTERED()
-    local _, subEvent, _, sourceGUID, _, _, _, destGUID, _, _, _, spellId = CombatLogGetCurrentEventInfo();
+    local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId = CombatLogGetCurrentEventInfo();
 
     if subEvent == 'SPELL_INTERRUPT' then
         for _, unitframe in pairs(NP) do
             if unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
-                OnInterrupt(unitframe, spellId, sourceGUID, destGUID);
+                OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName);
             end
         end
     end

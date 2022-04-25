@@ -64,6 +64,11 @@ U.UnitIsPet = function(unit)
     return (not UnitIsPlayer(unit) and UnitPlayerControlled(unit));
 end
 
+U.UnitIsPetByGUID = function(guid)
+    local unitType = strsplit('-', guid);
+    return unitType == 'Pet';
+end
+
 U.PlayerInGuild = function()
     return IsInGuild() and GetGuildInfo(PLAYER_UNIT);
 end
@@ -181,7 +186,8 @@ do
             if LCN[class] then
                 class = LCN[class];
             else
-                class = UnitClassBase(class);
+                local _;
+                _, class = UnitClass(class);
             end
         end
 

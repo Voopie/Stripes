@@ -12,6 +12,7 @@ local INTERRUPTED = INTERRUPTED;
 
 -- Stripes API
 local U_GetClassColor = U.GetClassColor;
+local U_UnitIsPetByGUID = U.UnitIsPetByGUID;
 
 -- Nameplates
 local NP = S.NamePlates;
@@ -28,22 +29,26 @@ local blacklist = {
     [197214] = true, -- Sundering (Shaman Enhancement talent)
 };
 
-local function OnInterrupt(unitframe, guid)
+local function OnInterrupt(unitframe, guid, sourceName)
     if guid and guid ~= '' then
         local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(guid);
         if name then
             unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(englishClass, 1), INTERRUPTED, name));
+        else
+            if U_UnitIsPetByGUID(guid) then
+                unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(sourceName, 1), INTERRUPTED, sourceName));
+            end
         end
     end
 end
 
 function Module:COMBAT_LOG_EVENT_UNFILTERED()
-    local _, subEvent, _, sourceGUID, _, _, _, destGUID, _, _, _, spellId = CombatLogGetCurrentEventInfo();
+    local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId = CombatLogGetCurrentEventInfo();
 
     if subEvent == 'SPELL_INTERRUPT' then
         for _, unitframe in pairs(NP) do
             if unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
-                OnInterrupt(unitframe, sourceGUID);
+                OnInterrupt(unitframe, sourceGUID, sourceName);
             end
         end
     elseif subEvent == 'SPELL_AURA_APPLIED' and not blacklist[spellId] then
@@ -51,7 +56,7 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
         if flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0 then
             for _, unitframe in pairs(NP) do
                 if unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
-                    OnInterrupt(unitframe, sourceGUID);
+                    OnInterrupt(unitframe, sourceGUID, sourceName);
                 end
             end
         end
