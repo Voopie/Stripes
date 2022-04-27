@@ -443,16 +443,14 @@ O.DefaultValues = {
     current_target_custom_texture_enabled = true,
     current_target_custom_texture_value   = 'Blizzard Bar Fill',
     current_target_custom_texture_overlay = true,
-    current_target_custom_texture_overlay_alpha = 0.25,
-    current_target_custom_texture_overlay_alpha_mode = 4, -- ADD
+    current_target_custom_texture_overlay_color = { 1, 1, 1, 0.25 },
     current_focus_health_bar_coloring = false,
     current_focus_health_bar_color    = { 1, 1, 1, 1 },
     current_focus_health_bar_use_class_color = false,
     current_focus_custom_texture_enabled = false,
-    current_focus_custom_texture_value   = 'Bars',
+    current_focus_custom_texture_value   = 'Striped Fat',
     current_focus_custom_texture_overlay = true,
-    current_focus_custom_texture_overlay_alpha = 0.5,
-    current_focus_custom_texture_overlay_alpha_mode = 2, -- BLEND
+    current_focus_custom_texture_overlay_color = { 0, 0, 0, 0.5 },
 
     execution_enabled      = false,
     execution_low_percent  = 30,
@@ -936,7 +934,7 @@ local RESERVED_PROFILE_NAMES = {
     ['기본값']         = true, -- koKR
     ['默认']           = true, -- zhCN
     ['默認']           = true, -- zhTW
-}
+};
 
 function Module:IsNameExists(name)
     if name == O.PROFILE_DEFAULT_NAME then
@@ -986,6 +984,24 @@ local function RenameDefaultProfile()
 
     if O.activeProfileId == O.PROFILE_DEFAULT_ID then
         O.activeProfileName = O.PROFILE_DEFAULT_NAME;
+    end
+end
+
+local function CleanUp()
+    for pId, _ in pairs(StripesDB.profiles) do
+        -- 1.26.1
+        StripesDB.profiles[pId].current_target_custom_texture_overlay_alpha = nil;
+        StripesDB.profiles[pId].current_target_custom_texture_overlay_alpha_mode = nil;
+        StripesDB.profiles[pId].current_focus_custom_texture_overlay_alpha = nil;
+        StripesDB.profiles[pId].current_focus_custom_texture_overlay_alpha_mode = nil;
+
+        -- ~1.25
+        StripesDB.profiles[pId].spiteful_glow = nil;
+        StripesDB.profiles[pId].spitefil_glow_color = nil;
+        StripesDB.profiles[pId].target_highlight = nil;
+        StripesDB.profiles[pId].explosive_orbs_glow = nil
+        StripesDB.profiles[pId].health_bar_border_thin = nil
+        StripesDB.profiles[pId].castbar_interrupt_ready_color = nil;
     end
 end
 
@@ -1129,6 +1145,8 @@ function Module:StartUp()
     if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 24) then
         Migration_ColorsAndCategories();
     end
+
+    CleanUp();
 
     StripesDB.version = S.Version;
 end

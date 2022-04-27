@@ -160,6 +160,8 @@ S.Media.Textures = {
 
         BARS     = M .. 'Textures\\StatusBar\\bars.blp',
         DIAGONAL = M .. 'Textures\\StatusBar\\diagonal.blp',
+
+        STRIPED_FAT = M .. 'Textures\\StatusBar\\striped_fat.blp',
     },
 };
 
@@ -322,6 +324,7 @@ LSM:Register(LSM.MediaType.STATUSBAR, 'Melli Dark', S.Media.Textures.StatusBar.M
 LSM:Register(LSM.MediaType.STATUSBAR, 'Melli Dark Rough', S.Media.Textures.StatusBar.MELLI_DARK_ROUGH);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Bars', S.Media.Textures.StatusBar.BARS);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Diagonal', S.Media.Textures.StatusBar.DIAGONAL);
+LSM:Register(LSM.MediaType.STATUSBAR, 'Striped Fat', S.Media.Textures.StatusBar.STRIPED_FAT);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Blizzard Glow', [[Interface\TargetingFrame\UI-StatusBar-Glow]]);
 LSM:Register(LSM.MediaType.STATUSBAR, 'Blizzard Bar Fill', [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]]);
 

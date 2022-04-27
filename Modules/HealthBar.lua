@@ -737,9 +737,8 @@ local function UpdateExtraTargetTexture(unitframe)
         if DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
             unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
 
-            unitframe.healthBar.ExtraTexture:SetBlendMode(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
-            unitframe.healthBar.ExtraTexture:SetAlpha(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA);
             unitframe.healthBar.ExtraTexture:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
+            unitframe.healthBar.ExtraTexture:SetVertexColor(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[1], DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[2], DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[3], DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[4]);
             unitframe.healthBar.ExtraTexture:Show();
         else
             unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
@@ -756,9 +755,8 @@ local function UpdateExtraFocusTexture(unitframe)
         if DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY then
             unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
 
-            unitframe.healthBar.ExtraTexture:SetBlendMode(DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE);
-            unitframe.healthBar.ExtraTexture:SetAlpha(DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA);
             unitframe.healthBar.ExtraTexture:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE));
+            unitframe.healthBar.ExtraTexture:SetVertexColor(DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[1], DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[2], DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[3], DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[4]);
             unitframe.healthBar.ExtraTexture:Show();
         else
             unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE));
@@ -1059,8 +1057,11 @@ function Module:UpdateLocalConfig()
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED       = O.db.current_target_custom_texture_enabled;
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE         = O.db.current_target_custom_texture_value;
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY       = O.db.current_target_custom_texture_overlay;
-    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA = O.db.current_target_custom_texture_overlay_alpha;
-    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE = O.Lists.alpha_mode[O.db.current_target_custom_texture_overlay_alpha_mode] or 'ADD';
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR    = DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR or {};
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[1] = O.db.current_target_custom_texture_overlay_color[1];
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[2] = O.db.current_target_custom_texture_overlay_color[2];
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[3] = O.db.current_target_custom_texture_overlay_color[3];
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[4] = O.db.current_target_custom_texture_overlay_color[4] or 1;
 
     DB.CURRENT_FOCUS_COLOR_ENABLED = O.db.current_focus_health_bar_coloring;
     DB.CURRENT_FOCUS_COLOR    = DB.CURRENT_FOCUS_COLOR or {};
@@ -1084,6 +1085,11 @@ function Module:UpdateLocalConfig()
     DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY       = O.db.current_focus_custom_texture_overlay;
     DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA = O.db.current_focus_custom_texture_overlay_alpha;
     DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_ALPHA_MODE = O.Lists.alpha_mode[O.db.current_focus_custom_texture_overlay_alpha_mode] or 'BLEND';
+    DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR    = DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR or {};
+    DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[1] = O.db.current_focus_custom_texture_overlay_color[1];
+    DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[2] = O.db.current_focus_custom_texture_overlay_color[2];
+    DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[3] = O.db.current_focus_custom_texture_overlay_color[3];
+    DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[4] = O.db.current_focus_custom_texture_overlay_color[4] or 1;
 
     DB.HEALTH_BAR_BACKGROUND_TEXTURE  = O.db.health_bar_background_texture_value;
     DB.HEALTH_BAR_BACKGROUND_COLOR    = DB.HEALTH_BAR_BACKGROUND_COLOR or {};
