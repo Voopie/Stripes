@@ -458,6 +458,7 @@ L['OPTIONS_TARGET_GLOW_ENABLED_TOOLTIP'] = 'Показывать свечени�
 L['OPTIONS_TARGET_GLOW_COLOR_TOOLTIP'] = 'Цвет свечения';
 L['OPTIONS_TARGET_GLOW_COLOR_AS_CLASS'] = 'По цвету класса';
 L['OPTIONS_TARGET_GLOW_COLOR_AS_CLASS_TOOLTIP'] = 'Окрашивать свечение по цвету вашего класса';
+L['OPTIONS_TARGET_GLOW_SIZE_TOOLTIP'] = 'Размер свечения';
 L['OPTIONS_HOVER_GLOW_ENABLED'] = 'При наведении';
 L['OPTIONS_HOVER_GLOW_ENABLED_TOOLTIP'] = 'Показывать свечение при наведении на неймплейты';
 L['OPTIONS_CURRENT_TARGET_HEALTH_BAR_COLORING'] = 'Особый цвет цели';

@@ -264,7 +264,7 @@ O.Lists = {
     }
 };
 
--- ~578
+-- ~579
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -436,6 +436,7 @@ O.DefaultValues = {
     target_glow_enabled       = true,
     target_glow_color         = { 1, 1, 1, 1 },
     target_glow_color_as_class = false,
+    target_glow_size          = 12,
     hover_glow_enabled        = true,
     current_target_health_bar_coloring = false,
     current_target_health_bar_color    = { 1, 1, 1, 1 },

@@ -14,6 +14,7 @@ local NP = S.NamePlates;
 local TARGET_INDICATOR_ENABLED, TARGET_GLOW_ENABLED, HOVER_GLOW_ENABLED;
 local TEXTURE, TARGET_INDICATOR_COLOR, TARGET_GLOW_COLOR;
 local SIZE, X_OFFSET, Y_OFFSET;
+local GLOW_SIZE;
 
 local GLOW_TEXTURE = S.Media.Path .. 'Textures\\glow';
 local GLOW_UPDATE_INTERVAL = 0.1;
@@ -106,9 +107,9 @@ local function CreateTargetIndicator(unitframe)
     indicator.right:Hide();
 
     indicator.glowUp = indicator:CreateTexture(nil, 'BORDER');
-    PixelUtil.SetPoint(indicator.glowUp, 'TOPLEFT', unitframe.healthBar, 'TOPLEFT', 0, 6);
-    PixelUtil.SetPoint(indicator.glowUp, 'TOPRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, 6);
-    PixelUtil.SetHeight(indicator.glowUp, 6);
+    PixelUtil.SetPoint(indicator.glowUp, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', 0, 0);
+    PixelUtil.SetPoint(indicator.glowUp, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, 0);
+    PixelUtil.SetHeight(indicator.glowUp, GLOW_SIZE);
     indicator.glowUp:SetTexture(GLOW_TEXTURE);
     indicator.glowUp:SetTexCoord(0, 1, 1, 0);
     indicator.glowUp:Hide();
@@ -116,7 +117,7 @@ local function CreateTargetIndicator(unitframe)
     indicator.glowDown = indicator:CreateTexture(nil, 'BORDER');
     PixelUtil.SetPoint(indicator.glowDown, 'TOPLEFT', unitframe.healthBar, 'BOTTOMLEFT', 0, 0);
     PixelUtil.SetPoint(indicator.glowDown, 'TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', 0, 0);
-    PixelUtil.SetHeight(indicator.glowDown, 6);
+    PixelUtil.SetHeight(indicator.glowDown, GLOW_SIZE);
     indicator.glowDown:SetTexture(GLOW_TEXTURE);
     indicator.glowDown:Hide();
 
@@ -142,6 +143,9 @@ local function UpdateStyle(unitframe)
 
     unitframe.TargetIndicator.glowUp:SetVertexColor(unpack(TARGET_GLOW_COLOR));
     unitframe.TargetIndicator.glowDown:SetVertexColor(unpack(TARGET_GLOW_COLOR));
+
+    PixelUtil.SetHeight(unitframe.TargetIndicator.glowUp, GLOW_SIZE);
+    PixelUtil.SetHeight(unitframe.TargetIndicator.glowDown, GLOW_SIZE);
 end
 
 local function UpdateMouseoverUnit()
@@ -186,6 +190,8 @@ function Module:UpdateLocalConfig()
     X_OFFSET = O.db.target_indicator_x_offset;
     Y_OFFSET = O.db.target_indicator_y_offset;
     TEXTURE  = O.Lists.target_indicator_texture_path[O.db.target_indicator_texture] or O.Lists.target_indicator_texture_path[1];
+
+    GLOW_SIZE = O.db.target_glow_size;
 
     TARGET_INDICATOR_COLOR = TARGET_INDICATOR_COLOR or {};
 

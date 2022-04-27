@@ -458,6 +458,7 @@ L['OPTIONS_TARGET_GLOW_ENABLED_TOOLTIP'] = 'Show glow of the current target name
 L['OPTIONS_TARGET_GLOW_COLOR_TOOLTIP'] = 'Target glow color';
 L['OPTIONS_TARGET_GLOW_COLOR_AS_CLASS'] = 'By class color';
 L['OPTIONS_TARGET_GLOW_COLOR_AS_CLASS_TOOLTIP'] = 'Color the target glow according to the color of your class';
+L['OPTIONS_TARGET_GLOW_SIZE_TOOLTIP'] = 'Glow size';
 L['OPTIONS_HOVER_GLOW_ENABLED'] = 'On hover';
 L['OPTIONS_HOVER_GLOW_ENABLED_TOOLTIP'] = 'Show glow on mouse over nameplates';
 L['OPTIONS_CURRENT_TARGET_HEALTH_BAR_COLORING'] = 'Special target color';

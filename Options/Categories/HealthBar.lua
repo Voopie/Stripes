@@ -875,7 +875,17 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    local Delimiter = E.CreateDelimiter(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.target_glow_size = E.CreateSlider(self.TabsFrames['TargetIndicatorTab'].Content);
+    self.target_glow_size:SetPosition('LEFT', self.target_glow_color_as_class.Label, 'RIGHT', 12, 0);
+    self.target_glow_size:SetValues(O.db.target_glow_size, 1, 64, 1);
+    self.target_glow_size:SetTooltip(L['OPTIONS_TARGET_GLOW_SIZE_TOOLTIP']);
+    self.target_glow_size:AddToSearch(button, L['OPTIONS_TARGET_GLOW_SIZE_TOOLTIP'], self.Tabs[3]);
+    self.target_glow_size.OnValueChangedCallback = function(_, value)
+        O.db.target_glow_size = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    Delimiter = E.CreateDelimiter(self.TabsFrames['TargetIndicatorTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.target_glow_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 

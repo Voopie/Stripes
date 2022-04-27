@@ -458,6 +458,7 @@ L['OPTIONS_TARGET_GLOW_ENABLED_TOOLTIP'] = 'Glühen des aktuellen Zielanzeigers 
 L['OPTIONS_TARGET_GLOW_COLOR_TOOLTIP'] = 'Ziel-Leuchtfarbe';
 L['OPTIONS_TARGET_GLOW_COLOR_AS_CLASS'] = 'Nach Klassenfarbe';
 L['OPTIONS_TARGET_GLOW_COLOR_AS_CLASS_TOOLTIP'] = 'Färben Sie das Glühen des Ziels entsprechend der Farbe Ihrer Klasse';
+L['OPTIONS_TARGET_GLOW_SIZE_TOOLTIP'] = 'Glühen-Größe';
 L['OPTIONS_HOVER_GLOW_ENABLED'] = 'Beim Schweben';
 L['OPTIONS_HOVER_GLOW_ENABLED_TOOLTIP'] = 'Beim Überfahren von Namensschildern mit der Maus leuchten';
 L['OPTIONS_CURRENT_TARGET_HEALTH_BAR_COLORING'] = 'Spezielle Zielfarbe';
