@@ -79,6 +79,7 @@ local units = {
     [164929] = true, -- Tirnenn Villager (Mists of Tirna Scithe)
     [170850] = true, -- Raging Bloodhorn (Theater of Pain)
     [163882] = true, -- Decaying Flesh Giant (Plaguefall)
+    [179837] = true, -- Tracker Zo'korss (Tazavesh: Streets)
 
     -- Open World
     [165349] = true, -- Animated Corpsehound (Maldraxxus)
