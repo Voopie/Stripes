@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('TargetIndicator');
 
 -- Lua API
-local pairs, math_rad = pairs, math.rad;
+local pairs = pairs;
 
 -- WoW API
 local UnitIsUnit, UnitExists = UnitIsUnit, UnitExists;
@@ -110,7 +110,7 @@ local function CreateTargetIndicator(unitframe)
     PixelUtil.SetPoint(indicator.glowUp, 'TOPRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, 6);
     PixelUtil.SetHeight(indicator.glowUp, 6);
     indicator.glowUp:SetTexture(GLOW_TEXTURE);
-    indicator.glowUp:SetRotation(math_rad(180));
+    indicator.glowUp:SetTexCoord(0, 1, 1, 0);
     indicator.glowUp:Hide();
 
     indicator.glowDown = indicator:CreateTexture(nil, 'BORDER');
