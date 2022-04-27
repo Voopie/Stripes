@@ -264,7 +264,7 @@ O.Lists = {
     }
 };
 
--- ~580
+-- ~578
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
