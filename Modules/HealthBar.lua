@@ -792,6 +792,36 @@ local function UpdateExtraTexture(unitframe)
     end
 end
 
+local function CreateSpark(unitframe)
+    if unitframe.healthBar.Spark then
+        return;
+    end
+
+    unitframe.healthBar.Spark = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
+    unitframe.healthBar.Spark:SetPoint('CENTER', 0, 0);
+    unitframe.healthBar.Spark:SetTexture('Interface\\CastingBar\\UI-CastingBar-Spark');
+    unitframe.healthBar.Spark:SetBlendMode('ADD');
+end
+
+local function UpdateSpark(unitframe)
+    if unitframe.healthBar.Spark then
+        if DB.SPARK_SHOW then
+            unitframe.healthBar.Spark:SetSize(DB.SPARK_WIDTH, DB.SPARK_HEIGHT);
+            unitframe.healthBar.Spark:Show();
+        else
+            unitframe.healthBar.Spark:Hide();
+        end
+    end
+end
+
+local function UpdateSparkPosition(unitframe)
+    if unitframe.healthBar.Spark and DB.SPARK_SHOW then
+        local _, maxValue = unitframe.healthBar:GetMinMaxValues();
+        local sparkPosition = (unitframe.healthBar:GetValue() / maxValue) * unitframe.healthBar:GetWidth();
+        unitframe.healthBar.Spark:SetPoint('CENTER', unitframe.healthBar, 'LEFT', sparkPosition, 0);
+    end
+end
+
 function Module:UnitAdded(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
     unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
@@ -806,6 +836,9 @@ function Module:UnitAdded(unitframe)
     UpdateCustomBorder(unitframe);
     CreateExtraTexture(unitframe);
     UpdateExtraTexture(unitframe);
+    CreateSpark(unitframe);
+    UpdateSpark(unitframe);
+    UpdateSparkPosition(unitframe);
     UpdateBackgroundTexture(unitframe);
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
@@ -846,6 +879,8 @@ function Module:Update(unitframe)
     UpdateThreatPercentagePosition(unitframe);
     UpdateCustomBorder(unitframe);
     UpdateExtraTexture(unitframe);
+    UpdateSpark(unitframe);
+    UpdateSparkPosition(unitframe);
     UpdateBackgroundTexture(unitframe);
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
@@ -1099,6 +1134,10 @@ function Module:UpdateLocalConfig()
     DB.HEALTH_BAR_BACKGROUND_COLOR[4] = O.db.health_bar_background_color[4] or 1;
 
     DB.HEALTH_BAR_COLOR_CLASS_USE = O.db.health_bar_color_class_use;
+
+    DB.SPARK_SHOW   = O.db.health_bar_spark_show;
+    DB.SPARK_WIDTH  = O.db.health_bar_spark_width;
+    DB.SPARK_HEIGHT = O.db.health_bar_spark_height;
 end
 
 function Module:StartUp()
@@ -1111,6 +1150,8 @@ function Module:StartUp()
 
     self:RegisterEvent('RAID_TARGET_UPDATE');
     self:RegisterEvent('PLAYER_FOCUS_CHANGED');
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', UpdateSparkPosition);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
         if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED then

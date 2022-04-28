@@ -264,7 +264,7 @@ O.Lists = {
     }
 };
 
--- ~579
+-- ~582
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -355,6 +355,10 @@ O.DefaultValues = {
     health_bar_border_color          = { 0, 0, 0, 1 },
     health_bar_border_same_color     = false,
     health_bar_border_size           = 1,
+
+    health_bar_spark_show   = true,
+    health_bar_spark_width  = 8,
+    health_bar_spark_height = 16,
 
     health_bar_custom_border_enabled      = false,
     health_bar_custom_border_path         = '',

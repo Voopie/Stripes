@@ -236,8 +236,43 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    local SparkHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_SPARK']);
+    SparkHeader:SetPosition('TOPLEFT', self.health_bar_custom_border_x_offset, 'BOTTOMLEFT', 0, -8);
+    SparkHeader:SetW(self:GetWidth());
+
+    self.health_bar_spark_show = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_spark_show:SetPosition('TOPLEFT', SparkHeader, 'BOTTOMLEFT', 0, -4);
+    self.health_bar_spark_show:SetLabel(L['OPTIONS_SHOW']);
+    self.health_bar_spark_show:SetTooltip(L['OPTIONS_HEALTH_BAR_SPARK_SHOW_TOOLTIP']);
+    self.health_bar_spark_show:SetChecked(O.db.health_bar_spark_show);
+    self.health_bar_spark_show:AddToSearch(button, L['OPTIONS_HEALTH_BAR_SPARK_SHOW_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_spark_show.Callback = function(self)
+        O.db.health_bar_spark_show = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_spark_width = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_spark_width:SetPosition('LEFT', self.health_bar_spark_show.Label, 'RIGHT', 12, 0);
+    self.health_bar_spark_width:SetValues(O.db.health_bar_spark_width, 1, 32, 1);
+    self.health_bar_spark_width:SetTooltip(L['OPTIONS_HEALTH_BAR_SPARK_WIDTH_TOOLTIP']);
+    self.health_bar_spark_width:AddToSearch(button, L['OPTIONS_HEALTH_BAR_SPARK_WIDTH_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_spark_width.OnValueChangedCallback = function(_, value)
+        O.db.health_bar_spark_width = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_spark_height = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_spark_height:SetPosition('LEFT', self.health_bar_spark_width, 'RIGHT', 12, 0);
+    self.health_bar_spark_height:SetValues(O.db.health_bar_spark_height, 1, 32, 1);
+    self.health_bar_spark_height:SetTooltip(L['OPTIONS_HEALTH_BAR_SPARK_HEIGHT_TOOLTIP']);
+    self.health_bar_spark_height:AddToSearch(button, L['OPTIONS_HEALTH_BAR_SPARK_HEIGHT_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_spark_height.OnValueChangedCallback = function(_, value)
+        O.db.health_bar_spark_height = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     local AbsorbHeader = E.CreateHeader(self.TabsFrames['CommonTab'].Content, L['OPTIONS_HEADER_ABSORB']);
-    AbsorbHeader:SetPosition('TOPLEFT', self.health_bar_custom_border_x_offset, 'BOTTOMLEFT', 0, -8);
+    AbsorbHeader:SetPosition('TOPLEFT', self.health_bar_spark_show, 'BOTTOMLEFT', 0, -8);
     AbsorbHeader:SetW(self:GetWidth());
 
     self.absorb_bar_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
