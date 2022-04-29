@@ -264,7 +264,7 @@ O.Lists = {
     }
 };
 
--- ~582
+-- ~583
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -359,6 +359,7 @@ O.DefaultValues = {
     health_bar_spark_show   = true,
     health_bar_spark_width  = 8,
     health_bar_spark_height = 16,
+    health_bar_spark_hide_at_max = true,
 
     health_bar_custom_border_enabled      = false,
     health_bar_custom_border_path         = '',

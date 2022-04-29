@@ -251,8 +251,19 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.health_bar_spark_hide_at_max = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.health_bar_spark_hide_at_max:SetPosition('LEFT', self.health_bar_spark_show.Label, 'RIGHT', 12, 0);
+    self.health_bar_spark_hide_at_max:SetLabel(L['OPTIONS_HEALTH_BAR_SPARK_HIDE_AT_MAX_HEALTH']);
+    self.health_bar_spark_hide_at_max:SetTooltip(L['OPTIONS_HEALTH_BAR_SPARK_HIDE_AT_MAX_HEALTH_TOOLTIP']);
+    self.health_bar_spark_hide_at_max:SetChecked(O.db.health_bar_spark_hide_at_max);
+    self.health_bar_spark_hide_at_max:AddToSearch(button, L['OPTIONS_HEALTH_BAR_SPARK_HIDE_AT_MAX_HEALTH_TOOLTIP'], self.Tabs[1]);
+    self.health_bar_spark_hide_at_max.Callback = function(self)
+        O.db.health_bar_spark_hide_at_max = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.health_bar_spark_width = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
-    self.health_bar_spark_width:SetPosition('LEFT', self.health_bar_spark_show.Label, 'RIGHT', 12, 0);
+    self.health_bar_spark_width:SetPosition('LEFT', self.health_bar_spark_hide_at_max.Label, 'RIGHT', 12, 0);
     self.health_bar_spark_width:SetValues(O.db.health_bar_spark_width, 1, 32, 1);
     self.health_bar_spark_width:SetTooltip(L['OPTIONS_HEALTH_BAR_SPARK_WIDTH_TOOLTIP']);
     self.health_bar_spark_width:AddToSearch(button, L['OPTIONS_HEALTH_BAR_SPARK_WIDTH_TOOLTIP'], self.Tabs[1]);

@@ -807,7 +807,15 @@ local function UpdateSpark(unitframe)
     if unitframe.healthBar.Spark then
         if DB.SPARK_SHOW then
             unitframe.healthBar.Spark:SetSize(DB.SPARK_WIDTH, DB.SPARK_HEIGHT);
-            unitframe.healthBar.Spark:Show();
+
+            local _, maxValue = unitframe.healthBar:GetMinMaxValues();
+            local currentValue = unitframe.healthBar:GetValue();
+
+            if DB.SPARK_HIDE_AT_MAX_HEALTH and currentValue == maxValue then
+                unitframe.healthBar.Spark:Hide();
+            else
+                unitframe.healthBar.Spark:Show();
+            end
         else
             unitframe.healthBar.Spark:Hide();
         end
@@ -817,8 +825,15 @@ end
 local function UpdateSparkPosition(unitframe)
     if unitframe.healthBar.Spark and DB.SPARK_SHOW then
         local _, maxValue = unitframe.healthBar:GetMinMaxValues();
-        local sparkPosition = (unitframe.healthBar:GetValue() / maxValue) * unitframe.healthBar:GetWidth();
-        unitframe.healthBar.Spark:SetPoint('CENTER', unitframe.healthBar, 'LEFT', sparkPosition, 0);
+        local currentValue = unitframe.healthBar:GetValue();
+
+        if DB.SPARK_HIDE_AT_MAX_HEALTH and currentValue == maxValue then
+            unitframe.healthBar.Spark:Hide();
+        else
+            local sparkPosition = (currentValue / maxValue) * unitframe.healthBar:GetWidth();
+            unitframe.healthBar.Spark:SetPoint('CENTER', unitframe.healthBar, 'LEFT', sparkPosition, 0);
+            unitframe.healthBar.Spark:Show();
+        end
     end
 end
 
@@ -1138,6 +1153,7 @@ function Module:UpdateLocalConfig()
     DB.SPARK_SHOW   = O.db.health_bar_spark_show;
     DB.SPARK_WIDTH  = O.db.health_bar_spark_width;
     DB.SPARK_HEIGHT = O.db.health_bar_spark_height;
+    DB.SPARK_HIDE_AT_MAX_HEALTH = O.db.health_bar_spark_hide_at_max;
 end
 
 function Module:StartUp()
