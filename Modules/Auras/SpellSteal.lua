@@ -82,7 +82,13 @@ local function UpdateAnchor(unitframe)
         end
     end
 
-    PixelUtil.SetPoint(unitframe.AurasSpellSteal, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
+    if AURAS_DIRECTION == 1 then
+        PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, 0);
+    elseif AURAS_DIRECTION == 2 then
+        PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, 0);
+    else
+        unitframe.AurasSpellSteal:SetWidth(unitframe.healthBar:GetWidth());
+    end
 end
 
 local function UpdateGlow(aura)
@@ -175,8 +181,14 @@ local function Update(unitframe)
 
             if AURAS_DIRECTION == 1 then
                 aura:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + SPACING_X), 0);
-            else
+            elseif AURAS_DIRECTION == 2 then
                 aura:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + SPACING_X)), 0);
+            else
+                unitframe.AurasSpellSteal.buffList[1]:SetPoint('TOP', -(aura:GetWidth()/2)*(buffIndex-1), 0);
+
+                if buffIndex > 1 then
+                    aura:SetPoint('TOPLEFT', unitframe.AurasSpellSteal.buffList[buffIndex - 1], 'TOPRIGHT', SPACING_X, 0);
+                end
             end
 
             aura:SetID(index);

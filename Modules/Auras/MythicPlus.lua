@@ -88,7 +88,13 @@ local function UpdateAnchor(unitframe)
         PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
     end
 
-    PixelUtil.SetPoint(unitframe.AurasMythicPlus, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', unitframe.healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', OFFSET_X, 0);
+    if AURAS_DIRECTION == 1 then
+        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, 0);
+    elseif AURAS_DIRECTION == 2 then
+        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, 0);
+    else
+        unitframe.AurasMythicPlus:SetWidth(unitframe.healthBar:GetWidth());
+    end
 end
 
 local function FilterShouldShowBuff(spellId, isHelpful, isHarmful)
@@ -220,8 +226,14 @@ local function Update(unitframe)
 
         if AURAS_DIRECTION == 1 then
             aura:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + SPACING_X), 0);
-        else
+        elseif AURAS_DIRECTION == 2 then
             aura:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + SPACING_X)), 0);
+        else
+            unitframe.AurasMythicPlus.buffList[1]:SetPoint('TOP', -(aura:GetWidth()/2)*(buffIndex-1), 0);
+
+            if buffIndex > 1 then
+                aura:SetPoint('TOPLEFT', unitframe.AurasMythicPlus.buffList[buffIndex - 1], 'TOPRIGHT', SPACING_X, 0);
+            end
         end
 
         aura:SetID(spell.index);

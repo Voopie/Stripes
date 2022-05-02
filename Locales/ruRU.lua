@@ -77,6 +77,7 @@ L['FRAME_STRATA_INHERIT'] = 'Наследовать';
 
 L['AURAS_DIRECTON_LEFT_TO_RIGHT'] = 'Слева направо';
 L['AURAS_DIRECTON_RIGHT_TO_LEFT'] = 'Справа налево';
+L['AURAS_DIRECTON_CENTER'] = 'По центру';
 
 L['AURAS_SORT_EXPIRES_ASC'] = 'По меньшему времени';
 L['AURAS_SORT_EXPIRES_DESC'] = 'По большему времени';

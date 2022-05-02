@@ -255,6 +255,7 @@ O.Lists = {
     auras_horizontal_direction = {
         [1] = L['AURAS_DIRECTON_LEFT_TO_RIGHT'],
         [2] = L['AURAS_DIRECTON_RIGHT_TO_LEFT'],
+        [3] = L['AURAS_DIRECTON_CENTER'],
     },
 
     auras_xlist_mode = {

@@ -171,7 +171,13 @@ local function UpdateAnchor(self)
         PixelUtil.SetPoint(self, 'BOTTOM', self:GetParent().healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     end
 
-    PixelUtil.SetPoint(self, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', self:GetParent().healthBar, AURAS_DIRECTION == 1 and 'LEFT' or 'RIGHT', BUFFFRAME_OFFSET_X, 0);
+    if AURAS_DIRECTION == 1 then
+        PixelUtil.SetPoint(self, 'LEFT', self:GetParent().healthBar, 'LEFT', BUFFFRAME_OFFSET_X, 0);
+    elseif AURAS_DIRECTION == 2 then
+        PixelUtil.SetPoint(self, 'RIGHT', self:GetParent().healthBar, 'RIGHT', BUFFFRAME_OFFSET_X, 0);
+    else
+        self:SetWidth(self:GetParent().healthBar:GetWidth());
+    end
 end
 
 local function UpdateAuraStyle(aura, withoutMasque)
@@ -456,14 +462,32 @@ local function UpdateBuffs(self, unit, filter, showAll)
                 if #unitframe.SortBuffs > 0 then
                     table_sort(unitframe.SortBuffs, SortMethodFunction);
 
+                    local firstBuffIndex, lastBuff;
+
                     for i, data in ipairs(unitframe.SortBuffs) do
                         if self.buffList[data.buffIndex] then
                             self.buffList[data.buffIndex]:ClearAllPoints();
 
                             if AURAS_DIRECTION == 1 then
                                 self.buffList[data.buffIndex]:SetPoint('TOPLEFT', (i - 1) * (20 + SPACING_X), 0);
-                            else
+                            elseif AURAS_DIRECTION == 2 then
                                 self.buffList[data.buffIndex]:SetPoint('TOPRIGHT', -((i - 1) * (20 + SPACING_X)), 0);
+                            else
+                                if i == 1 then
+                                    firstBuffIndex = data.buffIndex;
+                                end
+
+                                self.buffList[firstBuffIndex]:SetPoint('TOP', -(self.buffList[firstBuffIndex]:GetWidth()/2)*(i-1), 0);
+
+                                if i > 1 and firstBuffIndex ~= data.buffIndex then
+                                    if lastBuff then
+                                        self.buffList[data.buffIndex]:SetPoint('TOPLEFT', lastBuff, 'TOPRIGHT', SPACING_X, 0);
+                                        lastBuff = self.buffList[data.buffIndex];
+                                    else
+                                        self.buffList[data.buffIndex]:SetPoint('TOPLEFT', self.buffList[firstBuffIndex], 'TOPRIGHT', SPACING_X, 0);
+                                        lastBuff = self.buffList[data.buffIndex];
+                                    end
+                                end
                             end
                         end
                     end
@@ -474,8 +498,14 @@ local function UpdateBuffs(self, unit, filter, showAll)
 
                     if AURAS_DIRECTION == 1 then
                         self.buffList[i]:SetPoint('TOPLEFT', (i - 1) * (20 + SPACING_X), 0);
-                    else
+                    elseif AURAS_DIRECTION == 2 then
                         self.buffList[i]:SetPoint('TOPRIGHT', -((i - 1) * (20 + SPACING_X)), 0);
+                    else
+                        self.buffList[1]:SetPoint('TOP', -(self.buffList[1]:GetWidth()/2)*(i-1), 0);
+
+                        if i > 1 then
+                            self.buffList[i]:SetPoint('TOPLEFT', self.buffList[i - 1], 'TOPRIGHT', SPACING_X, 0);
+                        end
                     end
                 end
             end

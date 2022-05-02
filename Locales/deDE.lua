@@ -77,6 +77,7 @@ L['FRAME_STRATA_INHERIT'] = 'Übertragen';
 
 L['AURAS_DIRECTON_LEFT_TO_RIGHT'] = 'Von links nach rechts';
 L['AURAS_DIRECTON_RIGHT_TO_LEFT'] = 'Von rechts nach links';
+L['AURAS_DIRECTON_CENTER'] = 'Center';
 
 L['AURAS_SORT_EXPIRES_ASC'] = 'Weniger Zeit';
 L['AURAS_SORT_EXPIRES_DESC'] = 'Längere Zeit';
