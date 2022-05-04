@@ -986,7 +986,7 @@ do
     end
 end
 
-local function RenameDefaultProfile()
+function Module:RenameDefaultProfile()
     StripesDB.profiles[O.PROFILE_DEFAULT_ID].profileName = O.PROFILE_DEFAULT_NAME;
 
     if O.activeProfileId == O.PROFILE_DEFAULT_ID then
@@ -994,9 +994,9 @@ local function RenameDefaultProfile()
     end
 end
 
-local function CleanUp()
+function Module:CleanUp()
     for pId, _ in pairs(StripesDB.profiles) do
-        -- 1.26.1
+        -- 1.27
         StripesDB.profiles[pId].current_target_custom_texture_overlay_alpha = nil;
         StripesDB.profiles[pId].current_target_custom_texture_overlay_alpha_mode = nil;
         StripesDB.profiles[pId].current_focus_custom_texture_overlay_alpha = nil;
@@ -1012,7 +1012,7 @@ local function CleanUp()
     end
 end
 
-local function Migration_ColorsAndCategories()
+function Module:Migration_ColorsAndCategories()
     for pId, _ in pairs(StripesDB.profiles) do
         -- Color categories
         if StripesDB.profiles[pId].color_category_data then
@@ -1105,6 +1105,10 @@ local function Migration_ColorsAndCategories()
     end
 end
 
+function Module:RunMigrations()
+    self:Migration_ColorsAndCategories();
+end
+
 function Module:StartUp()
     StripesDB.freqUsed = StripesDB.freqUsed or {};
 
@@ -1143,17 +1147,17 @@ function Module:StartUp()
     end
 
     -- Rename default profile when switching client language
-    RenameDefaultProfile();
+    self:RenameDefaultProfile();
 
     local majorVersion, minorVersion = strsplit('.', (StripesDB.version or ''));
     majorVersion, minorVersion = tonumber(majorVersion or 0) or 0, tonumber(minorVersion or 0) or 0;
 
     -- migration to 1.24
     if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 24) then
-        Migration_ColorsAndCategories();
+        self:Migration_ColorsAndCategories();
     end
 
-    CleanUp();
+    self:CleanUp();
 
     StripesDB.version = S.Version;
 end

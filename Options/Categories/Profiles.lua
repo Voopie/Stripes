@@ -216,10 +216,14 @@ local function ImportProfile(name, data)
     panel.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
 
     O.UpdatePanelAll();
+
     S:GetNameplateModule('Handler'):CVarsUpdate();
     S:GetNameplateModule('Handler'):UpdateAll();
 
     O.frame.TopBar.CurrentProfileName:SetText(O.activeProfileName);
+
+    Options:RunMigrations();
+    Options:CleanUp();
 
     collectgarbage('collect');
 end
