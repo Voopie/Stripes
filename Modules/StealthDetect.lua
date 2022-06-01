@@ -72,6 +72,12 @@ local units = {
     [104278] = true, -- Felbound Enforcer (Court of Stars)
     [105699] = true, -- Mana Saber (Court of Stars)
 
+    -- BfA
+    -- Dungeons
+    [150254] = true, -- Scraphound (Operation Mechagon: JY)
+    [150292] = true, -- Mechagon Cavalry (Operation Mechagon: JY)
+    [144298] = true, -- Defense Bot Mk III (Operation Mechagon: UP)
+
     -- Shadowlands
     -- Dungeons
     [164563] = true, -- Vicious Gargon (Halls of Atonement)
