@@ -507,7 +507,7 @@ local function CreateListRow(b)
             self.npc_name = U.GetNpcNameByID(self.npc_id);
             self.tooltip = string.format(LIST_TOOLTIP_PATTERN, self.npc_name, self.npc_id);
 
-            self.NameText:SetText(self.name);
+            self.NameText:SetText(self.npc_name);
         end
 
         if self.npc_name ~= UNKNOWN and not D.ModelBlacklist[self.npc_id] then
