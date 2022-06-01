@@ -35,6 +35,8 @@ local HelpfulList = {
     [209859] = true, -- Mythic Plus Affix: Bolstering
     [343502] = true, -- Mythic Plus Affix: Inspiring
     [228318] = true, -- Mythic Plus Affix: Raging
+    [373011] = true, -- Affix SL S4: Disguised
+    [373785] = true, -- Affix SL S4: Disguised
 
     -- Shadowlands
     [324085] = true, -- Theater of Pain (Enrage)
