@@ -20,6 +20,8 @@ local NP = S.NamePlates;
 -- Local Config
 local ENABLED, SIZE, COUNTDOWN_ENABLED, CASTER_NAME_SHOW, FRAME_STRATA;
 local POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
+local DRAW_SWIPE, DRAW_EDGE;
+local SHOW_INTERRUPTED_ICON;
 
 local StripesSpellInterruptedCooldownFont = CreateFont('StripesSpellInterruptedCooldownFont');
 local StripesSpellInterruptedCasterFont   = CreateFont('StripesSpellInterruptedCasterFont');
@@ -79,6 +81,8 @@ local function Create(unitframe)
     frame.cooldown = CreateFrame('Cooldown', nil, frame, 'CooldownFrameTemplate');
     frame.cooldown:SetAllPoints(frame.icon);
     frame.cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+    frame.cooldown:SetDrawEdge(DRAW_EDGE);
+    frame.cooldown:SetDrawSwipe(DRAW_SWIPE);
     frame.cooldown:GetRegions():SetFontObject(StripesSpellInterruptedCooldownFont);
     frame.cooldown:HookScript('OnCooldownDone', function(self)
         self:GetParent().expTime = 0;
@@ -100,6 +104,8 @@ end
 local function Update(unitframe)
     if ENABLED then
         unitframe.SpellInterrupted.cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+        unitframe.SpellInterrupted.cooldown:SetDrawEdge(DRAW_EDGE);
+        unitframe.SpellInterrupted.cooldown:SetDrawSwipe(DRAW_SWIPE);
 
         if FRAME_STRATA == 1 then
             unitframe.SpellInterrupted:SetFrameStrata(unitframe.SpellInterrupted:GetParent():GetFrameStrata());
@@ -130,7 +136,8 @@ local function UpdateByAura(unitframe)
     end
 
     unitframe.SpellInterrupted.icon:SetTexture(icon);
-    CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, expirationTime - duration, duration, duration > 0, true);
+
+    CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, expirationTime - duration, duration, duration > 0, DRAW_EDGE);
 
     unitframe.SpellInterrupted.expTime  = expirationTime;
     unitframe.SpellInterrupted.destGUID = unitframe.data.unitGUID;
@@ -146,7 +153,7 @@ local function UpdateByAura(unitframe)
     unitframe.SpellInterrupted:SetShown(true);
 end
 
-local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName)
+local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId)
     if not spellId then
         unitframe.SpellInterrupted.expTime  = 0;
         unitframe.SpellInterrupted.destGUID = nil;
@@ -156,7 +163,8 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName)
 
     local duration = durations[spellId] or DEFAULT_DURATION;
 
-    unitframe.SpellInterrupted.icon:SetTexture(GetSpellTexture(spellId));
+    unitframe.SpellInterrupted.icon:SetTexture(GetSpellTexture(SHOW_INTERRUPTED_ICON and extraSpellId or spellId));
+
     CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, GetTime(), duration, duration > 0, true);
 
     unitframe.SpellInterrupted.expTime  = GetTime() + duration;
@@ -184,12 +192,12 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName)
 end
 
 function Module:COMBAT_LOG_EVENT_UNFILTERED()
-    local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId = CombatLogGetCurrentEventInfo();
+    local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId, _, _, extraSpellId = CombatLogGetCurrentEventInfo();
 
     if subEvent == 'SPELL_INTERRUPT' then
         for _, unitframe in pairs(NP) do
             if unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
-                OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName);
+                OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId);
             end
         end
     end
@@ -227,6 +235,11 @@ function Module:UpdateLocalConfig()
     RELATIVE_POINT = O.Lists.frame_points[O.db.spell_interrupted_icon_relative_point] or 'RIGHT';
     OFFSET_X       = O.db.spell_interrupted_icon_offset_x;
     OFFSET_Y       = O.db.spell_interrupted_icon_offset_y;
+
+    DRAW_SWIPE = O.db.spell_interrupted_icon_cooldown_draw_swipe;
+    DRAW_EDGE  = O.db.spell_interrupted_icon_cooldown_draw_edge;
+
+    SHOW_INTERRUPTED_ICON = O.db.spell_interrupted_icon_show_interrupted_icon;
 
     UpdateFontObject(StripesSpellInterruptedCooldownFont, O.db.spell_interrupted_icon_countdown_font_value, O.db.spell_interrupted_icon_countdown_font_size, O.db.spell_interrupted_icon_countdown_font_flag, O.db.spell_interrupted_icon_countdown_font_shadow);
     UpdateFontObject(StripesSpellInterruptedCasterFont, O.db.spell_interrupted_icon_caster_name_font_value, O.db.spell_interrupted_icon_caster_name_font_size, O.db.spell_interrupted_icon_caster_name_font_flag, O.db.spell_interrupted_icon_caster_name_font_shadow);

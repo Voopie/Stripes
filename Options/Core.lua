@@ -703,6 +703,9 @@ O.DefaultValues = {
     spell_interrupted_icon_caster_name_font_size   = 6,
     spell_interrupted_icon_caster_name_font_flag   = 1, -- NONE
     spell_interrupted_icon_caster_name_font_shadow = true,
+    spell_interrupted_icon_cooldown_draw_swipe = true,
+    spell_interrupted_icon_cooldown_draw_edge = true,
+    spell_interrupted_icon_show_interrupted_icon = false,
 
     pvp_healers_enabled    = true,
     pvp_healers_sound      = false,

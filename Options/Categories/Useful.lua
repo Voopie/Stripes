@@ -321,8 +321,19 @@ panel.Load = function(self)
     self.SpellInterruptedIconPositionOptions.OpenButton:SetPosition('LEFT', self.spell_interrupted_icon_size, 'RIGHT', 16, 0);
     self.SpellInterruptedIconPositionOptions.OpenButton:SetLabel(L['POSITION_OPTIONS']);
 
+    self.spell_interrupted_icon_show_interrupted_icon = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.spell_interrupted_icon_show_interrupted_icon:SetPosition('TOPLEFT', self.spell_interrupted_icon, 'BOTTOMLEFT', 0, -8);
+    self.spell_interrupted_icon_show_interrupted_icon:SetLabel(L['OPTIONS_SPELL_INTERRUPTED_ICON_SHOW_INTERRUPTED_ICON']);
+    self.spell_interrupted_icon_show_interrupted_icon:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_SHOW_INTERRUPTED_ICON_TOOLTIP']);
+    self.spell_interrupted_icon_show_interrupted_icon:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_SHOW_INTERRUPTED_ICON_TOOLTIP'], self.Tabs[3]);
+    self.spell_interrupted_icon_show_interrupted_icon:SetChecked(O.db.spell_interrupted_icon_show_interrupted_icon);
+    self.spell_interrupted_icon_show_interrupted_icon.Callback = function(self)
+        O.db.spell_interrupted_icon_show_interrupted_icon = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellInterruptedTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.spell_interrupted_icon, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.spell_interrupted_icon_show_interrupted_icon, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.spell_interrupted_countdown_text = E.CreateFontString(self.TabsFrames['SpellInterruptedTab'].Content);
@@ -337,6 +348,28 @@ panel.Load = function(self)
     self.spell_interrupted_icon_countdown_show:SetChecked(O.db.spell_interrupted_icon_countdown_show);
     self.spell_interrupted_icon_countdown_show.Callback = function(self)
         O.db.spell_interrupted_icon_countdown_show = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.spell_interrupted_icon_cooldown_draw_swipe = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.spell_interrupted_icon_cooldown_draw_swipe:SetPosition('LEFT', self.spell_interrupted_icon_countdown_show.Label, 'RIGHT', 12, 0);
+    self.spell_interrupted_icon_cooldown_draw_swipe:SetLabel(L['OPTIONS_SPELL_INTERRUPTED_ICON_COOLDOWN_DRAW_SWIPE']);
+    self.spell_interrupted_icon_cooldown_draw_swipe:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_COOLDOWN_DRAW_SWIPE_TOOLTIP']);
+    self.spell_interrupted_icon_cooldown_draw_swipe:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COOLDOWN_DRAW_SWIPE_TOOLTIP'], self.Tabs[3]);
+    self.spell_interrupted_icon_cooldown_draw_swipe:SetChecked(O.db.spell_interrupted_icon_cooldown_draw_swipe);
+    self.spell_interrupted_icon_cooldown_draw_swipe.Callback = function(self)
+        O.db.spell_interrupted_icon_cooldown_draw_swipe = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.spell_interrupted_icon_cooldown_draw_edge = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.spell_interrupted_icon_cooldown_draw_edge:SetPosition('LEFT', self.spell_interrupted_icon_cooldown_draw_swipe.Label, 'RIGHT', 12, 0);
+    self.spell_interrupted_icon_cooldown_draw_edge:SetLabel(L['OPTIONS_SPELL_INTERRUPTED_ICON_COOLDOWN_DRAW_EDGE']);
+    self.spell_interrupted_icon_cooldown_draw_edge:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_COOLDOWN_DRAW_EDGE_TOOLTIP']);
+    self.spell_interrupted_icon_cooldown_draw_edge:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COOLDOWN_DRAW_EDGE_TOOLTIP'], self.Tabs[3]);
+    self.spell_interrupted_icon_cooldown_draw_edge:SetChecked(O.db.spell_interrupted_icon_cooldown_draw_edge);
+    self.spell_interrupted_icon_cooldown_draw_edge.Callback = function(self)
+        O.db.spell_interrupted_icon_cooldown_draw_edge = self:GetChecked();
         Stripes:UpdateAll();
     end
 
@@ -391,7 +424,7 @@ panel.Load = function(self)
     self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_size):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_value, 'RIGHT', 12, 0);
     self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_flag):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_size, 'RIGHT', 12, 0);
     self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_shadow):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_flag, 'RIGHT', 12, 0);
-    self.SpellInterruptedIconFontOptions.OpenButton:SetPosition('LEFT', self.spell_interrupted_icon_countdown_show.Label, 'RIGHT', 16, 0);
+    self.SpellInterruptedIconFontOptions.OpenButton:SetPosition('LEFT', self.spell_interrupted_icon_cooldown_draw_edge.Label, 'RIGHT', 16, 0);
     self.SpellInterruptedIconFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellInterruptedTab'].Content);
