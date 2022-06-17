@@ -34,6 +34,7 @@ local HelpfulList = {
     [226510] = true, -- Mythic Plus Affix: Sanguine
     [209859] = true, -- Mythic Plus Affix: Bolstering
     [343502] = true, -- Mythic Plus Affix: Inspiring
+    [343503] = true, -- Mythic Plus Affix: Inspiring (Inspired)
     [228318] = true, -- Mythic Plus Affix: Raging
     [373011] = true, -- Affix SL S4: Disguised
     [373785] = true, -- Affix SL S4: Disguised
