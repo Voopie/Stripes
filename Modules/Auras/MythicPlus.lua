@@ -50,6 +50,7 @@ local HelpfulList = {
     [326450] = true, -- Halls of Atonement (Loyal Beasts)
     [328015] = true, -- Plaguefall (Wonder Grow)
     [343470] = true, -- The Necrotic Wake (Skeletal Marauder)
+    [355147] = true, -- Tazavesh: So'leah's Gambit (Fish Invigoration)
 };
 
 local HarmfulList = {
