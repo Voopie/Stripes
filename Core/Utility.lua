@@ -192,7 +192,7 @@ do
         end
 
         if O.db.health_bar_color_class_use then
-            class = O.db['health_bar_color_class_' .. class];
+            class = O.db['health_bar_color_class_' .. (class or '')];
         else
             class = (CUSTOM_CLASS_COLORS or RAID_CLASS_COLORS)[class];
         end
