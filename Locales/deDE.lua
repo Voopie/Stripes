@@ -29,6 +29,7 @@ L['NOT_CHOSEN'] = 'Nicht ausgewählt';
 L['SPACING'] = 'Abstände';
 L['BACKGROUND'] = 'Hintergrund';
 L['MAX_SHORT'] = 'Max .';
+L['SECOND_SHORT'] = 's.';
 
 L['FONT_OPTIONS'] = 'Schriftart';
 L['POSITION_OPTIONS'] = 'Position';

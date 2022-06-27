@@ -2,6 +2,9 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('MythicPlusSpiteful');
 local Stripes = S:GetNameplateModule('Handler');
 
+-- Lua API
+local string_format = string.format;
+
 -- WoW API
 local UnitName = UnitName;
 
@@ -27,8 +30,11 @@ local function Create(unitframe)
     frame.icon:SetAllPoints();
     frame.icon:SetTexture(SPITEFUL_TEXTURE);
     frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+    frame.icon:Hide();
 
-    frame:SetShown(false);
+    frame.ttd = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
+    frame.ttd:SetPoint('TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', 0, 0);
+    frame.ttd:Hide();
 
     unitframe.Spiteful = frame;
 end
@@ -39,19 +45,25 @@ local function Update(unitframe)
     end
 
     if not ENABLED or unitframe.data.unitType == 'SELF' then
-        unitframe.Spiteful:SetShown(false);
+        unitframe.Spiteful.icon:Hide();
+        unitframe.Spiteful.ttd:Hide();
+
         return;
     end
 
     if unitframe:IsShown() then
         if ENABLED and unitframe.data.npcId == SPITEFUL_NPC_ID then
             if ONLY_ON_ME then
-                unitframe.Spiteful:SetShown(unitframe.data.targetName == PlayerData.Name);
+                unitframe.Spiteful.icon:SetShown(unitframe.data.targetName == PlayerData.Name);
             else
-                unitframe.Spiteful:SetShown(true);
+                unitframe.Spiteful.icon:Show();
             end
+
+            unitframe.Spiteful.ttd:SetText(string_format('%.1f%s', unitframe.data.healthPerF / 8, L['SECOND_SHORT']));
+            unitframe.Spiteful.ttd:Show();
         else
-            unitframe.Spiteful:SetShown(false);
+            unitframe.Spiteful.icon:Hide();
+            unitframe.Spiteful.ttd:Hide();
         end
     end
 end
@@ -75,7 +87,8 @@ end
 
 local function Reset(unitframe)
     if unitframe.Spiteful then
-        unitframe.Spiteful:SetShown(false);
+        unitframe.Spiteful.icon:Hide();
+        unitframe.Spiteful.ttd:Hide();
     end
 end
 

@@ -29,6 +29,7 @@ L['NOT_CHOSEN'] = 'Не выбрано';
 L['SPACING'] = 'Промежуток';
 L['BACKGROUND'] = 'Фон';
 L['MAX_SHORT'] = 'Макс.';
+L['SECOND_SHORT'] = 'c.';
 
 L['FONT_OPTIONS'] = 'Шрифт';
 L['POSITION_OPTIONS'] = 'Позиция';
