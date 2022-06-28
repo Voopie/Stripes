@@ -36,6 +36,7 @@ local HelpfulList = {
     [343502] = true, -- Mythic Plus Affix: Inspiring
     [343503] = true, -- Mythic Plus Affix: Inspiring (Inspired)
     [228318] = true, -- Mythic Plus Affix: Raging
+    [343553] = true, -- Mythic Plus Affix: All-Consuming Spite (Spiteful)
     [373011] = true, -- Affix SL S4: Disguised
     [373785] = true, -- Affix SL S4: Disguised
 
@@ -185,7 +186,7 @@ local function Update(unitframe)
     end);
 
     local aura;
-    for _, spell in pairs(unitframe.AurasMythicPlus.buffCompact) do
+    for sId, spell in pairs(unitframe.AurasMythicPlus.buffCompact) do
         aura = unitframe.AurasMythicPlus.buffList[buffIndex];
 
         if not aura then
@@ -246,14 +247,19 @@ local function Update(unitframe)
 
         if spell.count > 1 then
             aura.CountFrame.Count:SetText(spell.count);
-            aura.CountFrame.Count:SetShown(true);
+            aura.CountFrame.Count:Show();
         else
-            aura.CountFrame.Count:SetShown(false);
+            aura.CountFrame.Count:Hide();
         end
 
-        CooldownFrame_Set(aura.Cooldown, spell.expirationTime - spell.duration, spell.duration, spell.duration > 0, DRAW_EDGE);
+        if sId == 343553 then
+            local dur = tonumber(string.format('%.0f', unitframe.data.healthPerF / 8));
+            CooldownFrame_Set(aura.Cooldown, GetTime(), dur, dur > 0, DRAW_EDGE);
+        else
+            CooldownFrame_Set(aura.Cooldown, spell.expirationTime - spell.duration, spell.duration, spell.duration > 0, DRAW_EDGE);
+        end
 
-        aura:SetShown(true);
+        aura:Show();
 
         buffIndex = buffIndex + 1;
 
@@ -264,7 +270,7 @@ local function Update(unitframe)
 
     for i = buffIndex, BUFF_MAX_DISPLAY do
         if unitframe.AurasMythicPlus.buffList[i] then
-            unitframe.AurasMythicPlus.buffList[i]:SetShown(false);
+            unitframe.AurasMythicPlus.buffList[i]:Hide();
         else
             break;
         end
@@ -272,13 +278,13 @@ local function Update(unitframe)
 
     if buffIndex > 1 then
         if not unitframe.AurasMythicPlus:IsShown() then
-            unitframe.AurasMythicPlus:SetShown(true);
+            unitframe.AurasMythicPlus:Show();
         end
 
         UpdateAnchor(unitframe);
     else
         if unitframe.AurasMythicPlus:IsShown() then
-            unitframe.AurasMythicPlus:SetShown(false);
+            unitframe.AurasMythicPlus:Show();
         end
     end
 end
@@ -432,4 +438,11 @@ end
 function Module:StartUp()
     self:UpdateLocalConfig();
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', UpdateAnchor);
+
+    -- All-Consuming Spite (Spiteful) timer update
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', function(self)
+        if self.data.npcId == 174773 then
+            Update(self);
+        end
+    end);
 end
