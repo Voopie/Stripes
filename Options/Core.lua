@@ -265,7 +265,7 @@ O.Lists = {
     }
 };
 
--- ~586
+-- ~587
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -659,6 +659,7 @@ O.DefaultValues = {
 
     spiteful_enabled         = true,
     spiteful_show_only_on_me = true,
+    spiteful_ttd_enabled     = false,
 
     mythic_plus_auto_slot_keystone = true,
 

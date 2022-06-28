@@ -199,6 +199,7 @@ panel.Load = function(self)
         O.db.spiteful_enabled = self:GetChecked();
 
         panel.spiteful_show_only_on_me:SetEnabled(O.db.spiteful_enabled);
+        panel.spiteful_ttd_enabled:SetEnabled(O.db.spiteful_enabled);
 
         Stripes:UpdateAll();
     end
@@ -212,6 +213,18 @@ panel.Load = function(self)
     self.spiteful_show_only_on_me:SetEnabled(O.db.spiteful_enabled);
     self.spiteful_show_only_on_me.Callback = function(self)
         O.db.spiteful_show_only_on_me = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.spiteful_ttd_enabled = E.CreateCheckButton(self);
+    self.spiteful_ttd_enabled:SetPosition('LEFT', self.spiteful_show_only_on_me.Label, 'RIGHT', 12, 0);
+    self.spiteful_ttd_enabled:SetLabel(L['OPTIONS_SPITEFUL_TTD_ENABLED']);
+    self.spiteful_ttd_enabled:SetTooltip(L['OPTIONS_SPITEFUL_TTD_ENABLED_TOOLTIP']);
+    self.spiteful_ttd_enabled:AddToSearch(button, L['OPTIONS_SPITEFUL_TTD_ENABLED_TOOLTIP']);
+    self.spiteful_ttd_enabled:SetChecked(O.db.spiteful_ttd_enabled);
+    self.spiteful_ttd_enabled:SetEnabled(O.db.spiteful_enabled);
+    self.spiteful_ttd_enabled.Callback = function(self)
+        O.db.spiteful_ttd_enabled = self:GetChecked();
         Stripes:UpdateAll();
     end
 

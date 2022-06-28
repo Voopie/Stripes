@@ -9,7 +9,7 @@ local string_format = string.format;
 local UnitName = UnitName;
 
 -- Local config
-local ENABLED, ONLY_ON_ME;
+local ENABLED, ONLY_ON_ME, TTD;
 
 local PlayerData = D.Player;
 
@@ -59,8 +59,12 @@ local function Update(unitframe)
                 unitframe.Spiteful.icon:Show();
             end
 
-            unitframe.Spiteful.ttd:SetText(string_format('%.1f%s', unitframe.data.healthPerF / 8, L['SECOND_SHORT']));
-            unitframe.Spiteful.ttd:Show();
+            if TTD then
+                unitframe.Spiteful.ttd:SetText(string_format('%.1f%s', unitframe.data.healthPerF / 8, L['SECOND_SHORT']));
+                unitframe.Spiteful.ttd:Show();
+            else
+                unitframe.Spiteful.ttd:Hide();
+            end
         else
             unitframe.Spiteful.icon:Hide();
             unitframe.Spiteful.ttd:Hide();
@@ -81,6 +85,10 @@ local function OnUpdate(unitframe)
 
     if unitframe.data.targetName ~= name then
         unitframe.data.targetName = name;
+        Update(unitframe);
+    end
+
+    if TTD then
         Update(unitframe);
     end
 end
@@ -108,6 +116,7 @@ end
 function Module:UpdateLocalConfig()
     ENABLED    = O.db.spiteful_enabled;
     ONLY_ON_ME = O.db.spiteful_show_only_on_me;
+    TTD        = O.db.spiteful_ttd_enabled;
 
     if ENABLED then
         Stripes.Updater:Add('MythicPlusSpiteful', OnUpdate);
