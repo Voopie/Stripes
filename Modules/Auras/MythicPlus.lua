@@ -56,6 +56,7 @@ local HelpfulList = {
 
 local HarmfulList = {
     [323059] = true, -- Mists of Tirna Scithe (Droman's Wrath)
+    [340191] = true, -- Mists of Tirna Scithe (Rejuvenating Radiance)
 };
 
 local PlayerState = D.Player.State;
