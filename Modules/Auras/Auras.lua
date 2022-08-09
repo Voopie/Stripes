@@ -279,13 +279,13 @@ local function FilterShouldShowBuff(name, spellId, caster, nameplateShowPersonal
         end
     elseif XLIST_MODE == 3 then -- WHITELIST
         if whitelistAurasNameCache[name] then
-            return true;
+            return units[caster];
         elseif O.db.auras_whitelist[name] and O.db.auras_whitelist[name].enabled then
             whitelistAurasNameCache[name] = spellId;
-            return true;
+            return units[caster];
         elseif spellId and O.db.auras_whitelist[spellId] and O.db.auras_whitelist[spellId].enabled then
             whitelistAurasNameCache[name] = spellId;
-            return true;
+            return units[caster];
         end
 
         return false;
