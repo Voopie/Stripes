@@ -233,12 +233,129 @@ function StripesCastingBar_OnLoad(self, unit, showTradeSkills, showShield)
     StripesCastingBar_SetUseStartColorForFlash(self, true);
     StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield);
 
+    self.StagePoints = {};
+	self.StagePips = {};
+
     self.showCastbar = true;
 
     local point, _, _, _, offsetY = self.Spark:GetPoint();
     if point == 'CENTER' then
         self.Spark.offsetY = offsetY;
     end
+end
+
+local CASTBAR_STAGE_INVALID = -1;
+local CASTBAR_STAGE_DURATION_INVALID = -1;
+local CASTBAR_STAGE_WIDTH = 195;
+local CASTBAR_STAGE_MIN_OFFSET = CASTBAR_STAGE_WIDTH / -2;
+local CASTBAR_STAGE_MAX_OFFSET = CASTBAR_STAGE_WIDTH / 2;
+
+function StripesCastingBar_AddStages(self, numStages)
+	self.CurrSpellStage = CASTBAR_STAGE_INVALID;
+	self.NumStages = numStages;
+
+	local sumDuration = 0;
+
+	self.StagePoints = {};
+	self.StagePips = {};
+
+	local hasFX = self.StandardFinish ~= nil;
+	local stageMaxValue = self.maxValue * 1000;
+
+	for i = 1, self.NumStages, 1 do
+		local duration = GetEmpowerStageDuration(i-1);
+
+		if duration > CASTBAR_STAGE_DURATION_INVALID then
+			sumDuration = sumDuration + duration;
+
+			local portion = sumDuration / stageMaxValue;
+			local offset = (CASTBAR_STAGE_WIDTH * portion) + CASTBAR_STAGE_MIN_OFFSET;
+
+			self.StagePoints[i] = sumDuration;
+			if offset > CASTBAR_STAGE_MIN_OFFSET and offset <= CASTBAR_STAGE_MAX_OFFSET then
+				local stagePipName = 'StagePip' .. i;
+				local stagePip = self[stagePipName];
+
+				if not stagePip then
+					stagePip = CreateFrame('Frame', nil, self, hasFX and 'CastingBarFrameStagePipFXTemplate' or 'CastingBarFrameStagePipTemplate');
+					self[stagePipName] = stagePip;
+				end
+
+				if stagePip then
+					table.insert(self.StagePips, stagePip);
+
+					stagePip:ClearAllPoints();
+					stagePip:SetPoint('TOP', offset, 0.5);
+					stagePip:SetPoint('BOTTOM', offset, 0);
+
+					if i == self.NumStages then
+						stagePip:SetPoint('RIGHT', 0, 0);
+					end
+
+					stagePip:Show();
+					stagePip.BasePip:SetShown(i ~= self.NumStages);
+					stagePip.BasePipGlow:Hide();
+				end
+			end
+		end
+	end
+end
+
+function StripesCastingBar_UpdateStage(self)
+    local maxStage = 0;
+	local stageValue = self.value*1000;
+	for i = 1, self.NumStages do
+		if self.StagePoints[i] then
+			if stageValue > self.StagePoints[i] then
+				maxStage = i;
+			else
+				break;
+			end
+		end
+	end
+
+    if maxStage ~= self.CurrSpellStage and maxStage > CASTBAR_STAGE_INVALID and maxStage <= self.NumStages then
+		self.CurrSpellStage = maxStage;
+
+		if maxStage < self.NumStages then
+			local stagePip = self.StagePips[maxStage];
+			if stagePip then
+				stagePip.BasePipGlow:SetShown(maxStage < self.NumStages);
+
+				for i = 1, maxStage do
+					local stageAnimName = 'Stage' .. i;
+					local stageAnim = stagePip[stageAnimName];
+					if stageAnim then
+						stageAnim:Play();
+					end
+				end
+			end
+		end
+
+		if maxStage == self.NumStages then
+			self:PlayFinishAnim();
+		end
+	end
+end
+
+function StripesCastingBar_ClearStages(self)
+	for _, stagePip in pairs(self.StagePips) do
+		local maxStage = self.NumStages;
+
+		for i = 1, maxStage do
+			local stageAnimName = 'Stage' .. i;
+			local stageAnim = stagePip[stageAnimName];
+			if stageAnim then
+				stageAnim:Stop();
+			end
+		end
+
+		stagePip:Hide();
+	end
+
+	self.NumStages = 0;
+
+	wipe(self.StagePoints);
 end
 
 function StripesCastingBar_SetStartCastColor(self, r, g, b, a)
@@ -399,6 +516,8 @@ function StripesCastingBar_OnEvent(self, event, ...)
         local startColor = StripesCastingBar_GetEffectiveStartColor(self, false, notInterruptible);
         self:SetStatusBarColor(startColor:GetRGBA());
 
+        StripesCastingBar_ClearStages(self);
+
         if self.flashColorSameAsStart then
             self.Flash:SetVertexColor(startColor:GetRGB());
         else
@@ -482,6 +601,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
                 self.Flash:Show();
             end
 
+            if not self.reverseChanneling and not self.channeling then
+				self:SetValue(self.maxValue);
+			end
+
             if self.InterruptReadyTick then
                 self.InterruptReadyTick:Hide();
             end
@@ -557,6 +680,8 @@ function StripesCastingBar_OnEvent(self, event, ...)
             if not self.casting then
                 self:SetStatusBarColor(StripesCastingBar_GetEffectiveStartColor(self, false, notInterruptible):GetRGBA());
 
+                StripesCastingBar_ClearStages(self);
+
                 if self.Spark then
                     self.Spark:Show();
                 end
@@ -587,6 +712,8 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
         local isChargeSpell = numStages > 0;
 
+        self.maxValue = (endTime - startTime) / 1000;
+
         local startColor = StripesCastingBar_GetEffectiveStartColor(self, true, notInterruptible);
         if self.flashColorSameAsStart then
             self.Flash:SetVertexColor(startColor:GetRGB());
@@ -595,8 +722,22 @@ function StripesCastingBar_OnEvent(self, event, ...)
         end
 
         self:SetStatusBarColor(startColor:GetRGBA());
-        self.value = (endTime / 1000) - GetTime();
-        self.maxValue = (endTime - startTime) / 1000;
+
+
+        StripesCastingBar_ClearStages(self);
+
+        if isChargeSpell then
+			StripesCastingBar_AddStages(self, numStages);
+
+			self.value = (startTime / 1000) - GetTime();
+
+			if self.Spark then
+                self.Spark:Show();
+            end
+		else
+			self.value = (endTime / 1000) - GetTime();
+		end
+
         self:SetMinMaxValues(0, self.maxValue);
         self:SetValue(self.value);
 
@@ -734,12 +875,30 @@ function StripesCastingBar_UpdateInterruptibleState(self, notInterruptible)
 end
 
 function StripesCastingBar_OnUpdate(self, elapsed)
-    if self.casting then
+    if self.casting  or self.reverseChanneling then
         self.value = self.value + elapsed;
+
+        if self.reverseChanneling and self.NumStages > 0 then
+			StripesCastingBar_UpdateStage();
+		end
 
         if self.value >= self.maxValue then
             self:SetValue(self.maxValue);
-            StripesCastingBar_FinishSpell(self);
+
+
+            if not self.reverseChanneling then
+				StripesCastingBar_FinishSpell(self);
+			else
+				if self.FlashLoopingAnim and not self.FlashLoopingAnim:IsPlaying() then
+					self.FlashLoopingAnim:Play();
+					self.Flash:Show();
+				end
+			end
+
+            if self.Spark then
+                self.Spark:Hide();
+            end
+
             return;
         end
 
@@ -747,11 +906,6 @@ function StripesCastingBar_OnUpdate(self, elapsed)
 
         if self.Flash then
             self.Flash:Hide();
-        end
-
-        if self.Spark then
-            local sparkPosition = (self.value / self.maxValue) * self:GetWidth();
-            self.Spark:SetPoint('CENTER', self, 'LEFT', sparkPosition, self.Spark.offsetY or 2);
         end
 
         if self.TargetText then
@@ -808,6 +962,13 @@ function StripesCastingBar_OnUpdate(self, elapsed)
             self:Hide();
         end
     end
+
+    if self.casting or self.reverseChanneling or self.channeling then
+		if self.Spark then
+			local sparkPosition = (self.value / self.maxValue) * self:GetWidth();
+			self.Spark:SetPoint('CENTER', self, 'LEFT', sparkPosition, self.Spark.offsetY or 2);
+		end
+	end
 end
 
 function StripesCastingBar_ApplyAlpha(self, alpha)
