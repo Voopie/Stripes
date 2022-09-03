@@ -29,7 +29,6 @@ local AURAS_DIRECTION, AURAS_MAX_DISPLAY;
 local StripesAurasCustomCooldownFont = CreateFont('StripesAurasCustomCooldownFont');
 local StripesAurasCustomCountFont    = CreateFont('StripesAurasCustomCountFont');
 
-local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filterHelpful = 'HELPFUL';
 local filterHarmful = 'HARMFUL';
 
@@ -111,7 +110,7 @@ local function Update(unitframe)
     local index = 1;
 
     local _, buffName, texture, count, duration, expirationTime, spellId, source;
-    AuraUtil_ForEachAura(unitframe.AurasCustom.unit, filterHelpful, BUFF_MAX_DISPLAY, function(...)
+    AuraUtil_ForEachAura(unitframe.AurasCustom.unit, filterHelpful, nil, function(...)
         buffName, texture, count, _, duration, expirationTime, source, _, _, spellId = ...;
 
         if FilterShouldShowBuff(buffName, spellId, source) then
@@ -135,10 +134,10 @@ local function Update(unitframe)
 
         index = index + 1;
 
-        return index > BUFF_MAX_DISPLAY;
+        return index > AURAS_MAX_DISPLAY;
     end);
 
-    AuraUtil_ForEachAura(unitframe.AurasCustom.unit, filterHarmful, BUFF_MAX_DISPLAY, function(...)
+    AuraUtil_ForEachAura(unitframe.AurasCustom.unit, filterHarmful, nil, function(...)
         buffName, texture, count, _, duration, expirationTime, source, _, _, spellId = ...;
 
         if FilterShouldShowBuff(buffName, spellId, source) then
@@ -162,7 +161,7 @@ local function Update(unitframe)
 
         index = index + 1;
 
-        return index > BUFF_MAX_DISPLAY;
+        return index > AURAS_MAX_DISPLAY;
     end);
 
     local aura;
@@ -243,7 +242,7 @@ local function Update(unitframe)
         end
     end
 
-    for i = buffIndex, BUFF_MAX_DISPLAY do
+    for i = buffIndex, AURAS_MAX_DISPLAY do
         if unitframe.AurasCustom.buffList[i] then
             unitframe.AurasCustom.buffList[i]:SetShown(false);
         else

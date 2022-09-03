@@ -17,7 +17,7 @@ local GetQuestDifficultyColor = GetQuestDifficultyColor;
 local IsInGuild, GetGuildInfo = IsInGuild, GetGuildInfo;
 local IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map_GetBestMapForUnit = IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map.GetBestMapForUnit
 local GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell = GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell;
-local AuraUtil_ForEachAura, BUFF_MAX_DISPLAY = AuraUtil.ForEachAura, BUFF_MAX_DISPLAY;
+local AuraUtil_ForEachAura = AuraUtil.ForEachAura;
 
 -- WoW C API
 local C_MythicPlus_GetCurrentAffixes, C_ChallengeMode_GetActiveKeystoneInfo = C_MythicPlus.GetCurrentAffixes, C_ChallengeMode.GetActiveKeystoneInfo;
@@ -335,13 +335,12 @@ U.IsAffixActive = function(affixID)
 end
 
 U.UnitHasAura = function(unit, filter, neededAuraId)
-    local buffIndex = 1;
     local has = false;
     local name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod;
 
     local isTable = type(neededAuraId) == 'table';
 
-    AuraUtil_ForEachAura(unit, filter, BUFF_MAX_DISPLAY, function(...)
+    AuraUtil_ForEachAura(unit, filter, nil, function(...)
         name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = ...;
 
         if isTable then
@@ -356,7 +355,7 @@ U.UnitHasAura = function(unit, filter, neededAuraId)
             end
         end
 
-        return buffIndex > BUFF_MAX_DISPLAY;
+        return false;
     end);
 
     if has then

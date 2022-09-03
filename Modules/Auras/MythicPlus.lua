@@ -60,7 +60,6 @@ local HarmfulList = {
 };
 
 local PlayerState = D.Player.State;
-local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filterHelpful = 'HELPFUL';
 local filterHarmful = 'HARMFUL';
 
@@ -132,7 +131,7 @@ local function Update(unitframe)
     local index = 1;
 
     local _, buffName, texture, count, duration, expirationTime, spellId;
-    AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, filterHelpful, BUFF_MAX_DISPLAY, function(...)
+    AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, filterHelpful, nil, function(...)
         buffName, texture, count, _, duration, expirationTime, _, _, _, spellId = ...;
 
         if FilterShouldShowBuff(spellId, true, false) then
@@ -156,10 +155,10 @@ local function Update(unitframe)
 
         index = index + 1;
 
-        return index > BUFF_MAX_DISPLAY;
+        return index > AURAS_MAX_DISPLAY;
     end);
 
-    AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, filterHarmful, BUFF_MAX_DISPLAY, function(...)
+    AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, filterHarmful, nil, function(...)
         buffName, texture, count, _, duration, expirationTime, _, _, _, spellId = ...;
 
         if FilterShouldShowBuff(spellId, false, true) then
@@ -183,7 +182,7 @@ local function Update(unitframe)
 
         index = index + 1;
 
-        return index > BUFF_MAX_DISPLAY;
+        return index > AURAS_MAX_DISPLAY;
     end);
 
     local aura;
@@ -269,7 +268,7 @@ local function Update(unitframe)
         end
     end
 
-    for i = buffIndex, BUFF_MAX_DISPLAY do
+    for i = buffIndex, AURAS_MAX_DISPLAY do
         if unitframe.AurasMythicPlus.buffList[i] then
             unitframe.AurasMythicPlus.buffList[i]:Hide();
         else

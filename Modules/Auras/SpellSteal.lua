@@ -6,7 +6,7 @@ local Stripes = S:GetNameplateModule('Handler');
 local math_max = math.max;
 
 -- WoW API
-local CooldownFrame_Set, GetCVarBool, UnitIsUnit, GetTime, AuraUtil_ForEachAura = CooldownFrame_Set, GetCVarBool, UnitIsUnit, GetTime, AuraUtil.ForEachAura;
+local CooldownFrame_Set, UnitIsUnit, GetTime, AuraUtil_ForEachAura = CooldownFrame_Set, UnitIsUnit, GetTime, AuraUtil.ForEachAura;
 
 -- Stripes API
 local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
@@ -35,7 +35,6 @@ local LCG = S.Libraries.LCG;
 local StripesAurasSpellStealCooldownFont = CreateFont('StripesAurasSpellStealCooldownFont');
 local StripesAurasSpellStealCountFont    = CreateFont('StripesAurasSpellStealCountFont');
 
-local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HELPFUL';
 
 local MAX_OFFSET_Y = -9;
@@ -130,7 +129,7 @@ local function Update(unitframe)
     local _, texture, count, duration, expirationTime, isStealable;
     local aura;
 
-    AuraUtil_ForEachAura(unitframe.AurasSpellSteal.unit, unitframe.AurasSpellSteal.filter, BUFF_MAX_DISPLAY, function(...)
+    AuraUtil_ForEachAura(unitframe.AurasSpellSteal.unit, unitframe.AurasSpellSteal.filter, nil, function(...)
         _, texture, count, _, duration, expirationTime, _, isStealable = ...;
 
         if FilterShouldShowBuff(isStealable) then
@@ -220,7 +219,7 @@ local function Update(unitframe)
         return buffIndex > AURAS_MAX_DISPLAY;
     end);
 
-    for i = buffIndex, BUFF_MAX_DISPLAY do
+    for i = buffIndex, AURAS_MAX_DISPLAY do
         if unitframe.AurasSpellSteal.buffList[i] then
             unitframe.AurasSpellSteal.buffList[i]:SetShown(false);
         else

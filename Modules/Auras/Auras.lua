@@ -343,12 +343,8 @@ end
 
 local function UpdateBuffs(self, unit, filter, showAll)
     if not self.isActive then
-        for i = 1, BUFF_MAX_DISPLAY do
-            if self.buffList[i] then
-                self.buffList[i]:Hide();
-            else
-                break;
-            end
+        for _, buff in ipairs(self.buffList) do
+            buff:Hide();
         end
 
         return;
@@ -371,7 +367,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
         local _, name, texture, count, debuffType, duration, expirationTime, caster, nameplateShowPersonal, spellId, nameplateShowAll;
         local aura;
 
-        AuraUtil_ForEachAura(unit, filter, BUFF_MAX_DISPLAY, function(...)
+        AuraUtil_ForEachAura(unit, filter, nil, function(...)
             name, texture, count, debuffType, duration, expirationTime, caster, _, nameplateShowPersonal, spellId, _, _, _, nameplateShowAll = ...;
 
             if FilterShouldShowBuff(name, spellId, caster, nameplateShowPersonal, nameplateShowAll or showAll, isSelf) then
@@ -433,7 +429,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
             return buffIndex > AURAS_MAX_DISPLAY;
         end);
 
-        for i = buffIndex, BUFF_MAX_DISPLAY do
+        for i = buffIndex, AURAS_MAX_DISPLAY do
             if self.buffList[i] then
                 self.buffList[i]:Hide();
             else

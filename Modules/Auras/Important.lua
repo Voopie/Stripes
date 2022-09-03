@@ -41,7 +41,6 @@ local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCount
 local StripesAurasImportantCasterFont   = CreateFont('StripesAurasImportantCasterFont');
 
 local MAX_OFFSET_Y = -9;
-local BUFF_MAX_DISPLAY = BUFF_MAX_DISPLAY;
 local filter = 'HARMFUL';
 
 local additionalAuras = {
@@ -130,7 +129,7 @@ local function Update(unitframe)
     local index = 1;
 
     local _, texture, count, duration, expirationTime, source, spellId;
-    AuraUtil_ForEachAura(unitframe.ImportantAuras.unit, unitframe.ImportantAuras.filter, BUFF_MAX_DISPLAY, function(...)
+    AuraUtil_ForEachAura(unitframe.ImportantAuras.unit, unitframe.ImportantAuras.filter, nil, function(...)
         _, texture, count, _, duration, expirationTime, source, _, _, spellId = ...;
 
         if FilterShouldShowBuff(spellId) then
@@ -228,7 +227,7 @@ local function Update(unitframe)
         return buffIndex > AURAS_MAX_DISPLAY;
     end);
 
-    for i = buffIndex, BUFF_MAX_DISPLAY do
+    for i = buffIndex, AURAS_MAX_DISPLAY do
         if unitframe.ImportantAuras.buffList[i] then
             unitframe.ImportantAuras.buffList[i]:SetShown(false);
         else

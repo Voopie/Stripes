@@ -7,7 +7,7 @@ local UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSit
       UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer;
 local GetRaidTargetIndex = GetRaidTargetIndex;
-local AuraUtil_ForEachAura, BUFF_MAX_DISPLAY = AuraUtil.ForEachAura, BUFF_MAX_DISPLAY;
+local AuraUtil_ForEachAura = AuraUtil.ForEachAura;
 
 -- Stripes API
 local UnitIsTapped, IsPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.IsPlayer, U.IsPlayerEffectivelyTank;
@@ -386,11 +386,10 @@ end
 
 local function GetAuraColor(unit)
     local _, name, spellId;
-    local buffIndex = 1;
     local has = false;
     local color;
 
-    AuraUtil_ForEachAura(unit, 'PLAYER HARMFUL', BUFF_MAX_DISPLAY, function(...)
+    AuraUtil_ForEachAura(unit, 'PLAYER HARMFUL', nil, function(...)
         name, _, _, _, _, _, _, _, _, spellId = ...;
 
         local spellData = O.db.auras_hpbar_color_data[spellId] or O.db.auras_hpbar_color_data[name];
@@ -401,7 +400,7 @@ local function GetAuraColor(unit)
             return true;
         end
 
-        return buffIndex > BUFF_MAX_DISPLAY;
+        return false;
     end);
 
     if has then
