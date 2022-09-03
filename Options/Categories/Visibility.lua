@@ -233,7 +233,7 @@ panel.Load = function(self)
     Delimiter:SetW(self:GetWidth());
 
     self.show_personal_resource_ontarget = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.show_personal_resource_ontarget:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
+    self.show_personal_resource_ontarget:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -12);
     self.show_personal_resource_ontarget:SetLabel(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET']);
     self.show_personal_resource_ontarget:SetTooltip(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP']);
     self.show_personal_resource_ontarget:AddToSearch(button, L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET_TOOLTIP'], self.Tabs[1]);
@@ -251,7 +251,6 @@ panel.Load = function(self)
     self.class_bar_alpha:SetW(100);
     self.class_bar_alpha:SetValues(O.db.class_bar_alpha, 0, 1, 0.05);
     self.class_bar_alpha:SetLabel(L['ALPHA']);
-    self.class_bar_alpha:SetLabelPosition('LEFT');
     self.class_bar_alpha:SetTooltip(L['OPTIONS_CLASS_BAR_ALPHA_TOOLTIP']);
     self.class_bar_alpha:AddToSearch(button, L['OPTIONS_CLASS_BAR_ALPHA_TOOLTIP'], self.Tabs[1]);
     self.class_bar_alpha.OnValueChangedCallback = function(_, value)
@@ -264,7 +263,6 @@ panel.Load = function(self)
     self.class_bar_scale:SetW(100);
     self.class_bar_scale:SetValues(O.db.class_bar_scale, 0.25, 3, 0.05);
     self.class_bar_scale:SetLabel(L['SCALE']);
-    self.class_bar_scale:SetLabelPosition('LEFT');
     self.class_bar_scale:SetTooltip(L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP']);
     self.class_bar_scale:AddToSearch(button, L['OPTIONS_CLASS_BAR_SCALE_TOOLTIP'], self.Tabs[1]);
     self.class_bar_scale.OnValueChangedCallback = function(_, value)
@@ -296,7 +294,7 @@ panel.Load = function(self)
     self.class_bar_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.class_bar_offset_x:SetSize(120, 18);
     self.class_bar_offset_x:SetValues(O.db.class_bar_offset_x, -50, 50, 1);
-    self.class_bar_offset_x:SetLabel(L['OFFSET_X']);
+    self.class_bar_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.class_bar_offset_x:SetTooltip(L['OPTIONS_CLASS_BAR_OFFSET_X_TOOLTIP']);
     self.class_bar_offset_x.OnValueChangedCallback = function(_, value)
         O.db.class_bar_offset_x = tonumber(value);
@@ -306,7 +304,7 @@ panel.Load = function(self)
     self.class_bar_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.class_bar_offset_y:SetSize(120, 18);
     self.class_bar_offset_y:SetValues(O.db.class_bar_offset_y, -50, 50, 1);
-    self.class_bar_offset_y:SetLabel(L['OFFSET_Y']);
+    self.class_bar_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.class_bar_offset_y:SetTooltip(L['OPTIONS_CLASS_BAR_OFFSET_Y_TOOLTIP']);
     self.class_bar_offset_y.OnValueChangedCallback = function(_, value)
         O.db.class_bar_offset_y = tonumber(value);
@@ -314,8 +312,8 @@ panel.Load = function(self)
     end
 
     self.ClassBarPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
-    self.ClassBarPositionOptions:SetH(60);
-    self.ClassBarPositionOptions:Add(self.class_bar_point):SetPosition('TOPLEFT', self.ClassBarPositionOptions, 'TOPLEFT', 12, -26);
+    self.ClassBarPositionOptions:SetH(80);
+    self.ClassBarPositionOptions:Add(self.class_bar_point):SetPosition('TOPLEFT', self.ClassBarPositionOptions, 'TOPLEFT', 12, -32);
     self.ClassBarPositionOptions:Add(self.class_bar_relative_point):SetPosition('LEFT', self.class_bar_point, 'RIGHT', 12, 0);
     self.ClassBarPositionOptions:Add(self.class_bar_offset_x):SetPosition('LEFT', self.class_bar_relative_point, 'RIGHT', 12, 0);
     self.ClassBarPositionOptions:Add(self.class_bar_offset_y):SetPosition('LEFT', self.class_bar_offset_x, 'RIGHT', 12, 0);
@@ -327,7 +325,7 @@ panel.Load = function(self)
     Delimiter:SetW(self:GetWidth());
 
     self.classification_indicator_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
-    self.classification_indicator_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -8);
+    self.classification_indicator_enabled:SetPosition('TOPLEFT', Delimiter, 'BOTTOMLEFT', 0, -12);
     self.classification_indicator_enabled:SetLabel(L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED']);
     self.classification_indicator_enabled:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP']);
     self.classification_indicator_enabled:AddToSearch(button, L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED_TOOLTIP'], self.Tabs[1]);
@@ -352,7 +350,6 @@ panel.Load = function(self)
     self.classification_indicator_size:SetPosition('LEFT', self.classification_indicator_star.Label, 'RIGHT', 16, 0);
     self.classification_indicator_size:SetValues(O.db.classification_indicator_size, 2, 40, 1);
     self.classification_indicator_size:SetLabel(L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE']);
-    self.classification_indicator_size:SetLabelPosition('LEFT');
     self.classification_indicator_size:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE_TOOLTIP']);
     self.classification_indicator_size:AddToSearch(button, L['OPTIONS_CLASSIFICATION_INDICATOR_SIZE_TOOLTIP'], self.Tabs[1]);
     self.classification_indicator_size.OnValueChangedCallback = function(_, value)
@@ -384,6 +381,7 @@ panel.Load = function(self)
     self.classification_indicator_offset_x = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.classification_indicator_offset_x:SetSize(120, 18);
     self.classification_indicator_offset_x:SetValues(O.db.classification_indicator_offset_x, -50, 50, 1);
+    self.classification_indicator_offset_x:SetLabel(L['OFFSET_X_SHORT']);
     self.classification_indicator_offset_x:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_X_TOOLTIP']);
     self.classification_indicator_offset_x.OnValueChangedCallback = function(_, value)
         O.db.classification_indicator_offset_x = tonumber(value);
@@ -393,6 +391,7 @@ panel.Load = function(self)
     self.classification_indicator_offset_y = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
     self.classification_indicator_offset_y:SetSize(120, 18);
     self.classification_indicator_offset_y:SetValues(O.db.classification_indicator_offset_y, -50, 50, 1);
+    self.classification_indicator_offset_y:SetLabel(L['OFFSET_Y_SHORT']);
     self.classification_indicator_offset_y:SetTooltip(L['OPTIONS_CLASSIFICATION_INDICATOR_OFFSET_Y_TOOLTIP']);
     self.classification_indicator_offset_y.OnValueChangedCallback = function(_, value)
         O.db.classification_indicator_offset_y = tonumber(value);
@@ -400,8 +399,8 @@ panel.Load = function(self)
     end
 
     self.ClassificationIndicatorPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
-    self.ClassificationIndicatorPositionOptions:SetH(60);
-    self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_point):SetPosition('TOPLEFT', self.ClassificationIndicatorPositionOptions, 'TOPLEFT', 12, -20);
+    self.ClassificationIndicatorPositionOptions:SetH(80);
+    self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_point):SetPosition('TOPLEFT', self.ClassificationIndicatorPositionOptions, 'TOPLEFT', 12, -32);
     self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_relative_point):SetPosition('LEFT', self.classification_indicator_point, 'RIGHT', 12, 0);
     self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_offset_x):SetPosition('LEFT', self.classification_indicator_relative_point, 'RIGHT', 12, 0);
     self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_offset_y):SetPosition('LEFT', self.classification_indicator_offset_x, 'RIGHT', 12, 0);
