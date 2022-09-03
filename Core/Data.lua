@@ -250,6 +250,7 @@ D.NPCs = {
         120651, 174773, 173729,
         179446, 179892, 179891, 179890,                 -- SL Season 2 Affix
         185683, 185680, 185685, 184911, 184910, 184908, -- SL Season 3 Affix
+        190128, 189878                                  -- SL Season 4 Affix
     },
 
     -- Mists of Tirna Scithe
