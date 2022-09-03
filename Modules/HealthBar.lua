@@ -399,6 +399,8 @@ local function GetAuraColor(unit)
             color = spellData.color;
             return true;
         end
+
+        return false;
     end);
 
     if has then
