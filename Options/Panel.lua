@@ -462,10 +462,6 @@ O.ClearLeftHighlight = function()
     end
 end
 
-
-local grColorFrom = CreateColor(0.9, 0.9, 0.9)
-local grColorTo = CreateColor(0.1, 0.1, 0.1)
-
 O.CreateLeftButton = function(text, name, order, panel, hideButton)
     local button = Mixin(CreateFrame('Button', 'Stripes_Options_Left_' .. name, O.frame.Left), E.PixelPerfectMixin);
     button:SetPosition('TOPLEFT', O.frame.Left, 'TOPLEFT', 0, -(28*order-28));
