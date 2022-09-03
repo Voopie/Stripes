@@ -302,33 +302,39 @@ function StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield)
         self.notInterruptible = nil;
 
         if unit then
-            self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED');
-            self:RegisterEvent('UNIT_SPELLCAST_DELAYED');
-            self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START');
-            self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE');
-            self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP');
-            self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE');
-            self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE');
-            self:RegisterEvent('PLAYER_ENTERING_WORLD');
-            self:RegisterUnitEvent('UNIT_SPELLCAST_START', unit);
-            self:RegisterUnitEvent('UNIT_SPELLCAST_STOP', unit);
-            self:RegisterUnitEvent('UNIT_SPELLCAST_FAILED', unit);
+            self:RegisterUnitEvent('UNIT_SPELLCAST_INTERRUPTED', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_DELAYED', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_START', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_CHANNEL_STOP', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_START', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_STOP', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_INTERRUPTIBLE', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_START', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_STOP', unit);
+			self:RegisterUnitEvent('UNIT_SPELLCAST_FAILED', unit);
+			self:RegisterEvent('PLAYER_ENTERING_WORLD');
 
             self.interruptSpellId = GetInterruptSpellId();
 
             StripesCastingBar_OnEvent(self, 'PLAYER_ENTERING_WORLD');
         else
             self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED');
-            self:UnregisterEvent('UNIT_SPELLCAST_DELAYED');
-            self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START');
-            self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE');
-            self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP');
-            self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE');
-            self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE');
-            self:UnregisterEvent('PLAYER_ENTERING_WORLD');
-            self:UnregisterEvent('UNIT_SPELLCAST_START');
-            self:UnregisterEvent('UNIT_SPELLCAST_STOP');
-            self:UnregisterEvent('UNIT_SPELLCAST_FAILED');
+			self:UnregisterEvent('UNIT_SPELLCAST_DELAYED');
+			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START');
+			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE');
+			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP');
+			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START');
+			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE');
+			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP');
+			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE');
+			self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE');
+			self:UnregisterEvent('UNIT_SPELLCAST_START');
+			self:UnregisterEvent('UNIT_SPELLCAST_STOP');
+			self:UnregisterEvent('UNIT_SPELLCAST_FAILED');
+			self:UnregisterEvent('PLAYER_ENTERING_WORLD');
 
             self:Hide();
         end
@@ -430,6 +436,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
         self.spellID = spellID;
         self.spellName = text;
         self.channeling = nil;
+        self.reverseChanneling = nil;
         self.fadeOut = nil;
 
         self.notInterruptible = notInterruptible;
@@ -460,12 +467,12 @@ function StripesCastingBar_OnEvent(self, event, ...)
         if self.showCastbar then
             self:Show();
         end
-    elseif event == 'UNIT_SPELLCAST_STOP' or event == 'UNIT_SPELLCAST_CHANNEL_STOP' then
+    elseif event == 'UNIT_SPELLCAST_STOP' or event == 'UNIT_SPELLCAST_CHANNEL_STOP' or event == 'UNIT_SPELLCAST_EMPOWER_STOP' then
         if not self:IsVisible() then
             self:Hide();
         end
 
-        if (self.casting and event == 'UNIT_SPELLCAST_STOP' and select(2, ...) == self.castID) or (self.channeling and event == 'UNIT_SPELLCAST_CHANNEL_STOP') then
+        if ( (self.casting and event == 'UNIT_SPELLCAST_STOP' and select(2, ...) == self.castID) or ((self.channeling or self.reverseChanneling) and (event == 'UNIT_SPELLCAST_CHANNEL_STOP' or event == 'UNIT_SPELLCAST_EMPOWER_STOP')) ) then
             if self.Spark then
                 self.Spark:Hide();
             end
@@ -488,6 +495,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
                 end
             else
                 self.channeling = nil;
+                if self.reverseChanneling then
+					self.casting = nil;
+				end
+				self.reverseChanneling = nil;
             end
 
             self.flash = true;
@@ -524,6 +535,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
             self.casting = nil;
             self.channeling = nil;
+            self.reverseChanneling = nil;
             self.fadeOut = true;
             self.holdTime = GetTime() + CASTING_BAR_HOLD_TIME;
             self.notInterruptible = nil;
@@ -556,6 +568,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
                 self.casting = true;
                 self.channeling = nil;
+                self.reverseChanneling = nil;
                 self.flash = nil;
                 self.fadeOut = nil;
                 self.notInterruptible = nil;
@@ -564,13 +577,15 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
             self.notInterruptible = notInterruptible;
         end
-    elseif event == 'UNIT_SPELLCAST_CHANNEL_START' then
-        local name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID = UnitChannelInfo(unit);
+    elseif event == 'UNIT_SPELLCAST_CHANNEL_START' or event == 'UNIT_SPELLCAST_EMPOWER_START' then
+        local name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit);
         if not name or (not self.showTradeSkills and isTradeSkill) then
             -- if there is no name, there is no bar
             self:Hide();
             return;
         end
+
+        local isChargeSpell = numStages > 0;
 
         local startColor = StripesCastingBar_GetEffectiveStartColor(self, true, notInterruptible);
         if self.flashColorSameAsStart then
@@ -603,11 +618,19 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self.Spark:Hide();
         end
 
+        if isChargeSpell then
+			self.reverseChanneling = true;
+			self.casting = true;
+			self.channeling = false;
+		else
+			self.reverseChanneling = nil;
+			self.casting = nil;
+			self.channeling = true;
+		end
+
         StripesCastingBar_ApplyAlpha(self, 1.0);
 
         self.holdTime = 0;
-        self.casting = nil;
-        self.channeling = true;
         self.fadeOut = nil;
         self.spellID = spellID;
         self.spellName = text;
@@ -639,7 +662,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
         if self.showCastbar then
             self:Show();
         end
-    elseif event == 'UNIT_SPELLCAST_CHANNEL_UPDATE' then
+    elseif event == 'UNIT_SPELLCAST_CHANNEL_UPDATE' or event == 'UNIT_SPELLCAST_EMPOWER_UPDATE' then
         if self:IsShown() then
             local name, text, _, startTime, endTime, isTradeSkill = UnitChannelInfo(unit);
 

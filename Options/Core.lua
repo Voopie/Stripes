@@ -265,7 +265,7 @@ O.Lists = {
     }
 };
 
--- ~587
+-- ~588
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -394,6 +394,7 @@ O.DefaultValues = {
     health_bar_color_class_SHAMAN      = { 0.00, 0.44, 0.87, 1 },
     health_bar_color_class_WARLOCK     = { 0.53, 0.53, 0.93, 1 },
     health_bar_color_class_WARRIOR     = { 0.78, 0.61, 0.43, 1 },
+    health_bar_color_class_EVOKER      = { 0.20, 0.57, 0.49, 1 },
 
     absorb_bar_enabled = true,
     absorb_bar_at_top  = false,

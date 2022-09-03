@@ -6,7 +6,7 @@ local Stripes = S:GetNameplateModule('Handler');
 local ipairs, tonumber, math_max, table_wipe, table_sort, bit_band = ipairs, tonumber, math.max, wipe, table.sort, bit.band;
 
 -- Wow API
-local UnitIsUnit, CooldownFrame_Set, AuraUtil_ForEachAura, AuraUtil_ShouldSkipAuraUpdate = UnitIsUnit, CooldownFrame_Set, AuraUtil.ForEachAura, AuraUtil.ShouldSkipAuraUpdate;
+local UnitIsUnit, CooldownFrame_Set = UnitIsUnit, CooldownFrame_Set;
 
 -- Stripes API
 local ShouldShowName   = S:GetNameplateModule('Handler').ShouldShowName;
@@ -221,16 +221,16 @@ local function UpdateAuraStyle(aura, withoutMasque)
                 return;
             end
 
-            if self.spellId and IsOnPandemic(self) then
-                local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellId);
+            if self.spellID and IsOnPandemic(self) then
+                local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellID);
                 if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
-                    self.spellId = GetTrulySpellId(self.spellId);
+                    self.spellID = GetTrulySpellId(self.spellID);
 
-                    if self.spellId and (pandemicKnownSpells[self.spellId] or S_IsSpellKnown(self.spellId)) then
+                    if self.spellID and (pandemicKnownSpells[self.spellID] or S_IsSpellKnown(self.spellID)) then
                         self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
 
-                        if not pandemicKnownSpells[self.spellId] then
-                            pandemicKnownSpells[self.spellId] = true;
+                        if not pandemicKnownSpells[self.spellID] then
+                            pandemicKnownSpells[self.spellID] = true;
                         end
                     end
                 end
@@ -262,10 +262,14 @@ local function UpdateAuraStyle(aura, withoutMasque)
     end
 end
 
-local function FilterShouldShowBuff(name, spellId, caster, nameplateShowPersonal, nameplateShowAll, isSelf)
-    if not name then
-        return false;
-    end
+local function FilterShouldShowBuff(self, aura, forceAll, isSelf)
+    if not aura or not aura.name then
+		return false;
+	end
+
+    local name    = aura.name;
+    local spellId = aura.spellId;
+    local caster  = aura.sourceUnit;
 
     if XLIST_MODE == 2 then -- BLACKLIST
         if blacklistAurasNameCache[name] then
@@ -294,233 +298,294 @@ local function FilterShouldShowBuff(name, spellId, caster, nameplateShowPersonal
     if FILTER_PLAYER_ENABLED and not isSelf then
         return units[caster];
     else
-        return nameplateShowAll or (nameplateShowPersonal and units[caster]);
+        return aura.nameplateShowAll or forceAll or(aura.nameplateShowPersonal and units[caster]);
     end
 end
 
-local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
-    local filter;
-    local showAll = false;
+local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
     local unit = unitframe.data.unit;
     local isPlayer = unitframe.data.unitType == 'SELF';
     local hostileUnit = unitframe.data.reaction and unitframe.data.reaction <= 4;
+	local showDebuffsOnFriendly = SHOW_DEBUFFS_ON_FRIENDLY;
 
-    if isPlayer then
-        filter = 'HELPFUL|INCLUDE_NAME_PLATE_ONLY';
-    else
-        if hostileUnit then
-            filter = 'HARMFUL|INCLUDE_NAME_PLATE_ONLY';
-        else
-            if SHOW_DEBUFFS_ON_FRIENDLY then
-                filter = 'HARMFUL|RAID';
-                showAll = true;
-            else
-                filter = 'NONE';
-            end
-        end
-    end
+	local auraSettings =
+	{
+		helpful = false;
+		harmful = false;
+		raid = false;
+		includeNameplateOnly = false;
+		showAll = false;
+		hideAll = false;
+	};
 
-    local function AuraCouldDisplayAsBuff(auraInfo)
-        if not FilterShouldShowBuff(auraInfo.name, auraInfo.spellId, auraInfo.sourceUnit, auraInfo.nameplateShowPersonal, auraInfo.nameplateShowAll or showAll, isPlayer) then
-            return false;
-        elseif isPlayer then
-            return auraInfo.isHelpful;
-        elseif hostileUnit then
-            return auraInfo.isHarmful;
-        elseif SHOW_DEBUFFS_ON_FRIENDLY then
-            return auraInfo.isHarmful and auraInfo.isRaid;
-        end
+	if isPlayer then
+		auraSettings.helpful = true;
+		auraSettings.includeNameplateOnly = true;
+	else
+		if hostileUnit then
+			-- Reaction 4 is neutral and less than 4 becomes increasingly more hostile
+			auraSettings.harmful = true;
+			auraSettings.includeNameplateOnly = true;
+		else
+			if (showDebuffsOnFriendly) then
+				-- dispellable debuffs
+				auraSettings.harmful = true;
+				auraSettings.raid = true;
+				auraSettings.showAll = true;
+			else
+				auraSettings.hideAll = true;
+			end
+		end
+	end
 
-        return false;
-    end
-
-    if filter ~= 'NONE' and AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
-        return;
-    end
-
-    unitframe.BuffFrame:UpdateBuffs(unit, filter, showAll);
+    unitframe.BuffFrame:UpdateBuffs(unit, unitAuraUpdateInfo, auraSettings);
 end
 
-local function UpdateBuffs(self, unit, filter, showAll)
-    if not self.isActive then
-        for _, buff in ipairs(self.buffList) do
-            buff:Hide();
-        end
+local function UpdateBuffs(self, unit, unitAuraUpdateInfo, auraSettings)
+    local isSelf = self:GetParent().data.unitType == 'SELF';
 
-        return;
-    end
+    local filters = {};
+	if auraSettings.helpful then
+		table.insert(filters, AuraUtil.AuraFilters.Helpful);
+	end
+	if auraSettings.harmful then
+		table.insert(filters, AuraUtil.AuraFilters.Harmful);
+	end
+	if auraSettings.raid then
+		table.insert(filters, AuraUtil.AuraFilters.Raid);
+	end
+	if auraSettings.includeNameplateOnly then
+		table.insert(filters, AuraUtil.AuraFilters.IncludeNameplateOnly);
+	end
+	local filterString = AuraUtil.CreateFilterString(unpack(filters));
 
-    self.unit   = unit;
-    self.filter = filter;
+	local previousFilter = self.filter;
+	local previousUnit   = self.unit;
+
+	self.unit = unit;
+	self.filter = filterString;
+
+	local aurasChanged = false;
+	if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filterString ~= previousFilter then
+		self:ParseAllAuras(auraSettings.showAll);
+		aurasChanged = true;
+	else
+		if unitAuraUpdateInfo.addedAuras ~= nil then
+			for _, aura in ipairs(unitAuraUpdateInfo.addedAuras) do
+				if FilterShouldShowBuff(self, aura, auraSettings.showAll, isSelf) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filterString) then
+					self.auras[aura.auraInstanceID] = aura;
+					aurasChanged = true;
+				end
+			end
+		end
+
+		if unitAuraUpdateInfo.updatedAuraInstanceIDs ~= nil then
+			for _, auraInstanceID in ipairs(unitAuraUpdateInfo.updatedAuraInstanceIDs) do
+				if self.auras[auraInstanceID] ~= nil then
+					local newAura = C_UnitAuras.GetAuraDataByAuraInstanceID(self.unit, auraInstanceID);
+					self.auras[auraInstanceID] = newAura;
+					aurasChanged = true;
+				end
+			end
+		end
+
+		if unitAuraUpdateInfo.removedAuraInstanceIDs ~= nil then
+			for _, auraInstanceID in ipairs(unitAuraUpdateInfo.removedAuraInstanceIDs) do
+				if self.auras[auraInstanceID] ~= nil then
+					self.auras[auraInstanceID] = nil;
+					aurasChanged = true;
+				end
+			end
+		end
+	end
 
     self:UpdateAnchor();
 
-    local isSelf = self:GetParent().data.unitType == 'SELF';
+    if not aurasChanged then
+		return;
+	end
 
-    if filter == 'NONE' then
-        for _, buff in ipairs(self.buffList) do
-            buff:Hide();
+	self.buffPool:ReleaseAll();
+
+    if auraSettings.hideAll or not self.isActive then
+		return;
+	end
+
+    local buffIndex = 1;
+	self.auras:Iterate(function(auraInstanceID, aura)
+		local buff, isNew = self.buffPool:Acquire();
+
+		buff.auraInstanceID = auraInstanceID;
+		buff.isBuff = aura.isHelpful;
+		buff.layoutIndex = buffIndex;
+		buff.spellID = aura.spellId;
+        buff.expirationTime = aura.expirationTime;
+
+        if not isNew and buff.Cooldown.noCooldownCount == nil then
+            buff.needUpdate = true;
         end
-    else
-        local buffIndex = 1;
-        local index = 1;
-        local _, name, texture, count, debuffType, duration, expirationTime, caster, nameplateShowPersonal, spellId, nameplateShowAll;
-        local aura;
 
-        AuraUtil_ForEachAura(unit, filter, nil, function(...)
-            name, texture, count, debuffType, duration, expirationTime, caster, _, nameplateShowPersonal, spellId, _, _, _, nameplateShowAll = ...;
+        if isNew then
+            UpdateAuraStyle(buff);
+            buff.needUpdate = nil;
+        end
 
-            if FilterShouldShowBuff(name, spellId, caster, nameplateShowPersonal, nameplateShowAll or showAll, isSelf) then
-                aura = self.buffList[buffIndex];
+        if buff.needUpdate then
+            UpdateAuraStyle(buff);
+            buff.needUpdate = nil;
+        end
 
-                if aura and aura.Cooldown.noCooldownCount == nil then
-                    aura.needUpdate = true;
-                end
+		buff.Icon:SetTexture(aura.icon);
 
-                if not aura then
-                    aura = CreateFrame('Frame', nil, self, 'NameplateBuffButtonTemplate');
-                    aura:SetMouseClickEnabled(false);
-                    aura.layoutIndex = buffIndex;
+		if aura.applications > 1 then
+			buff.CountFrame.Count:SetText(aura.applications);
+			buff.CountFrame.Count:Show();
+		else
+			buff.CountFrame.Count:Hide();
+		end
 
-                    UpdateAuraStyle(aura);
-                    aura.needUpdate = nil;
+		CooldownFrame_Set(buff.Cooldown, aura.expirationTime - aura.duration, aura.duration, aura.duration > 0, DRAW_EDGE);
 
-                    self.buffList[buffIndex] = aura;
-                end
-
-                if aura.needUpdate then
-                    UpdateAuraStyle(aura);
-                    aura.needUpdate = nil;
-                end
-
-                aura:SetID(index);
-
-                aura.spellId = spellId;
-                aura.expirationTime = expirationTime;
-
-                aura.Icon:SetTexture(texture);
-
-                if count > 1 then
-                    aura.CountFrame.Count:SetText(count);
-                    aura.CountFrame.Count:Show();
-                else
-                    aura.CountFrame.Count:Hide();
-                end
-
-                CooldownFrame_Set(aura.Cooldown, expirationTime - duration, duration, duration > 0, DRAW_EDGE);
-
-                if BORDER_COLOR_ENABLED then
-                    if debuffType then
-                        aura.Border:SetColorTexture(DebuffTypeColor[debuffType].r, DebuffTypeColor[debuffType].g, DebuffTypeColor[debuffType].b, 1);
-                    else
-                        aura.Border:SetColorTexture(0, 0, 0, 1);
-                    end
-                else
-                    aura.Border:SetColorTexture(0, 0, 0, 1);
-                end
-
-                aura:Show();
-
-                buffIndex = buffIndex + 1;
-            end
-
-            index = index + 1;
-
-            return buffIndex > AURAS_MAX_DISPLAY;
-        end);
-
-        for i = buffIndex, AURAS_MAX_DISPLAY do
-            if self.buffList[i] then
-                self.buffList[i]:Hide();
+        if BORDER_COLOR_ENABLED then
+            if aura.dispelName then
+                buff.Border:SetColorTexture(DebuffTypeColor[aura.dispelName].r, DebuffTypeColor[aura.dispelName].g, DebuffTypeColor[aura.dispelName].b, 1);
             else
-                break;
+                buff.Border:SetColorTexture(0, 0, 0, 1);
             end
+        else
+            buff.Border:SetColorTexture(0, 0, 0, 1);
         end
 
-        if buffIndex > 1 then
-            if SORT_ENABLED and self:GetParent().data.unitType ~= 'SELF' then
-                local unitframe = self:GetParent();
+		buff:Show();
 
-                if not unitframe.SortBuffs then
-                    unitframe.SortBuffs = {};
-                else
-                    table_wipe(unitframe.SortBuffs);
-                end
+		buffIndex = buffIndex + 1;
 
-                for sBuffIndex, sAura in ipairs(self.buffList) do
-                    if self.buffList[sBuffIndex]:IsShown() then
-                        unitframe.SortBuffs[sBuffIndex]           = unitframe.SortBuffs[sBuffIndex] or {};
-                        unitframe.SortBuffs[sBuffIndex].buffIndex = sBuffIndex;
-                        unitframe.SortBuffs[sBuffIndex].expires   = tonumber(sAura.expirationTime) or 0;
-                    end
-                end
+		return buffIndex >= AURAS_MAX_DISPLAY;
+	end);
 
-                if #unitframe.SortBuffs > 0 then
-                    table_sort(unitframe.SortBuffs, SortMethodFunction);
+    if buffIndex > 1 then
+        if SORT_ENABLED and self:GetParent().data.unitType ~= 'SELF' then
+            local unitframe = self:GetParent();
 
-                    local firstBuffIndex, lastBuff;
+            if not unitframe.SortBuffs then
+                unitframe.SortBuffs = {};
+            else
+                table_wipe(unitframe.SortBuffs);
+            end
 
-                    for i, data in ipairs(unitframe.SortBuffs) do
-                        if self.buffList[data.buffIndex] then
-                            self.buffList[data.buffIndex]:ClearAllPoints();
+            local activeCount = 1;
+            for buff in self.buffPool:EnumerateActive() do
+                unitframe.SortBuffs[activeCount]           = unitframe.SortBuffs[activeCount] or {};
+                unitframe.SortBuffs[activeCount].buffIndex = activeCount;
+                unitframe.SortBuffs[activeCount].expires   = tonumber(buff.expirationTime) or 0;
+                unitframe.SortBuffs[activeCount].buff      = buff;
 
-                            if AURAS_DIRECTION == 1 then
-                                self.buffList[data.buffIndex]:SetPoint('TOPLEFT', (i - 1) * (20 + SPACING_X), 0);
-                            elseif AURAS_DIRECTION == 2 then
-                                self.buffList[data.buffIndex]:SetPoint('TOPRIGHT', -((i - 1) * (20 + SPACING_X)), 0);
-                            else
-                                if i == 1 then
-                                    firstBuffIndex = data.buffIndex;
-                                end
+                activeCount = activeCount + 1;
+            end
 
-                                self.buffList[firstBuffIndex]:SetPoint('TOP', -(self.buffList[firstBuffIndex]:GetWidth()/2)*(i-1), 0);
+            if #unitframe.SortBuffs > 0 then
+                table_sort(unitframe.SortBuffs, SortMethodFunction);
 
-                                if i > 1 and firstBuffIndex ~= data.buffIndex then
-                                    if lastBuff then
-                                        self.buffList[data.buffIndex]:SetPoint('TOPLEFT', lastBuff, 'TOPRIGHT', SPACING_X, 0);
-                                        lastBuff = self.buffList[data.buffIndex];
-                                    else
-                                        self.buffList[data.buffIndex]:SetPoint('TOPLEFT', self.buffList[firstBuffIndex], 'TOPRIGHT', SPACING_X, 0);
-                                        lastBuff = self.buffList[data.buffIndex];
-                                    end
+                local firstBuffIndex, lastBuff;
+
+                for i, data in ipairs(unitframe.SortBuffs) do
+                    if data.buff then
+                        data.buff:ClearAllPoints();
+
+                        if AURAS_DIRECTION == 1 then
+                            data.buff:SetPoint('TOPLEFT', (i - 1) * (20 + SPACING_X), 0);
+                        elseif AURAS_DIRECTION == 2 then
+                            data.buff:SetPoint('TOPRIGHT', -((i - 1) * (20 + SPACING_X)), 0);
+                        else
+                            if i == 1 then
+                                firstBuffIndex = data.buffIndex;
+                            end
+
+                            unitframe.SortBuffs[firstBuffIndex]:SetPoint('TOP', -(unitframe.SortBuffs[firstBuffIndex]:GetWidth()/2)*(i-1), 0);
+
+                            if i > 1 and firstBuffIndex ~= data.buffIndex then
+                                if lastBuff then
+                                    data.buff:SetPoint('TOPLEFT', lastBuff, 'TOPRIGHT', SPACING_X, 0);
+                                    lastBuff = data.buff;
+                                else
+                                    data.buff:SetPoint('TOPLEFT', unitframe.SortBuffs[firstBuffIndex], 'TOPRIGHT', SPACING_X, 0);
+                                    lastBuff = data.buff;
                                 end
                             end
                         end
                     end
                 end
-            else
-                for i = 1, buffIndex - 1 do
-                    self.buffList[i]:ClearAllPoints();
+            end
+        else
+            local activeCount = 1;
+            local firstBuffIndex, firstBuff, lastBuff;
+            for buff in self.buffPool:EnumerateActive() do
+                buff:ClearAllPoints();
 
-                    if AURAS_DIRECTION == 1 then
-                        self.buffList[i]:SetPoint('TOPLEFT', (i - 1) * (20 + SPACING_X), 0);
-                    elseif AURAS_DIRECTION == 2 then
-                        self.buffList[i]:SetPoint('TOPRIGHT', -((i - 1) * (20 + SPACING_X)), 0);
-                    else
-                        self.buffList[1]:SetPoint('TOP', -(self.buffList[1]:GetWidth()/2)*(i-1), 0);
+                if AURAS_DIRECTION == 1 then
+                    buff:SetPoint('TOPLEFT', (activeCount - 1) * (20 + SPACING_X), 0);
+                elseif AURAS_DIRECTION == 2 then
+                    buff:SetPoint('TOPRIGHT', -((activeCount - 1) * (20 + SPACING_X)), 0);
+                else
+                    if activeCount == 1 then
+                        firstBuff = buff;
+                        firstBuffIndex = buff.layoutIndex;
+                    end
 
-                        if i > 1 then
-                            self.buffList[i]:SetPoint('TOPLEFT', self.buffList[i - 1], 'TOPRIGHT', SPACING_X, 0);
+                    firstBuff:SetPoint('TOP', -(firstBuff:GetWidth()/2)*(activeCount-1), 0);
+
+                    if activeCount > 1 and firstBuffIndex ~= buff.layoutIndex then
+                        if lastBuff then
+                            buff:SetPoint('TOPLEFT', lastBuff, 'TOPRIGHT', SPACING_X, 0);
+                            lastBuff = buff;
+                        else
+                            buff:SetPoint('TOPLEFT', firstBuff, 'TOPRIGHT', SPACING_X, 0);
+                            lastBuff = buff;
                         end
                     end
                 end
+
+                activeCount = activeCount + 1;
             end
         end
     end
 end
 
-local function Update(unitframe, isFullUpdate, updatedAuraInfos)
+local function Update(unitframe, unitAuraUpdateInfo)
     unitframe.BuffFrame.spacing        = SPACING_X;
     unitframe.BuffFrame.isActive       = BUFFFRAME_IS_ACTIVE;
     unitframe.BuffFrame.UpdateAnchor   = UpdateAnchor;
     unitframe.BuffFrame.ShouldShowBuff = FilterShouldShowBuff;
     unitframe.BuffFrame.UpdateBuffs    = UpdateBuffs;
 
-    OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos);
+    OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo);
 end
 
 local function UpdateStyle(unitframe)
-    for _, aura in ipairs(unitframe.BuffFrame.buffList) do
+    for aura in unitframe.BuffFrame.buffPool:EnumerateActive() do
+        if Stripes.Masque then
+            if MASQUE_SUPPORT then
+                Stripes.MasqueAurasGroup:RemoveButton(aura);
+                Stripes.MasqueAurasGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+
+                aura.Border:SetDrawLayer('BACKGROUND');
+            else
+                Stripes.MasqueAurasGroup:RemoveButton(aura);
+
+                aura.Border:SetColorTexture(0, 0, 0, 1);
+                aura.Border:SetDrawLayer('BACKGROUND');
+
+                aura.Icon:SetDrawLayer('ARTWORK');
+
+                aura.Cooldown:ClearAllPoints();
+                aura.Cooldown:SetAllPoints();
+            end
+        end
+
+        UpdateAuraStyle(aura, true);
+    end
+
+    for _, aura in unitframe.BuffFrame.buffPool:EnumerateInactive() do
         if Stripes.Masque then
             if MASQUE_SUPPORT then
                 Stripes.MasqueAurasGroup:RemoveButton(aura);
@@ -556,8 +621,8 @@ function Module:UnitRemoved(unitframe)
     ResetPandemic(unitframe);
 end
 
-function Module:UnitAura(unitframe, isFullUpdate, updatedAuraInfos)
-    Update(unitframe, isFullUpdate, updatedAuraInfos);
+function Module:UnitAura(unitframe, unitAuraUpdateInfo)
+    Update(unitframe, unitAuraUpdateInfo);
 end
 
 function Module:Update(unitframe)

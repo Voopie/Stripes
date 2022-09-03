@@ -411,7 +411,7 @@ do
             return bestIcon[name];
         end
 
-        local icons = StripesDB.spellCache and StripesDB.spellCache.data and StripesDB.spellCache.data[name];
+        local icons = StripesSpellDB and StripesSpellDB.data and StripesSpellDB.data[name];
         local bestMatch = nil;
 
         if icons and icons.spells then

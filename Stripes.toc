@@ -1,9 +1,9 @@
-## Interface: 90207
+## Interface: 100000
 ## Author: Voopie
 ## Title: Stripes
 ## Notes: Yet another nameplates customization addon
 ## Notes-ruRU: Еще один аддон для кастомизации неймплейтов 
-## Version: 1.27.4
-## SavedVariables: StripesDB
+## Version: 1.28
+## SavedVariables: StripesDB, StripesSpellDB
 
 Stripes.xml

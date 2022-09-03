@@ -121,7 +121,9 @@ Stripes.UpdateAll = function()
 end
 
 Stripes.UpdateFontObject = function(fontObject, fontValue, fontSize, fontFlag, fontShadow)
-    fontObject:SetFont(LSM:Fetch(LSM_MEDIATYPE_FONT, O.db.use_global_font_value and O.db.global_font_value or fontValue), math.max(3, O.db.use_global_font_size and O.db.global_font_size or fontSize), LIST_FONT_FLAGS[O.db.use_global_font_flag and O.db.global_font_flag or fontFlag]);
+    -- fontObject:SetFont(LSM:Fetch(LSM_MEDIATYPE_FONT, O.db.use_global_font_value and O.db.global_font_value or fontValue), math.max(3, O.db.use_global_font_size and O.db.global_font_size or fontSize), LIST_FONT_FLAGS[O.db.use_global_font_flag and O.db.global_font_flag or fontFlag]);
+    fontObject:SetFont(LSM:Fetch(LSM_MEDIATYPE_FONT, O.db.use_global_font_value and O.db.global_font_value or fontValue), math.max(3, O.db.use_global_font_size and O.db.global_font_size or fontSize), 'OUTLINE');
+
 
     if O.db.use_global_font_shadow then
         fontObject:SetShadowOffset(O.db.global_font_shadow and 1 or 0, O.db.global_font_shadow and -1 or 0);
@@ -653,14 +655,14 @@ function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
     S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
 end
 
-function Stripes:UNIT_AURA(unit, isFullUpdate, updatedAuraInfos)
+function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
     local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
 
     if not nameplate or not NP[nameplate] then
         return;
     end
 
-    S:ForAllNameplateModules('UnitAura', NP[nameplate], isFullUpdate, updatedAuraInfos);
+    S:ForAllNameplateModules('UnitAura', NP[nameplate], unitAuraUpdateInfo);
 end
 
 function Stripes:PLAYER_TARGET_CHANGED()

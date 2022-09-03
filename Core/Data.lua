@@ -361,7 +361,8 @@ D.KickByClassId = {
     [8]  = { [1] = 2139,   [2] = 2139,   [3] = 2139 },                 -- Mage
     [10] = { [1] = 116705, [2] = nil,    [3] = 116705, [5] = 116705 }, -- Monk
     [11] = { [1] = 78675,  [2] = 106839, [3] = 106839, [4] = nil },    -- Druid
-    [12] = { [1] = 183752, [2] = 183752, [5] = 183752},                -- Demon Hunter
+    [12] = { [1] = 183752, [2] = 183752, [5] = 183752 },               -- Demon Hunter
+    [13] = { [1] = 351338, [2] = 351338, [5] = 351338 },               -- Evoker
 };
 
 local function UpdateSpecialization()
@@ -415,6 +416,7 @@ function Data:PLAYER_ENTERING_WORLD()
 
         if difficulty == DifficultyUtil.ID.DungeonChallenge then
             D.Player.State.inChallenge         = true;
+            D.Player.State.inMythic            = true;
             D.Player.State.inMythicPlus        = true;
             D.Player.State.inMythicPlusTeeming = U.IsAffixCurrent(TEEMING_AFFIX_ID);
         end

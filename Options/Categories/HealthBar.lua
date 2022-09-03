@@ -770,6 +770,22 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.health_bar_color_class_EVOKER = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_class_EVOKER:SetPosition('TOPLEFT', self.health_bar_color_class_SHAMAN, 'BOTTOMLEFT', 0, -8);
+    self.health_bar_color_class_EVOKER:SetLabel(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_EVOKER']);
+    self.health_bar_color_class_EVOKER:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_CLASS_EVOKER_TOOLTIP']);
+    self.health_bar_color_class_EVOKER:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_EVOKER_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_class_EVOKER:SetValue(unpack(O.db.health_bar_color_class_EVOKER));
+    self.health_bar_color_class_EVOKER.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_class_EVOKER[1] = r;
+        O.db.health_bar_color_class_EVOKER[2] = g;
+        O.db.health_bar_color_class_EVOKER[3] = b;
+        O.db.health_bar_color_class_EVOKER[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+
     local ResetHealthBarClassColorsButton = E.CreateTextureButton(self.TabsFrames['ColorsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);
     ResetHealthBarClassColorsButton:SetPosition('TOPRIGHT', ClassColorsHeader, 'BOTTOMRIGHT', -8, -4);
     ResetHealthBarClassColorsButton:SetTooltip(L['OPTIONS_HEALTH_BAR_CLASS_COLORS_RESET_TOOLTIP']);

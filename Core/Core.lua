@@ -675,10 +675,17 @@ function spellCache.Build()
             local nameLower = name and string_lower(name);
 
             -- 136243 is the a gear icon, we can ignore those spells
-            -- Also DNT and test
             if icon == 136243 then
                 misses = 0;
-            elseif name and name ~= '' and not (nameLower and (string_find(nameLower, 'dnt') or string_find(nameLower, 'test'))) then
+            elseif name and name ~= '' and not (nameLower and (string_find(nameLower, 'dnt')
+                or string_find(nameLower, '[dnd]', 1, true)
+                or string_find(nameLower, 'test')
+                or string_find(nameLower, 'unused')
+                or string_find(nameLower, 'reuse')
+                or string_find(nameLower, 'resue')
+                or string_find(nameLower, '[ph]', 1, true)
+                or string_find(nameLower, 'nyi'))) then
+
                 cache[name]            = cache[name] or {};
                 cache[name].spells     = cache[name].spells or {};
                 cache[name].spells[id] = icon;
@@ -728,11 +735,12 @@ function AddOn:ADDON_LOADED(addonName)
     StripesDB.minimap_button = StripesDB.minimap_button or { hide = false };
     StripesDB.last_used_hex_color = StripesDB.last_used_hex_color or nil;
 
-    StripesDB.spellCache      = StripesDB.spellCache or {};
-    StripesDB.spellCache.data = StripesDB.spellCache.data or {};
+    StripesSpellDB      = StripesSpellDB or {};
+    StripesSpellDB.data = StripesSpellDB.data or {};
 
-    spellCache.Load(StripesDB.spellCache);
-    spellCache.Build();
+    -- TODO: constant table overflow
+    -- spellCache.Load(StripesSpellDB);
+    -- spellCache.Build();
 
     self:ForAllModules('StartUp');
     self:ForAllNameplateModules('StartUp');

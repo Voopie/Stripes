@@ -3,13 +3,13 @@ local Module = S:NewNameplateModule('Auras_MythicPlus');
 local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
-local pairs, table_wipe, math_max = pairs, wipe, math.max;
+local math_max = math.max;
 
 -- WoW API
-local CooldownFrame_Set, UnitIsUnit, AuraUtil_ForEachAura, AuraUtil_ShouldSkipAuraUpdate = CooldownFrame_Set, UnitIsUnit, AuraUtil.ForEachAura, AuraUtil.ShouldSkipAuraUpdate;
+local CooldownFrame_Set, UnitIsUnit, AuraUtil_ForEachAura = CooldownFrame_Set, UnitIsUnit, AuraUtil.ForEachAura;
 
 -- Stripes API
-local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
+local ShouldShowName   = S:GetNameplateModule('Handler').ShouldShowName;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
@@ -65,7 +65,7 @@ local filterHarmful = 'HARMFUL';
 
 local MAX_OFFSET_Y = -9;
 
-local function CreateAnchor(unitframe)
+local function CreateBuffFrame(unitframe)
     if unitframe.AurasMythicPlus then
         return;
     end
@@ -77,293 +77,335 @@ local function CreateAnchor(unitframe)
     frame.buffList = {};
     frame.buffCompact = {};
 
+    frame.UpdateAnchor = function(self)
+        self:ClearAllPoints();
+
+        local uf = self:GetParent();
+        local unit = uf.data.unit or uf.unit;
+
+        if unit and ShouldShowName(uf) then
+            local offset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
+            self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+        else
+            local offset = uf.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and uf.BuffFrame:GetTargetYOffset() or 0.0);
+            self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+        end
+
+        if AURAS_DIRECTION == 1 then
+            self:SetPoint('LEFT', uf.healthBar, 'LEFT', OFFSET_X, 0);
+        elseif AURAS_DIRECTION == 2 then
+            self:SetPoint('RIGHT', uf.healthBar, 'RIGHT', OFFSET_X, 0);
+        else
+            self:SetWidth(uf.healthBar:GetWidth());
+        end
+    end
+
+    frame.ShouldShowBuff = function(self, aura, isHelpful)
+        if not aura or not aura.spellId then
+            return;
+        end
+
+        if isHelpful and HelpfulList[aura.spellId] then
+            return true;
+        elseif not isHelpful and HarmfulList[aura.spellId] then
+            return true;
+        end
+
+        return false;
+    end
+
+    frame.HasSameAura = function(self, auraSpellId)
+        local found = false;
+
+        self.auras:Iterate(function(auraInstanceID, aura)
+            if aura.spellId == auraSpellId then
+                found = auraInstanceID;
+            end
+
+            return found and true;
+        end);
+
+        return found;
+    end
+
+    frame.ParseAllAuras = function(self, forceAll)
+        if self.auras == nil then
+            self.auras = TableUtil.CreatePriorityTable(self.AuraComparator, TableUtil.Constants.AssociativePriorityTable);
+        else
+            self.auras:Clear();
+        end
+
+        local function HandleAuraHelpful(aura)
+            if self:ShouldShowBuff(aura, true) then
+                local auraInstanceID = self:HasSameAura(aura.spellId);
+
+                if auraInstanceID and self.auras[auraInstanceID] then
+                    self.auras[auraInstanceID].applications = self.auras[auraInstanceID].applications + 1;
+                else
+                    self.auras[aura.auraInstanceID] = aura;
+                end
+            end
+
+            return false;
+        end
+
+        local function HandleAuraHarmful(aura)
+            if self:ShouldShowBuff(aura, false) then
+                local auraInstanceID = self:HasSameAura(aura.spellId);
+
+                if auraInstanceID and self.auras[auraInstanceID] then
+                    self.auras[auraInstanceID].applications = self.auras[auraInstanceID].applications + 1;
+                else
+                    self.auras[aura.auraInstanceID] = aura;
+                end
+            end
+
+            return false;
+        end
+
+        local batchCount = nil;
+        local usePackedAura = true;
+
+        AuraUtil_ForEachAura(self.unit, filterHelpful, batchCount, HandleAuraHelpful, usePackedAura);
+        AuraUtil_ForEachAura(self.unit, filterHarmful, batchCount, HandleAuraHarmful, usePackedAura);
+    end
+
+    frame.UpdateBuffs = function(self, unit, unitAuraUpdateInfo, auraSettings)
+        local uf = self:GetParent();
+
+        if not ENABLED or not PlayerState.inMythic or not uf.data.unit or uf.data.unitType == 'SELF' then
+            self:Hide();
+            return;
+        end
+
+        unit = unit or uf.data.unit;
+
+        local isSelf = uf.data.unitType == 'SELF';
+
+        local filterString = filterHelpful;
+
+        local previousFilter = self.filter;
+        local previousUnit   = self.unit;
+
+        local showAll = auraSettings and auraSettings.showAll;
+
+        self.unit   = unit;
+        self.filter = filterHelpful;
+
+        local aurasChanged = false;
+        if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filterString ~= previousFilter then
+            self:ParseAllAuras(showAll);
+            aurasChanged = true;
+        else
+            if unitAuraUpdateInfo.addedAuras ~= nil then
+                for _, aura in ipairs(unitAuraUpdateInfo.addedAuras) do
+                    if self:ShouldShowBuff(aura, aura.isHelpful) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filterString) then
+                        self.auras[aura.auraInstanceID] = aura;
+                        aurasChanged = true;
+                    end
+                end
+            end
+
+            if unitAuraUpdateInfo.updatedAuraInstanceIDs ~= nil then
+                for _, auraInstanceID in ipairs(unitAuraUpdateInfo.updatedAuraInstanceIDs) do
+                    if self.auras[auraInstanceID] ~= nil then
+                        local newAura = C_UnitAuras.GetAuraDataByAuraInstanceID(self.unit, auraInstanceID);
+                        self.auras[auraInstanceID] = newAura;
+                        aurasChanged = true;
+                    end
+                end
+            end
+
+            if unitAuraUpdateInfo.removedAuraInstanceIDs ~= nil then
+                for _, auraInstanceID in ipairs(unitAuraUpdateInfo.removedAuraInstanceIDs) do
+                    if self.auras[auraInstanceID] ~= nil then
+                        self.auras[auraInstanceID] = nil;
+                        aurasChanged = true;
+                    end
+                end
+            end
+        end
+
+        self:UpdateAnchor();
+
+        if not aurasChanged then
+            return;
+        end
+
+        local buffIndex = 1;
+        self.auras:Iterate(function(auraInstanceID, aura)
+            local buff = self.buffList[buffIndex];
+
+            if not buff then
+                buff = CreateFrame('Frame', nil, self, 'NameplateBuffButtonTemplate');
+                buff:SetMouseClickEnabled(false);
+                aura:SetScale(SCALE);
+
+                if SQUARE then
+                    buff:SetSize(20, 20);
+                    buff.Icon:SetSize(18, 18);
+                    buff.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+                end
+
+                buff.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+                buff.Border:SetShown(not BORDER_HIDE);
+
+                buff.Cooldown:SetDrawEdge(DRAW_EDGE);
+                buff.Cooldown:SetDrawSwipe(DRAW_SWIPE);
+                buff.Cooldown:SetCountdownFont('StripesAurasMythicPlusCooldownFont');
+                buff.Cooldown:GetRegions():ClearAllPoints();
+                buff.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, buff.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+                buff.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+                buff.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+                buff.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+
+                buff.CountFrame.Count:ClearAllPoints();
+                buff.CountFrame.Count:SetPoint(COUNT_POINT, buff.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+                buff.CountFrame.Count:SetFontObject(StripesAurasMythicPlusCountFont);
+                buff.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
+
+                if MASQUE_SUPPORT and Stripes.Masque then
+                    Stripes.MasqueAurasMythicGroup:RemoveButton(buff);
+                    Stripes.MasqueAurasMythicGroup:AddButton(buff, { Icon = buff.Icon, Cooldown = buff.Cooldown }, 'Aura', true);
+                end
+
+                self.buffList[buffIndex] = buff;
+            end
+
+            buff.auraInstanceID = auraInstanceID;
+            buff.isBuff = aura.isHelpful;
+            buff.layoutIndex = buffIndex;
+            buff.spellID = aura.spellId;
+            buff.expirationTime = aura.expirationTime;
+            buff.sourceUnit = aura.sourceUnit;
+
+            buff:ClearAllPoints();
+
+            if AURAS_DIRECTION == 1 then
+                buff:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + SPACING_X), 0);
+            elseif AURAS_DIRECTION == 2 then
+                buff:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + SPACING_X)), 0);
+            else
+                self.buffList[1]:SetPoint('TOP', -(buff:GetWidth()/2)*(buffIndex-1), 0);
+
+                if buffIndex > 1 then
+                    buff:SetPoint('TOPLEFT', self.buffList[buffIndex - 1], 'TOPRIGHT', SPACING_X, 0);
+                end
+            end
+
+            buff.Icon:SetTexture(aura.icon);
+
+            if aura.applications > 1 then
+                buff.CountFrame.Count:SetText(aura.applications);
+                buff.CountFrame.Count:Show()
+            else
+                buff.CountFrame.Count:Hide();
+            end
+
+            if aura.spellId == 343553 then
+                local dur = tonumber(string.format('%.0f', unitframe.data.healthPerF / 8));
+                CooldownFrame_Set(buff.Cooldown, GetTime(), dur, dur > 0, DRAW_EDGE);
+            else
+                CooldownFrame_Set(buff.Cooldown, aura.expirationTime - aura.duration, aura.duration, aura.duration > 0, DRAW_EDGE);
+            end
+
+            buff:Show();
+
+            buffIndex = buffIndex + 1;
+
+            return buffIndex > AURAS_MAX_DISPLAY;
+        end);
+
+        for i = buffIndex, AURAS_MAX_DISPLAY do
+            if self.buffList[i] then
+                self.buffList[i]:Hide();
+            else
+                break;
+            end
+        end
+
+        if buffIndex > 1 then
+            if not self:IsShown() then
+                self:Show();
+            end
+
+            self:UpdateAnchor();
+        else
+            if self:IsShown() then
+                self:Hide();
+            end
+        end
+    end
+
+    frame.UpdateStyle = function(self)
+        for _, buff in ipairs(self.buffList) do
+            if Stripes.Masque then
+                if MASQUE_SUPPORT then
+                    Stripes.MasqueAurasMythicGroup:RemoveButton(buff);
+                    Stripes.MasqueAurasMythicGroup:AddButton(buff, { Icon = buff.Icon, Cooldown = buff.Cooldown }, 'Aura', true);
+
+                    buff.Border:SetDrawLayer('BACKGROUND');
+                else
+                    Stripes.MasqueAurasMythicGroup:RemoveButton(buff);
+
+                    buff.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+                    buff.Border:SetDrawLayer('BACKGROUND');
+
+                    buff.Icon:SetDrawLayer('ARTWORK');
+
+                    buff.Cooldown:ClearAllPoints();
+                    buff.Cooldown:SetAllPoints();
+                end
+            end
+
+            buff:SetScale(SCALE);
+
+            if SQUARE then
+                buff:SetSize(20, 20);
+                buff.Icon:SetSize(18, 18);
+                buff.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+            else
+                buff:SetSize(20, 14);
+                buff.Icon:SetSize(18, 12);
+                buff.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
+            end
+
+            buff.Border:SetShown(not BORDER_HIDE);
+            buff.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+
+            buff.Cooldown:SetDrawEdge(DRAW_EDGE);
+            buff.Cooldown:SetDrawSwipe(DRAW_SWIPE);
+            buff.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+            buff.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+
+            buff.Cooldown:GetRegions():ClearAllPoints();
+            buff.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, buff.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+            buff.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+
+            buff.CountFrame.Count:ClearAllPoints();
+            buff.CountFrame.Count:SetPoint(COUNT_POINT, buff.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+            buff.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
+        end
+    end
+
     unitframe.AurasMythicPlus = frame;
 end
 
-local function UpdateAnchor(unitframe)
-    local unit = unitframe.data.unit;
-
-    unitframe.AurasMythicPlus:ClearAllPoints();
-
-    if unit and ShouldShowName(unitframe) then
-        local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
-        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
-    else
-        local offset = unitframe.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and unitframe.BuffFrame:GetTargetYOffset() or 0.0);
-        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
-    end
-
-    if AURAS_DIRECTION == 1 then
-        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, 0);
-    elseif AURAS_DIRECTION == 2 then
-        PixelUtil.SetPoint(unitframe.AurasMythicPlus, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, 0);
-    else
-        unitframe.AurasMythicPlus:SetWidth(unitframe.healthBar:GetWidth());
-    end
-end
-
-local function FilterShouldShowBuff(spellId, isHelpful, isHarmful)
-    if isHelpful and HelpfulList[spellId] then
-        return true;
-    elseif isHarmful and HarmfulList[spellId] then
-        return true;
-    end
-
-    return false;
-end
-
-local function AuraCouldDisplayAsBuff(auraInfo)
-    return FilterShouldShowBuff(auraInfo.spellId, auraInfo.isHelpful, auraInfo.isHarmful);
-end
-
-local function Update(unitframe)
-    if not ENABLED or not PlayerState.inMythic or not unitframe.data.unit or unitframe.data.unitType == 'SELF' then
-        unitframe.AurasMythicPlus:SetShown(false);
-        return;
-    end
-
-    unitframe.AurasMythicPlus.unit   = unitframe.data.unit;
-    unitframe.AurasMythicPlus.filter = filterHelpful;
-
-    table_wipe(unitframe.AurasMythicPlus.buffCompact);
-
-    local buffIndex = 1;
-    local index = 1;
-
-    local _, buffName, texture, count, duration, expirationTime, spellId;
-    AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, filterHelpful, nil, function(...)
-        buffName, texture, count, _, duration, expirationTime, _, _, _, spellId = ...;
-
-        if FilterShouldShowBuff(spellId, true, false) then
-            local cCount = count == 0 and 1 or count;
-
-            if not unitframe.AurasMythicPlus.buffCompact[spellId] then
-                unitframe.AurasMythicPlus.buffCompact[spellId] = {
-                    index          = index,
-                    buffName       = buffName,
-                    texture        = texture,
-                    count          = cCount,
-                    duration       = duration,
-                    expirationTime = expirationTime,
-                };
-            else
-                unitframe.AurasMythicPlus.buffCompact[spellId].count          = unitframe.AurasMythicPlus.buffCompact[spellId].count + cCount;
-                unitframe.AurasMythicPlus.buffCompact[spellId].duration       = duration;
-                unitframe.AurasMythicPlus.buffCompact[spellId].expirationTime = expirationTime;
-            end
-        end
-
-        index = index + 1;
-
-        return index > AURAS_MAX_DISPLAY;
-    end);
-
-    AuraUtil_ForEachAura(unitframe.AurasMythicPlus.unit, filterHarmful, nil, function(...)
-        buffName, texture, count, _, duration, expirationTime, _, _, _, spellId = ...;
-
-        if FilterShouldShowBuff(spellId, false, true) then
-            local cCount = count == 0 and 1 or count;
-
-            if not unitframe.AurasMythicPlus.buffCompact[spellId] then
-                unitframe.AurasMythicPlus.buffCompact[spellId] = {
-                    index          = index,
-                    buffName       = buffName,
-                    texture        = texture,
-                    count          = cCount,
-                    duration       = duration,
-                    expirationTime = expirationTime,
-                };
-            else
-                unitframe.AurasMythicPlus.buffCompact[spellId].count          = unitframe.AurasMythicPlus.buffCompact[spellId].count + cCount;
-                unitframe.AurasMythicPlus.buffCompact[spellId].duration       = duration;
-                unitframe.AurasMythicPlus.buffCompact[spellId].expirationTime = expirationTime;
-            end
-        end
-
-        index = index + 1;
-
-        return index > AURAS_MAX_DISPLAY;
-    end);
-
-    local aura;
-    for sId, spell in pairs(unitframe.AurasMythicPlus.buffCompact) do
-        aura = unitframe.AurasMythicPlus.buffList[buffIndex];
-
-        if not aura then
-            aura = CreateFrame('Frame', nil, unitframe.AurasMythicPlus, 'NameplateBuffButtonTemplate');
-            aura:SetMouseClickEnabled(false);
-            aura.layoutIndex = buffIndex;
-
-            aura:SetScale(SCALE);
-
-            if SQUARE then
-                aura:SetSize(20, 20);
-                aura.Icon:SetSize(18, 18);
-                aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
-            end
-
-            aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
-            aura.Border:SetShown(not BORDER_HIDE);
-
-            aura.Cooldown:SetDrawEdge(DRAW_EDGE);
-            aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
-            aura.Cooldown:SetCountdownFont('StripesAurasMythicPlusCooldownFont');
-            aura.Cooldown:GetRegions():ClearAllPoints();
-            aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-            aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
-            aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-            aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
-
-            aura.CountFrame.Count:ClearAllPoints();
-            aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
-            aura.CountFrame.Count:SetFontObject(StripesAurasMythicPlusCountFont);
-            aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
-
-            if MASQUE_SUPPORT and Stripes.Masque then
-                Stripes.MasqueAurasMythicGroup:RemoveButton(aura);
-                Stripes.MasqueAurasMythicGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
-            end
-
-            unitframe.AurasMythicPlus.buffList[buffIndex] = aura;
-        end
-
-        aura:ClearAllPoints();
-
-        if AURAS_DIRECTION == 1 then
-            aura:SetPoint('TOPLEFT', (buffIndex - 1) * (20 + SPACING_X), 0);
-        elseif AURAS_DIRECTION == 2 then
-            aura:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + SPACING_X)), 0);
-        else
-            unitframe.AurasMythicPlus.buffList[1]:SetPoint('TOP', -(aura:GetWidth()/2)*(buffIndex-1), 0);
-
-            if buffIndex > 1 then
-                aura:SetPoint('TOPLEFT', unitframe.AurasMythicPlus.buffList[buffIndex - 1], 'TOPRIGHT', SPACING_X, 0);
-            end
-        end
-
-        aura:SetID(spell.index);
-
-        aura.Icon:SetTexture(spell.texture);
-
-        if spell.count > 1 then
-            aura.CountFrame.Count:SetText(spell.count);
-            aura.CountFrame.Count:Show();
-        else
-            aura.CountFrame.Count:Hide();
-        end
-
-        if sId == 343553 then
-            local dur = tonumber(string.format('%.0f', unitframe.data.healthPerF / 8));
-            CooldownFrame_Set(aura.Cooldown, GetTime(), dur, dur > 0, DRAW_EDGE);
-        else
-            CooldownFrame_Set(aura.Cooldown, spell.expirationTime - spell.duration, spell.duration, spell.duration > 0, DRAW_EDGE);
-        end
-
-        aura:Show();
-
-        buffIndex = buffIndex + 1;
-
-        if buffIndex > AURAS_MAX_DISPLAY then
-            break;
-        end
-    end
-
-    for i = buffIndex, AURAS_MAX_DISPLAY do
-        if unitframe.AurasMythicPlus.buffList[i] then
-            unitframe.AurasMythicPlus.buffList[i]:Hide();
-        else
-            break;
-        end
-    end
-
-    if buffIndex > 1 then
-        if not unitframe.AurasMythicPlus:IsShown() then
-            unitframe.AurasMythicPlus:Show();
-        end
-
-        UpdateAnchor(unitframe);
-    else
-        if unitframe.AurasMythicPlus:IsShown() then
-            unitframe.AurasMythicPlus:Show();
-        end
-    end
-end
-
-local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
-    if AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
-        return;
-    end
-
-    Update(unitframe);
-end
-
-local function UpdateStyle(unitframe)
-    for _, aura in ipairs(unitframe.AurasMythicPlus.buffList) do
-        if Stripes.Masque then
-            if MASQUE_SUPPORT then
-                Stripes.MasqueAurasMythicGroup:RemoveButton(aura);
-                Stripes.MasqueAurasMythicGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
-
-                aura.Border:SetDrawLayer('BACKGROUND');
-            else
-                Stripes.MasqueAurasMythicGroup:RemoveButton(aura);
-
-                aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
-                aura.Border:SetDrawLayer('BACKGROUND');
-
-                aura.Icon:SetDrawLayer('ARTWORK');
-
-                aura.Cooldown:ClearAllPoints();
-                aura.Cooldown:SetAllPoints();
-            end
-        end
-
-        aura:SetScale(SCALE);
-
-        if SQUARE then
-            aura:SetSize(20, 20);
-            aura.Icon:SetSize(18, 18);
-            aura.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
-        else
-            aura:SetSize(20, 14);
-            aura.Icon:SetSize(18, 12);
-            aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
-        end
-
-        aura.Border:SetShown(not BORDER_HIDE);
-        aura.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
-
-        aura.Cooldown:SetDrawEdge(DRAW_EDGE);
-        aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
-        aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-        aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
-
-        aura.Cooldown:GetRegions():ClearAllPoints();
-        aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-        aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
-
-        aura.CountFrame.Count:ClearAllPoints();
-        aura.CountFrame.Count:SetPoint(COUNT_POINT, aura.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
-        aura.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
-    end
-end
-
 function Module:UnitAdded(unitframe)
-    CreateAnchor(unitframe);
+    CreateBuffFrame(unitframe);
 
     unitframe.AurasMythicPlus.spacing = SPACING_X;
-
-    OnUnitAuraUpdate(unitframe);
+    unitframe.AurasMythicPlus:UpdateBuffs();
 end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.AurasMythicPlus then
-        unitframe.AurasMythicPlus:SetShown(false);
+        unitframe.AurasMythicPlus:Hide();
     end
 end
 
-function Module:UnitAura(unitframe, isFullUpdate, updatedAuraInfos)
-    OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos);
+function Module:UnitAura(unitframe, unitAuraUpdateInfo)
+    unitframe.AurasMythicPlus:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
 end
 
 function Module:Update(unitframe)
@@ -372,9 +414,8 @@ function Module:Update(unitframe)
     end
 
     unitframe.AurasMythicPlus.spacing = SPACING_X;
-
-    Update(unitframe);
-    UpdateStyle(unitframe);
+    unitframe.AurasMythicPlus:UpdateBuffs();
+    unitframe.AurasMythicPlus:UpdateStyle();
 end
 
 function Module:UpdateLocalConfig()
@@ -437,12 +478,14 @@ end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', UpdateAnchor);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
+        unitframe.AurasSpellSteal:UpdateAnchor();
+    end);
 
     -- All-Consuming Spite (Spiteful) timer update
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', function(self)
-        if self.data.npcId == 174773 then
-            Update(self);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', function(unitframe)
+        if unitframe.data.npcId == 174773 then
+            unitframe.AurasMythicPlus:UpdateBuffs();
         end
     end);
 end

@@ -541,8 +541,8 @@ do
     end
 
     E.CreateSlider = function(parent)
-        local slider  = Mixin(CreateFrame('Slider', nil, parent, 'OptionsSliderTemplate'), E.PixelPerfectMixin);
-        local editbox = Mixin(CreateFrame('EditBox', '$parentEditBox', slider, 'InputBoxTemplate'), E.PixelPerfectMixin);
+        local slider  = Mixin(CreateFrame('Slider', nil, parent, 'OptionsSliderTemplate, BackdropTemplate'), E.PixelPerfectMixin);
+        local editbox = Mixin(CreateFrame('EditBox', '$parentEditBox', slider, 'InputBoxTemplate, BackdropTemplate'), E.PixelPerfectMixin);
 
         slider:SetH(18);
 
