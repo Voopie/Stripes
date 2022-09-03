@@ -73,12 +73,12 @@ local function UpdateTargetSelection(unitframe)
     end
 
     if unitframe.data.unitType == 'SELF' then
-        unitframe.TargetIndicator:SetShown(false);
+        unitframe.TargetIndicator:Hide();
         return;
     end
 
     if unitframe.data.isTarget then
-        unitframe.TargetIndicator:SetShown(true);
+        unitframe.TargetIndicator:Show();
 
         unitframe.TargetIndicator.left:SetShown(TARGET_INDICATOR_ENABLED);
         unitframe.TargetIndicator.right:SetShown(TARGET_INDICATOR_ENABLED);
@@ -86,7 +86,7 @@ local function UpdateTargetSelection(unitframe)
         unitframe.TargetIndicator.glowUp:SetShown(TARGET_GLOW_ENABLED);
         unitframe.TargetIndicator.glowDown:SetShown(TARGET_GLOW_ENABLED);
     else
-        unitframe.TargetIndicator:SetShown(false);
+        unitframe.TargetIndicator:Hide();
     end
 end
 
@@ -172,7 +172,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.TargetIndicator then
-        unitframe.TargetIndicator:SetShown(false);
+        unitframe.TargetIndicator:Hide();
     end
 end
 

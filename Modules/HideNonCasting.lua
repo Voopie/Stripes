@@ -18,7 +18,7 @@ local visibilityState = true;
 
 local function RecalculateVisibilityState(unitframe)
     if visibilityState then
-        unitframe:SetShown(true);
+        unitframe:Show();
         return;
     end
 
@@ -30,12 +30,12 @@ local function RecalculateVisibilityState(unitframe)
 
     if spellId then
         if SHOW_UNINTERRUPTIBLE or not notInterruptible then
-            unitframe:SetShown(true);
+            unitframe:Show();
             return;
         end
     end
 
-    unitframe:SetShown(false);
+    unitframe:Hide();
 end
 
 local function ShowOnlyCastingNamePlates()

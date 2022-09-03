@@ -27,7 +27,7 @@ HolderModelFrame:SetBackdrop({
 });
 HolderModelFrame:SetBackdropColor(0.1, 0.1, 0.1, 1);
 HolderModelFrame:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
-HolderModelFrame:SetShown(false);
+HolderModelFrame:Hide();
 
 local ModelFrame = CreateFrame('PlayerModel', nil, HolderModelFrame);
 ModelFrame:SetPoint('CENTER', HolderModelFrame, 'CENTER', 0, 0);
@@ -52,15 +52,15 @@ local function UpdateNewName(editbox, npcId, oldName, newName)
     newName = strtrim(newName);
 
     if not newName or newName == '' then
-        return editbox:SetShown(false);
+        return editbox:Hide();
     end
 
     if not npcId or not O.db.custom_name_data[npcId] then
-        return editbox:SetShown(false);
+        return editbox:Hide();
     end
 
     if oldName == newName then
-        return editbox:SetShown(false);
+        return editbox:Hide();
     end
 
     O.db.custom_name_data[npcId].new_name = newName;
@@ -68,7 +68,7 @@ local function UpdateNewName(editbox, npcId, oldName, newName)
     panel:UpdateScroll();
     S:GetNameplateModule('Handler'):UpdateAll();
 
-    editbox:SetShown(false);
+    editbox:Hide();
 end
 
 local function CreateRow(frame)
@@ -102,12 +102,12 @@ local function CreateRow(frame)
     frame.EditBox:SetPosition('LEFT', frame.IdText, 'RIGHT', 4, 0);
     frame.EditBox:SetFrameLevel(frame.EditBox:GetFrameLevel() + 10);
     frame.EditBox:SetSize(NAME_WIDTH, ROW_HEIGHT);
-    frame.EditBox:SetShown(false);
+    frame.EditBox:Hide();
     frame.EditBox:SetScript('OnEnterPressed', function(self)
         UpdateNewName(self, self:GetParent().npc_id, self:GetParent().npc_name, self:GetText());
     end);
     frame.EditBox.FocusLostCallback = function(self)
-        self:SetShown(false);
+        self:Hide();
     end
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
@@ -140,7 +140,7 @@ local function CreateRow(frame)
     frame.EditButton:SetSize(14, 14);
     frame.EditButton:SetScript('OnClick', function(self)
         self:GetParent().EditBox:SetText(self:GetParent().new_name);
-        self:GetParent().EditBox:SetShown(true);
+        self:GetParent().EditBox:Show();
         self:GetParent().EditBox:SetFocus();
         self:GetParent().EditBox:SetCursorPosition(0);
     end);
@@ -154,7 +154,7 @@ local function CreateRow(frame)
 
     frame:HookScript('OnDoubleClick', function(self)
         self.EditBox:SetText(self.new_name);
-        self.EditBox:SetShown(true);
+        self.EditBox:Show();
         self.EditBox:SetFocus();
         self.EditBox:SetCursorPosition(0);
     end);
@@ -280,7 +280,7 @@ panel.UpdateScroll = function()
 
             UpdateRow(frame);
 
-            frame:SetShown(true);
+            frame:Show();
         end
     end
 
@@ -298,7 +298,7 @@ local function CreateListRow(b)
     b.PlusSign:SetSize(ROW_HEIGHT / 2, ROW_HEIGHT / 2);
     b.PlusSign:SetTexture(S.Media.Icons.TEXTURE);
     b.PlusSign:SetTexCoord(unpack(S.Media.Icons.COORDS.PLUS_SIGN_WHITE));
-    b.PlusSign:SetShown(false);
+    b.PlusSign:Hide();
 
     b.NameText = Mixin(b:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
     b.NameText:SetPosition('LEFT', b, 'LEFT', 8, 0);
@@ -316,7 +316,7 @@ local function CreateListRow(b)
 
     b:HookScript('OnEnter', function(self)
         self:SetBackdropColor(0.3, 0.3, 0.3, 1);
-        self.PlusSign:SetShown(true);
+        self.PlusSign:Show();
 
         if self.npc_name == UNKNOWN then
             self.npc_name = U.GetNpcNameByID(self.npc_id);
@@ -337,7 +337,7 @@ local function CreateListRow(b)
 
     b:HookScript('OnLeave', function(self)
         self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
-        self.PlusSign:SetShown(false);
+        self.PlusSign:Hide();
 
         if self.npc_name == UNKNOWN then
             self.npc_name = U.GetNpcNameByID(self.npc_id);
@@ -392,7 +392,7 @@ panel.UpdateListScroll = function(id)
 
         UpdateListRow(b);
 
-        b:SetShown(true);
+        b:Show();
     end
 
     PixelUtil.SetSize(panel.ListScrollArea.scrollChild, panel.ListScroll:GetWidth(), panel.ListScroll:GetHeight() - (panel.ListScroll:GetHeight() % ROW_HEIGHT));
@@ -496,41 +496,41 @@ panel.Load = function(self)
 
         if panel.searchWordLower == '' then
             panel.searchWordLower = nil;
-            panel.ResetSearchEditBox:SetShown(false);
+            panel.ResetSearchEditBox:Hide();
         end
 
         if panel.searchWordLower then
-            panel.ResetSearchEditBox:SetShown(true);
+            panel.ResetSearchEditBox:Show();
         end
 
         panel:UpdateScroll();
     end);
     self.SearchEditBox.FocusGainedCallback = function()
-        panel.ResetSearchEditBox:SetShown(true);
+        panel.ResetSearchEditBox:Show();
     end
     self.SearchEditBox.FocusLostCallback = function(self)
         panel.ResetSearchEditBox:SetShown(self:GetText() ~= '');
     end
     self.SearchEditBox.OnTextChangedCallback = function(self)
         if self:GetText() ~= '' then
-            panel.ResetSearchEditBox:SetShown(true);
+            panel.ResetSearchEditBox:Show();
         else
-            panel.ResetSearchEditBox:SetShown(false);
+            panel.ResetSearchEditBox:Hide();
         end
     end
 
     self.ResetSearchEditBox = E.CreateTextureButton(self.SearchEditBox, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.CROSS_WHITE);
     self.ResetSearchEditBox:SetPosition('RIGHT', self.SearchEditBox, 'RIGHT', 0, 0);
     self.ResetSearchEditBox:SetSize(12, 12);
-    self.ResetSearchEditBox:SetShown(false);
+    self.ResetSearchEditBox:Hide();
     self.ResetSearchEditBox:SetScript('OnClick', function(self)
         panel.searchWordLower = nil;
 
         panel.SearchEditBox:SetText('');
-        panel.SearchEditBox.Instruction:SetShown(true);
+        panel.SearchEditBox.Instruction:Show();
         panel:UpdateScroll();
 
-        self:SetShown(false);
+        self:Hide();
     end);
 
     self.CustomNameEditFrame = CreateFrame('Frame', nil, self, 'BackdropTemplate');
@@ -554,7 +554,7 @@ panel.Load = function(self)
     self.List:SetWidth(250);
     self.List:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.List:SetBackdropColor(0.1, 0.1, 0.1, 1);
-    self.List:SetShown(false);
+    self.List:Hide();
 
     self.ListDropdown = E.CreateDropdown('plain', self.List);
     self.ListDropdown:SetPosition('TOP', self.List, 'TOP', 0, -10);

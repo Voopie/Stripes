@@ -52,14 +52,14 @@ local function Create(unitframe)
 
     absorbBar:SetStatusBarTexture(absorbBar.t);
     absorbBar:SetValue(0);
-    absorbBar:SetShown(false);
+    absorbBar:Hide();
 
     local absorbText = CreateFrame('Frame', '$parentAbsorbText', unitframe.healthBar);
     absorbText:SetAllPoints(unitframe.healthBar);
     absorbText.text = absorbText:CreateFontString(nil, 'OVERLAY', 'StripesAbsorbTextFont');
     PixelUtil.SetPoint(absorbText.text, ABSORB_TEXT_ANCHOR, absorbText, ABSORB_TEXT_ANCHOR, ABSORB_TEXT_X_OFFSET, ABSORB_TEXT_Y_OFFSET);
     absorbText.text:SetTextColor(ABSORB_TEXT_COLOR[1], ABSORB_TEXT_COLOR[2], ABSORB_TEXT_COLOR[3], ABSORB_TEXT_COLOR[4]);
-    absorbText:SetShown(false);
+    absorbText:Hide();
 
     unitframe.AbsorbBar = absorbBar;
     unitframe.AbsorbText = absorbText;
@@ -71,7 +71,7 @@ local function Update(unitframe)
     end
 
     if unitframe.data.unitType == 'SELF' then
-        unitframe.AbsorbBar:SetShown(false);
+        unitframe.AbsorbBar:Hide();
         return;
     end
 
@@ -79,16 +79,16 @@ local function Update(unitframe)
         return;
     end
 
-    unitframe.overAbsorbGlow:SetShown(false);
-    unitframe.totalAbsorb:SetShown(false);
-    unitframe.totalAbsorbOverlay:SetShown(false);
+    unitframe.overAbsorbGlow:Hide();
+    unitframe.totalAbsorb:Hide();
+    unitframe.totalAbsorbOverlay:Hide();
 
     local absorbAmount = unitframe.data.absorbAmount;
 
     if unitframe.data.healthMax > 0 and absorbAmount > 0 then
         unitframe.AbsorbBar:SetMinMaxValues(0, unitframe.data.healthMax);
         unitframe.AbsorbBar:SetValue(absorbAmount);
-        unitframe.AbsorbBar:SetShown(true);
+        unitframe.AbsorbBar:Show();
 
         if not AT_TOP then
             unitframe.AbsorbBar:ClearAllPoints();
@@ -104,14 +104,14 @@ local function Update(unitframe)
 
         if ABSORB_TEXT_ENABLED then
             unitframe.AbsorbText.text:SetText(ShortValue(absorbAmount));
-            unitframe.AbsorbText:SetShown(true);
+            unitframe.AbsorbText:Show();
         else
-            unitframe.AbsorbText:SetShown(false);
+            unitframe.AbsorbText:Hide();
         end
     else
         unitframe.AbsorbBar:SetValue(0);
-        unitframe.AbsorbBar:SetShown(false);
-        unitframe.AbsorbText:SetShown(false);
+        unitframe.AbsorbBar:Hide();
+        unitframe.AbsorbText:Hide();
     end
 end
 
@@ -145,7 +145,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.AbsorbBar then
-        unitframe.AbsorbBar:SetShown(false);
+        unitframe.AbsorbBar:Hide();
     end
 end
 

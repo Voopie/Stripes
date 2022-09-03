@@ -27,7 +27,7 @@ local function Create(unitframe)
     frame.LeftText = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
     frame.RightText = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.HealthText = frame;
 end
@@ -132,7 +132,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.HealthText then
-        unitframe.HealthText:SetShown(false);
+        unitframe.HealthText:Hide();
     end
 end
 

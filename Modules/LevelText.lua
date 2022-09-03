@@ -31,7 +31,7 @@ local function Create(unitframe)
     frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesLevelTextFont');
     frame.text:SetTextColor(1, 1, 1);
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.LevelText = frame;
 end
@@ -84,7 +84,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.LevelText then
-        unitframe.LevelText:SetShown(false);
+        unitframe.LevelText:Hide();
     end
 end
 

@@ -44,12 +44,12 @@ OrbsCounter.count:SetTextColor(1, 1, 1);
 OrbsCounter.count:SetShadowOffset(1, -1);
 OrbsCounter.count:SetShadowColor(0, 0, 0);
 
-OrbsCounter:SetShown(false);
+OrbsCounter:Hide();
 
 local counter = 0;
 local function CountOrbs()
     if not COUNTER or not PlayerState.inMythicPlus then
-        OrbsCounter:SetShown(false);
+        OrbsCounter:Hide();
         return;
     end
 
@@ -63,9 +63,9 @@ local function CountOrbs()
 
     if counter > 0 then
         OrbsCounter.count:SetText(counter);
-        OrbsCounter:SetShown(true);
+        OrbsCounter:Show();
     else
-        OrbsCounter:SetShown(false);
+        OrbsCounter:Hide();
     end
 end
 
@@ -74,9 +74,9 @@ Module.OrbsCounter = OrbsCounter;
 
 local function Update(unitframe)
     if not PlayerState.inMythicPlus then
-        OrbsCounter:SetShown(false);
+        OrbsCounter:Hide();
 
-        unitframe.Explosive:SetShown(false);
+        unitframe.Explosive:Hide();
 
         return;
     end
@@ -87,7 +87,7 @@ local function Update(unitframe)
         if unitframe.data.npcId == EXPLOSIVE_ID then
             unitframe.Explosive:SetShown(CROSSHAIR);
         else
-            unitframe.Explosive:SetShown(false);
+            unitframe.Explosive:Hide();
         end
     end
 end
@@ -96,7 +96,7 @@ local function Hide(unitframe)
     CountOrbs();
 
     if unitframe.Explosive then
-        unitframe.Explosive:SetShown(false);
+        unitframe.Explosive:Hide();
     end
 end
 
@@ -132,7 +132,7 @@ local function Create(unitframe)
     horLine:SetVertexColor(1, 0, 0, 0.5);
 
     unitframe.Explosive = frame;
-    unitframe.Explosive:SetShown(false);
+    unitframe.Explosive:Hide();
 end
 
 function Module:UnitAdded(unitframe)

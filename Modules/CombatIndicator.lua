@@ -38,7 +38,7 @@ local function Create(unitframe)
     frame.icon = frame:CreateTexture(nil, 'OVERLAY');
     frame.icon:SetTexture(S.Media.Icons2.TEXTURE);
     frame.icon:SetTexCoord(unpack(S.Media.Icons2.COORDS.CROSS_SWORDS_WHITE));
-    frame.icon:SetShown(false);
+    frame.icon:Hide();
 
     frame.elapsed = 0;
     frame:SetScript('OnUpdate', OnUpdate);
@@ -60,7 +60,7 @@ end
 
 local function Hide(unitframe)
     if unitframe.CombatIndicator then
-        unitframe.CombatIndicator:SetShown(false);
+        unitframe.CombatIndicator:Hide();
     end
 end
 

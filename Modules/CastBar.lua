@@ -236,7 +236,7 @@ end
 local function UpdateVisibility(unitframe)
     if unitframe.castBar then
         unitframe.castBar:UnregisterAllEvents();
-        unitframe.castBar:SetShown(false);
+        unitframe.castBar:Hide();
     end
 
     if unitframe.castingBar then

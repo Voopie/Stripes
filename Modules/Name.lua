@@ -455,8 +455,8 @@ local function NameOnly_UpdateHealthBar(unitframe)
     if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
         PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.name, 'TOP', 0, 8);
 
-        unitframe.healthBar:SetShown(false);
-        unitframe.classificationIndicator:SetShown(false);
+        unitframe.healthBar:Hide();
+        unitframe.classificationIndicator:Hide();
     else
         UpdateRaidTargetIconPosition[RAID_TARGET_ICON_POSITION](unitframe);
 
@@ -511,7 +511,7 @@ local function NameOnly_CreateGuildName(unitframe)
     frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesGuildNameFont');
     PixelUtil.SetPoint(frame.text, 'TOP', unitframe.name, 'BOTTOM', 0, -1);
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.GuildName = frame;
 end
@@ -550,13 +550,13 @@ local function NameOnly_UpdateGuildName(unitframe)
                 unitframe.GuildName.text:SetTextColor(NAME_ONLY_GUILD_NAME_COLOR[1], NAME_ONLY_GUILD_NAME_COLOR[2], NAME_ONLY_GUILD_NAME_COLOR[3], NAME_ONLY_GUILD_NAME_COLOR[4]);
                 unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
             else
-                unitframe.GuildName:SetShown(false);
+                unitframe.GuildName:Hide();
             end
         else
-            unitframe.GuildName:SetShown(false);
+            unitframe.GuildName:Hide();
         end
     else
-        unitframe.GuildName:SetShown(false);
+        unitframe.GuildName:Hide();
     end
 end
 
@@ -641,7 +641,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.GuildName then
-        unitframe.GuildName:SetShown(false);
+        unitframe.GuildName:Hide();
     end
 end
 

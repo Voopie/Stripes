@@ -543,7 +543,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             if notInterruptible then
                 self.Icon:SetShown(self.iconWhenNoninterruptible);
             else
-                self.Icon:SetShown(true);
+                self.Icon:Show();
             end
         end
 
@@ -751,7 +751,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             if notInterruptible then
                 self.Icon:SetShown(self.iconWhenNoninterruptible);
             else
-                self.Icon:SetShown(true);
+                self.Icon:Show();
             end
         end
 
@@ -861,7 +861,7 @@ function StripesCastingBar_UpdateInterruptibleState(self, notInterruptible)
             if notInterruptible then
                 self.Icon:SetShown(self.iconWhenNoninterruptible);
             else
-                self.Icon:SetShown(true);
+                self.Icon:Show();
             end
         end
 

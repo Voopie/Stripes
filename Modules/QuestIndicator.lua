@@ -95,7 +95,7 @@ local function Update(unitframe, unit)
     unit = unit or unitframe.data.unit;
 
     if not ENABLED or not unit or unitframe.data.unitType == 'SELF' or (select(10, C_Scenario_GetInfo()) == LE_SCENARIO_TYPE_CHALLENGE_MODE) then
-        unitframe.QuestIndicator:SetShown(false);
+        unitframe.QuestIndicator:Hide();
         return;
     end
 
@@ -147,18 +147,18 @@ local function Update(unitframe, unit)
         end
 
         if lootIconShow then
-            unitframe.QuestIndicator.swordIcon:SetShown(false);
-            unitframe.QuestIndicator.lootIcon:SetShown(true);
+            unitframe.QuestIndicator.swordIcon:Hide();
+            unitframe.QuestIndicator.lootIcon:Show();
             unitframe.QuestIndicator.counterText:SetPoint('CENTER', unitframe.QuestIndicator.lootIcon, 'CENTER', 1, -3);
         else
-            unitframe.QuestIndicator.swordIcon:SetShown(true);
-            unitframe.QuestIndicator.lootIcon:SetShown(false);
+            unitframe.QuestIndicator.swordIcon:Show();
+            unitframe.QuestIndicator.lootIcon:Hide();
             unitframe.QuestIndicator.counterText:SetPoint('CENTER', unitframe.QuestIndicator.swordIcon, 'CENTER', -2, -2);
         end
 
-        unitframe.QuestIndicator:SetShown(true);
+        unitframe.QuestIndicator:Show();
     else
-        unitframe.QuestIndicator:SetShown(false);
+        unitframe.QuestIndicator:Hide();
     end
 end
 
@@ -171,7 +171,7 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
     frame:SetFrameStrata('HIGH');
     frame:SetFrameLevel(frame:GetFrameLevel() + 50);
-    frame:SetShown(false);
+    frame:Hide();
 
     frame.swordIcon = frame:CreateTexture(nil, 'BORDER', nil, 0);
 
@@ -190,7 +190,7 @@ local function Create(unitframe)
     frame.lootIcon:SetSize(16, 16);
     frame.lootIcon:SetTexture(S.Media.Icons2.TEXTURE);
     frame.lootIcon:SetTexCoord(unpack(S.Media.Icons2.COORDS.LOOT));
-    frame.lootIcon:SetShown(false);
+    frame.lootIcon:Hide();
 
     frame.counterText = frame:CreateFontString(nil, 'OVERLAY');
     frame.counterText:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 8, 'OUTLINE');

@@ -36,7 +36,7 @@ HolderModelFrame:SetBackdrop({
 });
 HolderModelFrame:SetBackdropColor(0.1, 0.1, 0.1, 1);
 HolderModelFrame:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
-HolderModelFrame:SetShown(false);
+HolderModelFrame:Hide();
 
 local ModelFrame = CreateFrame('PlayerModel', nil, HolderModelFrame);
 ModelFrame:SetPoint('CENTER', HolderModelFrame, 'CENTER', 0, 0);
@@ -75,7 +75,7 @@ ExtendedOptions:SetFrameLevel(100);
 ExtendedOptions:SetSize(260, 300);
 ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
 ExtendedOptions:SetClampedToScreen(true);
-ExtendedOptions:SetShown(false);
+ExtendedOptions:Hide();
 
 ExtendedOptions.Update = function(self)
     self.ColorName:SetList(Colors:GetList());
@@ -200,7 +200,7 @@ ExtendedOptions.RemoveButton:SetScript('OnClick', function(_)
     if O.db.custom_color_data[ExtendedOptions.id] then
         O.db.custom_color_data[ExtendedOptions.id] = nil;
 
-        ExtendedOptions:SetShown(false);
+        ExtendedOptions:Hide();
         ExtendedOptions.anchor.isHighlighted = false;
         ExtendedOptions.anchor.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
 
@@ -210,7 +210,7 @@ ExtendedOptions.RemoveButton:SetScript('OnClick', function(_)
 end);
 
 local function ExtendedOptionsHide()
-    ExtendedOptions:SetShown(false);
+    ExtendedOptions:Hide();
     ExtendedOptions.anchor.isHighlighted = false;
     ExtendedOptions.anchor:SetBackdropColor(unpack(ExtendedOptions.anchor.backgroundColor));
     ExtendedOptions.anchor.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
@@ -261,7 +261,7 @@ local function CreateRow(frame)
                 self.isHighlighted = false;
                 self.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
 
-                ExtendedOptions:SetShown(false);
+                ExtendedOptions:Hide();
 
                 panel:UpdateScroll();
                 S:GetNameplateModule('Handler'):UpdateAll();
@@ -275,7 +275,7 @@ local function CreateRow(frame)
         end
 
         if ExtendedOptions:IsShown() then
-            ExtendedOptions:SetShown(false);
+            ExtendedOptions:Hide();
 
             self.isHighlighted = false;
             self:SetBackdropColor(unpack(self.backgroundColor));
@@ -465,7 +465,7 @@ panel.UpdateScroll = function()
 
             UpdateRow(frame);
 
-            frame:SetShown(true);
+            frame:Show();
         end
     end
 
@@ -483,7 +483,7 @@ local function CreateListRow(b)
     b.PlusSign:SetSize(ROW_HEIGHT / 2, ROW_HEIGHT / 2);
     b.PlusSign:SetTexture(S.Media.Icons.TEXTURE);
     b.PlusSign:SetTexCoord(unpack(S.Media.Icons.COORDS.PLUS_SIGN_WHITE));
-    b.PlusSign:SetShown(false);
+    b.PlusSign:Hide();
 
     b.NameText = Mixin(b:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
     b.NameText:SetPosition('LEFT', b, 'LEFT', 8, 0);
@@ -501,7 +501,7 @@ local function CreateListRow(b)
 
     b:HookScript('OnEnter', function(self)
         self:SetBackdropColor(0.3, 0.3, 0.3, 1);
-        self.PlusSign:SetShown(true);
+        self.PlusSign:Show();
 
         if self.npc_name == UNKNOWN then
             self.npc_name = U.GetNpcNameByID(self.npc_id);
@@ -522,7 +522,7 @@ local function CreateListRow(b)
 
     b:HookScript('OnLeave', function(self)
         self:SetBackdropColor(self.backgroundColor[1], self.backgroundColor[2], self.backgroundColor[3], self.backgroundColor[4]);
-        self.PlusSign:SetShown(false);
+        self.PlusSign:Hide();
 
         if self.npc_name == UNKNOWN then
             self.npc_name = U.GetNpcNameByID(self.npc_id);
@@ -577,7 +577,7 @@ panel.UpdateListScroll = function(id)
 
         UpdateListRow(b);
 
-        b:SetShown(true);
+        b:Show();
     end
 
     PixelUtil.SetSize(panel.ListScrollArea.scrollChild, panel.ListScroll:GetWidth(), panel.ListScroll:GetHeight() - (panel.ListScroll:GetHeight() % ROW_HEIGHT));
@@ -612,18 +612,18 @@ panel.CreateCategoryListRow = function(frame)
     frame.EditBox:SetFrameLevel(frame.EditBox:GetFrameLevel() + 10);
     frame.EditBox:SetSize(170, ROW_HEIGHT);
     frame.EditBox:SetMaxLetters(CATEGORY_MAX_LETTERS);
-    frame.EditBox:SetShown(false);
+    frame.EditBox:Hide();
     frame.EditBox:SetScript('OnEnterPressed', function(self)
         local name = self:GetParent().name;
 
         if not name or not O.db.custom_color_categories_data[name] then
-            return self:SetShown(false);
+            return self:Hide();
         end
 
         local newName = strtrim(self:GetText());
 
         if not newName or newName == '' or string.lower(newName) == string.lower(CATEGORY_ALL_NAME) then
-            return self:SetShown(false);
+            return self:Hide();
         end
 
         O.db.custom_color_categories_data[newName] = true;
@@ -646,10 +646,10 @@ panel.CreateCategoryListRow = function(frame)
             panel.CategoryDropdown:SetValue(newName);
         end
 
-        self:SetShown(false);
+        self:Hide();
     end);
     frame.EditBox.FocusLostCallback = function(self)
-        self:SetShown(false);
+        self:Hide();
     end
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
@@ -681,7 +681,7 @@ panel.CreateCategoryListRow = function(frame)
     frame.EditButton:SetSize(14, 14);
     frame.EditButton:SetScript('OnClick', function(self)
         self:GetParent().EditBox:SetText(self:GetParent().name);
-        self:GetParent().EditBox:SetShown(true);
+        self:GetParent().EditBox:Show();
         self:GetParent().EditBox:SetFocus();
         self:GetParent().EditBox:SetCursorPosition(0);
     end);
@@ -695,7 +695,7 @@ panel.CreateCategoryListRow = function(frame)
 
     frame:HookScript('OnDoubleClick', function(self)
         self.EditBox:SetText(self.name);
-        self.EditBox:SetShown(true);
+        self.EditBox:Show();
         self.EditBox:SetFocus();
         self.EditBox:SetCursorPosition(0);
     end);
@@ -762,7 +762,7 @@ panel.UpdateCategoryListScroll = function()
 
         panel.UpdateCategoryListRow(frame);
 
-        frame:SetShown(true);
+        frame:Show();
     end
 
     PixelUtil.SetSize(panel.CategoryListScrollArea.scrollChild, panel.CategoryListScroll:GetWidth(), panel.CategoryListScroll:GetHeight() - (panel.CategoryListScroll:GetHeight() % ROW_HEIGHT));
@@ -856,7 +856,7 @@ panel.Load = function(self)
         end
 
         Colors:HideListFrame();
-        panel.CategoryList:SetShown(false);
+        panel.CategoryList:Hide();
     end);
 
     self.SearchEditBox = E.CreateEditBox(self);
@@ -869,41 +869,41 @@ panel.Load = function(self)
 
         if panel.searchWordLower == '' then
             panel.searchWordLower = nil;
-            panel.ResetSearchEditBox:SetShown(false);
+            panel.ResetSearchEditBox:Hide();
         end
 
         if panel.searchWordLower then
-            panel.ResetSearchEditBox:SetShown(true);
+            panel.ResetSearchEditBox:Show();
         end
 
         panel:UpdateScroll();
     end);
     self.SearchEditBox.FocusGainedCallback = function()
-        panel.ResetSearchEditBox:SetShown(true);
+        panel.ResetSearchEditBox:Show();
     end
     self.SearchEditBox.FocusLostCallback = function(self)
         panel.ResetSearchEditBox:SetShown(self:GetText() ~= '');
     end
     self.SearchEditBox.OnTextChangedCallback = function(self)
         if self:GetText() ~= '' then
-            panel.ResetSearchEditBox:SetShown(true);
+            panel.ResetSearchEditBox:Show();
         else
-            panel.ResetSearchEditBox:SetShown(false);
+            panel.ResetSearchEditBox:Hide();
         end
     end
 
     self.ResetSearchEditBox = E.CreateTextureButton(self.SearchEditBox, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.CROSS_WHITE);
     self.ResetSearchEditBox:SetPosition('RIGHT', self.SearchEditBox, 'RIGHT', 0, 0);
     self.ResetSearchEditBox:SetSize(12, 12);
-    self.ResetSearchEditBox:SetShown(false);
+    self.ResetSearchEditBox:Hide();
     self.ResetSearchEditBox:SetScript('OnClick', function(self)
         panel.searchWordLower = nil;
 
         panel.SearchEditBox:SetText('');
-        panel.SearchEditBox.Instruction:SetShown(true);
+        panel.SearchEditBox.Instruction:Show();
         panel:UpdateScroll();
 
-        self:SetShown(false);
+        self:Hide();
     end);
 
     self.CategoryDropdown = E.CreateDropdown('plain', self);
@@ -925,7 +925,7 @@ panel.Load = function(self)
 
         Colors:HideListFrame();
 
-        panel.List:SetShown(false);
+        panel.List:Hide();
         AddFromList:UnlockHighlight();
     end
 
@@ -948,7 +948,7 @@ panel.Load = function(self)
     self.List:SetWidth(250);
     self.List:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.List:SetBackdropColor(0.1, 0.1, 0.1, 1);
-    self.List:SetShown(false);
+    self.List:Hide();
 
     self.ListDropdown = E.CreateDropdown('plain', self.List);
     self.ListDropdown:SetPosition('TOP', self.List, 'TOP', 0, -10);
@@ -1028,10 +1028,10 @@ panel.Load = function(self)
     self.ColorCategoryToggleButton.Callback = function()
         Colors:ToggleListFrame();
 
-        panel.List:SetShown(false);
+        panel.List:Hide();
         AddFromList:UnlockHighlight();
 
-        panel.CategoryList:SetShown(false);
+        panel.CategoryList:Hide();
     end
 
     self.HelpTipButton = E.CreateHelpTipButton(self);
@@ -1070,7 +1070,7 @@ panel.Load = function(self)
     self.CategoryList:SetWidth(250);
     self.CategoryList:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.CategoryList:SetBackdropColor(0.1, 0.1, 0.1, 1);
-    self.CategoryList:SetShown(false);
+    self.CategoryList:Hide();
 
     self.CategoryEditbox = E.CreateEditBox(self.CategoryList);
     self.CategoryEditbox:SetPosition('TOP', self.CategoryList, 'TOP', 0, -10);

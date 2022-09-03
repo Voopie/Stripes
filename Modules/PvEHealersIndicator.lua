@@ -134,7 +134,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.PVEHealers then
-        unitframe.PVEHealers:SetShown(false);
+        unitframe.PVEHealers:Hide();
     end
 end
 

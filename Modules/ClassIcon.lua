@@ -23,35 +23,35 @@ local function Create(unitframe)
     PixelUtil.SetSize(frame.icon, 12, 12);
     frame.icon:SetTexture(classIconsTexture);
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.ClassIcon = frame;
 end
 
 local function Update(unitframe)
     if not ENABLED or not unitframe.data.className or not ShouldShowName(unitframe) then
-        unitframe.ClassIcon:SetShown(false);
+        unitframe.ClassIcon:Hide();
         return;
     end
 
     if ONLY_IN_ARENA then
         if PlayerState.inArena then
             unitframe.ClassIcon.icon:SetTexCoord(unpack(classIconsCoords[unitframe.data.className]));
-            unitframe.ClassIcon:SetShown(true);
+            unitframe.ClassIcon:Show();
         else
-            unitframe.ClassIcon:SetShown(false);
+            unitframe.ClassIcon:Hide();
         end
     else
         if ONLY_ENEMY then
             if unitframe.data.unitType == 'ENEMY_PLAYER' then
                 unitframe.ClassIcon.icon:SetTexCoord(unpack(classIconsCoords[unitframe.data.className]));
-                unitframe.ClassIcon:SetShown(true);
+                unitframe.ClassIcon:Show();
             else
-                unitframe.ClassIcon:SetShown(false);
+                unitframe.ClassIcon:Hide();
             end
         else
             unitframe.ClassIcon.icon:SetTexCoord(unpack(classIconsCoords[unitframe.data.className]));
-            unitframe.ClassIcon:SetShown(true);
+            unitframe.ClassIcon:Show();
         end
     end
 end
@@ -63,7 +63,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.ClassIcon then
-        unitframe.ClassIcon:SetShown(false);
+        unitframe.ClassIcon:Hide();
     end
 end
 

@@ -655,7 +655,7 @@ end
 local function UpdateClickableArea(unitframe)
     if not DB.SHOW_CLICKABLE_AREA or unitframe.data.unitType == 'SELF' then
         if unitframe.ClickableArea then
-            unitframe.ClickableArea:SetShown(false);
+            unitframe.ClickableArea:Hide();
         end
 
         return;
@@ -688,7 +688,7 @@ local function UpdateClickableArea(unitframe)
         unitframe.ClickableArea:SetSize(C_NamePlate.GetNamePlateFriendlySize());
     end
 
-    unitframe.ClickableArea:SetShown(true);
+    unitframe.ClickableArea:Show();
 end
 
 local function CreateCustomBorder(unitframe)

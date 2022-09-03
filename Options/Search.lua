@@ -70,7 +70,7 @@ function Module:GetFrame()
             insets = { top = 0, left = 0, bottom = 0, right = 0 },
         });
         frame:SetBackdropColor(0, 0, 0, 1);
-        frame:SetShown(false);
+        frame:Hide();
 
         frame.buttonPool = CreateFramePool('Button', frame, 'BackdropTemplate');
     end
@@ -83,7 +83,7 @@ function Module:ShowFrame()
         return;
     end
 
-    frame:SetShown(true);
+    frame:Show();
 end
 
 function Module:HideFrame()
@@ -91,7 +91,7 @@ function Module:HideFrame()
         return;
     end
 
-    frame:SetShown(false);
+    frame:Hide();
 end
 
 function Module:UpdateFrameSize()
@@ -203,7 +203,7 @@ function Module:AddButton(name, func, numResults, editbox)
         button.Arrow:SetTexture(S.Media.Icons.TEXTURE);
         button.Arrow:SetTexCoord(unpack(S.Media.Icons.COORDS.ARROW_DOWN_WHITE));
         button.Arrow:SetRotation(math.rad(90));
-        button.Arrow:SetShown(false);
+        button.Arrow:Hide();
 
         button.BottomLine = button:CreateTexture(nil, 'ARTWORK');
         PixelUtil.SetPoint(button.BottomLine, 'BOTTOMLEFT', button, 'BOTTOMLEFT', 0, 0);
@@ -229,7 +229,7 @@ function Module:AddButton(name, func, numResults, editbox)
         button.ClearFocus = function(self)
             self.selected = false;
             self:SetBackdropColor(0.1, 0.1, 0.1, 1);
-            self.Arrow:SetShown(false);
+            self.Arrow:Hide();
         end
 
         button.SetFocus = function(self)
@@ -239,7 +239,7 @@ function Module:AddButton(name, func, numResults, editbox)
 
             self.selected = true;
             self:SetBackdropColor(0.45, 0.45, 0.5, 1);
-            self.Arrow:SetShown(true);
+            self.Arrow:Show();
         end
 
         button:HookScript('OnEnter', function(self)
@@ -256,14 +256,14 @@ function Module:AddButton(name, func, numResults, editbox)
     end
 
     button:SetScript('OnClick', function()
-        frame:SetShown(false);
+        frame:Hide();
         func();
 
         editbox:ClearFocus();
-        editbox:SetShown(false);
+        editbox:Hide();
 
         if editbox.ShowButton then
-            editbox.ShowButton:SetShown(true);
+            editbox.ShowButton:Show();
         end
     end);
 
@@ -273,7 +273,7 @@ function Module:AddButton(name, func, numResults, editbox)
     button.Text:SetText(name);
 
     button:ClearFocus();
-    button:SetShown(true);
+    button:Show();
 end
 
 

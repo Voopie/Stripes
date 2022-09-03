@@ -188,7 +188,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.PVPHealers then
-        unitframe.PVPHealers:SetShown(false);
+        unitframe.PVPHealers:Hide();
     end
 end
 

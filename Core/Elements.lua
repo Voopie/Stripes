@@ -395,18 +395,18 @@ E.CreateHelpTipButton = function(parent)
     b:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
 
     b:SetScript('OnEnter', function(self)
-        self.Text:SetShown(true);
+        self.Text:Show();
     end);
 
     b:SetScript('OnLeave', function(self)
-        self.Text:SetShown(false);
+        self.Text:Hide();
     end);
 
     b.Text = Mixin(b:CreateFontString(nil, 'ARTWORK'), E.PixelPerfectMixin);
     b.Text:SetPosition('LEFT', b, 'RIGHT', 8, 0);
     b.Text:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 12, 'OUTLINE');
     b.Text:SetTextColor(0.85, 0.85, 0.85);
-    b.Text:SetShown(false);
+    b.Text:Hide();
 
     b.SetTip = function(self, helpTip)
         self.Text:SetText(helpTip);
@@ -560,12 +560,12 @@ do
         slider.Low:ClearAllPoints();
         PixelUtil.SetPoint(slider.Low, 'LEFT', slider, 'LEFT', 0, 0);
         slider.Low:SetFontObject('StripesOptionsNormalFont');
-        slider.Low:SetShown(false);
+        slider.Low:Hide();
 
         slider.High:ClearAllPoints();
         PixelUtil.SetPoint(slider.High, 'RIGHT', slider, 'RIGHT', 0, 0);
         slider.High:SetFontObject('StripesOptionsNormalFont');
-        slider.High:SetShown(false);
+        slider.High:Hide();
 
         slider.Text:ClearAllPoints();
         PixelUtil.SetPoint(slider.Text, 'BOTTOMLEFT', slider, 'TOPLEFT', 0, 4);
@@ -667,9 +667,9 @@ do
             AddToFreqUsed(self);
 
             if button == 'RightButton' then
-                self.editbox:SetShown(true);
+                self.editbox:Show();
                 self.editbox:SetFocus();
-                self.CurrentValueBox:SetShown(false);
+                self.CurrentValueBox:Hide();
 
                 return;
             end
@@ -705,7 +705,7 @@ do
         slider.CurrentValueBox.Text:SetPosition('CENTER', slider.CurrentValueBox, 'CENTER', 0, 0);
 
         editbox:SetFrameLevel(slider:GetFrameLevel() + 3);
-        editbox:SetShown(false);
+        editbox:Hide();
         editbox:ClearAllPoints();
         editbox:SetPosition('TOPLEFT', slider.CurrentValueBox, 'TOPLEFT', 5, 0);
         editbox:SetPosition('BOTTOMRIGHT', slider.CurrentValueBox, 'BOTTOMRIGHT', 0, 0);
@@ -754,8 +754,8 @@ do
 
             PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
-            self:SetShown(false);
-            self:GetParent().CurrentValueBox:SetShown(true);
+            self:Hide();
+            self:GetParent().CurrentValueBox:Show();
         end);
 
         editbox:SetScript('OnEditFocusGained', function(self)
@@ -775,8 +775,8 @@ do
             EditBox_ClearHighlight(self);
             self.Background:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
 
-            self:SetShown(false);
-            self:GetParent().CurrentValueBox:SetShown(true);
+            self:Hide();
+            self:GetParent().CurrentValueBox:Show();
         end);
 
         editbox:HookScript('OnEnter', function(self)
@@ -807,7 +807,7 @@ do
         plusButton:SetPosition('RIGHT', slider, 'RIGHT', 4, 0);
         plusButton:SetSize(12, 12);
         plusButton:SetFrameLevel(slider:GetFrameLevel() + 10);
-        plusButton:SetShown(false);
+        plusButton:Hide();
         plusButton.Text = Mixin(plusButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
         plusButton.Text:SetPosition('CENTER', plusButton, 'CENTER', 1, 0);
         plusButton.Text:SetText('+');
@@ -839,8 +839,8 @@ do
             self.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
 
             if not self:GetParent():IsMouseOver() then
-                self:SetShown(false);
-                self:GetParent().minusButton:SetShown(false);
+                self:Hide();
+                self:GetParent().minusButton:Hide();
             end
         end);
 
@@ -848,7 +848,7 @@ do
         minusButton:SetPosition('LEFT', slider, 'LEFT', -4, 0);
         minusButton:SetSize(12, 12);
         minusButton:SetFrameLevel(slider:GetFrameLevel() + 10);
-        minusButton:SetShown(false);
+        minusButton:Hide();
         minusButton.Text = Mixin(minusButton:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont'), E.PixelPerfectMixin);
         minusButton.Text:SetPosition('CENTER', minusButton, 'CENTER', 0, 1);
         minusButton.Text:SetText('-');
@@ -880,8 +880,8 @@ do
             self.Background:SetBackdropColor(0.05, 0.05, 0.05, 1);
 
             if not self:GetParent():IsMouseOver() then
-                self:SetShown(false);
-                self:GetParent().plusButton:SetShown(false);
+                self:Hide();
+                self:GetParent().plusButton:Hide();
             end
         end);
 
@@ -890,14 +890,14 @@ do
                 return;
             end
 
-            self.plusButton:SetShown(true);
-            self.minusButton:SetShown(true);
+            self.plusButton:Show();
+            self.minusButton:Show();
         end);
 
         slider:HookScript('OnLeave', function(self)
             if not (self.plusButton:IsMouseOver() or self.minusButton:IsMouseOver()) then
-                self.plusButton:SetShown(false);
-                self.minusButton:SetShown(false);
+                self.plusButton:Hide();
+                self.minusButton:Hide();
             end
         end);
 
@@ -996,7 +996,7 @@ do
             self:HighlightText();
             self.Background:SetBackdropBorderColor(0.8, 0.8, 0.8, 1);
 
-            self.Instruction:SetShown(false);
+            self.Instruction:Hide();
 
             if self.FocusGainedCallback then
                 self:FocusGainedCallback();
@@ -1162,6 +1162,9 @@ do
         insets   = { left = 3, right = 3, top = 6, bottom = 6 },
     };
 
+    local DROPDOWN_ITEM_FONT_SIZE  = 13;
+    local DROPDOWN_ITEM_FONT_FLAGS = 'OUTLINE';
+
     local function UpdateScrollArea(scrollArea, height, heightValue, counter)
         scrollArea:UpdateScrollChildRect();
         scrollArea.ScrollBar:SetMinMaxValues(0, math.floor(math.abs(height - counter * heightValue - 0.5)));
@@ -1220,7 +1223,7 @@ do
         button.SelectedIcon = button:CreateTexture(nil, 'ARTWORK');
         PixelUtil.SetPoint(button.SelectedIcon, 'LEFT', button, 'LEFT', 2, 0);
         button.SelectedIcon:SetTexture('Interface\\Buttons\\UI-CheckBox-Check');
-        button.SelectedIcon:SetShown(false);
+        button.SelectedIcon:Hide();
 
         button.Text = button:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
         PixelUtil.SetPoint(button.Text, 'TOPLEFT', button.SelectedIcon, 'TOPRIGHT', 2, 4);
@@ -1311,7 +1314,7 @@ do
                         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
                         container:SetValue(container.byValue and self.Value or self.Key);
-                        DropdownList:SetShown(false);
+                        DropdownList:Hide();
 
                         if container.OnValueChangedCallback then
                             container:OnValueChangedCallback(self.Key, self.Value, IsShiftKeyDown());
@@ -1326,24 +1329,24 @@ do
                     itemButton.Value = self.itemsTable[data.key];
                     itemButton.Kind  = self.kind;
 
-                    itemButton:SetShown(true);
+                    itemButton:Show();
                 end
 
                 if not self.currentValue then
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                        button.SelectedIcon:SetShown(false);
+                        button.SelectedIcon:Hide();
                     end
                 else
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                        button.SelectedIcon:SetShown(false);
+                        button.SelectedIcon:Hide();
 
                         if self.byValue then
                             if button.Value == self.currentValue then
-                                button.SelectedIcon:SetShown(true);
+                                button.SelectedIcon:Show();
                             end
                         else
                             if button.Key == self.currentValue then
-                                button.SelectedIcon:SetShown(true);
+                                button.SelectedIcon:Show();
                             end
                         end
                     end
@@ -1367,20 +1370,20 @@ do
 
                 if not self.currentValue then
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                        button.SelectedIcon:SetShown(false);
+                        button.SelectedIcon:Hide();
                     end
                 else
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                        button.SelectedIcon:SetShown(false);
+                        button.SelectedIcon:Hide();
 
                         if self.byValue then
                             if button.Value == self.currentValue then
-                                button.SelectedIcon:SetShown(true);
+                                button.SelectedIcon:Show();
                                 self.holderButton.Text:SetText(button.Value);
                             end
                         else
                             if button.Key == self.currentValue then
-                                button.SelectedIcon:SetShown(true);
+                                button.SelectedIcon:Show();
                                 self.holderButton.Text:SetText(button.Value);
                             end
                         end
@@ -1437,7 +1440,7 @@ do
                         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
                         container:SetValue(self.Key);
-                        DropdownList:SetShown(false);
+                        DropdownList:Hide();
 
                         if container.OnValueChangedCallback then
                             container:OnValueChangedCallback(self.Key);
@@ -1456,15 +1459,15 @@ do
                     itemButton.Value = value;
                     itemButton.Kind  = self.kind;
 
-                    itemButton:SetShown(true);
+                    itemButton:Show();
                 end
 
                 if self.currentValue then
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                        button.SelectedIcon:SetShown(false);
+                        button.SelectedIcon:Hide();
 
                         if button.Key == self.currentValue then
-                            button.SelectedIcon:SetShown(true);
+                            button.SelectedIcon:Show();
                         end
                     end
                 end
@@ -1485,10 +1488,10 @@ do
                 self.currentValue = value;
 
                 for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                    button.SelectedIcon:SetShown(false);
+                    button.SelectedIcon:Hide();
 
                     if button.Key == value then
-                        button.SelectedIcon:SetShown(true);
+                        button.SelectedIcon:Show();
                         self.holderButton.Text:SetText(value);
                         self.holderButton.Texture:SetTexture(self.itemsTable[value]);
                     end
@@ -1552,7 +1555,7 @@ do
                         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
                         container:SetValue(self.Value);
-                        DropdownList:SetShown(false);
+                        DropdownList:Hide();
 
                         if container.OnValueChangedCallback then
                             container:OnValueChangedCallback(self.Value);
@@ -1570,15 +1573,15 @@ do
                     itemButton.Value = value;
                     itemButton.Kind  = self.kind;
 
-                    itemButton:SetShown(true);
+                    itemButton:Show();
                 end
 
                 if self.currentValue then
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                        button.SelectedIcon:SetShown(false);
+                        button.SelectedIcon:Hide();
 
                         if button.Value == self.currentValue then
-                            button.SelectedIcon:SetShown(true);
+                            button.SelectedIcon:Show();
                         end
                     end
                 end
@@ -1599,10 +1602,10 @@ do
                 self.currentValue = value;
 
                 for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                    button.SelectedIcon:SetShown(false);
+                    button.SelectedIcon:Hide();
 
                     if button.Value == value then
-                        button.SelectedIcon:SetShown(true);
+                        button.SelectedIcon:Show();
 
                     end
                 end
@@ -1639,7 +1642,7 @@ do
                 table.sort(self.sortedTable, textSort);
             end,
 
-            UpdateList = function(self)
+            UpdateList = function(self, forceUpdate)
                 local container = self;
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
@@ -1670,7 +1673,7 @@ do
                         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
                         container:SetValue(self.Value);
-                        DropdownList:SetShown(false);
+                        DropdownList:Hide();
 
                         if container.OnValueChangedCallback then
                             container:OnValueChangedCallback(self.Value);
@@ -1679,24 +1682,23 @@ do
 
                     PixelUtil.SetSize(itemButton, self.WidthValue, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
-                    itemButton.Text:SetText(value);
 
-                    local _, size, outline = itemButton.Text:GetFont();
-                    itemButton.Text:SetFont(LSM:Fetch('font', value), size, outline);
+                    itemButton.Text:SetFont(LSM:Fetch('font', value), DROPDOWN_ITEM_FONT_SIZE, DROPDOWN_ITEM_FONT_FLAGS);
+                    itemButton.Text:SetText(value);
 
                     itemButton.Key   = key;
                     itemButton.Value = value;
                     itemButton.Kind  = self.kind;
 
-                    itemButton:SetShown(true);
+                    itemButton:Show();
                 end
 
                 if self.currentValue then
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                        button.SelectedIcon:SetShown(false);
+                        button.SelectedIcon:Hide()
 
                         if button.Value == self.currentValue then
-                            button.SelectedIcon:SetShown(true);
+                            button.SelectedIcon:Show();
                         end
                     end
                 end
@@ -1717,10 +1719,10 @@ do
                 self.currentValue = value;
 
                 for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                    button.SelectedIcon:SetShown(false);
+                    button.SelectedIcon:Hide();
 
                     if button.Value == value then
-                        button.SelectedIcon:SetShown(true);
+                        button.SelectedIcon:Show();
                     end
                 end
 
@@ -1737,13 +1739,11 @@ do
 
                     self.holderButton.Text:SetText('Trigger'); -- Not fully resolve a problem...
                     self.holderButton.Text:SetText(self.currentValue);
-                    local _, size, outline = self.holderButton.Text:GetFont();
-                    self.holderButton.Text:SetFont(LSM:Fetch('font', self.currentValue), size, outline);
+                    self.holderButton.Text:SetFont(LSM:Fetch('font', self.currentValue), DROPDOWN_ITEM_FONT_SIZE, DROPDOWN_ITEM_FONT_FLAGS);
                 else
                     self.holderButton.Text:SetTextColor(1, 0, 0, 1);
                     self.holderButton.Text:SetText(L['MISSING_FONT']);
-                    local _, size, outline = self.holderButton.Text:GetFont();
-                    self.holderButton.Text:SetFont(LSM:Fetch('font', LSM.DefaultMedia.font), size, outline);
+                    self.holderButton.Text:SetFont(LSM:Fetch('font', LSM.DefaultMedia.font), DROPDOWN_ITEM_FONT_SIZE, DROPDOWN_ITEM_FONT_FLAGS);
                 end
             end,
         },
@@ -1795,7 +1795,7 @@ do
                         PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
 
                         container:SetValue(self.Value);
-                        DropdownList:SetShown(false);
+                        DropdownList:Hide();
 
                         if container.OnValueChangedCallback then
                             container:OnValueChangedCallback(self.Value);
@@ -1813,15 +1813,15 @@ do
                     itemButton.Value = name;
                     itemButton.Kind  = self.kind;
 
-                    itemButton:SetShown(true);
+                    itemButton:Show();
                 end
 
                 if self.currentValue then
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                        button.SelectedIcon:SetShown(false);
+                        button.SelectedIcon:Hide();
 
                         if button.Value == self.currentValue then
-                            button.SelectedIcon:SetShown(true);
+                            button.SelectedIcon:Show();
                         end
                     end
                 end
@@ -1842,10 +1842,10 @@ do
                 self.currentValue = value;
 
                 for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                    button.SelectedIcon:SetShown(false);
+                    button.SelectedIcon:Hide();
 
                     if button.Value == value then
-                        button.SelectedIcon:SetShown(true);
+                        button.SelectedIcon:Show();
                     end
                 end
 
@@ -1856,7 +1856,7 @@ do
                 if self.currentValue then
                     self.holderButton.Text:SetText(self.currentValue);
                     self.holderButton.Color:SetVertexColor(unpack(self.itemsTable[self.currentValue]));
-                    self.holderButton.Color:SetShown(true);
+                    self.holderButton.Color:Show();
                 end
             end,
         },
@@ -1925,15 +1925,15 @@ do
                     itemButton.Value = value;
                     itemButton.Kind  = self.kind;
 
-                    itemButton:SetShown(true);
+                    itemButton:Show();
                 end
 
                 if self.currentValue then
                     for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                        button.SelectedIcon:SetShown(false);
+                        button.SelectedIcon:Hide();
 
                         if button.Value == self.currentValue then
-                            button.SelectedIcon:SetShown(true);
+                            button.SelectedIcon:Show();
                         end
                     end
                 end
@@ -1954,10 +1954,10 @@ do
                 self.currentValue = value;
 
                 for button, _ in DropdownList.buttonPool:EnumerateActive() do
-                    button.SelectedIcon:SetShown(false);
+                    button.SelectedIcon:Hide();
 
                     if button.Value == value then
-                        button.SelectedIcon:SetShown(true);
+                        button.SelectedIcon:Show();
                     end
                 end
 
@@ -2040,7 +2040,7 @@ do
         PixelUtil.SetPoint(holderButton.Color, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
         PixelUtil.SetPoint(holderButton.Color, 'BOTTOMRIGHT', holderButton, 'BOTTOMRIGHT', 0, 0);
         holderButton.Color:SetColorTexture(1, 1, 1, 1);
-        holderButton.Color:SetShown(false);
+        holderButton.Color:Hide();
 
         holderButton.Texture = holderButton:CreateTexture(nil, 'ARTWORK');
         PixelUtil.SetPoint(holderButton.Texture, 'LEFT', holderButton.Text, 'LEFT', 22, 0);
@@ -2250,7 +2250,7 @@ local NewColorPicker do
     ColorPickerButtons:SetPosition('TOPRIGHT', ColorPickerFrame, 'TOPLEFT', 0, -6);
     ColorPickerButtons:SetPosition('BOTTOMRIGHT', ColorPickerFrame, 'BOTTOMLEFT', 0, 6)
     ColorPickerButtons:SetW(80);
-    ColorPickerButtons:SetShown(false);
+    ColorPickerButtons:Hide();
     ColorPickerButtons.colors = {
         'ffffff',
         'ff4d4d',
@@ -2466,7 +2466,7 @@ local NewColorPicker do
         StripesDB.last_used_hex_color = U.RGB2HEX(ColorPickerFrame:GetColorRGB());
 
         LastUsedColorButton:SetColor(StripesDB.last_used_hex_color);
-        LastUsedColorButton:SetShown(true);
+        LastUsedColorButton:Show();
     end);
 end
 
@@ -2571,7 +2571,7 @@ do
     Fader:SetBackdropColor(0, 0, 0, 0.75);
     Fader:Hide();
     Fader:SetScript('OnClick', function(self)
-        self.Holder:SetShown(false);
+        self.Holder:Hide();
         self:Hide();
     end);
 
@@ -2581,7 +2581,7 @@ do
         frame:SetSize(600, 300);
         frame:SetBackdrop(FONT_BACKDROP);
         frame:SetBackdropColor(0.1, 0.1, 0.1, 1);
-        frame:SetShown(false);
+        frame:Hide();
 
         frame:HookScript('OnShow', function(self)
             Fader:SetParent(parent);
@@ -2629,8 +2629,8 @@ function Module:StartUp()
     LastUsedColorButton:SetPosition('TOPLEFT', ColorPickerFrame, 'TOPRIGHT', 0, -6);
     if StripesDB.last_used_hex_color then
         LastUsedColorButton:SetColor(StripesDB.last_used_hex_color);
-        LastUsedColorButton:SetShown(true);
+        LastUsedColorButton:Show();
     else
-        LastUsedColorButton:SetShown(false);
+        LastUsedColorButton:Hide();
     end
 end

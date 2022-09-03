@@ -39,7 +39,7 @@ O.frame.config = { width = 800, height = 600 };
 O.frame:SetPosition('TOP', UIParent, 'TOP', 0, -120);
 O.frame:SetSize(O.frame.config.width, O.frame.config.height);
 O.frame:SetFrameStrata('DIALOG');
-O.frame:SetShown(false);
+O.frame:Hide();
 O.frame.isMin = false;
 
 O.frame:SetClampedToScreen(true);
@@ -67,8 +67,8 @@ O.frame:SetScript('OnKeyDown', function(self, key)
     end
 
     if key == 'F' and IsControlKeyDown() then
-        O.frame.SearchButton:SetShown(false);
-        O.frame.SearchEditbox:SetShown(true);
+        O.frame.SearchButton:Hide();
+        O.frame.SearchEditbox:Show();
         O.frame.SearchEditbox:SetFocus();
 
         self:SetPropagateKeyboardInput(false);
@@ -112,7 +112,7 @@ O.OpenOptions = function()
 
     wasNotified = false;
 
-    O.frame:SetShown(true);
+    O.frame:Show();
 end
 
 O.CloseOptions = function()
@@ -120,10 +120,10 @@ O.CloseOptions = function()
         return;
     end
 
-    O.frame.SearchButton:SetShown(true);
-    O.frame.SearchEditbox:SetShown(false);
+    O.frame.SearchButton:Show();
+    O.frame.SearchEditbox:Hide();
     O.frame:SetPropagateKeyboardInput(false);
-    O.frame:SetShown(false);
+    O.frame:Hide();
 
     if isNeedReload then
         StaticPopup_Show('STRIPES_OPTIONS_NEED_RELOAD');
@@ -189,7 +189,7 @@ O.frame.TopBar.CloseButton:SetScript('OnClick', O.CloseOptions);
 local function CollapseOptions()
     if not O.frame.isMin then
         O.frame:SetH(40);
-        O.frame.Main:SetShown(false);
+        O.frame.Main:Hide();
 
         O.frame.isMin = true;
     end
@@ -198,7 +198,7 @@ end
 local function ExpandOptions()
     if O.frame.isMin then
         O.frame:SetH(600);
-        O.frame.Main:SetShown(true);
+        O.frame.Main:Show();
 
         O.frame.isMin = false;
     end
@@ -209,12 +209,12 @@ local function ToggleMinimizedOptions()
 
     if O.frame.isMin then
         O.frame:SetH(40);
-        O.frame.Main:SetShown(false);
+        O.frame.Main:Hide();
 
         S:GetModule('Options_Colors'):HideListFrame();
     else
         O.frame:SetH(600);
-        O.frame.Main:SetShown(true);
+        O.frame.Main:Show();
     end
 end
 
@@ -247,20 +247,20 @@ O.frame.SearchButton:SetHighlightTexture(S.Media.Icons.TEXTURE, 'BLEND');
 O.frame.SearchButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.MAGNIFIER_WHITE));
 O.frame.SearchButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
 O.frame.SearchButton:SetScript('OnClick', function(self)
-    self:SetShown(false);
-    O.frame.SearchEditbox:SetShown(true);
+    self:Hide();
+    O.frame.SearchEditbox:Show();
     O.frame.SearchEditbox:SetFocus();
 end);
 
 O.frame.SearchEditbox = E.CreateEditBox(O.frame.TopBar);
 O.frame.SearchEditbox:SetPosition('LEFT', O.frame.TopBar, 'LEFT', 11, 0);
 O.frame.SearchEditbox:SetSize(184, 30);
-O.frame.SearchEditbox:SetShown(false);
+O.frame.SearchEditbox:Hide();
 O.frame.SearchEditbox.Background:SetBackdropColor(0.075, 0.075, 0.075, 1);
 O.frame.SearchEditbox:SetTextInsets(4, 20, 0, 0);
 O.frame.SearchEditbox:HookScript('OnEnterPressed', function(self)
-    self:SetShown(false);
-    O.frame.SearchButton:SetShown(true);
+    self:Hide();
+    O.frame.SearchButton:Show();
 end);
 
 O.frame.SearchEditbox:HookScript('OnEditFocusGained', function(self)
@@ -277,8 +277,8 @@ O.frame.SearchEditbox:SetScript('OnEditFocusLost', function(self)
         return;
     end
 
-    self:SetShown(false);
-    O.frame.SearchButton:SetShown(true);
+    self:Hide();
+    O.frame.SearchButton:Show();
 end);
 
 O.frame.SearchEditbox.ShowButton = O.frame.SearchButton;
@@ -315,9 +315,9 @@ O.frame.CloseSearchEditbox:SetHighlightTexture(S.Media.Icons.TEXTURE, 'BLEND');
 O.frame.CloseSearchEditbox:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.CROSS_WHITE));
 O.frame.CloseSearchEditbox:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
 O.frame.CloseSearchEditbox:SetScript('OnClick', function()
-    O.frame.SearchEditbox:SetShown(false);
+    O.frame.SearchEditbox:Hide();
     O.frame.SearchEditbox:SetText('');
-    O.frame.SearchButton:SetShown(true);
+    O.frame.SearchButton:Show();
 end);
 
 O.frame.Main = Mixin(CreateFrame('Frame', nil, O.frame.TopBar, 'BackdropTemplate'), E.PixelPerfectMixin);
@@ -365,12 +365,12 @@ O.CreateTab = function(parentPanel, name, text, callback)
         for _, t in ipairs(parentPanel.Tabs) do
             t:UnlockHighlight();
             t.BottomLine:SetVertexColor(0.75, 0.75, 0.75);
-            t.Content:SetShown(false);
+            t.Content:Hide();
         end
 
         self:LockHighlight();
         self.BottomLine:SetVertexColor(1, 0.85, 0);
-        self.Content:SetShown(true);
+        self.Content:Show();
 
         parentPanel.tabClicked = true;
 
@@ -384,7 +384,7 @@ O.CreateTab = function(parentPanel, name, text, callback)
     tab.Content = Mixin(CreateFrame('Frame', nil, tab), E.PixelPerfectMixin);
     tab.Content:SetPosition('TOPLEFT', parentPanel.TabsHolder, 'BOTTOMLEFT', 0, 0);
     tab.Content:SetPosition('BOTTOMRIGHT', parentPanel, 'BOTTOMRIGHT', 0, 0);
-    tab.Content:SetShown(false);
+    tab.Content:Hide();
 
     table.insert(parentPanel.Tabs, tab);
 
@@ -417,7 +417,7 @@ O.CreateRightPanel = function(name)
         end
     end
 
-    panel:SetShown(false);
+    panel:Hide();
 
     return panel;
 end
@@ -468,7 +468,7 @@ O.CreateLeftButton = function(text, name, order, panel, hideButton)
     button:SetSize(O.frame.config.width * 1/4, 28);
 
     if hideButton then
-        button:SetShown(false);
+        button:Hide();
     end
 
     button:SetNormalFontObject('StripesCategoryButtonNormalFont');
@@ -481,7 +481,7 @@ O.CreateLeftButton = function(text, name, order, panel, hideButton)
     button.Background:SetAllPoints();
     button.Background:SetColorTexture(1, 1, 1, 1);
     button.Background:SetGradient('HORIZONTAL', CreateColor(0.9, 0.9, 0.9, 1), CreateColor(0.1, 0.1, 0.1, 1));
-    button.Background:SetShown(false);
+    button.Background:Hide();
 
     button:SetScript('OnClick', function(self)
         O.ClearLeftHighlight();
