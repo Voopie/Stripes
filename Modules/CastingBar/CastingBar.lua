@@ -234,7 +234,7 @@ function StripesCastingBar_OnLoad(self, unit, showTradeSkills, showShield)
     StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield);
 
     self.StagePoints = {};
-	self.StagePips = {};
+    self.StagePips = {};
 
     self.showCastbar = true;
 
@@ -251,111 +251,111 @@ local CASTBAR_STAGE_MIN_OFFSET = CASTBAR_STAGE_WIDTH / -2;
 local CASTBAR_STAGE_MAX_OFFSET = CASTBAR_STAGE_WIDTH / 2;
 
 function StripesCastingBar_AddStages(self, numStages)
-	self.CurrSpellStage = CASTBAR_STAGE_INVALID;
-	self.NumStages = numStages;
+    self.CurrSpellStage = CASTBAR_STAGE_INVALID;
+    self.NumStages = numStages;
 
-	local sumDuration = 0;
+    local sumDuration = 0;
 
-	self.StagePoints = {};
-	self.StagePips = {};
+    self.StagePoints = {};
+    self.StagePips = {};
 
-	local hasFX = self.StandardFinish ~= nil;
-	local stageMaxValue = self.maxValue * 1000;
+    local hasFX = self.StandardFinish ~= nil;
+    local stageMaxValue = self.maxValue * 1000;
 
-	for i = 1, self.NumStages, 1 do
-		local duration = GetEmpowerStageDuration(i-1);
+    for i = 1, self.NumStages, 1 do
+        local duration = GetEmpowerStageDuration(i-1);
 
-		if duration > CASTBAR_STAGE_DURATION_INVALID then
-			sumDuration = sumDuration + duration;
+        if duration > CASTBAR_STAGE_DURATION_INVALID then
+            sumDuration = sumDuration + duration;
 
-			local portion = sumDuration / stageMaxValue;
-			local offset = (CASTBAR_STAGE_WIDTH * portion) + CASTBAR_STAGE_MIN_OFFSET;
+            local portion = sumDuration / stageMaxValue;
+            local offset = (CASTBAR_STAGE_WIDTH * portion) + CASTBAR_STAGE_MIN_OFFSET;
 
-			self.StagePoints[i] = sumDuration;
-			if offset > CASTBAR_STAGE_MIN_OFFSET and offset <= CASTBAR_STAGE_MAX_OFFSET then
-				local stagePipName = 'StagePip' .. i;
-				local stagePip = self[stagePipName];
+            self.StagePoints[i] = sumDuration;
+            if offset > CASTBAR_STAGE_MIN_OFFSET and offset <= CASTBAR_STAGE_MAX_OFFSET then
+                local stagePipName = 'StagePip' .. i;
+                local stagePip = self[stagePipName];
 
-				if not stagePip then
-					stagePip = CreateFrame('Frame', nil, self, hasFX and 'CastingBarFrameStagePipFXTemplate' or 'CastingBarFrameStagePipTemplate');
-					self[stagePipName] = stagePip;
-				end
+                if not stagePip then
+                    stagePip = CreateFrame('Frame', nil, self, hasFX and 'CastingBarFrameStagePipFXTemplate' or 'CastingBarFrameStagePipTemplate');
+                    self[stagePipName] = stagePip;
+                end
 
-				if stagePip then
-					table.insert(self.StagePips, stagePip);
+                if stagePip then
+                    table.insert(self.StagePips, stagePip);
 
-					stagePip:ClearAllPoints();
-					stagePip:SetPoint('TOP', offset, 0.5);
-					stagePip:SetPoint('BOTTOM', offset, 0);
+                    stagePip:ClearAllPoints();
+                    stagePip:SetPoint('TOP', offset, 0.5);
+                    stagePip:SetPoint('BOTTOM', offset, 0);
 
-					if i == self.NumStages then
-						stagePip:SetPoint('RIGHT', 0, 0);
-					end
+                    if i == self.NumStages then
+                        stagePip:SetPoint('RIGHT', 0, 0);
+                    end
 
-					stagePip:Show();
-					stagePip.BasePip:SetShown(i ~= self.NumStages);
-					stagePip.BasePipGlow:Hide();
-				end
-			end
-		end
-	end
+                    stagePip:Show();
+                    stagePip.BasePip:SetShown(i ~= self.NumStages);
+                    stagePip.BasePipGlow:Hide();
+                end
+            end
+        end
+    end
 end
 
 function StripesCastingBar_UpdateStage(self)
     local maxStage = 0;
-	local stageValue = self.value*1000;
-	for i = 1, self.NumStages do
-		if self.StagePoints[i] then
-			if stageValue > self.StagePoints[i] then
-				maxStage = i;
-			else
-				break;
-			end
-		end
-	end
+    local stageValue = self.value*1000;
+    for i = 1, self.NumStages do
+        if self.StagePoints[i] then
+            if stageValue > self.StagePoints[i] then
+                maxStage = i;
+            else
+                break;
+            end
+        end
+    end
 
     if maxStage ~= self.CurrSpellStage and maxStage > CASTBAR_STAGE_INVALID and maxStage <= self.NumStages then
-		self.CurrSpellStage = maxStage;
+        self.CurrSpellStage = maxStage;
 
-		if maxStage < self.NumStages then
-			local stagePip = self.StagePips[maxStage];
-			if stagePip then
-				stagePip.BasePipGlow:SetShown(maxStage < self.NumStages);
+        if maxStage < self.NumStages then
+            local stagePip = self.StagePips[maxStage];
+            if stagePip then
+                stagePip.BasePipGlow:SetShown(maxStage < self.NumStages);
 
-				for i = 1, maxStage do
-					local stageAnimName = 'Stage' .. i;
-					local stageAnim = stagePip[stageAnimName];
-					if stageAnim then
-						stageAnim:Play();
-					end
-				end
-			end
-		end
+                for i = 1, maxStage do
+                    local stageAnimName = 'Stage' .. i;
+                    local stageAnim = stagePip[stageAnimName];
+                    if stageAnim then
+                        stageAnim:Play();
+                    end
+                end
+            end
+        end
 
-		if maxStage == self.NumStages then
-			self:PlayFinishAnim();
-		end
-	end
+        if maxStage == self.NumStages then
+            self:PlayFinishAnim();
+        end
+    end
 end
 
 function StripesCastingBar_ClearStages(self)
-	for _, stagePip in pairs(self.StagePips) do
-		local maxStage = self.NumStages;
+    for _, stagePip in pairs(self.StagePips) do
+        local maxStage = self.NumStages;
 
-		for i = 1, maxStage do
-			local stageAnimName = 'Stage' .. i;
-			local stageAnim = stagePip[stageAnimName];
-			if stageAnim then
-				stageAnim:Stop();
-			end
-		end
+        for i = 1, maxStage do
+            local stageAnimName = 'Stage' .. i;
+            local stageAnim = stagePip[stageAnimName];
+            if stageAnim then
+                stageAnim:Stop();
+            end
+        end
 
-		stagePip:Hide();
-	end
+        stagePip:Hide();
+    end
 
-	self.NumStages = 0;
+    self.NumStages = 0;
 
-	wipe(self.StagePoints);
+    wipe(self.StagePoints);
 end
 
 function StripesCastingBar_SetStartCastColor(self, r, g, b, a)
@@ -602,8 +602,8 @@ function StripesCastingBar_OnEvent(self, event, ...)
             end
 
             if not self.reverseChanneling and not self.channeling then
-				self:SetValue(self.maxValue);
-			end
+                self:SetValue(self.maxValue);
+            end
 
             if self.InterruptReadyTick then
                 self.InterruptReadyTick:Hide();
@@ -727,16 +727,16 @@ function StripesCastingBar_OnEvent(self, event, ...)
         StripesCastingBar_ClearStages(self);
 
         if isChargeSpell then
-			StripesCastingBar_AddStages(self, numStages);
+            StripesCastingBar_AddStages(self, numStages);
 
-			self.value = (startTime / 1000) - GetTime();
+            self.value = (startTime / 1000) - GetTime();
 
-			if self.Spark then
+            if self.Spark then
                 self.Spark:Show();
             end
-		else
-			self.value = (endTime / 1000) - GetTime();
-		end
+        else
+            self.value = (endTime / 1000) - GetTime();
+        end
 
         self:SetMinMaxValues(0, self.maxValue);
         self:SetValue(self.value);
@@ -879,21 +879,21 @@ function StripesCastingBar_OnUpdate(self, elapsed)
         self.value = self.value + elapsed;
 
         if self.reverseChanneling and self.NumStages > 0 then
-			StripesCastingBar_UpdateStage();
-		end
+            StripesCastingBar_UpdateStage();
+        end
 
         if self.value >= self.maxValue then
             self:SetValue(self.maxValue);
 
 
             if not self.reverseChanneling then
-				StripesCastingBar_FinishSpell(self);
-			else
-				if self.FlashLoopingAnim and not self.FlashLoopingAnim:IsPlaying() then
-					self.FlashLoopingAnim:Play();
-					self.Flash:Show();
-				end
-			end
+                StripesCastingBar_FinishSpell(self);
+            else
+                if self.FlashLoopingAnim and not self.FlashLoopingAnim:IsPlaying() then
+                    self.FlashLoopingAnim:Play();
+                    self.Flash:Show();
+                end
+            end
 
             if self.Spark then
                 self.Spark:Hide();
@@ -964,11 +964,11 @@ function StripesCastingBar_OnUpdate(self, elapsed)
     end
 
     if self.casting or self.reverseChanneling or self.channeling then
-		if self.Spark then
-			local sparkPosition = (self.value / self.maxValue) * self:GetWidth();
-			self.Spark:SetPoint('CENTER', self, 'LEFT', sparkPosition, self.Spark.offsetY or 2);
-		end
-	end
+        if self.Spark then
+            local sparkPosition = (self.value / self.maxValue) * self:GetWidth();
+            self.Spark:SetPoint('CENTER', self, 'LEFT', sparkPosition, self.Spark.offsetY or 2);
+        end
+    end
 end
 
 function StripesCastingBar_ApplyAlpha(self, alpha)
