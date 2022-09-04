@@ -18,10 +18,15 @@ local U_UnitIsPetByGUID = U.UnitIsPetByGUID;
 local NP = S.NamePlates;
 
 -- Libraries
+local LT = S.Libraries.LT;
+local LDC = S.Libraries.LDC;
 local LPS = S.Libraries.LPS;
 local LPS_GetSpellInfo = LPS.GetSpellInfo;
 local CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.STUN);
 local CROWD_CTRL = LPS.constants.CROWD_CTRL;
+
+-- Local Config
+local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 
 local INTERRUPTED_FORMAT = '|cff%s%s! [%s]|r';
 
@@ -33,6 +38,14 @@ local function OnInterrupt(unitframe, guid, sourceName)
     if guid and guid ~= '' then
         local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(guid);
         if name then
+            if NAME_TRANSLIT then
+                name = LT:Transliterate(name);
+            end
+
+            if NAME_REPLACE_DIACRITICS then
+                name = LDC:Replace(name);
+            end
+
             unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(englishClass, 1), INTERRUPTED, name));
         else
             if U_UnitIsPetByGUID(guid) then
@@ -64,6 +77,9 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 function Module:UpdateLocalConfig()
+    NAME_TRANSLIT           = O.db.name_text_translit;
+    NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
+
     if O.db.who_interrupted_enabled then
         self:Enable();
     else
