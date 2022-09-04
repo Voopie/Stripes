@@ -121,6 +121,7 @@ Stripes.UpdateAll = function()
 end
 
 Stripes.UpdateFontObject = function(fontObject, fontValue, fontSize, fontFlag, fontShadow)
+    -- TODO: font outline
     -- fontObject:SetFont(LSM:Fetch(LSM_MEDIATYPE_FONT, O.db.use_global_font_value and O.db.global_font_value or fontValue), math.max(3, O.db.use_global_font_size and O.db.global_font_size or fontSize), LIST_FONT_FLAGS[O.db.use_global_font_flag and O.db.global_font_flag or fontFlag]);
     fontObject:SetFont(LSM:Fetch(LSM_MEDIATYPE_FONT, O.db.use_global_font_value and O.db.global_font_value or fontValue), math.max(3, O.db.use_global_font_size and O.db.global_font_size or fontSize), 'OUTLINE');
 

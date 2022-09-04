@@ -401,7 +401,7 @@ local hieroglyphsLocales = {
 };
 
 -- TODO: strange behavior with 'NONE' flag, I need to know what flag to use...
-local fontFlag = 'OUTLINE';
+local fontFlag = 'NORMAL, OUTLINE';
 
 local StripesCategoryButtonNormalFont = CreateFont('StripesCategoryButtonNormalFont');
 if hieroglyphsLocales[S.ClientLocale] then

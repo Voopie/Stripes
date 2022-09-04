@@ -541,10 +541,14 @@ do
     end
 
     E.CreateSlider = function(parent)
-        local slider  = Mixin(CreateFrame('Slider', nil, parent, 'OptionsSliderTemplate, BackdropTemplate'), E.PixelPerfectMixin);
-        local editbox = Mixin(CreateFrame('EditBox', '$parentEditBox', slider, 'InputBoxTemplate, BackdropTemplate'), E.PixelPerfectMixin);
+        local slider  = Mixin(CreateFrame('Slider', nil, parent, 'UISliderTemplateWithLabels, BackdropTemplate'), E.PixelPerfectMixin);
+        local editbox = Mixin(CreateFrame('EditBox', '$parentEditBox', slider, 'InputBoxTemplate'), E.PixelPerfectMixin);
 
-        slider:SetH(18);
+        slider:SetSize(144, 18);
+
+        if slider.NineSlice then
+            slider.NineSlice:Hide();
+        end
 
         slider.Thumb:SetTexture('');
 
@@ -1142,16 +1146,6 @@ do
         edgeSize = 1,
     };
 
-    local DROPDOWN_LIST_BACKDROP = {
-        bgFile = 'Interface\\Buttons\\WHITE8x8',
-        insets = { left = 0, right = 0, top = 0, bottom = 0 },
-    };
-
-    local DROPDOWN_ITEMBUTTON_BACKDROP = {
-        bgFile = 'Interface\\Buttons\\WHITE8x8',
-        insets = { left = 0, right = 0, top = 0, bottom = 0 },
-    };
-
     local DROPDOWN_BORDER_BACKDROP = {
         bgFile   = 'Interface\\Buttons\\UI-SliderBar-Background',
         edgeFile = MEDIA_PATH .. 'Textures\\Assets\\UI-SliderBar-Border',
@@ -1161,9 +1155,6 @@ do
         edgeSize = 8,
         insets   = { left = 3, right = 3, top = 6, bottom = 6 },
     };
-
-    local DROPDOWN_ITEM_FONT_SIZE  = 13;
-    local DROPDOWN_ITEM_FONT_FLAGS = 'OUTLINE';
 
     local function UpdateScrollArea(scrollArea, height, heightValue, counter)
         scrollArea:UpdateScrollChildRect();
@@ -1177,10 +1168,11 @@ do
         return string.upper(a) < string.upper(b);
     end
 
-    local DropdownList = CreateFrame('Frame', 'StripesDropdownList', UIParent, 'BackdropTemplate');
+    local DropdownList = CreateFrame('Frame', 'StripesDropdownList', UIParent);
     DropdownList:SetClampedToScreen(true);
-    DropdownList:SetBackdrop(DROPDOWN_LIST_BACKDROP);
-    DropdownList:SetBackdropColor(0, 0, 0, 1);
+    DropdownList.Background = DropdownList:CreateTexture(nil, 'BACKGROUND');
+    DropdownList.Background:SetAllPoints();
+    DropdownList.Background:SetColorTexture(0, 0, 0, 1);
     DropdownList:Hide();
 
     DropdownList.Border = CreateFrame('Frame', nil, DropdownList, 'BackdropTemplate');
@@ -1217,8 +1209,10 @@ do
     DropdownList.scrollBar = DropdownList.scrollArea.ScrollBar;
 
     local function CreateDropdownItem(button)
-        button:SetBackdrop(DROPDOWN_ITEMBUTTON_BACKDROP);
-        button:SetBackdropColor(0, 0, 0, 1);
+        button.Background = button:CreateTexture(nil, 'BACKGROUND');
+        button.Background:SetAllPoints();
+        button.Background:SetColorTexture(1, 1, 1, 1);
+        button.Background:SetVertexColor(0, 0, 0, 1);
 
         button.SelectedIcon = button:CreateTexture(nil, 'ARTWORK');
         PixelUtil.SetPoint(button.SelectedIcon, 'LEFT', button, 'LEFT', 2, 0);
@@ -1245,7 +1239,7 @@ do
         PixelUtil.SetPoint(button.StatusBar, 'BOTTOMRIGHT', button, 'BOTTOMRIGHT', 0, 0);
 
         button:SetScript('OnEnter', function(self)
-            self:SetBackdropColor(0.6, 0.5, 0.2, 1);
+            self.Background:SetVertexColor(0.6, 0.5, 0.2, 1);
 
             if self.Kind == 'border' then
                 DropdownList.Border.backdropInfo.edgeFile = LSM:Fetch('border', self.Value);
@@ -1255,7 +1249,7 @@ do
         end);
 
         button:SetScript('OnLeave', function(self)
-            self:SetBackdropColor(0, 0, 0, 1);
+            self.Background:SetVertexColor(0, 0, 0, 1);
         end);
     end
 
@@ -1683,7 +1677,9 @@ do
                     PixelUtil.SetSize(itemButton, self.WidthValue, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
 
-                    itemButton.Text:SetFont(LSM:Fetch('font', value), DROPDOWN_ITEM_FONT_SIZE, DROPDOWN_ITEM_FONT_FLAGS);
+                    -- TODO: I don't know what to do with freezes... Caused by :SetFont
+                    local _, size, outline = itemButton.Text:GetFont();
+                    itemButton.Text:SetFont(LSM:Fetch('font', value), size, outline);
                     itemButton.Text:SetText(value);
 
                     itemButton.Key   = key;
@@ -1739,11 +1735,13 @@ do
 
                     self.holderButton.Text:SetText('Trigger'); -- Not fully resolve a problem...
                     self.holderButton.Text:SetText(self.currentValue);
-                    self.holderButton.Text:SetFont(LSM:Fetch('font', self.currentValue), DROPDOWN_ITEM_FONT_SIZE, DROPDOWN_ITEM_FONT_FLAGS);
+                    local _, size, outline = self.holderButton.Text:GetFont();
+                    self.holderButton.Text:SetFont(LSM:Fetch('font', self.currentValue), size, outline);
                 else
                     self.holderButton.Text:SetTextColor(1, 0, 0, 1);
                     self.holderButton.Text:SetText(L['MISSING_FONT']);
-                    self.holderButton.Text:SetFont(LSM:Fetch('font', LSM.DefaultMedia.font), DROPDOWN_ITEM_FONT_SIZE, DROPDOWN_ITEM_FONT_FLAGS);
+                    local _, size, outline = self.holderButton.Text:GetFont();
+                    self.holderButton.Text:SetFont(LSM:Fetch('font', LSM.DefaultMedia.font), size, outline);
                 end
             end,
         },
