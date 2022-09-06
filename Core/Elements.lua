@@ -1187,8 +1187,10 @@ do
         frame:ClearAllPoints();
 
         if frame.Text then
-            local value, size, outline = _G['StripesOptionsNormalFont']:GetFont();
-            frame.Text:SetFont(value, size, outline);
+            if DropdownList.kind ~= 'font' then
+                local value, size, outline = _G['StripesOptionsNormalFont']:GetFont();
+                frame.Text:SetFont(value, size, outline);
+            end
         end
 
         if frame.Texture then
@@ -1205,7 +1207,7 @@ do
     end
 
     DropdownList.scrollChild, DropdownList.scrollArea = E.CreateScrollFrame(DropdownList, DROPDOWN_HEIGHT);
-    DropdownList.buttonPool = CreateFramePool('Button', DropdownList.scrollChild, 'BackdropTemplate', FramePoolResetter);
+    DropdownList.buttonPool = CreateFramePool('Button', DropdownList.scrollChild, nil, FramePoolResetter);
     DropdownList.scrollBar = DropdownList.scrollArea.ScrollBar;
 
     local function CreateDropdownItem(button)
@@ -1282,6 +1284,7 @@ do
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
+                DropdownList.kind = self.kind;
                 DropdownList.buttonPool:ReleaseAll();
 
                 for _, data in pairs(self.sortedTable) do
@@ -1408,6 +1411,7 @@ do
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
+                DropdownList.kind = self.kind;
                 DropdownList.buttonPool:ReleaseAll();
 
                 for key, value in ipairs(self.itemsTable) do
@@ -1523,6 +1527,7 @@ do
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
+                DropdownList.kind = self.kind;
                 DropdownList.buttonPool:ReleaseAll();
 
                 for key, value in ipairs(self.sortedTable) do
@@ -1636,11 +1641,12 @@ do
                 table.sort(self.sortedTable, textSort);
             end,
 
-            UpdateList = function(self, forceUpdate)
+            UpdateList = function(self)
                 local container = self;
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
+                DropdownList.kind = self.kind;
                 DropdownList.buttonPool:ReleaseAll();
 
                 for key, value in ipairs(self.sortedTable) do
@@ -1677,7 +1683,7 @@ do
                     PixelUtil.SetSize(itemButton, self.WidthValue, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
 
-                    -- TODO: I don't know what to do with freezes... Caused by :SetFont
+                    -- TODO: I don't know what to do with freezes... Caused by :SetFont And Resetter
                     local _, size, outline = itemButton.Text:GetFont();
                     itemButton.Text:SetFont(LSM:Fetch('font', value), size, outline);
                     itemButton.Text:SetText(value);
@@ -1767,6 +1773,7 @@ do
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
+                DropdownList.kind = self.kind;
                 DropdownList.buttonPool:ReleaseAll();
 
                 for index, name in ipairs(self.sortedTable) do
@@ -1880,6 +1887,7 @@ do
                 local itemButton, isNew, lastButton;
                 local itemCounter = 0;
 
+                DropdownList.kind = self.kind;
                 DropdownList.buttonPool:ReleaseAll();
 
                 for key, value in ipairs(self.sortedTable) do
