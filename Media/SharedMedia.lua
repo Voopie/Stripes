@@ -400,14 +400,13 @@ local hieroglyphsLocales = {
     ['koKR'] = true,
 };
 
--- TODO: strange behavior with 'NONE' flag, I need to know what flag to use...
-local fontFlag = 'NORMAL, OUTLINE';
+local fontFlagNone = '';
 
 local StripesCategoryButtonNormalFont = CreateFont('StripesCategoryButtonNormalFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesCategoryButtonNormalFont:CopyFontObject('SystemFont_Med3');
 else
-    StripesCategoryButtonNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 14, fontFlag);
+    StripesCategoryButtonNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 14, fontFlagNone);
 end
 StripesCategoryButtonNormalFont:SetJustifyH('LEFT');
 StripesCategoryButtonNormalFont:SetTextColor(1, 1, 1);
@@ -418,7 +417,7 @@ local StripesCategoryButtonHighlightFont = CreateFont('StripesCategoryButtonHigh
 if hieroglyphsLocales[S.ClientLocale] then
     StripesCategoryButtonHighlightFont:CopyFontObject('SystemFont_Shadow_Med3');
 else
-    StripesCategoryButtonHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 14, fontFlag);
+    StripesCategoryButtonHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 14, fontFlagNone);
 end
 StripesCategoryButtonHighlightFont:SetJustifyH('LEFT');
 StripesCategoryButtonHighlightFont:SetTextColor(1, 0.85, 0);
@@ -429,7 +428,7 @@ local StripesOptionsNormalFont = CreateFont('StripesOptionsNormalFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsNormalFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
-    StripesOptionsNormalFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlag);
+    StripesOptionsNormalFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlagNone);
 end
 StripesOptionsNormalFont:SetJustifyH('LEFT');
 StripesOptionsNormalFont:SetTextColor(1, 1, 1);
@@ -440,7 +439,7 @@ local StripesOptionsHighlightFont = CreateFont('StripesOptionsHighlightFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsHighlightFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
-    StripesOptionsHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlag);
+    StripesOptionsHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlagNone);
 end
 StripesOptionsHighlightFont:SetJustifyH('LEFT');
 StripesOptionsHighlightFont:SetTextColor(1, 0.85, 0);
@@ -451,7 +450,7 @@ local StripesOptionsLightGreyedFont = CreateFont('StripesOptionsLightGreyedFont'
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsLightGreyedFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
-    StripesOptionsLightGreyedFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlag);
+    StripesOptionsLightGreyedFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlagNone);
 end
 StripesOptionsLightGreyedFont:SetJustifyH('LEFT');
 StripesOptionsLightGreyedFont:SetTextColor(0.75, 0.75, 0.75);
@@ -462,7 +461,7 @@ local StripesOptionsDisabledFont = CreateFont('StripesOptionsDisabledFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsDisabledFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
-    StripesOptionsDisabledFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlag);
+    StripesOptionsDisabledFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlagNone);
 end
 StripesOptionsDisabledFont:SetJustifyH('LEFT');
 StripesOptionsDisabledFont:SetTextColor(0.35, 0.35, 0.35);
@@ -473,7 +472,7 @@ local StripesOptionsTabHighlightFont = CreateFont('StripesOptionsTabHighlightFon
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsTabHighlightFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesOptionsTabHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlag);
+    StripesOptionsTabHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlagNone);
 end
 StripesOptionsTabHighlightFont:SetTextColor(1, 0.85, 0);
 StripesOptionsTabHighlightFont:SetShadowColor(0, 0, 0);
@@ -483,7 +482,7 @@ local StripesOptionsTabGreyedFont = CreateFont('StripesOptionsTabGreyedFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsTabGreyedFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesOptionsTabGreyedFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlag);
+    StripesOptionsTabGreyedFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlagNone);
 end
 StripesOptionsTabGreyedFont:SetTextColor(0.75, 0.75, 0.75);
 StripesOptionsTabGreyedFont:SetShadowColor(0, 0, 0);
@@ -493,7 +492,7 @@ local StripesOptionsButtonNormalFont = CreateFont('StripesOptionsButtonNormalFon
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsButtonNormalFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesOptionsButtonNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlag);
+    StripesOptionsButtonNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlagNone);
 end
 StripesOptionsButtonNormalFont:SetTextColor(1, 1, 1);
 StripesOptionsButtonNormalFont:SetShadowColor(0, 0, 0);
@@ -503,7 +502,7 @@ local StripesOptionsButtonHighlightFont = CreateFont('StripesOptionsButtonHighli
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsButtonHighlightFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesOptionsButtonHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlag);
+    StripesOptionsButtonHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlagNone);
 end
 StripesOptionsButtonHighlightFont:SetTextColor(1, 0.85, 0);
 StripesOptionsButtonHighlightFont:SetShadowColor(0, 0, 0);
@@ -513,7 +512,7 @@ local StripesOptionsButtonDisabledFont = CreateFont('StripesOptionsButtonDisable
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsButtonDisabledFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesOptionsButtonDisabledFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlag);
+    StripesOptionsButtonDisabledFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlagNone);
 end
 StripesOptionsButtonDisabledFont:SetTextColor(0.35, 0.35, 0.35);
 StripesOptionsButtonDisabledFont:SetShadowColor(0, 0, 0);
@@ -523,7 +522,7 @@ local StripesMediumHighlightFont = CreateFont('StripesMediumHighlightFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesMediumHighlightFont:CopyFontObject('SystemFont_Shadow_Med2');
 else
-    StripesMediumHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 14, fontFlag);
+    StripesMediumHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 14, fontFlagNone);
 end
 StripesMediumHighlightFont:SetJustifyH('LEFT');
 StripesMediumHighlightFont:SetTextColor(1, 0.85, 0);
@@ -534,7 +533,7 @@ local StripesLargeHighlightFont = CreateFont('StripesLargeHighlightFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesLargeHighlightFont:CopyFontObject('SystemFont_Shadow_Large');
 else
-    StripesLargeHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 16, fontFlag);
+    StripesLargeHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 16, fontFlagNone);
 end
 StripesLargeHighlightFont:SetJustifyH('LEFT');
 StripesLargeHighlightFont:SetTextColor(1, 0.85, 0);
@@ -545,7 +544,7 @@ local StripesSmallNormalFont = CreateFont('StripesSmallNormalFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesSmallNormalFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesSmallNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.REGULARITALIC, 11, fontFlag);
+    StripesSmallNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.REGULARITALIC, 11, fontFlagNone);
 end
 StripesSmallNormalFont:SetTextColor(1, 1, 1);
 StripesSmallNormalFont:SetShadowColor(0, 0, 0);
@@ -555,7 +554,7 @@ local StripesMediumNormalSemiBoldFont = CreateFont('StripesMediumNormalSemiBoldF
 if hieroglyphsLocales[S.ClientLocale] then
     StripesMediumNormalSemiBoldFont:CopyFontObject('SystemFont_Shadow_Med2');
 else
-    StripesMediumNormalSemiBoldFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLD, 14, fontFlag);
+    StripesMediumNormalSemiBoldFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLD, 14, fontFlagNone);
 end
 StripesMediumNormalSemiBoldFont:SetJustifyH('LEFT');
 StripesMediumNormalSemiBoldFont:SetTextColor(1, 1, 1);

@@ -77,7 +77,7 @@ O.Lists = {
     },
 
     font_flags = {
-        [1] = 'NONE',
+        [1] = '',
         [2] = 'OUTLINE',
         [3] = 'THICKOUTLINE',
         [4] = 'MONOCHROME',

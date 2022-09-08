@@ -1683,7 +1683,6 @@ do
                     PixelUtil.SetSize(itemButton, self.WidthValue, self.HeightValue);
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
 
-                    -- TODO: I don't know what to do with freezes... Caused by :SetFont And Resetter
                     local _, size, outline = itemButton.Text:GetFont();
                     itemButton.Text:SetFont(LSM:Fetch('font', value), size, outline);
                     itemButton.Text:SetText(value);
