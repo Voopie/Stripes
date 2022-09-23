@@ -8,17 +8,11 @@ local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitG
 -- Stripes API
 local GetUnitColor = U.GetUnitColor;
 local ShouldShowName = Stripes.ShouldShowName;
-local utf8sub = U.UTF8SUB;
-local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyModeAndFriendly;
-
--- Libraries
-local LT = S.Libraries.LT;
-local LDC = S.Libraries.LDC;
+local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
+local GetCachedName = Stripes.GetCachedName;
 
 -- Local Config
 local ENABLED, ONLY_ENEMY, NOT_ME, ROLE_ICON;
-local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
-local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
 local NAME_ONLY_MODE;
 
 local PlayerData = D.Player;
@@ -38,7 +32,7 @@ local function TargetChanged(unitframe)
         return;
     end
 
-    if not ENABLED or not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
+    if not ENABLED or unitframe.data.isUnimportantUnit or not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
         unitframe.TargetName:SetShown(false);
         return;
     end
@@ -57,19 +51,7 @@ local function TargetChanged(unitframe)
                 unitframe.TargetName:SetTextColor(1, 0.2, 0.2);
             end
         else
-            local targetName = unitframe.data.targetName;
-
-            if NAME_TRANSLIT then
-                targetName = LT:Transliterate(targetName);
-            end
-
-            if NAME_REPLACE_DIACRITICS then
-                targetName = LDC:Replace(targetName);
-            end
-
-            if NAME_CUT_ENABLED then
-                targetName = utf8sub(targetName, 0, NAME_CUT_NUMBER);
-            end
+            local targetName = GetCachedName(unitframe.data.targetName, true, true, true);
 
             if ROLE_ICON and partyRolesCache[unitframe.data.targetName] then
                 unitframe.TargetName:SetText('» ' .. partyRolesCache[unitframe.data.targetName] .. ' '.. targetName);
@@ -147,12 +129,6 @@ function Module:UpdateLocalConfig()
     ONLY_ENEMY = O.db.target_name_only_enemy;
     NOT_ME     = O.db.target_name_not_me;
     ROLE_ICON  = O.db.target_name_role_icon;
-
-    NAME_CUT_ENABLED = O.db.target_name_cut_enabled;
-    NAME_CUT_NUMBER  = O.db.target_name_cut_number;
-
-    NAME_TRANSLIT           = O.db.name_text_translit;
-    NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
 
     NAME_ONLY_MODE = O.db.name_only_friendly_mode;
 

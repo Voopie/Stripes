@@ -57,7 +57,7 @@ end
 local function UpdateAnchor(unitframe)
     unitframe.AurasSpellSteal:ClearAllPoints();
 
-    if not unitframe.BuffFrame.buffList[1] or not unitframe.BuffFrame.buffList[1]:IsShown() then
+    if not unitframe.BuffFrame.hasAuras then
         if ShouldShowName(unitframe) then
             if STATIC_POSITION then
                 PixelUtil.SetPoint(unitframe.AurasSpellSteal, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
@@ -115,7 +115,7 @@ local function FilterShouldShowBuff(isStealable)
 end
 
 local function Update(unitframe)
-    if not ENABLED or not unitframe.data.unit or unitframe.data.unitType == 'SELF' then
+    if not ENABLED or unitframe.data.isUnimportantUnit or not unitframe.data.unit or unitframe.data.unitType == 'SELF' then
         unitframe.AurasSpellSteal:SetShown(false);
         return;
     end

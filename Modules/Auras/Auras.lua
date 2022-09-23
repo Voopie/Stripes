@@ -299,6 +299,10 @@ local function FilterShouldShowBuff(name, spellId, caster, nameplateShowPersonal
 end
 
 local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
+    if unitframe.data.isUnimportantUnit then
+        return;
+    end
+
     local filter;
     local showAll = false;
     local unit = unitframe.data.unit;
@@ -429,6 +433,8 @@ local function UpdateBuffs(self, unit, filter, showAll)
             return buffIndex > AURAS_MAX_DISPLAY;
         end);
 
+        self.hasAuras = buffIndex > 1;
+
         for i = buffIndex, AURAS_MAX_DISPLAY do
             if self.buffList[i] then
                 self.buffList[i]:Hide();
@@ -437,7 +443,7 @@ local function UpdateBuffs(self, unit, filter, showAll)
             end
         end
 
-        if buffIndex > 1 then
+        if self.hasAuras then
             if SORT_ENABLED and self:GetParent().data.unitType ~= 'SELF' then
                 local unitframe = self:GetParent();
 

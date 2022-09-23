@@ -264,6 +264,10 @@ local function Update(unitframe)
 end
 
 local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
+    if unitframe.data.isUnimportantUnit then
+        return;
+    end
+
     if AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
         return;
     end

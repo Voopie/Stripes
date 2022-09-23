@@ -79,7 +79,7 @@ local function CreateAnchor(unitframe)
 end
 
 local function UpdateAnchor(unitframe)
-    if unitframe.BuffFrame.buffList[1] and unitframe.BuffFrame.buffList[1]:IsShown() then
+    if unitframe.BuffFrame.hasAuras then
         unitframe.ImportantAuras:SetPoint('BOTTOMLEFT', unitframe.BuffFrame, 'TOPLEFT', OFFSET_X, 4 + (SQUARE and 6 or 0) + OFFSET_Y);
     else
         if ShouldShowName(unitframe) then
@@ -249,6 +249,10 @@ local function Update(unitframe)
 end
 
 local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
+    if unitframe.data.isUnimportantUnit then
+        return;
+    end
+
     if AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
         return;
     end

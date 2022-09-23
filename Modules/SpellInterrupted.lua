@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('SpellInterrupted');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
 local pairs = pairs;
@@ -12,7 +13,8 @@ local UnitHasAura = U.UnitHasAura;
 local U_GetClassColor = U.GetClassColor;
 local U_UnitIsPetByGUID = U.UnitIsPetByGUID;
 local GetUnitColor = U.GetUnitColor;
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local UpdateFontObject = Stripes.UpdateFontObject;
+local GetCachedName = Stripes.GetCachedName;
 
 -- Nameplates
 local NP = S.NamePlates;
@@ -143,7 +145,9 @@ local function UpdateByAura(unitframe)
     unitframe.SpellInterrupted.destGUID = unitframe.data.unitGUID;
 
     if CASTER_NAME_SHOW and source then
-        unitframe.SpellInterrupted.casterName:SetText(UnitName(source));
+        local name = GetCachedName(UnitName(source), true, true, false);
+
+        unitframe.SpellInterrupted.casterName:SetText(name);
         unitframe.SpellInterrupted.casterName:SetTextColor(GetUnitColor(source, 2));
         unitframe.SpellInterrupted.casterName:SetShown(true);
     else
@@ -174,11 +178,15 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
         local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(sourceGUID);
 
         if name then
+            name = GetCachedName(name, true, true, false);
+
             unitframe.SpellInterrupted.casterName:SetText(name);
             unitframe.SpellInterrupted.casterName:SetTextColor(U_GetClassColor(englishClass, 2));
             unitframe.SpellInterrupted.casterName:SetShown(true);
         elseif U_UnitIsPetByGUID(sourceGUID) then
-            unitframe.SpellInterrupted.casterName:SetText(sourceName);
+            name = GetCachedName(sourceName, true, true, false);
+
+            unitframe.SpellInterrupted.casterName:SetText(name);
             unitframe.SpellInterrupted.casterName:SetTextColor(U_GetClassColor(sourceName, 2));
             unitframe.SpellInterrupted.casterName:SetShown(true);
         else

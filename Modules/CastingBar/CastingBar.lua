@@ -1,6 +1,7 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('CastingBar');
 local Colors = S:GetModule('Options_Colors');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- WoW API
 local UnitName, UnitExists, UnitIsUnit = UnitName, UnitExists, UnitIsUnit;
@@ -11,13 +12,10 @@ local GetTime = GetTime;
 -- Stripes API
 local GetUnitColor = U.GetUnitColor;
 local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
-
--- Libraries
-local LT = S.Libraries.LT;
-local LDC = S.Libraries.LDC;
+local GetCachedName = Stripes.GetCachedName;
 
 -- Local config
-local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS, CUSTOM_CASTS_ENABLED;
+local CUSTOM_CASTS_ENABLED;
 
 -- In fact, this is a copy paste from Blizzard/CastingBarFrame.lua
 
@@ -143,15 +141,7 @@ local function UpdateCastTargetName(self)
     local targetUnit = self.unit .. 'target';
 
     if UnitExists(targetUnit) and not UnitIsUnit(self.unit, targetUnit) then
-        local targetName = UnitName(targetUnit);
-
-        if NAME_TRANSLIT then
-            targetName = LT:Transliterate(targetName);
-        end
-
-        if NAME_REPLACE_DIACRITICS then
-            targetName = LDC:Replace(targetName);
-        end
+        local targetName = GetCachedName(UnitName(targetUnit), true, true, false);
 
         if self.castTargetNameInSpellName and self.spellName then
             self.Text:SetText(string.format('%s > |cff%s%s|r', self.spellName, self.castTargetNameUseClassColor and GetUnitColor(targetUnit, true) or 'ffffff', targetName));
@@ -173,10 +163,7 @@ local function UpdateCastTargetName(self)
 end
 
 function Module:UpdateLocalConfig()
-    CUSTOM_CASTS_ENABLED    = O.db.castbar_custom_casts_enabled;
-
-    NAME_TRANSLIT           = O.db.name_text_translit;
-    NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
+    CUSTOM_CASTS_ENABLED = O.db.castbar_custom_casts_enabled;
 end
 
 function Module:StartUp()

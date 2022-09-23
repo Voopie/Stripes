@@ -13,8 +13,11 @@ local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
 
 -- Stripes API
 local GetNpcIDByGUID, GetUnitLevel, GetUnitColor = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor;
+local utf8sub = U.UTF8SUB;
 
 -- Libraries
+local LT = S.Libraries.LT;
+local LDC = S.Libraries.LDC;
 local LSM = S.Libraries.LSM;
 local LSM_MEDIATYPE_FONT = LSM.MediaType.FONT;
 local LIST_FONT_FLAGS = O.Lists.font_flags;
@@ -35,6 +38,7 @@ local NP = S.NamePlates;
 
 -- Local Config
 local NAME_TEXT_ENABLED, NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY;
+local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 
 local PLAYER_UNIT = 'player';
 
@@ -155,6 +159,50 @@ end
 
 Stripes.IsNameOnlyMode            = IsNameOnlyMode;
 Stripes.IsNameOnlyModeAndFriendly = IsNameOnlyModeAndFriendly;
+
+Stripes.UnimportantUnits = {
+    [167999] = true, -- Echo of Sin (SL, Castle Nathria, Sire Denathrius)
+    [176920] = true, -- Domination Arrow (SL, Sanctum of Domination, Sylvanas)
+    [189707] = true, -- Chaotic Essence (SL, Season 4, Raid Fated Affix)
+};
+
+do
+    local CACHE = {};
+
+    Stripes.GetCachedName = function(name, useTranslit, useReplaceDiacritics, useCut)
+        if CACHE[name] then
+            return CACHE[name];
+        end
+
+        local newName = name;
+
+        if useTranslit and NAME_TRANSLIT then
+            newName = LT:Transliterate(name);
+        end
+
+        if useReplaceDiacritics and NAME_REPLACE_DIACRITICS then
+            newName = LDC:Replace(newName);
+        end
+
+        if useCut and NAME_CUT_ENABLED then
+            newName = utf8sub(newName, 0, NAME_CUT_NUMBER);
+        end
+
+        if newName ~= name then
+            CACHE[name] = newName;
+        end
+
+        return newName;
+    end
+
+    Stripes.CachedNamesResetCache = function()
+        wipe(CACHE);
+    end
+
+    Stripes.CachedNamesAdd = function(oldName, newName)
+        CACHE[oldName] = newName;
+    end
+end
 
 local function UpdateSizesSafe()
     if U.PlayerInCombat() then
@@ -591,6 +639,8 @@ local function ResetNameplateData(unitframe)
 
     unitframe.data.isTarget = nil;
     unitframe.data.isFocus  = nil;
+
+    unitframe.data.isUnimportantUnit = nil;
 end
 
 function Stripes:NAME_PLATE_UNIT_ADDED(unit)
@@ -633,6 +683,12 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
 
     NP[nameplate].isActive = true;
     S:ForAllNameplateModules('UnitAdded', NP[nameplate]);
+
+    if Stripes.UnimportantUnits[unitframe.data.npcId] then
+        NP[nameplate].data.isUnimportantUnit = true;
+    end
+
+    print(NP[nameplate].data.isUnimportantUnit);
 
     if NP[nameplate].data.widgetsOnly then
         NP[nameplate].isActive = false;
@@ -722,6 +778,11 @@ function Stripes:UpdateLocalConfig()
     NAME_TEXT_ENABLED               = O.db.name_text_enabled;
     NAME_ONLY_FRIENDLY_ENABLED      = O.db.name_only_friendly_enabled;
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
+
+    NAME_TRANSLIT           = O.db.name_text_translit;
+    NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
+    NAME_CUT_ENABLED = O.db.target_name_cut_enabled;
+    NAME_CUT_NUMBER  = O.db.target_name_cut_number;
 
     Stripes.Updater:SetShown(Stripes.Updater.GetElementsCount() > 0);
 end

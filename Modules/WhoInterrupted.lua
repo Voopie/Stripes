@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('WhoInterrupted');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
 local pairs, string_format, bit_band = pairs, string.format, bit.band;
@@ -13,6 +14,7 @@ local INTERRUPTED = INTERRUPTED;
 -- Stripes API
 local U_GetClassColor = U.GetClassColor;
 local U_UnitIsPetByGUID = U.UnitIsPetByGUID;
+local GetCachedName = Stripes.GetCachedName;
 
 -- Nameplates
 local NP = S.NamePlates;
@@ -33,10 +35,12 @@ local function OnInterrupt(unitframe, guid, sourceName)
     if guid and guid ~= '' then
         local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(guid);
         if name then
+            name = GetCachedName(name, true, true, false);
             unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(englishClass, 1), INTERRUPTED, name));
         else
             if U_UnitIsPetByGUID(guid) then
-                unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(sourceName, 1), INTERRUPTED, sourceName));
+                name = GetCachedName(sourceName, true, true, false);
+                unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(sourceName, 1), INTERRUPTED, name));
             end
         end
     end

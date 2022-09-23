@@ -564,11 +564,11 @@ do
 end
 
 U.FirstToUpper = function(str)
-    return str:gsub('^[%z\1-\127\194-\244][\128-\191]', string.upper);
+    return (str:gsub('^%l', string.upper));
 end
 
 U.FirstToLower = function(str)
-    return str:gsub('^[%z\1-\127\194-\244][\128-\191]', string.lower);
+    return (str:gsub('^%u', string.lower));
 end
 
 -- Table
