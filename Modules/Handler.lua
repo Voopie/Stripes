@@ -688,8 +688,6 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
         NP[nameplate].data.isUnimportantUnit = true;
     end
 
-    print(NP[nameplate].data.isUnimportantUnit);
-
     if NP[nameplate].data.widgetsOnly then
         NP[nameplate].isActive = false;
         ResetNameplateData(NP[nameplate]);
