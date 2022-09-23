@@ -300,6 +300,7 @@ end
 
 local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
     if unitframe.data.isUnimportantUnit then
+        unitframe.BuffFrame.hasAuras = nil;
         return;
     end
 
@@ -339,6 +340,7 @@ local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
     end
 
     if filter ~= 'NONE' and AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
+        unitframe.BuffFrame.hasAuras = nil;
         return;
     end
 
