@@ -340,7 +340,6 @@ local function OnUnitAuraUpdate(unitframe, isFullUpdate, updatedAuraInfos)
     end
 
     if filter ~= 'NONE' and AuraUtil_ShouldSkipAuraUpdate(isFullUpdate, updatedAuraInfos, AuraCouldDisplayAsBuff) then
-        unitframe.BuffFrame.hasAuras = nil;
         return;
     end
 
@@ -352,6 +351,8 @@ local function UpdateBuffs(self, unit, filter, showAll)
         for _, buff in ipairs(self.buffList) do
             buff:Hide();
         end
+
+        self.hasAuras = nil;
 
         return;
     end
@@ -367,6 +368,8 @@ local function UpdateBuffs(self, unit, filter, showAll)
         for _, buff in ipairs(self.buffList) do
             buff:Hide();
         end
+
+        self.hasAuras = nil;
     else
         local buffIndex = 1;
         local index = 1;
