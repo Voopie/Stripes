@@ -173,7 +173,7 @@ local function CreateBuffFrame(unitframe)
     frame.UpdateBuffs = function(self, unit, unitAuraUpdateInfo, auraSettings)
         local uf = self:GetParent();
 
-        if not ENABLED or not PlayerState.inMythic or not uf.data.unit or uf.data.unitType == 'SELF' then
+        if not ENABLED or not PlayerState.inMythic or not uf.data.unit or uf.data.unitType == 'SELF' or unitframe.data.isUnimportantUnit then
             self:Hide();
             return;
         end

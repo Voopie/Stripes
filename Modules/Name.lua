@@ -1,8 +1,9 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Name');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
-local string_format, string_gsub, string_gmatch, string_find = string.format, string.gsub, string.gmatch, string.find;
+local string_format, string_gsub, string_gmatch = string.format, string.gsub, string.gmatch;
 local strlenutf8 = strlenutf8;
 
 -- WoW API
@@ -15,10 +16,11 @@ local GetUnitArenaId = U.GetUnitArenaId;
 local PlayerState = D.Player.State;
 local UnitIsTapped = U.UnitIsTapped;
 local GetNpcSubLabelByID = U.GetNpcSubLabelByID;
-local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
-local IsNameOnlyMode = S:GetNameplateModule('Handler').IsNameOnlyMode;
-local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyModeAndFriendly;
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local ShouldShowName = Stripes.ShouldShowName;
+local IsNameOnlyMode = Stripes.IsNameOnlyMode;
+local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
+local UpdateFontObject = Stripes.UpdateFontObject;
+local GetCachedName = Stripes.GetCachedName
 
 -- Libraries
 local LT = S.Libraries.LT;
@@ -127,8 +129,17 @@ local function AbbrFirst(name)
     return name;
 end
 
+local ABBR_CACHE = {};
+
 local GetAbbreviatedName = {
     [1] = function(name)
+        local oldName = name;
+        local keyName = oldName .. FIRST_MODE;
+
+        if ABBR_CACHE[keyName] then
+            return ABBR_CACHE[keyName];
+        end
+
         if FIRST_MODE == 1 then
             name = string_gsub(name or '', ABBR_FORMAT, AbbrSub);
         elseif FIRST_MODE == 2 then
@@ -137,10 +148,19 @@ local GetAbbreviatedName = {
             name = firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSub));
         end
 
+        ABBR_CACHE[keyName] = name;
+
         return name;
     end,
 
     [2] = function(name)
+        local oldName = name;
+        local keyName = oldName .. FIRST_MODE .. 'SPACE';
+
+        if ABBR_CACHE[keyName] then
+            return ABBR_CACHE[keyName];
+        end
+
         if FIRST_MODE == 1 then
             name = string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace);
         elseif FIRST_MODE == 2 then
@@ -149,10 +169,19 @@ local GetAbbreviatedName = {
             name = firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace));
         end
 
+        ABBR_CACHE[keyName] = name;
+
         return name;
     end,
 
     [3] = function(name)
+        local oldName = name;
+        local keyName = oldName .. FIRST_MODE .. 'LAST';
+
+        if ABBR_CACHE[keyName] then
+            return ABBR_CACHE[keyName];
+        end
+
         if FIRST_MODE == 1 then
             name = AbbrLast(name or '');
         elseif FIRST_MODE == 2 then
@@ -161,10 +190,19 @@ local GetAbbreviatedName = {
             name = firstLower(AbbrLast(name or ''));
         end
 
+        ABBR_CACHE[keyName] = name;
+
         return name;
     end,
 
     [4] = function(name)
+        local oldName = name;
+        local keyName = oldName .. FIRST_MODE .. 'FIRST';
+
+        if ABBR_CACHE[keyName] then
+            return ABBR_CACHE[keyName];
+        end
+
         if FIRST_MODE == 1 then
             name = AbbrFirst(name or '');
         elseif FIRST_MODE == 2 then
@@ -173,11 +211,22 @@ local GetAbbreviatedName = {
             name = firstLower(AbbrFirst(name or ''));
         end
 
+        ABBR_CACHE[keyName] = name;
+
         return name;
     end,
 };
 
+local CUTTED_CACHE = {};
+
 local function GetCuttedName(name)
+    local oldName = name;
+    local keyName = oldName .. FIRST_MODE .. NAME_CUT_NUMBER;
+
+    if CUTTED_CACHE[keyName] then
+        return CUTTED_CACHE[keyName];
+    end
+
     if FIRST_MODE == 1 then
         name = utf8sub(name, 0, NAME_CUT_NUMBER) or '';
     elseif FIRST_MODE == 2 then
@@ -185,6 +234,8 @@ local function GetCuttedName(name)
     elseif FIRST_MODE == 3 then
         name = firstLower(utf8sub(name, 0, NAME_CUT_NUMBER) or '');
     end
+
+    CUTTED_CACHE[keyName] = name;
 
     return name;
 end
@@ -194,6 +245,8 @@ local function GetCustomName(npcId)
         return O.db.custom_name_data[npcId].new_name;
     end
 end
+
+local FIRST_MODE_CACHE = {};
 
 local function UpdateName(unitframe)
     if unitframe.data.commonUnitType == 'NPC' then
@@ -232,10 +285,17 @@ local function UpdateName(unitframe)
             end
         elseif FIRST_MODE ~= 1 then
             local nameFirst;
-            if FIRST_MODE == 2 then
-                nameFirst = firstUpper(unitframe.data.name);
-            elseif FIRST_MODE == 3 then
-                nameFirst = firstLower(unitframe.data.name);
+
+            if FIRST_MODE_CACHE[unitframe.data.name .. FIRST_MODE] then
+                nameFirst = FIRST_MODE_CACHE[unitframe.data.name .. FIRST_MODE];
+            else
+                if FIRST_MODE == 2 then
+                    nameFirst = firstUpper(unitframe.data.name);
+                elseif FIRST_MODE == 3 then
+                    nameFirst = firstLower(unitframe.data.name);
+                end
+
+                FIRST_MODE_CACHE[unitframe.data.name .. FIRST_MODE] = nameFirst;
             end
 
             unitframe.name:SetText(nameFirst);
@@ -523,15 +583,7 @@ local function NameOnly_UpdateGuildName(unitframe)
 
     if IsNameOnlyMode() and NAME_ONLY_GUILD_NAME then
         if unitframe.data.unitType == 'FRIENDLY_PLAYER' and unitframe.data.guild then
-            local guild = unitframe.data.guild;
-
-            if NAME_TRANSLIT then
-                guild = LT:Transliterate(guild);
-            end
-
-            if NAME_REPLACE_DIACRITICS then
-                guild = LDC:Replace(guild);
-            end
+            local guild = GetCachedName(unitframe.data.guild, true, true, false);
 
             unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, guild));
 

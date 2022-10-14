@@ -122,7 +122,7 @@ local function CreateBuffFrame(unitframe)
     frame.UpdateBuffs = function(self, unit, unitAuraUpdateInfo, auraSettings)
         local uf = self:GetParent();
 
-        if not ENABLED or uf.data.unitType == 'SELF' then
+        if not ENABLED or uf.data.unitType == 'SELF' or unitframe.data.isUnimportantUnit then
             self:Hide();
             return;
         end
@@ -347,7 +347,9 @@ function Module:UnitRemoved(unitframe)
 end
 
 function Module:UnitAura(unitframe, unitAuraUpdateInfo)
-    unitframe.AurasCustom:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
+    if unitframe.AurasCustom then
+        unitframe.AurasCustom:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
+    end
 end
 
 function Module:Update(unitframe)

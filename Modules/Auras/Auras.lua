@@ -303,6 +303,10 @@ local function FilterShouldShowBuff(self, aura, forceAll, isSelf)
 end
 
 local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
+    if unitframe.data.isUnimportantUnit then
+        return;
+    end
+
     local unit = unitframe.data.unit;
     local isPlayer = unitframe.data.unitType == 'SELF';
     local hostileUnit = unitframe.data.reaction and unitframe.data.reaction <= 4;
@@ -345,18 +349,23 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, auraSettings)
     local isSelf = self:GetParent().data.unitType == 'SELF';
 
     local filters = {};
+
     if auraSettings.helpful then
         table.insert(filters, AuraUtil.AuraFilters.Helpful);
     end
+
     if auraSettings.harmful then
         table.insert(filters, AuraUtil.AuraFilters.Harmful);
     end
+
     if auraSettings.raid then
         table.insert(filters, AuraUtil.AuraFilters.Raid);
     end
+
     if auraSettings.includeNameplateOnly then
         table.insert(filters, AuraUtil.AuraFilters.IncludeNameplateOnly);
     end
+
     local filterString = AuraUtil.CreateFilterString(unpack(filters));
 
     local previousFilter = self.filter;

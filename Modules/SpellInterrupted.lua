@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('SpellInterrupted');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
 local pairs = pairs;
@@ -12,21 +13,17 @@ local UnitHasAura = U.UnitHasAura;
 local U_GetClassColor = U.GetClassColor;
 local U_UnitIsPetByGUID = U.UnitIsPetByGUID;
 local GetUnitColor = U.GetUnitColor;
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local UpdateFontObject = Stripes.UpdateFontObject;
+local GetCachedName = Stripes.GetCachedName;
 
 -- Nameplates
 local NP = S.NamePlates;
-
--- Libraries
-local LT = S.Libraries.LT;
-local LDC = S.Libraries.LDC;
 
 -- Local Config
 local ENABLED, SIZE, COUNTDOWN_ENABLED, CASTER_NAME_SHOW, FRAME_STRATA;
 local POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
 local DRAW_SWIPE, DRAW_EDGE;
 local SHOW_INTERRUPTED_ICON;
-local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 
 local StripesSpellInterruptedCooldownFont = CreateFont('StripesSpellInterruptedCooldownFont');
 local StripesSpellInterruptedCasterFont   = CreateFont('StripesSpellInterruptedCasterFont');
@@ -148,7 +145,9 @@ local function UpdateByAura(unitframe)
     unitframe.SpellInterrupted.destGUID = unitframe.data.unitGUID;
 
     if CASTER_NAME_SHOW and source then
-        unitframe.SpellInterrupted.casterName:SetText(UnitName(source));
+        local name = GetCachedName(UnitName(source), true, true, false);
+
+        unitframe.SpellInterrupted.casterName:SetText(name);
         unitframe.SpellInterrupted.casterName:SetTextColor(GetUnitColor(source, 2));
         unitframe.SpellInterrupted.casterName:Show();
     else
@@ -179,19 +178,15 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
         local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(sourceGUID);
 
         if name then
-            if NAME_TRANSLIT then
-                name = LT:Transliterate(name);
-            end
-
-            if NAME_REPLACE_DIACRITICS then
-                name = LDC:Replace(name);
-            end
+            name = GetCachedName(name, true, true, false);
 
             unitframe.SpellInterrupted.casterName:SetText(name);
             unitframe.SpellInterrupted.casterName:SetTextColor(U_GetClassColor(englishClass, 2));
             unitframe.SpellInterrupted.casterName:Show();
         elseif U_UnitIsPetByGUID(sourceGUID) then
-            unitframe.SpellInterrupted.casterName:SetText(sourceName);
+            name = GetCachedName(sourceName, true, true, false);
+
+            unitframe.SpellInterrupted.casterName:SetText(name);
             unitframe.SpellInterrupted.casterName:SetTextColor(U_GetClassColor(sourceName, 2));
             unitframe.SpellInterrupted.casterName:Show();
         else
@@ -253,9 +248,6 @@ function Module:UpdateLocalConfig()
     DRAW_EDGE  = O.db.spell_interrupted_icon_cooldown_draw_edge;
 
     SHOW_INTERRUPTED_ICON = O.db.spell_interrupted_icon_show_interrupted_icon;
-
-    NAME_TRANSLIT           = O.db.name_text_translit;
-    NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
 
     UpdateFontObject(StripesSpellInterruptedCooldownFont, O.db.spell_interrupted_icon_countdown_font_value, O.db.spell_interrupted_icon_countdown_font_size, O.db.spell_interrupted_icon_countdown_font_flag, O.db.spell_interrupted_icon_countdown_font_shadow);
     UpdateFontObject(StripesSpellInterruptedCasterFont, O.db.spell_interrupted_icon_caster_name_font_value, O.db.spell_interrupted_icon_caster_name_font_size, O.db.spell_interrupted_icon_caster_name_font_flag, O.db.spell_interrupted_icon_caster_name_font_shadow);

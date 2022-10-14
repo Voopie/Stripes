@@ -26,7 +26,7 @@ local EMPTY_STRING = '';
 local PLAYER_UNIT = 'player';
 local PET_UNIT    = 'pet';
 
-U.TooltipScanner = CreateFrame('GameTooltip', 'Stripes_TooltipScanner', nil, 'SharedTooltipTemplate');
+U.TooltipScanner = CreateFrame('GameTooltip', 'Stripes_TooltipScanner', nil, 'GameTooltipTemplate');
 U.TooltipScanner.Name = 'Stripes_TooltipScanner';
 U.TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
 U.TooltipScanner:SetScript('OnTooltipAddMoney', nil);
@@ -564,11 +564,11 @@ do
 end
 
 U.FirstToUpper = function(str)
-    return str:gsub('^[%z\1-\127\194-\244][\128-\191]', string.upper);
+    return (str:gsub('^%l', string.upper));
 end
 
 U.FirstToLower = function(str)
-    return str:gsub('^[%z\1-\127\194-\244][\128-\191]', string.lower);
+    return (str:gsub('^%u', string.lower));
 end
 
 -- Table

@@ -1,6 +1,7 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('CastingBar');
 local Colors = S:GetModule('Options_Colors');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- WoW API
 local UnitName, UnitExists, UnitIsUnit = UnitName, UnitExists, UnitIsUnit;
@@ -11,13 +12,10 @@ local GetTime = GetTime;
 -- Stripes API
 local GetUnitColor = U.GetUnitColor;
 local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
-
--- Libraries
-local LT = S.Libraries.LT;
-local LDC = S.Libraries.LDC;
+local GetCachedName = Stripes.GetCachedName;
 
 -- Local config
-local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS, CUSTOM_CASTS_ENABLED;
+local CUSTOM_CASTS_ENABLED;
 
 -- In fact, this is a copy paste from Blizzard/CastingBarFrame.lua
 
@@ -96,11 +94,11 @@ local function UpdateInterruptReadyColorAndTick(self)
     end
 end
 
-local CustomCastsData = {};
+local CUSTOM_CASTS_DATA = {};
 
 local function UpdateCustomCast(self)
     local spellId  = self.spellID;
-    local castData = spellId and CustomCastsData[spellId];
+    local castData = spellId and CUSTOM_CASTS_DATA[spellId];
 
     if not CUSTOM_CASTS_ENABLED or not spellId or not castData or not castData.enabled then
         GlowStopAll(self);
@@ -143,15 +141,7 @@ local function UpdateCastTargetName(self)
     local targetUnit = self.unit .. 'target';
 
     if UnitExists(targetUnit) and not UnitIsUnit(self.unit, targetUnit) then
-        local targetName = UnitName(targetUnit);
-
-        if NAME_TRANSLIT then
-            targetName = LT:Transliterate(targetName);
-        end
-
-        if NAME_REPLACE_DIACRITICS then
-            targetName = LDC:Replace(targetName);
-        end
+        local targetName = GetCachedName(UnitName(targetUnit), true, true, false);
 
         if self.castTargetNameInSpellName and self.spellName then
             self.Text:SetText(string.format('%s > |cff%s%s|r', self.spellName, self.castTargetNameUseClassColor and GetUnitColor(targetUnit, true) or 'ffffff', targetName));
@@ -173,16 +163,12 @@ local function UpdateCastTargetName(self)
 end
 
 function Module:UpdateLocalConfig()
-    CUSTOM_CASTS_ENABLED    = O.db.castbar_custom_casts_enabled;
-
-    NAME_TRANSLIT           = O.db.name_text_translit;
-    NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
+    CUSTOM_CASTS_ENABLED = O.db.castbar_custom_casts_enabled;
+    CUSTOM_CASTS_DATA    = O.db.castbar_custom_casts_data;
 end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-
-    CustomCastsData = O.db.castbar_custom_casts_data;
 end
 
 StripesBorderTemplateMixin = {};
@@ -246,13 +232,10 @@ end
 
 local CASTBAR_STAGE_INVALID = -1;
 local CASTBAR_STAGE_DURATION_INVALID = -1;
-local CASTBAR_STAGE_WIDTH = 195;
-local CASTBAR_STAGE_MIN_OFFSET = CASTBAR_STAGE_WIDTH / -2;
-local CASTBAR_STAGE_MAX_OFFSET = CASTBAR_STAGE_WIDTH / 2;
 
 function StripesCastingBar_AddStages(self, numStages)
     self.CurrSpellStage = CASTBAR_STAGE_INVALID;
-    self.NumStages = numStages;
+    self.NumStages = numStages + 1;
 
     local sumDuration = 0;
 
@@ -262,40 +245,42 @@ function StripesCastingBar_AddStages(self, numStages)
     local hasFX = self.StandardFinish ~= nil;
     local stageMaxValue = self.maxValue * 1000;
 
-    for i = 1, self.NumStages, 1 do
-        local duration = GetEmpowerStageDuration(i-1);
+    local getStageDuration = function(stage)
+        if stage == self.NumStages then
+            return GetUnitEmpowerHoldAtMaxTime(self.unit);
+        else
+            return GetUnitEmpowerStageDuration(self.unit, stage-1);
+        end
+    end;
+
+    local castBarWidth = self:GetWidth();
+
+    for i = 1, self.NumStages - 1, 1 do
+        local duration = getStageDuration(i);
 
         if duration > CASTBAR_STAGE_DURATION_INVALID then
             sumDuration = sumDuration + duration;
 
             local portion = sumDuration / stageMaxValue;
-            local offset = (CASTBAR_STAGE_WIDTH * portion) + CASTBAR_STAGE_MIN_OFFSET;
+            local offset = castBarWidth * portion;
 
             self.StagePoints[i] = sumDuration;
-            if offset > CASTBAR_STAGE_MIN_OFFSET and offset <= CASTBAR_STAGE_MAX_OFFSET then
-                local stagePipName = 'StagePip' .. i;
-                local stagePip = self[stagePipName];
 
-                if not stagePip then
-                    stagePip = CreateFrame('Frame', nil, self, hasFX and 'CastingBarFrameStagePipFXTemplate' or 'CastingBarFrameStagePipTemplate');
-                    self[stagePipName] = stagePip;
-                end
+            local stagePipName = 'StagePip' .. i;
+            local stagePip = self[stagePipName];
 
-                if stagePip then
-                    table.insert(self.StagePips, stagePip);
+            if not stagePip then
+                stagePip = CreateFrame('Frame', nil, self, hasFX and 'CastingBarFrameStagePipFXTemplate' or 'CastingBarFrameStagePipTemplate');
+                self[stagePipName] = stagePip;
+            end
 
-                    stagePip:ClearAllPoints();
-                    stagePip:SetPoint('TOP', offset, 0.5);
-                    stagePip:SetPoint('BOTTOM', offset, 0);
-
-                    if i == self.NumStages then
-                        stagePip:SetPoint('RIGHT', 0, 0);
-                    end
-
-                    stagePip:Show();
-                    stagePip.BasePip:SetShown(i ~= self.NumStages);
-                    stagePip.BasePipGlow:Hide();
-                end
+            if stagePip then
+                table.insert(self.StagePips, stagePip);
+                stagePip:ClearAllPoints();
+                stagePip:SetPoint('TOP', self, 'TOPLEFT', offset, -1);
+                stagePip:SetPoint('BOTTOM', self, 'BOTTOMLEFT', offset, 1);
+                stagePip:Show();
+                stagePip.BasePip:SetShown(i ~= self.NumStages);
             end
         end
     end
@@ -319,21 +304,9 @@ function StripesCastingBar_UpdateStage(self)
 
         if maxStage < self.NumStages then
             local stagePip = self.StagePips[maxStage];
-            if stagePip then
-                stagePip.BasePipGlow:SetShown(maxStage < self.NumStages);
-
-                for i = 1, maxStage do
-                    local stageAnimName = 'Stage' .. i;
-                    local stageAnim = stagePip[stageAnimName];
-                    if stageAnim then
-                        stageAnim:Play();
-                    end
-                end
+            if stagePip and stagePip.StageAnim then
+                stagePip.StageAnim:Play();
             end
-        end
-
-        if maxStage == self.NumStages then
-            self:PlayFinishAnim();
         end
     end
 end
@@ -592,8 +565,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
         end
 
         if ( (self.casting and event == 'UNIT_SPELLCAST_STOP' and select(2, ...) == self.castID) or ((self.channeling or self.reverseChanneling) and (event == 'UNIT_SPELLCAST_CHANNEL_STOP' or event == 'UNIT_SPELLCAST_EMPOWER_STOP')) ) then
-            if self.Spark then
-                self.Spark:Hide();
+            if not self.reverseChanneling then
+                if self.Spark then
+                    self.Spark:Hide();
+                end
             end
 
             if self.Flash then
@@ -712,6 +687,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
         local isChargeSpell = numStages > 0;
 
+        if isChargeSpell then
+            endTime = endTime + GetUnitEmpowerHoldAtMaxTime(self.unit);
+        end
+
         self.maxValue = (endTime - startTime) / 1000;
 
         local startColor = StripesCastingBar_GetEffectiveStartColor(self, true, notInterruptible);
@@ -723,17 +702,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
         self:SetStatusBarColor(startColor:GetRGBA());
 
-
         StripesCastingBar_ClearStages(self);
 
         if isChargeSpell then
-            StripesCastingBar_AddStages(self, numStages);
-
             self.value = (startTime / 1000) - GetTime();
-
-            if self.Spark then
-                self.Spark:Show();
-            end
         else
             self.value = (endTime / 1000) - GetTime();
         end
@@ -802,6 +774,10 @@ function StripesCastingBar_OnEvent(self, event, ...)
 
         if self.showCastbar then
             self:Show();
+        end
+
+        if isChargeSpell then
+            StripesCastingBar_AddStages(self, numStages);
         end
     elseif event == 'UNIT_SPELLCAST_CHANNEL_UPDATE' or event == 'UNIT_SPELLCAST_EMPOWER_UPDATE' then
         if self:IsShown() then
@@ -879,7 +855,7 @@ function StripesCastingBar_OnUpdate(self, elapsed)
         self.value = self.value + elapsed;
 
         if self.reverseChanneling and self.NumStages > 0 then
-            StripesCastingBar_UpdateStage();
+            StripesCastingBar_UpdateStage(self);
         end
 
         if self.value >= self.maxValue then

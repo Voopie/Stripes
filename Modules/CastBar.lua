@@ -1,12 +1,13 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('CastBar');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
 local string_format, math_max = string.format, math.max;
 
 -- Stripes API
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
-local IsNameOnlyModeAndFriendly = S:GetNameplateModule('Handler').IsNameOnlyModeAndFriendly;
+local UpdateFontObject = Stripes.UpdateFontObject;
+local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
 local PlayerState = D.Player.State;
 
 -- Libraries
@@ -240,6 +241,11 @@ local function UpdateVisibility(unitframe)
     end
 
     if unitframe.castingBar then
+        if unitframe.data.isUnimportantUnit then
+            StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
+            return;
+        end
+
         if unitframe.data.unitType == 'SELF' then
             StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
         else
