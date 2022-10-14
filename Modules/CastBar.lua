@@ -64,7 +64,7 @@ local function OnUpdate(self, elapsed)
     end
 end
 
-local function UpdateTexture(unitframe)
+local function UpdateBarTexture(unitframe)
     unitframe.castingBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, STATUSBAR_TEXTURE));
 
     if unitframe.castingBar.Flash then
@@ -203,7 +203,7 @@ local function UpdateCastNameTextPosition(unitframe)
     end
 end
 
-local function CreateTimer(unitframe)
+local function CreateCastingBarAndTimer(unitframe)
     if not unitframe.castBar then
         return;
     end
@@ -301,8 +301,8 @@ local function UpdateBackgroundTexture(unitframe)
 end
 
 function Module:UnitAdded(unitframe)
-    CreateTimer(unitframe);
-    UpdateTexture(unitframe);
+    CreateCastingBarAndTimer(unitframe);
+    UpdateBarTexture(unitframe);
     UpdateBackgroundTexture(unitframe);
     UpdateColors(unitframe);
     UpdateStyle(unitframe);
@@ -316,7 +316,7 @@ function Module:UnitRemoved(unitframe)
 end
 
 function Module:Update(unitframe)
-    UpdateTexture(unitframe);
+    UpdateBarTexture(unitframe);
     UpdateBackgroundTexture(unitframe);
     UpdateColors(unitframe);
     UpdateStyle(unitframe);
