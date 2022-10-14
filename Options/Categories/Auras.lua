@@ -564,6 +564,10 @@ panel.UpdateBlackListScroll = function()
         if type(id) == 'string' then
             name = id;
             icon = GetIconFromSpellCache(name);
+
+            if not icon then
+                _, _, icon = GetSpellInfo(name);
+            end
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -738,6 +742,10 @@ panel.UpdateWhiteListScroll = function()
         if type(id) == 'string' then
             name = id;
             icon = GetIconFromSpellCache(name);
+
+            if not icon then
+                _, _, icon = GetSpellInfo(name);
+            end
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -930,6 +938,10 @@ panel.UpdateHPBarColorScroll = function()
         if type(id) == 'string' then
             name = id;
             icon = GetIconFromSpellCache(name);
+
+            if not icon then
+                _, _, icon = GetSpellInfo(name);
+            end
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -1093,20 +1105,25 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
-            saveId = id;
+        if GetSpellInfo(text) then
+            saveId = 0;
+            byName = true;
         else
-            byNameIcon = GetIconFromSpellCache(text);
+            if id and id ~= 0 and GetSpellInfo(id) then
+                saveId = id;
+            else
+                byNameIcon = GetIconFromSpellCache(text);
 
-            if byNameIcon then
-                byName = true;
+                if byNameIcon then
+                    byName = true;
+                end
             end
-        end
 
-        if not saveId and not byName then
-            self:SetText('');
-            self:ClearFocus();
-            return;
+            if not saveId and not byName then
+                self:SetText('');
+                self:ClearFocus();
+                return;
+            end
         end
 
         AddWhiteListAura(tonumber(saveId), byName, text);
@@ -1178,20 +1195,25 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
-            saveId = id;
+        if GetSpellInfo(text) then
+            saveId = 0;
+            byName = true;
         else
-            byNameIcon = GetIconFromSpellCache(text);
+            if id and id ~= 0 and GetSpellInfo(id) then
+                saveId = id;
+            else
+                byNameIcon = GetIconFromSpellCache(text);
 
-            if byNameIcon then
-                byName = true;
+                if byNameIcon then
+                    byName = true;
+                end
             end
-        end
 
-        if not saveId and not byName then
-            self:SetText('');
-            self:ClearFocus();
-            return;
+            if not saveId and not byName then
+                self:SetText('');
+                self:ClearFocus();
+                return;
+            end
         end
 
         AddBlackListAura(tonumber(saveId), byName, text);
@@ -1347,20 +1369,25 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
-            saveId = id;
+        if GetSpellInfo(text) then
+            saveId = 0;
+            byName = true;
         else
-            byNameIcon = GetIconFromSpellCache(text);
+            if id and id ~= 0 and GetSpellInfo(id) then
+                saveId = id;
+            else
+                byNameIcon = GetIconFromSpellCache(text);
 
-            if byNameIcon then
-                byName = true;
+                if byNameIcon then
+                    byName = true;
+                end
             end
-        end
 
-        if not saveId and not byName then
-            self:SetText('');
-            self:ClearFocus();
-            return;
+            if not saveId and not byName then
+                self:SetText('');
+                self:ClearFocus();
+                return;
+            end
         end
 
         AddHPBarColorAura(tonumber(saveId), byName, text);

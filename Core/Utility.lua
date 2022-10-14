@@ -406,7 +406,12 @@ end
 
 do
     local bestIcon = {};
+
     U.GetIconFromSpellCache = function(name)
+        if not name then
+            return;
+        end
+
         if bestIcon[name] then
             return bestIcon[name];
         end
@@ -415,14 +420,16 @@ do
         local bestMatch = nil;
 
         if icons and icons.spells then
-            for spellId, _ in pairs(icons.spells) do
-                if not bestMatch or (type(spellId) == 'number' and IsSpellKnown(spellId)) then
-                    bestMatch = spellId;
+            for spell, icon in icons.spells:gmatch('(%d+)=(%d+)') do
+                local spellId = tonumber(spell);
+
+                if not bestMatch or (spellId and IsSpellKnown(spellId)) then
+                    bestMatch = tonumber(icon);
                 end
             end
         end
 
-        bestIcon[name] = bestMatch and icons.spells[bestMatch];
+        bestIcon[name] = bestMatch;
 
         return bestIcon[name];
     end

@@ -668,7 +668,7 @@ function spellCache.Build()
     spellCacheCoroutine = coroutine.create(function()
         local id, misses = 0, 0;
 
-        while misses < 50000 do
+        while misses < 80000 do
             id = id + 1;
 
             local name, _, icon = GetSpellInfo(id);
@@ -677,7 +677,7 @@ function spellCache.Build()
             -- 136243 is the a gear icon, we can ignore those spells
             if icon == 136243 then
                 misses = 0;
-            elseif name and name ~= '' and not (nameLower and (string_find(nameLower, 'dnt')
+            elseif name and name ~= '' and icon and not (nameLower and (string_find(nameLower, 'dnt')
                 or string_find(nameLower, '[dnd]', 1, true)
                 or string_find(nameLower, 'test')
                 or string_find(nameLower, 'unused')
@@ -686,9 +686,13 @@ function spellCache.Build()
                 or string_find(nameLower, '[ph]', 1, true)
                 or string_find(nameLower, 'nyi'))) then
 
-                cache[name]            = cache[name] or {};
-                cache[name].spells     = cache[name].spells or {};
-                cache[name].spells[id] = icon;
+                cache[name] = cache[name] or {};
+
+                if not cache[name].spells or cache[name].spells == '' then
+                    cache[name].spells = id .. '=' .. icon;
+                else
+                    cache[name].spells = cache[name].spells .. ',' .. id .. '=' .. icon;
+                end
 
                 misses = 0;
             else
@@ -711,14 +715,16 @@ function spellCache.Load(data)
     local _, build = GetBuildInfo();
 
     local num = 0;
+
     for _, _ in pairs(cache) do
         num = num + 1;
     end
 
-    if num < 39000 or metaData.locale ~= locale or metaData.build ~= build then
-        metaData.build        = build;
-        metaData.locale       = locale;
-        metaData.needsRebuild = true;
+    if num < 39000 or metaData.locale ~= locale or metaData.build ~= build or not metaData.spellCacheStrings then
+        metaData.build             = build;
+        metaData.locale            = locale;
+        metaData.spellCacheStrings = true;
+        metaData.needsRebuild      = true;
 
         wipe(cache);
     end
@@ -738,9 +744,8 @@ function AddOn:ADDON_LOADED(addonName)
     StripesSpellDB      = StripesSpellDB or {};
     StripesSpellDB.data = StripesSpellDB.data or {};
 
-    -- TODO: constant table overflow
-    -- spellCache.Load(StripesSpellDB);
-    -- spellCache.Build();
+    spellCache.Load(StripesSpellDB);
+    spellCache.Build();
 
     self:ForAllModules('StartUp');
     self:ForAllNameplateModules('StartUp');
