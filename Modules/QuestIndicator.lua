@@ -94,7 +94,7 @@ end
 local function Update(unitframe, unit)
     unit = unit or unitframe.data.unit;
 
-    if not ENABLED or not unit or unitframe.data.unitType == 'SELF' or (select(10, C_Scenario_GetInfo()) == LE_SCENARIO_TYPE_CHALLENGE_MODE) then
+    if not ENABLED or not unit or unitframe.data.isPersonal or (select(10, C_Scenario_GetInfo()) == LE_SCENARIO_TYPE_CHALLENGE_MODE) then
         unitframe.QuestIndicator:Hide();
         return;
     end

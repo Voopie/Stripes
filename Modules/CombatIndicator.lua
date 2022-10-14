@@ -48,7 +48,7 @@ end
 
 local function Update(unitframe)
     unitframe.CombatIndicator.elapsed = UPDATE_INTERVAL + 0.01;
-    unitframe.CombatIndicator:SetShown(ENABLED and unitframe.data.unitType ~= 'SELF');
+    unitframe.CombatIndicator:SetShown(ENABLED and not unitframe.data.isPersonal);
 
     unitframe.CombatIndicator.icon:ClearAllPoints();
     PixelUtil.SetPoint(unitframe.CombatIndicator.icon, POINT, unitframe.CombatIndicator, RELATIVE_POINT, OFFSET_X, OFFSET_Y);

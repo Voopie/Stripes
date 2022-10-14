@@ -506,7 +506,7 @@ local function UpdateRaidTargetIcon(unitframe)
 end
 
 local function NameOnly_UpdateHealthBar(unitframe)
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         return;
     end
 

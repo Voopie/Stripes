@@ -44,7 +44,7 @@ local function Update(unitframe)
         return;
     end
 
-    if not ENABLED or unitframe.data.unitType == 'SELF' then
+    if not ENABLED or unitframe.data.isPersonal then
         unitframe.Spiteful.icon:Hide();
         unitframe.Spiteful.ttd:Hide();
 

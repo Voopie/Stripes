@@ -139,7 +139,7 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    if not ENABLED or unitframe.data.unitType == 'SELF' or not PlayerState.inPvPInstance then
+    if not ENABLED or unitframe.data.isPersonal or not PlayerState.inPvPInstance then
         unitframe.PVPHealers:Hide();
         return;
     end

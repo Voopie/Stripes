@@ -115,7 +115,7 @@ local function UpdateWhitelistCache()
 end
 
 local function IsOnPandemic(aura)
-    if not PANDEMIC_ENABLED or not COUNTDOWN_ENABLED or aura:GetParent():GetParent().data.unitType == 'SELF' then
+    if not PANDEMIC_ENABLED or not COUNTDOWN_ENABLED or aura:GetParent():GetParent().data.isPersonal then
         return;
     end
 
@@ -298,7 +298,7 @@ local function FilterShouldShowBuff(self, aura, forceAll, isSelf)
     if FILTER_PLAYER_ENABLED and not isSelf then
         return units[caster];
     else
-        return aura.nameplateShowAll or forceAll or(aura.nameplateShowPersonal and units[caster]);
+        return aura.nameplateShowAll or forceAll or (aura.nameplateShowPersonal and units[caster]);
     end
 end
 
@@ -308,7 +308,7 @@ local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
     end
 
     local unit = unitframe.data.unit;
-    local isPlayer = unitframe.data.unitType == 'SELF';
+    local isPlayer = unitframe.data.isPersonal;
     local hostileUnit = unitframe.data.reaction and unitframe.data.reaction <= 4;
     local showDebuffsOnFriendly = SHOW_DEBUFFS_ON_FRIENDLY;
 
@@ -346,7 +346,7 @@ local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
 end
 
 local function UpdateBuffs(self, unit, unitAuraUpdateInfo, auraSettings)
-    local isSelf = self:GetParent().data.unitType == 'SELF';
+    local isSelf = self:GetParent().data.isPersonal;
 
     local filters = {};
 
@@ -473,7 +473,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, auraSettings)
     end);
 
     if buffIndex > 1 then
-        if SORT_ENABLED and self:GetParent().data.unitType ~= 'SELF' then
+        if SORT_ENABLED and not self:GetParent().data.isPersonal then
             local unitframe = self:GetParent();
 
             if not unitframe.SortBuffs then
@@ -619,7 +619,7 @@ local function UpdateStyle(unitframe)
 end
 
 function Module:UnitAdded(unitframe)
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         ResetPandemic(unitframe);
     end
 

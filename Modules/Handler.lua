@@ -161,6 +161,7 @@ end
 Stripes.IsNameOnlyMode            = IsNameOnlyMode;
 Stripes.IsNameOnlyModeAndFriendly = IsNameOnlyModeAndFriendly;
 
+-- TODO: Allow to add from options
 Stripes.UnimportantUnits = {
     [167999] = true, -- Echo of Sin (SL, Castle Nathria, Sire Denathrius)
     [176920] = true, -- Domination Arrow (SL, Sanctum of Domination, Sylvanas)
@@ -607,6 +608,11 @@ local function HookSetCVar(name, value)
 end
 
 local function ResetNameplateData(unitframe)
+    unitframe.data.unit      = nil;
+    unitframe.data.unitGUID  = nil;
+
+    unitframe.data.isPersonal = nil;
+
     unitframe.data.healthCurrent = 0;
 
     unitframe.data.reaction = nil;
@@ -670,6 +676,8 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
     UpdateConnection(NP[nameplate]);
     UpdateTarget(NP[nameplate]);
     UpdateFocus(NP[nameplate]);
+
+    NP[nameplate].data.isPersonal = NP[nameplate].data.unitType == 'SELF';
 
     NP[nameplate].data.creatureType = not NP[nameplate].data.isPlayer and UnitCreatureType(unit) or nil;
     NP[nameplate].data.minus = UnitClassification(unit) == 'minus';

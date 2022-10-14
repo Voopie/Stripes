@@ -72,7 +72,7 @@ local function UpdateTargetSelection(unitframe)
         return;
     end
 
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         unitframe.TargetIndicator:Hide();
         return;
     end
@@ -154,7 +154,7 @@ local function UpdateMouseoverUnit()
     end
 
     for _, unitframe in pairs(NP) do
-        if unitframe:IsShown() and not unitframe.data.isTarget and unitframe.data.unitType ~= 'SELF' then
+        if unitframe:IsShown() and not unitframe.data.isTarget and not unitframe.data.isPersonal then
             if MouseOnUnit(unitframe) then
                 Glow_Show(unitframe);
             else

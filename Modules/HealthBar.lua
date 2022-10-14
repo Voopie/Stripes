@@ -522,7 +522,7 @@ end
 ]]
 
 function Module.UpdateHealthBar(unitframe)
-    if not unitframe:IsShown() or unitframe.data.unitType == 'SELF' then
+    if not unitframe:IsShown() or unitframe.data.isPersonal then
         return;
     end
 
@@ -559,7 +559,7 @@ end
 
 local function UpdateBorder(unitframe)
     if DB.BORDER_HIDE then
-        if unitframe.data.unitType == 'SELF' then
+        if unitframe.data.isPersonal then
             unitframe.healthBar.border:SetVertexColor(0, 0, 0);
             unitframe.healthBar.border:Show();
         else
@@ -587,7 +587,7 @@ end
 local function UpdateBorderSizes(unitframe)
     local borderSize, minPixels = DB.BORDER_SIZE, DB.BORDER_SIZE - 0.5;
 
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         borderSize, minPixels = 1, 2;
     end
 
@@ -609,7 +609,7 @@ local function UpdateBorderSizes(unitframe)
         PixelUtil.SetPoint(unitframe.healthBar.border.Top, 'BOTTOMRIGHT', unitframe.healthBar.border, 'TOPRIGHT', 0, 0);
     end
 
-    if unitframe.data.unitType == 'SELF' and unitframe.powerBar and unitframe.powerBar:IsShown() then
+    if unitframe.data.isPersonal and unitframe.powerBar and unitframe.powerBar:IsShown() then
         PixelUtil.SetWidth(unitframe.powerBar.border.Left, borderSize, minPixels);
         PixelUtil.SetPoint(unitframe.powerBar.border.Left, 'TOPRIGHT', unitframe.powerBar.border, 'TOPLEFT', 0, borderSize, 0, minPixels);
         PixelUtil.SetPoint(unitframe.powerBar.border.Left, 'BOTTOMRIGHT', unitframe.powerBar.border, 'BOTTOMLEFT', 0, -borderSize, 0, minPixels);
@@ -631,7 +631,7 @@ local function UpdateBorderSizes(unitframe)
 end
 
 local function UpdateSizes(unitframe)
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         unitframe.healthBar:SetHeight(DB.PLAYER_HEIGHT);
 
         if unitframe.powerBar and unitframe.powerBar:IsShown() then
@@ -658,7 +658,7 @@ local function UpdateSizes(unitframe)
 end
 
 local function UpdateClickableArea(unitframe)
-    if not DB.SHOW_CLICKABLE_AREA or unitframe.data.unitType == 'SELF' then
+    if not DB.SHOW_CLICKABLE_AREA or unitframe.data.isPersonal then
         if unitframe.ClickableArea then
             unitframe.ClickableArea:Hide();
         end
@@ -781,7 +781,7 @@ local function UpdateExtraTexture(unitframe)
         return;
     end
 
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         unitframe.healthBar:SetStatusBarTexture(DEFAULT_STATUSBAR_TEXTURE);
         unitframe.healthBar.ExtraTexture:Hide();
     else
@@ -843,7 +843,7 @@ end
 
 function Module:UnitAdded(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
-    unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
+    unitframe.healthBar:SetFrameStrata(unitframe.data.isPersonal and 'HIGH' or 'MEDIUM');
 
     if unitframe.selectionHighlight then
         unitframe.selectionHighlight:SetAlpha(0);
@@ -893,7 +893,7 @@ end
 
 function Module:Update(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
-    unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
+    unitframe.healthBar:SetFrameStrata(unitframe.data.isPersonal and 'HIGH' or 'MEDIUM');
 
     UpdateThreatPercentagePosition(unitframe);
     UpdateCustomBorder(unitframe);

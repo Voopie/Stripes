@@ -70,7 +70,7 @@ local function Update(unitframe)
         return;
     end
 
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         unitframe.AbsorbBar:Hide();
         return;
     end
@@ -116,8 +116,8 @@ local function Update(unitframe)
 end
 
 local function UpdateShow(unitframe)
-    unitframe.AbsorbBar:SetShown(ENABLED and unitframe.AbsorbBar:GetValue() ~= 0 and unitframe.data.unitType ~= 'SELF');
-    unitframe.AbsorbText:SetShown(ABSORB_TEXT_ENABLED and unitframe.AbsorbBar:GetValue() ~= 0 and unitframe.data.unitType ~= 'SELF');
+    unitframe.AbsorbBar:SetShown(ENABLED and unitframe.AbsorbBar:GetValue() ~= 0 and not unitframe.data.isPersonal);
+    unitframe.AbsorbText:SetShown(ABSORB_TEXT_ENABLED and unitframe.AbsorbBar:GetValue() ~= 0 and not unitframe.data.isPersonal);
 end
 
 local function UpdateStyle(unitframe)

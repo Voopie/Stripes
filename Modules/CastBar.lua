@@ -82,7 +82,7 @@ local function UpdateStyle(unitframe)
         PixelUtil.SetHeight(unitframe.castingBar, unitframe.healthBar.sHeight or 12);
         PixelUtil.SetPoint(unitframe.healthBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6 + 2 + BAR_HEIGHT);
 
-        if unitframe.data.unitType == 'SELF' then
+        if unitframe.data.isPersonal then
             PixelUtil.SetWidth(unitframe.healthBar, PLAYER_WIDTH - WIDTH_OFFSET);
         elseif unitframe.data.commonReaction == 'ENEMY' then
             PixelUtil.SetWidth(unitframe.healthBar, ENEMY_WIDTH - WIDTH_OFFSET);
@@ -106,7 +106,7 @@ local function UpdateStyle(unitframe)
         PixelUtil.SetHeight(unitframe.castingBar, BAR_HEIGHT);
         PixelUtil.SetPoint(unitframe.castingBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6);
 
-        if unitframe.data.unitType == 'SELF' then
+        if unitframe.data.isPersonal then
             PixelUtil.SetWidth(unitframe.castingBar, PLAYER_WIDTH - WIDTH_OFFSET);
         elseif unitframe.data.commonReaction == 'ENEMY' then
             PixelUtil.SetWidth(unitframe.castingBar, ENEMY_WIDTH - WIDTH_OFFSET);
@@ -246,7 +246,7 @@ local function UpdateVisibility(unitframe)
             return;
         end
 
-        if unitframe.data.unitType == 'SELF' then
+        if unitframe.data.isPersonal then
             StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
         else
             if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
