@@ -654,6 +654,27 @@ spellCache:SetScript('OnUpdate', function()
     end
 end);
 
+spellCache.blockedSpellNames = {
+    ['dnt']    = true,
+    ['[dnd]']  = true,
+    ['test']   = true,
+    ['unused'] = true,
+    ['reuse']  = true,
+    ['resue']  = true, -- yep...
+    ['[ph]']   = true,
+    ['nyi']    = true,
+    ['loot']   = true,
+    ['boss']   = true,
+};
+
+function spellCache.isBlockedName(name)
+    for blockedName, status in pairs(spellCache.blockedSpellNames) do
+        if status and string_find(name, blockedName, 1, true) then
+            return true;
+        end
+    end
+end
+
 function spellCache.Build()
     if not cache then
         error('spellCache has not been loaded. Call spellCache.Load(...) first.');
@@ -677,15 +698,7 @@ function spellCache.Build()
             -- 136243 is the a gear icon, we can ignore those spells
             if icon == 136243 then
                 misses = 0;
-            elseif name and name ~= '' and icon and not (nameLower and (string_find(nameLower, 'dnt')
-                or string_find(nameLower, '[dnd]', 1, true)
-                or string_find(nameLower, 'test')
-                or string_find(nameLower, 'unused')
-                or string_find(nameLower, 'reuse')
-                or string_find(nameLower, 'resue')
-                or string_find(nameLower, '[ph]', 1, true)
-                or string_find(nameLower, 'nyi'))) then
-
+            elseif name and name ~= '' and icon and nameLower and not spellCache.isBlockedName(nameLower) then
                 cache[name] = cache[name] or {};
 
                 if not cache[name].spells or cache[name].spells == '' then

@@ -8,8 +8,7 @@
     <Script file="HealthBar.lua" />
     <Script file="CastBar.lua" />
     <Script file="Auras.lua" />
-    <Script file="CustomColor.lua" />
-    <Script file="CustomName.lua" />
+    <Script file="CustomNPC.lua" />
     <Script file="MythicPlus.lua" />
     <Script file="Useful.lua" />
     <Script file="Global.lua" />

@@ -265,7 +265,7 @@ O.Lists = {
     }
 };
 
--- ~588
+-- ~586
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -921,14 +921,11 @@ O.DefaultValues = {
     global_font_flag   = 1, -- NONE
     global_font_shadow = true,
 
-    custom_color_enabled = false,
-    custom_color_data    = {},
-    custom_color_categories_data = {},
-
-    custom_name_enabled = false,
-    custom_name_data    = {},
-
     colors_data = {},
+
+    custom_npc_enabled    = true,
+    custom_npc            = {},
+    custom_npc_categories = {},
 };
 
 O.PROFILE_DEFAULT_ID   = '1';
@@ -1110,8 +1107,73 @@ function Module:Migration_ColorsAndCategories()
     end
 end
 
+function Module:Migration_CustomColorsAndNames()
+    for pId, _ in pairs(StripesDB.profiles) do
+        if StripesDB.profiles[pId].custom_color_data then
+            for npc_id, data in pairs(StripesDB.profiles[pId].custom_color_data) do
+                StripesDB.profiles[pId].custom_npc[npc_id] = {
+                    enabled  = data.enabled,
+
+                    npc_id       = npc_id,
+                    npc_name     = data.npc_name,
+                    npc_new_name = data.npc_new_name or data.npc_name,
+        
+                    category_name = data.category_name,
+        
+                    color_enabled = data.color_enabled,
+                    color_name    = data.color_name,
+        
+                    glow_enabled    = data.glow_enabled,
+                    glow_type       = data.glow_type,
+                    glow_color_name = data.glow_color_name,
+                };
+            end
+
+            StripesDB.profiles[pId].custom_color_enabled = nil;
+            StripesDB.profiles[pId].custom_color_data    = nil;
+        end
+
+        if StripesDB.profiles[pId].custom_color_categories_data then
+            for category_name, _ in pairs(StripesDB.profiles[pId].custom_color_categories_data) do
+                StripesDB.profiles[pId].custom_npc_categories[category_name] = true;
+            end
+
+            StripesDB.profiles[pId].custom_color_categories_data = nil;
+        end
+
+        if StripesDB.profiles[pId].custom_name_data then
+            for npc_id, data in pairs(StripesDB.profiles[pId].custom_name_data) do
+                if StripesDB.profiles[pId].custom_npc[npc_id] then
+                    StripesDB.profiles[pId].custom_npc[npc_id].npc_new_name = data.new_name;
+                else
+                    StripesDB.profiles[pId].custom_npc[npc_id] = {
+                        enabled  = data.enabled,
+    
+                        npc_id       = npc_id,
+                        npc_name     = data.npc_name,
+                        npc_new_name = data.new_name or data.npc_name,
+            
+                        category_name = O.CATEGORY_ALL_NAME,
+            
+                        color_enabled = false,
+                        color_name    = 'Teal',
+            
+                        glow_enabled    = false,
+                        glow_type       = 0,
+                        glow_color_name = 'Yellow',
+                    };
+                end
+            end
+
+            StripesDB.profiles[pId].custom_name_enabled = nil;
+            StripesDB.profiles[pId].custom_name_data = nil;
+        end
+    end
+end
+
 function Module:RunMigrations()
     self:Migration_ColorsAndCategories();
+    self:Migration_CustomColorsAndNames();
 end
 
 function Module:StartUp()
@@ -1160,6 +1222,12 @@ function Module:StartUp()
     -- migration to 1.24
     if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 24) then
         self:Migration_ColorsAndCategories();
+    end
+
+    -- migration to 1.28
+    if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 29) then
+        print('MIGRATION 1.28')
+        self:Migration_CustomColorsAndNames();
     end
 
     self:CleanUp();

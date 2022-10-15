@@ -161,8 +161,7 @@ L['OPTIONS_CATEGORY_VISIBILITY'] = 'Видимость';
 L['OPTIONS_CATEGORY_HEALTHBAR'] = 'Полоса здоровья';
 L['OPTIONS_CATEGORY_CASTBAR'] = 'Полоса заклинания';
 L['OPTIONS_CATEGORY_AURAS'] = 'Ауры';
-L['OPTIONS_CATEGORY_CUSTOMCOLOR'] = 'Особый цвет здоровья';
-L['OPTIONS_CATEGORY_CUSTOMNAME'] = 'Особые имена';
+L['OPTIONS_CATEGORY_CUSTOMNPC'] = 'Особые NPC';
 L['OPTIONS_CATEGORY_MYTHIC_PLUS'] = 'Эпохальные ключи';
 L['OPTIONS_CATEGORY_USEFUL'] = 'Полезное';
 L['OPTIONS_CATEGORY_PROFILES'] = 'Профили';
@@ -1121,23 +1120,17 @@ L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Направление роста
 L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Максимальное количество отображаемых пользовательских аур';
 L['OPTIONS_AURAS_CUSTOM_ADDED_BY_NAME'] = 'по имени';
 
-L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
-L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';
-L['OPTIONS_CUSTOM_COLOR_EDITBOX_ENTER_ID'] = 'Введите номер NPC';
-L['OPTIONS_CUSTOM_COLOR_ADD_FROM_TARGET'] = 'Из цели';
-L['OPTIONS_CUSTOM_COLOR_ADD_FROM_LIST'] = 'Из списка';
+L['OPTIONS_CUSTOM_NPC_ENABLED'] = 'Включить';
+L['OPTIONS_CUSTOM_NPC_ENABLED_TOOLTIP'] = 'Включить особые настройки для определённых NPC';
+L['OPTIONS_CUSTOM_NPC_EDITBOX_ENTER_ID'] = 'Введите номер NPC';
+L['OPTIONS_CUSTOM_NPC_ADD_FROM_TARGET'] = 'Из цели';
+L['OPTIONS_CUSTOM_NPC_ADD_FROM_LIST'] = 'Из списка';
 
 L['OPTIONS_GLOBAL_FONT_HEADER'] = 'Настройки шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_VALUE_TOOLTIP'] = 'Использовать глобальные настройки шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_SIZE_TOOLTIP'] = 'Использовать глобальные настройки размера шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_FLAG_TOOLTIP'] = 'Использовать глобальные настройки контура шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_SHADOW_TOOLTIP'] = 'Использовать глобальные настройки тени шрифта';
-
-L['OPTIONS_CUSTOM_NAME_ENABLED'] = 'Включить';
-L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP'] = 'Включить особые имена';
-L['OPTIONS_CUSTOM_NAME_EDITBOX_ENTER_ID'] = 'Введите номер NPC';
-L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'Из цели';
-L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'Из списка';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Введите имя и нажмите Enter';
 L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Открыть список цветов';

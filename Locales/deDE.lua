@@ -161,8 +161,7 @@ L['OPTIONS_CATEGORY_VISIBILITY'] = 'Sichtbarkeit';
 L['OPTIONS_CATEGORY_HEALTHBAR'] = 'Gesundheitsbalken';
 L['OPTIONS_CATEGORY_CASTBAR'] = 'Zauberbalken';
 L['OPTIONS_CATEGORY_AURAS'] = 'Auren';
-L['OPTIONS_CATEGORY_CUSTOMCOLOR'] = 'HP-Balken anpassen';
-L['OPTIONS_CATEGORY_CUSTOMNAME'] = 'Namen anpassen';
+L['OPTIONS_CATEGORY_CUSTOMNPC'] = 'NPC anpassen';
 L['OPTIONS_CATEGORY_MYTHIC_PLUS'] = 'Mythisch+';
 L['OPTIONS_CATEGORY_USEFUL'] = 'Nützlich';
 L['OPTIONS_CATEGORY_PROFILES'] = 'Profile';
@@ -1121,23 +1120,17 @@ L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Benutzerdefinierte Auren Wachstum
 L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl von angezeigten benutzerdefinierten Auren';
 L['OPTIONS_AURAS_CUSTOM_ADDED_BY_NAME'] = 'namentlich';
 
-L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Aktivieren';
-L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Farben der Gesundheitsleiste aktivieren';
-L['OPTIONS_CUSTOM_COLOR_EDITBOX_ENTER_ID'] = 'Geben Sie die ID des NPCs ein';
-L['OPTIONS_CUSTOM_COLOR_ADD_FROM_TARGET'] = 'Vom Ziel';
-L['OPTIONS_CUSTOM_COLOR_ADD_FROM_LIST'] = 'Aus Liste';
-
 L['OPTIONS_GLOBAL_FONT_HEADER'] = 'Schrifteinstellungen';
 L['OPTIONS_USE_GLOBAL_FONT_VALUE_TOOLTIP'] = 'Globale Schrifteinstellungen verwenden';
 L['OPTIONS_USE_GLOBAL_FONT_SIZE_TOOLTIP'] = 'Globale Einstellungen für die Schriftgröße verwenden';
 L['OPTIONS_USE_GLOBAL_FONT_FLAG_TOOLTIP'] = 'Globale Einstellungen für den Schriftumriss verwenden';
 L['OPTIONS_USE_GLOBAL_FONT_SHADOW_TOOLTIP'] = 'Globale Einstellungen für Schriftschatten verwenden';
 
-L['OPTIONS_CUSTOM_NAME_ENABLED'] = 'Aktivieren';
-L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Namen einschalten';
-L['OPTIONS_CUSTOM_NAME_EDITBOX_ENTER_ID'] = 'Geben Sie die ID des NPCs ein';
-L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'Vom Ziel';
-L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'Von Liste';
+L['OPTIONS_CUSTOM_NPC_ENABLED'] = 'Aktivieren';
+L['OPTIONS_CUSTOM_NPC_ENABLED_TOOLTIP'] = 'Aktiviere spezielle Einstellungen für bestimmte NPCs';
+L['OPTIONS_CUSTOM_NPC_EDITBOX_ENTER_ID'] = 'Geben Sie die ID des NPCs ein';
+L['OPTIONS_CUSTOM_NPC_ADD_FROM_TARGET'] = 'Vom Ziel';
+L['OPTIONS_CUSTOM_NPC_ADD_FROM_LIST'] = 'Von Liste';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Geben Sie einen Namen ein und drücken Sie die Eingabetaste';
 L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Farbliste öffnen';
