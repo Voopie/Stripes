@@ -570,12 +570,22 @@ do
     end
 end
 
-U.FirstToUpper = function(str)
-    return (str:gsub('^%l', string.upper));
-end
+if S.ClientLocale == 'ruRU' then
+    U.FirstToUpper = function(str)
+        return str:gsub('^[%z\1-\127\194-\244][\128-\191]', string.upper);
+    end
+    
+    U.FirstToLower = function(str)
+        return str:gsub('^[%z\1-\127\194-\244][\128-\191]', string.lower);
+    end
+else
+    U.FirstToUpper = function(str)
+        return (str:gsub('^%l', string.upper));
+    end
 
-U.FirstToLower = function(str)
-    return (str:gsub('^%u', string.lower));
+    U.FirstToLower = function(str)
+        return (str:gsub('^%u', string.lower));
+    end
 end
 
 -- Table
