@@ -473,7 +473,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, auraSettings)
     end);
 
     if buffIndex > 1 then
-        if SORT_ENABLED and not self:GetParent().data.isPersonal then
+        if SORT_ENABLED and not isSelf then
             local unitframe = self:GetParent();
 
             if not unitframe.SortBuffs then
@@ -528,6 +528,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, auraSettings)
         else
             local activeCount = 1;
             local firstBuffIndex, firstBuff, lastBuff;
+
             for buff in self.buffPool:EnumerateActive() do
                 buff:ClearAllPoints();
 
@@ -541,7 +542,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, auraSettings)
                         firstBuffIndex = buff.layoutIndex;
                     end
 
-                    firstBuff:SetPoint('TOP', -(firstBuff:GetWidth()/2)*(activeCount-1), 0);
+                    firstBuff:SetPoint('TOP', -(firstBuff:GetWidth() / 2) * (activeCount - 1), 0);
 
                     if activeCount > 1 and firstBuffIndex ~= buff.layoutIndex then
                         if lastBuff then
