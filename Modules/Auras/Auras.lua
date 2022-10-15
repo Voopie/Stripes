@@ -346,6 +346,11 @@ local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
 end
 
 local function UpdateBuffs(self, unit, unitAuraUpdateInfo, auraSettings)
+    if not unit or not self.isActive or auraSettings.hideAll then
+        self.buffPool:ReleaseAll();
+        return;
+    end
+
     local isSelf = self:GetParent().data.isPersonal;
 
     local filters = {};
@@ -415,10 +420,6 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, auraSettings)
     end
 
     self.buffPool:ReleaseAll();
-
-    if auraSettings.hideAll or not self.isActive then
-        return;
-    end
 
     local buffIndex = 1;
     self.auras:Iterate(function(auraInstanceID, aura)

@@ -121,12 +121,12 @@ local function CreateBuffFrame(unitframe)
     frame.UpdateBuffs = function(self, unit, unitAuraUpdateInfo, auraSettings)
         local uf = self:GetParent();
 
-        if not ENABLED or not uf.data.unit or uf.data.isPersonal or unitframe.data.isUnimportantUnit then
+        unit = unit or uf.data.unit;
+
+        if not ENABLED or not unit or uf.data.isPersonal or unitframe.data.isUnimportantUnit then
             self:Hide();
             return;
         end
-
-        unit = unit or uf.data.unit;
 
         local isSelf = uf.data.isPersonal;
 
