@@ -33,7 +33,7 @@ local NAME_WITH_TITLE_ENABLED, NAME_WITH_TITLE_UNIT_TYPE, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
 local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
-local CUSTOM_NAME_ENABLED;
+local CUSTOM_NPC_ENABLED;
 local CLASSIFICATION_INDICATOR_ENABLED, CLASSIFICATION_INDICATOR_STAR, CLASSIFICATION_INDICATOR_SIZE;
 local CLASSIFICATION_INDICATOR_POINT, CLASSIFICATION_INDICATOR_RELATIVE_POINT, CLASSIFICATION_INDICATOR_OFFSET_X, CLASSIFICATION_INDICATOR_OFFSET_Y;
 local FIRST_MODE;
@@ -241,8 +241,8 @@ local function GetCuttedName(name)
 end
 
 local function GetCustomName(npcId)
-    if npcId and O.db.custom_name_data[npcId] then
-        return O.db.custom_name_data[npcId].new_name;
+    if npcId and O.db.custom_npc[npcId] then
+        return O.db.custom_npc[npcId].enabled and O.db.custom_npc[npcId].npc_new_name;
     end
 end
 
@@ -250,7 +250,7 @@ local FIRST_MODE_CACHE = {};
 
 local function UpdateName(unitframe)
     if unitframe.data.commonUnitType == 'NPC' then
-        local customName = CUSTOM_NAME_ENABLED and GetCustomName(unitframe.data.npcId);
+        local customName = CUSTOM_NPC_ENABLED and GetCustomName(unitframe.data.npcId);
 
         -- I don't like this Leaning Tower of Pisa...
         if customName then
@@ -719,7 +719,7 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    CUSTOM_NAME_ENABLED = O.db.custom_name_enabled;
+    CUSTOM_NPC_ENABLED = O.db.custom_npc_enabled;
 
     POSITION               = O.db.name_text_position;
     POSITION_V             = O.db.name_text_position_v;
