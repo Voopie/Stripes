@@ -20,7 +20,7 @@ local LIST_TOOLTIP_PATTERN = '|cffff6666%s|r  |cffffffff| |r |cffffb833%s|r';
 
 local CATEGORY_ALL_NAME       = O.CATEGORY_ALL_NAME;
 local DEFAULT_GLOW_COLOR_NAME = 'Yellow';
-local DEFAULT_HB_COLOR_NAME   = 'Teal';
+local DEFAULT_HB_COLOR_NAME   = 'Fuchsia';
 
 panel.categoryName = CATEGORY_ALL_NAME;
 

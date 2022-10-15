@@ -1156,7 +1156,7 @@ function Module:Migration_CustomColorsAndNames()
                         category_name = O.CATEGORY_ALL_NAME,
             
                         color_enabled = false,
-                        color_name    = 'Teal',
+                        color_name    = 'Fuchsia',
             
                         glow_enabled    = false,
                         glow_type       = 0,
