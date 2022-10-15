@@ -181,9 +181,11 @@ local function UpdateCustomHealthBarColor(unitframe)
         LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
         LCG_ButtonGlow_Stop(unitframe.healthBar);
 
-        if DB.CUSTOM_HP_ENABLED and DB.CUSTOM_HP_DATA[unitframe.data.npcId] and DB.CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
-            if DB.CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled then
-                local color = Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].color_name);
+        if DB.CUSTOM_NPC_ENABLED and DB.CUSTOM_NPC_DATA[unitframe.data.npcId] and DB.CUSTOM_NPC_DATA[unitframe.data.npcId].enabled then
+            local custom = DB.CUSTOM_NPC_DATA[unitframe.data.npcId];
+
+            if custom.color_enabled then
+                local color = Colors:Get(custom.color_name);
                 local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
 
                 if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
@@ -195,12 +197,12 @@ local function UpdateCustomHealthBarColor(unitframe)
                 unitframe.healthBar.customColored = nil;
             end
 
-            if DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_enabled then
-                if DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 1 then
-                    LCG_PixelGlow_Start(unitframe.healthBar, Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
-                elseif DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 2 then
-                    LCG_AutoCastGlow_Start(unitframe.healthBar, Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
-                elseif DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 3 then
+            if custom.glow_enabled then
+                if custom.glow_type == 1 then
+                    LCG_PixelGlow_Start(unitframe.healthBar, Colors:Get(custom.glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
+                elseif custom.glow_type == 2 then
+                    LCG_AutoCastGlow_Start(unitframe.healthBar, Colors:Get(custom.glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
+                elseif custom.glow_type == 3 then
                     LCG_ButtonGlow_Start(unitframe.healthBar);
                 end
             end
@@ -998,8 +1000,8 @@ function Module:UpdateLocalConfig()
     DB.TP_OFFSET_Y       = O.db.threat_percentage_offset_y;
     UpdateFontObject(StripesThreatPercentageFont, O.db.threat_percentage_font_value, O.db.threat_percentage_font_size, O.db.threat_percentage_font_flag, O.db.threat_percentage_font_shadow);
 
-    DB.CUSTOM_HP_ENABLED = O.db.custom_color_enabled;
-    DB.CUSTOM_HP_DATA    = O.db.custom_color_data;
+    DB.CUSTOM_NPC_ENABLED = O.db.custom_npc_enabled;
+    DB.CUSTOM_NPC_DATA    = O.db.custom_npc;
 
     DB.EXECUTION_ENABLED      = O.db.execution_enabled;
     DB.EXECUTION_COLOR        = DB.EXECUTION_COLOR or {};
