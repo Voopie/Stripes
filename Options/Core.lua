@@ -1224,9 +1224,8 @@ function Module:StartUp()
         self:Migration_ColorsAndCategories();
     end
 
-    -- migration to 1.28
-    if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 29) then
-        print('MIGRATION 1.28')
+    -- migration to 1.28 (DF 1st version)
+    if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 28) then
         self:Migration_CustomColorsAndNames();
     end
 
