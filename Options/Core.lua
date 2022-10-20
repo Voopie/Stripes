@@ -1117,12 +1117,12 @@ function Module:Migration_CustomColorsAndNames()
                     npc_id       = npc_id,
                     npc_name     = data.npc_name,
                     npc_new_name = data.npc_new_name or data.npc_name,
-        
+
                     category_name = data.category_name,
-        
+
                     color_enabled = data.color_enabled,
                     color_name    = data.color_name,
-        
+
                     glow_enabled    = data.glow_enabled,
                     glow_type       = data.glow_type,
                     glow_color_name = data.glow_color_name,
@@ -1148,16 +1148,16 @@ function Module:Migration_CustomColorsAndNames()
                 else
                     StripesDB.profiles[pId].custom_npc[npc_id] = {
                         enabled  = data.enabled,
-    
+
                         npc_id       = npc_id,
                         npc_name     = data.npc_name,
                         npc_new_name = data.new_name or data.npc_name,
-            
+
                         category_name = O.CATEGORY_ALL_NAME,
-            
+
                         color_enabled = false,
                         color_name    = 'Fuchsia',
-            
+
                         glow_enabled    = false,
                         glow_type       = 0,
                         glow_color_name = 'Yellow',
