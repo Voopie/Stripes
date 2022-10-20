@@ -90,7 +90,7 @@ local function CreateBuffFrame(unitframe)
                 local offset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
                 self:SetPoint('BOTTOMLEFT', uf.healthBar, 'TOPLEFT', OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             else
-                local offset = uf.BuffFrame:GetBaseYOffset() + (UnitIsUnit(uf.data.unit, 'target') and uf.BuffFrame:GetTargetYOffset() or 0.0);
+                local offset = uf.BuffFrame:GetBaseYOffset() + (uf.data.isTarget and uf.BuffFrame:GetTargetYOffset() or 0.0);
                 self:SetPoint('BOTTOMLEFT', uf.healthBar, 'TOPLEFT', OFFSET_X, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             end
         end

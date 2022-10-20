@@ -578,7 +578,7 @@ local function UpdateBorder(unitframe)
         return;
     end
 
-    if UnitIsUnit(unitframe.data.unit, 'target') then
+    if unitframe.data.isTarget then
         unitframe.healthBar.border:SetVertexColor(DB.BORDER_SELECTED_COLOR[1], DB.BORDER_SELECTED_COLOR[2], DB.BORDER_SELECTED_COLOR[3], DB.BORDER_SELECTED_COLOR[4]);
         return;
     end

@@ -6,7 +6,7 @@ local Stripes = S:GetNameplateModule('Handler');
 local ipairs, tonumber, math_max, table_wipe, table_sort, bit_band = ipairs, tonumber, math.max, wipe, table.sort, bit.band;
 
 -- Wow API
-local UnitIsUnit, CooldownFrame_Set = UnitIsUnit, CooldownFrame_Set;
+local CooldownFrame_Set = CooldownFrame_Set;
 
 -- Stripes API
 local ShouldShowName   = S:GetNameplateModule('Handler').ShouldShowName;
@@ -167,7 +167,7 @@ local function UpdateAnchor(self)
         local offset = NAME_TEXT_POSITION_V == 1 and (self:GetParent().name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
         PixelUtil.SetPoint(self, 'BOTTOM', self:GetParent().healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     else
-        local offset = self:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and self:GetTargetYOffset() or 0.0);
+        local offset = self:GetBaseYOffset() + (self:GetParent().data.isTarget and self:GetTargetYOffset() or 0.0);
         PixelUtil.SetPoint(self, 'BOTTOM', self:GetParent().healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     end
 

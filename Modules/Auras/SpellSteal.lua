@@ -6,7 +6,7 @@ local Stripes = S:GetNameplateModule('Handler');
 local math_max = math.max;
 
 -- WoW API
-local CooldownFrame_Set, UnitIsUnit, GetTime, AuraUtil_ForEachAura = CooldownFrame_Set, UnitIsUnit, GetTime, AuraUtil.ForEachAura;
+local CooldownFrame_Set, GetTime, AuraUtil_ForEachAura = CooldownFrame_Set, GetTime, AuraUtil.ForEachAura;
 
 -- Stripes API
 local ShouldShowName   = S:GetNameplateModule('Handler').ShouldShowName;
@@ -78,7 +78,7 @@ local function CreateBuffFrame(unitframe)
                 if STATIC_POSITION then
                     self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
                 else
-                    local offset = uf.BuffFrame:GetBaseYOffset() + (UnitIsUnit(uf.data.unit, 'target') and uf.BuffFrame:GetTargetYOffset() or 0.0);
+                    local offset = uf.BuffFrame:GetBaseYOffset() + (uf.data.isTarget and uf.BuffFrame:GetTargetYOffset() or 0.0);
                     self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
                 end
             end

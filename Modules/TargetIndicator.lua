@@ -46,7 +46,7 @@ local function Glow_Hide(unitframe)
 end
 
 local function MouseOnUnit(unitframe)
-    if unitframe and unitframe:IsVisible() and UnitExists('mouseover') then
+    if unitframe and unitframe.data.unit and unitframe:IsVisible() and UnitExists('mouseover') then
         return UnitIsUnit('mouseover', unitframe.data.unit);
     end
 

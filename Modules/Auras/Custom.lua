@@ -6,7 +6,7 @@ local Stripes = S:GetNameplateModule('Handler');
 local math_max = math.max;
 
 -- WoW API
-local CooldownFrame_Set, UnitIsUnit, AuraUtil_ForEachAura = CooldownFrame_Set, UnitIsUnit, AuraUtil.ForEachAura;
+local CooldownFrame_Set, AuraUtil_ForEachAura = CooldownFrame_Set, AuraUtil.ForEachAura;
 
 -- Stripes API
 local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
@@ -69,7 +69,7 @@ local function CreateBuffFrame(unitframe)
                 local offset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
                 self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             else
-                local offset = uf.BuffFrame:GetBaseYOffset() + ((unit and UnitIsUnit(unit, 'target')) and uf.BuffFrame:GetTargetYOffset() or 0.0);
+                local offset = uf.BuffFrame:GetBaseYOffset() + (uf.data.isTarget and uf.BuffFrame:GetTargetYOffset() or 0.0);
                 self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             end
         end
