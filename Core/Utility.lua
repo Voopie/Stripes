@@ -29,8 +29,6 @@ local PET_UNIT    = 'pet';
 U.TooltipScanner = CreateFrame('GameTooltip', 'Stripes_TooltipScanner', nil, 'GameTooltipTemplate');
 U.TooltipScanner.Name = 'Stripes_TooltipScanner';
 U.TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
-U.TooltipScanner:SetScript('OnTooltipAddMoney', nil);
-U.TooltipScanner:SetScript('OnTooltipCleared', nil);
 
 U.Print = function(message, debug)
     if not message or message == EMPTY_STRING then
