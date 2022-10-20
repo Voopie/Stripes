@@ -127,7 +127,7 @@ local function Update(unitframe)
 end
 
 local function UpdateByAura(unitframe)
-    if not ENABLED then
+    if not ENABLED or not unitframe.data.unit then
         return;
     end
 
