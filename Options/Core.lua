@@ -161,6 +161,22 @@ O.Lists = {
         [11] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_CN'],
         [12] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOD'],
         [13] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOTFO'],
+
+        -- After DF release
+        -- [1]  = '|TInterface\\PaperDollInfoFrame\\UI-EquipmentManager-Toggle:12:12:2:0|t ' .. L['OPTIONS_COMMON'],
+        -- [2]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_ULD'],
+        -- [3]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_RLP'],
+        -- [4]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_ALGA'],
+        -- [5]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_HOI'],
+        -- [6]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_TAV'],
+        -- [7]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_BH'],
+        -- [8]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_TNO'],
+        -- [9]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_NLTH'],
+        -- [10] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_MOP_TOTJS'],
+        -- [11] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_WOD_SBG'],
+        -- [12] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_LEGION_HOV'],
+        -- [13] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_LEGION_COS'],
+        -- [14] = S.Media.RAID_ICON_INLINE    .. L['RAID_DF_VOTI'],
     },
 
     quest_indicator_position = {
@@ -1171,9 +1187,48 @@ function Module:Migration_CustomColorsAndNames()
     end
 end
 
+do
+    local fontValueOptions = {
+        'name_text_font_value',
+        'health_text_font_value',
+        'level_text_font_value',
+        'absorb_text_font_value',
+        'threat_percentage_font_value',
+        'castbar_timer_font_value',
+        'castbar_text_font_value',
+        'castbar_target_font_value',
+        'mythic_plus_percentage_font_value',
+        'spell_interrupted_icon_countdown_font_value',
+        'spell_interrupted_icon_caster_name_font_value',
+        'auras_cooldown_font_value',
+        'auras_count_font_value',
+        'auras_spellsteal_cooldown_font_value',
+        'auras_spellsteal_count_font_value',
+        'auras_mythicplus_cooldown_font_value',
+        'auras_mythicplus_count_font_value',
+        'auras_important_cooldown_font_value',
+        'auras_important_count_font_value',
+        'auras_important_castername_font_value',
+        'auras_custom_cooldown_font_value',
+        'auras_custom_count_font_value',
+        'global_font_value',
+    };
+
+    function Module:Migration_FontValueOptions()
+        for profileId, _ in pairs(StripesDB.profiles) do
+            for _, fontOptionName in ipairs(fontValueOptions) do
+                if StripesDB.profiles[profileId][fontOptionName] and StripesDB.profiles[profileId][fontOptionName] == 'Avant Garde Gothic Bold ' then
+                    StripesDB.profiles[profileId][fontOptionName] = 'Avant Garde Gothic Bold';
+                end
+            end
+        end
+    end
+end
+
 function Module:RunMigrations()
     self:Migration_ColorsAndCategories();
     self:Migration_CustomColorsAndNames();
+    self:Migration_FontValueOptions();
 end
 
 function Module:StartUp()
@@ -1227,6 +1282,7 @@ function Module:StartUp()
     -- migration to 1.28 (DF 1st version)
     if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 28) then
         self:Migration_CustomColorsAndNames();
+        self:Migration_FontValueOptions();
     end
 
     self:CleanUp();

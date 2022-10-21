@@ -97,6 +97,13 @@ L['MINIMAP_BUTTON_HIDE'] = 'Скрыть эту кнопку';
 L['MINIMAP_BUTTON_COMMAND_SHOW'] = 'Напишите в чате /stripes minimap, чтобы снова показать кнопку у миникарты';
 L['MINIMAP_ACTIVE_PROFILE'] = 'Активный профиль';
 
+L['DUNGEON_MOP_TOTJS'] = 'Храм Нефритовой Змеи';
+
+L['DUNGEON_WOD_SBG'] = 'Некрополь Призрачной Луны';
+
+L['DUNGEON_LEGION_HOV'] = 'Чертоги Доблести';
+L['DUNGEON_LEGION_COS'] = 'Квартал Звезд';
+
 L['DUNGEON_SL_MISTS'] = 'Туманы Тирна Скитта';
 L['DUNGEON_SL_NW'] = 'Смертельная тризна';
 L['DUNGEON_SL_DOS'] = 'Та Сторона';
@@ -107,9 +114,20 @@ L['DUNGEON_SL_SOA'] = 'Шпили Перерождения';
 L['DUNGEON_SL_TOP'] = 'Театр Боли';
 L['DUNGEON_SL_TTVM'] = 'Тайный рынок Тазавеш';
 
+L['DUNGEON_DF_ULD'] = 'Ульдаман: наследие Тира';
+L['DUNGEON_DF_RLP'] = 'Рубиновые Омуты Жизни';
+L['DUNGEON_DF_ALGA'] = 'Академия Алгет\'ар';
+L['DUNGEON_DF_HOI'] = 'Чертоги Насыщения';
+L['DUNGEON_DF_TAV'] = 'Лазурное Хранилище';
+L['DUNGEON_DF_BH'] = 'Пещера Бурошкуров';
+L['DUNGEON_DF_TNO'] = 'Наступление клана Нокхуд';
+L['DUNGEON_DF_NLTH'] = 'Нелтарий';
+
 L['RAID_SL_CN'] = 'Замок Нафрия';
 L['RAID_SL_SOD'] = 'Святилище Господства';
 L['RAID_SL_SOTFO'] = 'Гробница Предвечных';
+
+L['RAID_DF_VOTI'] = 'Хранилище Воплощений';
 
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C для копирования';
 

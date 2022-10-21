@@ -97,6 +97,13 @@ L['MINIMAP_BUTTON_HIDE'] = 'Hide this button';
 L['MINIMAP_BUTTON_COMMAND_SHOW'] = 'Use /stripes minimap to show the minimap button again';
 L['MINIMAP_ACTIVE_PROFILE'] = 'Active profile';
 
+L['DUNGEON_MOP_TOTJS'] = 'Temple of the Jade Serpent';
+
+L['DUNGEON_WOD_SBG'] = 'Shadowmoon Burial Grounds';
+
+L['DUNGEON_LEGION_HOV'] = 'Halls of Valor';
+L['DUNGEON_LEGION_COS'] = 'Court of Stars';
+
 L['DUNGEON_SL_MISTS'] = 'Mists of Tirna Scithe';
 L['DUNGEON_SL_NW'] = 'The Necrotic Wake';
 L['DUNGEON_SL_DOS'] = 'De Other Side';
@@ -107,9 +114,20 @@ L['DUNGEON_SL_SOA'] = 'Spires of Ascension';
 L['DUNGEON_SL_TOP'] = 'Theater of Pain';
 L['DUNGEON_SL_TTVM'] = 'Tazavesh, the Veiled Market';
 
+L['DUNGEON_DF_ULD'] = 'Uldaman: Legacy of Tyr';
+L['DUNGEON_DF_RLP'] = 'Ruby Life Pools';
+L['DUNGEON_DF_ALGA'] = 'Algeth\'ar Academy';
+L['DUNGEON_DF_HOI'] = 'Halls of Infusion';
+L['DUNGEON_DF_TAV'] = 'The Azure Vault';
+L['DUNGEON_DF_BH'] = 'Brackenhide Hollow';
+L['DUNGEON_DF_TNO'] = 'The Nokhud Offensive';
+L['DUNGEON_DF_NLTH'] = 'Neltharius';
+
 L['RAID_SL_CN'] = 'Castle Nathria';
 L['RAID_SL_SOD'] = 'Sanctum of Domination';
 L['RAID_SL_SOTFO'] = 'Sepulcher of the First Ones';
+
+L['RAID_DF_VOTI'] = 'Vault of the Incarnates';
 
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C to copy';
 
