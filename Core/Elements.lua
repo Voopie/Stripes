@@ -404,7 +404,7 @@ E.CreateHelpTipButton = function(parent)
 
     b.Text = Mixin(b:CreateFontString(nil, 'ARTWORK'), E.PixelPerfectMixin);
     b.Text:SetPosition('LEFT', b, 'RIGHT', 8, 0);
-    b.Text:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 12, 'OUTLINE');
+    b.Text:SetFont(S.Media.Fonts['Systopie Semi Bold Italic'], 12, 'OUTLINE');
     b.Text:SetTextColor(0.85, 0.85, 0.85);
     b.Text:Hide();
 

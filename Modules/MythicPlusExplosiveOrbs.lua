@@ -39,7 +39,7 @@ OrbsCounter.border:SetPoint('BOTTOMRIGHT', OrbsCounter, 1, -1);
 
 OrbsCounter.count = OrbsCounter:CreateFontString();
 OrbsCounter.count:SetPoint('CENTER', 0, 0);
-OrbsCounter.count:SetFont(S.Media.Fonts.BIGNOODLETOO.OBLIQUE, 26, 'OUTLINE');
+OrbsCounter.count:SetFont(S.Media.Fonts['BigNoodleToo Oblique'], 26, 'OUTLINE');
 OrbsCounter.count:SetTextColor(1, 1, 1);
 OrbsCounter.count:SetShadowOffset(1, -1);
 OrbsCounter.count:SetShadowColor(0, 0, 0);

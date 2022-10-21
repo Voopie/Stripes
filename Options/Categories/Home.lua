@@ -154,7 +154,7 @@ panel.Load = function(self)
     self.FreqUsedOptionsTip = Mixin(self:CreateFontString(nil, 'ARTWORK'), E.PixelPerfectMixin);
     self.FreqUsedOptionsTip:SetPosition('TOPLEFT', self, 'TOPLEFT', 10, 20);
     self.FreqUsedOptionsTip:SetPosition('BOTTOMRIGHT', self, 'BOTTOMRIGHT', -10, 0);
-    self.FreqUsedOptionsTip:SetFont(S.Media.Fonts.BIGNOODLETOO.OBLIQUE, 36, 'OUTLINE');
+    self.FreqUsedOptionsTip:SetFont(S.Media.Fonts['BigNoodleToo Oblique'], 36, 'OUTLINE');
     self.FreqUsedOptionsTip:SetJustifyH('CENTER');
     self.FreqUsedOptionsTip:SetTextColor(0.8, 0.8, 0.8);
     self.FreqUsedOptionsTip:SetText(L['OPTIONS_HOME_FREQUENTLY_USED_OPTIONS_TIP']);
@@ -178,7 +178,7 @@ panel.Load = function(self)
 
     self.EXmarkButton.Text = Mixin(self.EXmarkButton:CreateFontString(nil, 'ARTWORK'), E.PixelPerfectMixin);
     self.EXmarkButton.Text:SetPosition('LEFT', self.EXmarkButton, 'RIGHT', 8, 0);
-    self.EXmarkButton.Text:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 12, 'OUTLINE');
+    self.EXmarkButton.Text:SetFont(S.Media.Fonts['Systopie Semi Bold Italic'], 12, 'OUTLINE');
     self.EXmarkButton.Text:SetTextColor(0.85, 0.85, 0.85);
     self.EXmarkButton.Text:SetText(L['OPTIONS_HOME_DELETE_TIP']);
     self.EXmarkButton.Text:Hide();

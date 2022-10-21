@@ -142,140 +142,6 @@ S.Media.IconsClass = {
     },
 };
 
-S.Media.Textures = {
-    StatusBar = {
-        FLAT    = M .. 'Textures\\StatusBar\\flat.blp',
-        LILINE  = M .. 'Textures\\StatusBar\\liline.blp',
-        LIMIDA  = M .. 'Textures\\StatusBar\\limida.blp',
-        LIMIGLO = M .. 'Textures\\StatusBar\\limiglo.blp',
-        MIDA    = M .. 'Textures\\StatusBar\\mida.blp',
-        MIDIGLO = M .. 'Textures\\StatusBar\\midiglo.blp',
-        SIDY    = M .. 'Textures\\StatusBar\\sidy.blp',
-        UPLI    = M .. 'Textures\\StatusBar\\upli.blp',
-        SKULLFLOWERNEON = M .. 'Textures\\StatusBar\\skullflower_neon.blp',
-
-        MELLI            = M .. 'Textures\\StatusBar\\melli.blp',
-        MELLI_DARK       = M .. 'Textures\\StatusBar\\melli_dark.blp',
-        MELLI_DARK_ROUGH = M .. 'Textures\\StatusBar\\melli_dark_rough.blp',
-
-        BARS     = M .. 'Textures\\StatusBar\\bars.blp',
-        DIAGONAL = M .. 'Textures\\StatusBar\\diagonal.blp',
-
-        STRIPED_FAT = M .. 'Textures\\StatusBar\\striped_fat.blp',
-    },
-};
-
-S.Media.Fonts = {
-    AVANTGARDE_CTT = {
-        REGULAR = M .. 'Fonts\\avant_garde_ctt.ttf',
-        ITALIC  = M .. 'Fonts\\avant_garde_ctt_italic.ttf',
-    },
-
-    AVANTGARDE_GOTHIC_CTT = {
-        BOLD = M .. 'Fonts\\avant_garde_gothic_ctt_bold.ttf',
-    },
-
-    BIGNOODLETOO = {
-        OBLIQUE = M .. 'Fonts\\bignoodletoo_oblique.ttf',
-        TITLING = M .. 'Fonts\\bignoodletoo_titling.ttf',
-    },
-
-    BRUTALTYPE = {
-        REGULAR = M .. 'Fonts\\brutaltype.ttf',
-        LIGHT   = M .. 'Fonts\\brutaltype-light.ttf',
-        MEDIUM  = M .. 'Fonts\\brutaltype-medium.ttf',
-        BOLD    = M .. 'Fonts\\brutaltype-bold.ttf',
-    },
-
-    CONVECTION = {
-        REGULAR = M .. 'Fonts\\convection.ttf',
-        MEDIUM  = M .. 'Fonts\\convection_medium.ttf',
-        BOLD    = M .. 'Fonts\\convection_bold.ttf',
-    },
-
-    EXPRESSWAY = {
-        REGULAR = M .. 'Fonts\\expressway.ttf',
-        BOLD    = M .. 'Fonts\\expressway_bold.ttf',
-    },
-
-    FUTURAPT = {
-        BOOK          = M .. 'Fonts\\futura-pt-book.ttf',
-        BOOKOBLIQUE   = M .. 'Fonts\\futura-pt-book-oblique.ttf',
-        MEDIUM        = M .. 'Fonts\\futura-pt-medium.ttf',
-        MEDIUMOBLIQUE = M .. 'Fonts\\futura-pt-medium-oblique.ttf',
-        DEMI          = M .. 'Fonts\\futura-pt-demi.ttf',
-        DEMIOBLIQUE   = M .. 'Fonts\\futura-pt-demi-oblique.ttf',
-        BOLD          = M .. 'Fonts\\futura-pt-bold.ttf',
-        BOLDOBLIQUE   = M .. 'Fonts\\futura-pt-bold-oblique.ttf',
-    },
-
-    GOOGLESANS = {
-        REGULAR      = M .. 'Fonts\\googlesans-regular.ttf',
-        ITALIC       = M .. 'Fonts\\googlesans-italic.ttf',
-        MEDIUM       = M .. 'Fonts\\googlesans-medium.ttf',
-        MEDIUMITALIC = M .. 'Fonts\\googlesans-mediumitalic.ttf',
-        BOLD         = M .. 'Fonts\\googlesans-bold.ttf',
-        BOLDITALIC   = M .. 'Fonts\\googlesans-bolditalic.ttf',
-    },
-
-    GOTHAMPRO = {
-        REGULAR      = M .. 'Fonts\\gotham-pro-reg.ttf',
-        ITALIC       = M .. 'Fonts\\gotham-pro-italic.ttf',
-        BLACK        = M .. 'Fonts\\gotham-pro-black.ttf',
-        BLACKITALIC  = M .. 'Fonts\\gotham-pro-black-italic.ttf',
-        BOLD         = M .. 'Fonts\\gotham-pro-bold.ttf',
-        BOLDITALIC   = M .. 'Fonts\\gotham-pro-bold-italic.ttf',
-        LIGHT        = M .. 'Fonts\\gotham-pro-light.ttf',
-        LIGHTITALIC  = M .. 'Fonts\\gotham-pro-light-italic.ttf',
-        MEDIUM       = M .. 'Fonts\\gotham-pro-medium.ttf',
-        MEDIUMITALIC = M .. 'Fonts\\gotham-pro-medium-italic.ttf',
-        NARROWMEDIUM = M .. 'Fonts\\gotham-pro-narrow-medium.ttf',
-        NARROWBOLD   = M .. 'Fonts\\gotham-pro-narrow-bold.ttf',
-    },
-
-    OSWALD = {
-        REGULAR       = M .. 'Fonts\\oswald-regular.ttf',
-        REGULARITALIC = M .. 'Fonts\\oswald-regular-italic.ttf',
-        MEDIUM        = M .. 'Fonts\\oswald-medium.ttf',
-        MEDIUMITALIC  = M .. 'Fonts\\oswald-medium-italic.ttf',
-        DEMI          = M .. 'Fonts\\oswald-demi.ttf',
-        DEMIITALIC    = M .. 'Fonts\\oswald-demi-italic.ttf',
-        BOLD          = M .. 'Fonts\\oswald-bold.ttf',
-        BOLDITALIC    = M .. 'Fonts\\oswald-bold-italic.ttf',
-    },
-
-    PTSANS = {
-        NARROWBOLD = M .. 'Fonts\\ptsnb.ttf',
-        BOLD       = M .. 'Fonts\\ptsab.ttf',
-    },
-
-    ROBOTO = {
-        REGULAR      = M .. 'Fonts\\roboto.ttf',
-        ITALIC       = M .. 'Fonts\\roboto-italic.ttf',
-        MEDIUM       = M .. 'Fonts\\roboto-medium.ttf',
-        MEDIUMITALIC = M .. 'Fonts\\roboto-medium-italic.ttf',
-        BOLD         = M .. 'Fonts\\roboto-bold.ttf',
-        BOLDITALIC   = M .. 'Fonts\\roboto-bold-italic.ttf',
-    },
-
-    RPL = {
-        REGULAR = M .. 'Fonts\\rpl-regular.ttf',
-    },
-
-    SYSTOPIE = {
-        REGULAR        = M .. 'Fonts\\systopie.ttf',
-        REGULARITALIC  = M .. 'Fonts\\systopie-italic.ttf',
-        SEMIBOLD       = M .. 'Fonts\\systopie-semi-bold.ttf',
-        SEMIBOLDITALIC = M .. 'Fonts\\systopie-semi-bold-italic.ttf',
-        BOLD           = M .. 'Fonts\\systopie-bold.ttf',
-        BOLDITALIC     = M .. 'Fonts\\systopie-bold-italic.ttf',
-    },
-
-    TEEN = {
-        CYR = M .. 'Fonts\\teencyr.ttf',
-    },
-};
-
 -- LSM Font Preloader ~Simpy
 do
     local preloader = CreateFrame('Frame');
@@ -310,89 +176,118 @@ do
 end
 
 -- Status bar textures
-LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Flat', S.Media.Textures.StatusBar.FLAT);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Liline', S.Media.Textures.StatusBar.LILINE);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Limida', S.Media.Textures.StatusBar.LIMIDA);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Limiglo', S.Media.Textures.StatusBar.LIMIGLO);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Mida', S.Media.Textures.StatusBar.MIDA);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Midiglo', S.Media.Textures.StatusBar.MIDIGLO);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Sidy', S.Media.Textures.StatusBar.SIDY);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Stripes Upli', S.Media.Textures.StatusBar.UPLI);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Skullflower Neon', S.Media.Textures.StatusBar.SKULLFLOWERNEON);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Melli', S.Media.Textures.StatusBar.MELLI);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Melli Dark', S.Media.Textures.StatusBar.MELLI_DARK);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Melli Dark Rough', S.Media.Textures.StatusBar.MELLI_DARK_ROUGH);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Bars', S.Media.Textures.StatusBar.BARS);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Diagonal', S.Media.Textures.StatusBar.DIAGONAL);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Striped Fat', S.Media.Textures.StatusBar.STRIPED_FAT);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Blizzard Glow', [[Interface\TargetingFrame\UI-StatusBar-Glow]]);
-LSM:Register(LSM.MediaType.STATUSBAR, 'Blizzard Bar Fill', [[Interface\TargetingFrame\UI-TargetingFrame-BarFill]]);
+S.Media.StatusBar = {
+    ['Stripes Flat']    = M .. 'Textures\\StatusBar\\flat.blp',
+    ['Stripes Liline']  = M .. 'Textures\\StatusBar\\liline.blp',
+    ['Stripes Limida']  = M .. 'Textures\\StatusBar\\limida.blp',
+    ['Stripes Limiglo'] = M .. 'Textures\\StatusBar\\limiglo.blp',
+    ['Stripes Mida']    = M .. 'Textures\\StatusBar\\mida.blp',
+    ['Stripes Midiglo'] = M .. 'Textures\\StatusBar\\midiglo.blp',
+    ['Stripes Sidy']    = M .. 'Textures\\StatusBar\\sidy.blp',
+    ['Stripes Upli']    = M .. 'Textures\\StatusBar\\upli.blp',
+
+    ['Melli']            = M .. 'Textures\\StatusBar\\melli.blp',
+    ['Melli Dark']       = M .. 'Textures\\StatusBar\\melli_dark.blp',
+    ['Melli Dark Rough'] = M .. 'Textures\\StatusBar\\melli_dark_rough.blp',
+
+    ['Skullflower Neon'] = M .. 'Textures\\StatusBar\\skullflower_neon.blp',
+
+    ['Bars']        = M .. 'Textures\\StatusBar\\bars.blp',
+    ['Diagonal']    = M .. 'Textures\\StatusBar\\diagonal.blp',
+    ['Striped Fat'] = M .. 'Textures\\StatusBar\\striped_fat.blp',
+
+    ['Blizzard Glow']     = 'Interface\\TargetingFrame\\UI-StatusBar-Glow',
+    ['Blizzard Bar Fill'] = 'Interface\\TargetingFrame\\UI-TargetingFrame-BarFill',
+};
+
+for bar_name, bar_path in pairs(S.Media.StatusBar) do
+    LSM:Register(LSM.MediaType.STATUSBAR, bar_name, bar_path);
+end
 
 -- Fonts
-LSM:Register(LSM.MediaType.FONT, 'Avant Garde', S.Media.Fonts.AVANTGARDE_CTT.REGULAR, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Avant Garde Italic', S.Media.Fonts.AVANTGARDE_CTT.ITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Avant Garde Gothic Bold ', S.Media.Fonts.AVANTGARDE_GOTHIC_CTT.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'BigNoodleToo Oblique', S.Media.Fonts.BIGNOODLETOO.OBLIQUE, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'BigNoodleToo Titling', S.Media.Fonts.BIGNOODLETOO.TITLING, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Brutal Type', S.Media.Fonts.BRUTALTYPE.REGULAR, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Brutal Type Light', S.Media.Fonts.BRUTALTYPE.LIGHT, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Brutal Type Medium', S.Media.Fonts.BRUTALTYPE.MEDIUM, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Brutal Type Bold', S.Media.Fonts.BRUTALTYPE.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Convection Regular', S.Media.Fonts.CONVECTION.REGULAR, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Convection Medium', S.Media.Fonts.CONVECTION.MEDIUM, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Convection Bold', S.Media.Fonts.CONVECTION.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Expressway Regular', S.Media.Fonts.EXPRESSWAY.REGULAR, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Expressway Bold', S.Media.Fonts.EXPRESSWAY.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Futura PT Book', S.Media.Fonts.FUTURAPT.BOOK, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Futura PT Book Oblique', S.Media.Fonts.FUTURAPT.BOOKOBLIQUE, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Futura PT Medium', S.Media.Fonts.FUTURAPT.MEDIUM, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Futura PT Medium Oblique', S.Media.Fonts.FUTURAPT.MEDIUMOBLIQUE, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Futura PT Demi', S.Media.Fonts.FUTURAPT.DEMI, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Futura PT Demi Oblique', S.Media.Fonts.FUTURAPT.DEMIOBLIQUE, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Futura PT Bold', S.Media.Fonts.FUTURAPT.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Futura PT Bold Oblique', S.Media.Fonts.FUTURAPT.BOLDOBLIQUE, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Google Sans Regular', S.Media.Fonts.GOOGLESANS.REGULAR, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Google Sans Italic', S.Media.Fonts.GOOGLESANS.ITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Google Sans Medium', S.Media.Fonts.GOOGLESANS.MEDIUM, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Google Sans Medium Italic', S.Media.Fonts.GOOGLESANS.MEDIUMITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Google Sans Bold', S.Media.Fonts.GOOGLESANS.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Google Sans Bold Italic', S.Media.Fonts.GOOGLESANS.BOLDITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Regular', S.Media.Fonts.GOTHAMPRO.REGULAR, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Italic', S.Media.Fonts.GOTHAMPRO.ITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Black', S.Media.Fonts.GOTHAMPRO.BLACK, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Black Italic', S.Media.Fonts.GOTHAMPRO.BLACKITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Bold', S.Media.Fonts.GOTHAMPRO.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Bold Italic', S.Media.Fonts.GOTHAMPRO.BOLDITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Light', S.Media.Fonts.GOTHAMPRO.LIGHT, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Light Italic', S.Media.Fonts.GOTHAMPRO.LIGHTITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Medium', S.Media.Fonts.GOTHAMPRO.MEDIUM, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Medium Italic', S.Media.Fonts.GOTHAMPRO.MEDIUMITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Narrow Medium', S.Media.Fonts.GOTHAMPRO.NARROWMEDIUM, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Gotham Pro Narrow Bold', S.Media.Fonts.GOTHAMPRO.NARROWBOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Oswald Regular', S.Media.Fonts.OSWALD.REGULAR, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Oswald Regular Italic', S.Media.Fonts.OSWALD.REGULARITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Oswald Medium', S.Media.Fonts.OSWALD.MEDIUM, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Oswald Medium Italic', S.Media.Fonts.OSWALD.MEDIUMITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Oswald Demi', S.Media.Fonts.OSWALD.DEMI, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Oswald Demi Italic', S.Media.Fonts.OSWALD.DEMIITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Oswald Bold', S.Media.Fonts.OSWALD.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Oswald Bold Italic', S.Media.Fonts.OSWALD.BOLDITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'PT Sans Narrow Bold', S.Media.Fonts.PTSANS.NARROWBOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'PT Sans Bold', S.Media.Fonts.PTSANS.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Roboto', S.Media.Fonts.ROBOTO.REGULAR, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Roboto Italic', S.Media.Fonts.ROBOTO.ITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Roboto Medium', S.Media.Fonts.ROBOTO.MEDIUM, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Roboto Medium Italic', S.Media.Fonts.ROBOTO.MEDIUMITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Roboto Bold', S.Media.Fonts.ROBOTO.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Roboto Bold Italic', S.Media.Fonts.ROBOTO.BOLDITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'RPL Regular', S.Media.Fonts.RPL.REGULAR, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Systopie', S.Media.Fonts.SYSTOPIE.REGULAR, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Systopie Italic', S.Media.Fonts.SYSTOPIE.REGULARITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Systopie Semi Bold', S.Media.Fonts.SYSTOPIE.SEMIBOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Systopie Semi Bold Italic', S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Systopie Bold', S.Media.Fonts.SYSTOPIE.BOLD, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Systopie Bold Italic', S.Media.Fonts.SYSTOPIE.BOLDITALIC, LOCALE_WEST_AND_RU);
-LSM:Register(LSM.MediaType.FONT, 'Teen CYR', S.Media.Fonts.TEEN.CYR, LOCALE_WEST_AND_RU);
+S.Media.Fonts = {
+    ['Avant Garde']             = M .. 'Fonts\\avant_garde_ctt.ttf',
+    ['Avant Garde Italic']      = M .. 'Fonts\\avant_garde_ctt_italic.ttf',
+    ['Avant Garde Gothic Bold'] = M .. 'Fonts\\avant_garde_gothic_ctt_bold.ttf',
+
+    ['BigNoodleToo Oblique'] = M .. 'Fonts\\bignoodletoo_oblique.ttf',
+    ['BigNoodleToo Titling'] = M .. 'Fonts\\bignoodletoo_titling.ttf',
+
+    ['Brutal Type']        = M .. 'Fonts\\brutaltype.ttf',
+    ['Brutal Type Light']  = M .. 'Fonts\\brutaltype_light.ttf',
+    ['Brutal Type Medium'] = M .. 'Fonts\\brutaltype_medium.ttf',
+    ['Brutal Type Bold']   = M .. 'Fonts\\brutaltype_bold.ttf',
+
+    ['Convection Regular'] = M .. 'Fonts\\convection.ttf',
+    ['Convection Medium']  = M .. 'Fonts\\convection_medium.ttf',
+    ['Convection Bold']    = M .. 'Fonts\\convection_bold.ttf',
+
+    ['Expressway Regular'] = M .. 'Fonts\\expressway.ttf',
+    ['Expressway Bold']    = M .. 'Fonts\\expressway_bold.ttf',
+
+    ['Futura PT Book']           = M .. 'Fonts\\futura_pt_book.ttf',
+    ['Futura PT Book Oblique']   = M .. 'Fonts\\futura_pt_book_oblique.ttf',
+    ['Futura PT Medium']         = M .. 'Fonts\\futura_pt_medium.ttf',
+    ['Futura PT Medium Oblique'] = M .. 'Fonts\\futura_pt_medium_oblique.ttf',
+    ['Futura PT Demi']           = M .. 'Fonts\\futura_pt_demi.ttf',
+    ['Futura PT Demi Oblique']   = M .. 'Fonts\\futura_pt_demi_oblique.ttf',
+    ['Futura PT Bold']           = M .. 'Fonts\\futura_pt_bold.ttf',
+    ['Futura PT Bold Oblique']   = M .. 'Fonts\\futura_pt_bold_oblique.ttf',
+
+    ['Google Sans Regular']       = M .. 'Fonts\\googlesans_regular.ttf',
+    ['Google Sans Italic']        = M .. 'Fonts\\googlesans_italic.ttf',
+    ['Google Sans Medium']        = M .. 'Fonts\\googlesans_medium.ttf',
+    ['Google Sans Medium Italic'] = M .. 'Fonts\\googlesans_medium_italic.ttf',
+    ['Google Sans Bold']          = M .. 'Fonts\\googlesans_bold.ttf',
+    ['Google Sans Bold Italic']   = M .. 'Fonts\\googlesans_bold_italic.ttf',
+
+    ['Gotham Pro Regular']       = M .. 'Fonts\\gotham_pro_regilar.ttf',
+    ['Gotham Pro Italic']        = M .. 'Fonts\\gotham_pro_italic.ttf',
+    ['Gotham Pro Black']         = M .. 'Fonts\\gotham_pro_black.ttf',
+    ['Gotham Pro Black Italic']  = M .. 'Fonts\\gotham_pro_black_italic.ttf',
+    ['Gotham Pro Bold']          = M .. 'Fonts\\gotham_pro_bold.ttf',
+    ['Gotham Pro Bold Italic']   = M .. 'Fonts\\gotham_pro_bold_italic.ttf',
+    ['Gotham Pro Light']         = M .. 'Fonts\\gotham_pro_light.ttf',
+    ['Gotham Pro Light Italic']  = M .. 'Fonts\\gotham_pro_light_italic.ttf',
+    ['Gotham Pro Medium']        = M .. 'Fonts\\gotham_pro_medium.ttf',
+    ['Gotham Pro Medium Italic'] = M .. 'Fonts\\gotham_pro_medium_italic.ttf',
+    ['Gotham Pro Narrow Medium'] = M .. 'Fonts\\gotham_pro_narrow_medium.ttf',
+    ['Gotham Pro Narrow Bold']   = M .. 'Fonts\\gotham_pro_narrow_bold.ttf',
+
+    ['Oswald Regular']        = M .. 'Fonts\\oswald_regular.ttf',
+    ['Oswald Regular Italic'] = M .. 'Fonts\\oswald_regular_italic.ttf',
+    ['Oswald Medium']         = M .. 'Fonts\\oswald_medium.ttf',
+    ['Oswald Medium Italic']  = M .. 'Fonts\\oswald_medium_italic.ttf',
+    ['Oswald Demi']           = M .. 'Fonts\\oswald_demi.ttf',
+    ['Oswald Demi Italic']    = M .. 'Fonts\\oswald_demi_italic.ttf',
+    ['Oswald Bold']           = M .. 'Fonts\\oswald_bold.ttf',
+    ['Oswald Bold Italic']    = M .. 'Fonts\\oswald_bold_italic.ttf',
+
+    ['PT Sans Bold']        = M .. 'Fonts\\ptsans_bold.ttf',
+    ['PT Sans Narrow Bold'] = M .. 'Fonts\\ptsans_narrow_bold.ttf',
+
+    ['Roboto']               = M .. 'Fonts\\roboto.ttf',
+    ['Roboto Italic']        = M .. 'Fonts\\roboto_italic.ttf',
+    ['Roboto Medium']        = M .. 'Fonts\\roboto_medium.ttf',
+    ['Roboto Medium Italic'] = M .. 'Fonts\\roboto_medium_italic.ttf',
+    ['Roboto Bold']          = M .. 'Fonts\\roboto_bold.ttf',
+    ['Roboto Bold Italic']   = M .. 'Fonts\\roboto_bold_italic.ttf',
+
+    ['RPL Regular'] = M .. 'Fonts\\rpl_regular.ttf',
+
+    ['Systopie']                  = M .. 'Fonts\\systopie.ttf',
+    ['Systopie Italic']           = M .. 'Fonts\\systopie_italic.ttf',
+    ['Systopie Semi Bold']        = M .. 'Fonts\\systopie_semi_bold.ttf',
+    ['Systopie Semi Bold Italic'] = M .. 'Fonts\\systopie_semi_bold_italic.ttf',
+    ['Systopie Bold']             = M .. 'Fonts\\systopie_bold.ttf',
+    ['Systopie Bold Italic']      = M .. 'Fonts\\systopie_bold_italic.ttf',
+
+    ['Teen CYR'] = M .. 'Fonts\\teencyr.ttf',
+};
+
+for font_name, font_path in pairs(S.Media.Fonts) do
+    LSM:Register(LSM.MediaType.FONT, font_name, font_path, LOCALE_WEST_AND_RU);
+end
 
 local hieroglyphsLocales = {
     ['zhCN'] = true,
@@ -406,7 +301,7 @@ local StripesCategoryButtonNormalFont = CreateFont('StripesCategoryButtonNormalF
 if hieroglyphsLocales[S.ClientLocale] then
     StripesCategoryButtonNormalFont:CopyFontObject('SystemFont_Med3');
 else
-    StripesCategoryButtonNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 14, fontFlagNone);
+    StripesCategoryButtonNormalFont:SetFont(S.Media.Fonts['Systopie Semi Bold Italic'], 14, fontFlagNone);
 end
 StripesCategoryButtonNormalFont:SetJustifyH('LEFT');
 StripesCategoryButtonNormalFont:SetTextColor(1, 1, 1);
@@ -417,7 +312,7 @@ local StripesCategoryButtonHighlightFont = CreateFont('StripesCategoryButtonHigh
 if hieroglyphsLocales[S.ClientLocale] then
     StripesCategoryButtonHighlightFont:CopyFontObject('SystemFont_Shadow_Med3');
 else
-    StripesCategoryButtonHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 14, fontFlagNone);
+    StripesCategoryButtonHighlightFont:SetFont(S.Media.Fonts['Systopie Semi Bold Italic'], 14, fontFlagNone);
 end
 StripesCategoryButtonHighlightFont:SetJustifyH('LEFT');
 StripesCategoryButtonHighlightFont:SetTextColor(1, 0.85, 0);
@@ -428,7 +323,7 @@ local StripesOptionsNormalFont = CreateFont('StripesOptionsNormalFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsNormalFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
-    StripesOptionsNormalFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlagNone);
+    StripesOptionsNormalFont:SetFont(S.Media.Fonts['Futura PT Medium'], 13, fontFlagNone);
 end
 StripesOptionsNormalFont:SetJustifyH('LEFT');
 StripesOptionsNormalFont:SetTextColor(1, 1, 1);
@@ -439,7 +334,7 @@ local StripesOptionsHighlightFont = CreateFont('StripesOptionsHighlightFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsHighlightFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
-    StripesOptionsHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlagNone);
+    StripesOptionsHighlightFont:SetFont(S.Media.Fonts['Futura PT Medium'], 13, fontFlagNone);
 end
 StripesOptionsHighlightFont:SetJustifyH('LEFT');
 StripesOptionsHighlightFont:SetTextColor(1, 0.85, 0);
@@ -450,7 +345,7 @@ local StripesOptionsLightGreyedFont = CreateFont('StripesOptionsLightGreyedFont'
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsLightGreyedFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
-    StripesOptionsLightGreyedFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlagNone);
+    StripesOptionsLightGreyedFont:SetFont(S.Media.Fonts['Futura PT Medium'], 13, fontFlagNone);
 end
 StripesOptionsLightGreyedFont:SetJustifyH('LEFT');
 StripesOptionsLightGreyedFont:SetTextColor(0.75, 0.75, 0.75);
@@ -461,7 +356,7 @@ local StripesOptionsDisabledFont = CreateFont('StripesOptionsDisabledFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsDisabledFont:CopyFontObject('SystemFont_Shadow_Med1');
 else
-    StripesOptionsDisabledFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 13, fontFlagNone);
+    StripesOptionsDisabledFont:SetFont(S.Media.Fonts['Futura PT Medium'], 13, fontFlagNone);
 end
 StripesOptionsDisabledFont:SetJustifyH('LEFT');
 StripesOptionsDisabledFont:SetTextColor(0.35, 0.35, 0.35);
@@ -472,7 +367,7 @@ local StripesOptionsTabHighlightFont = CreateFont('StripesOptionsTabHighlightFon
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsTabHighlightFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesOptionsTabHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlagNone);
+    StripesOptionsTabHighlightFont:SetFont(S.Media.Fonts['Systopie Bold'] , 11, fontFlagNone);
 end
 StripesOptionsTabHighlightFont:SetTextColor(1, 0.85, 0);
 StripesOptionsTabHighlightFont:SetShadowColor(0, 0, 0);
@@ -482,7 +377,7 @@ local StripesOptionsTabGreyedFont = CreateFont('StripesOptionsTabGreyedFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsTabGreyedFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesOptionsTabGreyedFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlagNone);
+    StripesOptionsTabGreyedFont:SetFont(S.Media.Fonts['Systopie Bold'] , 11, fontFlagNone);
 end
 StripesOptionsTabGreyedFont:SetTextColor(0.75, 0.75, 0.75);
 StripesOptionsTabGreyedFont:SetShadowColor(0, 0, 0);
@@ -492,7 +387,7 @@ local StripesOptionsButtonNormalFont = CreateFont('StripesOptionsButtonNormalFon
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsButtonNormalFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesOptionsButtonNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlagNone);
+    StripesOptionsButtonNormalFont:SetFont(S.Media.Fonts['Systopie Bold'] , 11, fontFlagNone);
 end
 StripesOptionsButtonNormalFont:SetTextColor(1, 1, 1);
 StripesOptionsButtonNormalFont:SetShadowColor(0, 0, 0);
@@ -502,7 +397,7 @@ local StripesOptionsButtonHighlightFont = CreateFont('StripesOptionsButtonHighli
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsButtonHighlightFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesOptionsButtonHighlightFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlagNone);
+    StripesOptionsButtonHighlightFont:SetFont(S.Media.Fonts['Systopie Bold'] , 11, fontFlagNone);
 end
 StripesOptionsButtonHighlightFont:SetTextColor(1, 0.85, 0);
 StripesOptionsButtonHighlightFont:SetShadowColor(0, 0, 0);
@@ -512,7 +407,7 @@ local StripesOptionsButtonDisabledFont = CreateFont('StripesOptionsButtonDisable
 if hieroglyphsLocales[S.ClientLocale] then
     StripesOptionsButtonDisabledFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesOptionsButtonDisabledFont:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 11, fontFlagNone);
+    StripesOptionsButtonDisabledFont:SetFont(S.Media.Fonts['Systopie Bold'] , 11, fontFlagNone);
 end
 StripesOptionsButtonDisabledFont:SetTextColor(0.35, 0.35, 0.35);
 StripesOptionsButtonDisabledFont:SetShadowColor(0, 0, 0);
@@ -522,7 +417,7 @@ local StripesMediumHighlightFont = CreateFont('StripesMediumHighlightFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesMediumHighlightFont:CopyFontObject('SystemFont_Shadow_Med2');
 else
-    StripesMediumHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 14, fontFlagNone);
+    StripesMediumHighlightFont:SetFont(S.Media.Fonts['Futura PT Medium'], 14, fontFlagNone);
 end
 StripesMediumHighlightFont:SetJustifyH('LEFT');
 StripesMediumHighlightFont:SetTextColor(1, 0.85, 0);
@@ -533,7 +428,7 @@ local StripesLargeHighlightFont = CreateFont('StripesLargeHighlightFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesLargeHighlightFont:CopyFontObject('SystemFont_Shadow_Large');
 else
-    StripesLargeHighlightFont:SetFont(S.Media.Fonts.FUTURAPT.MEDIUM, 16, fontFlagNone);
+    StripesLargeHighlightFont:SetFont(S.Media.Fonts['Futura PT Medium'], 16, fontFlagNone);
 end
 StripesLargeHighlightFont:SetJustifyH('LEFT');
 StripesLargeHighlightFont:SetTextColor(1, 0.85, 0);
@@ -544,7 +439,7 @@ local StripesSmallNormalFont = CreateFont('StripesSmallNormalFont');
 if hieroglyphsLocales[S.ClientLocale] then
     StripesSmallNormalFont:CopyFontObject('SystemFont_Shadow_Small2');
 else
-    StripesSmallNormalFont:SetFont(S.Media.Fonts.SYSTOPIE.REGULARITALIC, 11, fontFlagNone);
+    StripesSmallNormalFont:SetFont(S.Media.Fonts['Systopie Italic'], 11, fontFlagNone);
 end
 StripesSmallNormalFont:SetTextColor(1, 1, 1);
 StripesSmallNormalFont:SetShadowColor(0, 0, 0);
@@ -554,7 +449,7 @@ local StripesMediumNormalSemiBoldFont = CreateFont('StripesMediumNormalSemiBoldF
 if hieroglyphsLocales[S.ClientLocale] then
     StripesMediumNormalSemiBoldFont:CopyFontObject('SystemFont_Shadow_Med2');
 else
-    StripesMediumNormalSemiBoldFont:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLD, 14, fontFlagNone);
+    StripesMediumNormalSemiBoldFont:SetFont(S.Media.Fonts['Systopie Semi Bold'], 14, fontFlagNone);
 end
 StripesMediumNormalSemiBoldFont:SetJustifyH('LEFT');
 StripesMediumNormalSemiBoldFont:SetTextColor(1, 1, 1);

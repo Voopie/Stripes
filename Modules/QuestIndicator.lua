@@ -193,7 +193,7 @@ local function Create(unitframe)
     frame.lootIcon:Hide();
 
     frame.counterText = frame:CreateFontString(nil, 'OVERLAY');
-    frame.counterText:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 8, 'OUTLINE');
+    frame.counterText:SetFont(S.Media.Fonts['Systopie Bold'], 8, 'OUTLINE');
     frame.counterText:SetJustifyH('CENTER');
     frame.counterText:SetShadowOffset(1, -1);
     frame.counterText:SetTextColor(1, 1, 1);
