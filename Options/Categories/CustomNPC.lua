@@ -92,7 +92,7 @@ local CategoryListActiveRows = {};
 local CategoryListSortedRows = {};
 local CategoryDropdown       = {}
 
-local function SortCategoryByName(a, b)
+local function SortCategoriesByName(a, b)
     return a.value < b.value;
 end
 
@@ -153,7 +153,7 @@ panel.CreateCategoryListRow = function(frame)
 
         panel:UpdateMainContentList();
         panel.UpdateCategoryList();
-        panel.CategoryDropdown:SetList(panel:GetCategoryDropdown(), SortCategoryByName, true);
+        panel.CategoryDropdown:SetList(panel:GetCategoryDropdown(), SortCategoriesByName, true);
 
         if panel.CategoryDropdown:GetValue() == name then
             panel.CategoryDropdown:SetValue(new_name);
@@ -179,7 +179,7 @@ panel.CreateCategoryListRow = function(frame)
 
         panel:UpdateMainContentList();
         panel.UpdateCategoryList();
-        panel.CategoryDropdown:SetList(panel:GetCategoryDropdown(), SortCategoryByName, true);
+        panel.CategoryDropdown:SetList(panel:GetCategoryDropdown(), SortCategoriesByName, true);
         panel.CategoryDropdown:SetValue(CATEGORY_ALL_NAME);
     end);
     frame.RemoveButton:HookScript('OnEnter', function(self)
@@ -1011,7 +1011,7 @@ panel.Load = function(self)
     self.CategoryDropdown = E.CreateDropdown('plain', self);
     self.CategoryDropdown:SetPosition('LEFT', self.SearchEditBox, 'RIGHT', 11, 0);
     self.CategoryDropdown:SetSize(160, 22);
-    self.CategoryDropdown:SetList(self:GetCategoryDropdown(), SortCategoryByName, true);
+    self.CategoryDropdown:SetList(self:GetCategoryDropdown(), SortCategoriesByName, true);
     self.CategoryDropdown:SetValue(CATEGORY_ALL_NAME);
     self.CategoryDropdown.OnValueChangedCallback = function(_, _, value)
         panel.categoryName = value;
@@ -1055,7 +1055,7 @@ panel.Load = function(self)
     self.ChooseNPCListDropdown = E.CreateDropdown('plain', self.ChooseNPCList);
     self.ChooseNPCListDropdown:SetPosition('TOP', self.ChooseNPCList, 'TOP', 0, -10);
     self.ChooseNPCListDropdown:SetSize(228, 20);
-    self.ChooseNPCListDropdown:SetList(O.Lists.custom_color_npcs);
+    self.ChooseNPCListDropdown:SetList(O.Lists.npcs_groups);
     self.ChooseNPCListDropdown:SetValue(DEFAULT_LIST_VALUE);
     self.ChooseNPCListDropdown.OnValueChangedCallback = function(_, value)
         panel.UpdateChooseNPCList(value);
@@ -1115,7 +1115,7 @@ panel.Load = function(self)
         Colors:UpdateListScroll();
 
         panel:UpdateCategoryList();
-        panel.CategoryDropdown:SetList(panel:GetCategoryDropdown(), SortCategoryByName, true);
+        panel.CategoryDropdown:SetList(panel:GetCategoryDropdown(), SortCategoriesByName, true);
 
         Stripes:UpdateAll();
     end
@@ -1201,7 +1201,7 @@ panel.Load = function(self)
         panel:UpdateMainContentList();
         panel:UpdateCategoryList();
 
-        panel.CategoryDropdown:SetList(panel:GetCategoryDropdown(), SortCategoryByName, true);
+        panel.CategoryDropdown:SetList(panel:GetCategoryDropdown(), SortCategoriesByName, true);
         panel.CategoryDropdown:SetValue(panel.CategoryDropdown:GetValue());
     end);
 
@@ -1230,7 +1230,7 @@ panel.OnShowOnce = function(self)
     self:UpdateMainContentList();
     self:UpdateCategoryList();
 
-    for i = 1, #O.Lists.custom_color_npcs do
+    for i = 1, #O.Lists.npcs_groups do
         self.UpdateChooseNPCList(i);
         self.UpdateChooseNPCList(i);
     end
@@ -1248,7 +1248,7 @@ panel.Update = function(self)
 
     self:UpdateMainContentList();
     self:UpdateCategoryList();
-    self.CategoryDropdown:SetList(self:GetCategoryDropdown(), SortCategoryByName, true);
+    self.CategoryDropdown:SetList(self:GetCategoryDropdown(), SortCategoriesByName, true);
 end
 
 function Module:MODIFIER_STATE_CHANGED(key, down)

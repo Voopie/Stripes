@@ -147,7 +147,7 @@ O.Lists = {
         [9] = 'TOOLTIP',
     },
 
-    custom_color_npcs = {
+    npcs_groups = {
         [1]  = '|TInterface\\PaperDollInfoFrame\\UI-EquipmentManager-Toggle:12:12:2:0|t ' .. L['OPTIONS_COMMON'],
         [2]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_MISTS'],
         [3]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_NW'],
