@@ -689,10 +689,8 @@ local function HookSetCVar(name, value)
         return;
     end
 
-    value = tostring(value);
-
     if usedCVars[name] then
-        usedCVars[name](value);
+        usedCVars[name](tostring(value));
     end
 end
 
