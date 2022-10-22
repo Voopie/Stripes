@@ -20,8 +20,6 @@ local GetCachedName = Stripes.GetCachedName;
 local NP = S.NamePlates;
 
 -- Libraries
-local LT = S.Libraries.LT;
-local LDC = S.Libraries.LDC;
 local LPS = S.Libraries.LPS;
 local LPS_GetSpellInfo = LPS.GetSpellInfo;
 local CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.STUN);
