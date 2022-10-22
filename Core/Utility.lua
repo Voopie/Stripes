@@ -22,16 +22,12 @@ local AuraUtil_ForEachAura = AuraUtil.ForEachAura;
 -- WoW C API
 local C_MythicPlus_GetCurrentAffixes, C_ChallengeMode_GetActiveKeystoneInfo = C_MythicPlus.GetCurrentAffixes, C_ChallengeMode.GetActiveKeystoneInfo;
 
-local EMPTY_STRING = '';
-local PLAYER_UNIT = 'player';
-local PET_UNIT    = 'pet';
-
 U.TooltipScanner = CreateFrame('GameTooltip', 'Stripes_TooltipScanner', nil, 'GameTooltipTemplate');
 U.TooltipScanner.Name = 'Stripes_TooltipScanner';
 U.TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
 
 U.Print = function(message, debug)
-    if not message or message == EMPTY_STRING then
+    if not message or message == '' then
         return;
     end
 
@@ -47,7 +43,7 @@ U.CanAccessObject = function(obj)
 end
 
 U.PlayerInCombat = function()
-    return (InCombatLockdown() or (UnitAffectingCombat(PLAYER_UNIT) or UnitAffectingCombat(PET_UNIT)));
+    return (InCombatLockdown() or (UnitAffectingCombat('player') or UnitAffectingCombat('pet')));
 end
 
 U.UnitIsTapped = function(unit)
@@ -68,7 +64,7 @@ U.UnitIsPetByGUID = function(guid)
 end
 
 U.PlayerInGuild = function()
-    return IsInGuild() and GetGuildInfo(PLAYER_UNIT);
+    return IsInGuild() and GetGuildInfo('player');
 end
 
 U.UnitInGuild = function(unit)
@@ -86,7 +82,7 @@ U.UnitIsCasting = function(unit)
 end
 
 U.IsPlayerEffectivelyTank = function ()
-    local assignedRole = UnitGroupRolesAssigned(PLAYER_UNIT);
+    local assignedRole = UnitGroupRolesAssigned('player');
 
     if assignedRole == 'NONE' then
         local spec = GetSpecialization();
@@ -97,7 +93,7 @@ U.IsPlayerEffectivelyTank = function ()
 end
 
 U.IsInArena = function()
-    if IsActiveBattlefieldArena() or GetZonePVPInfo() == 'arena' or select(2, IsInInstance()) == 'arena' or (UnitInBattleground(PLAYER_UNIT) and (C_Map_GetBestMapForUnit(PLAYER_UNIT) and C_Map_GetBestMapForUnit(PLAYER_UNIT) < 0)) then
+    if IsActiveBattlefieldArena() or GetZonePVPInfo() == 'arena' or select(2, IsInInstance()) == 'arena' or (UnitInBattleground('player') and (C_Map_GetBestMapForUnit('player') and C_Map_GetBestMapForUnit('player') < 0)) then
         return true;
     else
         return false;
@@ -159,11 +155,11 @@ do
 end
 
 U.GetNpcID = function(unit)
-    return tonumber((select(6, strsplit('-', UnitGUID(unit) or EMPTY_STRING))));
+    return tonumber((select(6, strsplit('-', UnitGUID(unit) or ''))));
 end
 
 U.GetNpcIDByGUID = function(guid)
-    return tonumber((select(6, strsplit('-', guid or EMPTY_STRING))));
+    return tonumber((select(6, strsplit('-', guid or ''))));
 end
 
 do
@@ -179,7 +175,7 @@ do
 
     U.GetClassColor = function(class, str)
         if not class then
-            class = UnitClassBase(PLAYER_UNIT);
+            class = UnitClassBase('player');
         elseif not RAID_CLASS_COLORS[class] then
             if LCN[class] then
                 class = LCN[class];
@@ -285,7 +281,7 @@ do
         if ClassificationTable[classification] then
             classification = long and ClassificationTable[classification][2] or ClassificationTable[classification][1];
         else
-            classification = EMPTY_STRING;
+            classification = '';
         end
 
         if level == -1 then
@@ -477,7 +473,7 @@ U.RGB2CFFHEX = function(r, g, b)
 end
 
 U.HEX2RGB = function(hex)
-    hex = string_gsub(hex, '#', EMPTY_STRING);
+    hex = string_gsub(hex, '#', '');
 
     if string_len(hex) == 3 then
         return (tonumber('0x' .. string_sub(hex, 1, 1)) * 17) / 255, (tonumber('0x' .. string_sub(hex, 2, 2)) * 17) / 255, (tonumber('0x' .. string_sub(hex, 3, 3)) * 17) / 255;
