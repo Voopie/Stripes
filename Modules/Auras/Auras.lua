@@ -9,8 +9,8 @@ local ipairs, tonumber, math_max, table_wipe, table_sort, bit_band = ipairs, ton
 local CooldownFrame_Set = CooldownFrame_Set;
 
 -- Stripes API
-local ShouldShowName   = S:GetNameplateModule('Handler').ShouldShowName;
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local ShouldShowName   = Stripes.ShouldShowName;
+local UpdateFontObject = Stripes.UpdateFontObject;
 local GetTrulySpellId, S_IsSpellKnown = U.GetTrulySpellId, U.IsSpellKnown;
 local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
 
