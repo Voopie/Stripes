@@ -10,8 +10,8 @@ local CooldownFrame_Set, UnitName, AuraUtil_ForEachAura = CooldownFrame_Set, Uni
 
 -- Sripes API
 local GetUnitColor = U.GetUnitColor;
-local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local ShouldShowName = Stripes.ShouldShowName;
+local UpdateFontObject = Stripes.UpdateFontObject;
 local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Libraries

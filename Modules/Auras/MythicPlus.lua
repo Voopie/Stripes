@@ -9,8 +9,8 @@ local math_max = math.max;
 local CooldownFrame_Set, AuraUtil_ForEachAura = CooldownFrame_Set, AuraUtil.ForEachAura;
 
 -- Stripes API
-local ShouldShowName   = S:GetNameplateModule('Handler').ShouldShowName;
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local ShouldShowName   = Stripes.ShouldShowName;
+local UpdateFontObject = Stripes.UpdateFontObject;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED;
