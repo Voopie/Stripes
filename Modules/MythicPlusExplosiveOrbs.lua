@@ -18,9 +18,9 @@ local EXPLOSIVE_TEXTURE = 2175503;
 local OrbsCounter = CreateFrame('Frame', 'Stripes_ExplosiveOrbsCounter', UIParent);
 OrbsCounter:SetPoint('CENTER', 0, -100);
 OrbsCounter:SetSize(44, 44);
-
 OrbsCounter:EnableMouse(true);
 OrbsCounter:SetMovable(true);
+OrbsCounter:SetClampedToScreen(true);
 OrbsCounter:RegisterForDrag('LeftButton');
 OrbsCounter:SetScript('OnDragStart', function(self) if self:IsMovable() then self:StartMoving(); end end);
 OrbsCounter:SetScript('OnDragStop', function(self) self:StopMovingOrSizing(); end);
