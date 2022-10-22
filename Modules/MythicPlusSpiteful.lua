@@ -118,7 +118,9 @@ function Module:UpdateLocalConfig()
     ONLY_ON_ME = O.db.spiteful_show_only_on_me;
     TTD        = O.db.spiteful_ttd_enabled;
 
-    if ENABLED then
+    local isSpitefulCurrentWeek = U.IsAffixCurrent(123);
+
+    if ENABLED and isSpitefulCurrentWeek then
         Stripes.Updater:Add('MythicPlusSpiteful', OnUpdate);
     else
         Stripes.Updater:Remove('MythicPlusSpiteful');
