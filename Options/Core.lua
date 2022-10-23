@@ -158,9 +158,10 @@ O.Lists = {
         [8]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_SOA'],
         [9]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_TOP'],
         [10] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_TTVM'],
-        [11] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_CN'],
-        [12] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOD'],
-        [13] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOTFO'],
+        [11] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_ULD'],
+        [12] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_CN'],
+        [13] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOD'],
+        [14] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOTFO'],
 
         -- After DF release
         -- [1]  = '|TInterface\\PaperDollInfoFrame\\UI-EquipmentManager-Toggle:12:12:2:0|t ' .. L['OPTIONS_COMMON'],
