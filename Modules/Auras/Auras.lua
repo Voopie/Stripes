@@ -307,86 +307,53 @@ local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
         return;
     end
 
-    local unit = unitframe.data.unit;
-    local isPlayer = unitframe.data.isPersonal;
     local hostileUnit = unitframe.data.reaction and unitframe.data.reaction <= 4;
-    local showDebuffsOnFriendly = SHOW_DEBUFFS_ON_FRIENDLY;
 
-    local auraSettings =
-    {
-        helpful = false;
-        harmful = false;
-        raid = false;
-        includeNameplateOnly = false;
-        showAll = false;
-        hideAll = false;
-    };
+    local filter;
+    local showAll = false;
 
-    if isPlayer then
-        auraSettings.helpful = true;
-        auraSettings.includeNameplateOnly = true;
+    if unitframe.data.isPersonal then
+        filter = 'HELPFUL|INCLUDE_NAME_PLATE_ONLY';
     else
         if hostileUnit then
             -- Reaction 4 is neutral and less than 4 becomes increasingly more hostile
-            auraSettings.harmful = true;
-            auraSettings.includeNameplateOnly = true;
+            filter = 'HARMFUL|INCLUDE_NAME_PLATE_ONLY';
         else
-            if (showDebuffsOnFriendly) then
-                -- dispellable debuffs
-                auraSettings.harmful = true;
-                auraSettings.raid = true;
-                auraSettings.showAll = true;
+            if SHOW_DEBUFFS_ON_FRIENDLY then
+                -- Dispellable debuffs
+                filter = 'HARMFUL|RAID';
+                showAll = true;
             else
-                auraSettings.hideAll = true;
+                filter = 'NONE';
             end
         end
     end
 
-    unitframe.BuffFrame:UpdateBuffs(unit, unitAuraUpdateInfo, auraSettings);
+    unitframe.BuffFrame:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo, filter, showAll);
 end
 
-local function UpdateBuffs(self, unit, unitAuraUpdateInfo, auraSettings)
-    if not unit or not self.isActive or auraSettings.hideAll then
+local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
+    if not unit or not self.isActive or filter == 'NONE' then
         self.buffPool:ReleaseAll();
         return;
     end
 
     local isSelf = self:GetParent().data.isPersonal;
 
-    local filters = {};
-
-    if auraSettings.helpful then
-        table.insert(filters, AuraUtil.AuraFilters.Helpful);
-    end
-
-    if auraSettings.harmful then
-        table.insert(filters, AuraUtil.AuraFilters.Harmful);
-    end
-
-    if auraSettings.raid then
-        table.insert(filters, AuraUtil.AuraFilters.Raid);
-    end
-
-    if auraSettings.includeNameplateOnly then
-        table.insert(filters, AuraUtil.AuraFilters.IncludeNameplateOnly);
-    end
-
-    local filterString = AuraUtil.CreateFilterString(unpack(filters));
-
     local previousFilter = self.filter;
     local previousUnit   = self.unit;
 
-    self.unit = unit;
-    self.filter = filterString;
+    self.unit   = unit;
+    self.filter = filter;
 
     local aurasChanged = false;
-    if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filterString ~= previousFilter then
-        self:ParseAllAuras(auraSettings.showAll);
+    if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filter ~= previousFilter then
+        self:ParseAllAuras(showAll);
         aurasChanged = true;
     else
         if unitAuraUpdateInfo.addedAuras ~= nil then
             for _, aura in ipairs(unitAuraUpdateInfo.addedAuras) do
-                if FilterShouldShowBuff(self, aura, auraSettings.showAll, isSelf) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filterString) then
+                if FilterShouldShowBuff(self, aura, showAll, isSelf) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filter) then
                     self.auras[aura.auraInstanceID] = aura;
                     aurasChanged = true;
                 end
