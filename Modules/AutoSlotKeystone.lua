@@ -1,9 +1,9 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('AutoSlotKeystone');
 
-local GetContainerNumSlots = C_Container and C_Container.GetContainerNumSlots or GetContainerNumSlots;
-local GetContainerItemInfo = C_Container and C_Container.GetContainerNumSlots or GetContainerItemInfo;
-local PickupContainerItem  = C_Container and C_Container.PickupContainerItem  or PickupContainerItem;
+local GetContainerNumSlots = GetContainerNumSlots or C_Container.GetContainerNumSlots;
+local GetContainerItemInfo = GetContainerItemInfo or C_Container.GetContainerNumSlots;
+local PickupContainerItem  = PickupContainerItem  or C_Container.PickupContainerItem;
 
 function Module:Slot()
     if not O.db.mythic_plus_auto_slot_keystone then
