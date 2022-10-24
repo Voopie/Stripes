@@ -9,11 +9,13 @@ local Module = S:NewNameplateModule('QuestIndicator');
 local select, pairs, tonumber, math_ceil, math_floor, string_format, string_match, table_wipe = select, pairs, tonumber, math.ceil, math.floor, string.format, string.match, wipe;
 
 -- WoW API
-local C_Scenario_GetInfo, C_TaskQuest_GetQuestProgressBarInfo, C_QuestLog_GetQuestObjectives, C_QuestLog_GetQuestIDForLogIndex = C_Scenario.GetInfo, C_TaskQuest.GetQuestProgressBarInfo, C_QuestLog.GetQuestObjectives, C_QuestLog.GetQuestIDForLogIndex;
+local C_TaskQuest_GetQuestProgressBarInfo, C_QuestLog_GetQuestObjectives, C_QuestLog_GetQuestIDForLogIndex = C_TaskQuest.GetQuestProgressBarInfo, C_QuestLog.GetQuestObjectives, C_QuestLog.GetQuestIDForLogIndex;
 local C_QuestLog_GetNumQuestLogEntries, C_QuestLog_GetInfo, C_QuestLog_IsQuestTask, C_TaskQuest_GetQuestInfoByQuestID = C_QuestLog.GetNumQuestLogEntries, C_QuestLog.GetInfo, C_QuestLog.IsQuestTask, C_TaskQuest.GetQuestInfoByQuestID;
 
 -- Nameplates
 local NP = S.NamePlates;
+
+local PlayerState = D.Player.State;
 
 -- Local Config
 local ENABLED, POSITION;
@@ -94,7 +96,7 @@ end
 local function Update(unitframe, unit)
     unit = unit or unitframe.data.unit;
 
-    if not ENABLED or not unit or unitframe.data.isPersonal or (select(10, C_Scenario_GetInfo()) == LE_SCENARIO_TYPE_CHALLENGE_MODE) then
+    if not ENABLED or not unit or unitframe.data.isPersonal or not PlayerState.inChallenge then
         unitframe.QuestIndicator:Hide();
         return;
     end

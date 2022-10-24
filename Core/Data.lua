@@ -499,7 +499,8 @@ function Data:PLAYER_ENTERING_WORLD()
         end
 
         if raidDifficultyIDs[difficulty] then
-            D.Player.State.inRaid = true;
+            D.Player.State.inChallenge = true;
+            D.Player.State.inRaid      = true;
         end
 
         D.Player.State.inPvPInstance = (instanceType == 'pvp' or instanceType == 'arena') and true or false;
