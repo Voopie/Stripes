@@ -114,8 +114,4 @@ end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-
-    if ENABLED then
-        self:Enable();
-    end
 end
