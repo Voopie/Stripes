@@ -16,9 +16,9 @@ local ENABLED, SHOW_UNINTERRUPTIBLE, MODIFIER;
 local modifiers = O.Lists.hide_non_casting_modifiers;
 local visibilityState = true;
 
-local function RecalculateVisibilityState(unitframe)
+local function UpdateVisibility(unitframe)
     if visibilityState then
-        unitframe:SetShown(true);
+        unitframe:Show();
         return;
     end
 
@@ -30,40 +30,44 @@ local function RecalculateVisibilityState(unitframe)
 
     if spellId then
         if SHOW_UNINTERRUPTIBLE or not notInterruptible then
-            unitframe:SetShown(true);
+            unitframe:Show();
             return;
         end
     end
 
-    unitframe:SetShown(false);
+    unitframe:Hide();
 end
 
-local function ShowOnlyCastingNamePlates()
+local function ShowOnlyCasting()
     visibilityState = false;
 
     for _, unitframe in pairs(NP) do
-        RecalculateVisibilityState(unitframe);
+        if unitframe.isActive and unitframe.data.unit then
+            UpdateVisibility(unitframe);
+        end
     end
 end
 
-local function ShowAllNamePlates()
+local function ShowAll()
     visibilityState = true;
 
     for _, unitframe in pairs(NP) do
-        RecalculateVisibilityState(unitframe);
+        if unitframe.isActive and unitframe.data.unit then
+            UpdateVisibility(unitframe);
+        end
     end
 end
 
 local function CheckCasting(unit)
     for _, unitframe in pairs(NP) do
-        if unitframe.data.unit == unit then
-            RecalculateVisibilityState(unitframe);
+        if unitframe.isActive and unitframe.data.unit == unit then
+            UpdateVisibility(unitframe);
         end
     end
 end
 
 function Module:UnitAdded(unitframe)
-    RecalculateVisibilityState(unitframe);
+    UpdateVisibility(unitframe);
 end
 
 function Module:UpdateLocalConfig()
@@ -81,9 +85,9 @@ end
 function Module:MODIFIER_STATE_CHANGED(key, down)
     if key == modifiers[MODIFIER] then
         if down == 1 then
-            ShowOnlyCastingNamePlates();
+            ShowOnlyCasting();
         else
-            ShowAllNamePlates();
+            ShowAll();
         end
     end
 end
@@ -97,7 +101,7 @@ function Module:Enable()
 
     KeyChecker:SetScript('OnKeyDown', function(_, key)
         if ENABLED and key == 'TAB' then
-            ShowAllNamePlates();
+            ShowAll();
         end
     end);
     KeyChecker:SetPropagateKeyboardInput(true);
@@ -114,8 +118,4 @@ end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-
-    if ENABLED then
-        self:Enable();
-    end
 end

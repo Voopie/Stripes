@@ -9,11 +9,13 @@ local Module = S:NewNameplateModule('QuestIndicator');
 local select, pairs, tonumber, math_ceil, math_floor, string_format, string_match, table_wipe = select, pairs, tonumber, math.ceil, math.floor, string.format, string.match, wipe;
 
 -- WoW API
-local C_Scenario_GetInfo, C_TaskQuest_GetQuestProgressBarInfo, C_QuestLog_GetQuestObjectives, C_QuestLog_GetQuestIDForLogIndex = C_Scenario.GetInfo, C_TaskQuest.GetQuestProgressBarInfo, C_QuestLog.GetQuestObjectives, C_QuestLog.GetQuestIDForLogIndex;
+local C_TaskQuest_GetQuestProgressBarInfo, C_QuestLog_GetQuestObjectives, C_QuestLog_GetQuestIDForLogIndex = C_TaskQuest.GetQuestProgressBarInfo, C_QuestLog.GetQuestObjectives, C_QuestLog.GetQuestIDForLogIndex;
 local C_QuestLog_GetNumQuestLogEntries, C_QuestLog_GetInfo, C_QuestLog_IsQuestTask, C_TaskQuest_GetQuestInfoByQuestID = C_QuestLog.GetNumQuestLogEntries, C_QuestLog.GetInfo, C_QuestLog.IsQuestTask, C_TaskQuest.GetQuestInfoByQuestID;
 
 -- Nameplates
 local NP = S.NamePlates;
+
+local PlayerState = D.Player.State;
 
 -- Local Config
 local ENABLED, POSITION;
@@ -94,8 +96,8 @@ end
 local function Update(unitframe, unit)
     unit = unit or unitframe.data.unit;
 
-    if not ENABLED or not unit or unitframe.data.unitType == 'SELF' or (select(10, C_Scenario_GetInfo()) == LE_SCENARIO_TYPE_CHALLENGE_MODE) then
-        unitframe.QuestIndicator:SetShown(false);
+    if not ENABLED or not unit or unitframe.data.isPersonal or PlayerState.inChallenge then
+        unitframe.QuestIndicator:Hide();
         return;
     end
 
@@ -147,18 +149,18 @@ local function Update(unitframe, unit)
         end
 
         if lootIconShow then
-            unitframe.QuestIndicator.swordIcon:SetShown(false);
-            unitframe.QuestIndicator.lootIcon:SetShown(true);
+            unitframe.QuestIndicator.swordIcon:Hide();
+            unitframe.QuestIndicator.lootIcon:Show();
             unitframe.QuestIndicator.counterText:SetPoint('CENTER', unitframe.QuestIndicator.lootIcon, 'CENTER', 1, -3);
         else
-            unitframe.QuestIndicator.swordIcon:SetShown(true);
-            unitframe.QuestIndicator.lootIcon:SetShown(false);
+            unitframe.QuestIndicator.swordIcon:Show();
+            unitframe.QuestIndicator.lootIcon:Hide();
             unitframe.QuestIndicator.counterText:SetPoint('CENTER', unitframe.QuestIndicator.swordIcon, 'CENTER', -2, -2);
         end
 
-        unitframe.QuestIndicator:SetShown(true);
+        unitframe.QuestIndicator:Show();
     else
-        unitframe.QuestIndicator:SetShown(false);
+        unitframe.QuestIndicator:Hide();
     end
 end
 
@@ -171,7 +173,7 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
     frame:SetFrameStrata('HIGH');
     frame:SetFrameLevel(frame:GetFrameLevel() + 50);
-    frame:SetShown(false);
+    frame:Hide();
 
     frame.swordIcon = frame:CreateTexture(nil, 'BORDER', nil, 0);
 
@@ -190,10 +192,10 @@ local function Create(unitframe)
     frame.lootIcon:SetSize(16, 16);
     frame.lootIcon:SetTexture(S.Media.Icons2.TEXTURE);
     frame.lootIcon:SetTexCoord(unpack(S.Media.Icons2.COORDS.LOOT));
-    frame.lootIcon:SetShown(false);
+    frame.lootIcon:Hide();
 
     frame.counterText = frame:CreateFontString(nil, 'OVERLAY');
-    frame.counterText:SetFont(S.Media.Fonts.SYSTOPIE.BOLD, 8, 'OUTLINE');
+    frame.counterText:SetFont(S.Media.Fonts['Systopie Bold'], 8, 'OUTLINE');
     frame.counterText:SetJustifyH('CENTER');
     frame.counterText:SetShadowOffset(1, -1);
     frame.counterText:SetTextColor(1, 1, 1);

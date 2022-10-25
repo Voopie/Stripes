@@ -77,7 +77,7 @@ O.Lists = {
     },
 
     font_flags = {
-        [1] = 'NONE',
+        [1] = '',
         [2] = 'OUTLINE',
         [3] = 'THICKOUTLINE',
         [4] = 'MONOCHROME',
@@ -147,7 +147,7 @@ O.Lists = {
         [9] = 'TOOLTIP',
     },
 
-    custom_color_npcs = {
+    npcs_groups = {
         [1]  = '|TInterface\\PaperDollInfoFrame\\UI-EquipmentManager-Toggle:12:12:2:0|t ' .. L['OPTIONS_COMMON'],
         [2]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_MISTS'],
         [3]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_NW'],
@@ -158,9 +158,26 @@ O.Lists = {
         [8]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_SOA'],
         [9]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_TOP'],
         [10] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_SL_TTVM'],
-        [11] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_CN'],
-        [12] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOD'],
-        [13] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOTFO'],
+        [11] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_ULD'],
+        [12] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_CN'],
+        [13] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOD'],
+        [14] = S.Media.RAID_ICON_INLINE    .. L['RAID_SL_SOTFO'],
+
+        -- After DF release
+        -- [1]  = '|TInterface\\PaperDollInfoFrame\\UI-EquipmentManager-Toggle:12:12:2:0|t ' .. L['OPTIONS_COMMON'],
+        -- [2]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_ULD'],
+        -- [3]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_RLP'],
+        -- [4]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_ALGA'],
+        -- [5]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_HOI'],
+        -- [6]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_TAV'],
+        -- [7]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_BH'],
+        -- [8]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_TNO'],
+        -- [9]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_NLTH'],
+        -- [10] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_MOP_TOTJS'],
+        -- [11] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_WOD_SBG'],
+        -- [12] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_LEGION_HOV'],
+        -- [13] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_LEGION_COS'],
+        -- [14] = S.Media.RAID_ICON_INLINE    .. L['RAID_DF_VOTI'],
     },
 
     quest_indicator_position = {
@@ -265,7 +282,7 @@ O.Lists = {
     }
 };
 
--- ~587
+-- ~586
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -394,6 +411,7 @@ O.DefaultValues = {
     health_bar_color_class_SHAMAN      = { 0.00, 0.44, 0.87, 1 },
     health_bar_color_class_WARLOCK     = { 0.53, 0.53, 0.93, 1 },
     health_bar_color_class_WARRIOR     = { 0.78, 0.61, 0.43, 1 },
+    health_bar_color_class_EVOKER      = { 0.20, 0.57, 0.49, 1 },
 
     absorb_bar_enabled = true,
     absorb_bar_at_top  = false,
@@ -920,14 +938,11 @@ O.DefaultValues = {
     global_font_flag   = 1, -- NONE
     global_font_shadow = true,
 
-    custom_color_enabled = false,
-    custom_color_data    = {},
-    custom_color_categories_data = {},
-
-    custom_name_enabled = false,
-    custom_name_data    = {},
-
     colors_data = {},
+
+    custom_npc_enabled    = true,
+    custom_npc            = {},
+    custom_npc_categories = {},
 };
 
 O.PROFILE_DEFAULT_ID   = '1';
@@ -1109,8 +1124,112 @@ function Module:Migration_ColorsAndCategories()
     end
 end
 
+function Module:Migration_CustomColorsAndNames()
+    for pId, _ in pairs(StripesDB.profiles) do
+        if StripesDB.profiles[pId].custom_color_data then
+            for npc_id, data in pairs(StripesDB.profiles[pId].custom_color_data) do
+                StripesDB.profiles[pId].custom_npc[npc_id] = {
+                    enabled  = data.enabled,
+
+                    npc_id       = npc_id,
+                    npc_name     = data.npc_name,
+                    npc_new_name = data.npc_new_name or data.npc_name,
+
+                    category_name = data.category_name,
+
+                    color_enabled = data.color_enabled,
+                    color_name    = data.color_name,
+
+                    glow_enabled    = data.glow_enabled,
+                    glow_type       = data.glow_type,
+                    glow_color_name = data.glow_color_name,
+                };
+            end
+
+            StripesDB.profiles[pId].custom_color_enabled = nil;
+            StripesDB.profiles[pId].custom_color_data    = nil;
+        end
+
+        if StripesDB.profiles[pId].custom_color_categories_data then
+            for category_name, _ in pairs(StripesDB.profiles[pId].custom_color_categories_data) do
+                StripesDB.profiles[pId].custom_npc_categories[category_name] = true;
+            end
+
+            StripesDB.profiles[pId].custom_color_categories_data = nil;
+        end
+
+        if StripesDB.profiles[pId].custom_name_data then
+            for npc_id, data in pairs(StripesDB.profiles[pId].custom_name_data) do
+                if StripesDB.profiles[pId].custom_npc[npc_id] then
+                    StripesDB.profiles[pId].custom_npc[npc_id].npc_new_name = data.new_name;
+                else
+                    StripesDB.profiles[pId].custom_npc[npc_id] = {
+                        enabled  = data.enabled,
+
+                        npc_id       = npc_id,
+                        npc_name     = data.npc_name,
+                        npc_new_name = data.new_name or data.npc_name,
+
+                        category_name = O.CATEGORY_ALL_NAME,
+
+                        color_enabled = false,
+                        color_name    = 'Fuchsia',
+
+                        glow_enabled    = false,
+                        glow_type       = 0,
+                        glow_color_name = 'Yellow',
+                    };
+                end
+            end
+
+            StripesDB.profiles[pId].custom_name_enabled = nil;
+            StripesDB.profiles[pId].custom_name_data = nil;
+        end
+    end
+end
+
+do
+    local fontValueOptions = {
+        'name_text_font_value',
+        'health_text_font_value',
+        'level_text_font_value',
+        'absorb_text_font_value',
+        'threat_percentage_font_value',
+        'castbar_timer_font_value',
+        'castbar_text_font_value',
+        'castbar_target_font_value',
+        'mythic_plus_percentage_font_value',
+        'spell_interrupted_icon_countdown_font_value',
+        'spell_interrupted_icon_caster_name_font_value',
+        'auras_cooldown_font_value',
+        'auras_count_font_value',
+        'auras_spellsteal_cooldown_font_value',
+        'auras_spellsteal_count_font_value',
+        'auras_mythicplus_cooldown_font_value',
+        'auras_mythicplus_count_font_value',
+        'auras_important_cooldown_font_value',
+        'auras_important_count_font_value',
+        'auras_important_castername_font_value',
+        'auras_custom_cooldown_font_value',
+        'auras_custom_count_font_value',
+        'global_font_value',
+    };
+
+    function Module:Migration_FontValueOptions()
+        for profileId, _ in pairs(StripesDB.profiles) do
+            for _, fontOptionName in ipairs(fontValueOptions) do
+                if StripesDB.profiles[profileId][fontOptionName] and StripesDB.profiles[profileId][fontOptionName] == 'Avant Garde Gothic Bold ' then
+                    StripesDB.profiles[profileId][fontOptionName] = 'Avant Garde Gothic Bold';
+                end
+            end
+        end
+    end
+end
+
 function Module:RunMigrations()
     self:Migration_ColorsAndCategories();
+    self:Migration_CustomColorsAndNames();
+    self:Migration_FontValueOptions();
 end
 
 function Module:StartUp()
@@ -1159,6 +1278,12 @@ function Module:StartUp()
     -- migration to 1.24
     if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 24) then
         self:Migration_ColorsAndCategories();
+    end
+
+    -- migration to 1.28 (DF 1st version)
+    if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 28) then
+        self:Migration_CustomColorsAndNames();
+        self:Migration_FontValueOptions();
     end
 
     self:CleanUp();

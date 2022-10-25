@@ -95,15 +95,15 @@ do
 end
 
 local function UpdateElementsVisibility()
-    panel.EditActiveProfileName:SetShown(true);
+    panel.EditActiveProfileName:Show();
 
-    panel.EditNameEditBox:SetShown(false);
+    panel.EditNameEditBox:Hide();
     panel.EditNameEditBox:ClearFocus();
 
-    panel.ActiveProfileValue:SetShown(true);
+    panel.ActiveProfileValue:Show();
     panel.ActiveProfileValue:SetText(O.activeProfileName);
 
-    panel.SaveProfileName:SetShown(false);
+    panel.SaveProfileName:Hide();
 end
 
 local function EditActiveProfileName(profileId, newProfileName)
@@ -188,6 +188,7 @@ local function CreateDefaultProfile(name)
     panel.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
 
     O.UpdatePanelAll();
+
     S:GetNameplateModule('Handler'):CVarsUpdate();
     S:GetNameplateModule('Handler'):UpdateAll();
 
@@ -215,15 +216,15 @@ local function ImportProfile(name, data)
     panel.ActiveProfileValue:SetText(O.activeProfileName);
     panel.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
 
+    Options:RunMigrations();
+    Options:CleanUp();
+
     O.UpdatePanelAll();
 
     S:GetNameplateModule('Handler'):CVarsUpdate();
     S:GetNameplateModule('Handler'):UpdateAll();
 
     O.frame.TopBar.CurrentProfileName:SetText(O.activeProfileName);
-
-    Options:RunMigrations();
-    Options:CleanUp();
 
     collectgarbage('collect');
 end
@@ -331,7 +332,7 @@ panel.ImportExportFrame:SetFrameLevel(O.frame:GetFrameLevel() + 20);
 panel.ImportExportFrame:EnableMouse(true);
 panel.ImportExportFrame:SetBackdrop({ bgFile = 'Interface\\ChatFrame\\ChatFrameBackground' });
 panel.ImportExportFrame:SetBackdropColor(0.1, 0.1, 0.1, 1);
-panel.ImportExportFrame:SetShown(false);
+panel.ImportExportFrame:Hide();
 
 panel.ImportExportFrame.editBox = CreateFrame('EditBox', nil, panel.ImportExportFrame);
 panel.ImportExportFrame.editBox:SetFrameLevel(panel.ImportExportFrame:GetFrameLevel() + 20);
@@ -355,10 +356,10 @@ panel.ImportExportFrame.okButton:SetPosition('BOTTOMLEFT', panel.ImportExportFra
 panel.ImportExportFrame.CloseButton = E.CreateButton(panel.ImportExportFrame);
 panel.ImportExportFrame.CloseButton:SetPosition('BOTTOMRIGHT', panel.ImportExportFrame, 'BOTTOMRIGHT', 0, 0);
 panel.ImportExportFrame.CloseButton:SetLabel(L['OPTIONS_CLOSE']);
-panel.ImportExportFrame.CloseButton:SetShown(false);
+panel.ImportExportFrame.CloseButton:Hide();
 panel.ImportExportFrame.CloseButton:SetScript('OnClick', function()
     panel.ImportExportFrame.editBox:SetText('');
-    panel.ImportExportFrame:SetShown(false);
+    panel.ImportExportFrame:Hide();
 end);
 
 panel.Load = function(self)
@@ -380,7 +381,7 @@ panel.Load = function(self)
     self.EditNameEditBox:SetFont(self.ActiveProfileValue:GetFont());
     self.EditNameEditBox:SetText(O.activeProfileName);
     self.EditNameEditBox:SetMaxLetters(MAX_LETTERS);
-    self.EditNameEditBox:SetShown(false);
+    self.EditNameEditBox:Hide();
     self.EditNameEditBox.useLastValue = false;
     self.EditNameEditBox.profileId = O.activeProfileId;
     self.EditNameEditBox.Callback = function(self)
@@ -409,14 +410,14 @@ panel.Load = function(self)
     E.CreateTooltip(self.EditActiveProfileName, L['RENAME']);
     self.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
     self.EditActiveProfileName:SetScript('OnClick', function()
-        panel.EditActiveProfileName:SetShown(false);
+        panel.EditActiveProfileName:Hide();
 
-        panel.ActiveProfileValue:SetShown(false);
-        panel.SaveProfileName:SetShown(true);
+        panel.ActiveProfileValue:Hide();
+        panel.SaveProfileName:Show();
 
         panel.EditNameEditBox:SetText(O.activeProfileName);
         panel.EditNameEditBox.profileId = O.activeProfileId;
-        panel.EditNameEditBox:SetShown(true);
+        panel.EditNameEditBox:Show();
         panel.EditNameEditBox:SetFocus();
         panel.EditNameEditBox:SetCursorPosition(0);
     end);
@@ -430,7 +431,7 @@ panel.Load = function(self)
     self.SaveProfileName:SetHighlightTexture(S.Media.Icons.TEXTURE, 'BLEND');
     self.SaveProfileName:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.CHECKMARK_WHITE));
     self.SaveProfileName:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
-    self.SaveProfileName:SetShown(false);
+    self.SaveProfileName:Hide();
     E.CreateTooltip(self.SaveProfileName, L['SAVE']);
     self.SaveProfileName:SetScript('OnClick', function()
         EditActiveProfileName(panel.EditNameEditBox.profileId, panel.EditNameEditBox:GetText());
@@ -474,7 +475,7 @@ panel.Load = function(self)
     self.CopyFromActiveButton:SetHighlightColor('10b095');
     self.CopyFromActiveButton:SetScript('OnClick', function()
         CopyFromActive(panel.CreateNewProfileEditBox:GetText());
-        panel.CreateNewProfileEditBox.Instruction:SetShown(true);
+        panel.CreateNewProfileEditBox.Instruction:Show();
     end);
 
     self.CreateDefaultProfileButton = E.CreateButton(self);
@@ -483,7 +484,7 @@ panel.Load = function(self)
     self.CreateDefaultProfileButton:SetHighlightColor('62bd35');
     self.CreateDefaultProfileButton:SetScript('OnClick', function()
         CreateDefaultProfile(panel.CreateNewProfileEditBox:GetText());
-        panel.CreateNewProfileEditBox.Instruction:SetShown(true);
+        panel.CreateNewProfileEditBox.Instruction:Show();
     end);
 
     Delimiter = E.CreateDelimiter(self);
@@ -500,7 +501,7 @@ panel.Load = function(self)
         panel.ImportExportFrame.okButton:SetScript('OnClick', function()
             local importString = panel.ImportExportFrame.editBox:GetText();
             if not importString or importString == '' then
-                panel.ImportExportFrame:SetShown(false);
+                panel.ImportExportFrame:Hide();
                 return;
             end
 
@@ -527,14 +528,14 @@ panel.Load = function(self)
                 else
                     ImportProfile(importTable.profileName, importTable);
 
-                    panel.ImportExportFrame:SetShown(false);
+                    panel.ImportExportFrame:Hide();
                 end
             end
         end);
 
-        panel.ImportExportFrame.CloseButton:SetShown(true);
+        panel.ImportExportFrame.CloseButton:Show();
         panel.ImportExportFrame.okButton:SetLabel(L['OPTIONS_PROFILES_IMPORT_BUTTON_LABEL']);
-        panel.ImportExportFrame:SetShown(true);
+        panel.ImportExportFrame:Show();
     end);
 
     self.ExportProfileButton = E.CreateButton(self);
@@ -544,7 +545,7 @@ panel.Load = function(self)
     self.ExportProfileButton:SetScript('OnClick', function()
         panel.ImportExportFrame.okButton:SetScript('OnClick', function()
             panel.ImportExportFrame.editBox:SetText('');
-            panel.ImportExportFrame:SetShown(false);
+            panel.ImportExportFrame:Hide();
         end);
 
         local exportTable = LibSerialize:Serialize(StripesDB.profiles[O.activeProfileId]);
@@ -554,9 +555,9 @@ panel.Load = function(self)
         panel.ImportExportFrame.editBox:SetText(printable_compressed);
         panel.ImportExportFrame.editBox:HighlightText(0,-1)
 
-        panel.ImportExportFrame.CloseButton:SetShown(true);
+        panel.ImportExportFrame.CloseButton:Show();
         panel.ImportExportFrame.okButton:SetLabel(L['OPTIONS_PROFILES_EXPORT_COPIED']);
-        panel.ImportExportFrame:SetShown(true);
+        panel.ImportExportFrame:Show();
     end);
 
 

@@ -25,7 +25,7 @@ local function CreateButton(button)
     button.Icon:SetTexture(S.Media.Icons.TEXTURE);
     button.Icon:SetTexCoord(unpack(S.Media.Icons.COORDS.NEW_WINDOW_WHITE));
     button.Icon:SetVertexColor(0.75, 0.75, 0.75);
-    button.Icon:SetShown(false);
+    button.Icon:Hide();
 
     button.BottomLine = Mixin(button:CreateTexture(nil, 'ARTWORK'), E.PixelPerfectMixin);
     button.BottomLine:SetPosition('TOPLEFT', button, 'BOTTOMLEFT', 0, 0);
@@ -52,7 +52,7 @@ local function CreateButton(button)
         self.Text:SetFontObject('StripesOptionsTabHighlightFont');
         self.Text:SetPosition('RIGHT', self.Icon, 'LEFT', 0, 0);
 
-        self.Icon:SetShown(true);
+        self.Icon:Show();
         self.Icon:SetVertexColor(1, 0.4, 0.4);
 
         self.BottomLine:SetVertexColor(1, 0.4, 0.4);
@@ -70,7 +70,7 @@ local function CreateButton(button)
         self.Text:SetFontObject('StripesOptionsTabGreyedFont');
         self.Text:SetPosition('RIGHT', self, 'RIGHT', 0, 0);
 
-        self.Icon:SetShown(false);
+        self.Icon:Hide();
         self.Icon:SetVertexColor(0.75, 0.75, 0.75);
 
         self.BottomLine:SetVertexColor(0.75, 0.75, 0.75);
@@ -139,7 +139,7 @@ panel.UpdateButtons = function()
 
             UpdateButton(button);
 
-            button:SetShown(true);
+            button:Show();
         end
     end
 
@@ -154,7 +154,7 @@ panel.Load = function(self)
     self.FreqUsedOptionsTip = Mixin(self:CreateFontString(nil, 'ARTWORK'), E.PixelPerfectMixin);
     self.FreqUsedOptionsTip:SetPosition('TOPLEFT', self, 'TOPLEFT', 10, 20);
     self.FreqUsedOptionsTip:SetPosition('BOTTOMRIGHT', self, 'BOTTOMRIGHT', -10, 0);
-    self.FreqUsedOptionsTip:SetFont(S.Media.Fonts.BIGNOODLETOO.OBLIQUE, 36, 'OUTLINE');
+    self.FreqUsedOptionsTip:SetFont(S.Media.Fonts['BigNoodleToo Oblique'], 36, 'OUTLINE');
     self.FreqUsedOptionsTip:SetJustifyH('CENTER');
     self.FreqUsedOptionsTip:SetTextColor(0.8, 0.8, 0.8);
     self.FreqUsedOptionsTip:SetText(L['OPTIONS_HOME_FREQUENTLY_USED_OPTIONS_TIP']);
@@ -168,25 +168,25 @@ panel.Load = function(self)
     self.EXmarkButton:SetHighlightTexture(S.Media.Icons64.TEXTURE, 'BLEND');
     self.EXmarkButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons64.COORDS.EXMARK_WHITE));
     self.EXmarkButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
-    self.EXmarkButton:SetShown(false);
+    self.EXmarkButton:Hide();
     self.EXmarkButton:SetScript('OnEnter', function(self)
-        self.Text:SetShown(true);
+        self.Text:Show();
     end);
     self.EXmarkButton:SetScript('OnLeave', function(self)
-        self.Text:SetShown(false);
+        self.Text:Hide();
     end);
 
     self.EXmarkButton.Text = Mixin(self.EXmarkButton:CreateFontString(nil, 'ARTWORK'), E.PixelPerfectMixin);
     self.EXmarkButton.Text:SetPosition('LEFT', self.EXmarkButton, 'RIGHT', 8, 0);
-    self.EXmarkButton.Text:SetFont(S.Media.Fonts.SYSTOPIE.SEMIBOLDITALIC, 12, 'OUTLINE');
+    self.EXmarkButton.Text:SetFont(S.Media.Fonts['Systopie Semi Bold Italic'], 12, 'OUTLINE');
     self.EXmarkButton.Text:SetTextColor(0.85, 0.85, 0.85);
     self.EXmarkButton.Text:SetText(L['OPTIONS_HOME_DELETE_TIP']);
-    self.EXmarkButton.Text:SetShown(false);
+    self.EXmarkButton.Text:Hide();
 
     self.ResetButton = E.CreateButton(self);
     self.ResetButton:SetPosition('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 0, 0);
     self.ResetButton:SetLabel(L['OPTIONS_RESET']);
-    self.ResetButton:SetShown(false);
+    self.ResetButton:Hide();
     self.ResetButton:SetScript('OnClick', function()
         wipe(StripesDB.freqUsed);
         panel.UpdateButtons();

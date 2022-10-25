@@ -147,7 +147,7 @@ local function Create(unitframe)
 
     LCG_PixelGlow_Start(frame.glow, GLOW_COLOR, 8, nil, 8, nil, 1, 1, nil, LCG_SUFFIX);
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.StealthDetect = frame;
 end
@@ -155,7 +155,7 @@ end
 local function Update(unitframe)
     if ENABLED then
         if NOT_IN_COMBAT and PlayerState.inCombat then
-            unitframe.StealthDetect:SetShown(false);
+            unitframe.StealthDetect:Hide();
         else
             local found = false;
 
@@ -172,13 +172,13 @@ local function Update(unitframe)
             end
         end
     else
-        unitframe.StealthDetect:SetShown(false);
+        unitframe.StealthDetect:Hide();
     end
 end
 
 local function Hide(unitframe)
     if unitframe.StealthDetect then
-        unitframe.StealthDetect:SetShown(false);
+        unitframe.StealthDetect:Hide();
     end
 end
 

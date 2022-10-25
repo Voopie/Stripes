@@ -46,7 +46,7 @@ local function Glow_Hide(unitframe)
 end
 
 local function MouseOnUnit(unitframe)
-    if unitframe and unitframe:IsVisible() and UnitExists('mouseover') then
+    if unitframe and unitframe.data.unit and unitframe:IsVisible() and UnitExists('mouseover') then
         return UnitIsUnit('mouseover', unitframe.data.unit);
     end
 
@@ -72,13 +72,13 @@ local function UpdateTargetSelection(unitframe)
         return;
     end
 
-    if unitframe.data.unitType == 'SELF' then
-        unitframe.TargetIndicator:SetShown(false);
+    if unitframe.data.isPersonal then
+        unitframe.TargetIndicator:Hide();
         return;
     end
 
     if unitframe.data.isTarget then
-        unitframe.TargetIndicator:SetShown(true);
+        unitframe.TargetIndicator:Show();
 
         unitframe.TargetIndicator.left:SetShown(TARGET_INDICATOR_ENABLED);
         unitframe.TargetIndicator.right:SetShown(TARGET_INDICATOR_ENABLED);
@@ -86,7 +86,7 @@ local function UpdateTargetSelection(unitframe)
         unitframe.TargetIndicator.glowUp:SetShown(TARGET_GLOW_ENABLED);
         unitframe.TargetIndicator.glowDown:SetShown(TARGET_GLOW_ENABLED);
     else
-        unitframe.TargetIndicator:SetShown(false);
+        unitframe.TargetIndicator:Hide();
     end
 end
 
@@ -154,7 +154,7 @@ local function UpdateMouseoverUnit()
     end
 
     for _, unitframe in pairs(NP) do
-        if unitframe:IsShown() and not unitframe.data.isTarget and unitframe.data.unitType ~= 'SELF' then
+        if unitframe.isActive and unitframe:IsShown() and not unitframe.data.isTarget and not unitframe.data.isPersonal then
             if MouseOnUnit(unitframe) then
                 Glow_Show(unitframe);
             else
@@ -172,7 +172,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.TargetIndicator then
-        unitframe.TargetIndicator:SetShown(false);
+        unitframe.TargetIndicator:Hide();
     end
 end
 

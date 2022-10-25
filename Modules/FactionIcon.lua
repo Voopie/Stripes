@@ -23,7 +23,7 @@ local function Create(unitframe)
     PixelUtil.SetPoint(frame.icon, 'RIGHT', unitframe.name, 'LEFT', -2, 0);
     PixelUtil.SetSize(frame.icon, 12, 12);
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.FactionIcon = frame;
 end
@@ -31,9 +31,9 @@ end
 local function Update(unitframe)
     if ENABLED and unitframe.data.commonUnitType == 'PLAYER' and ShouldShowName(unitframe) and factionIcons[unitframe.data.factionGroup] then
         unitframe.FactionIcon.icon:SetTexture(factionIcons[unitframe.data.factionGroup]);
-        unitframe.FactionIcon:SetShown(true);
+        unitframe.FactionIcon:Show();
     else
-        unitframe.FactionIcon:SetShown(false);
+        unitframe.FactionIcon:Hide();
     end
 end
 
@@ -44,7 +44,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.FactionIcon then
-        unitframe.FactionIcon:SetShown(false);
+        unitframe.FactionIcon:Hide();
     end
 end
 

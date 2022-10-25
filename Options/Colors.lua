@@ -196,15 +196,15 @@ function Module:UpdateName(editbox, name, newName)
     newName = strtrim(newName);
 
     if not newName or newName == '' or string.lower(newName) == string.lower(L['NO']) then
-        return editbox:SetShown(false);
+        return editbox:Hide();
     end
 
     if not name or not O.db.colors_data[name] then
-        return editbox:SetShown(false);
+        return editbox:Hide();
     end
 
     if O.db.colors_data[newName] then
-        return editbox:SetShown(false);
+        return editbox:Hide();
     end
 
     O.db.colors_data[newName] = U.DeepCopy(O.db.colors_data[name]);
@@ -213,7 +213,7 @@ function Module:UpdateName(editbox, name, newName)
     Module:UpdateAllLists();
     Module:UpdateListScroll();
 
-    editbox:SetShown(false);
+    editbox:Hide();
 end
 
 local List = Mixin(CreateFrame('Frame', nil, O.frame, 'BackdropTemplate'), E.PixelPerfectMixin);
@@ -222,7 +222,7 @@ List:SetPosition('BOTTOMLEFT', O.frame, 'BOTTOMRIGHT', 0, 0);
 List:SetWidth(250);
 List:SetBackdrop(BACKDROP);
 List:SetBackdropColor(0.1, 0.1, 0.1, 1);
-List:SetShown(false);
+List:Hide();
 Module.List = List;
 
 local EditBox = E.CreateEditBox(List);
@@ -298,7 +298,7 @@ local CreateListRow = function(frame)
     frame.EditBox:SetPosition('LEFT', frame.ColorPicker, 'RIGHT', 8, 0);
     frame.EditBox:SetFrameLevel(frame.EditBox:GetFrameLevel() + 10);
     frame.EditBox:SetSize(170, ROW_HEIGHT);
-    frame.EditBox:SetShown(false);
+    frame.EditBox:Hide();
     frame.EditBox:SetScript('OnEnterPressed', function(self)
         local name = self:GetParent().name;
         if not name then
@@ -308,7 +308,7 @@ local CreateListRow = function(frame)
         Module:UpdateName(self, name, self:GetText());
     end);
     frame.EditBox.FocusLostCallback = function(self)
-        self:SetShown(false);
+        self:Hide();
     end
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
@@ -342,7 +342,7 @@ local CreateListRow = function(frame)
     frame.EditButton:SetSize(14, 14);
     frame.EditButton:SetScript('OnClick', function(self)
         self:GetParent().EditBox:SetText(self:GetParent().name);
-        self:GetParent().EditBox:SetShown(true);
+        self:GetParent().EditBox:Show();
         self:GetParent().EditBox:SetFocus();
         self:GetParent().EditBox:SetCursorPosition(0);
     end);
@@ -356,7 +356,7 @@ local CreateListRow = function(frame)
 
     frame:HookScript('OnDoubleClick', function(self)
         self.EditBox:SetText(self.name);
-        self.EditBox:SetShown(true);
+        self.EditBox:Show();
         self.EditBox:SetFocus();
         self.EditBox:SetCursorPosition(0);
     end);
@@ -423,7 +423,7 @@ Module.UpdateListScroll = function()
 
         UpdateListRow(frame);
 
-        frame:SetShown(true);
+        frame:Show();
     end
 
     PixelUtil.SetSize(ListScrollArea.scrollChild, ListScroll:GetWidth(), ListScroll:GetHeight() - (ListScroll:GetHeight() % ROW_HEIGHT));

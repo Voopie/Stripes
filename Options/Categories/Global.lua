@@ -3,7 +3,7 @@ local Module = S:NewModule('Options_Categories_Global');
 
 local LSM = S.Libraries.LSM;
 
-O.frame.Left.Global, O.frame.Right.Global = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_GLOBAL']), 'global', 11);
+O.frame.Left.Global, O.frame.Right.Global = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_GLOBAL']), 'global', 10);
 local button = O.frame.Left.Global;
 local panel = O.frame.Right.Global;
 

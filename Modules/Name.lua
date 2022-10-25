@@ -33,7 +33,7 @@ local NAME_WITH_TITLE_ENABLED, NAME_WITH_TITLE_UNIT_TYPE, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
 local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
-local CUSTOM_NAME_ENABLED;
+local CUSTOM_NPC_ENABLED;
 local CLASSIFICATION_INDICATOR_ENABLED, CLASSIFICATION_INDICATOR_STAR, CLASSIFICATION_INDICATOR_SIZE;
 local CLASSIFICATION_INDICATOR_POINT, CLASSIFICATION_INDICATOR_RELATIVE_POINT, CLASSIFICATION_INDICATOR_OFFSET_X, CLASSIFICATION_INDICATOR_OFFSET_Y;
 local FIRST_MODE;
@@ -241,8 +241,8 @@ local function GetCuttedName(name)
 end
 
 local function GetCustomName(npcId)
-    if npcId and O.db.custom_name_data[npcId] then
-        return O.db.custom_name_data[npcId].new_name;
+    if npcId and O.db.custom_npc[npcId] then
+        return O.db.custom_npc[npcId].enabled and O.db.custom_npc[npcId].npc_new_name;
     end
 end
 
@@ -250,7 +250,7 @@ local FIRST_MODE_CACHE = {};
 
 local function UpdateName(unitframe)
     if unitframe.data.commonUnitType == 'NPC' then
-        local customName = CUSTOM_NAME_ENABLED and GetCustomName(unitframe.data.npcId);
+        local customName = CUSTOM_NPC_ENABLED and GetCustomName(unitframe.data.npcId);
 
         -- I don't like this Leaning Tower of Pisa...
         if customName then
@@ -506,7 +506,7 @@ local function UpdateRaidTargetIcon(unitframe)
 end
 
 local function NameOnly_UpdateHealthBar(unitframe)
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         return;
     end
 
@@ -515,8 +515,8 @@ local function NameOnly_UpdateHealthBar(unitframe)
     if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
         PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.name, 'TOP', 0, 8);
 
-        unitframe.healthBar:SetShown(false);
-        unitframe.classificationIndicator:SetShown(false);
+        unitframe.healthBar:Hide();
+        unitframe.classificationIndicator:Hide();
     else
         UpdateRaidTargetIconPosition[RAID_TARGET_ICON_POSITION](unitframe);
 
@@ -571,7 +571,7 @@ local function NameOnly_CreateGuildName(unitframe)
     frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesGuildNameFont');
     PixelUtil.SetPoint(frame.text, 'TOP', unitframe.name, 'BOTTOM', 0, -1);
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.GuildName = frame;
 end
@@ -601,13 +601,13 @@ local function NameOnly_UpdateGuildName(unitframe)
                 unitframe.GuildName.text:SetTextColor(NAME_ONLY_GUILD_NAME_COLOR[1], NAME_ONLY_GUILD_NAME_COLOR[2], NAME_ONLY_GUILD_NAME_COLOR[3], NAME_ONLY_GUILD_NAME_COLOR[4]);
                 unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
             else
-                unitframe.GuildName:SetShown(false);
+                unitframe.GuildName:Hide();
             end
         else
-            unitframe.GuildName:SetShown(false);
+            unitframe.GuildName:Hide();
         end
     else
-        unitframe.GuildName:SetShown(false);
+        unitframe.GuildName:Hide();
     end
 end
 
@@ -692,7 +692,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.GuildName then
-        unitframe.GuildName:SetShown(false);
+        unitframe.GuildName:Hide();
     end
 end
 
@@ -718,7 +718,7 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    CUSTOM_NAME_ENABLED = O.db.custom_name_enabled;
+    CUSTOM_NPC_ENABLED = O.db.custom_npc_enabled;
 
     POSITION               = O.db.name_text_position;
     POSITION_V             = O.db.name_text_position_v;

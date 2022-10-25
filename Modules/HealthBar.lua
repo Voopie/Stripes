@@ -52,7 +52,6 @@ local petTankColor = { 0.00, 0.44, 1.00, 1 };
 local playerPetTankColor = { 0.00, 0.44, 1.00, 1 };
 
 local PLAYER_IS_TANK = false;
-local PLAYER_UNIT, PET_UNIT = 'player', 'pet';
 
 local RAID_TARGET_COLORS = {
     [1] = {    1,    1,  0.2, 1 }, -- YELLOW (STAR)
@@ -113,7 +112,7 @@ local function UpdateHealthColor(frame)
             elseif frame.optionTable.colorHealthBySelection then
                 if frame.optionTable.considerSelectionInCombatAsHostile and CompactUnitFrame_IsOnThreatListWithPlayer(frame.displayedUnit) then
                     r, g, b, a = DB.HPBAR_COLOR_ENEMY_NPC[1], DB.HPBAR_COLOR_ENEMY_NPC[2], DB.HPBAR_COLOR_ENEMY_NPC[3], DB.HPBAR_COLOR_ENEMY_NPC[4];
-                elseif frame.data.isPlayer and UnitIsFriend(PLAYER_UNIT, frame.displayedUnit) then
+                elseif frame.data.isPlayer and UnitIsFriend('player', frame.displayedUnit) then
                     r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_PLAYER[1], DB.HPBAR_COLOR_FRIENDLY_PLAYER[2], DB.HPBAR_COLOR_FRIENDLY_PLAYER[3], DB.HPBAR_COLOR_FRIENDLY_PLAYER[4];
                 else
                     local selectionType = UnitSelectionType(frame.displayedUnit, frame.optionTable.colorHealthWithExtendedColors);
@@ -131,7 +130,7 @@ local function UpdateHealthColor(frame)
                         end
                     end
                 end
-            elseif UnitIsFriend(PLAYER_UNIT, frame.displayedUnit) then
+            elseif UnitIsFriend('player', frame.displayedUnit) then
                 r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_NPC[1], DB.HPBAR_COLOR_FRIENDLY_NPC[2], DB.HPBAR_COLOR_FRIENDLY_NPC[3], DB.HPBAR_COLOR_FRIENDLY_NPC[4];
             else
                 r, g, b, a = DB.HPBAR_COLOR_ENEMY_NPC[1], DB.HPBAR_COLOR_ENEMY_NPC[2], DB.HPBAR_COLOR_ENEMY_NPC[3], DB.HPBAR_COLOR_ENEMY_NPC[4];
@@ -181,9 +180,11 @@ local function UpdateCustomHealthBarColor(unitframe)
         LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
         LCG_ButtonGlow_Stop(unitframe.healthBar);
 
-        if DB.CUSTOM_HP_ENABLED and DB.CUSTOM_HP_DATA[unitframe.data.npcId] and DB.CUSTOM_HP_DATA[unitframe.data.npcId].enabled then
-            if DB.CUSTOM_HP_DATA[unitframe.data.npcId].color_enabled then
-                local color = Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].color_name);
+        if DB.CUSTOM_NPC_ENABLED and DB.CUSTOM_NPC_DATA[unitframe.data.npcId] and DB.CUSTOM_NPC_DATA[unitframe.data.npcId].enabled then
+            local custom = DB.CUSTOM_NPC_DATA[unitframe.data.npcId];
+
+            if custom.color_enabled then
+                local color = Colors:Get(custom.color_name);
                 local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
 
                 if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
@@ -195,12 +196,12 @@ local function UpdateCustomHealthBarColor(unitframe)
                 unitframe.healthBar.customColored = nil;
             end
 
-            if DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_enabled then
-                if DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 1 then
-                    LCG_PixelGlow_Start(unitframe.healthBar, Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
-                elseif DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 2 then
-                    LCG_AutoCastGlow_Start(unitframe.healthBar, Colors:Get(DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
-                elseif DB.CUSTOM_HP_DATA[unitframe.data.npcId].glow_type == 3 then
+            if custom.glow_enabled then
+                if custom.glow_type == 1 then
+                    LCG_PixelGlow_Start(unitframe.healthBar, Colors:Get(custom.glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
+                elseif custom.glow_type == 2 then
+                    LCG_AutoCastGlow_Start(unitframe.healthBar, Colors:Get(custom.glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
+                elseif custom.glow_type == 3 then
                     LCG_ButtonGlow_Start(unitframe.healthBar);
                 end
             end
@@ -247,11 +248,11 @@ local function UpdateThreatPercentagePosition(unitframe)
 end
 
 local function Threat_GetThreatSituationStatus(unit)
-    local isTanking, status, threatpct = UnitDetailedThreatSituation(PLAYER_UNIT, unit);
+    local isTanking, status, threatpct = UnitDetailedThreatSituation('player', unit);
     local display = threatpct;
 
     if isTanking then
-        local lead = UnitThreatPercentageOfLead(PLAYER_UNIT, unit);
+        local lead = UnitThreatPercentageOfLead('player', unit);
         display = lead == 0 and 100 or lead;
     end
 
@@ -302,12 +303,12 @@ local function Threat_UpdateColor(unitframe)
 
     if not status or status < 3 then
         local tank_unit = unitframe.data.unit .. 'target';
-        if UnitExists(tank_unit) and not UnitIsUnit(tank_unit, PLAYER_UNIT) then
+        if UnitExists(tank_unit) and not UnitIsUnit(tank_unit, 'player') then
             if (UnitInParty(tank_unit) or UnitInRaid(tank_unit)) and UnitGroupRolesAssigned(tank_unit) == 'TANK' then
                 -- group tank
                 offTank = true;
             elseif not UnitIsPlayer(tank_unit) then
-                if UnitIsUnit(tank_unit, PET_UNIT) then
+                if UnitIsUnit(tank_unit, 'pet') then
                     -- player's pet
                     playerPetTank = true;
                 elseif UnitPlayerControlled(tank_unit) then
@@ -352,12 +353,12 @@ local function Threat_UpdatePercentage(unitframe)
 
         if not status or status < 3 then
             local tank_unit = unitframe.data.unit .. 'target';
-            if UnitExists(tank_unit) and not UnitIsUnit(tank_unit, PLAYER_UNIT) then
+            if UnitExists(tank_unit) and not UnitIsUnit(tank_unit, 'player') then
                 if (UnitInParty(tank_unit) or UnitInRaid(tank_unit)) and UnitGroupRolesAssigned(tank_unit) == 'TANK' then
                     -- group tank
                     offTank = true;
                 elseif not UnitIsPlayer(tank_unit) then
-                    if UnitIsUnit(tank_unit, PET_UNIT) then
+                    if UnitIsUnit(tank_unit, 'pet') then
                         -- player's pet
                         playerPetTank = true;
                     elseif UnitPlayerControlled(tank_unit) then
@@ -522,7 +523,12 @@ end
 ]]
 
 function Module.UpdateHealthBar(unitframe)
-    if not unitframe:IsShown() or unitframe.data.unitType == 'SELF' then
+    if not unitframe:IsShown() or unitframe.data.isPersonal then
+        return;
+    end
+
+    if unitframe.data.isUnimportantUnit then
+        UpdateHealthColor(unitframe);
         return;
     end
 
@@ -559,7 +565,7 @@ end
 
 local function UpdateBorder(unitframe)
     if DB.BORDER_HIDE then
-        if unitframe.data.unitType == 'SELF' then
+        if unitframe.data.isPersonal then
             unitframe.healthBar.border:SetVertexColor(0, 0, 0);
             unitframe.healthBar.border:Show();
         else
@@ -576,7 +582,7 @@ local function UpdateBorder(unitframe)
         return;
     end
 
-    if UnitIsUnit(unitframe.data.unit, 'target') then
+    if unitframe.data.isTarget then
         unitframe.healthBar.border:SetVertexColor(DB.BORDER_SELECTED_COLOR[1], DB.BORDER_SELECTED_COLOR[2], DB.BORDER_SELECTED_COLOR[3], DB.BORDER_SELECTED_COLOR[4]);
         return;
     end
@@ -587,7 +593,7 @@ end
 local function UpdateBorderSizes(unitframe)
     local borderSize, minPixels = DB.BORDER_SIZE, DB.BORDER_SIZE - 0.5;
 
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         borderSize, minPixels = 1, 2;
     end
 
@@ -609,7 +615,7 @@ local function UpdateBorderSizes(unitframe)
         PixelUtil.SetPoint(unitframe.healthBar.border.Top, 'BOTTOMRIGHT', unitframe.healthBar.border, 'TOPRIGHT', 0, 0);
     end
 
-    if unitframe.data.unitType == 'SELF' and unitframe.powerBar and unitframe.powerBar:IsShown() then
+    if unitframe.data.isPersonal and unitframe.powerBar and unitframe.powerBar:IsShown() then
         PixelUtil.SetWidth(unitframe.powerBar.border.Left, borderSize, minPixels);
         PixelUtil.SetPoint(unitframe.powerBar.border.Left, 'TOPRIGHT', unitframe.powerBar.border, 'TOPLEFT', 0, borderSize, 0, minPixels);
         PixelUtil.SetPoint(unitframe.powerBar.border.Left, 'BOTTOMRIGHT', unitframe.powerBar.border, 'BOTTOMLEFT', 0, -borderSize, 0, minPixels);
@@ -631,7 +637,7 @@ local function UpdateBorderSizes(unitframe)
 end
 
 local function UpdateSizes(unitframe)
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         unitframe.healthBar:SetHeight(DB.PLAYER_HEIGHT);
 
         if unitframe.powerBar and unitframe.powerBar:IsShown() then
@@ -658,9 +664,9 @@ local function UpdateSizes(unitframe)
 end
 
 local function UpdateClickableArea(unitframe)
-    if not DB.SHOW_CLICKABLE_AREA or unitframe.data.unitType == 'SELF' then
+    if not DB.SHOW_CLICKABLE_AREA or unitframe.data.isPersonal then
         if unitframe.ClickableArea then
-            unitframe.ClickableArea:SetShown(false);
+            unitframe.ClickableArea:Hide();
         end
 
         return;
@@ -693,7 +699,7 @@ local function UpdateClickableArea(unitframe)
         unitframe.ClickableArea:SetSize(C_NamePlate.GetNamePlateFriendlySize());
     end
 
-    unitframe.ClickableArea:SetShown(true);
+    unitframe.ClickableArea:Show();
 end
 
 local function CreateCustomBorder(unitframe)
@@ -781,7 +787,7 @@ local function UpdateExtraTexture(unitframe)
         return;
     end
 
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         unitframe.healthBar:SetStatusBarTexture(DEFAULT_STATUSBAR_TEXTURE);
         unitframe.healthBar.ExtraTexture:Hide();
     else
@@ -843,7 +849,7 @@ end
 
 function Module:UnitAdded(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
-    unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
+    unitframe.healthBar:SetFrameStrata(unitframe.data.isPersonal and 'HIGH' or 'MEDIUM');
 
     if unitframe.selectionHighlight then
         unitframe.selectionHighlight:SetAlpha(0);
@@ -893,7 +899,7 @@ end
 
 function Module:Update(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
-    unitframe.healthBar:SetFrameStrata(unitframe.data.unitType == 'SELF' and 'HIGH' or 'MEDIUM');
+    unitframe.healthBar:SetFrameStrata(unitframe.data.isPersonal and 'HIGH' or 'MEDIUM');
 
     UpdateThreatPercentagePosition(unitframe);
     UpdateCustomBorder(unitframe);
@@ -917,7 +923,7 @@ function Module:PLAYER_LOGIN()
 end
 
 function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
-    if unit ~= PLAYER_UNIT then
+    if unit ~= 'player' then
         return;
     end
 
@@ -998,8 +1004,8 @@ function Module:UpdateLocalConfig()
     DB.TP_OFFSET_Y       = O.db.threat_percentage_offset_y;
     UpdateFontObject(StripesThreatPercentageFont, O.db.threat_percentage_font_value, O.db.threat_percentage_font_size, O.db.threat_percentage_font_flag, O.db.threat_percentage_font_shadow);
 
-    DB.CUSTOM_HP_ENABLED = O.db.custom_color_enabled;
-    DB.CUSTOM_HP_DATA    = O.db.custom_color_data;
+    DB.CUSTOM_NPC_ENABLED = O.db.custom_npc_enabled;
+    DB.CUSTOM_NPC_DATA    = O.db.custom_npc;
 
     DB.EXECUTION_ENABLED      = O.db.execution_enabled;
     DB.EXECUTION_COLOR        = DB.EXECUTION_COLOR or {};

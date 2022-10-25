@@ -383,6 +383,10 @@ panel.UpdateCustomScroll = function()
         if type(id) == 'string' then
             name = id;
             icon = GetIconFromSpellCache(name);
+
+            if not icon then
+                _, _, icon = GetSpellInfo(name);
+            end
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -410,7 +414,7 @@ panel.UpdateCustomScroll = function()
 
         UpdateCustomAuraRow(frame);
 
-        frame:SetShown(true);
+        frame:Show();
     end
 
     PixelUtil.SetSize(panel.auras_custom_scrollchild, panel.auras_custom_editframe:GetWidth(), panel.auras_custom_editframe:GetHeight() - (panel.auras_custom_editframe:GetHeight() % ROW_HEIGHT + 8));
@@ -560,6 +564,10 @@ panel.UpdateBlackListScroll = function()
         if type(id) == 'string' then
             name = id;
             icon = GetIconFromSpellCache(name);
+
+            if not icon then
+                _, _, icon = GetSpellInfo(name);
+            end
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -584,7 +592,7 @@ panel.UpdateBlackListScroll = function()
 
         UpdateBlackListRow(frame);
 
-        frame:SetShown(true);
+        frame:Show();
     end
 
     PixelUtil.SetSize(panel.BlackListScrollArea.scrollChild, panel.BlackListScroll:GetWidth(), panel.BlackListScroll:GetHeight() - (panel.BlackListScroll:GetHeight() % ROW_HEIGHT));
@@ -734,6 +742,10 @@ panel.UpdateWhiteListScroll = function()
         if type(id) == 'string' then
             name = id;
             icon = GetIconFromSpellCache(name);
+
+            if not icon then
+                _, _, icon = GetSpellInfo(name);
+            end
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -758,7 +770,7 @@ panel.UpdateWhiteListScroll = function()
 
         UpdateWhiteListRow(frame);
 
-        frame:SetShown(true);
+        frame:Show();
     end
 
     PixelUtil.SetSize(panel.WhiteListScrollArea.scrollChild, panel.WhiteListScroll:GetWidth(), panel.WhiteListScroll:GetHeight() - (panel.WhiteListScroll:GetHeight() % ROW_HEIGHT));
@@ -926,6 +938,10 @@ panel.UpdateHPBarColorScroll = function()
         if type(id) == 'string' then
             name = id;
             icon = GetIconFromSpellCache(name);
+
+            if not icon then
+                _, _, icon = GetSpellInfo(name);
+            end
         else
             name, _, icon = GetSpellInfo(id);
         end
@@ -951,7 +967,7 @@ panel.UpdateHPBarColorScroll = function()
 
         UpdateHPBarColorRow(frame);
 
-        frame:SetShown(true);
+        frame:Show();
     end
 
     PixelUtil.SetSize(panel.HPBarColorListScrollArea.scrollChild, panel.HPBarColorListScroll:GetWidth(), panel.HPBarColorListScroll:GetHeight() - (panel.HPBarColorListScroll:GetHeight() % ROW_HEIGHT));
@@ -1055,10 +1071,10 @@ panel.Load = function(self)
             self:UnlockHighlight();
         end
 
-        panel.BlackList:SetShown(false);
+        panel.BlackList:Hide();
         panel.BlackListButton:UnlockHighlight();
 
-        panel.HPBarColorList:SetShown(false);
+        panel.HPBarColorList:Hide();
         panel.HPBarColorListButton:UnlockHighlight();
         panel.HPBarColorListButton:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_OPEN']);
     end);
@@ -1069,7 +1085,7 @@ panel.Load = function(self)
     self.WhiteList:SetWidth(250);
     self.WhiteList:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.WhiteList:SetBackdropColor(0.1, 0.1, 0.1, 1);
-    self.WhiteList:SetShown(false);
+    self.WhiteList:Hide();
 
     self.WhiteListText = E.CreateFontString(self.WhiteList);
     self.WhiteListText:SetPosition('TOP', self.WhiteList, 'TOP', 0, -10);
@@ -1089,20 +1105,25 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
-            saveId = id;
+        if GetSpellInfo(text) then
+            saveId = 0;
+            byName = true;
         else
-            byNameIcon = GetIconFromSpellCache(text);
+            if id and id ~= 0 and GetSpellInfo(id) then
+                saveId = id;
+            else
+                byNameIcon = GetIconFromSpellCache(text);
 
-            if byNameIcon then
-                byName = true;
+                if byNameIcon then
+                    byName = true;
+                end
             end
-        end
 
-        if not saveId and not byName then
-            self:SetText('');
-            self:ClearFocus();
-            return;
+            if not saveId and not byName then
+                self:SetText('');
+                self:ClearFocus();
+                return;
+            end
         end
 
         AddWhiteListAura(tonumber(saveId), byName, text);
@@ -1140,10 +1161,10 @@ panel.Load = function(self)
             self:UnlockHighlight();
         end
 
-        panel.WhiteList:SetShown(false);
+        panel.WhiteList:Hide();
         panel.WhiteListButton:UnlockHighlight();
 
-        panel.HPBarColorList:SetShown(false);
+        panel.HPBarColorList:Hide();
         panel.HPBarColorListButton:UnlockHighlight();
         panel.HPBarColorListButton:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_OPEN']);
     end);
@@ -1154,7 +1175,7 @@ panel.Load = function(self)
     self.BlackList:SetWidth(250);
     self.BlackList:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.BlackList:SetBackdropColor(0.1, 0.1, 0.1, 1);
-    self.BlackList:SetShown(false);
+    self.BlackList:Hide();
 
     self.BlackListText = E.CreateFontString(self.BlackList);
     self.BlackListText:SetPosition('TOP', self.BlackList, 'TOP', 0, -10);
@@ -1174,20 +1195,25 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
-            saveId = id;
+        if GetSpellInfo(text) then
+            saveId = 0;
+            byName = true;
         else
-            byNameIcon = GetIconFromSpellCache(text);
+            if id and id ~= 0 and GetSpellInfo(id) then
+                saveId = id;
+            else
+                byNameIcon = GetIconFromSpellCache(text);
 
-            if byNameIcon then
-                byName = true;
+                if byNameIcon then
+                    byName = true;
+                end
             end
-        end
 
-        if not saveId and not byName then
-            self:SetText('');
-            self:ClearFocus();
-            return;
+            if not saveId and not byName then
+                self:SetText('');
+                self:ClearFocus();
+                return;
+            end
         end
 
         AddBlackListAura(tonumber(saveId), byName, text);
@@ -1310,10 +1336,10 @@ panel.Load = function(self)
             self:SetLabel(L['OPTIONS_AURAS_HPBAR_COLOR_LIST_BUTTON_OPEN']);
         end
 
-        panel.BlackList:SetShown(false);
+        panel.BlackList:Hide();
         panel.BlackListButton:UnlockHighlight();
 
-        panel.WhiteList:SetShown(false);
+        panel.WhiteList:Hide();
         panel.WhiteListButton:UnlockHighlight();
     end);
 
@@ -1323,7 +1349,7 @@ panel.Load = function(self)
     self.HPBarColorList:SetWidth(250);
     self.HPBarColorList:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
     self.HPBarColorList:SetBackdropColor(0.1, 0.1, 0.1, 1);
-    self.HPBarColorList:SetShown(false);
+    self.HPBarColorList:Hide();
 
     self.HPBarColorListText = E.CreateFontString(self.HPBarColorList);
     self.HPBarColorListText:SetPosition('TOP', self.HPBarColorList, 'TOP', 0, -10);
@@ -1343,20 +1369,25 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
-            saveId = id;
+        if GetSpellInfo(text) then
+            saveId = 0;
+            byName = true;
         else
-            byNameIcon = GetIconFromSpellCache(text);
+            if id and id ~= 0 and GetSpellInfo(id) then
+                saveId = id;
+            else
+                byNameIcon = GetIconFromSpellCache(text);
 
-            if byNameIcon then
-                byName = true;
+                if byNameIcon then
+                    byName = true;
+                end
             end
-        end
 
-        if not saveId and not byName then
-            self:SetText('');
-            self:ClearFocus();
-            return;
+            if not saveId and not byName then
+                self:SetText('');
+                self:ClearFocus();
+                return;
+            end
         end
 
         AddHPBarColorAura(tonumber(saveId), byName, text);
@@ -3486,20 +3517,25 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
-            saveId = id;
+        if GetSpellInfo(text) then
+            saveId = 0;
+            byName = true;
         else
-            byNameIcon = GetIconFromSpellCache(text);
+            if id and id ~= 0 and GetSpellInfo(id) then
+                saveId = id;
+            else
+                byNameIcon = GetIconFromSpellCache(text);
 
-            if byNameIcon then
-                byName = true;
+                if byNameIcon then
+                    byName = true;
+                end
             end
-        end
 
-        if not saveId and not byName then
-            self:SetText('');
-            self:ClearFocus();
-            return;
+            if not saveId and not byName then
+                self:SetText('');
+                self:ClearFocus();
+                return;
+            end
         end
 
         AddCustomAura(tonumber(saveId), byName, text);

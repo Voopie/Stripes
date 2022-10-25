@@ -31,13 +31,13 @@ local function Create(unitframe)
     frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesLevelTextFont');
     frame.text:SetTextColor(1, 1, 1);
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.LevelText = frame;
 end
 
 local function Update(unitframe)
-    if unitframe.data.unitType == 'SELF' or not unitframe.data.level or (SHOW_ONLY_ON_TARGET and not unitframe.data.isTarget) then
+    if unitframe.data.isPersonal or not unitframe.data.level or (SHOW_ONLY_ON_TARGET and not unitframe.data.isTarget) then
         unitframe.LevelText.text:SetText('');
         return;
     end
@@ -58,9 +58,9 @@ local function UpdateShow(unitframe)
     end
 
     if HIDE_MAX then
-        unitframe.LevelText:SetShown(ENABLED and not (unitframe.data.level == '??' or unitframe.data.level >= D.MaxLevel) and unitframe.data.unitType ~= 'SELF');
+        unitframe.LevelText:SetShown(ENABLED and not (unitframe.data.level == '??' or unitframe.data.level >= D.MaxLevel) and not unitframe.data.isPersonal);
     else
-        unitframe.LevelText:SetShown(ENABLED and unitframe.data.unitType ~= 'SELF');
+        unitframe.LevelText:SetShown(ENABLED and not unitframe.data.isPersonal);
     end
 end
 
@@ -84,7 +84,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.LevelText then
-        unitframe.LevelText:SetShown(false);
+        unitframe.LevelText:Hide();
     end
 end
 

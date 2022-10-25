@@ -32,8 +32,8 @@ local function TargetChanged(unitframe)
         return;
     end
 
-    if not ENABLED or unitframe.data.isUnimportantUnit or not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.unitType == 'SELF' or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
-        unitframe.TargetName:SetShown(false);
+    if not ENABLED or unitframe.data.isUnimportantUnit or not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.isPersonal or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
+        unitframe.TargetName:Hide();
         return;
     end
 
@@ -62,9 +62,9 @@ local function TargetChanged(unitframe)
             unitframe.TargetName:SetTextColor(GetUnitColor(unitframe.data.unit .. 'target', 2));
         end
 
-        unitframe.TargetName:SetShown(true);
+        unitframe.TargetName:Show();
     else
-        unitframe.TargetName:SetShown(false);
+        unitframe.TargetName:Hide();
     end
 end
 
@@ -90,7 +90,7 @@ local function Create(unitframe)
     PixelUtil.SetPoint(unitframe.TargetName, 'LEFT', unitframe.name, 'RIGHT', 2, 0);
     unitframe.TargetName:SetDrawLayer('OVERLAY', 7);
     unitframe.TargetName:SetTextColor(1, 1, 1, 1);
-    unitframe.TargetName:SetShown(false);
+    unitframe.TargetName:Hide();
 end
 
 local function Update(unitframe)

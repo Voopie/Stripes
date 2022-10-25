@@ -89,7 +89,7 @@ local function Create(unitframe)
     frame.cooldown:HookScript('OnCooldownDone', function(self)
         self:GetParent().expTime = 0;
         self:GetParent().destGUID = nil;
-        self:GetParent():SetShown(false);
+        self:GetParent():Hide();
     end);
 
     frame.casterName = frame:CreateFontString(nil, 'ARTWORK', 'StripesSpellInterruptedCasterFont');
@@ -98,7 +98,7 @@ local function Create(unitframe)
     frame.expTime = 0;
     frame.destGUID = nil;
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.SpellInterrupted = frame;
 end
@@ -122,12 +122,12 @@ local function Update(unitframe)
 
         unitframe.SpellInterrupted:SetShown(unitframe.SpellInterrupted.expTime > GetTime() and unitframe.data.unitGUID == unitframe.SpellInterrupted.destGUID);
     else
-        unitframe.SpellInterrupted:SetShown(false);
+        unitframe.SpellInterrupted:Hide();
     end
 end
 
 local function UpdateByAura(unitframe)
-    if not ENABLED then
+    if not ENABLED or not unitframe.data.unit then
         return;
     end
 
@@ -149,19 +149,19 @@ local function UpdateByAura(unitframe)
 
         unitframe.SpellInterrupted.casterName:SetText(name);
         unitframe.SpellInterrupted.casterName:SetTextColor(GetUnitColor(source, 2));
-        unitframe.SpellInterrupted.casterName:SetShown(true);
+        unitframe.SpellInterrupted.casterName:Show();
     else
-        unitframe.SpellInterrupted.casterName:SetShown(false);
+        unitframe.SpellInterrupted.casterName:Hide();
     end
 
-    unitframe.SpellInterrupted:SetShown(true);
+    unitframe.SpellInterrupted:Show();
 end
 
 local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId)
     if not spellId then
         unitframe.SpellInterrupted.expTime  = 0;
         unitframe.SpellInterrupted.destGUID = nil;
-        unitframe.SpellInterrupted:SetShown(false);
+        unitframe.SpellInterrupted:Hide();
         return;
     end
 
@@ -182,21 +182,21 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
 
             unitframe.SpellInterrupted.casterName:SetText(name);
             unitframe.SpellInterrupted.casterName:SetTextColor(U_GetClassColor(englishClass, 2));
-            unitframe.SpellInterrupted.casterName:SetShown(true);
+            unitframe.SpellInterrupted.casterName:Show();
         elseif U_UnitIsPetByGUID(sourceGUID) then
             name = GetCachedName(sourceName, true, true, false);
 
             unitframe.SpellInterrupted.casterName:SetText(name);
             unitframe.SpellInterrupted.casterName:SetTextColor(U_GetClassColor(sourceName, 2));
-            unitframe.SpellInterrupted.casterName:SetShown(true);
+            unitframe.SpellInterrupted.casterName:Show();
         else
-            unitframe.SpellInterrupted.casterName:SetShown(false);
+            unitframe.SpellInterrupted.casterName:Hide();
         end
     else
-        unitframe.SpellInterrupted.casterName:SetShown(false);
+        unitframe.SpellInterrupted.casterName:Hide();
     end
 
-    unitframe.SpellInterrupted:SetShown(true);
+    unitframe.SpellInterrupted:Show();
 end
 
 function Module:COMBAT_LOG_EVENT_UNFILTERED()
@@ -204,7 +204,7 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
 
     if subEvent == 'SPELL_INTERRUPT' then
         for _, unitframe in pairs(NP) do
-            if unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
+            if unitframe.isActive and unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
                 OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId);
             end
         end
@@ -219,7 +219,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.SpellInterrupted then
-        unitframe.SpellInterrupted:SetShown(false);
+        unitframe.SpellInterrupted:Hide();
     end
 end
 

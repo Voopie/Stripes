@@ -44,7 +44,7 @@ local function Create(unitframe)
     frame.border:SetPoint('BOTTOMRIGHT', frame.icon, 'BOTTOMRIGHT', 1, -1);
     frame.border:SetColorTexture(0.3, 0.3, 0.3);
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.TotemIcon = frame;
 end
@@ -55,7 +55,7 @@ end
 
 local function Hide(unitframe)
     if unitframe.TotemIcon then
-        unitframe.TotemIcon:SetShown(false);
+        unitframe.TotemIcon:Hide();
     end
 end
 

@@ -97,6 +97,13 @@ L['MINIMAP_BUTTON_HIDE'] = 'Скрыть эту кнопку';
 L['MINIMAP_BUTTON_COMMAND_SHOW'] = 'Напишите в чате /stripes minimap, чтобы снова показать кнопку у миникарты';
 L['MINIMAP_ACTIVE_PROFILE'] = 'Активный профиль';
 
+L['DUNGEON_MOP_TOTJS'] = 'Храм Нефритовой Змеи';
+
+L['DUNGEON_WOD_SBG'] = 'Некрополь Призрачной Луны';
+
+L['DUNGEON_LEGION_HOV'] = 'Чертоги Доблести';
+L['DUNGEON_LEGION_COS'] = 'Квартал Звезд';
+
 L['DUNGEON_SL_MISTS'] = 'Туманы Тирна Скитта';
 L['DUNGEON_SL_NW'] = 'Смертельная тризна';
 L['DUNGEON_SL_DOS'] = 'Та Сторона';
@@ -107,9 +114,20 @@ L['DUNGEON_SL_SOA'] = 'Шпили Перерождения';
 L['DUNGEON_SL_TOP'] = 'Театр Боли';
 L['DUNGEON_SL_TTVM'] = 'Тайный рынок Тазавеш';
 
+L['DUNGEON_DF_ULD'] = 'Ульдаман: наследие Тира';
+L['DUNGEON_DF_RLP'] = 'Рубиновые Омуты Жизни';
+L['DUNGEON_DF_ALGA'] = 'Академия Алгет\'ар';
+L['DUNGEON_DF_HOI'] = 'Чертоги Насыщения';
+L['DUNGEON_DF_TAV'] = 'Лазурное Хранилище';
+L['DUNGEON_DF_BH'] = 'Пещера Бурошкуров';
+L['DUNGEON_DF_TNO'] = 'Наступление клана Нокхуд';
+L['DUNGEON_DF_NLTH'] = 'Нелтарий';
+
 L['RAID_SL_CN'] = 'Замок Нафрия';
 L['RAID_SL_SOD'] = 'Святилище Господства';
 L['RAID_SL_SOTFO'] = 'Гробница Предвечных';
+
+L['RAID_DF_VOTI'] = 'Хранилище Воплощений';
 
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C для копирования';
 
@@ -161,8 +179,7 @@ L['OPTIONS_CATEGORY_VISIBILITY'] = 'Видимость';
 L['OPTIONS_CATEGORY_HEALTHBAR'] = 'Полоса здоровья';
 L['OPTIONS_CATEGORY_CASTBAR'] = 'Полоса заклинания';
 L['OPTIONS_CATEGORY_AURAS'] = 'Ауры';
-L['OPTIONS_CATEGORY_CUSTOMCOLOR'] = 'Особый цвет здоровья';
-L['OPTIONS_CATEGORY_CUSTOMNAME'] = 'Особые имена';
+L['OPTIONS_CATEGORY_CUSTOMNPC'] = 'Особые NPC';
 L['OPTIONS_CATEGORY_MYTHIC_PLUS'] = 'Эпохальные ключи';
 L['OPTIONS_CATEGORY_USEFUL'] = 'Полезное';
 L['OPTIONS_CATEGORY_PROFILES'] = 'Профили';
@@ -419,6 +436,8 @@ L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARLOCK'] = 'Чернокнижник';
 L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARLOCK_TOOLTIP'] = 'Цвет для чернокнижника';
 L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARRIOR'] = 'Воин';
 L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARRIOR_TOOLTIP'] = 'Цвет для воина';
+L['OPTIONS_HEALTH_BAR_COLORS_CLASS_EVOKER'] = 'Пробудитель';
+L['OPTIONS_HEALTH_BAR_COLORS_CLASS_EVOKER_TOOLTIP'] = 'Цвет для пробудителя';
 L['OPTIONS_HEALTH_BAR_CLASS_COLORS_RESET_TOOLTIP'] = 'Сбросить классовые цвета на значения по умолчанию';
 L['OPTIONS_THREAT_COLOR_ENABLED'] = 'Цветовая угроза';
 L['OPTIONS_THREAT_COLOR_ENABLED_TOOLTIP'] = 'Менять цвет полосы здоровья в зависимости от количества угрозы';
@@ -1119,23 +1138,17 @@ L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Направление роста
 L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Максимальное количество отображаемых пользовательских аур';
 L['OPTIONS_AURAS_CUSTOM_ADDED_BY_NAME'] = 'по имени';
 
-L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Включить';
-L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Включить особые цвета полосы здоровья';
-L['OPTIONS_CUSTOM_COLOR_EDITBOX_ENTER_ID'] = 'Введите номер NPC';
-L['OPTIONS_CUSTOM_COLOR_ADD_FROM_TARGET'] = 'Из цели';
-L['OPTIONS_CUSTOM_COLOR_ADD_FROM_LIST'] = 'Из списка';
+L['OPTIONS_CUSTOM_NPC_ENABLED'] = 'Включить';
+L['OPTIONS_CUSTOM_NPC_ENABLED_TOOLTIP'] = 'Включить особые настройки для определённых NPC';
+L['OPTIONS_CUSTOM_NPC_EDITBOX_ENTER_ID'] = 'Введите номер NPC';
+L['OPTIONS_CUSTOM_NPC_ADD_FROM_TARGET'] = 'Из цели';
+L['OPTIONS_CUSTOM_NPC_ADD_FROM_LIST'] = 'Из списка';
 
 L['OPTIONS_GLOBAL_FONT_HEADER'] = 'Настройки шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_VALUE_TOOLTIP'] = 'Использовать глобальные настройки шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_SIZE_TOOLTIP'] = 'Использовать глобальные настройки размера шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_FLAG_TOOLTIP'] = 'Использовать глобальные настройки контура шрифта';
 L['OPTIONS_USE_GLOBAL_FONT_SHADOW_TOOLTIP'] = 'Использовать глобальные настройки тени шрифта';
-
-L['OPTIONS_CUSTOM_NAME_ENABLED'] = 'Включить';
-L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP'] = 'Включить особые имена';
-L['OPTIONS_CUSTOM_NAME_EDITBOX_ENTER_ID'] = 'Введите номер NPC';
-L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'Из цели';
-L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'Из списка';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Введите имя и нажмите Enter';
 L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Открыть список цветов';

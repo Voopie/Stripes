@@ -27,7 +27,7 @@ local function Create(unitframe)
     frame.LeftText = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
     frame.RightText = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
 
-    frame:SetShown(false);
+    frame:Hide();
 
     unitframe.HealthText = frame;
 end
@@ -75,7 +75,7 @@ local UpdateHealthTextFormat = {
 };
 
 local function Update(unitframe)
-    if unitframe.data.unitType == 'SELF' or (SHOW_ONLY_ON_TARGET and not unitframe.data.isTarget) or (HIDE_FULL and unitframe.data.healthCurrent == unitframe.data.healthMax) then
+    if unitframe.data.isPersonal or (SHOW_ONLY_ON_TARGET and not unitframe.data.isTarget) or (HIDE_FULL and unitframe.data.healthCurrent == unitframe.data.healthMax) then
         unitframe.HealthText.text:SetText('');
         unitframe.HealthText.LeftText:SetText('');
         unitframe.HealthText.RightText:SetText('');
@@ -90,7 +90,7 @@ local function Update(unitframe)
 end
 
 local function UpdateShow(unitframe)
-    unitframe.HealthText:SetShown((ENABLED and unitframe.data.unitType ~= 'SELF'));
+    unitframe.HealthText:SetShown((ENABLED and not unitframe.data.isPersonal));
 
     unitframe.HealthText.text:SetShown(not IS_DOUBLE);
     unitframe.HealthText.LeftText:SetShown(IS_DOUBLE);
@@ -132,7 +132,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.HealthText then
-        unitframe.HealthText:SetShown(false);
+        unitframe.HealthText:Hide();
     end
 end
 

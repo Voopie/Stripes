@@ -14,7 +14,7 @@ local function UpdatePosition(unitframe)
         return;
     end
 
-    if unitframe.data.unitType == 'SELF' then
+    if unitframe.data.isPersonal then
         if NamePlateDriverFrame.classNamePlatePowerBar then
             NamePlateDriverFrame.classNamePlateMechanicFrame:ClearAllPoints();
             NamePlateDriverFrame.classNamePlateMechanicFrame:SetPoint('TOP', NamePlateDriverFrame.classNamePlatePowerBar, 'BOTTOM', 0, NamePlateDriverFrame.classNamePlateMechanicFrame.paddingOverride or -4);

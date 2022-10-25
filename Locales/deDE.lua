@@ -97,6 +97,13 @@ L['MINIMAP_BUTTON_HIDE'] = 'Verstecke diesen Button';
 L['MINIMAP_BUTTON_COMMAND_SHOW'] = 'Gib den Befehl /stripes minimap ein, um den Minimap Button erneut anzuzeigen';
 L['MINIMAP_ACTIVE_PROFILE'] = 'Aktives Profil';
 
+L['DUNGEON_MOP_TOTJS'] = 'Temple of the Jade Serpent';
+
+L['DUNGEON_WOD_SBG'] = 'Shadowmoon Burial Grounds';
+
+L['DUNGEON_LEGION_HOV'] = 'Halls of Valor';
+L['DUNGEON_LEGION_COS'] = 'Court of Stars';
+
 L['DUNGEON_SL_MISTS'] = 'Die Nebel von Tirna Scithe';
 L['DUNGEON_SL_NW'] = 'Die Nekrotische Schneise';
 L['DUNGEON_SL_DOS'] = 'Die Andre Seite';
@@ -107,9 +114,20 @@ L['DUNGEON_SL_SOA'] = 'Die Spitzen des Aufstiegs';
 L['DUNGEON_SL_TOP'] = 'Theater der Schmerzen';
 L['DUNGEON_SL_TTVM'] = 'Tazavesh, der Verhüllte Markt';
 
+L['DUNGEON_DF_ULD'] = 'Uldaman: Legacy of Tyr';
+L['DUNGEON_DF_RLP'] = 'Ruby Life Pools';
+L['DUNGEON_DF_ALGA'] = 'Algeth\'ar Academy';
+L['DUNGEON_DF_HOI'] = 'Halls of Infusion';
+L['DUNGEON_DF_TAV'] = 'The Azure Vault';
+L['DUNGEON_DF_BH'] = 'Brackenhide Hollow';
+L['DUNGEON_DF_TNO'] = 'The Nokhud Offensive';
+L['DUNGEON_DF_NLTH'] = 'Neltharius';
+
 L['RAID_SL_CN'] = 'Schloss Natharia';
 L['RAID_SL_SOD'] = 'Sanktum der Herrschaft';
 L['RAID_SL_SOTFO'] = 'Mausoleum der Ersten';
+
+L['RAID_DF_VOTI'] = 'Vault of the Incarnates';
 
 L['PSEUDOLINK_TOOLTIP'] = 'Strg+C zum kopieren';
 
@@ -161,8 +179,7 @@ L['OPTIONS_CATEGORY_VISIBILITY'] = 'Sichtbarkeit';
 L['OPTIONS_CATEGORY_HEALTHBAR'] = 'Gesundheitsbalken';
 L['OPTIONS_CATEGORY_CASTBAR'] = 'Zauberbalken';
 L['OPTIONS_CATEGORY_AURAS'] = 'Auren';
-L['OPTIONS_CATEGORY_CUSTOMCOLOR'] = 'HP-Balken anpassen';
-L['OPTIONS_CATEGORY_CUSTOMNAME'] = 'Namen anpassen';
+L['OPTIONS_CATEGORY_CUSTOMNPC'] = 'NPC anpassen';
 L['OPTIONS_CATEGORY_MYTHIC_PLUS'] = 'Mythisch+';
 L['OPTIONS_CATEGORY_USEFUL'] = 'Nützlich';
 L['OPTIONS_CATEGORY_PROFILES'] = 'Profile';
@@ -419,6 +436,8 @@ L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARLOCK'] = 'Hexenmeister';
 L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARLOCK_TOOLTIP'] = 'Hexenmeister Farbe';
 L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARRIOR'] = 'Krieger';
 L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARRIOR_TOOLTIP'] = 'Krieger Farbe';
+L['OPTIONS_HEALTH_BAR_COLORS_CLASS_EVOKER'] = 'Evoker';
+L['OPTIONS_HEALTH_BAR_COLORS_CLASS_EVOKER_TOOLTIP'] = 'Evoker color';
 L['OPTIONS_HEALTH_BAR_CLASS_COLORS_RESET_TOOLTIP'] = 'Klassenfarben auf Standardwerte zurücksetzen';
 L['OPTIONS_THREAT_COLOR_ENABLED'] = 'Farbe der Bedrohung';
 L['OPTIONS_THREAT_COLOR_ENABLED_TOOLTIP'] = 'Farbe des Gesundheitsbalkens in Abhängigkeit vom Ausmaß der Bedrohung ändern';
@@ -1119,23 +1138,17 @@ L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Benutzerdefinierte Auren Wachstum
 L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl von angezeigten benutzerdefinierten Auren';
 L['OPTIONS_AURAS_CUSTOM_ADDED_BY_NAME'] = 'namentlich';
 
-L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Aktivieren';
-L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Farben der Gesundheitsleiste aktivieren';
-L['OPTIONS_CUSTOM_COLOR_EDITBOX_ENTER_ID'] = 'Geben Sie die ID des NPCs ein';
-L['OPTIONS_CUSTOM_COLOR_ADD_FROM_TARGET'] = 'Vom Ziel';
-L['OPTIONS_CUSTOM_COLOR_ADD_FROM_LIST'] = 'Aus Liste';
-
 L['OPTIONS_GLOBAL_FONT_HEADER'] = 'Schrifteinstellungen';
 L['OPTIONS_USE_GLOBAL_FONT_VALUE_TOOLTIP'] = 'Globale Schrifteinstellungen verwenden';
 L['OPTIONS_USE_GLOBAL_FONT_SIZE_TOOLTIP'] = 'Globale Einstellungen für die Schriftgröße verwenden';
 L['OPTIONS_USE_GLOBAL_FONT_FLAG_TOOLTIP'] = 'Globale Einstellungen für den Schriftumriss verwenden';
 L['OPTIONS_USE_GLOBAL_FONT_SHADOW_TOOLTIP'] = 'Globale Einstellungen für Schriftschatten verwenden';
 
-L['OPTIONS_CUSTOM_NAME_ENABLED'] = 'Aktivieren';
-L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Namen einschalten';
-L['OPTIONS_CUSTOM_NAME_EDITBOX_ENTER_ID'] = 'Geben Sie die ID des NPCs ein';
-L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'Vom Ziel';
-L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'Von Liste';
+L['OPTIONS_CUSTOM_NPC_ENABLED'] = 'Aktivieren';
+L['OPTIONS_CUSTOM_NPC_ENABLED_TOOLTIP'] = 'Aktiviere spezielle Einstellungen für bestimmte NPCs';
+L['OPTIONS_CUSTOM_NPC_EDITBOX_ENTER_ID'] = 'Geben Sie die ID des NPCs ein';
+L['OPTIONS_CUSTOM_NPC_ADD_FROM_TARGET'] = 'Vom Ziel';
+L['OPTIONS_CUSTOM_NPC_ADD_FROM_LIST'] = 'Von Liste';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Geben Sie einen Namen ein und drücken Sie die Eingabetaste';
 L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Farbliste öffnen';

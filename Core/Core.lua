@@ -654,6 +654,27 @@ spellCache:SetScript('OnUpdate', function()
     end
 end);
 
+spellCache.blockedSpellNames = {
+    ['dnt']    = true,
+    ['[dnd]']  = true,
+    ['test']   = true,
+    ['unused'] = true,
+    ['reuse']  = true,
+    ['resue']  = true, -- yep...
+    ['[ph]']   = true,
+    ['nyi']    = true,
+    ['loot']   = true,
+    ['boss']   = true,
+};
+
+function spellCache.isBlockedName(name)
+    for blockedName, status in pairs(spellCache.blockedSpellNames) do
+        if status and string_find(name, blockedName, 1, true) then
+            return true;
+        end
+    end
+end
+
 function spellCache.Build()
     if not cache then
         error('spellCache has not been loaded. Call spellCache.Load(...) first.');
@@ -668,20 +689,23 @@ function spellCache.Build()
     spellCacheCoroutine = coroutine.create(function()
         local id, misses = 0, 0;
 
-        while misses < 50000 do
+        while misses < 80000 do
             id = id + 1;
 
             local name, _, icon = GetSpellInfo(id);
             local nameLower = name and string_lower(name);
 
             -- 136243 is the a gear icon, we can ignore those spells
-            -- Also DNT and test
             if icon == 136243 then
                 misses = 0;
-            elseif name and name ~= '' and not (nameLower and (string_find(nameLower, 'dnt') or string_find(nameLower, 'test'))) then
-                cache[name]            = cache[name] or {};
-                cache[name].spells     = cache[name].spells or {};
-                cache[name].spells[id] = icon;
+            elseif name and name ~= '' and icon and nameLower and not spellCache.isBlockedName(nameLower) then
+                cache[name] = cache[name] or {};
+
+                if not cache[name].spells or cache[name].spells == '' then
+                    cache[name].spells = id .. '=' .. icon;
+                else
+                    cache[name].spells = cache[name].spells .. ',' .. id .. '=' .. icon;
+                end
 
                 misses = 0;
             else
@@ -704,14 +728,16 @@ function spellCache.Load(data)
     local _, build = GetBuildInfo();
 
     local num = 0;
+
     for _, _ in pairs(cache) do
         num = num + 1;
     end
 
-    if num < 39000 or metaData.locale ~= locale or metaData.build ~= build then
-        metaData.build        = build;
-        metaData.locale       = locale;
-        metaData.needsRebuild = true;
+    if num < 39000 or metaData.locale ~= locale or metaData.build ~= build or not metaData.spellCacheStrings then
+        metaData.build             = build;
+        metaData.locale            = locale;
+        metaData.spellCacheStrings = true;
+        metaData.needsRebuild      = true;
 
         wipe(cache);
     end
@@ -728,10 +754,10 @@ function AddOn:ADDON_LOADED(addonName)
     StripesDB.minimap_button = StripesDB.minimap_button or { hide = false };
     StripesDB.last_used_hex_color = StripesDB.last_used_hex_color or nil;
 
-    StripesDB.spellCache      = StripesDB.spellCache or {};
-    StripesDB.spellCache.data = StripesDB.spellCache.data or {};
+    StripesSpellDB      = StripesSpellDB or {};
+    StripesSpellDB.data = StripesSpellDB.data or {};
 
-    spellCache.Load(StripesDB.spellCache);
+    spellCache.Load(StripesSpellDB);
     spellCache.Build();
 
     self:ForAllModules('StartUp');

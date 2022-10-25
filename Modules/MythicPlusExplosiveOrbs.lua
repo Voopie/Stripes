@@ -18,9 +18,9 @@ local EXPLOSIVE_TEXTURE = 2175503;
 local OrbsCounter = CreateFrame('Frame', 'Stripes_ExplosiveOrbsCounter', UIParent);
 OrbsCounter:SetPoint('CENTER', 0, -100);
 OrbsCounter:SetSize(44, 44);
-
 OrbsCounter:EnableMouse(true);
 OrbsCounter:SetMovable(true);
+OrbsCounter:SetClampedToScreen(true);
 OrbsCounter:RegisterForDrag('LeftButton');
 OrbsCounter:SetScript('OnDragStart', function(self) if self:IsMovable() then self:StartMoving(); end end);
 OrbsCounter:SetScript('OnDragStop', function(self) self:StopMovingOrSizing(); end);
@@ -39,33 +39,33 @@ OrbsCounter.border:SetPoint('BOTTOMRIGHT', OrbsCounter, 1, -1);
 
 OrbsCounter.count = OrbsCounter:CreateFontString();
 OrbsCounter.count:SetPoint('CENTER', 0, 0);
-OrbsCounter.count:SetFont(S.Media.Fonts.BIGNOODLETOO.OBLIQUE, 26, 'OUTLINE');
+OrbsCounter.count:SetFont(S.Media.Fonts['BigNoodleToo Oblique'], 26, 'OUTLINE');
 OrbsCounter.count:SetTextColor(1, 1, 1);
 OrbsCounter.count:SetShadowOffset(1, -1);
 OrbsCounter.count:SetShadowColor(0, 0, 0);
 
-OrbsCounter:SetShown(false);
+OrbsCounter:Hide();
 
 local counter = 0;
 local function CountOrbs()
     if not COUNTER or not PlayerState.inMythicPlus then
-        OrbsCounter:SetShown(false);
+        OrbsCounter:Hide();
         return;
     end
 
     counter = 0;
 
     for _, unitframe in pairs(NP) do
-        if unitframe:IsShown() and unitframe.data.npcId == EXPLOSIVE_ID then
+        if unitframe.isActive and unitframe:IsShown() and unitframe.data.npcId == EXPLOSIVE_ID then
             counter = counter + 1;
         end
     end
 
     if counter > 0 then
         OrbsCounter.count:SetText(counter);
-        OrbsCounter:SetShown(true);
+        OrbsCounter:Show();
     else
-        OrbsCounter:SetShown(false);
+        OrbsCounter:Hide();
     end
 end
 
@@ -74,9 +74,9 @@ Module.OrbsCounter = OrbsCounter;
 
 local function Update(unitframe)
     if not PlayerState.inMythicPlus then
-        OrbsCounter:SetShown(false);
+        OrbsCounter:Hide();
 
-        unitframe.Explosive:SetShown(false);
+        unitframe.Explosive:Hide();
 
         return;
     end
@@ -87,7 +87,7 @@ local function Update(unitframe)
         if unitframe.data.npcId == EXPLOSIVE_ID then
             unitframe.Explosive:SetShown(CROSSHAIR);
         else
-            unitframe.Explosive:SetShown(false);
+            unitframe.Explosive:Hide();
         end
     end
 end
@@ -96,7 +96,7 @@ local function Hide(unitframe)
     CountOrbs();
 
     if unitframe.Explosive then
-        unitframe.Explosive:SetShown(false);
+        unitframe.Explosive:Hide();
     end
 end
 
@@ -132,7 +132,7 @@ local function Create(unitframe)
     horLine:SetVertexColor(1, 0, 0, 0.5);
 
     unitframe.Explosive = frame;
-    unitframe.Explosive:SetShown(false);
+    unitframe.Explosive:Hide();
 end
 
 function Module:UnitAdded(unitframe)

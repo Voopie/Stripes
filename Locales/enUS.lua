@@ -97,6 +97,13 @@ L['MINIMAP_BUTTON_HIDE'] = 'Hide this button';
 L['MINIMAP_BUTTON_COMMAND_SHOW'] = 'Use /stripes minimap to show the minimap button again';
 L['MINIMAP_ACTIVE_PROFILE'] = 'Active profile';
 
+L['DUNGEON_MOP_TOTJS'] = 'Temple of the Jade Serpent';
+
+L['DUNGEON_WOD_SBG'] = 'Shadowmoon Burial Grounds';
+
+L['DUNGEON_LEGION_HOV'] = 'Halls of Valor';
+L['DUNGEON_LEGION_COS'] = 'Court of Stars';
+
 L['DUNGEON_SL_MISTS'] = 'Mists of Tirna Scithe';
 L['DUNGEON_SL_NW'] = 'The Necrotic Wake';
 L['DUNGEON_SL_DOS'] = 'De Other Side';
@@ -107,9 +114,20 @@ L['DUNGEON_SL_SOA'] = 'Spires of Ascension';
 L['DUNGEON_SL_TOP'] = 'Theater of Pain';
 L['DUNGEON_SL_TTVM'] = 'Tazavesh, the Veiled Market';
 
+L['DUNGEON_DF_ULD'] = 'Uldaman: Legacy of Tyr';
+L['DUNGEON_DF_RLP'] = 'Ruby Life Pools';
+L['DUNGEON_DF_ALGA'] = 'Algeth\'ar Academy';
+L['DUNGEON_DF_HOI'] = 'Halls of Infusion';
+L['DUNGEON_DF_TAV'] = 'The Azure Vault';
+L['DUNGEON_DF_BH'] = 'Brackenhide Hollow';
+L['DUNGEON_DF_TNO'] = 'The Nokhud Offensive';
+L['DUNGEON_DF_NLTH'] = 'Neltharius';
+
 L['RAID_SL_CN'] = 'Castle Nathria';
 L['RAID_SL_SOD'] = 'Sanctum of Domination';
 L['RAID_SL_SOTFO'] = 'Sepulcher of the First Ones';
+
+L['RAID_DF_VOTI'] = 'Vault of the Incarnates';
 
 L['PSEUDOLINK_TOOLTIP'] = 'CTRL-C to copy';
 
@@ -161,8 +179,7 @@ L['OPTIONS_CATEGORY_VISIBILITY'] = 'Visibility';
 L['OPTIONS_CATEGORY_HEALTHBAR'] = 'Health bar';
 L['OPTIONS_CATEGORY_CASTBAR'] = 'Cast bar';
 L['OPTIONS_CATEGORY_AURAS'] = 'Auras';
-L['OPTIONS_CATEGORY_CUSTOMCOLOR'] = 'Custom HP bar colors';
-L['OPTIONS_CATEGORY_CUSTOMNAME'] = 'Custom names';
+L['OPTIONS_CATEGORY_CUSTOMNPC'] = 'Custom NPC';
 L['OPTIONS_CATEGORY_MYTHIC_PLUS'] = 'Mythic+';
 L['OPTIONS_CATEGORY_USEFUL'] = 'Useful';
 L['OPTIONS_CATEGORY_PROFILES'] = 'Profiles';
@@ -419,6 +436,8 @@ L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARLOCK'] = 'Warlock';
 L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARLOCK_TOOLTIP'] = 'Warlock color';
 L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARRIOR'] = 'Warrior';
 L['OPTIONS_HEALTH_BAR_COLORS_CLASS_WARRIOR_TOOLTIP'] = 'Warrior color';
+L['OPTIONS_HEALTH_BAR_COLORS_CLASS_EVOKER'] = 'Evoker';
+L['OPTIONS_HEALTH_BAR_COLORS_CLASS_EVOKER_TOOLTIP'] = 'Evoker color';
 L['OPTIONS_HEALTH_BAR_CLASS_COLORS_RESET_TOOLTIP'] = 'Reset class colors to defaults';
 L['OPTIONS_THREAT_COLOR_ENABLED'] = 'Threat color';
 L['OPTIONS_THREAT_COLOR_ENABLED_TOOLTIP'] = 'Change the color of the health bar depending on the amount of threat';
@@ -1119,23 +1138,17 @@ L['OPTIONS_AURAS_CUSTOM_DIRECTION_TOOLTIP'] = 'Custom auras growth direction';
 L['OPTIONS_AURAS_CUSTOM_MAX_DISPLAY_TOOLTIP'] = 'Maximum number of displayed custom auras';
 L['OPTIONS_AURAS_CUSTOM_ADDED_BY_NAME'] = 'by name';
 
-L['OPTIONS_CUSTOM_COLOR_ENABLED'] = 'Enable';
-L['OPTIONS_CUSTOM_COLOR_ENABLED_TOOLTIP'] = 'Enable custom health bar colors';
-L['OPTIONS_CUSTOM_COLOR_EDITBOX_ENTER_ID'] = 'Enter the ID of the NPC';
-L['OPTIONS_CUSTOM_COLOR_ADD_FROM_TARGET'] = 'From target';
-L['OPTIONS_CUSTOM_COLOR_ADD_FROM_LIST'] = 'From list';
-
 L['OPTIONS_GLOBAL_FONT_HEADER'] = 'Font settings';
 L['OPTIONS_USE_GLOBAL_FONT_VALUE_TOOLTIP'] = 'Use global font settings';
 L['OPTIONS_USE_GLOBAL_FONT_SIZE_TOOLTIP'] = 'Use global font size settings';
 L['OPTIONS_USE_GLOBAL_FONT_FLAG_TOOLTIP'] = 'Use global font outline settings';
 L['OPTIONS_USE_GLOBAL_FONT_SHADOW_TOOLTIP'] = 'Use global font shadow settings';
 
-L['OPTIONS_CUSTOM_NAME_ENABLED'] = 'Enable';
-L['OPTIONS_CUSTOM_NAME_ENABLED_TOOLTIP'] = 'Enable custom names';
-L['OPTIONS_CUSTOM_NAME_EDITBOX_ENTER_ID'] = 'Enter the ID of the NPC';
-L['OPTIONS_CUSTOM_NAME_ADD_FROM_TARGET'] = 'From target';
-L['OPTIONS_CUSTOM_NAME_ADD_FROM_LIST'] = 'From list';
+L['OPTIONS_CUSTOM_NPC_ENABLED'] = 'Enable';
+L['OPTIONS_CUSTOM_NPC_ENABLED_TOOLTIP'] = 'Enable special settings for certain NPCs';
+L['OPTIONS_CUSTOM_NPC_EDITBOX_ENTER_ID'] = 'Enter the ID of the NPC';
+L['OPTIONS_CUSTOM_NPC_ADD_FROM_TARGET'] = 'From target';
+L['OPTIONS_CUSTOM_NPC_ADD_FROM_LIST'] = 'From list';
 
 L['OPTIONS_COLOR_CATEGORY_ENTER_NAME'] = 'Type a name and press Enter';
 L['OPTIONS_COLOR_CATEGORY_TOGGLE_FRAME'] = 'Open color list';
