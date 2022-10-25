@@ -329,7 +329,7 @@ U.IsAffixActive = function(affixID)
 end
 
 U.UnitHasAura = function(unit, filter, neededAuraId)
-    if not unit or not filter or not neededAuraId then
+    if not (unit and filter and neededAuraId) then
         return false;
     end
 
