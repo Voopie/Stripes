@@ -586,7 +586,6 @@ local function NameOnly_UpdateGuildName(unitframe)
             local guild = GetCachedName(unitframe.data.guild, true, true, false);
 
             unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, guild));
-
             if D.Player.GuildName == unitframe.data.guild then
                 unitframe.GuildName.text:SetTextColor(NAME_ONLY_GUILD_NAME_SAME_COLOR[1], NAME_ONLY_GUILD_NAME_SAME_COLOR[2], NAME_ONLY_GUILD_NAME_SAME_COLOR[3], NAME_ONLY_GUILD_NAME_SAME_COLOR[4]);
             else

@@ -309,7 +309,7 @@ local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
     end
 
     local hostileUnit = unitframe.data.reaction and unitframe.data.reaction <= 4;
-
+    
     local filter;
     local showAll = false;
 

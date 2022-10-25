@@ -36,7 +36,6 @@ local function OnInterrupt(unitframe, guid, sourceName)
         local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(guid);
         if name then
             name = GetCachedName(name, true, true, false);
-
             unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(englishClass, 1), INTERRUPTED, name));
         else
             if U_UnitIsPetByGUID(guid) then

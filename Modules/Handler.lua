@@ -159,7 +159,6 @@ end
 Stripes.IsNameOnlyMode            = IsNameOnlyMode;
 Stripes.IsNameOnlyModeAndFriendly = IsNameOnlyModeAndFriendly;
 
--- TODO: Allow to add from options
 Stripes.UnimportantUnits = {
     [167999] = true, -- Echo of Sin (SL, Castle Nathria, Sire Denathrius)
     [176920] = true, -- Domination Arrow (SL, Sanctum of Domination, Sylvanas)

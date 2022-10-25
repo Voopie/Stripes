@@ -307,6 +307,10 @@ function Module:UnitAdded(unitframe)
     UpdateColors(unitframe);
     UpdateStyle(unitframe);
     UpdateVisibility(unitframe);
+
+    if unitframe.data.isUnimportantUnit then
+        StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
+    end
 end
 
 function Module:UnitRemoved(unitframe)
