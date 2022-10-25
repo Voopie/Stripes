@@ -329,6 +329,10 @@ U.IsAffixActive = function(affixID)
 end
 
 U.UnitHasAura = function(unit, filter, neededAuraId)
+    if not unit or not filter or not neededAuraId then
+        return false;
+    end
+
     local has = false;
     local name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod;
 
