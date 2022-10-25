@@ -57,8 +57,8 @@ local blacklistAurasNameCache = {};
 local whitelistAurasNameCache = {};
 
 local function BlacklistCacheFindAuraNameById(id)
-    for name, sid in pairs(blacklistAurasNameCache) do
-        if sid == id then
+    for name, spellId in pairs(blacklistAurasNameCache) do
+        if spellId == id then
             return name;
         end
     end
@@ -86,8 +86,8 @@ local function UpdateBlacklistCache()
 end
 
 local function WhitelistCacheFindAuraNameById(id)
-    for name, sid in pairs(whitelistAurasNameCache) do
-        if sid == id then
+    for name, spellId in pairs(whitelistAurasNameCache) do
+        if spellId == id then
             return name;
         end
     end
@@ -159,24 +159,25 @@ local function SortMethodFunction(a, b)
 end
 
 local function UpdateAnchor(self)
-    local unit = self:GetParent().unit;
+    local unitframe = self:GetParent();
+    local unit = unitframe.unit or unitframe.data.unit;
 
     self:ClearAllPoints();
 
-    if unit and ShouldShowName(self:GetParent()) then
-        local offset = NAME_TEXT_POSITION_V == 1 and (self:GetParent().name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
-        PixelUtil.SetPoint(self, 'BOTTOM', self:GetParent().healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
+    if unit and ShouldShowName(unitframe) then
+        local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
+        PixelUtil.SetPoint(self, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     else
-        local offset = self:GetBaseYOffset() + (self:GetParent().data.isTarget and self:GetTargetYOffset() or 0.0);
-        PixelUtil.SetPoint(self, 'BOTTOM', self:GetParent().healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
+        local offset = self:GetBaseYOffset() + (unitframe.data.isTarget and self:GetTargetYOffset() or 0.0);
+        PixelUtil.SetPoint(self, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
     end
 
     if AURAS_DIRECTION == 1 then
-        PixelUtil.SetPoint(self, 'LEFT', self:GetParent().healthBar, 'LEFT', BUFFFRAME_OFFSET_X, 0);
+        PixelUtil.SetPoint(self, 'LEFT', unitframe.healthBar, 'LEFT', BUFFFRAME_OFFSET_X, 0);
     elseif AURAS_DIRECTION == 2 then
-        PixelUtil.SetPoint(self, 'RIGHT', self:GetParent().healthBar, 'RIGHT', BUFFFRAME_OFFSET_X, 0);
+        PixelUtil.SetPoint(self, 'RIGHT', unitframe.healthBar, 'RIGHT', BUFFFRAME_OFFSET_X, 0);
     else
-        self:SetWidth(self:GetParent().healthBar:GetWidth());
+        self:SetWidth(unitframe.healthBar:GetWidth());
     end
 end
 
@@ -338,7 +339,9 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
         return;
     end
 
-    local isSelf = self:GetParent().data.isPersonal;
+    local unitframe = self:GetParent();
+
+    local isSelf = unitframe.data.isPersonal;
 
     local previousFilter = self.filter;
     local previousUnit   = self.unit;
@@ -442,8 +445,6 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
 
     if buffIndex > 1 then
         if SORT_ENABLED and not isSelf then
-            local unitframe = self:GetParent();
-
             if not unitframe.SortBuffs then
                 unitframe.SortBuffs = {};
             else

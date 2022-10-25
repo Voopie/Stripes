@@ -98,7 +98,7 @@ local function CreateBuffFrame(unitframe)
         self:SetWidth(uf.healthBar:GetWidth());
     end
 
-    frame.ShouldShowBuff = function(self, aura, forceAll, isSelf)
+    frame.ShouldShowBuff = function(self, aura)
         local spellId = aura.spellId;
 
         local spellFound = false;
@@ -115,7 +115,7 @@ local function CreateBuffFrame(unitframe)
         return spellFound;
     end
 
-    frame.ParseAllAuras = function(self, forceAll)
+    frame.ParseAllAuras = function(self)
         if self.auras == nil then
             self.auras = TableUtil.CreatePriorityTable(self.AuraComparator, TableUtil.Constants.AssociativePriorityTable);
         else
@@ -123,7 +123,7 @@ local function CreateBuffFrame(unitframe)
         end
 
         local function HandleAura(aura)
-            if self:ShouldShowBuff(aura, forceAll) then
+            if self:ShouldShowBuff(aura) then
                 self.auras[aura.auraInstanceID] = aura;
             end
 
@@ -136,36 +136,32 @@ local function CreateBuffFrame(unitframe)
         AuraUtil_ForEachAura(self.unit, self.filter, batchCount, HandleAura, usePackedAura);
     end
 
-    frame.UpdateBuffs = function(self, unit, unitAuraUpdateInfo, auraSettings)
+    frame.UpdateBuffs = function(self, unit, unitAuraUpdateInfo)
         local uf = self:GetParent();
 
         unit = unit or uf.data.unit;
 
-        if not ENABLED or not unit or uf.data.isPersonal or unitframe.data.isUnimportantUnit then
+        if not ENABLED or not unit or uf.data.isPersonal or uf.data.isUnimportantUnit then
             self:Hide();
             return;
         end
-
-        local isSelf = uf.data.isPersonal;
 
         local filterString = filter;
 
         local previousFilter = self.filter;
         local previousUnit   = self.unit;
 
-        local showAll = auraSettings and auraSettings.showAll;
-
         self.unit   = unit;
         self.filter = filter;
 
         local aurasChanged = false;
         if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filterString ~= previousFilter then
-            self:ParseAllAuras(showAll);
+            self:ParseAllAuras();
             aurasChanged = true;
         else
             if unitAuraUpdateInfo.addedAuras ~= nil then
                 for _, aura in ipairs(unitAuraUpdateInfo.addedAuras) do
-                    if self:ShouldShowBuff(aura, showAll, isSelf) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filterString) then
+                    if self:ShouldShowBuff(aura) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filterString) then
                         self.auras[aura.auraInstanceID] = aura;
                         aurasChanged = true;
                     end

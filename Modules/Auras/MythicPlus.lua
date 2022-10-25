@@ -128,7 +128,7 @@ local function CreateBuffFrame(unitframe)
         return found;
     end
 
-    frame.ParseAllAuras = function(self, forceAll)
+    frame.ParseAllAuras = function(self)
         if self.auras == nil then
             self.auras = TableUtil.CreatePriorityTable(self.AuraComparator, TableUtil.Constants.AssociativePriorityTable);
         else
@@ -170,31 +170,27 @@ local function CreateBuffFrame(unitframe)
         AuraUtil_ForEachAura(self.unit, filterHarmful, batchCount, HandleAuraHarmful, usePackedAura);
     end
 
-    frame.UpdateBuffs = function(self, unit, unitAuraUpdateInfo, auraSettings)
+    frame.UpdateBuffs = function(self, unit, unitAuraUpdateInfo)
         local uf = self:GetParent();
 
         unit = unit or uf.data.unit;
 
-        if not ENABLED or not PlayerState.inMythic or not unit or uf.data.isPersonal or unitframe.data.isUnimportantUnit then
+        if not ENABLED or not PlayerState.inMythic or not unit or uf.data.isPersonal or uf.data.isUnimportantUnit then
             self:Hide();
             return;
         end
-
-        local isSelf = uf.data.isPersonal;
 
         local filterString = filterHelpful;
 
         local previousFilter = self.filter;
         local previousUnit   = self.unit;
 
-        local showAll = auraSettings and auraSettings.showAll;
-
         self.unit   = unit;
         self.filter = filterHelpful;
 
         local aurasChanged = false;
         if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filterString ~= previousFilter then
-            self:ParseAllAuras(showAll);
+            self:ParseAllAuras();
             aurasChanged = true;
         else
             if unitAuraUpdateInfo.addedAuras ~= nil then
