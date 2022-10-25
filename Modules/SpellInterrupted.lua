@@ -204,7 +204,7 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
 
     if subEvent == 'SPELL_INTERRUPT' then
         for _, unitframe in pairs(NP) do
-            if unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
+            if unitframe.isActive and unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
                 OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId);
             end
         end

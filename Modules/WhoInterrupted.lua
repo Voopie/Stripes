@@ -52,7 +52,7 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
 
     if subEvent == 'SPELL_INTERRUPT' then
         for _, unitframe in pairs(NP) do
-            if unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
+            if unitframe.isActive and unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
                 OnInterrupt(unitframe, sourceGUID, sourceName);
             end
         end
@@ -60,7 +60,7 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
         local flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
         if flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0 then
             for _, unitframe in pairs(NP) do
-                if unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
+                if unitframe.isActive and unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
                     OnInterrupt(unitframe, sourceGUID, sourceName);
                 end
             end

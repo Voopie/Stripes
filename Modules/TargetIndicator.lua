@@ -154,7 +154,7 @@ local function UpdateMouseoverUnit()
     end
 
     for _, unitframe in pairs(NP) do
-        if unitframe:IsShown() and not unitframe.data.isTarget and not unitframe.data.isPersonal then
+        if unitframe.isActive and unitframe:IsShown() and not unitframe.data.isTarget and not unitframe.data.isPersonal then
             if MouseOnUnit(unitframe) then
                 Glow_Show(unitframe);
             else

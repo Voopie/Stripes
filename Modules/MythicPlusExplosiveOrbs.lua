@@ -56,7 +56,7 @@ local function CountOrbs()
     counter = 0;
 
     for _, unitframe in pairs(NP) do
-        if unitframe:IsShown() and unitframe.data.npcId == EXPLOSIVE_ID then
+        if unitframe.isActive and unitframe:IsShown() and unitframe.data.npcId == EXPLOSIVE_ID then
             counter = counter + 1;
         end
     end
