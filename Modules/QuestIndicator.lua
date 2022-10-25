@@ -96,7 +96,7 @@ end
 local function Update(unitframe, unit)
     unit = unit or unitframe.data.unit;
 
-    if not ENABLED or not unit or unitframe.data.isPersonal or not PlayerState.inChallenge then
+    if not ENABLED or not unit or unitframe.data.isPersonal or PlayerState.inChallenge then
         unitframe.QuestIndicator:Hide();
         return;
     end
