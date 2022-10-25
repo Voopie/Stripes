@@ -42,7 +42,9 @@ local function ShowOnlyCasting()
     visibilityState = false;
 
     for _, unitframe in pairs(NP) do
-        UpdateVisibility(unitframe);
+        if unitframe.isActive and unitframe.data.unit then
+            UpdateVisibility(unitframe);
+        end
     end
 end
 
@@ -50,13 +52,15 @@ local function ShowAll()
     visibilityState = true;
 
     for _, unitframe in pairs(NP) do
-        UpdateVisibility(unitframe);
+        if unitframe.isActive and unitframe.data.unit then
+            UpdateVisibility(unitframe);
+        end
     end
 end
 
 local function CheckCasting(unit)
     for _, unitframe in pairs(NP) do
-        if unitframe.data.unit == unit then
+        if unitframe.isActive and unitframe.data.unit == unit then
             UpdateVisibility(unitframe);
         end
     end
