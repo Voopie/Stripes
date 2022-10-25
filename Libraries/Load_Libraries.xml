@@ -1,4 +1,7 @@
 <Ui>
+    <!-- Not a library actually -->
+    <Include file="TaintLess.xml" />
+
     <Script file="Fuzzy.lua" />
 
     <Script file="LibStub.lua" />
