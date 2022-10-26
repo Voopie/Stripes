@@ -309,7 +309,7 @@ local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
     end
 
     local hostileUnit = unitframe.data.reaction and unitframe.data.reaction <= 4;
-    
+
     local filter;
     local showAll = false;
 
@@ -334,6 +334,10 @@ local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
 end
 
 local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
+    if type(filter) == 'table' then
+        return;
+    end
+
     if not unit or not self.isActive or filter == 'NONE' then
         self.buffPool:ReleaseAll();
         return;
