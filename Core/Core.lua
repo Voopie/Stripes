@@ -754,6 +754,10 @@ function AddOn:ADDON_LOADED(addonName)
     StripesDB.minimap_button = StripesDB.minimap_button or { hide = false };
     StripesDB.last_used_hex_color = StripesDB.last_used_hex_color or nil;
 
+    if StripesDB.spellCache then
+        StripesDB.spellCache = nil;
+    end
+
     StripesSpellDB      = StripesSpellDB or {};
     StripesSpellDB.data = StripesSpellDB.data or {};
 
