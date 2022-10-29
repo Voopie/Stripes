@@ -684,10 +684,6 @@ local usedCVars = {
 }
 
 local function HookSetCVar(name, value)
-    if not string_find(string_lower(name), 'nameplate') then
-        return;
-    end
-
     if usedCVars[name] then
         usedCVars[name](tostring(value));
     end
