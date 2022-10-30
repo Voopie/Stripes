@@ -6,6 +6,8 @@ local string_find, string_lower = string.find, string.lower;
 
 local LCG = S.Libraries.LCG;
 
+-- check
+
 local USE_FUZZY = true; -- very good but too much garbage...
 local MAX_NUM_RESULTS = 5;
 local GLOW_TIME_SECONDS = 5;
