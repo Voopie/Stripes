@@ -532,11 +532,6 @@ function Module.UpdateHealthBar(unitframe)
         return;
     end
 
-    if unitframe.data.isUnimportantUnit then
-        UpdateHealthColor(unitframe);
-        return;
-    end
-
     Threat_HighPrioColor(unitframe);
     UpdateCurrentTargetColor(unitframe);
     UpdateCustomHealthBarColor(unitframe);
