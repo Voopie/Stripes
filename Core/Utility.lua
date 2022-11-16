@@ -115,18 +115,22 @@ do
             return NAMES_CACHE[id];
         end
 
+        local name = UNKNOWN;
+
         local tooltipData = C_TooltipInfo.GetHyperlink(string_format(UNIT_CREATURE_LINK, id));
 
-        TooltipUtil.SurfaceArgs(tooltipData);
+        if tooltipData then
+            TooltipUtil.SurfaceArgs(tooltipData);
 
-        for _, line in ipairs(tooltipData.lines) do
-            TooltipUtil.SurfaceArgs(line);
-        end
+            for _, line in ipairs(tooltipData.lines) do
+                TooltipUtil.SurfaceArgs(line);
+            end
 
-        local name = tooltipData.lines[1].leftText or UNKNOWN;
+            name = tooltipData.lines[1].leftText or UNKNOWN;
 
-        if name ~= UNKNOWN then
-            NAMES_CACHE[id] = name;
+            if name ~= UNKNOWN then
+                NAMES_CACHE[id] = name;
+            end
         end
 
         return name;
@@ -141,15 +145,19 @@ do
             return SUBLABELS_CACHE[id];
         end
 
+        local sublabel;
+
         local tooltipData = C_TooltipInfo.GetHyperlink(string_format(UNIT_CREATURE_LINK, id));
 
-        TooltipUtil.SurfaceArgs(tooltipData);
+        if tooltipData then
+            TooltipUtil.SurfaceArgs(tooltipData);
 
-        for _, line in ipairs(tooltipData.lines) do
-            TooltipUtil.SurfaceArgs(line);
+            for _, line in ipairs(tooltipData.lines) do
+                TooltipUtil.SurfaceArgs(line);
+            end
+
+            sublabel = tooltipData.lines[2].leftText;
         end
-
-        local sublabel = tooltipData.lines[2].leftText;
 
         if not sublabel or string_find(sublabel or '', '??', 1, true) then
             SUBLABELS_CACHE[id] = nil;
