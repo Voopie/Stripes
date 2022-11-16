@@ -115,11 +115,15 @@ do
             return NAMES_CACHE[id];
         end
 
-        U.TooltipScanner:ClearLines();
-        U.TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
-        U.TooltipScanner:SetHyperlink(string_format(UNIT_CREATURE_LINK, id));
+        local tooltipData = C_TooltipInfo.GetHyperlink(string_format(UNIT_CREATURE_LINK, id));
 
-        local name = _G[U.TooltipScanner.Name .. 'TextLeft1']:GetText() or UNKNOWN;
+        TooltipUtil.SurfaceArgs(tooltipData);
+
+        for _, line in ipairs(tooltipData.lines) do
+            TooltipUtil.SurfaceArgs(line);
+        end
+
+        local name = tooltipData.lines[1].leftText or UNKNOWN;
 
         if name ~= UNKNOWN then
             NAMES_CACHE[id] = name;
@@ -137,11 +141,15 @@ do
             return SUBLABELS_CACHE[id];
         end
 
-        U.TooltipScanner:ClearLines();
-        U.TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
-        U.TooltipScanner:SetHyperlink(string_format(UNIT_CREATURE_LINK, id));
+        local tooltipData = C_TooltipInfo.GetHyperlink(string_format(UNIT_CREATURE_LINK, id));
 
-        local sublabel = _G[U.TooltipScanner.Name .. 'TextLeft2']:GetText();
+        TooltipUtil.SurfaceArgs(tooltipData);
+
+        for _, line in ipairs(tooltipData.lines) do
+            TooltipUtil.SurfaceArgs(line);
+        end
+
+        local sublabel = tooltipData.lines[2].leftText;
 
         if not sublabel or string_find(sublabel or '', '??', 1, true) then
             SUBLABELS_CACHE[id] = nil;
