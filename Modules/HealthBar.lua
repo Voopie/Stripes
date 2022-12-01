@@ -248,6 +248,10 @@ local function UpdateThreatPercentagePosition(unitframe)
 end
 
 local function Threat_GetThreatSituationStatus(unit)
+    if not unit then
+        return;
+    end
+
     local isTanking, status, threatpct = UnitDetailedThreatSituation('player', unit);
     local display = threatpct;
 
@@ -293,7 +297,7 @@ local function Threat_HighPrioColor(unitframe)
 end
 
 local function Threat_UpdateColor(unitframe)
-    if not DB.THREAT_ENABLED then
+    if not DB.THREAT_ENABLED or not unitframe.data.unit then
         unitframe.data.tpNeedUpdate = true;
         return;
     end
@@ -523,7 +527,7 @@ end
 ]]
 
 function Module.UpdateHealthBar(unitframe)
-    if not unitframe:IsShown() or unitframe.data.isPersonal then
+    if not unitframe:IsShown() or not unitframe.data.unit or unitframe.data.isPersonal then
         return;
     end
 
