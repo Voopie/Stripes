@@ -126,7 +126,7 @@ do
                 TooltipUtil.SurfaceArgs(line);
             end
 
-            name = tooltipData.lines[1].leftText or UNKNOWN;
+            name = tooltipData.lines[1] and tooltipData.lines[1].leftText or UNKNOWN;
 
             if name ~= UNKNOWN then
                 NAMES_CACHE[id] = name;
@@ -156,7 +156,7 @@ do
                 TooltipUtil.SurfaceArgs(line);
             end
 
-            sublabel = tooltipData.lines[2].leftText;
+            sublabel = tooltipData.lines[2] and tooltipData.lines[2].leftText;
         end
 
         if not sublabel or string_find(sublabel or '', '??', 1, true) then
@@ -290,6 +290,10 @@ do
     };
 
     U.GetUnitLevel = function(unit, long, real)
+        if not unit then
+            return '??', '', GetQuestDifficultyColor(1);
+        end
+
         local level = real and UnitLevel(unit) or UnitEffectiveLevel(unit);
         local classification = UnitClassification(unit);
         local diff = GetQuestDifficultyColor(level <= 0 and 999 or level);
