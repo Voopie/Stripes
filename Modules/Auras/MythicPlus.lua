@@ -235,7 +235,7 @@ local function CreateBuffFrame(unitframe)
             if not buff then
                 buff = CreateFrame('Frame', nil, self, 'NameplateBuffButtonTemplate');
                 buff:SetMouseClickEnabled(false);
-                aura:SetScale(SCALE);
+                buff:SetScale(SCALE);
 
                 if SQUARE then
                     buff:SetSize(20, 20);
