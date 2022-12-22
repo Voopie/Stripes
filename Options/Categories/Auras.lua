@@ -3517,25 +3517,20 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if GetSpellInfo(text) then
-            saveId = 0;
-            byName = true;
+        if id and id ~= 0 and GetSpellInfo(id) then
+            saveId = id;
         else
-            if id and id ~= 0 and GetSpellInfo(id) then
-                saveId = id;
-            else
-                byNameIcon = GetIconFromSpellCache(text);
+            byNameIcon = GetIconFromSpellCache(text);
 
-                if byNameIcon then
-                    byName = true;
-                end
+            if byNameIcon then
+                byName = true;
             end
+        end
 
-            if not saveId and not byName then
-                self:SetText('');
-                self:ClearFocus();
-                return;
-            end
+        if not saveId and not byName then
+            self:SetText('');
+            self:ClearFocus();
+            return;
         end
 
         AddCustomAura(tonumber(saveId), byName, text);

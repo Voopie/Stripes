@@ -85,7 +85,7 @@ local function CreateBuffFrame(unitframe)
 
     frame.ShouldShowBuff = function(self, aura)
         local name    = aura.name;
-        local spellId = aura.spellID;
+        local spellId = aura.spellId;
         local caster  = aura.sourceUnit;
 
         local spellData = O.db.auras_custom_data[spellId] or O.db.auras_custom_data[name];
@@ -220,7 +220,7 @@ local function CreateBuffFrame(unitframe)
             buff.auraInstanceID = auraInstanceID;
             buff.isBuff = aura.isHelpful;
             buff.layoutIndex = buffIndex;
-            buff.spellID = aura.spellId;
+            buff.spellId = aura.spellId;
             buff.expirationTime = aura.expirationTime;
             buff.sourceUnit = aura.sourceUnit;
 
