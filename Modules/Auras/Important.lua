@@ -57,6 +57,12 @@ local additionalAuras = {
     -- Warlock
     [5484] = true, -- Howl of Terror
 
+    -- Warrior
+    [385954] = true, -- Shield Charge
+
+    -- Demon Hunter
+    [370970] = true, -- The Hunt (Root)
+
     -- Covenant
     [331866] = true, -- Agent of Chaos (Venthyr)
     [332423] = true, -- Sparkling Driftglobe Core (Kyrian)
@@ -247,7 +253,7 @@ local function CreateBuffFrame(unitframe)
             buff.auraInstanceID = auraInstanceID;
             buff.isBuff = aura.isHelpful;
             buff.layoutIndex = buffIndex;
-            buff.spellID = aura.spellId;
+            buff.spellId = aura.spellId;
             buff.expirationTime = aura.expirationTime;
             buff.sourceUnit = aura.sourceUnit;
 
@@ -277,7 +283,7 @@ local function CreateBuffFrame(unitframe)
                     buff.CasterName:SetTextColor(GetUnitColor(buff.sourceUnit, 2));
                     buff.CasterName:Show();
                 else
-                    buff.CasterName:Show();
+                    buff.CasterName:Hide();
                 end
             else
                 buff.CasterName:Hide();
