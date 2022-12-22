@@ -222,16 +222,19 @@ local function UpdateAuraStyle(aura, withoutMasque)
                 return;
             end
 
-            if self.spellID and IsOnPandemic(self) then
-                local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellID);
-                if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
-                    self.spellID = GetTrulySpellId(self.spellID);
+            if self.spellId and IsOnPandemic(self) then
+                if pandemicKnownSpells[self.spellId] then
+                    self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
+                else
+                    local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellId);
+                    if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
+                        self.trullySpellId = GetTrulySpellId(self.spellId);
 
-                    if self.spellID and (pandemicKnownSpells[self.spellID] or S_IsSpellKnown(self.spellID)) then
-                        self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
+                        if self.trullySpellId and (pandemicKnownSpells[self.trullySpellId] or S_IsSpellKnown(self.trullySpellId)) then
+                            self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
 
-                        if not pandemicKnownSpells[self.spellID] then
-                            pandemicKnownSpells[self.spellID] = true;
+                            pandemicKnownSpells[self.spellId]       = true;
+                            pandemicKnownSpells[self.trullySpellId] = true;
                         end
                     end
                 end
@@ -402,7 +405,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
         buff.auraInstanceID = auraInstanceID;
         buff.isBuff = aura.isHelpful;
         buff.layoutIndex = buffIndex;
-        buff.spellID = aura.spellId;
+        buff.spellId = aura.spellId;
         buff.expirationTime = aura.expirationTime;
 
         if not isNew and buff.Cooldown.noCooldownCount == nil then
