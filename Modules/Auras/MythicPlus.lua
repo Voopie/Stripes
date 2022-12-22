@@ -271,7 +271,7 @@ local function CreateBuffFrame(unitframe)
             buff.auraInstanceID = auraInstanceID;
             buff.isBuff = aura.isHelpful;
             buff.layoutIndex = buffIndex;
-            buff.spellID = aura.spellId;
+            buff.spellId = aura.spellId;
             buff.expirationTime = aura.expirationTime;
             buff.sourceUnit = aura.sourceUnit;
 
