@@ -592,7 +592,7 @@ if S.ClientLocale == 'ruRU' then
     U.FirstToUpper = function(str)
         return str:gsub('^[%z\1-\127\194-\244][\128-\191]', string.upper);
     end
-    
+
     U.FirstToLower = function(str)
         return str:gsub('^[%z\1-\127\194-\244][\128-\191]', string.lower);
     end

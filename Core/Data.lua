@@ -345,37 +345,34 @@ local function UpdatePlayer()
     D.Player.Realm                          = GetRealmName();
 
     UpdateSpecialization();
-end
-
-function Data:PLAYER_LOGIN()
-    UpdatePlayer();
 
     D.MaxLevel = GetMaxLevelForLatestExpansion();
 end
 
+function Data:PLAYER_LOGIN()
+    UpdatePlayer();
+end
+
 local raidDifficultyIDs = {
-    [1]  = true, -- PrimaryRaidNormal
     [3]  = true, -- Raid10Normal
     [4]  = true, -- Raid25Normal
     [5]  = true, -- Raid10Heroic
     [6]  = true, -- Raid25Heroic
     [7]  = true, -- RaidLFR
     [9]  = true, -- Raid40
+    [14] = true, -- PrimaryRaidNormal
     [15] = true, -- PrimaryRaidHeroic
     [16] = true, -- PrimaryRaidMythic
     [17] = true, -- PrimaryRaidLFR
     [33] = true, -- RaidTimewalker
+    [151]= true, -- RaidTimewalkerLFR
 };
 
-function Data:PLAYER_ENTERING_WORLD()
-    UpdatePlayer();
-
-    D.MaxLevel = GetMaxLevelForLatestExpansion();
-
+local function UpdateInstanceState()
     if U.IsInInstance() then
         D.Player.State.inInstance = true;
 
-        local instanceType, difficulty = select(2, GetInstanceInfo());
+        local _, instanceType, difficulty = GetInstanceInfo();
 
         if difficulty == DifficultyUtil.ID.DungeonMythic then
             D.Player.State.inChallenge = true;
@@ -383,10 +380,9 @@ function Data:PLAYER_ENTERING_WORLD()
         end
 
         if difficulty == DifficultyUtil.ID.DungeonChallenge then
-            D.Player.State.inChallenge         = true;
-            D.Player.State.inMythic            = true;
-            D.Player.State.inMythicPlus        = true;
-            D.Player.State.inMythicPlusTeeming = U.IsAffixCurrent(TEEMING_AFFIX_ID);
+            D.Player.State.inChallenge  = true;
+            D.Player.State.inMythic     = true;
+            D.Player.State.inMythicPlus = true;
         end
 
         if raidDifficultyIDs[difficulty] then
@@ -396,16 +392,24 @@ function Data:PLAYER_ENTERING_WORLD()
 
         D.Player.State.inPvPInstance = (instanceType == 'pvp' or instanceType == 'arena') and true or false;
     else
-        D.Player.State.inInstance          = false;
-        D.Player.State.inChallenge         = false;
-        D.Player.State.inMythic            = false;
-        D.Player.State.inMythicPlus        = false;
-        D.Player.State.inMythicPlusTeeming = false;
-        D.Player.State.inPvPInstance       = false;
-        D.Player.State.inRaid              = false;
+        D.Player.State.inInstance    = false;
+        D.Player.State.inChallenge   = false;
+        D.Player.State.inMythic      = false;
+        D.Player.State.inMythicPlus  = false;
+        D.Player.State.inPvPInstance = false;
+        D.Player.State.inRaid        = false;
     end
 
     D.Player.State.inArena = U.IsInArena();
+end
+
+function Data:PLAYER_ENTERING_WORLD()
+    UpdatePlayer();
+    UpdateInstanceState();
+end
+
+function Data:UPDATE_INSTANCE_INFO()
+    UpdateInstanceState();
 end
 
 function Data:CHALLENGE_MODE_START()
@@ -466,6 +470,7 @@ end
 function Data:StartUp()
     self:RegisterEvent('PLAYER_LOGIN');
     self:RegisterEvent('PLAYER_ENTERING_WORLD');
+    self:RegisterEvent('UPDATE_INSTANCE_INFO');
     self:RegisterEvent('CHALLENGE_MODE_START');
     self:RegisterEvent('CHALLENGE_MODE_COMPLETED');
     self:RegisterEvent('CHALLENGE_MODE_RESET');
