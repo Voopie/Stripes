@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Stripes = S:NewNameplateModule('Handler');
 
 -- Lua API
-local pairs, string_find, string_lower, math_ceil, math_max = pairs, string.find, string.lower, math.ceil, math.max;
+local pairs, math_ceil, math_max = pairs, math.ceil, math.max;
 
 -- WoW API
 local UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
@@ -163,6 +163,7 @@ Stripes.UnimportantUnits = {
     [167999] = true, -- Echo of Sin (SL, Castle Nathria, Sire Denathrius)
     [176920] = true, -- Domination Arrow (SL, Sanctum of Domination, Sylvanas)
     [189707] = true, -- Chaotic Essence (SL, Season 4, Raid Fated Affix)
+    [191714] = true, -- Seeking Stormling (DF, Vault of the Incarnates, Raszageth P2.5)
 };
 
 do
@@ -742,47 +743,47 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
 
     NP[nameplate] = unitframe;
 
-    NP[nameplate].data = NP[nameplate].data or {};
+    unitframe.data = unitframe.data or {};
 
-    NP[nameplate].data.unit      = unit;
-    NP[nameplate].data.unitGUID  = UnitGUID(unit);
+    unitframe.data.unit      = unit;
+    unitframe.data.unitGUID  = UnitGUID(unit);
 
-    UpdateStatus(NP[nameplate]);
-    UpdateClassName(NP[nameplate]);
-    UpdateWidgetStatus(NP[nameplate]);
-    UpdateNpcId(NP[nameplate]);
-    UpdateUnitColor(NP[nameplate]);
-    UpdateHealth(NP[nameplate]);
-    UpdateAbsorbs(NP[nameplate])
-    UpdateClassification(NP[nameplate]);
-    UpdateConnection(NP[nameplate]);
-    UpdateTarget(NP[nameplate]);
-    UpdateFocus(NP[nameplate]);
+    UpdateStatus(unitframe);
+    UpdateClassName(unitframe);
+    UpdateWidgetStatus(unitframe);
+    UpdateNpcId(unitframe);
+    UpdateUnitColor(unitframe);
+    UpdateHealth(unitframe);
+    UpdateAbsorbs(unitframe)
+    UpdateClassification(unitframe);
+    UpdateConnection(unitframe);
+    UpdateTarget(unitframe);
+    UpdateFocus(unitframe);
 
-    NP[nameplate].data.isPersonal = NP[nameplate].data.unitType == 'SELF';
+    unitframe.data.isPersonal = unitframe.data.unitType == 'SELF';
 
-    NP[nameplate].data.creatureType = not NP[nameplate].data.isPlayer and UnitCreatureType(unit) or nil;
-    NP[nameplate].data.minus = UnitClassification(unit) == 'minus';
-    NP[nameplate].data.targetName = UnitName(unit .. 'target');
+    unitframe.data.creatureType = not unitframe.data.isPlayer and UnitCreatureType(unit) or nil;
+    unitframe.data.minus = UnitClassification(unit) == 'minus';
+    unitframe.data.targetName = UnitName(unit .. 'target');
 
-    if NP[nameplate].data.widgetsOnly then
-        NP[nameplate].data.previousType = nil;
+    if unitframe.data.widgetsOnly then
+        unitframe.data.previousType = nil;
     else
-        NP[nameplate].data.previousType = NP[nameplate].data.unitType;
-        NP[nameplate]:UnregisterEvent('UNIT_AURA');
+        unitframe.data.previousType = unitframe.data.unitType;
+        unitframe:UnregisterEvent('UNIT_AURA');
     end
 
-    NP[nameplate].isActive = true;
-    S:ForAllNameplateModules('UnitAdded', NP[nameplate]);
+    unitframe.isActive = true;
+    S:ForAllNameplateModules('UnitAdded', unitframe);
 
     if Stripes.UnimportantUnits[unitframe.data.npcId] then
-        NP[nameplate].data.isUnimportantUnit = true;
+        unitframe.data.isUnimportantUnit = true;
     end
 
-    if NP[nameplate].data.widgetsOnly then
-        NP[nameplate].isActive = false;
-        ResetNameplateData(NP[nameplate]);
-        S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
+    if unitframe.data.widgetsOnly then
+        unitframe.isActive = false;
+        ResetNameplateData(unitframe);
+        S:ForAllNameplateModules('UnitRemoved', unitframe);
     end
 end
 
@@ -793,9 +794,11 @@ function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
         return;
     end
 
-    NP[nameplate].isActive = false;
-    ResetNameplateData(NP[nameplate]);
-    S:ForAllNameplateModules('UnitRemoved', NP[nameplate]);
+    local unitframe = NP[nameplate];
+
+    unitframe.isActive = false;
+    ResetNameplateData(unitframe);
+    S:ForAllNameplateModules('UnitRemoved', unitframe);
 end
 
 function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
@@ -805,7 +808,9 @@ function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
         return;
     end
 
-    S:ForAllNameplateModules('UnitAura', NP[nameplate], unitAuraUpdateInfo);
+    local unitframe = NP[nameplate];
+
+    S:ForAllNameplateModules('UnitAura', unitframe, unitAuraUpdateInfo);
 end
 
 function Stripes:PLAYER_TARGET_CHANGED()
@@ -815,7 +820,9 @@ function Stripes:PLAYER_TARGET_CHANGED()
         return;
     end
 
-    S:ForAllNameplateModules('UnitAura', NP[nameplate]);
+    local unitframe = NP[nameplate];
+
+    S:ForAllNameplateModules('UnitAura', unitframe);
 end
 
 function Stripes:UNIT_LEVEL(unit)
@@ -825,7 +832,9 @@ function Stripes:UNIT_LEVEL(unit)
         return;
     end
 
-    UpdateLevel(NP[nameplate]);
+    local unitframe = NP[nameplate];
+
+    UpdateLevel(unitframe);
 end
 
 function Stripes:UNIT_FACTION(unit)
@@ -835,7 +844,9 @@ function Stripes:UNIT_FACTION(unit)
         return;
     end
 
-    UpdateLevel(NP[nameplate]);
+    local unitframe = NP[nameplate];
+
+    UpdateLevel(unitframe);
 end
 
 function Stripes:PLAYER_FOCUS_CHANGED()
