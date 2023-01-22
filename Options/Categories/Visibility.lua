@@ -788,6 +788,7 @@ panel.Load = function(self)
         panel.name_only_friendly_players_only:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_color_name_by_health:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_color_name_by_class:SetEnabled(O.db.name_only_friendly_enabled);
+        panel.name_only_friendly_show_level:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_guild_name:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_guild_name_color:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_guild_name_same_color:SetEnabled(O.db.name_only_friendly_enabled);
@@ -914,6 +915,18 @@ panel.Load = function(self)
     self.name_only_friendly_color_name_by_class:SetEnabled(O.db.name_only_friendly_enabled);
     self.name_only_friendly_color_name_by_class.Callback = function(self)
         O.db.name_only_friendly_color_name_by_class = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.name_only_friendly_show_level = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
+    self.name_only_friendly_show_level:SetPosition('LEFT', self.name_only_friendly_color_name_by_class.Label, 'RIGHT', 12, 0);
+    self.name_only_friendly_show_level:SetLabel(L['OPTIONS_VISIBILITY_NAME_ONLY_SHOW_LEVEL']);
+    self.name_only_friendly_show_level:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_SHOW_LEVEL_TOOLTIP']);
+    self.name_only_friendly_show_level:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_SHOW_LEVEL_TOOLTIP'], self.Tabs[3]);
+    self.name_only_friendly_show_level:SetChecked(O.db.name_only_friendly_show_level);
+    self.name_only_friendly_show_level:SetEnabled(O.db.name_only_friendly_enabled);
+    self.name_only_friendly_show_level.Callback = function(self)
+        O.db.name_only_friendly_show_level = self:GetChecked();
         Stripes:UpdateAll();
     end
 

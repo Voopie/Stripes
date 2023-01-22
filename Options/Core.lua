@@ -266,7 +266,7 @@ O.Lists = {
     }
 };
 
--- ~586
+-- ~587
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -636,6 +636,7 @@ O.DefaultValues = {
     name_only_friendly_y_offset              = 0,
     name_only_friendly_players_only          = false,
     name_only_friendly_stacking              = false,
+    name_only_friendly_show_level            = false,
 
     selected_alpha      = tonumber(C_CVar.GetCVar('nameplateSelectedAlpha')), -- 1
     max_alpha           = tonumber(C_CVar.GetCVar('nameplateMaxAlpha')), -- 1

@@ -28,7 +28,7 @@ local LDC = S.Libraries.LDC;
 
 -- Local Config
 local POSITION, POSITION_V, OFFSET_X, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, ABRR_UNIT_TYPE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE, COLORING_MODE_NPC;
-local NAME_ONLY_MODE, NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
+local NAME_ONLY_MODE, NAME_ONLY_OFFSET_Y, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_SHOW_LEVEL, NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 local NAME_WITH_TITLE_ENABLED, NAME_WITH_TITLE_UNIT_TYPE, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
 local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
@@ -530,18 +530,25 @@ local function NameOnly_UpdateNameHealth(unitframe)
     end
 
     if NAME_ONLY_COLOR_HEALTH then
+        local level = '';
+
         if unitframe.data.unitType == 'FRIENDLY_PLAYER' and not unitframe.data.canAttack then
             if unitframe.data.isConnected then
                 if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
                     local name = GetPlayerName(unitframe);
 
+                    if NAME_ONLY_SHOW_LEVEL and unitframe.data.level and unitframe.data.diff then
+                        level = U.RGB2CFFHEX(unitframe.data.diff) .. unitframe.data.level .. ' P|r ';
+                    end
+
                     local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
-                    unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
+
+                    unitframe.name:SetText(level .. utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
                 end
             else
                 unitframe.name:SetText(GREY_COLOR_START .. GetPlayerName(unitframe));
             end
-        elseif not NAME_ONLY_FRIENDLY_PLAYERS_ONLY and unitframe.data.unitType == 'FRIENDLY_NPC' then
+        elseif not NAME_ONLY_FRIENDLY_PLAYERS_ONLY and IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
             local name = unitframe.data.name;
 
             if ABBR_ENABLED and unitframe.data.nameAbbr and unitframe.data.nameAbbr ~= '' then
@@ -553,8 +560,13 @@ local function NameOnly_UpdateNameHealth(unitframe)
             end
 
             if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
+                if NAME_ONLY_SHOW_LEVEL and unitframe.data.level and unitframe.data.diff and unitframe.data.classification then
+                    level = U.RGB2CFFHEX(unitframe.data.diff) .. unitframe.data.level .. unitframe.data.classification .. '|r ';
+                end
+
                 local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
-                unitframe.name:SetText(utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
+
+                unitframe.name:SetText(level .. utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
             end
         end
     end
@@ -593,7 +605,7 @@ local function NameOnly_UpdateGuildName(unitframe)
             end
 
             unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
-        elseif unitframe.data.unitType == 'FRIENDLY_NPC' then
+        elseif IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
             local subLabel = GetNpcSubLabelByID(unitframe.data.npcId);
 
             if subLabel then
@@ -739,6 +751,9 @@ function Module:UpdateLocalConfig()
 
     NAME_ONLY_COLOR_CLASS  = O.db.name_only_friendly_color_name_by_class;
     NAME_ONLY_COLOR_HEALTH = O.db.name_only_friendly_color_name_by_health;
+
+    NAME_ONLY_SHOW_LEVEL   = O.db.name_only_friendly_show_level;
+
     NAME_ONLY_GUILD_NAME   = O.db.name_only_friendly_guild_name;
 
     NAME_ONLY_GUILD_NAME_COLOR = NAME_ONLY_GUILD_NAME_COLOR or {};

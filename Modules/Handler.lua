@@ -149,6 +149,10 @@ local function IsNameOnlyModeAndFriendly(unitType, canAttack)
         return false;
     end
 
+    if NAME_ONLY_FRIENDLY_ENABLED and not canAttack then
+        return true;
+    end
+
     if NAME_ONLY_FRIENDLY_PLAYERS_ONLY then
         return unitType == 'FRIENDLY_PLAYER';
     else

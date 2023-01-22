@@ -1,5 +1,6 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('QuestIndicator');
+local Stripes = S:GetNameplateModule('Handler');
 
 -- Based on QuestPlates (semlar) and KuiNameplates (Quest element) (kesavaa)
 -- https://www.curseforge.com/wow/addons/questplates
@@ -11,6 +12,9 @@ local select, pairs, tonumber, math_ceil, math_floor, string_format, string_matc
 -- WoW API
 local C_TaskQuest_GetQuestProgressBarInfo, C_QuestLog_GetQuestObjectives, C_QuestLog_GetQuestIDForLogIndex = C_TaskQuest.GetQuestProgressBarInfo, C_QuestLog.GetQuestObjectives, C_QuestLog.GetQuestIDForLogIndex;
 local C_QuestLog_GetNumQuestLogEntries, C_QuestLog_GetInfo, C_QuestLog_IsQuestTask, C_TaskQuest_GetQuestInfoByQuestID = C_QuestLog.GetNumQuestLogEntries, C_QuestLog.GetInfo, C_QuestLog.IsQuestTask, C_TaskQuest.GetQuestInfoByQuestID;
+
+-- Stripes API
+local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
 
 -- Nameplates
 local NP = S.NamePlates;
@@ -169,7 +173,7 @@ local function Create(unitframe)
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentQuestIndicator', unitframe.healthBar);
+    local frame = CreateFrame('Frame', '$parentQuestIndicator', unitframe);
     frame:SetAllPoints(unitframe.healthBar);
     frame:SetFrameStrata('HIGH');
     frame:SetFrameLevel(frame:GetFrameLevel() + 50);
@@ -201,6 +205,26 @@ local function Create(unitframe)
     frame.counterText:SetTextColor(1, 1, 1);
 
     unitframe.QuestIndicator = frame;
+end
+
+local function UpdateStyle(unitframe)
+    unitframe.QuestIndicator:ClearAllPoints();
+
+    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+        unitframe.QuestIndicator:SetAllPoints(unitframe.name);
+    else
+        unitframe.QuestIndicator:SetAllPoints(unitframe.healthBar);
+    end
+
+    unitframe.QuestIndicator.swordIcon:ClearAllPoints();
+
+    if POSITION == 1 then
+        unitframe.QuestIndicator.swordIcon:SetPoint('BOTTOMRIGHT', unitframe.QuestIndicator, 'BOTTOMLEFT', -2, 0);
+        unitframe.QuestIndicator.lootIcon:SetPoint('BOTTOMLEFT', unitframe.QuestIndicator.swordIcon, 'BOTTOMLEFT', -1, 0);
+    else
+        unitframe.QuestIndicator.swordIcon:SetPoint('BOTTOMLEFT', unitframe.QuestIndicator, 'BOTTOMRIGHT', 4, 0);
+        unitframe.QuestIndicator.lootIcon:SetPoint('BOTTOMLEFT', unitframe.QuestIndicator.swordIcon, 'BOTTOMLEFT', -3, 0);
+    end
 end
 
 local function UpdateQuestLogIndexCache()
@@ -250,19 +274,6 @@ local function QuestRemoved(questID)
     end
 
     UnitQuestLogChanged();
-end
-
-local function UpdateStyle(unitframe)
-    unitframe.QuestIndicator.swordIcon:ClearAllPoints();
-
-    if POSITION == 1 then
-        unitframe.QuestIndicator.swordIcon:SetPoint('BOTTOMRIGHT', unitframe.QuestIndicator, 'BOTTOMLEFT', -2, 0);
-        unitframe.QuestIndicator.lootIcon:SetPoint('BOTTOMLEFT', unitframe.QuestIndicator.swordIcon, 'BOTTOMLEFT', -1, 0);
-    else
-        unitframe.QuestIndicator.swordIcon:SetPoint('BOTTOMLEFT', unitframe.QuestIndicator, 'BOTTOMRIGHT', 4, 0);
-        unitframe.QuestIndicator.lootIcon:SetPoint('BOTTOMLEFT', unitframe.QuestIndicator.swordIcon, 'BOTTOMLEFT', -3, 0);
-    end
-
 end
 
 function Module:UnitAdded(unitframe)
