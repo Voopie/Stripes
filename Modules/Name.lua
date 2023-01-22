@@ -465,7 +465,7 @@ end
 
 local function UpdateNameVisibility(unitframe)
     if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
-        unitframe.name:SetShown(NAME_TEXT_ENABLED and not unitframe.data.widgetsOnly);
+        unitframe.name:SetShown(NAME_TEXT_ENABLED and not unitframe.data.widgetsOnly and ShouldShowName(unitframe));
     else
         unitframe.name:SetShown(ShouldShowName(unitframe));
     end
