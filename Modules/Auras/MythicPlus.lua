@@ -40,6 +40,10 @@ local HelpfulList = {
     [373011] = true, -- Affix SL S4: Disguised
     [373785] = true, -- Affix SL S4: Disguised
 
+    -- Mists of Pandaria
+    [113315] = true, -- Temple of the Jade Serpent (Intensity)
+    [113309] = true, -- Temple of the Jade Serpent (Ultimate Power)
+
     -- Shadowlands
     [324085] = true, -- Theater of Pain (Enrage)
     [333241] = true, -- Theater of Pain (Raging Tantrum)
@@ -76,6 +80,10 @@ local function CreateBuffFrame(unitframe)
 
     frame.buffList = {};
     frame.buffCompact = {};
+
+    frame.AuraComparator = function(a, b)
+        return AuraUtil.DefaultAuraCompare(a, b);
+    end
 
     frame.UpdateAnchor = function(self)
         self:ClearAllPoints();
