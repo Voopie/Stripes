@@ -37,7 +37,7 @@ end
 local NP = S.NamePlates;
 
 -- Local Config
-local NAME_TEXT_ENABLED, NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY;
+local NAME_TEXT_ENABLED, NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_MODE;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
 
@@ -882,6 +882,7 @@ function Stripes:UpdateLocalConfig()
     NAME_TEXT_ENABLED               = O.db.name_text_enabled;
     NAME_ONLY_FRIENDLY_ENABLED      = O.db.name_only_friendly_enabled;
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
+    NAME_ONLY_MODE                  = O.db.name_only_friendly_mode;
 
     NAME_TRANSLIT           = O.db.name_text_translit;
     NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
@@ -918,7 +919,7 @@ function Stripes:StartUp()
     C_CVar.RegisterCVar('nameplateShowOnlyNames');
 
     hooksecurefunc(NamePlateDriverFrame, 'UpdateNamePlateOptions', function()
-        if NAME_ONLY_FRIENDLY_ENABLED then
+        if NAME_ONLY_FRIENDLY_ENABLED and NAME_ONLY_MODE == 1 then
             TableUtil.TrySet(DefaultCompactNamePlateFriendlyFrameOptions, 'hideHealthbar');
             TableUtil.TrySet(DefaultCompactNamePlateFriendlyFrameOptions, 'hideCastbar');
             TableUtil.TrySet(DefaultCompactNamePlateEnemyFrameOptions, 'hideHealthbar');
