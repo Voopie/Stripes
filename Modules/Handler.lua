@@ -914,5 +914,19 @@ function Stripes:StartUp()
 
     hooksecurefunc(C_CVar, 'SetCVar', HookSetCVar);
 
+    -- 10.0.5 workaround for nameplateShowOnlyNames
+    C_CVar.RegisterCVar('nameplateShowOnlyNames');
+
+    hooksecurefunc(NamePlateDriverFrame, 'UpdateNamePlateOptions', function()
+        if NAME_ONLY_FRIENDLY_ENABLED then
+            TableUtil.TrySet(DefaultCompactNamePlateFriendlyFrameOptions, 'hideHealthbar');
+            TableUtil.TrySet(DefaultCompactNamePlateFriendlyFrameOptions, 'hideCastbar');
+            TableUtil.TrySet(DefaultCompactNamePlateEnemyFrameOptions, 'hideHealthbar');
+            TableUtil.TrySet(DefaultCompactNamePlateEnemyFrameOptions, 'hideCastbar');
+            TableUtil.TrySet(DefaultCompactNamePlateFrameSetUpOptions, 'hideHealthbar');
+            TableUtil.TrySet(DefaultCompactNamePlateFrameSetUpOptions, 'hideCastbar');
+        end
+    end);
+
     self:UpdateAll();
 end
