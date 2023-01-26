@@ -148,7 +148,12 @@ local function CreateBuffFrame(unitframe)
                 local auraInstanceID = self:GetSameAuraInstanceID(aura.spellId);
 
                 if auraInstanceID and self.auras[auraInstanceID] then
-                    self.auras[auraInstanceID].applications   = self.auras[auraInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
+                    if self.auras[auraInstanceID].applications == 0 then
+                        self.auras[auraInstanceID].applications = 1 + (aura.applications == 0 and 1 or aura.applications);
+                    else
+                        self.auras[auraInstanceID].applications = self.auras[auraInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
+                    end
+
                     self.auras[auraInstanceID].duration       = aura.duration;
                     self.auras[auraInstanceID].expirationTime = aura.expirationTime;
                 else
@@ -164,7 +169,12 @@ local function CreateBuffFrame(unitframe)
                 local auraInstanceID = self:GetSameAuraInstanceID(aura.spellId);
 
                 if auraInstanceID and self.auras[auraInstanceID] then
-                    self.auras[auraInstanceID].applications   = self.auras[auraInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
+                    if self.auras[auraInstanceID].applications == 0 then
+                        self.auras[auraInstanceID].applications = 1 + (aura.applications == 0 and 1 or aura.applications);
+                    else
+                        self.auras[auraInstanceID].applications = self.auras[auraInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
+                    end
+
                     self.auras[auraInstanceID].duration       = aura.duration;
                     self.auras[auraInstanceID].expirationTime = aura.expirationTime;
                 else
@@ -211,7 +221,12 @@ local function CreateBuffFrame(unitframe)
                         local aInstanceID = self:GetSameAuraInstanceID(aura.spellId);
 
                         if aInstanceID and self.auras[aInstanceID] then
-                            self.auras[aInstanceID].applications   = self.auras[aInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
+                            if self.auras[aInstanceID].applications == 0 then
+                                self.auras[aInstanceID].applications = 1 + (aura.applications == 0 and 1 or aura.applications);
+                            else
+                                self.auras[aInstanceID].applications = self.auras[aInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
+                            end
+
                             self.auras[aInstanceID].duration       = aura.duration;
                             self.auras[aInstanceID].expirationTime = aura.expirationTime;
                         else
@@ -228,7 +243,16 @@ local function CreateBuffFrame(unitframe)
                     if self.auras[auraInstanceID] ~= nil then
                         local newAura = C_UnitAuras.GetAuraDataByAuraInstanceID(self.unit, auraInstanceID);
 
-                        self.auras[auraInstanceID] = newAura;
+                        if newAura then
+                            local aInstanceID = self:GetSameAuraInstanceID(newAura.spellId);
+
+                            if aInstanceID then
+                                self.auras[aInstanceID].duration       = newAura.duration;
+                                self.auras[aInstanceID].expirationTime = newAura.expirationTime;
+                            else
+                                self.auras[auraInstanceID] = newAura;
+                            end
+                        end
 
                         aurasChanged = true;
                     end
@@ -241,8 +265,12 @@ local function CreateBuffFrame(unitframe)
                         local removedAura = self.auras[auraInstanceID];
                         local aInstanceID = self:GetSameAuraInstanceID(removedAura.spellId);
 
-                        if aInstanceID and self.auras[aInstanceID] then
+                        if aInstanceID and self.auras[aInstanceID] and self.auras[aInstanceID].applications > 1 then
                             self.auras[aInstanceID].applications = self.auras[aInstanceID].applications - (removedAura.applications == 0 and 1 or removedAura.applications);
+
+                            if self.auras[aInstanceID].applications == 1 then
+                                self.auras[aInstanceID].applications = 0;
+                            end
                         else
                             self.auras[auraInstanceID] = nil;
                         end
