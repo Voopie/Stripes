@@ -122,7 +122,7 @@ local function CreateBuffFrame(unitframe)
         return false;
     end
 
-    frame.HasSameAura = function(self, auraSpellId)
+    frame.GetSameAuraInstanceID = function(self, auraSpellId)
         local found = false;
 
         self.auras:Iterate(function(auraInstanceID, aura)
@@ -145,10 +145,12 @@ local function CreateBuffFrame(unitframe)
 
         local function HandleAuraHelpful(aura)
             if self:ShouldShowBuff(aura, true) then
-                local auraInstanceID = self:HasSameAura(aura.spellId);
+                local auraInstanceID = self:GetSameAuraInstanceID(aura.spellId);
 
                 if auraInstanceID and self.auras[auraInstanceID] then
-                    self.auras[auraInstanceID].applications = self.auras[auraInstanceID].applications + 1;
+                    self.auras[auraInstanceID].applications   = self.auras[auraInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
+                    self.auras[auraInstanceID].duration       = aura.duration;
+                    self.auras[auraInstanceID].expirationTime = aura.expirationTime;
                 else
                     self.auras[aura.auraInstanceID] = aura;
                 end
@@ -159,10 +161,12 @@ local function CreateBuffFrame(unitframe)
 
         local function HandleAuraHarmful(aura)
             if self:ShouldShowBuff(aura, false) then
-                local auraInstanceID = self:HasSameAura(aura.spellId);
+                local auraInstanceID = self:GetSameAuraInstanceID(aura.spellId);
 
                 if auraInstanceID and self.auras[auraInstanceID] then
-                    self.auras[auraInstanceID].applications = self.auras[auraInstanceID].applications + 1;
+                    self.auras[auraInstanceID].applications   = self.auras[auraInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
+                    self.auras[auraInstanceID].duration       = aura.duration;
+                    self.auras[auraInstanceID].expirationTime = aura.expirationTime;
                 else
                     self.auras[aura.auraInstanceID] = aura;
                 end
@@ -204,7 +208,16 @@ local function CreateBuffFrame(unitframe)
             if unitAuraUpdateInfo.addedAuras ~= nil then
                 for _, aura in ipairs(unitAuraUpdateInfo.addedAuras) do
                     if self:ShouldShowBuff(aura, aura.isHelpful) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filterString) then
-                        self.auras[aura.auraInstanceID] = aura;
+                        local aInstanceID = self:GetSameAuraInstanceID(aura.spellId);
+
+                        if aInstanceID and self.auras[aInstanceID] then
+                            self.auras[aInstanceID].applications   = self.auras[aInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
+                            self.auras[aInstanceID].duration       = aura.duration;
+                            self.auras[aInstanceID].expirationTime = aura.expirationTime;
+                        else
+                            self.auras[aura.auraInstanceID] = aura;
+                        end
+
                         aurasChanged = true;
                     end
                 end
@@ -214,7 +227,9 @@ local function CreateBuffFrame(unitframe)
                 for _, auraInstanceID in ipairs(unitAuraUpdateInfo.updatedAuraInstanceIDs) do
                     if self.auras[auraInstanceID] ~= nil then
                         local newAura = C_UnitAuras.GetAuraDataByAuraInstanceID(self.unit, auraInstanceID);
+
                         self.auras[auraInstanceID] = newAura;
+
                         aurasChanged = true;
                     end
                 end
@@ -223,7 +238,15 @@ local function CreateBuffFrame(unitframe)
             if unitAuraUpdateInfo.removedAuraInstanceIDs ~= nil then
                 for _, auraInstanceID in ipairs(unitAuraUpdateInfo.removedAuraInstanceIDs) do
                     if self.auras[auraInstanceID] ~= nil then
-                        self.auras[auraInstanceID] = nil;
+                        local removedAura = self.auras[auraInstanceID];
+                        local aInstanceID = self:GetSameAuraInstanceID(removedAura.spellId);
+
+                        if aInstanceID and self.auras[aInstanceID] then
+                            self.auras[aInstanceID].applications = self.auras[aInstanceID].applications - (removedAura.applications == 0 and 1 or removedAura.applications);
+                        else
+                            self.auras[auraInstanceID] = nil;
+                        end
+
                         aurasChanged = true;
                     end
                 end
@@ -483,7 +506,7 @@ end
 function Module:StartUp()
     self:UpdateLocalConfig();
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
-        unitframe.AurasSpellSteal:UpdateAnchor();
+        unitframe.AurasMythicPlus:UpdateAnchor();
     end);
 
     -- All-Consuming Spite (Spiteful) timer update
