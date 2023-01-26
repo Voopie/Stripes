@@ -412,6 +412,14 @@ function Data:UPDATE_INSTANCE_INFO()
     UpdateInstanceState();
 end
 
+function Data:ZONE_CHANGED_NEW_AREA()
+    UpdateInstanceState();
+end
+
+function Data:INSTANCE_GROUP_SIZE_CHANGED()
+    UpdateInstanceState();
+end
+
 function Data:CHALLENGE_MODE_START()
     D.Player.State.inChallenge         = true;
     D.Player.State.inMythic            = true;
@@ -471,6 +479,8 @@ function Data:StartUp()
     self:RegisterEvent('PLAYER_LOGIN');
     self:RegisterEvent('PLAYER_ENTERING_WORLD');
     self:RegisterEvent('UPDATE_INSTANCE_INFO');
+    self:RegisterEvent('ZONE_CHANGED_NEW_AREA');
+    self:RegisterEvent('INSTANCE_GROUP_SIZE_CHANGED');
     self:RegisterEvent('CHALLENGE_MODE_START');
     self:RegisterEvent('CHALLENGE_MODE_COMPLETED');
     self:RegisterEvent('CHALLENGE_MODE_RESET');
