@@ -795,9 +795,7 @@ panel.Load = function(self)
         panel.name_only_friendly_y_offset:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_stacking:SetEnabled(O.db.name_only_friendly_enabled);
 
-        Stripes:UpdateAll();
-
-        if Stripes:IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+        if O.db.name_only_friendly_enabled and O.db.name_only_friendly_stacking then
             if U.IsInInstance() then
                 C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
             else
