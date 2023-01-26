@@ -434,7 +434,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
         CooldownFrame_Set(buff.Cooldown, aura.expirationTime - aura.duration, aura.duration, aura.duration > 0, DRAW_EDGE);
 
         if BORDER_COLOR_ENABLED then
-            if aura.dispelName then
+            if aura.dispelName and DebuffTypeColor[aura.dispelName]then
                 buff.Border:SetColorTexture(DebuffTypeColor[aura.dispelName].r, DebuffTypeColor[aura.dispelName].g, DebuffTypeColor[aura.dispelName].b, 1);
             else
                 buff.Border:SetColorTexture(0, 0, 0, 1);
