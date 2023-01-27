@@ -79,7 +79,7 @@ local function CreateBuffFrame(unitframe)
     frame:SetHeight(14);
 
     frame.buffList = {};
-    frame.buffCompact = {};
+    frame.compactList = {};
 
     frame.AuraComparator = function(a, b)
         return AuraUtil.DefaultAuraCompare(a, b);
@@ -122,20 +122,6 @@ local function CreateBuffFrame(unitframe)
         return false;
     end
 
-    frame.GetSameAuraInstanceID = function(self, auraSpellId)
-        local found = false;
-
-        self.auras:Iterate(function(auraInstanceID, aura)
-            if aura.spellId == auraSpellId then
-                found = auraInstanceID;
-            end
-
-            return found and true;
-        end);
-
-        return found;
-    end
-
     frame.ParseAllAuras = function(self)
         if self.auras == nil then
             self.auras = TableUtil.CreatePriorityTable(self.AuraComparator, TableUtil.Constants.AssociativePriorityTable);
@@ -145,20 +131,7 @@ local function CreateBuffFrame(unitframe)
 
         local function HandleAuraHelpful(aura)
             if self:ShouldShowBuff(aura, true) then
-                local auraInstanceID = self:GetSameAuraInstanceID(aura.spellId);
-
-                if auraInstanceID and self.auras[auraInstanceID] then
-                    if self.auras[auraInstanceID].applications == 0 then
-                        self.auras[auraInstanceID].applications = 1 + (aura.applications == 0 and 1 or aura.applications);
-                    else
-                        self.auras[auraInstanceID].applications = self.auras[auraInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
-                    end
-
-                    self.auras[auraInstanceID].duration       = aura.duration;
-                    self.auras[auraInstanceID].expirationTime = aura.expirationTime;
-                else
-                    self.auras[aura.auraInstanceID] = aura;
-                end
+                self.auras[aura.auraInstanceID] = aura;
             end
 
             return false;
@@ -166,20 +139,7 @@ local function CreateBuffFrame(unitframe)
 
         local function HandleAuraHarmful(aura)
             if self:ShouldShowBuff(aura, false) then
-                local auraInstanceID = self:GetSameAuraInstanceID(aura.spellId);
-
-                if auraInstanceID and self.auras[auraInstanceID] then
-                    if self.auras[auraInstanceID].applications == 0 then
-                        self.auras[auraInstanceID].applications = 1 + (aura.applications == 0 and 1 or aura.applications);
-                    else
-                        self.auras[auraInstanceID].applications = self.auras[auraInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
-                    end
-
-                    self.auras[auraInstanceID].duration       = aura.duration;
-                    self.auras[auraInstanceID].expirationTime = aura.expirationTime;
-                else
-                    self.auras[aura.auraInstanceID] = aura;
-                end
+                self.auras[aura.auraInstanceID] = aura;
             end
 
             return false;
@@ -218,21 +178,7 @@ local function CreateBuffFrame(unitframe)
             if unitAuraUpdateInfo.addedAuras ~= nil then
                 for _, aura in ipairs(unitAuraUpdateInfo.addedAuras) do
                     if self:ShouldShowBuff(aura, aura.isHelpful) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filterString) then
-                        local aInstanceID = self:GetSameAuraInstanceID(aura.spellId);
-
-                        if aInstanceID and self.auras[aInstanceID] then
-                            if self.auras[aInstanceID].applications == 0 then
-                                self.auras[aInstanceID].applications = 1 + (aura.applications == 0 and 1 or aura.applications);
-                            else
-                                self.auras[aInstanceID].applications = self.auras[aInstanceID].applications + (aura.applications == 0 and 1 or aura.applications);
-                            end
-
-                            self.auras[aInstanceID].duration       = aura.duration;
-                            self.auras[aInstanceID].expirationTime = aura.expirationTime;
-                        else
-                            self.auras[aura.auraInstanceID] = aura;
-                        end
-
+                        self.auras[aura.auraInstanceID] = aura;
                         aurasChanged = true;
                     end
                 end
@@ -242,18 +188,7 @@ local function CreateBuffFrame(unitframe)
                 for _, auraInstanceID in ipairs(unitAuraUpdateInfo.updatedAuraInstanceIDs) do
                     if self.auras[auraInstanceID] ~= nil then
                         local newAura = C_UnitAuras.GetAuraDataByAuraInstanceID(self.unit, auraInstanceID);
-
-                        if newAura then
-                            local aInstanceID = self:GetSameAuraInstanceID(newAura.spellId);
-
-                            if aInstanceID then
-                                self.auras[aInstanceID].duration       = newAura.duration;
-                                self.auras[aInstanceID].expirationTime = newAura.expirationTime;
-                            else
-                                self.auras[auraInstanceID] = newAura;
-                            end
-                        end
-
+                        self.auras[auraInstanceID] = newAura;
                         aurasChanged = true;
                     end
                 end
@@ -262,19 +197,7 @@ local function CreateBuffFrame(unitframe)
             if unitAuraUpdateInfo.removedAuraInstanceIDs ~= nil then
                 for _, auraInstanceID in ipairs(unitAuraUpdateInfo.removedAuraInstanceIDs) do
                     if self.auras[auraInstanceID] ~= nil then
-                        local removedAura = self.auras[auraInstanceID];
-                        local aInstanceID = self:GetSameAuraInstanceID(removedAura.spellId);
-
-                        if aInstanceID and self.auras[aInstanceID] and self.auras[aInstanceID].applications > 1 then
-                            self.auras[aInstanceID].applications = self.auras[aInstanceID].applications - (removedAura.applications == 0 and 1 or removedAura.applications);
-
-                            if self.auras[aInstanceID].applications == 1 then
-                                self.auras[aInstanceID].applications = 0;
-                            end
-                        else
-                            self.auras[auraInstanceID] = nil;
-                        end
-
+                        self.auras[auraInstanceID] = nil;
                         aurasChanged = true;
                     end
                 end
@@ -288,7 +211,29 @@ local function CreateBuffFrame(unitframe)
         end
 
         local buffIndex = 1;
+
+        wipe(unitframe.AurasMythicPlus.compactList);
+
         self.auras:Iterate(function(auraInstanceID, aura)
+            local aCount = aura.applications == 0 and 1 or aura.applications;
+
+            if not unitframe.AurasMythicPlus.compactList[aura.spellId] then
+                unitframe.AurasMythicPlus.compactList[aura.spellId] = {
+                    spellId        = aura.spellId,
+                    name           = aura.name,
+                    icon           = aura.icon,
+                    applications   = aCount,
+                    duration       = aura.duration,
+                    expirationTime = aura.expirationTime,
+                };
+            else
+                unitframe.AurasMythicPlus.compactList[aura.spellId].applications   = unitframe.AurasMythicPlus.compactList[aura.spellId].applications + aCount;
+                unitframe.AurasMythicPlus.compactList[aura.spellId].duration       = aura.duration;
+                unitframe.AurasMythicPlus.compactList[aura.spellId].expirationTime = aura.expirationTime;
+            end
+        end);
+
+        for _, aura in pairs(unitframe.AurasMythicPlus.compactList) do
             local buff = self.buffList[buffIndex];
 
             if not buff then
@@ -327,12 +272,9 @@ local function CreateBuffFrame(unitframe)
                 self.buffList[buffIndex] = buff;
             end
 
-            buff.auraInstanceID = auraInstanceID;
-            buff.isBuff = aura.isHelpful;
-            buff.layoutIndex = buffIndex;
-            buff.spellId = aura.spellId;
+            buff.layoutIndex    = buffIndex;
+            buff.spellId        = aura.spellId;
             buff.expirationTime = aura.expirationTime;
-            buff.sourceUnit = aura.sourceUnit;
 
             buff:ClearAllPoints();
 
@@ -368,8 +310,10 @@ local function CreateBuffFrame(unitframe)
 
             buffIndex = buffIndex + 1;
 
-            return buffIndex > AURAS_MAX_DISPLAY;
-        end);
+            if buffIndex > AURAS_MAX_DISPLAY then
+                break;
+            end
+        end
 
         for i = buffIndex, AURAS_MAX_DISPLAY do
             if self.buffList[i] then
