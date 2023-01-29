@@ -772,15 +772,15 @@ panel.Load = function(self)
     NameOnlyHeader:SetPosition('TOPLEFT', self.show_friendly_minions, 'BOTTOMLEFT', 0, -8);
     NameOnlyHeader:SetW(self:GetWidth());
 
-    self.LAST_SESSION_name_only_friendly_enabled = O.db.name_only_friendly_enabled;
     self.name_only_friendly_enabled = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
     self.name_only_friendly_enabled:SetPosition('TOPLEFT', NameOnlyHeader, 'BOTTOMLEFT', 0, -4);
     self.name_only_friendly_enabled:SetLabel(L['OPTIONS_VISIBILITY_NAME_ONLY_ENABLED'] .. S.Media.ASTERISK);
     self.name_only_friendly_enabled:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_ENABLED_TOOLTIP']);
     self.name_only_friendly_enabled:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_ENABLED_TOOLTIP'], self.Tabs[3]);
     self.name_only_friendly_enabled:SetChecked(O.db.name_only_friendly_enabled);
+    self.name_only_friendly_enabled.LastSessionValue = O.db.name_only_friendly_enabled;
     self.name_only_friendly_enabled.Callback = function(self)
-        O.NeedReload('name_only_friendly_enabled', self.LAST_SESSION_name_only_friendly_enabled ~= self:GetChecked());
+        O.NeedReload('name_only_friendly_enabled', self.LastSessionValue ~= self:GetChecked());
 
         O.db.name_only_friendly_enabled = self:GetChecked();
 
@@ -812,7 +812,6 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
-    self.LAST_SESSION_name_only_friendly_mode = O.db.name_only_friendly_mode;
     self.name_only_friendly_mode = E.CreateDropdown('plain', self.TabsFrames['FriendlyTab'].Content);
     self.name_only_friendly_mode:SetPosition('LEFT', self.name_only_friendly_enabled.Label, 'RIGHT', 12, 0);
     self.name_only_friendly_mode:SetSize(200, 20);
@@ -821,8 +820,9 @@ panel.Load = function(self)
     self.name_only_friendly_mode:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_FRIENDLY_MODE_TOOLTIP']);
     self.name_only_friendly_mode:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_FRIENDLY_MODE_TOOLTIP'], self.Tabs[3]);
     self.name_only_friendly_mode:SetEnabled(O.db.name_only_friendly_enabled);
+    self.name_only_friendly_mode.LastSessionValue = O.db.name_only_friendly_mode;
     self.name_only_friendly_mode.OnValueChangedCallback = function(_, value)
-        O.NeedReload('name_only_friendly_mode', self.LAST_SESSION_name_only_friendly_mode ~= tonumber(value));
+        O.NeedReload('name_only_friendly_mode', self.LastSessionValue ~= tonumber(value));
 
         O.db.name_only_friendly_mode = tonumber(value);
 
