@@ -649,7 +649,9 @@ local function UpdateClassificationIndicator(unitframe)
 
             if unitframe.data.classification == '+' or unitframe.data.classification == 'b' then
                 unitframe.classificationIndicator:SetVertexColor(0.85, 0.65, 0.13, 1);
-            elseif unitframe.data.classification == 'r' or unitframe.data.classification == 'r+' then
+            elseif unitframe.data.classification == 'r' then
+                unitframe.classificationIndicator:SetVertexColor(0.8, 0.4, 0.15, 1);
+            elseif unitframe.data.classification == 'r+' then
                 unitframe.classificationIndicator:SetVertexColor(0.6, 0.6, 0.6, 1);
             end
 
