@@ -325,7 +325,7 @@ local function UpdateClassification(unitframe)
 end
 
 local function UpdateConnection(unitframe)
-    unitframe.data.isConnected = UnitIsConnected(unitframe.data.unit);
+    unitframe.data.isConnected = unitframe.data.unit and UnitIsConnected(unitframe.data.unit);
 end
 
 local function UpdateTarget(unitframe)
