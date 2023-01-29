@@ -100,6 +100,10 @@ end
 Stripes.SetCVar = SetCVar;
 
 Stripes.UpdateAll = function()
+    if O.isUpdatingPanels then
+        return;
+    end
+
     S:ForAllModules('UpdateLocalConfig');
     S:ForAllNameplateModules('UpdateLocalConfig');
 

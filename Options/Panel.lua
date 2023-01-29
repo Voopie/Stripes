@@ -576,6 +576,8 @@ O.UpdatePanelAll = function()
         return;
     end
 
+    O.isUpdatingPanels = true;
+
     for _, panel in pairs(panels) do
         O.UpdatePanel(panel);
 
@@ -583,6 +585,8 @@ O.UpdatePanelAll = function()
             panel:Update();
         end
     end
+
+    O.isUpdatingPanels = false;
 end
 
 O.NeedReload = function(name, need)
