@@ -832,6 +832,20 @@ panel.Load = function(self)
             C_CVar.SetCVar('nameplateShowOnlyNames', 0);
         end
 
+        if O.db.name_only_friendly_enabled and O.db.name_only_friendly_stacking then
+            if U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
+            else
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
+            end
+        else
+            if U.IsInInstance() then
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
+            else
+                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
+            end
+        end
+
         Stripes:UpdateAll();
     end
 
