@@ -39,6 +39,56 @@ panel.Load = function(self)
     self.name_text_enabled:AddToSearch(button, L['OPTIONS_NAME_TEXT_SHOW'], self.Tabs[1]);
     self.name_text_enabled.Callback = function(self)
         O.db.name_text_enabled = self:GetChecked();
+
+        panel.npc_names_enabled:SetEnabled(O.db.name_text_enabled);
+
+        Stripes:UpdateAll();
+    end
+
+    self.npc_names_enabled = E.CreateDropdown('plain', self.TabsFrames['NameTab'].Content);
+    self.npc_names_enabled:SetPosition('LEFT', self.name_text_enabled.Label, 'RIGHT', 12, 0);
+    self.npc_names_enabled:SetSize(280, 20);
+    self.npc_names_enabled:SetList(O.Lists.npc_names_enabled);
+    self.npc_names_enabled:SetValue(O.db.npc_names_enabled);
+    self.npc_names_enabled:SetLabel(L['OPTIONS_NAME_NPC_NAMES']);
+    self.npc_names_enabled:SetTooltip(L['OPTIONS_NAME_NPC_NAMES_TOOLTIP']);
+    self.npc_names_enabled:AddToSearch(button, L['OPTIONS_NAME_NPC_NAMES_TOOLTIP'], self.Tabs[1]);
+    self.npc_names_enabled:SetEnabled(O.db.name_text_enabled);
+    self.npc_names_enabled.OnValueChangedCallback = function(_, value)
+        O.db.npc_names_enabled = tonumber(value);
+
+        if O.db.npc_names_enabled == 1 then
+            Stripes.SetCVar('UnitNameFriendlySpecialNPCName', 1);
+            Stripes.SetCVar('UnitNameNPC', 0);
+            Stripes.SetCVar('UnitNameHostleNPC', 0);
+            Stripes.SetCVar('UnitNameInteractiveNPC', 0);
+            Stripes.SetCVar('ShowQuestUnitCircles', 1);
+        elseif O.db.npc_names_enabled == 2 then
+            Stripes.SetCVar('UnitNameFriendlySpecialNPCName', 1);
+            Stripes.SetCVar('UnitNameHostleNPC', 1);
+            Stripes.SetCVar('UnitNameInteractiveNPC', 0);
+            Stripes.SetCVar('UnitNameNPC', 0);
+            Stripes.SetCVar('ShowQuestUnitCircles', 1);
+        elseif O.db.npc_names_enabled == 3 then
+            Stripes.SetCVar('UnitNameFriendlySpecialNPCName', 1);
+            Stripes.SetCVar('UnitNameHostleNPC', 1);
+            Stripes.SetCVar('UnitNameInteractiveNPC', 1);
+            Stripes.SetCVar('UnitNameNPC', 0);
+            Stripes.SetCVar('ShowQuestUnitCircles', 1);
+        elseif O.db.npc_names_enabled == 4 then
+            Stripes.SetCVar('UnitNameFriendlySpecialNPCName', 0);
+            Stripes.SetCVar('UnitNameHostleNPC', 0);
+            Stripes.SetCVar('UnitNameInteractiveNPC', 0);
+            Stripes.SetCVar('UnitNameNPC', 1);
+            Stripes.SetCVar('ShowQuestUnitCircles', 1);
+        else
+            Stripes.SetCVar('UnitNameFriendlySpecialNPCName', 0);
+            Stripes.SetCVar('UnitNameHostleNPC', 0);
+            Stripes.SetCVar('UnitNameInteractiveNPC', 0);
+            Stripes.SetCVar('UnitNameNPC', 0);
+            Stripes.SetCVar('ShowQuestUnitCircles', 1);
+        end
+
         Stripes:UpdateAll();
     end
 

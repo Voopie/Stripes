@@ -403,6 +403,11 @@ local function CVarsReset()
     SetCVar('nameplateMinAlpha', GetCVarDefault('nameplateMinAlpha'));
     SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'));
     SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'));
+
+    SetCVar('UnitNameNPC', GetCVarDefault('UnitNameNPC'));
+    SetCVar('UnitNameFriendlySpecialNPCName', GetCVarDefault('UnitNameFriendlySpecialNPCName'));
+    SetCVar('UnitNameHostleNPC', GetCVarDefault('UnitNameHostleNPC'));
+    SetCVar('UnitNameInteractiveNPC', GetCVarDefault('UnitNameInteractiveNPC'));
 end
 
 Stripes.CVarsReset = CVarsReset;
@@ -462,11 +467,67 @@ local function CVarsUpdate()
     SetCVar('nameplateMinAlpha', O.db.min_alpha);
     SetCVar('nameplateMinAlphaDistance', O.db.min_alpha_distance);
     SetCVar('nameplateOccludedAlphaMult', O.db.occluded_alpha_mult);
+
+    if O.db.npc_names_enabled == 1 then
+        SetCVar('UnitNameFriendlySpecialNPCName', 1);
+        SetCVar('UnitNameNPC', 0);
+        SetCVar('UnitNameHostleNPC', 0);
+        SetCVar('UnitNameInteractiveNPC', 0);
+        SetCVar('ShowQuestUnitCircles', 1);
+    elseif O.db.npc_names_enabled == 2 then
+        SetCVar('UnitNameFriendlySpecialNPCName', 1);
+        SetCVar('UnitNameHostleNPC', 1);
+        SetCVar('UnitNameInteractiveNPC', 0);
+        SetCVar('UnitNameNPC', 0);
+        SetCVar('ShowQuestUnitCircles', 1);
+    elseif O.db.npc_names_enabled == 3 then
+        SetCVar('UnitNameFriendlySpecialNPCName', 1);
+        SetCVar('UnitNameHostleNPC', 1);
+        SetCVar('UnitNameInteractiveNPC', 1);
+        SetCVar('UnitNameNPC', 0);
+        SetCVar('ShowQuestUnitCircles', 1);
+    elseif O.db.npc_names_enabled == 4 then
+        SetCVar('UnitNameFriendlySpecialNPCName', 0);
+        SetCVar('UnitNameHostleNPC', 0);
+        SetCVar('UnitNameInteractiveNPC', 0);
+        SetCVar('UnitNameNPC', 1);
+        SetCVar('ShowQuestUnitCircles', 1);
+    else
+        SetCVar('UnitNameFriendlySpecialNPCName', 0);
+        SetCVar('UnitNameHostleNPC', 0);
+        SetCVar('UnitNameInteractiveNPC', 0);
+        SetCVar('UnitNameNPC', 0);
+        SetCVar('ShowQuestUnitCircles', 1);
+    end
 end
 
 Stripes.CVarsUpdate = CVarsUpdate;
 
 local usedCVars = {
+    ['UnitNameNPC'] = function(value)
+        value = O.GetNpcNamesValue();
+        O.GetPanel('Common').npc_names_enabled:SetValue(value);
+        O.db.npc_names_enabled = value;
+    end,
+
+    ['UnitNameFriendlySpecialNPCName'] = function(value)
+        value = O.GetNpcNamesValue();
+        O.GetPanel('Common').npc_names_enabled:SetValue(value);
+        O.db.npc_names_enabled = value;
+    end,
+
+    ['UnitNameHostleNPC'] = function(value)
+        value = O.GetNpcNamesValue();
+        O.GetPanel('Common').npc_names_enabled:SetValue(value);
+        O.db.npc_names_enabled = value;
+    end,
+
+    ['UnitNameInteractiveNPC'] = function(value)
+        value = O.GetNpcNamesValue();
+        O.GetPanel('Common').npc_names_enabled:SetValue(value);
+        O.db.npc_names_enabled = value;
+    end,
+
     ['ShowClassColorInFriendlyNameplate'] = function(value)
         O.GetPanel('HealthBar').health_bar_class_color_friendly:SetChecked(value == '1');
         O.db.health_bar_class_color_friendly = value == '1';

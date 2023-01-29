@@ -225,6 +225,8 @@ L['OPTIONS_COMMON_TAB_HEALTHTEXT'] = 'Gesundheit';
 L['OPTIONS_COMMON_TAB_LEVELTEXT'] = 'Level';
 
 L['OPTIONS_NAME_TEXT_SHOW'] = 'Zeige Namen';
+L['OPTIONS_NAME_NPC_NAMES'] = 'NSC-Namen';
+L['OPTIONS_NAME_NPC_NAMES_TOOLTIP'] = 'NSC-Namen Anzeigemodus';
 L['OPTIONS_NAME_TEXT_FONT_VALUE'] = 'Name Schriftart';
 L['OPTIONS_NAME_TEXT_FONT_SIZE'] = 'Name Schriftgröße';
 L['OPTIONS_NAME_TEXT_FONT_FLAG'] = 'Name Schriftumriss';

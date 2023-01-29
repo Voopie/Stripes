@@ -295,8 +295,6 @@ end
 
 function Module:PLAYER_LOGIN()
     C_CVar.SetCVar('showQuestTrackingTooltips', 1); -- !!!
-    C_CVar.SetCVar('showQuestUnitCircles', 1);
-    C_CVar.SetCVar('UnitNameFriendlySpecialNPCName', 1);
 
     local uiMapID = C_Map.GetBestMapForUnit('player');
 

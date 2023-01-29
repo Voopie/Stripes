@@ -225,6 +225,8 @@ L['OPTIONS_COMMON_TAB_HEALTHTEXT'] = 'Здоровье';
 L['OPTIONS_COMMON_TAB_LEVELTEXT'] = 'Уровень';
 
 L['OPTIONS_NAME_TEXT_SHOW'] = 'Показывать имя';
+L['OPTIONS_NAME_NPC_NAMES'] = 'Имена NPC';
+L['OPTIONS_NAME_NPC_NAMES_TOOLTIP'] = 'Режим отображения имён NPC';
 L['OPTIONS_NAME_TEXT_FONT_VALUE'] = 'Шрифт имени';
 L['OPTIONS_NAME_TEXT_FONT_SIZE'] = 'Размер шрифта имени';
 L['OPTIONS_NAME_TEXT_FONT_FLAG'] = 'Контур шрифта имени';

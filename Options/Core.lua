@@ -263,13 +263,41 @@ O.Lists = {
         [1] = L['AURAS_XLIST_MODE_NONE'],
         [2] = L['AURAS_XLIST_MODE_BLACKLIST'],
         [3] = L['AURAS_XLIST_MODE_WHITELIST'],
-    }
+    },
+
+    npc_names_enabled = {
+        [1] = NPC_NAMES_DROPDOWN_TRACKED,
+        [2] = NPC_NAMES_DROPDOWN_HOSTILE,
+        [3] = NPC_NAMES_DROPDOWN_INTERACTIVE,
+        [4] = NPC_NAMES_DROPDOWN_ALL,
+        [5] = NPC_NAMES_DROPDOWN_NONE,
+    },
 };
 
--- ~587
+O.GetNpcNamesValue = function()
+    if GetCVarBool('UnitNameNPC') then
+        return 4;
+    else
+        local specialNPCName = GetCVarBool('UnitNameFriendlySpecialNPCName');
+        local hostileNPCName = GetCVarBool('UnitNameHostleNPC');
+        local specialAndHostile = specialNPCName and hostileNPCName;
+        if specialAndHostile and GetCVarBool('UnitNameInteractiveNPC') then
+            return 3;
+        elseif specialAndHostile then
+            return 2;
+        elseif specialNPCName then
+            return 1;
+        end
+    end
+
+    return 5;
+end
+
+-- ~588
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
+    npc_names_enabled                = O.GetNpcNamesValue(),
     name_text_font_value             = 'BigNoodleToo Titling',
     name_text_font_size              = 11,
     name_text_font_flag              = 1, -- NONE
