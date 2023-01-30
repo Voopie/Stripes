@@ -172,6 +172,7 @@ Stripes.UnimportantUnits = {
     [176920] = true, -- Domination Arrow (SL, Sanctum of Domination, Sylvanas)
     [189707] = true, -- Chaotic Essence (SL, Season 4, Raid Fated Affix)
     [191714] = true, -- Seeking Stormling (DF, Vault of the Incarnates, Raszageth P2.5)
+    [197398] = true, -- Hungry Lasher (DF, Algeth'ar Academy, Overgrown Ancient)
 };
 
 do
