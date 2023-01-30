@@ -37,7 +37,7 @@ end
 local NP = S.NamePlates;
 
 -- Local Config
-local NAME_TEXT_ENABLED, NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_MODE;
+local NAME_TEXT_ENABLED, NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
 
@@ -174,6 +174,18 @@ Stripes.UnimportantUnits = {
     [191714] = true, -- Seeking Stormling (DF, Vault of the Incarnates, Raszageth P2.5)
     [197398] = true, -- Hungry Lasher (DF, Algeth'ar Academy, Overgrown Ancient)
 };
+
+Stripes.IsUnimportantUnit = function(self, unitId)
+    return self.UnimportantUnits[unitId];
+end
+
+Stripes.AddUnimportantUnit = function(self, unitId)
+    self.UnimportantUnits[unitId] = true;
+end
+
+Stripes.RemoveUnimportantUnit = function(self, unitId)
+    self.UnimportantUnits[unitId] = nil;
+end
 
 do
     local CACHE = {};
@@ -846,7 +858,7 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
     unitframe.isActive = true;
     S:ForAllNameplateModules('UnitAdded', unitframe);
 
-    if Stripes.UnimportantUnits[unitframe.data.npcId] then
+    if Stripes:IsUnimportantUnit(unitframe.data.npcId) then
         unitframe.data.isUnimportantUnit = true;
     end
 
@@ -948,7 +960,6 @@ function Stripes:UpdateLocalConfig()
     NAME_TEXT_ENABLED               = O.db.name_text_enabled;
     NAME_ONLY_FRIENDLY_ENABLED      = O.db.name_only_friendly_enabled;
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
-    NAME_ONLY_MODE                  = O.db.name_only_friendly_mode;
 
     NAME_TRANSLIT           = O.db.name_text_translit;
     NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
