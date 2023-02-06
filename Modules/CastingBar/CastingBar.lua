@@ -74,14 +74,16 @@ local function UpdateInterruptReadyColorAndTick(self)
         else
             local tickPosition, interruptReady, interruptWillBeReady = GetInterruptReadyTickPosition(self);
 
-            if not interruptReady then
-                if self.useInterruptReadyInTimeColor and interruptWillBeReady then
-                    self:SetStatusBarColor(self.interruptReadyInTimeColor:GetRGBA());
-                elseif self.useInterruptNotReadyColor then
-                    self:SetStatusBarColor(self.interruptNotReadyColor:GetRGBA());
+            if not self.customColored then
+                if not interruptReady then
+                    if self.useInterruptReadyInTimeColor and interruptWillBeReady then
+                        self:SetStatusBarColor(self.interruptReadyInTimeColor:GetRGBA());
+                    elseif self.useInterruptNotReadyColor then
+                        self:SetStatusBarColor(self.interruptNotReadyColor:GetRGBA());
+                    end
+                else
+                    self:SetStatusBarColor(StripesCastingBar_GetEffectiveStartColor(self, self.channeling, self.notInterruptible):GetRGBA());
                 end
-            else
-                self:SetStatusBarColor(StripesCastingBar_GetEffectiveStartColor(self, self.channeling, self.notInterruptible):GetRGBA());
             end
 
             if tickPosition == 0 or not self.showInterruptReadyTick then
@@ -102,6 +104,7 @@ local function UpdateCustomCast(self)
 
     if not CUSTOM_CASTS_ENABLED or not spellId or not castData or not castData.enabled then
         GlowStopAll(self);
+        self.customColored = nil;
         return;
     end
 
@@ -112,6 +115,8 @@ local function UpdateCustomCast(self)
         if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
             self:SetStatusBarColor(color[1], color[2], color[3], color[4]);
         end
+
+        self.customColored = true;
     end
 
     if castData.new_name and castData.new_name ~= castData.name then
@@ -603,6 +608,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self.fadeOut = true;
             self.holdTime = 0;
             self.spellName = nil;
+            self.customColored = nil;
         end
     elseif event == 'UNIT_SPELLCAST_FAILED' or event == 'UNIT_SPELLCAST_INTERRUPTED' then
         if self:IsShown() and (self.casting and select(2, ...) == self.castID) and not self.fadeOut then
@@ -638,6 +644,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
             self.holdTime = GetTime() + CASTING_BAR_HOLD_TIME;
             self.notInterruptible = nil;
             self.spellName = nil;
+            self.customColored = nil;
         end
     elseif event == 'UNIT_SPELLCAST_DELAYED' then
         if self:IsShown() then
@@ -851,7 +858,7 @@ function StripesCastingBar_UpdateInterruptibleState(self, notInterruptible)
 end
 
 function StripesCastingBar_OnUpdate(self, elapsed)
-    if self.casting  or self.reverseChanneling then
+    if self.casting or self.reverseChanneling then
         self.value = self.value + elapsed;
 
         if self.reverseChanneling and self.NumStages > 0 then
