@@ -2383,7 +2383,7 @@ local NewColorPicker do
 
         holder:SetScript('OnDisable', function(self)
             self.background:SetVertexColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b);
-            self.Label:SetFontObject(GameFontDisable);
+            self.Label:SetFontObject('StripesOptionsDisabledFont');
 
             self.disabled = true;
         end);
@@ -2392,7 +2392,7 @@ local NewColorPicker do
             local color = self:IsMouseOver() and NORMAL_FONT_COLOR or HIGHLIGHT_FONT_COLOR;
 
             self.background:SetVertexColor(color.r, color.g, color.b);
-            self.Label:SetFontObject(GameFontHighlight);
+            self.Label:SetFontObject('StripesOptionsNormalFont');
 
             self.disabled = false;
         end);
