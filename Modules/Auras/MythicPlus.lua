@@ -44,6 +44,23 @@ local HelpfulList = {
     [113315] = true, -- Temple of the Jade Serpent (Intensity)
     [113309] = true, -- Temple of the Jade Serpent (Ultimate Power)
 
+    -- BfA
+    [263246] = true, -- Temple of Sethralis: Lightning Shield
+    [257597] = true, -- MOTHERLODE: Azerite Infusion
+    [257042] = true, -- Siege of Boralus: Feral Bond
+    [260805] = true, -- Waycrest Manor: Focusing Iris
+    [264027] = true, -- Waycrest Manor: Warding Candles
+    [269935] = true, -- King's Rest: Minion of Zul
+    [257402] = true, -- Freehold: Harlan Sweete - Loaded Dice: All Hands!
+    [257458] = true, -- Freehold: Harlan Sweete - Loaded Dice: Man-O-War
+    [265091] = true, -- The Underrot: Devout Blood Priest - Gift of G'huun
+
+    -- Legion
+    [190225] = true, -- Halls of Valor (Enrage)
+    [397410] = true, -- Halls of Valor (Enraged Regeneration)
+    [225101] = true, -- Court of Stars (Power Charge)
+    [209033] = true, -- Court of Stars (Fortification)
+
     -- Shadowlands
     [324085] = true, -- Theater of Pain (Enrage)
     [333241] = true, -- Theater of Pain (Raging Tantrum)
@@ -56,6 +73,16 @@ local HelpfulList = {
     [328015] = true, -- Plaguefall (Wonder Grow)
     [343470] = true, -- The Necrotic Wake (Skeletal Marauder)
     [355147] = true, -- Tazavesh: So'leah's Gambit (Fish Invigoration)
+
+    -- Dragonflight,
+    [385063] = true, -- Ruby Life Pools (Burning Ambition)
+    [392454] = true, -- Ruby Life Pools (Burning Veins)
+    [387596] = true, -- The Nokhud Offensive (Swift Wind)
+    [396798] = true, -- The Nokhud Offensive (Swift Wind)
+    [383067] = true, -- The Nokhud Offensive (Raging Kin)
+    [389686] = true, -- The Azure Vault (Arcane Fury)
+    [378065] = true, -- The Azure Vault (Mage Hunter's Fervor)
+    [374778] = true, -- The Azure Vault (Brilliant Scales)
 };
 
 local HarmfulList = {
