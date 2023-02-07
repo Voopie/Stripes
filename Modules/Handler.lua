@@ -345,6 +345,10 @@ local function UpdateTarget(unitframe)
     unitframe.data.isTarget = unitframe.displayedUnit and UnitIsUnit(unitframe.displayedUnit, 'target');
 end
 
+local function UpdateTargetName(unitframe)
+    unitframe.data.targetName = unitframe.displayedUnit and UnitName(unitframe.displayedUnit .. 'target');
+end
+
 local function UpdateFocus(unitframe)
     unitframe.data.isFocus = unitframe.displayedUnit and UnitIsUnit(unitframe.displayedUnit, 'focus');
 end
@@ -841,12 +845,12 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
     UpdateConnection(unitframe);
     UpdateTarget(unitframe);
     UpdateFocus(unitframe);
+    UpdateTargetName(unitframe);
 
     unitframe.data.isPersonal = unitframe.data.unitType == 'SELF';
 
     unitframe.data.creatureType = not unitframe.data.isPlayer and UnitCreatureType(unit) or nil;
     unitframe.data.minus = UnitClassification(unit) == 'minus';
-    unitframe.data.targetName = UnitName(unit .. 'target');
 
     if unitframe.data.widgetsOnly then
         unitframe.data.previousType = nil;
@@ -931,6 +935,20 @@ function Stripes:UNIT_FACTION(unit)
     UpdateLevel(unitframe);
 end
 
+function Stripes:UNIT_TARGET(unit)
+    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
+
+    if not nameplate or not NP[nameplate] then
+        return;
+    end
+
+    local unitframe = NP[nameplate];
+
+    UpdateTargetName(unitframe);
+
+    S:ForAllNameplateModules('UnitTarget', unitframe);
+end
+
 function Stripes:PLAYER_FOCUS_CHANGED()
     for _, unitframe in pairs(NP) do
         if unitframe.isActive and unitframe:IsShown() then
@@ -989,6 +1007,7 @@ function Stripes:StartUp()
     self:RegisterEvent('UNIT_LEVEL');
     self:RegisterEvent('UNIT_FACTION');
     self:RegisterEvent('PLAYER_FOCUS_CHANGED');
+    self:RegisterEvent('UNIT_TARGET');
 
     hooksecurefunc(C_CVar, 'SetCVar', HookSetCVar);
 

@@ -68,19 +68,6 @@ local function TargetChanged(unitframe)
     end
 end
 
-local function OnUpdate(unitframe)
-    if not unitframe.TargetName then
-        return;
-    end
-
-    local name = UnitName(unitframe.data.unit .. 'target');
-
-    if unitframe.data.targetName ~= name then
-        unitframe.data.targetName = name;
-        TargetChanged(unitframe);
-    end
-end
-
 local function Create(unitframe)
     if unitframe.TargetName then
         return;
@@ -107,6 +94,10 @@ local function Reset(unitframe)
     end
 end
 
+function Module:UnitTarget(unitframe)
+    TargetChanged(unitframe);
+end
+
 function Module:UnitAdded(unitframe)
     Create(unitframe);
     Update(unitframe);
@@ -131,12 +122,6 @@ function Module:UpdateLocalConfig()
     ROLE_ICON  = O.db.target_name_role_icon;
 
     NAME_ONLY_MODE = O.db.name_only_friendly_mode;
-
-    if ENABLED then
-        Stripes.Updater:Add('TargetName', OnUpdate);
-    else
-        Stripes.Updater:Remove('TargetName');
-    end
 end
 
 function Module:UpdatePartyCache()

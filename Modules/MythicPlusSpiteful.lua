@@ -5,9 +5,6 @@ local Stripes = S:GetNameplateModule('Handler');
 -- Lua API
 local string_format = string.format;
 
--- WoW API
-local UnitName = UnitName;
-
 -- Local config
 local ENABLED, ONLY_ON_ME, TTD;
 
@@ -15,6 +12,8 @@ local PlayerData = D.Player;
 
 local SPITEFUL_NPC_ID  = 174773;
 local SPITEFUL_TEXTURE = 135945;
+
+local isSpitefulCurrentWeek;
 
 local function Create(unitframe)
     if unitframe.Spiteful then
@@ -44,7 +43,7 @@ local function Update(unitframe)
         return;
     end
 
-    if not ENABLED or unitframe.data.isPersonal then
+    if not ENABLED or not isSpitefulCurrentWeek or unitframe.data.isPersonal then
         unitframe.Spiteful.icon:Hide();
         unitframe.Spiteful.ttd:Hide();
 
@@ -72,32 +71,15 @@ local function Update(unitframe)
     end
 end
 
-local function OnUpdate(unitframe)
-    if not unitframe.Spiteful then
-        return;
-    end
-
-    local name = UnitName(unitframe.data.unit .. 'target');
-
-    if not unitframe.data.targetName or (name and name == PlayerData.Name) then
-        Update(unitframe);
-    end
-
-    if unitframe.data.targetName ~= name then
-        unitframe.data.targetName = name;
-        Update(unitframe);
-    end
-
-    if TTD then
-        Update(unitframe);
-    end
-end
-
 local function Reset(unitframe)
     if unitframe.Spiteful then
         unitframe.Spiteful.icon:Hide();
         unitframe.Spiteful.ttd:Hide();
     end
+end
+
+function Module:UnitTarget(unitframe)
+    Update(unitframe);
 end
 
 function Module:UnitAdded(unitframe)
@@ -118,15 +100,18 @@ function Module:UpdateLocalConfig()
     ONLY_ON_ME = O.db.spiteful_show_only_on_me;
     TTD        = O.db.spiteful_ttd_enabled;
 
-    local isSpitefulCurrentWeek = U.IsAffixCurrent(123);
-
-    if ENABLED and isSpitefulCurrentWeek then
-        Stripes.Updater:Add('MythicPlusSpiteful', OnUpdate);
-    else
-        Stripes.Updater:Remove('MythicPlusSpiteful');
-    end
+    isSpitefulCurrentWeek = U.IsAffixCurrent(123);
 end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
+
+    -- All-Consuming Spite (Spiteful) timer update
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', function(unitframe)
+        if ENABLED and TTD then
+            if unitframe.data.npcId == 174773 then
+                Update(unitframe);
+            end
+        end
+    end);
 end
