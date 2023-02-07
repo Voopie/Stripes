@@ -11,6 +11,13 @@ local TEXTURE = S.Media.Path .. 'Textures\\icons_healers';
 local SOUNDFILE_ID = 567458;
 
 local mobsIDs = {
+    -- Warlords of Draenor
+    [75713] = true, -- Shadowmoon Burial Grounds: Shadowmoon Bone-Mender
+
+    -- Legion
+    [95834]  = true, -- Halls of Valor: Valarjar Mystic
+    [104270] = true, -- Court of Stars: Guardian Construct
+
     -- Battle for Azeroth
     [122973] = true, -- Atal'Dazar: Dazar'ai Confessor
 
@@ -79,6 +86,10 @@ local mobsIDs = {
     [178141] = true, -- Tazavesh (Upper): Murkbrine Scalebinder
     [179733] = true, -- Tazavesh (Upper): Invigorating Fish Stick
     [180432] = true, -- Tazavesh (Upper): Devoted Accomplice
+
+    -- Dragonflight
+    [188067] = true, -- Ruby Life Pools: Flashfrost Chillweaver
+    [197985] = true, -- Ruby Life Pools: Flame Channeler
 };
 
 local function Create(unitframe)
