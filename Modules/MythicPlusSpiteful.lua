@@ -109,7 +109,7 @@ function Module:StartUp()
     -- All-Consuming Spite (Spiteful) timer update
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', function(unitframe)
         if ENABLED and TTD and isSpitefulCurrentWeek then
-            if unitframe.data.npcId == 174773 then
+            if unitframe.data.npcId == SPITEFUL_NPC_ID then
                 Update(unitframe);
             end
         end
