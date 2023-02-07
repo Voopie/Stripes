@@ -63,6 +63,12 @@ local auras = {
 };
 
 local units = {
+    -- Mists of Pandaria
+    -- Dungeons
+    -- [200126] = true, -- Fallen Waterspeaker (Temple of the Jade Serpent)
+    -- [200131] = true, -- Sha-Touched Guardian (Temple of the Jade Serpent)
+    -- [200137] = true, -- Depraved Mistweave (Temple of the Jade Serpent)
+
     -- Legion
     -- Dungeons
     [91796]  = true, -- Skrog Wavecrasher (Eye of Azshara)
@@ -124,6 +130,15 @@ local units = {
     -- Dragonflight
     -- Dungeons
     -- TODO with my Rogue
+    [187159] = true, -- Shrieking Whelp (The Azure Vault)
+    [191847] = true, -- Nokhud Plainstomper (The Nokhud Offensive)
+    [192800] = true, -- Nokhud Lancemaster (The Nokhud Offensive)
+    [194317] = true, -- Stormcaller Boroo (The Nokhud Offensive)
+    [194316] = true, -- Stormcaller Zarii (The Nokhud Offensive)
+    [194315] = true, -- Stormcaller Solongo (The Nokhud Offensive)
+    [195265] = true, -- Stormcaller Arynga (The Nokhud Offensive)
+    [195696] = true, -- Primalist Thunderbeast (The Nokhud Offensive)
+    [187897] = true, -- Defier Draghar (Ruby Life Pools)
 };
 
 local function Create(unitframe)
