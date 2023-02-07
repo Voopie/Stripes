@@ -151,19 +151,23 @@ local function Update(unitframe)
     if Healers[name] then
         local specID = HealerSpecs[Healers[name]];
 
-        if STRATA == 1 then
-            unitframe.PVPHealers:SetFrameStrata(unitframe.healthBar:GetFrameStrata());
+        if ICON_COORDS[specID] then
+            if STRATA == 1 then
+                unitframe.PVPHealers:SetFrameStrata(unitframe.healthBar:GetFrameStrata());
+            else
+                unitframe.PVPHealers:SetFrameStrata(STRATA);
+            end
+
+            unitframe.PVPHealers.icon:SetTexture(tankSpecIDs[specID] and TANKS_TEXTURE or HEALERS_TEXTURE);
+            unitframe.PVPHealers.icon:SetTexCoord(unpack(ICON_COORDS[specID]));
+
+            unitframe.PVPHealers.icon:ClearAllPoints();
+            unitframe.PVPHealers.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+            unitframe.PVPHealers:SetScale(ICON_SCALE);
+            unitframe.PVPHealers:Show();
         else
-            unitframe.PVPHealers:SetFrameStrata(STRATA);
+            unitframe.PVPHealers:Hide();
         end
-
-        unitframe.PVPHealers.icon:SetTexture(tankSpecIDs[specID] and TANKS_TEXTURE or HEALERS_TEXTURE);
-        unitframe.PVPHealers.icon:SetTexCoord(unpack(ICON_COORDS[specID]));
-
-        unitframe.PVPHealers.icon:ClearAllPoints();
-        unitframe.PVPHealers.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
-        unitframe.PVPHealers:SetScale(ICON_SCALE);
-        unitframe.PVPHealers:Show();
     else
         unitframe.PVPHealers:Hide();
     end
