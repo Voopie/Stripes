@@ -25,6 +25,7 @@ local ICON_COORDS = {
     [270] = { 3/4, 4/4,   0, 1/2 }, -- Monk Mistweaver
     [65]  = {   0, 1/4, 1/2, 2/2 }, -- Paladin Holy
     [264] = { 1/4, 2/4, 1/2, 2/2 }, -- Shaman Restoration
+    [1468]= { 3/4, 4/4,   0, 1/2 }, -- Evoker Preservation (TODO)
 
     [268] = {   0, 1/4,   0, 1/2 }, -- Monk Brewmaster
     [104] = { 1/4, 2/4,   0, 1/2 }, -- Druid Guardian
@@ -50,6 +51,7 @@ local healerSpecIDs = {
     270, -- Monk Mistweaver
     65,	 -- Paladin Holy
     264, -- Shaman Restoration
+    1468,-- Evoker Preservation
 
     -- Hooking tanks
     268, -- Monk Brewmaster
