@@ -774,15 +774,22 @@ panel.Load = function(self)
 
     self.name_only_friendly_enabled = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
     self.name_only_friendly_enabled:SetPosition('TOPLEFT', NameOnlyHeader, 'BOTTOMLEFT', 0, -4);
-    self.name_only_friendly_enabled:SetLabel(L['OPTIONS_VISIBILITY_NAME_ONLY_ENABLED'] .. S.Media.ASTERISK);
+    self.name_only_friendly_enabled:SetLabel(L['OPTIONS_VISIBILITY_NAME_ONLY_ENABLED']);
     self.name_only_friendly_enabled:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_ENABLED_TOOLTIP']);
     self.name_only_friendly_enabled:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_ENABLED_TOOLTIP'], self.Tabs[3]);
     self.name_only_friendly_enabled:SetChecked(O.db.name_only_friendly_enabled);
-    self.name_only_friendly_enabled.LastSessionValue = O.db.name_only_friendly_enabled;
     self.name_only_friendly_enabled.Callback = function(self)
-        O.NeedReload('name_only_friendly_enabled', self.LastSessionValue ~= self:GetChecked());
-
         O.db.name_only_friendly_enabled = self:GetChecked();
+
+        if O.db.name_only_friendly_enabled then
+            if O.db.name_only_friendly_mode == 1 then -- Anywhere
+                C_CVar.SetCVar('nameplateShowOnlyNames', 1);
+            else
+                C_CVar.SetCVar('nameplateShowOnlyNames', 0);
+            end
+        else
+            C_CVar.SetCVar('nameplateShowOnlyNames', 0);
+        end
 
         panel.name_only_friendly_mode:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_players_only:SetEnabled(O.db.name_only_friendly_enabled);
@@ -820,14 +827,15 @@ panel.Load = function(self)
     self.name_only_friendly_mode:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_FRIENDLY_MODE_TOOLTIP']);
     self.name_only_friendly_mode:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_FRIENDLY_MODE_TOOLTIP'], self.Tabs[3]);
     self.name_only_friendly_mode:SetEnabled(O.db.name_only_friendly_enabled);
-    self.name_only_friendly_mode.LastSessionValue = O.db.name_only_friendly_mode;
     self.name_only_friendly_mode.OnValueChangedCallback = function(_, value)
-        O.NeedReload('name_only_friendly_mode', self.LastSessionValue ~= tonumber(value));
-
         O.db.name_only_friendly_mode = tonumber(value);
 
-        if O.db.name_only_friendly_mode == 1 then -- Anywhere
-            C_CVar.SetCVar('nameplateShowOnlyNames', 1);
+        if O.db.name_only_friendly_enabled then
+            if O.db.name_only_friendly_mode == 1 then -- Anywhere
+                C_CVar.SetCVar('nameplateShowOnlyNames', 1);
+            else
+                C_CVar.SetCVar('nameplateShowOnlyNames', 0);
+            end
         else
             C_CVar.SetCVar('nameplateShowOnlyNames', 0);
         end
