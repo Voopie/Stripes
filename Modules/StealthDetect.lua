@@ -120,6 +120,10 @@ local units = {
     [156245] = true, -- Grand Automaton
     [156244] = true, -- Winged Automaton
     [173051] = true, -- Suppressor Xelors
+
+    -- Dragonflight
+    -- Dungeons
+    -- TODO with my Rogue
 };
 
 local function Create(unitframe)
