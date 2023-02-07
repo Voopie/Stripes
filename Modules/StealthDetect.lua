@@ -129,7 +129,6 @@ local units = {
 
     -- Dragonflight
     -- Dungeons
-    -- TODO with my Rogue
     [187159] = true, -- Shrieking Whelp (The Azure Vault)
     [191847] = true, -- Nokhud Plainstomper (The Nokhud Offensive)
     [192800] = true, -- Nokhud Lancemaster (The Nokhud Offensive)
