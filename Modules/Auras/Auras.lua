@@ -306,6 +306,26 @@ local function FilterShouldShowBuff(self, aura, forceAll, isSelf)
     end
 end
 
+local function ParseAllAuras(self, forceAll, isSelf)
+	if self.auras == nil then
+		self.auras = TableUtil.CreatePriorityTable(AuraUtil.DefaultAuraCompare, TableUtil.Constants.AssociativePriorityTable);
+	else
+		self.auras:Clear();
+	end
+
+	local function HandleAura(aura)
+		if FilterShouldShowBuff(self, aura, forceAll, isSelf) then
+			self.auras[aura.auraInstanceID] = aura;
+		end
+
+		return false;
+	end
+
+	local batchCount = nil;
+	local usePackedAura = true;
+	AuraUtil.ForEachAura(self.unit, self.filter, batchCount, HandleAura, usePackedAura);
+end
+
 local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
     if unitframe.data.isUnimportantUnit then
         return;
@@ -358,7 +378,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
 
     local aurasChanged = false;
     if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filter ~= previousFilter then
-        self:ParseAllAuras(showAll);
+        ParseAllAuras(self, showAll, isSelf);
         aurasChanged = true;
     else
         if unitAuraUpdateInfo.addedAuras ~= nil then
@@ -542,9 +562,11 @@ local function Update(unitframe, unitAuraUpdateInfo)
     unitframe.BuffFrame.isActive       = BUFFFRAME_IS_ACTIVE;
     unitframe.BuffFrame.UpdateAnchor   = UpdateAnchor;
     unitframe.BuffFrame.ShouldShowBuff = FilterShouldShowBuff;
+    unitframe.BuffFrame.ParseAllAuras  = ParseAllAuras;
     unitframe.BuffFrame.UpdateBuffs    = UpdateBuffs;
 
     OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo);
+    --unitframe.BuffFrame:UpdateBuffs();
 end
 
 local function UpdateStyle(unitframe)
