@@ -991,6 +991,7 @@ function Stripes:StartUp()
     self:RegisterEvent('PLAYER_FOCUS_CHANGED');
 
     hooksecurefunc(C_CVar, 'SetCVar', HookSetCVar);
+    hooksecurefunc(NamePlateDriverFrame, 'UpdateNamePlateOptions', UpdateSizesSafe);
 
     self:UpdateAll();
 end
