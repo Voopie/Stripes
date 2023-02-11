@@ -183,6 +183,10 @@ Stripes.RemoveUnimportantUnit = function(self, unitId)
     end
 end
 
+Stripes.GetUnimportantUnits = function(self)
+    return StripesDB.UnimportantsUnits;
+end
+
 do
     local CACHE = {};
 
