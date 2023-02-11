@@ -819,6 +819,13 @@ function AddOn:ADDON_LOADED(addonName)
                 end
 
                 return;
+            elseif string.find(input, 'help') then
+                U.Print(L['AVAILABLE_COMMANDS']);
+                U.Print(string.format('%s | %s', '|cffff6666minimap|r', 'Toggle visibility of the minimap button'));
+                U.Print(string.format('%s | %s', '|cffff6666profile|r', 'Change profile (/stripes profile PROFILENAME)'));
+                U.Print(string.format('%s | %s', '|cffff6666ununits|r', 'List of unimportant units'));
+
+                return;
             end
         end
 

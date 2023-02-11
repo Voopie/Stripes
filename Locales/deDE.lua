@@ -31,6 +31,10 @@ L['BACKGROUND'] = 'Hintergrund';
 L['MAX_SHORT'] = 'Max .';
 L['SECOND_SHORT'] = 's.';
 
+L['AVAILABLE_COMMANDS'] = 'Verfügbare Befehle';
+L['COMMAND_MINIMAP_DESCRIPTION'] = 'Umschalten der Sichtbarkeit der Minimap-Schaltfläche';
+L['COMMAND_PROFILE_DESCRIPTION'] = 'Profil ändern (/stripes profile PROFILENAME)';
+L['COMMAND_UNUNITS_DESCRIPTION'] = 'Liste der unwichtigen Einheiten';
 L['UNIMPORTANT_UNITS'] = 'Unwichtige Einheiten';
 L['NO_UNIMPORTANT_UNITS'] = 'Es gibt keine unwichtigen Einheiten';
 

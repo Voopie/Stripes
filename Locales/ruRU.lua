@@ -31,6 +31,10 @@ L['BACKGROUND'] = 'Фон';
 L['MAX_SHORT'] = 'Макс.';
 L['SECOND_SHORT'] = 'c.';
 
+L['AVAILABLE_COMMANDS'] = 'Доступные команды';
+L['COMMAND_MINIMAP_DESCRIPTION'] = 'Переключить видимость кнопки у миникарты';
+L['COMMAND_PROFILE_DESCRIPTION'] = 'Сменить профиль (/stripes profile PROFILENAME)';
+L['COMMAND_UNUNITS_DESCRIPTION'] = 'Список неважных юнитов';
 L['UNIMPORTANT_UNITS'] = 'Неважные юниты';
 L['NO_UNIMPORTANT_UNITS'] = 'Нет неважных юнитов';
 

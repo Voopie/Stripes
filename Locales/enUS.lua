@@ -31,6 +31,10 @@ L['BACKGROUND'] = 'Background';
 L['MAX_SHORT'] = 'Max';
 L['SECOND_SHORT'] = 's';
 
+L['AVAILABLE_COMMANDS'] = 'Available commands';
+L['COMMAND_MINIMAP_DESCRIPTION'] = 'Toggle visibility of the minimap button';
+L['COMMAND_PROFILE_DESCRIPTION'] = 'Change profile (/stripes profile PROFILENAME)';
+L['COMMAND_UNUNITS_DESCRIPTION'] = 'List of unimportant units';
 L['UNIMPORTANT_UNITS'] = 'Unimportant units';
 L['NO_UNIMPORTANT_UNITS'] = 'There are no unimportant units';
 
