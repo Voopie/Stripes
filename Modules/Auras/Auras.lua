@@ -222,18 +222,18 @@ local function UpdateAuraStyle(aura, withoutMasque)
                 return;
             end
 
-            if self.spellId and IsOnPandemic(self) then
-                if pandemicKnownSpells[self.spellId] then
+            if self.spellID and IsOnPandemic(self) then
+                if pandemicKnownSpells[self.spellID] then
                     self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
                 else
-                    local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellId);
+                    local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellID);
                     if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
-                        self.trullySpellId = GetTrulySpellId(self.spellId);
+                        self.trullySpellId = GetTrulySpellId(self.spellID);
 
                         if self.trullySpellId and (pandemicKnownSpells[self.trullySpellId] or S_IsSpellKnown(self.trullySpellId)) then
                             self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
 
-                            pandemicKnownSpells[self.spellId]       = true;
+                            pandemicKnownSpells[self.spellID]       = true;
                             pandemicKnownSpells[self.trullySpellId] = true;
                         end
                     end
@@ -423,9 +423,9 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
         local buff, isNew = self.buffPool:Acquire();
 
         buff.auraInstanceID = auraInstanceID;
-        buff.isBuff = aura.isHelpful;
-        buff.layoutIndex = buffIndex;
-        buff.spellId = aura.spellId;
+        buff.isBuff         = aura.isHelpful;
+        buff.layoutIndex    = buffIndex;
+        buff.spellID        = aura.spellId;
         buff.expirationTime = aura.expirationTime;
 
         if not isNew and buff.Cooldown.noCooldownCount == nil then

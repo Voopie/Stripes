@@ -220,11 +220,11 @@ local function CreateBuffFrame(unitframe)
             end
 
             buff.auraInstanceID = auraInstanceID;
-            buff.isBuff = aura.isHelpful;
-            buff.layoutIndex = buffIndex;
-            buff.spellId = aura.spellId;
+            buff.isBuff         = aura.isHelpful;
+            buff.layoutIndex    = buffIndex;
+            buff.spellID        = aura.spellId;
             buff.expirationTime = aura.expirationTime;
-            buff.sourceUnit = aura.sourceUnit;
+            buff.sourceUnit     = aura.sourceUnit;
 
             buff:ClearAllPoints();
 

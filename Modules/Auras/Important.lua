@@ -251,11 +251,11 @@ local function CreateBuffFrame(unitframe)
             end
 
             buff.auraInstanceID = auraInstanceID;
-            buff.isBuff = aura.isHelpful;
-            buff.layoutIndex = buffIndex;
-            buff.spellId = aura.spellId;
+            buff.isBuff         = aura.isHelpful;
+            buff.layoutIndex    = buffIndex;
+            buff.spellID        = aura.spellId;
             buff.expirationTime = aura.expirationTime;
-            buff.sourceUnit = aura.sourceUnit;
+            buff.sourceUnit     = aura.sourceUnit;
 
             self.buffList[1]:ClearAllPoints();
             self.buffList[1]:SetPoint('CENTER', -(self.buffList[1]:GetWidth()/2)*(buffIndex-1), 0);
