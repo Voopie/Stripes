@@ -2311,6 +2311,17 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.auras_mythicplus_helpful_show_all = E.CreateCheckButton(self.TabsFrames['MythicPlusTab'].Content);
+    self.auras_mythicplus_helpful_show_all:SetPosition('LEFT', self.auras_mythicplus_direction, 'RIGHT', 16, 0);
+    self.auras_mythicplus_helpful_show_all:SetLabel(L['OPTIONS_AURAS_MYTHICPLUS_HELPFUL_SHOW_ALL']);
+    self.auras_mythicplus_helpful_show_all:SetTooltip(L['OPTIONS_AURAS_MYTHICPLUS_HELPFUL_SHOW_ALL_TOOLTIP']);
+    self.auras_mythicplus_helpful_show_all:AddToSearch(button, L['OPTIONS_AURAS_MYTHICPLUS_HELPFUL_SHOW_ALL_TOOLTIP'], self.Tabs[3]);
+    self.auras_mythicplus_helpful_show_all:SetChecked(O.db.auras_mythicplus_helpful_show_all);
+    self.auras_mythicplus_helpful_show_all.Callback = function(self)
+        O.db.auras_mythicplus_helpful_show_all = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['MythicPlusTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.auras_mythicplus_direction, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());

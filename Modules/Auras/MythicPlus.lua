@@ -26,6 +26,7 @@ local TEXT_COOLDOWN_COLOR, TEXT_COUNT_COLOR;
 local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
 local AURAS_DIRECTION, AURAS_MAX_DISPLAY;
+local HELPFUL_SHOW_ALL;
 
 local StripesAurasMythicPlusCooldownFont = CreateFont('StripesAurasMythicPlusCooldownFont');
 local StripesAurasMythicPlusCountFont    = CreateFont('StripesAurasMythicPlusCountFont');
@@ -140,7 +141,7 @@ local function CreateBuffFrame(unitframe)
             return;
         end
 
-        if isHelpful and HelpfulList[aura.spellId] then
+        if isHelpful and (HELPFUL_SHOW_ALL or HelpfulList[aura.spellId]) then
             return true;
         elseif not isHelpful and HarmfulList[aura.spellId] then
             return true;
@@ -184,7 +185,7 @@ local function CreateBuffFrame(unitframe)
 
         unit = unit or uf.data.unit;
 
-        if not ENABLED or not PlayerState.inMythic or not unit or uf.data.isPersonal or uf.data.isUnimportantUnit then
+        if not ENABLED or not PlayerState.inChallenge or not unit or uf.data.isPersonal or uf.data.isUnimportantUnit then
             self:Hide();
             return;
         end
@@ -252,6 +253,7 @@ local function CreateBuffFrame(unitframe)
                     applications   = aCount,
                     duration       = aura.duration,
                     expirationTime = aura.expirationTime,
+                    auraInstanceID = aura.auraInstanceID,
                 };
             else
                 unitframe.AurasMythicPlus.compactList[aura.spellId].applications   = unitframe.AurasMythicPlus.compactList[aura.spellId].applications + aCount;
@@ -300,8 +302,9 @@ local function CreateBuffFrame(unitframe)
             end
 
             buff.layoutIndex    = buffIndex;
-            buff.spellId        = aura.spellId;
+            buff.spellID        = aura.spellId;
             buff.expirationTime = aura.expirationTime;
+            buff.auraInstanceID = aura.auraInstanceID;
 
             buff:ClearAllPoints();
 
@@ -452,6 +455,8 @@ function Module:UpdateLocalConfig()
     NAME_TEXT_POSITION_V = O.db.name_text_position_v;
     NAME_TEXT_OFFSET_Y   = O.db.name_text_offset_y;
     SUPPRESS_OMNICC      = O.db.auras_omnicc_suppress;
+
+    HELPFUL_SHOW_ALL = O.db.auras_mythicplus_helpful_show_all;
 
     BORDER_HIDE = O.db.auras_border_hide;
     BORDER_COLOR    = BORDER_COLOR or {};

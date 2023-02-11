@@ -293,7 +293,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~588
+-- ~589
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -871,6 +871,7 @@ O.DefaultValues = {
     auras_mythicplus_spacing_x            = 4,
     auras_mythicplus_direction            = 2,
     auras_mythicplus_max_display          = 32,
+    auras_mythicplus_helpful_show_all     = false,
 
     auras_important_enabled                = true,
     auras_important_draw_swipe             = true,
@@ -1239,10 +1240,23 @@ do
     end
 end
 
+function Module:Migration_UnimportantUnits()
+    if not StripesDB.UnimportantsUnits then
+        StripesDB.UnimportantsUnits = {
+            [167999] = true, -- Echo of Sin (SL, Castle Nathria, Sire Denathrius)
+            [176920] = true, -- Domination Arrow (SL, Sanctum of Domination, Sylvanas)
+            [189707] = true, -- Chaotic Essence (SL, Season 4, Raid Fated Affix)
+            [191714] = true, -- Seeking Stormling (DF, Vault of the Incarnates, Raszageth P2.5)
+            [197398] = true, -- Hungry Lasher (DF, Algeth'ar Academy, Overgrown Ancient)
+        };
+    end
+end
+
 function Module:RunMigrations()
     self:Migration_ColorsAndCategories();
     self:Migration_CustomColorsAndNames();
     self:Migration_FontValueOptions();
+    self:Migration_UnimportantUnits();
 end
 
 function Module:StartUp()
@@ -1297,6 +1311,11 @@ function Module:StartUp()
     if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 28) then
         self:Migration_CustomColorsAndNames();
         self:Migration_FontValueOptions();
+    end
+
+    -- migration to 1.29
+    if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 29) then
+        self:Migration_UnimportantUnits();
     end
 
     self:CleanUp();
