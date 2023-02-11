@@ -167,24 +167,20 @@ end
 Stripes.IsNameOnlyMode            = IsNameOnlyMode;
 Stripes.IsNameOnlyModeAndFriendly = IsNameOnlyModeAndFriendly;
 
-Stripes.UnimportantUnits = {
-    [167999] = true, -- Echo of Sin (SL, Castle Nathria, Sire Denathrius)
-    [176920] = true, -- Domination Arrow (SL, Sanctum of Domination, Sylvanas)
-    [189707] = true, -- Chaotic Essence (SL, Season 4, Raid Fated Affix)
-    [191714] = true, -- Seeking Stormling (DF, Vault of the Incarnates, Raszageth P2.5)
-    [197398] = true, -- Hungry Lasher (DF, Algeth'ar Academy, Overgrown Ancient)
-};
-
 Stripes.IsUnimportantUnit = function(self, unitId)
-    return self.UnimportantUnits[unitId];
+    return StripesDB.UnimportantsUnits and StripesDB.UnimportantsUnits[unitId];
 end
 
 Stripes.AddUnimportantUnit = function(self, unitId)
-    self.UnimportantUnits[unitId] = true;
+    if StripesDB.UnimportantsUnits then
+        StripesDB.UnimportantsUnits[unitId] = true;
+    end
 end
 
 Stripes.RemoveUnimportantUnit = function(self, unitId)
-    self.UnimportantUnits[unitId] = nil;
+    if StripesDB.UnimportantsUnits and StripesDB.UnimportantsUnits[unitId] then
+        StripesDB.UnimportantsUnits[unitId] = nil;
+    end
 end
 
 do
