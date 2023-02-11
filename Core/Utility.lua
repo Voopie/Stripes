@@ -128,7 +128,7 @@ do
 
             name = tooltipData.lines[1] and tooltipData.lines[1].leftText or UNKNOWN;
 
-            if name ~= UNKNOWN then
+            if name ~= '' and name ~= UNKNOWN then
                 NAMES_CACHE[id] = name;
             end
         end
