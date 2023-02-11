@@ -1050,6 +1050,8 @@ L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Показывать эффе
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION'] = 'Направление роста';
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Направление роста эпохальных+ аур';
 L['OPTIONS_AURAS_MYTHICPLUS_MAX_DISPLAY_TOOLTIP'] = 'Максимальное количество отображаемых эпохальных+ аур';
+L['OPTIONS_AURAS_MYTHICPLUS_HELPFUL_SHOW_ALL'] = 'Все положительные';
+L['OPTIONS_AURAS_MYTHICPLUS_HELPFUL_SHOW_ALL_TOOLTIP'] = 'Показывать все положительные эпохальные+ ауры';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Включить';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Показывать важные ауры (оглушения, контроль и т.п.)';

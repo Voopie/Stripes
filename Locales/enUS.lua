@@ -1050,6 +1050,8 @@ L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Show edge effect on mythic+ a
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION'] = 'Growth direction';
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Mythic+ auras growth direction';
 L['OPTIONS_AURAS_MYTHICPLUS_MAX_DISPLAY_TOOLTIP'] = 'Maximum number of displayed mythic+ auras';
+L['OPTIONS_AURAS_MYTHICPLUS_HELPFUL_SHOW_ALL'] = 'All helpful';
+L['OPTIONS_AURAS_MYTHICPLUS_HELPFUL_SHOW_ALL_TOOLTIP'] = 'Show all helpful mythic+ auras';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Enable';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Show important auras (stuns, crowd control, disorient etc)';

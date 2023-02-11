@@ -1050,6 +1050,8 @@ L['OPTIONS_AURAS_MYTHICPLUS_DRAW_EDGE_TOOLTIP'] = 'Flächeneffekt (Edge) von myt
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION'] = 'Richtung des Wachstums';
 L['OPTIONS_AURAS_MYTHICPLUS_DIRECTION_TOOLTIP'] = 'Mythische+ Auren Wachstumsrichtung';
 L['OPTIONS_AURAS_MYTHICPLUS_MAX_DISPLAY_TOOLTIP'] = 'Maximale Anzahl von angezeigten mythischen+ Auren';
+L['OPTIONS_AURAS_MYTHICPLUS_HELPFUL_SHOW_ALL'] = 'Alle hilfreich';
+L['OPTIONS_AURAS_MYTHICPLUS_HELPFUL_SHOW_ALL_TOOLTIP'] = 'Alle hilfreichen mythischen+ Auren anzeigen';
 
 L['OPTIONS_AURAS_IMPORTANT_ENABLED'] = 'Aktivieren';
 L['OPTIONS_AURAS_IMPORTANT_ENABLED_TOOLTIP'] = 'Wichtige Auren anzeigen (Betäubung, Massenkontrolle, Desorientierung usw.)';
