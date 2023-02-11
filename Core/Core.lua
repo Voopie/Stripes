@@ -26,6 +26,8 @@ NAMESPACE[4] = {};                       -- Utility
 NAMESPACE[5] = {};                       -- Data
 NAMESPACE[6] = {};                       -- Elements
 
+local S, L, O, U, D, E = unpack(NAMESPACE);
+
 local L = setmetatable(NAMESPACE[2], {
     __index = function(t, k)
         t[k] = tostring(k);
@@ -532,7 +534,7 @@ MinimapButton.ToggleShown = function()
 
     if StripesDB.minimap_button.hide then
         LDBIcon:Hide('Stripes');
-        NAMESPACE[4].Print(L['MINIMAP_BUTTON_COMMAND_SHOW']);
+        U.Print(L['MINIMAP_BUTTON_COMMAND_SHOW']);
     else
         LDBIcon:Show('Stripes');
         LDBIcon:GetMinimapButton('Stripes').icon.UpdateCoord = MinimapButton.UpdateCoord;
@@ -743,6 +745,15 @@ function spellCache.Load(data)
     end
 end
 
+local function PrepareUnimportantUnitsNames()
+    local units = StripesAPI.GetUnimportantUnits();
+    if units then
+        for unitId, _ in pairs(units) do
+            U.GetNpcNameByID(unitId);
+        end
+    end
+end
+
 function AddOn:ADDON_LOADED(addonName)
     if addonName ~= AddOn.AddonName then
         return;
@@ -771,6 +782,8 @@ function AddOn:ADDON_LOADED(addonName)
 
     MinimapButton:Initialize();
 
+    PrepareUnimportantUnitsNames();
+
     _G['SLASH_STRIPES1'] = '/stripes';
     SlashCmdList['STRIPES'] = function(input)
         if input then
@@ -783,17 +796,32 @@ function AddOn:ADDON_LOADED(addonName)
                 local profileName = strtrim(string.format('%s %s %s', profileName1 or '', profileName2 or '', profileName3 or ''));
 
                 if not profileName or profileName == '' then
-                    NAMESPACE[4].Print(L['OPTIONS_PROFILES_PROFILE_CHANGED_NO_INPUT']);
+                    U.Print(L['OPTIONS_PROFILES_PROFILE_CHANGED_NO_INPUT']);
                     return;
                 end
 
-                local success = NAMESPACE[1]:GetModule('Options_Categories_Profiles').ChooseProfileByName(profileName);
-                NAMESPACE[4].Print(string.format(success and L['OPTIONS_PROFILES_PROFILE_CHANGED_SUCCESS'] or L['OPTIONS_PROFILES_PROFILE_CHANGED_FAILED'], profileName));
+                local success = S:GetModule('Options_Categories_Profiles').ChooseProfileByName(profileName);
+                U.Print(string.format(success and L['OPTIONS_PROFILES_PROFILE_CHANGED_SUCCESS'] or L['OPTIONS_PROFILES_PROFILE_CHANGED_FAILED'], profileName));
+
+                return;
+            elseif string.find(input, 'ununits') then
+                local units = StripesAPI.GetUnimportantUnits();
+                if units then
+                    U.Print(L['UNIMPORTANT_UNITS']);
+
+                    local index = 1;
+                    for unitId, _ in pairs(units) do
+                        U.Print(string.format('%s. [%s] %s', index, unitId, U.GetNpcNameByID(unitId)));
+                        index = index + 1;
+                    end
+                else
+                    U.Print(L['NO_UNIMPORTANT_UNITS']);
+                end
 
                 return;
             end
         end
 
-        NAMESPACE[3]:ToggleOptions();
+        O:ToggleOptions();
     end
 end

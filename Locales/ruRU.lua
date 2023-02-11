@@ -31,6 +31,9 @@ L['BACKGROUND'] = 'Фон';
 L['MAX_SHORT'] = 'Макс.';
 L['SECOND_SHORT'] = 'c.';
 
+L['UNIMPORTANT_UNITS'] = 'Неважные юниты';
+L['NO_UNIMPORTANT_UNITS'] = 'Нет неважных юнитов';
+
 L['FONT_OPTIONS'] = 'Шрифт';
 L['POSITION_OPTIONS'] = 'Позиция';
 

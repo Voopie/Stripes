@@ -31,6 +31,9 @@ L['BACKGROUND'] = 'Hintergrund';
 L['MAX_SHORT'] = 'Max .';
 L['SECOND_SHORT'] = 's.';
 
+L['UNIMPORTANT_UNITS'] = 'Unwichtige Einheiten';
+L['NO_UNIMPORTANT_UNITS'] = 'Es gibt keine unwichtigen Einheiten';
+
 L['FONT_OPTIONS'] = 'Schriftart';
 L['POSITION_OPTIONS'] = 'Position';
 

@@ -31,6 +31,9 @@ L['BACKGROUND'] = 'Background';
 L['MAX_SHORT'] = 'Max';
 L['SECOND_SHORT'] = 's';
 
+L['UNIMPORTANT_UNITS'] = 'Unimportant units';
+L['NO_UNIMPORTANT_UNITS'] = 'There are no unimportant units';
+
 L['FONT_OPTIONS'] = 'Font';
 L['POSITION_OPTIONS'] = 'Position';
 
