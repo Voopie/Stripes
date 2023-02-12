@@ -31,6 +31,10 @@ local HELPFUL_SHOW_ALL;
 local StripesAurasMythicPlusCooldownFont = CreateFont('StripesAurasMythicPlusCooldownFont');
 local StripesAurasMythicPlusCountFont    = CreateFont('StripesAurasMythicPlusCountFont');
 
+local HelpfulExceptionList = {
+    [206150] = true, -- Challenger's Might
+};
+
 local HelpfulList = {
     [226510] = true, -- Mythic Plus Affix: Sanguine
     [209859] = true, -- Mythic Plus Affix: Bolstering
@@ -141,8 +145,12 @@ local function CreateBuffFrame(unitframe)
             return;
         end
 
-        if isHelpful and (HELPFUL_SHOW_ALL or HelpfulList[aura.spellId]) then
-            return true;
+        if isHelpful then
+            if HELPFUL_SHOW_ALL then
+                return not HelpfulExceptionList[aura.spellId];
+            else
+                return HelpfulList[aura.spellId];
+            end
         elseif not isHelpful and HarmfulList[aura.spellId] then
             return true;
         end
@@ -254,6 +262,7 @@ local function CreateBuffFrame(unitframe)
                     duration       = aura.duration,
                     expirationTime = aura.expirationTime,
                     auraInstanceID = aura.auraInstanceID,
+                    isHelpful      = aura.isHelpful,
                 };
             else
                 unitframe.AurasMythicPlus.compactList[aura.spellId].applications   = unitframe.AurasMythicPlus.compactList[aura.spellId].applications + aCount;
@@ -305,6 +314,7 @@ local function CreateBuffFrame(unitframe)
             buff.spellID        = aura.spellId;
             buff.expirationTime = aura.expirationTime;
             buff.auraInstanceID = aura.auraInstanceID;
+            buff.isBuff         = aura.isHelpful;
 
             buff:ClearAllPoints();
 
