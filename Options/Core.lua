@@ -272,6 +272,16 @@ O.Lists = {
         [4] = NPC_NAMES_DROPDOWN_ALL,
         [5] = NPC_NAMES_DROPDOWN_NONE,
     },
+
+    threat_color_reversed_spec = {
+        [1] = L['SPEC_ALL_ROLES'],
+        [2] = L['SPEC_TANK_ONLY'],
+        [3] = L['SPEC_TANK_DAMAGER'],
+        [4] = L['SPEC_TANK_HEALER'],
+        [5] = L['SPEC_DAMAGER_ONLY'],
+        [6] = L['SPEC_DAMAGER_HEALER'],
+        [7] = L['SPEC_HEALER_ONLY'],
+    },
 };
 
 O.GetNpcNamesValue = function()
@@ -441,6 +451,7 @@ O.DefaultValues = {
     threat_color_enabled         = true,
     threat_color_istapped_border = true,
     threat_color_reversed        = false,
+    threat_color_reversed_spec   = 1, -- ALL
     threat_color_status_0        = { 1.00, 0.00, 0.00, 1 },
     threat_color_status_1        = { 0.75, 0.70, 0.15, 1 },
     threat_color_status_2        = { 1.00, 0.35, 0.10, 1 },

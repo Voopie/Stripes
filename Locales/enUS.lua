@@ -97,6 +97,14 @@ L['AURAS_XLIST_MODE_NONE'] = 'Don\'t use';
 L['AURAS_XLIST_MODE_BLACKLIST'] = 'Blacklist';
 L['AURAS_XLIST_MODE_WHITELIST'] = 'Whitelist';
 
+L['SPEC_ALL_ROLES'] = 'All roles';
+L['SPEC_TANK_ONLY'] = 'Tank only';
+L['SPEC_TANK_DAMAGER'] = 'Tank + Damager';
+L['SPEC_TANK_HEALER'] = 'Tank + Healer';
+L['SPEC_DAMAGER_ONLY'] = 'Damager only';
+L['SPEC_DAMAGER_HEALER'] = 'Damager + Healer';
+L['SPEC_HEALER_ONLY'] = 'Healer only';
+
 L['MINIMAP_BUTTON_LMB'] = 'LMB';
 L['MINIMAP_BUTTON_OPEN'] = 'Open «Stripes» options';
 L['MINIMAP_BUTTON_RMB'] = 'RMB';
@@ -453,6 +461,7 @@ L['OPTIONS_THREAT_COLOR_ENABLED'] = 'Threat color';
 L['OPTIONS_THREAT_COLOR_ENABLED_TOOLTIP'] = 'Change the color of the health bar depending on the amount of threat';
 L['OPTIONS_THREAT_COLOR_REVERSED'] = 'Reversed';
 L['OPTIONS_THREAT_COLOR_REVERSED_TOOLTIP'] = 'Reverse the threat colors';
+L['OPTIONS_THREAT_COLOR_REVERSED_SPEC_TOOLTIP'] = 'Reverse the threat colors for specific roles';
 L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER'] = 'Color the border (for tapped units)';
 L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER_TOOLTIP'] = 'Use threat colors for a health bar border for units from which you cannot get loot';
 L['OPTIONS_THREAT_COLOR_PRIO_HIGH'] = 'High threat color priority';

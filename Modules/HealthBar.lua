@@ -51,6 +51,7 @@ local offTankColor = { 0.60, 0.00, 0.85, 1 };
 local petTankColor = { 0.00, 0.44, 1.00, 1 };
 local playerPetTankColor = { 0.00, 0.44, 1.00, 1 };
 
+local PLAYER_ROLE;
 local PLAYER_IS_TANK = false;
 
 local RAID_TARGET_COLORS = {
@@ -917,8 +918,49 @@ function Module:Update(unitframe)
     end
 end
 
+local function SetReversedColors(state)
+    if state then
+        statusColors[0] = O.db.threat_color_status_3;
+        statusColors[1] = O.db.threat_color_status_1;
+        statusColors[2] = O.db.threat_color_status_2;
+        statusColors[3] = O.db.threat_color_status_0;
+    else
+        statusColors[0] = O.db.threat_color_status_0;
+        statusColors[1] = O.db.threat_color_status_1;
+        statusColors[2] = O.db.threat_color_status_2;
+        statusColors[3] = O.db.threat_color_status_3;
+    end
+end
+
+local function UpdateReverseThreat()
+    if not O.db.threat_color_reversed then
+        SetReversedColors(false);
+    else
+        local reverseSpec = O.db.threat_color_reversed_spec;
+
+        if reverseSpec == 1 then -- ALL
+            SetReversedColors(true);
+        elseif reverseSpec == 2 then -- TANK ONLY
+            SetReversedColors(PLAYER_ROLE == 'TANK');
+        elseif reverseSpec == 3 then -- TANK + DAMAGER
+            SetReversedColors(PLAYER_ROLE == 'TANK' or PLAYER_ROLE == 'DAMAGER');
+        elseif reverseSpec == 4 then -- TANK + HEALER
+            SetReversedColors(PLAYER_ROLE == 'TANK' or PLAYER_ROLE == 'HEALER');
+        elseif reverseSpec == 5 then -- DAMAGER ONLY
+            SetReversedColors(PLAYER_ROLE == 'DAMAGER');
+        elseif reverseSpec == 6 then -- DAMAGER + HEALER
+            SetReversedColors(PLAYER_ROLE == 'DAMAGER' or PLAYER_ROLE == 'HEALER');
+        elseif reverseSpec == 7 then -- HEALER ONLY
+            SetReversedColors(PLAYER_ROLE == 'HEALER');
+        end
+    end
+end
+
 function Module:PLAYER_LOGIN()
     PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+    PLAYER_ROLE    = U.GetPlayerRole();
+
+    UpdateReverseThreat();
 end
 
 function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
@@ -927,6 +969,9 @@ function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
     end
 
     PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+    PLAYER_ROLE    = U.GetPlayerRole();
+
+    UpdateReverseThreat();
 end
 
 function Module:ROLE_CHANGED_INFORM(changedName, _, _, newRole)
@@ -935,10 +980,16 @@ function Module:ROLE_CHANGED_INFORM(changedName, _, _, newRole)
     end
 
     PLAYER_IS_TANK = newRole == 'TANK';
+    PLAYER_ROLE    = U.GetPlayerRole();
+
+    UpdateReverseThreat();
 end
 
 function Module:PLAYER_ROLES_ASSIGNED()
     PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+    PLAYER_ROLE    = U.GetPlayerRole();
+
+    UpdateReverseThreat();
 end
 
 function Module:RAID_TARGET_UPDATE()
@@ -968,17 +1019,7 @@ function Module:UpdateLocalConfig()
     DB.THREAT_COLOR_PRIO_HIGH                   = O.db.threat_color_prio_high;
     DB.THREAT_COLOR_PRIO_HIGH_EXCLUDE_TANK_ROLE = O.db.threat_color_prio_high_exclude_tank_role;
 
-    if not O.db.threat_color_reversed then
-        statusColors[0] = O.db.threat_color_status_0;
-        statusColors[1] = O.db.threat_color_status_1;
-        statusColors[2] = O.db.threat_color_status_2;
-        statusColors[3] = O.db.threat_color_status_3;
-    else
-        statusColors[0] = O.db.threat_color_status_3;
-        statusColors[1] = O.db.threat_color_status_1;
-        statusColors[2] = O.db.threat_color_status_2;
-        statusColors[3] = O.db.threat_color_status_0;
-    end
+    UpdateReverseThreat();
 
     offTankColor[1] = O.db.threat_color_offtank[1];
     offTankColor[2] = O.db.threat_color_offtank[2];

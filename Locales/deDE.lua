@@ -97,6 +97,14 @@ L['AURAS_XLIST_MODE_NONE'] = 'Verwenden Sie nicht';
 L['AURAS_XLIST_MODE_BLACKLIST'] = 'Blacklist';
 L['AURAS_XLIST_MODE_WHITELIST'] = 'Whitelist';
 
+L['SPEC_ALL_ROLES'] = 'Alle Rollen';
+L['SPEC_TANK_ONLY'] = 'Nur Tank';
+L['SPEC_TANK_DAMAGER'] = 'Tank + Schaden';
+L['SPEC_TANK_HEALER'] = 'Tank + Heiler';
+L['SPEC_DAMAGER_ONLY'] = 'Nur Schaden';
+L['SPEC_DAMAGER_HEALER'] = 'Schädiger + Heiler';
+L['SPEC_HEALER_ONLY'] = 'Nur Heiler';
+
 L['MINIMAP_BUTTON_LMB'] = 'Linksklick';
 L['MINIMAP_BUTTON_OPEN'] = 'Öffne «Stripes» AddOn Fenster';
 L['MINIMAP_BUTTON_RMB'] = 'Rechtsklick';
@@ -453,6 +461,7 @@ L['OPTIONS_THREAT_COLOR_ENABLED'] = 'Farbe der Bedrohung';
 L['OPTIONS_THREAT_COLOR_ENABLED_TOOLTIP'] = 'Farbe des Gesundheitsbalkens in Abhängigkeit vom Ausmaß der Bedrohung ändern';
 L['OPTIONS_THREAT_COLOR_REVERSED'] = 'Umgekehrt';
 L['OPTIONS_THREAT_COLOR_REVERSED_TOOLTIP'] = 'Die Farben der Bedrohung umkehren';
+L['OPTIONS_THREAT_COLOR_REVERSED_SPEC_TOOLTIP'] = 'Umkehrung der Bedrohungsfarben für bestimmte Rollen';
 L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER'] = 'Farbe des Randes (für getappte Einheiten)';
 L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER_TOOLTIP'] = 'Benutze die Farben der Bedrohung für den Rand des Gesundheitsbalkens für Einheiten, von denen man keine Beute bekommen kann';
 L['OPTIONS_THREAT_COLOR_PRIO_HIGH'] = 'Hohe Priorität für bedrohliche Farben';

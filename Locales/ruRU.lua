@@ -97,6 +97,14 @@ L['AURAS_XLIST_MODE_NONE'] = 'Не использовать';
 L['AURAS_XLIST_MODE_BLACKLIST'] = 'Чёрный список';
 L['AURAS_XLIST_MODE_WHITELIST'] = 'Белый список';
 
+L['SPEC_ALL_ROLES'] = 'Все роли';
+L['SPEC_TANK_ONLY'] = 'Только танк';
+L['SPEC_TANK_DAMAGER'] = 'Танк + Урон';
+L['SPEC_TANK_HEALER'] = 'Танк + Лекарь';
+L['SPEC_DAMAGER_ONLY'] = 'Только урон';
+L['SPEC_DAMAGER_HEALER'] = 'Урон + Лекарь';
+L['SPEC_HEALER_ONLY'] = 'Только лекарь';
+
 L['MINIMAP_BUTTON_LMB'] = 'ЛКМ';
 L['MINIMAP_BUTTON_OPEN'] = 'Открыть настройки «Stripes»';
 L['MINIMAP_BUTTON_RMB'] = 'ПКМ';
@@ -453,6 +461,7 @@ L['OPTIONS_THREAT_COLOR_ENABLED'] = 'Цветовая угроза';
 L['OPTIONS_THREAT_COLOR_ENABLED_TOOLTIP'] = 'Менять цвет полосы здоровья в зависимости от количества угрозы';
 L['OPTIONS_THREAT_COLOR_REVERSED'] = 'Реверс';
 L['OPTIONS_THREAT_COLOR_REVERSED_TOOLTIP'] = 'Реверсировать цвета угрозы';
+L['OPTIONS_THREAT_COLOR_REVERSED_SPEC_TOOLTIP'] = 'Реверсировать цвета угрозы для определённых ролей';
 L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER'] = 'Окрашивать рамку (для «чужих» юнитов)';
 L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER_TOOLTIP'] = 'Использовать цвета угрозы для рамки здоровья для юнитов, с которых вы не сможете получить добычу';
 L['OPTIONS_THREAT_COLOR_PRIO_HIGH'] = 'Приоритет цвета высокой угрозы';

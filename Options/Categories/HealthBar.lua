@@ -1175,18 +1175,34 @@ panel.Load = function(self)
     end
 
     self.threat_color_reversed = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
-    self.threat_color_reversed:SetPosition('TOPLEFT', self.threat_color_enabled, 'BOTTOMLEFT', 0, -8);
+    self.threat_color_reversed:SetPosition('LEFT', self.threat_color_enabled.Label, 'RIGHT', 12, 0);
     self.threat_color_reversed:SetLabel(L['OPTIONS_THREAT_COLOR_REVERSED']);
     self.threat_color_reversed:SetTooltip(L['OPTIONS_THREAT_COLOR_REVERSED_TOOLTIP']);
     self.threat_color_reversed:SetChecked(O.db.threat_color_reversed);
     self.threat_color_reversed:AddToSearch(button, L['OPTIONS_THREAT_COLOR_REVERSED_TOOLTIP'], self.Tabs[4]);
     self.threat_color_reversed.Callback = function(self)
         O.db.threat_color_reversed = self:GetChecked();
+
+        panel.threat_color_reversed_spec:SetEnabled(O.db.threat_color_reversed);
+
+        Stripes:UpdateAll();
+    end
+
+    self.threat_color_reversed_spec = E.CreateDropdown('plain', self.TabsFrames['ThreatTab'].Content);
+    self.threat_color_reversed_spec:SetPosition('LEFT', self.threat_color_reversed.Label, 'RIGHT', 12, 0);
+    self.threat_color_reversed_spec:SetSize(180, 20);
+    self.threat_color_reversed_spec:SetList(O.Lists.threat_color_reversed_spec);
+    self.threat_color_reversed_spec:SetValue(O.db.threat_color_reversed_spec);
+    self.threat_color_reversed_spec:SetTooltip(L['OPTIONS_THREAT_COLOR_REVERSED_SPEC_TOOLTIP']);
+    self.threat_color_reversed_spec:AddToSearch(button, L['OPTIONS_THREAT_COLOR_REVERSED_SPEC_TOOLTIP'], self.Tabs[4]);
+    self.threat_color_reversed_spec:SetEnabled(O.db.threat_color_reversed);
+    self.threat_color_reversed_spec.OnValueChangedCallback = function(_, value)
+        O.db.threat_color_reversed_spec = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.threat_color_istapped_border = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
-    self.threat_color_istapped_border:SetPosition('LEFT', self.threat_color_reversed.Label, 'RIGHT', 12, 0);
+    self.threat_color_istapped_border:SetPosition('TOPLEFT', self.threat_color_enabled, 'BOTTOMLEFT', 0, -8);
     self.threat_color_istapped_border:SetLabel(L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER']);
     self.threat_color_istapped_border:SetTooltip(L['OPTIONS_THREAT_COLOR_ISTAPPED_BORDER_TOOLTIP']);
     self.threat_color_istapped_border:SetChecked(O.db.threat_color_istapped_border);
@@ -1197,7 +1213,7 @@ panel.Load = function(self)
     end
 
     self.threat_color_prio_high = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
-    self.threat_color_prio_high:SetPosition('TOPLEFT', self.threat_color_reversed, 'BOTTOMLEFT', 0, -8);
+    self.threat_color_prio_high:SetPosition('TOPLEFT', self.threat_color_istapped_border, 'BOTTOMLEFT', 0, -8);
     self.threat_color_prio_high:SetLabel(L['OPTIONS_THREAT_COLOR_PRIO_HIGH']);
     self.threat_color_prio_high:SetTooltip(L['OPTIONS_THREAT_COLOR_PRIO_HIGH_TOOLTIP']);
     self.threat_color_prio_high:SetChecked(O.db.threat_color_prio_high);
