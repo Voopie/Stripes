@@ -303,7 +303,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~589
+-- ~590
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
