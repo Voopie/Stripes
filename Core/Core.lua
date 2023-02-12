@@ -792,16 +792,20 @@ function AddOn:ADDON_LOADED(addonName)
 
                 return;
             elseif string.find(input, 'profile') then
-                local _, profileName1, profileName2, profileName3 = strsplit(' ', input);
-                local profileName = strtrim(string.format('%s %s %s', profileName1 or '', profileName2 or '', profileName3 or ''));
+                if InCombatLockdown() then
+                    U.Print(L['OPTIONS_PROFILES_CANT_CHANGE_IN_COMBAT']);
+                else
+                    local _, profileName1, profileName2, profileName3 = strsplit(' ', input);
+                    local profileName = strtrim(string.format('%s %s %s', profileName1 or '', profileName2 or '', profileName3 or ''));
 
-                if not profileName or profileName == '' then
-                    U.Print(L['OPTIONS_PROFILES_PROFILE_CHANGED_NO_INPUT']);
-                    return;
+                    if not profileName or profileName == '' then
+                        U.Print(L['OPTIONS_PROFILES_PROFILE_CHANGED_NO_INPUT']);
+                        return;
+                    end
+
+                    local success = S:GetModule('Options_Categories_Profiles').ChooseProfileByName(profileName);
+                    U.Print(string.format(success and L['OPTIONS_PROFILES_PROFILE_CHANGED_SUCCESS'] or L['OPTIONS_PROFILES_PROFILE_CHANGED_FAILED'], profileName));
                 end
-
-                local success = S:GetModule('Options_Categories_Profiles').ChooseProfileByName(profileName);
-                U.Print(string.format(success and L['OPTIONS_PROFILES_PROFILE_CHANGED_SUCCESS'] or L['OPTIONS_PROFILES_PROFILE_CHANGED_FAILED'], profileName));
 
                 return;
             elseif string.find(input, 'ununits') then

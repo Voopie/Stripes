@@ -218,6 +218,7 @@ L['OPTIONS_PROFILES_RESET_PROFILE_BUTTON'] = 'Сбросить профиль';
 L['OPTIONS_PROFILES_PROFILE_CHANGED_SUCCESS'] = 'Выбран профиль: «%s»';
 L['OPTIONS_PROFILES_PROFILE_CHANGED_FAILED'] = 'Что-то пошло не так при переключении профиля на «%s»';
 L['OPTIONS_PROFILES_PROFILE_CHANGED_NO_INPUT'] = 'Вы забыли ввести название профиля';
+L['OPTIONS_PROFILES_CANT_CHANGE_IN_COMBAT'] = 'Нельзя сменить профиль во время боя';
 
 L['OPTIONS_SHOW'] = 'Показать';
 L['OPTIONS_TEXTURE'] = 'Текстура';

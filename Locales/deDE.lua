@@ -218,6 +218,7 @@ L['OPTIONS_PROFILES_RESET_PROFILE_BUTTON'] = 'Profil zurücksetzen';
 L['OPTIONS_PROFILES_PROFILE_CHANGED_SUCCESS'] = 'Ausgewähltes Profil: «%s»';
 L['OPTIONS_PROFILES_PROFILE_CHANGED_FAILED'] = 'Beim Umschalten des Profils auf «%s» ist etwas schief gelaufen.';
 L['OPTIONS_PROFILES_PROFILE_CHANGED_NO_INPUT'] = 'Sie haben vergessen, den Profilnamen einzugeben';
+L['OPTIONS_PROFILES_CANT_CHANGE_IN_COMBAT'] = 'Profil kann während des Kampfes nicht gewechselt werden';
 
 L['OPTIONS_SHOW'] = 'Anzeigen';
 L['OPTIONS_TEXTURE'] = 'Textur';
