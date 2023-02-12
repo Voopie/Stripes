@@ -81,7 +81,7 @@ U.UnitIsCasting = function(unit)
     return spellId;
 end
 
-U.IsPlayerEffectivelyTank = function ()
+U.IsPlayerEffectivelyTank = function()
     local assignedRole = UnitGroupRolesAssigned('player');
 
     if assignedRole == 'NONE' then
@@ -90,6 +90,17 @@ U.IsPlayerEffectivelyTank = function ()
     end
 
     return assignedRole == 'TANK';
+end
+
+U.GetPlayerRole = function()
+    local assignedRole = UnitGroupRolesAssigned('player');
+
+    if assignedRole == 'NONE' then
+        local spec = GetSpecialization();
+        return spec and GetSpecializationRole(spec);
+    end
+
+    return assignedRole;
 end
 
 U.IsInArena = function()
