@@ -7,11 +7,15 @@ local Stripes = S:GetNameplateModule('Handler');
 -- https://www.curseforge.com/wow/addons/kuinameplates
 
 -- Lua API
-local select, pairs, tonumber, math_ceil, math_floor, string_format, string_match, table_wipe = select, pairs, tonumber, math.ceil, math.floor, string.format, string.match, wipe;
+local pairs, tonumber, math_ceil, string_match, table_wipe = pairs, tonumber, math.ceil, string.match, wipe;
 
 -- WoW API
+local GetQuestObjectiveInfo = GetQuestObjectiveInfo;
 local C_TaskQuest_GetQuestProgressBarInfo, C_QuestLog_GetQuestObjectives, C_QuestLog_GetQuestIDForLogIndex = C_TaskQuest.GetQuestProgressBarInfo, C_QuestLog.GetQuestObjectives, C_QuestLog.GetQuestIDForLogIndex;
 local C_QuestLog_GetNumQuestLogEntries, C_QuestLog_GetInfo, C_QuestLog_IsQuestTask, C_TaskQuest_GetQuestInfoByQuestID = C_QuestLog.GetNumQuestLogEntries, C_QuestLog.GetInfo, C_QuestLog.IsQuestTask, C_TaskQuest.GetQuestInfoByQuestID;
+local C_QuestLog_UnitIsRelatedToActiveQuest = C_QuestLog.UnitIsRelatedToActiveQuest;
+local C_TooltipInfo_GetUnit, TooltipUtil_SurfaceArgs = C_TooltipInfo.GetUnit, TooltipUtil.SurfaceArgs;
+local Enum_TooltipDataLineType_QuestTitle = Enum.TooltipDataLineType.QuestTitle;
 
 -- Stripes API
 local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
@@ -26,11 +30,6 @@ local ENABLED, POSITION;
 
 local QuestActiveCache, QuestLogIndexCache = {}, {};
 
-local TooltipScanner = U.TooltipScanner;
-local TooltipScannerName = U.TooltipScanner.Name;
-
-local TOOLTIP_LINE_PATTERN = '%s%s%s';
-local TOOLTIP_LINE_TEXT_LEFT = 'TextLeft';
 local SEARCH_PATTERN_AB = '(%d+)/(%d+)';
 local SEARCH_PATTERN_PROGRESS = '%((%d+)%%%)';
 
@@ -40,24 +39,32 @@ local LOOT_TYPES = {
 };
 
 local function GetQuestProgress(unit)
-    TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
-    TooltipScanner:SetUnit(unit);
+    if not C_QuestLog_UnitIsRelatedToActiveQuest(unit) then
+        return;
+    end
 
-    local tooltipLine, tooltipLineText;
+    local tooltipData = C_TooltipInfo_GetUnit(unit);
+
+    if not tooltipData then
+        return;
+    end
+
     local progressGlob, questType, questLogIndex, questId;
     local objectiveCount = 0;
 
-    for i = 3, TooltipScanner:NumLines() do
-        tooltipLine     = _G[string_format(TOOLTIP_LINE_PATTERN, TooltipScannerName, TOOLTIP_LINE_TEXT_LEFT, i)];
-        tooltipLineText = tooltipLine and tooltipLine:GetText();
+    for i = 3, #tooltipData.lines do
+        local line = tooltipData.lines[i];
+		TooltipUtil_SurfaceArgs(line);
 
-        if tooltipLineText and tooltipLineText ~= '' then
-            questId = questId or QuestActiveCache[tooltipLineText];
+        if line.type == Enum_TooltipDataLineType_QuestTitle and line.id then
+            local objText = GetQuestObjectiveInfo(line.id, 1, false);
 
-            local progressText = tooltipLineText;
+            questId = questId or line.id or objText and QuestActiveCache[objText];
 
-            if math_floor((select(4, tooltipLine:GetPoint(2)) or 0) + 0.5) == 28 then
-                local a, b = string_match(progressText, SEARCH_PATTERN_AB);
+			local isQuestText = not not objText;
+
+            if isQuestText then
+                local a, b = string_match(objText, SEARCH_PATTERN_AB);
                 a, b = tonumber(a), tonumber(b);
 
                 if a and b then
@@ -66,31 +73,30 @@ local function GetQuestProgress(unit)
                         objectiveCount = numLeft;
                     end
                 else
-                    questId = QuestActiveCache[tooltipLineText];
+                    questId = QuestActiveCache[objText];
                     questType = 3;
 
-                    a = string_match(progressText, SEARCH_PATTERN_PROGRESS);
+                    a = string_match(objText, SEARCH_PATTERN_PROGRESS);
                     a = tonumber(a);
 
                     if a and a <= 100 then
-                        return tooltipLineText, questType, math_ceil(100 - a), questId;
+                        return objText, questType, math_ceil(100 - a), questId;
                     end
                 end
 
                 if not a or (a and b and a ~= b) then
-                    progressGlob = progressGlob and progressGlob .. '\n' .. progressText or progressText;
+                    progressGlob = progressGlob and progressGlob .. '\n' .. objText or objText;
                 end
-            elseif QuestActiveCache[tooltipLineText] then
-                questId = QuestActiveCache[tooltipLineText];
+            elseif QuestActiveCache[objText] then
+                questId = QuestActiveCache[objText];
                 local progress = C_TaskQuest_GetQuestProgressBarInfo(questId);
                 if progress then
-                    questType = 2;
-                    return tooltipLineText, questType, math_ceil(100 - progress), questId;
+                    questType = 3;
+                    return objText, questType, math_ceil(100 - progress), questId;
                 end
-            elseif QuestLogIndexCache[tooltipLineText] then
-                questLogIndex = QuestLogIndexCache[tooltipLineText];
+            elseif QuestLogIndexCache[objText] then
+                questLogIndex = QuestLogIndexCache[objText];
             end
-
         end
     end
 
@@ -113,6 +119,8 @@ local function Update(unitframe, unit)
             unitframe.QuestIndicator.counterText:SetTextColor(1, 1, 1);
         elseif questType == 2 then
             unitframe.QuestIndicator.counterText:SetTextColor(1, 0.42, 0.3);
+        elseif questType == 3 then
+            unitframe.QuestIndicator.counterText:SetTextColor(0.15, 0.65, 1);
         end
 
         local lootIconShow = false;
@@ -268,7 +276,7 @@ local function QuestChanged(questID)
 end
 
 local function QuestRemoved(questID)
-    local questName = C_TaskQuest_GetQuestInfoByQuestID(questID)
+    local questName = C_TaskQuest_GetQuestInfoByQuestID(questID);
     if questName and QuestActiveCache[questName] then
         QuestActiveCache[questName] = nil;
     end
