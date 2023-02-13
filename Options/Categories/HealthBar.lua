@@ -1212,6 +1212,17 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.threat_color_name = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
+    self.threat_color_name:SetPosition('LEFT', self.threat_color_istapped_border.Label, 'RIGHT', 12, 0);
+    self.threat_color_name:SetLabel(L['OPTIONS_THREAT_COLOR_NAME']);
+    self.threat_color_name:SetTooltip(L['OPTIONS_THREAT_COLOR_NAME_TOOLTIP']);
+    self.threat_color_name:SetChecked(O.db.threat_color_name);
+    self.threat_color_name:AddToSearch(button, L['OPTIONS_THREAT_COLOR_NAME_TOOLTIP'], self.Tabs[4]);
+    self.threat_color_name.Callback = function(self)
+        O.db.threat_color_name = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     self.threat_color_prio_high = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
     self.threat_color_prio_high:SetPosition('TOPLEFT', self.threat_color_istapped_border, 'BOTTOMLEFT', 0, -8);
     self.threat_color_prio_high:SetLabel(L['OPTIONS_THREAT_COLOR_PRIO_HIGH']);

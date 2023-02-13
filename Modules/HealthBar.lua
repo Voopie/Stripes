@@ -248,6 +248,23 @@ local function UpdateThreatPercentagePosition(unitframe)
     PixelUtil.SetPoint(unitframe.ThreatPercentage.text, DB.TP_POINT, unitframe.ThreatPercentage, DB.TP_RELATIVE_POINT, DB.TP_OFFSET_X, DB.TP_OFFSET_Y);
 end
 
+local function UpdateThreatName(unitframe, value, r, g, b)
+    if not value or not DB.THREAT_NAME_COLORING then
+        unitframe.data.threatNameColored = nil;
+        unitframe.data.threatColorR = nil;
+        unitframe.data.threatColorG = nil;
+        unitframe.data.threatColorB = nil;
+        return;
+    end
+
+    unitframe.name:SetVertexColor(r, g, b);
+
+    unitframe.data.threatNameColored = true;
+    unitframe.data.threatColorR = r;
+    unitframe.data.threatColorG = g;
+    unitframe.data.threatColorB = b;
+end
+
 local function Threat_GetThreatSituationStatus(unit)
     if not unit then
         return;
@@ -291,6 +308,7 @@ local function Threat_HighPrioColor(unitframe)
         end
 
         UpdateThreatPercentage(unitframe, display, r, g, b, a);
+        UpdateThreatName(unitframe, display, r, g, b);
         unitframe.data.tpNeedUpdate = false;
     else
         unitframe.healthBar.highPrioColored = nil;
@@ -346,6 +364,7 @@ local function Threat_UpdateColor(unitframe)
         end
 
         UpdateThreatPercentage(unitframe, display, r, g, b, a);
+        UpdateThreatName(unitframe, display, r, g, b);
         unitframe.data.tpNeedUpdate = false;
     end
 end
@@ -1043,6 +1062,8 @@ function Module:UpdateLocalConfig()
     DB.TP_OFFSET_X       = O.db.threat_percentage_offset_x;
     DB.TP_OFFSET_Y       = O.db.threat_percentage_offset_y;
     UpdateFontObject(StripesThreatPercentageFont, O.db.threat_percentage_font_value, O.db.threat_percentage_font_size, O.db.threat_percentage_font_flag, O.db.threat_percentage_font_shadow);
+
+    DB.THREAT_NAME_COLORING = O.db.threat_color_name;
 
     DB.CUSTOM_NPC_ENABLED = O.db.custom_npc_enabled;
     DB.CUSTOM_NPC_DATA    = O.db.custom_npc;

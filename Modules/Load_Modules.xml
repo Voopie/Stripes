@@ -5,10 +5,10 @@
 
     <Include file="Auras\Load_Auras.xml" />
 
+    <Script file="HealthBar.lua" />
     <Script file="Name.lua" />
     <Script file="HealthText.lua" />
     <Script file="LevelText.lua" />
-    <Script file="HealthBar.lua" />
     
     <Script file="ClassBar.lua" />
     <Script file="AbsorbBar.lua" />

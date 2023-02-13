@@ -812,6 +812,11 @@ local function ResetNameplateData(unitframe)
     unitframe.data.isTarget = nil;
     unitframe.data.isFocus  = nil;
 
+    unitframe.data.threatNameColored = nil;
+    unitframe.data.threatColorR = nil;
+    unitframe.data.threatColorG = nil;
+    unitframe.data.threatColorB = nil;
+
     unitframe.data.isUnimportantUnit = nil;
 end
 
