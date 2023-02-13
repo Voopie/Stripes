@@ -22,10 +22,6 @@ local AuraUtil_ForEachAura = AuraUtil.ForEachAura;
 -- WoW C API
 local C_MythicPlus_GetCurrentAffixes, C_ChallengeMode_GetActiveKeystoneInfo = C_MythicPlus.GetCurrentAffixes, C_ChallengeMode.GetActiveKeystoneInfo;
 
-U.TooltipScanner = CreateFrame('GameTooltip', 'Stripes_TooltipScanner', nil, 'GameTooltipTemplate');
-U.TooltipScanner.Name = 'Stripes_TooltipScanner';
-U.TooltipScanner:SetOwner(UIParent, 'ANCHOR_NONE');
-
 U.Print = function(message, debug)
     if not message or message == '' then
         return;
