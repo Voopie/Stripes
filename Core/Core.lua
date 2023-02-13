@@ -620,11 +620,6 @@ function AddOn:CheckIncompatibleAddons()
         StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'namePlateM+');
         return;
     end
-
-    if IsAddOnLoaded('NameplateAuras') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'NameplateAuras');
-        return;
-    end
 end
 
 AddOn:RegisterEvent('ADDON_LOADED');
