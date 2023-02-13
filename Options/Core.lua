@@ -303,7 +303,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~591
+-- ~592
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -462,6 +462,7 @@ O.DefaultValues = {
     threat_color_prio_high = false,
     threat_color_prio_high_exclude_tank_role = true,
     threat_color_name = false,
+    threat_color_name_only = false,
 
     threat_percentage_enabled        = false,
     threat_percentage_coloring       = true,

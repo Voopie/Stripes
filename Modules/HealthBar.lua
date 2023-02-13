@@ -298,17 +298,22 @@ local function Threat_HighPrioColor(unitframe)
     if display and status == 3 and not IsPlayer(unitframe.data.unit) then
         local r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
 
-        if UnitIsTapped(unitframe.data.unit) then
-            if DB.THREAT_COLOR_ISTAPPED_BORDER then
-                unitframe.healthBar.border:SetVertexColor(r, g, b, a);
-            end
+        if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
+            UpdateThreatName(unitframe, display, r, g, b);
         else
-            unitframe.healthBar:SetStatusBarColor(r, g, b, a);
-            unitframe.healthBar.highPrioColored = true;
+            if UnitIsTapped(unitframe.data.unit) then
+                if DB.THREAT_COLOR_ISTAPPED_BORDER then
+                    unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+                end
+            else
+                unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                unitframe.healthBar.highPrioColored = true;
+            end
+
+            UpdateThreatName(unitframe, display, r, g, b);
         end
 
         UpdateThreatPercentage(unitframe, display, r, g, b, a);
-        UpdateThreatName(unitframe, display, r, g, b);
         unitframe.data.tpNeedUpdate = false;
     else
         unitframe.healthBar.highPrioColored = nil;
@@ -355,16 +360,21 @@ local function Threat_UpdateColor(unitframe)
             r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
         end
 
-        if UnitIsTapped(unitframe.data.unit) then
-            if DB.THREAT_COLOR_ISTAPPED_BORDER then
-                unitframe.healthBar.border:SetVertexColor(r, g, b, a);
-            end
+        if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
+            UpdateThreatName(unitframe, display, r, g, b);
         else
-            unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+            if UnitIsTapped(unitframe.data.unit) then
+                if DB.THREAT_COLOR_ISTAPPED_BORDER then
+                    unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+                end
+            else
+                unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+            end
+
+            UpdateThreatName(unitframe, display, r, g, b);
         end
 
         UpdateThreatPercentage(unitframe, display, r, g, b, a);
-        UpdateThreatName(unitframe, display, r, g, b);
         unitframe.data.tpNeedUpdate = false;
     end
 end
@@ -1064,6 +1074,7 @@ function Module:UpdateLocalConfig()
     UpdateFontObject(StripesThreatPercentageFont, O.db.threat_percentage_font_value, O.db.threat_percentage_font_size, O.db.threat_percentage_font_flag, O.db.threat_percentage_font_shadow);
 
     DB.THREAT_NAME_COLORING = O.db.threat_color_name;
+    DB.THREAT_NAME_ONLY     = O.db.threat_color_name_only;
 
     DB.CUSTOM_NPC_ENABLED = O.db.custom_npc_enabled;
     DB.CUSTOM_NPC_DATA    = O.db.custom_npc;

@@ -1220,6 +1220,21 @@ panel.Load = function(self)
     self.threat_color_name:AddToSearch(button, L['OPTIONS_THREAT_COLOR_NAME_TOOLTIP'], self.Tabs[4]);
     self.threat_color_name.Callback = function(self)
         O.db.threat_color_name = self:GetChecked();
+
+        panel.threat_color_name_only:SetEnabled(O.db.threat_color_name);
+
+        Stripes:UpdateAll();
+    end
+
+    self.threat_color_name_only = E.CreateCheckButton(self.TabsFrames['ThreatTab'].Content);
+    self.threat_color_name_only:SetPosition('LEFT', self.threat_color_name.Label, 'RIGHT', 12, 0);
+    self.threat_color_name_only:SetLabel(L['OPTIONS_THREAT_COLOR_NAME_ONLY']);
+    self.threat_color_name_only:SetTooltip(L['OPTIONS_THREAT_COLOR_NAME_ONLY_TOOLTIP']);
+    self.threat_color_name_only:SetChecked(O.db.threat_color_name_only);
+    self.threat_color_name_only:AddToSearch(button, L['OPTIONS_THREAT_COLOR_NAME_ONLY_TOOLTIP'], self.Tabs[4]);
+    self.threat_color_name_only:SetEnabled(O.db.threat_color_name);
+    self.threat_color_name_only.Callback = function(self)
+        O.db.threat_color_name_only = self:GetChecked();
         Stripes:UpdateAll();
     end
 
