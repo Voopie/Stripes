@@ -58,6 +58,8 @@ local auras = {
     [214793] = true, -- Vigilant
     [232143] = true, -- Demonic Senses
 
+    [330577] = true, -- Trained Eyes
+
     [ 79140] = true, -- Vendetta (Rogue)
     [188501] = true, -- Spectral Sight (Demon Hunter)
 };
@@ -95,6 +97,7 @@ local units = {
 
     -- Open World
     [165349] = true, -- Animated Corpsehound (Maldraxxus)
+    [169760] = true, -- Archivam Assassin
 
     -- Maw
     [173188] = true, -- Mawsworn Outrider
