@@ -10,12 +10,12 @@ local Stripes = S:GetNameplateModule('Handler');
 local pairs, tonumber, math_ceil, string_match, table_wipe = pairs, tonumber, math.ceil, string.match, wipe;
 
 -- WoW API
-local GetQuestObjectiveInfo = GetQuestObjectiveInfo;
 local C_TaskQuest_GetQuestProgressBarInfo, C_QuestLog_GetQuestObjectives, C_QuestLog_GetQuestIDForLogIndex = C_TaskQuest.GetQuestProgressBarInfo, C_QuestLog.GetQuestObjectives, C_QuestLog.GetQuestIDForLogIndex;
 local C_QuestLog_GetNumQuestLogEntries, C_QuestLog_GetInfo, C_QuestLog_IsQuestTask, C_TaskQuest_GetQuestInfoByQuestID = C_QuestLog.GetNumQuestLogEntries, C_QuestLog.GetInfo, C_QuestLog.IsQuestTask, C_TaskQuest.GetQuestInfoByQuestID;
 local C_QuestLog_UnitIsRelatedToActiveQuest = C_QuestLog.UnitIsRelatedToActiveQuest;
 local C_TooltipInfo_GetUnit, TooltipUtil_SurfaceArgs = C_TooltipInfo.GetUnit, TooltipUtil.SurfaceArgs;
 local Enum_TooltipDataLineType_QuestTitle = Enum.TooltipDataLineType.QuestTitle;
+local Enum_TooltipDataLineType_QuestObjective = Enum.TooltipDataLineType.QuestObjective;
 
 -- Stripes API
 local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
@@ -49,21 +49,20 @@ local function GetQuestProgress(unit)
         return;
     end
 
-    local progressGlob, questType, questLogIndex, questId;
+    local progressGlob, questType, questLogIndex, questId, questName;
     local objectiveCount = 0;
 
     for i = 3, #tooltipData.lines do
         local line = tooltipData.lines[i];
-		TooltipUtil_SurfaceArgs(line);
+        TooltipUtil_SurfaceArgs(line);
 
-        if line.type == Enum_TooltipDataLineType_QuestTitle and line.id then
-            local objText = GetQuestObjectiveInfo(line.id, 1, false);
+        if line.type == Enum_TooltipDataLineType_QuestTitle then
+            questId   = questId   or line.id;
+            questName = questName or line.leftText;
+        elseif line.type == Enum_TooltipDataLineType_QuestObjective then
+            local objText = line.leftText;
 
-            questId = questId or line.id or objText and QuestActiveCache[objText];
-
-			local isQuestText = not not objText;
-
-            if isQuestText then
+            if objText then
                 local a, b = string_match(objText, SEARCH_PATTERN_AB);
                 a, b = tonumber(a), tonumber(b);
 
@@ -73,7 +72,7 @@ local function GetQuestProgress(unit)
                         objectiveCount = numLeft;
                     end
                 else
-                    questId = QuestActiveCache[objText];
+                    questId = questId or (questName and QuestActiveCache[questName]);
                     questType = 3;
 
                     a = string_match(objText, SEARCH_PATTERN_PROGRESS);
@@ -87,15 +86,19 @@ local function GetQuestProgress(unit)
                 if not a or (a and b and a ~= b) then
                     progressGlob = progressGlob and progressGlob .. '\n' .. objText or objText;
                 end
-            elseif QuestActiveCache[objText] then
-                questId = QuestActiveCache[objText];
-                local progress = C_TaskQuest_GetQuestProgressBarInfo(questId);
-                if progress then
-                    questType = 3;
-                    return objText, questType, math_ceil(100 - progress), questId;
+            else
+                if questName then
+                    if QuestActiveCache[questName] then
+                        questId = questId or QuestActiveCache[questName];
+                        local progress = C_TaskQuest_GetQuestProgressBarInfo(questId);
+                        if progress then
+                            questType = 3;
+                            return questName, questType, math_ceil(100 - progress), questId;
+                        end
+                    elseif QuestLogIndexCache[questName] then
+                        questLogIndex = QuestLogIndexCache[questName];
+                    end
                 end
-            elseif QuestLogIndexCache[objText] then
-                questLogIndex = QuestLogIndexCache[objText];
             end
         end
     end
