@@ -14,8 +14,8 @@ local C_TaskQuest_GetQuestProgressBarInfo, C_QuestLog_GetQuestObjectives, C_Ques
 local C_QuestLog_GetNumQuestLogEntries, C_QuestLog_GetInfo, C_QuestLog_IsQuestTask, C_TaskQuest_GetQuestInfoByQuestID = C_QuestLog.GetNumQuestLogEntries, C_QuestLog.GetInfo, C_QuestLog.IsQuestTask, C_TaskQuest.GetQuestInfoByQuestID;
 local C_QuestLog_UnitIsRelatedToActiveQuest = C_QuestLog.UnitIsRelatedToActiveQuest;
 local C_TooltipInfo_GetUnit, TooltipUtil_SurfaceArgs = C_TooltipInfo.GetUnit, TooltipUtil.SurfaceArgs;
-local Enum_TooltipDataLineType_QuestTitle = Enum.TooltipDataLineType.QuestTitle;
-local Enum_TooltipDataLineType_QuestObjective = Enum.TooltipDataLineType.QuestObjective;
+local TooltipUtil_FindLinesFromData = TooltipUtil.FindLinesFromData;
+local Enum_TooltipDataLineType_QuestTitle, Enum_TooltipDataLineType_QuestObjective = Enum.TooltipDataLineType.QuestTitle, Enum.TooltipDataLineType.QuestObjective;
 
 -- Stripes API
 local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
@@ -38,6 +38,12 @@ local LOOT_TYPES = {
     ['object'] = true,
 };
 
+
+local questLines = {
+    Enum_TooltipDataLineType_QuestTitle,
+    Enum_TooltipDataLineType_QuestObjective,
+};
+
 local function GetQuestProgress(unit)
     if not C_QuestLog_UnitIsRelatedToActiveQuest(unit) then
         return;
@@ -49,12 +55,19 @@ local function GetQuestProgress(unit)
         return;
     end
 
+    TooltipUtil_SurfaceArgs(tooltipData);
+
+    local lines = TooltipUtil_FindLinesFromData(questLines, tooltipData);
+
+    if #lines == 0 then
+        return;
+    end
+
     local progressGlob, questType, questLogIndex, questId, questName;
     local objectiveCount = 0;
 
-    for i = 3, #tooltipData.lines do
-        local line = tooltipData.lines[i];
-        TooltipUtil_SurfaceArgs(line);
+    for i = 1, #lines do
+        local line = lines[i];
 
         if line.type == Enum_TooltipDataLineType_QuestTitle then
             questId   = questId   or line.id;
