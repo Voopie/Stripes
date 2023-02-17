@@ -87,8 +87,24 @@ panel.Load = function(self)
     self.show_always_instance.Callback = function(self)
         O.db.show_always_instance = self:GetChecked();
 
-        if U.IsInInstance() then
+        if U.IsInInstance() and not D.Player.State.inPvPInstance then
             C_CVar.SetCVar('nameplateShowAll', O.db.show_always_instance and 1 or 0);
+        end
+
+        Stripes:UpdateAll();
+    end
+
+    self.show_always_pvp_instance = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.show_always_pvp_instance:SetPosition('LEFT', self.show_always_instance.Label, 'RIGHT', 12, 0);
+    self.show_always_pvp_instance:SetLabel(L['OPTIONS_VISIBILITY_SHOW_ALWAYS_PVP_INSTANCE']);
+    self.show_always_pvp_instance:SetTooltip(L['OPTIONS_VISIBILITY_SHOW_ALWAYS_PVP_INSTANCE_TOOLTIP']);
+    self.show_always_pvp_instance:AddToSearch(button, nil, self.Tabs[1]);
+    self.show_always_pvp_instance:SetChecked(O.db.show_always_pvp_instance);
+    self.show_always_pvp_instance.Callback = function(self)
+        O.db.show_always_pvp_instance = self:GetChecked();
+
+        if D.Player.State.inPvPInstance then
+            C_CVar.SetCVar('nameplateShowAll', O.db.show_always_pvp_instance and 1 or 0);
         end
 
         Stripes:UpdateAll();
@@ -108,8 +124,7 @@ panel.Load = function(self)
         if not number then
             number = O.DefaultValues.max_distance_openworld;
         else
-            number = math.min(number, 100);
-            number = math.max(number, 1);
+            number = math.max(math.min(number, 100), 1);
         end
 
         O.db.max_distance_openworld = number;
@@ -134,14 +149,38 @@ panel.Load = function(self)
         if not number then
             number = O.DefaultValues.max_distance_instance;
         else
-            number = math.min(number, 100);
-            number = math.max(number, 1);
+            number = math.max(math.min(number, 100), 1);
         end
 
         O.db.max_distance_instance = number;
         self:SetText(number);
 
-        if U.IsInInstance() then
+        if U.IsInInstance() and not D.Player.State.inPvPInstance then
+            C_CVar.SetCVar('nameplateMaxDistance', number);
+        end
+    end
+
+    self.max_distance_pvp_instance = E.CreateEditBox(self.TabsFrames['CommonTab'].Content);
+    self.max_distance_pvp_instance:SetPosition('TOPLEFT', self.show_always_pvp_instance, 'BOTTOMLEFT', 5, -8);
+    self.max_distance_pvp_instance:SetLabel(L['OPTIONS_VISIBILITY_MAX_DISTANCE_PVP_INSTANCE']);
+    self.max_distance_pvp_instance:SetTooltip(L['OPTIONS_VISIBILITY_MAX_DISTANCE_PVP_INSTANCE_TOOLTIP']);
+    self.max_distance_pvp_instance:AddToSearch(button, L['OPTIONS_VISIBILITY_MAX_DISTANCE_PVP_INSTANCE_TOOLTIP'], self.Tabs[1]);
+    self.max_distance_pvp_instance:SetText(O.db.max_distance_pvp_instance);
+    self.max_distance_pvp_instance:SetEnabled(false);
+    self.max_distance_pvp_instance:SetJustifyH('CENTER');
+    self.max_distance_pvp_instance.Callback = function(self)
+        local number = tonumber(self:GetText());
+
+        if not number then
+            number = O.DefaultValues.max_distance_pvp_instance;
+        else
+            number = math.max(math.min(number, 100), 1);
+        end
+
+        O.db.max_distance_pvp_instance = number;
+        self:SetText(number);
+
+        if D.Player.State.inPvPInstance then
             C_CVar.SetCVar('nameplateMaxDistance', number);
         end
     end

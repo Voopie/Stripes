@@ -38,7 +38,6 @@ local LOOT_TYPES = {
     ['object'] = true,
 };
 
-
 local questLines = {
     Enum_TooltipDataLineType_QuestTitle,
     Enum_TooltipDataLineType_QuestObjective,

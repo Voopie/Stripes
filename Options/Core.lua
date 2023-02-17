@@ -303,7 +303,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~592
+-- ~594
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -615,10 +615,12 @@ O.DefaultValues = {
     motion       = tonumber(C_CVar.GetCVar('nameplateMotion')) + 1,
     motion_speed = tonumber(C_CVar.GetCVar('nameplateMotionSpeed')), -- 0.025
 
-    show_always_openworld  = C_CVar.GetCVar('nameplateShowAll') == '1',
-    show_always_instance   = C_CVar.GetCVar('nameplateShowAll') == '1',
-    max_distance_openworld = 60,
-    max_distance_instance  = 60,
+    show_always_openworld    = C_CVar.GetCVar('nameplateShowAll') == '1',
+    show_always_instance     = C_CVar.GetCVar('nameplateShowAll') == '1',
+    show_always_pvp_instance = C_CVar.GetCVar('nameplateShowAll') == '1',
+    max_distance_openworld    = 60,
+    max_distance_instance     = 60,
+    max_distance_pvp_instance = 60,
 
     show_friendly                = C_CVar.GetCVar('nameplateShowFriends') == '1',
     show_friendly_only_in_combat = false,

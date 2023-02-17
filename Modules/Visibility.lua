@@ -2,8 +2,11 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Visibility');
 local Stripes = S:GetNameplateModule('Handler');
 
+-- Stripes API
+local IsNameOnlyMode = Stripes.IsNameOnlyMode;
+
 -- Local Config
-local SHOW_ALWAYS_INSTANCE, SHOW_ALWAYS_OPENWORLD, MAX_DISTANCE_INSTANCE, MAX_DISTANCE_OPENWORLD;
+local SHOW_ALWAYS_INSTANCE, SHOW_ALWAYS_OPENWORLD, SHOW_ALWAYS_PVP_INSTANCE, MAX_DISTANCE_INSTANCE, MAX_DISTANCE_OPENWORLD, MAX_DISTANCE_PVP_INSTANCE;
 local SHOW_ENEMY, SHOW_FRIENDLY, ENEMY_ONLY_IN_COMBAT, FRIENDLY_ONLY_IN_COMBAT;
 
 local wasInCombat = false;
@@ -11,11 +14,13 @@ local wasInCombat = false;
 local function ZoneChanged()
     if U.PlayerInCombat() then
         wasInCombat = true;
-
         return;
     end
 
-    if U.IsInInstance() then
+    if D.Player.State.inPvPInstance then
+        Stripes.SetCVar('nameplateShowAll', SHOW_ALWAYS_PVP_INSTANCE and 1 or 0);
+        Stripes.SetCVar('nameplateMaxDistance', MAX_DISTANCE_PVP_INSTANCE);
+    elseif U.IsInInstance() then
         Stripes.SetCVar('nameplateShowAll', SHOW_ALWAYS_INSTANCE and 1 or 0);
         Stripes.SetCVar('nameplateMaxDistance', MAX_DISTANCE_INSTANCE);
     else
@@ -23,7 +28,7 @@ local function ZoneChanged()
         Stripes.SetCVar('nameplateMaxDistance', MAX_DISTANCE_OPENWORLD);
     end
 
-    if Stripes.IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+    if IsNameOnlyMode() and O.db.name_only_friendly_stacking then
         if U.IsInInstance() then
             C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
         else
@@ -79,10 +84,13 @@ function Module:PLAYER_REGEN_DISABLED()
 end
 
 function Module:UpdateLocalConfig()
-    SHOW_ALWAYS_INSTANCE   = O.db.show_always_instance;
-    SHOW_ALWAYS_OPENWORLD  = O.db.show_always_openworld;
-    MAX_DISTANCE_INSTANCE  = O.db.max_distance_instance;
-    MAX_DISTANCE_OPENWORLD = O.db.max_distance_openworld;
+    SHOW_ALWAYS_INSTANCE     = O.db.show_always_instance;
+    SHOW_ALWAYS_OPENWORLD    = O.db.show_always_openworld;
+    SHOW_ALWAYS_PVP_INSTANCE = O.db.show_always_pvp_instance;
+
+    MAX_DISTANCE_INSTANCE     = O.db.max_distance_instance;
+    MAX_DISTANCE_OPENWORLD    = O.db.max_distance_openworld;
+    MAX_DISTANCE_PVP_INSTANCE = O.db.max_distance_pvp_instance;
 
     SHOW_ENEMY    = O.db.show_enemy;
     SHOW_FRIENDLY = O.db.show_friendly;
