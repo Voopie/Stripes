@@ -1232,8 +1232,13 @@ panel.OnShowOnce = function(self)
 
     for i = 1, #O.Lists.npcs_groups do
         self.UpdateChooseNPCList(i);
-        self.UpdateChooseNPCList(i);
     end
+
+    C_Timer.After(0.1, function()
+        for i = 1, #O.Lists.npcs_groups do
+            self.UpdateChooseNPCList(i);
+        end
+    end);
 
     self.UpdateChooseNPCList(DEFAULT_LIST_VALUE);
 end
