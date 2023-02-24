@@ -129,11 +129,12 @@ do
         if tooltipData then
             TooltipUtil.SurfaceArgs(tooltipData);
 
-            for _, line in ipairs(tooltipData.lines) do
-                TooltipUtil.SurfaceArgs(line);
-            end
+            local line = tooltipData.lines and tooltipData.lines[1];
 
-            name = tooltipData.lines[1] and tooltipData.lines[1].leftText or UNKNOWN;
+            if line then
+                TooltipUtil.SurfaceArgs(line);
+                name = line.leftText or UNKNOWN;
+            end
 
             if name ~= '' and name ~= UNKNOWN then
                 NAMES_CACHE[id] = name;
@@ -159,11 +160,12 @@ do
         if tooltipData then
             TooltipUtil.SurfaceArgs(tooltipData);
 
-            for _, line in ipairs(tooltipData.lines) do
-                TooltipUtil.SurfaceArgs(line);
-            end
+            local line = tooltipData.lines and tooltipData.lines[2];
 
-            sublabel = tooltipData.lines[2] and tooltipData.lines[2].leftText;
+            if line then
+                TooltipUtil.SurfaceArgs(line);
+                sublabel = line and line.leftText;
+            end
         end
 
         if not sublabel or string_find(sublabel or '', '??', 1, true) then
