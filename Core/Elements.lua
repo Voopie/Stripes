@@ -1979,6 +1979,134 @@ do
                 end
             end,
         },
+
+        ['sound'] = {
+            SetList = function(self, itemsTable)
+                self.kind        = 'sound';
+                self.subType     = 'string';
+                self.itemsTable  = itemsTable or LSM:HashTable('sound');
+                self.sortedTable = self.sortedTable or {};
+
+                wipe(self.sortedTable);
+
+                for k, _ in pairs(self.itemsTable) do
+                    self.sortedTable[#self.sortedTable + 1] = k;
+                end
+
+                table.sort(self.sortedTable, textSort);
+            end,
+
+            UpdateList = function(self)
+                local container = self;
+                local itemButton, isNew, lastButton;
+                local itemCounter = 0;
+
+                DropdownList.kind = self.kind;
+                DropdownList.buttonPool:ReleaseAll();
+
+                for key, value in ipairs(self.sortedTable) do
+                    itemCounter = itemCounter + 1;
+                    itemButton, isNew  = DropdownList.buttonPool:Acquire();
+
+                    itemButton:ClearAllPoints();
+
+                    if itemCounter == 1 then
+                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', DropdownList.scrollChild, 'TOPLEFT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', DropdownList.scrollChild, 'TOPRIGHT', 0, 0);
+                    else
+                        PixelUtil.SetPoint(itemButton, 'TOPLEFT', lastButton, 'BOTTOMLEFT', 0, 0);
+                        PixelUtil.SetPoint(itemButton, 'TOPRIGHT', lastButton, 'BOTTOMRIGHT', 0, 0);
+                    end
+
+                    lastButton = itemButton;
+
+                    if isNew then
+                        CreateDropdownItem(itemButton);
+                    end
+
+                    itemButton:SetScript('OnClick', function(self)
+                        PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON);
+
+                        container:SetValue(self.Value);
+                        DropdownList:Hide();
+
+                        if container.OnValueChangedCallback then
+                            container:OnValueChangedCallback(self.Value);
+                        end
+
+                        PlaySoundFile(LSM:Fetch('sound', self.Value), 'Master');
+                    end);
+
+                    PixelUtil.SetSize(itemButton, self.WidthValue, self.HeightValue);
+                    PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
+
+                    local _, size, outline = itemButton.Text:GetFont();
+                    itemButton.Text:SetFont(LSM:Fetch('sound', value), size, outline);
+                    itemButton.Text:SetText(value);
+
+                    itemButton.Key   = key;
+                    itemButton.Value = value;
+                    itemButton.Kind  = self.kind;
+
+                    itemButton:Show();
+                end
+
+                if self.currentValue then
+                    for button, _ in DropdownList.buttonPool:EnumerateActive() do
+                        button.SelectedIcon:Hide()
+
+                        if button.Value == self.currentValue then
+                            button.SelectedIcon:Show();
+                        end
+                    end
+                end
+
+                self:UpdateHeader();
+
+                PixelUtil.SetHeight(DropdownList, math.min(15 * self.HeightValue, itemCounter * self.HeightValue));
+                PixelUtil.SetSize(DropdownList.scrollChild, self.WidthValue, DropdownList:GetHeight());
+
+                self.UpdateScrollArea = function()
+                    UpdateScrollArea(DropdownList.scrollArea, DropdownList:GetHeight(), container.HeightValue, itemCounter);
+                end
+
+                self:UpdateScrollArea();
+            end,
+
+            SetValue = function(self, value)
+                self.currentValue = value;
+
+                for button, _ in DropdownList.buttonPool:EnumerateActive() do
+                    button.SelectedIcon:Hide();
+
+                    if button.Value == value then
+                        button.SelectedIcon:Show();
+                    end
+                end
+
+                self:UpdateHeader();
+            end,
+
+            UpdateHeader = function(self)
+                if LSM:IsValid('sound', self.currentValue) then
+                    if self.holderButton:IsEnabled() then
+                        self.holderButton.Text:SetTextColor(1, 1, 1, 1);
+                    else
+                        self.holderButton.Text:SetTextColor(0.5, 0.5, 0.5, 1);
+                    end
+
+                    self.holderButton.Text:SetText('Trigger'); -- Not fully resolve a problem...
+                    self.holderButton.Text:SetText(self.currentValue);
+                    local _, size, outline = self.holderButton.Text:GetFont();
+                    self.holderButton.Text:SetFont(LSM:Fetch('sound', self.currentValue), size, outline);
+                else
+                    self.holderButton.Text:SetTextColor(1, 0, 0, 1);
+                    self.holderButton.Text:SetText(L['MISSING_SOUND']);
+                    local _, size, outline = self.holderButton.Text:GetFont();
+                    self.holderButton.Text:SetFont(LSM:Fetch('sound', LSM.DefaultMedia.sound), size, outline);
+                end
+            end,
+        },
     };
 
     E.CreateDropdown = function(kind, parent)

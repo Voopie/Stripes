@@ -43,6 +43,9 @@ L['POSITION_OPTIONS'] = 'Position';
 
 L['MISSING_TEXTURE'] = 'Missing texture';
 L['MISSING_FONT'] = 'Missing font';
+L['MISSING_SOUND'] = 'Missing sound';
+
+L['SOUND'] = 'Sound';
 
 L['FONT_VALUE'] = 'Font';
 L['FONT_SIZE'] = 'Font size';

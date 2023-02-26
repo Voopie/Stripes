@@ -14,6 +14,9 @@ local GetUnitColor = U.GetUnitColor;
 local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
 local GetCachedName = Stripes.GetCachedName;
 
+-- Libraries
+local LSM = S.Libraries.LSM;
+
 -- Local config
 local CUSTOM_CASTS_ENABLED;
 
@@ -98,7 +101,7 @@ end
 
 local CUSTOM_CASTS_DATA = {};
 
-local function UpdateCustomCast(self)
+local function UpdateCustomCast(self, changedInterruptibleState)
     local spellId  = self.spellID;
     local castData = spellId and CUSTOM_CASTS_DATA[spellId];
 
@@ -129,6 +132,10 @@ local function UpdateCustomCast(self)
     if castData.glow_enabled then
         GlowStopAll(self);
         GlowStart(self, castData.glow_type, Colors:Get(castData.glow_color_name));
+    end
+
+    if castData.sound_enabled and not changedInterruptibleState then
+        PlaySoundFile(LSM:Fetch('sound', castData.sound_name), 'Master');
     end
 end
 
@@ -853,7 +860,7 @@ function StripesCastingBar_UpdateInterruptibleState(self, notInterruptible)
         end
 
         UpdateInterruptReadyColorAndTick(self);
-        UpdateCustomCast(self);
+        UpdateCustomCast(self, true);
     end
 end
 

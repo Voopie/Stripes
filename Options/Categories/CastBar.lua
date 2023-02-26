@@ -65,6 +65,9 @@ local function AddCustomCast(spellId)
         glow_enabled   = true,
         glow_type      = 1,
         glow_color_name = DEFAULT_GLOW_COLOR_NAME,
+
+        sound_enabled  = false,
+        sound_name     = LSM.DefaultMedia.sound,
     };
 end
 
@@ -72,7 +75,7 @@ local DataCustomCastsRow = {};
 
 local ExtendedOptions = CreateFrame('Frame', nil, panel, 'BackdropTemplate');
 ExtendedOptions:SetFrameLevel(100);
-ExtendedOptions:SetSize(260, 340);
+ExtendedOptions:SetSize(260, 380);
 ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
 ExtendedOptions:SetClampedToScreen(true);
 ExtendedOptions:Hide();
@@ -82,6 +85,8 @@ ExtendedOptions.Update = function(self)
     self.ColorName:SetValue(self.anchor.color_name);
     self.GlowColorName:SetList(Colors:GetList());
     self.GlowColorName:SetValue(self.anchor.glow_color_name);
+    self.SoundName:SetList(LSM:HashTable('sound'));
+    self.SoundName:SetValue(self.anchor.sound_name);
 end
 
 ExtendedOptions.UpdateAll = function(self, frame)
@@ -101,6 +106,10 @@ ExtendedOptions.UpdateAll = function(self, frame)
     self.GlowType:SetValue(frame.glow_type);
     self.GlowColorName:SetList(Colors:GetList());
     self.GlowColorName:SetValue(frame.glow_color_name);
+
+    self.SoundName:SetList(LSM:HashTable('sound'));
+    self.SoundName:SetValue(frame.sound_name);
+    self.SoundEnabled:SetChecked(frame.sound_enabled);
 
     self.NewNameBox:SetText(frame.new_name or frame.name);
 
@@ -226,6 +235,31 @@ ExtendedOptions.GlowColorName:SetSize(140, 20);
 ExtendedOptions.GlowColorName.OnValueChangedCallback = function(_, name)
     O.db.castbar_custom_casts_data[ExtendedOptions.id].glow_color_name = name;
 
+    panel:UpdateCustomCastsScroll();
+    S:GetNameplateModule('Handler'):UpdateAll();
+end
+
+ExtendedOptions.SoundText = ExtendedOptions:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+ExtendedOptions.SoundText:SetPoint('TOPLEFT', ExtendedOptions.GlowColorName, 'BOTTOMLEFT', 0, -12);
+ExtendedOptions.SoundText:SetText(L['SOUND']);
+
+ExtendedOptions.SoundName = E.CreateDropdown('sound', ExtendedOptions);
+ExtendedOptions.SoundName:SetPosition('TOPLEFT', ExtendedOptions.SoundText, 'BOTTOMLEFT', 0, -4);
+ExtendedOptions.SoundName:SetSize(140, 20);
+ExtendedOptions.SoundName:SetList(LSM:HashTable('sound'));
+ExtendedOptions.SoundName.OnValueChangedCallback = function(_, value)
+    O.db.castbar_custom_casts_data[ExtendedOptions.id].sound_name = value;
+
+    panel:UpdateCustomCastsScroll();
+    S:GetNameplateModule('Handler'):UpdateAll();
+end
+
+ExtendedOptions.SoundEnabled = E.CreateCheckButton(ExtendedOptions);
+ExtendedOptions.SoundEnabled:SetPosition('LEFT', ExtendedOptions.SoundName, 'RIGHT', 12, 0);
+ExtendedOptions.SoundEnabled.Callback = function(self)
+    O.db.castbar_custom_casts_data[ExtendedOptions.id].sound_enabled = self:GetChecked();
+
+    panel:UpdateCustomCastsScroll();
     S:GetNameplateModule('Handler'):UpdateAll();
 end
 
@@ -258,7 +292,7 @@ if UIDropDownMenu_HandleGlobalMouseEvent then
             return;
         end
 
-        if ExtendedOptions:IsShown() and not ExtendedOptions:IsMouseOver() and not ExtendedOptions.anchor:IsMouseOver() and not _G['StripesDropdownList']:IsMouseOver() then
+        if ExtendedOptions:IsShown() and not ExtendedOptions:IsMouseOver() and not ExtendedOptions.anchor:IsMouseOver() and not _G['StripesDropdownList']:IsMouseOver() and not _G['StripesDropdownList'].scrollBar:IsMouseOver() then
             ExtendedOptionsHide();
         end
     end
@@ -349,16 +383,30 @@ local function CreateCustomCastRow(frame)
     frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
     frame.NameText:SetSize(NAME_WIDTH, ROW_HEIGHT);
 
+    frame.SoundIcon = frame:CreateTexture(nil, 'OVERLAY');
+    frame.SoundIcon:SetPoint('RIGHT', frame.ToggleExtendedOptions, 'LEFT', -8, 0);
+    frame.SoundIcon:SetSize(16, 16);
+    frame.SoundIcon:SetAtlas('chatframe-button-icon-voicechat');
+    frame.SoundIcon:Hide();
+
     frame:HookScript('OnEnter', function(self)
         self:SetBackdropColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
         self.ToggleExtendedOptions:SetVertexColor(1, 0.85, 0, 1);
 
         self.NameText:SetText(self.name .. '    |cffaaaaaa' .. self.id .. ' | ' .. (self.color_enabled and self.color_name or L['NO']) .. ' | ' .. O.Lists.glow_type_short_with_none[self.glow_type] .. '|r');
 
-        if self.id then
-            GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
-            GameTooltip:SetHyperlink('spell:' .. self.id);
-            GameTooltip:Show();
+        if self.SoundIcon:IsMouseOver() then
+            if self.SoundIcon.tooltip then
+                GameTooltip:SetOwner(self.SoundIcon, 'ANCHOR_TOPLEFT');
+                GameTooltip:AddLine(self.SoundIcon.tooltip);
+                GameTooltip:Show();
+            end
+        else
+            if self.id then
+                GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT');
+                GameTooltip:SetHyperlink('spell:' .. self.id);
+                GameTooltip:Show();
+            end
         end
     end);
 
@@ -420,6 +468,9 @@ local function UpdateCustomCastRow(frame)
         frame.ColorLine:SetColorTexture(0.1, 0.1, 0.1, 1);
         frame.highlightColor[1], frame.highlightColor[2], frame.highlightColor[3], frame.highlightColor[4] = 0.1, 0.1, 0.1, 0.5;
     end
+
+    frame.SoundIcon:SetShown(frame.sound_enabled and frame.sound_name ~= LSM.DefaultMedia.sound);
+    frame.SoundIcon.tooltip = frame.sound_name;
 
     frame.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
 
@@ -511,6 +562,9 @@ panel.UpdateCustomCastsScroll = function()
             end
 
             frame.new_name = O.db.castbar_custom_casts_data[id].new_name;
+
+            frame.sound_enabled = data.sound_enabled;
+            frame.sound_name    = data.sound_name or LSM.DefaultMedia.sound;
 
             UpdateCustomCastRow(frame);
 

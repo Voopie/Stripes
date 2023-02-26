@@ -43,6 +43,9 @@ L['POSITION_OPTIONS'] = 'Позиция';
 
 L['MISSING_TEXTURE'] = 'Нет текстуры';
 L['MISSING_FONT'] = 'Нет шрифта';
+L['MISSING_SOUND'] = 'Нет звука';
+
+L['SOUND'] = 'Звук';
 
 L['FONT_VALUE'] = 'Шрифт';
 L['FONT_SIZE'] = 'Размер шрифта';
