@@ -282,6 +282,14 @@ O.Lists = {
         [6] = L['SPEC_DAMAGER_HEALER'],
         [7] = L['SPEC_HEALER_ONLY'],
     },
+
+    sound_channels = {
+        ['Ambience'] = ENABLE_AMBIENCE,
+        ['Dialog']   = ENABLE_DIALOG,
+        ['Master']   = DEFAULT_CUF_PROFILE_NAME,
+        ['Music']    = ENABLE_MUSIC,
+        ['SFX']      = ENABLE_SOUNDFX,
+    }
 };
 
 O.GetNpcNamesValue = function()

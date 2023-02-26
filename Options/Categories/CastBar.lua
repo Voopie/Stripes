@@ -68,6 +68,7 @@ local function AddCustomCast(spellId)
 
         sound_enabled  = false,
         sound_name     = LSM.DefaultMedia.sound,
+        sound_channel  = 'Master',
     };
 end
 
@@ -75,7 +76,7 @@ local DataCustomCastsRow = {};
 
 local ExtendedOptions = CreateFrame('Frame', nil, panel, 'BackdropTemplate');
 ExtendedOptions:SetFrameLevel(100);
-ExtendedOptions:SetSize(260, 380);
+ExtendedOptions:SetSize(260, 410);
 ExtendedOptions:SetBackdrop(BACKDROP_BORDER_2);
 ExtendedOptions:SetClampedToScreen(true);
 ExtendedOptions:Hide();
@@ -87,6 +88,8 @@ ExtendedOptions.Update = function(self)
     self.GlowColorName:SetValue(self.anchor.glow_color_name);
     self.SoundName:SetList(LSM:HashTable('sound'));
     self.SoundName:SetValue(self.anchor.sound_name);
+    self.SoundChannel:SetList(O.Lists.sound_channels);
+    self.SoundChannel:SetValue(self.anchor.sound_channel);
 end
 
 ExtendedOptions.UpdateAll = function(self, frame)
@@ -110,6 +113,8 @@ ExtendedOptions.UpdateAll = function(self, frame)
     self.SoundName:SetList(LSM:HashTable('sound'));
     self.SoundName:SetValue(frame.sound_name);
     self.SoundEnabled:SetChecked(frame.sound_enabled);
+    self.SoundChannel:SetList(O.Lists.sound_channels);
+    self.SoundChannel:SetValue(frame.sound_channel);
 
     self.NewNameBox:SetText(frame.new_name or frame.name);
 
@@ -258,6 +263,17 @@ ExtendedOptions.SoundEnabled = E.CreateCheckButton(ExtendedOptions);
 ExtendedOptions.SoundEnabled:SetPosition('LEFT', ExtendedOptions.SoundName, 'RIGHT', 12, 0);
 ExtendedOptions.SoundEnabled.Callback = function(self)
     O.db.castbar_custom_casts_data[ExtendedOptions.id].sound_enabled = self:GetChecked();
+
+    panel:UpdateCustomCastsScroll();
+    S:GetNameplateModule('Handler'):UpdateAll();
+end
+
+ExtendedOptions.SoundChannel = E.CreateDropdown('plain', ExtendedOptions);
+ExtendedOptions.SoundChannel:SetPosition('TOPLEFT', ExtendedOptions.SoundName, 'BOTTOMLEFT', 0, -4);
+ExtendedOptions.SoundChannel:SetSize(140, 20);
+ExtendedOptions.SoundChannel:SetList(O.Lists.sound_channels);
+ExtendedOptions.SoundChannel.OnValueChangedCallback = function(_, key, value)
+    O.db.castbar_custom_casts_data[ExtendedOptions.id].sound_channel = key;
 
     panel:UpdateCustomCastsScroll();
     S:GetNameplateModule('Handler'):UpdateAll();
@@ -565,6 +581,7 @@ panel.UpdateCustomCastsScroll = function()
 
             frame.sound_enabled = data.sound_enabled;
             frame.sound_name    = data.sound_name or LSM.DefaultMedia.sound;
+            frame.sound_channel = data.sound_channel or 'Master';
 
             UpdateCustomCastRow(frame);
 
