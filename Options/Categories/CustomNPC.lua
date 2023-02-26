@@ -1240,7 +1240,9 @@ panel.OnShowOnce = function(self)
         end
     end);
 
-    self.UpdateChooseNPCList(DEFAULT_LIST_VALUE);
+    C_Timer.After(0.15, function()
+        self.UpdateChooseNPCList(DEFAULT_LIST_VALUE);
+    end);
 end
 
 panel.OnHide = function()
