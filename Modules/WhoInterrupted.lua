@@ -3,7 +3,7 @@ local Module = S:NewNameplateModule('WhoInterrupted');
 local Stripes = S:GetNameplateModule('Handler');
 
 -- Lua API
-local pairs, string_format, bit_band = pairs, string.format, bit.band;
+local string_format, bit_band = string.format, bit.band;
 
 -- WoW API
 local UnitExists, GetPlayerInfoByGUID = UnitExists, GetPlayerInfoByGUID;
@@ -15,9 +15,6 @@ local INTERRUPTED = INTERRUPTED;
 local U_GetClassColor = U.GetClassColor;
 local U_UnitIsPetByGUID = U.UnitIsPetByGUID;
 local GetCachedName = Stripes.GetCachedName;
-
--- Nameplates
-local NP = S.NamePlates;
 
 -- Libraries
 local LPS = S.Libraries.LPS;
@@ -50,19 +47,19 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
     local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId = CombatLogGetCurrentEventInfo();
 
     if subEvent == 'SPELL_INTERRUPT' then
-        for _, unitframe in pairs(NP) do
-            if unitframe.isActive and unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
+        self:ForAllActiveUnitFrames(function(unitframe)
+            if UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
                 OnInterrupt(unitframe, sourceGUID, sourceName);
             end
-        end
+        end);
     elseif subEvent == 'SPELL_AURA_APPLIED' and not blacklist[spellId] then
         local flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
         if flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0 then
-            for _, unitframe in pairs(NP) do
-                if unitframe.isActive and unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
+            self:ForAllActiveUnitFrames(function(unitframe)
+                if UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
                     OnInterrupt(unitframe, sourceGUID, sourceName);
                 end
-            end
+            end);
         end
     end
 end
