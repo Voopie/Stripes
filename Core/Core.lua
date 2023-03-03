@@ -3,6 +3,9 @@ local ADDON_NAME, NAMESPACE = ...;
 -- Lua API
 local ipairs, pairs, tostring, table_insert, table_remove = ipairs, pairs, tostring, table.insert, table.remove;
 
+-- WoW API
+local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
+
 local locale = GetLocale();
 local convert = {
     enGB = 'enUS',
@@ -368,6 +371,16 @@ function ModuleMixin:ForAllActiveUnitFrames(func)
             func(frame);
         end
     end
+end
+
+function ModuleMixin:ProcessNamePlateForUnit(unit, func)
+    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
+
+    if not nameplate or not NP[nameplate] then
+        return;
+    end
+
+    func(NP[nameplate]);
 end
 
 function ModuleMixin:SecureHook(name, func1, func2, func3)
