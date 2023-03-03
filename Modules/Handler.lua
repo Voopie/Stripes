@@ -33,9 +33,6 @@ if Masque then
     Stripes.MasqueAurasCustomGroup     = Masque:Group(S.AddonName, L['MASQUE_CUSTOM_AURAS']);
 end
 
--- Nameplates
-local NP = S.NamePlates;
-
 -- Local Config
 local NAME_TEXT_ENABLED, NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
@@ -79,13 +76,11 @@ Stripes.Updater.OnUpdate = function(_, elapsed)
     if updaterElapsed >= UPDATER_INTERVAL then
         updaterElapsed = 0;
 
-        for _, unitframe in pairs(NP) do
-            if unitframe.isActive and unitframe:IsShown() then
-                for _, func in pairs(UpdaterList) do
-                    func(unitframe);
-                end
+        Stripes:ForAllActiveUnitFrames(function(unitframe)
+            for _, func in pairs(UpdaterList) do
+                func(unitframe);
             end
-        end
+        end);
     end
 end
 
@@ -107,7 +102,7 @@ Stripes.UpdateAll = function()
     S:ForAllModules('UpdateLocalConfig');
     S:ForAllNameplateModules('UpdateLocalConfig');
 
-    for _, unitframe in pairs(NP) do
+    Stripes:ForAllUnitFrames(function(unitframe)
         if unitframe.unit and UnitExists(unitframe.unit) then
             CompactUnitFrame_UpdateWidgetsOnlyMode(unitframe);
             CompactUnitFrame_UpdateName(unitframe);
@@ -124,7 +119,7 @@ Stripes.UpdateAll = function()
         end
 
         S:ForAllNameplateModules('Update', unitframe);
-    end
+    end);
 end
 
 Stripes.UpdateFontObject = function(fontObject, fontValue, fontSize, fontFlag, fontShadow)
@@ -845,125 +840,80 @@ local function ResetNameplateData(unitframe)
 end
 
 function Stripes:NAME_PLATE_UNIT_ADDED(unit)
-    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
-    local unitframe = nameplate and nameplate.UnitFrame;
+    self:AddedNamePlateForUnit(unit, function(unitframe)
+        unitframe.data = unitframe.data or {};
 
-    if not nameplate then
-        return;
-    end
+        unitframe.data.unit      = unit;
+        unitframe.data.unitGUID  = UnitGUID(unit);
 
-    NP[nameplate] = unitframe;
+        UpdateStatus(unitframe);
+        UpdateClassName(unitframe);
+        UpdateWidgetStatus(unitframe);
+        UpdateNpcId(unitframe);
+        UpdateUnitColor(unitframe);
+        UpdateHealth(unitframe);
+        UpdateAbsorbs(unitframe)
+        UpdateClassification(unitframe);
+        UpdateConnection(unitframe);
+        UpdateTarget(unitframe);
+        UpdateFocus(unitframe);
 
-    unitframe.data = unitframe.data or {};
+        unitframe.data.creatureType = not unitframe.data.isPlayer and UnitCreatureType(unit) or nil;
+        unitframe.data.minus = UnitClassification(unit) == 'minus';
+        unitframe.data.targetName = UnitName(unit .. 'target');
 
-    unitframe.data.unit      = unit;
-    unitframe.data.unitGUID  = UnitGUID(unit);
+        if unitframe.data.widgetsOnly then
+            unitframe.data.previousType = nil;
+        else
+            unitframe.data.previousType = unitframe.data.unitType;
+            unitframe:UnregisterEvent('UNIT_AURA');
+        end
 
-    UpdateStatus(unitframe);
-    UpdateClassName(unitframe);
-    UpdateWidgetStatus(unitframe);
-    UpdateNpcId(unitframe);
-    UpdateUnitColor(unitframe);
-    UpdateHealth(unitframe);
-    UpdateAbsorbs(unitframe)
-    UpdateClassification(unitframe);
-    UpdateConnection(unitframe);
-    UpdateTarget(unitframe);
-    UpdateFocus(unitframe);
+        unitframe.isActive = true;
+        S:ForAllNameplateModules('UnitAdded', unitframe);
 
-    unitframe.data.creatureType = not unitframe.data.isPlayer and UnitCreatureType(unit) or nil;
-    unitframe.data.minus = UnitClassification(unit) == 'minus';
-    unitframe.data.targetName = UnitName(unit .. 'target');
+        if Stripes:IsUnimportantUnit(unitframe.data.npcId) then
+            unitframe.data.isUnimportantUnit = true;
+        end
 
-    if unitframe.data.widgetsOnly then
-        unitframe.data.previousType = nil;
-    else
-        unitframe.data.previousType = unitframe.data.unitType;
-        unitframe:UnregisterEvent('UNIT_AURA');
-    end
-
-    unitframe.isActive = true;
-    S:ForAllNameplateModules('UnitAdded', unitframe);
-
-    if Stripes:IsUnimportantUnit(unitframe.data.npcId) then
-        unitframe.data.isUnimportantUnit = true;
-    end
-
-    if unitframe.data.widgetsOnly then
-        unitframe.isActive = false;
-        ResetNameplateData(unitframe);
-        S:ForAllNameplateModules('UnitRemoved', unitframe);
-    end
+        if unitframe.data.widgetsOnly then
+            unitframe.isActive = false;
+            ResetNameplateData(unitframe);
+            S:ForAllNameplateModules('UnitRemoved', unitframe);
+        end
+    end);
 end
 
 function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
-    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
-
-    if not nameplate or not NP[nameplate] then
-        return;
-    end
-
-    local unitframe = NP[nameplate];
-
-    unitframe.isActive = false;
-    ResetNameplateData(unitframe);
-    S:ForAllNameplateModules('UnitRemoved', unitframe);
+    self:ProcessNamePlateForUnit(unit, function(unitframe)
+        unitframe.isActive = false;
+        ResetNameplateData(unitframe);
+        S:ForAllNameplateModules('UnitRemoved', unitframe);
+    end);
 end
 
 function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
-    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
-
-    if not nameplate or not NP[nameplate] then
-        return;
-    end
-
-    local unitframe = NP[nameplate];
-
-    S:ForAllNameplateModules('UnitAura', unitframe, unitAuraUpdateInfo);
+    self:ProcessNamePlateForUnit(unit, function(unitframe)
+        S:ForAllNameplateModules('UnitAura', unitframe, unitAuraUpdateInfo);
+    end);
 end
 
 function Stripes:PLAYER_TARGET_CHANGED()
-    local nameplate = C_NamePlate_GetNamePlateForUnit('target');
-
-    if not nameplate or not NP[nameplate] then
-        return;
-    end
-
-    local unitframe = NP[nameplate];
-
-    S:ForAllNameplateModules('UnitAura', unitframe);
+    self:ProcessNamePlateForUnit('target', function(unitframe)
+        S:ForAllNameplateModules('UnitAura', unitframe);
+    end);
 end
 
 function Stripes:UNIT_LEVEL(unit)
-    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
-
-    if not nameplate or not NP[nameplate] then
-        return;
-    end
-
-    local unitframe = NP[nameplate];
-
-    UpdateLevel(unitframe);
+    self:ProcessNamePlateForUnit(unit, UpdateLevel);
 end
 
 function Stripes:UNIT_FACTION(unit)
-    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
-
-    if not nameplate or not NP[nameplate] then
-        return;
-    end
-
-    local unitframe = NP[nameplate];
-
-    UpdateLevel(unitframe);
+    self:ProcessNamePlateForUnit(unit, UpdateLevel);
 end
 
 function Stripes:PLAYER_FOCUS_CHANGED()
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe:IsShown() then
-            UpdateFocus(unitframe);
-        end
-    end
+    self:ForAllActiveUnitFrames(UpdateFocus);
 end
 
 function Stripes:PLAYER_LOGIN()
