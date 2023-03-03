@@ -145,74 +145,6 @@ local function UpdateHealthColor(frame)
     end
 end
 
--- Execution
-local function Execution_Start(unitframe, onlyGlow)
-    if not onlyGlow then
-        local color = DB.EXECUTION_COLOR;
-        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
-
-        if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-            unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
-        end
-    end
-
-    if DB.EXECUTION_GLOW then
-        if not unitframe.healthBar.executionGlow then
-            LCG_PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_EXECUTION');
-            unitframe.healthBar.executionGlow = true;
-        end
-    else
-        LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
-        unitframe.healthBar.executionGlow = nil;
-    end
-end
-
-local function Execution_Stop(unitframe)
-    LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
-    unitframe.healthBar.executionGlow = nil;
-end
-
--- Custom Health Bar Color
-local function UpdateCustomHealthBarColor(unitframe)
-    if unitframe.healthBar.highPrioColored or unitframe.healthBar.currentTargetColored then
-        unitframe.healthBar.customColored = nil;
-    else
-        LCG_PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
-        LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
-        LCG_ButtonGlow_Stop(unitframe.healthBar);
-
-        if DB.CUSTOM_NPC_ENABLED and DB.CUSTOM_NPC_DATA[unitframe.data.npcId] and DB.CUSTOM_NPC_DATA[unitframe.data.npcId].enabled then
-            local custom = DB.CUSTOM_NPC_DATA[unitframe.data.npcId];
-
-            if custom.color_enabled then
-                local color = Colors:Get(custom.color_name);
-                local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
-
-                if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-                    unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
-                end
-
-                unitframe.healthBar.customColored = true;
-            else
-                unitframe.healthBar.customColored = nil;
-            end
-
-            if custom.glow_enabled then
-                if custom.glow_type == 1 then
-                    LCG_PixelGlow_Start(unitframe.healthBar, Colors:Get(custom.glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
-                elseif custom.glow_type == 2 then
-                    LCG_AutoCastGlow_Start(unitframe.healthBar, Colors:Get(custom.glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
-                elseif custom.glow_type == 3 then
-                    LCG_ButtonGlow_Start(unitframe.healthBar);
-                end
-            end
-        else
-            unitframe.healthBar.customColored = nil;
-        end
-    end
-end
-
--- Threat
 local function CreateThreatPercentage(unitframe)
     if unitframe.ThreatPercentage then
         return;
@@ -281,104 +213,6 @@ local function Threat_GetThreatSituationStatus(unit)
     return display, status, isTanking;
 end
 
-local function Threat_HighPrioColor(unitframe)
-    if not DB.THREAT_ENABLED or not DB.THREAT_COLOR_PRIO_HIGH then
-        unitframe.healthBar.highPrioColored = nil;
-        unitframe.data.tpNeedUpdate = true;
-        return;
-    end
-
-    if PLAYER_IS_TANK and DB.THREAT_COLOR_PRIO_HIGH_EXCLUDE_TANK_ROLE then
-        unitframe.healthBar.highPrioColored = nil;
-        return;
-    end
-
-    local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
-
-    if display and status == 3 and not IsPlayer(unitframe.data.unit) then
-        local r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
-
-        if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
-            UpdateThreatName(unitframe, display, r, g, b);
-        else
-            if UnitIsTapped(unitframe.data.unit) then
-                if DB.THREAT_COLOR_ISTAPPED_BORDER then
-                    unitframe.healthBar.border:SetVertexColor(r, g, b, a);
-                end
-            else
-                unitframe.healthBar:SetStatusBarColor(r, g, b, a);
-                unitframe.healthBar.highPrioColored = true;
-            end
-
-            UpdateThreatName(unitframe, display, r, g, b);
-        end
-
-        UpdateThreatPercentage(unitframe, display, r, g, b, a);
-        unitframe.data.tpNeedUpdate = false;
-    else
-        unitframe.healthBar.highPrioColored = nil;
-    end
-end
-
-local function Threat_UpdateColor(unitframe)
-    if not DB.THREAT_ENABLED or not unitframe.data.unit then
-        unitframe.data.tpNeedUpdate = true;
-        return;
-    end
-
-    local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
-    local offTank, petTank, playerPetTank = false, false, false;
-
-    if not status or status < 3 then
-        local tank_unit = unitframe.data.unit .. 'target';
-        if UnitExists(tank_unit) and not UnitIsUnit(tank_unit, 'player') then
-            if (UnitInParty(tank_unit) or UnitInRaid(tank_unit)) and UnitGroupRolesAssigned(tank_unit) == 'TANK' then
-                -- group tank
-                offTank = true;
-            elseif not UnitIsPlayer(tank_unit) then
-                if UnitIsUnit(tank_unit, 'pet') then
-                    -- player's pet
-                    playerPetTank = true;
-                elseif UnitPlayerControlled(tank_unit) then
-                    -- player controlled npc (pet, vehicle, totem)
-                    petTank = true;
-                end
-            end
-        end
-    end
-
-    if display and not IsPlayer(unitframe.data.unit) then
-        local r, g, b, a;
-
-        if PLAYER_IS_TANK and offTank then
-            r, g, b, a = offTankColor[1], offTankColor[2], offTankColor[3], offTankColor[4];
-        elseif playerPetTank then
-            r, g, b, a = playerPetTankColor[1], playerPetTankColor[2], playerPetTankColor[3], playerPetTankColor[4];
-        elseif petTank then
-            r, g, b, a = petTankColor[1], petTankColor[2], petTankColor[3], petTankColor[4];
-        else
-            r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
-        end
-
-        if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
-            UpdateThreatName(unitframe, display, r, g, b);
-        else
-            if UnitIsTapped(unitframe.data.unit) then
-                if DB.THREAT_COLOR_ISTAPPED_BORDER then
-                    unitframe.healthBar.border:SetVertexColor(r, g, b, a);
-                end
-            else
-                unitframe.healthBar:SetStatusBarColor(r, g, b, a);
-            end
-
-            UpdateThreatName(unitframe, display, r, g, b);
-        end
-
-        UpdateThreatPercentage(unitframe, display, r, g, b, a);
-        unitframe.data.tpNeedUpdate = false;
-    end
-end
-
 local function Threat_UpdatePercentage(unitframe)
     local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
 
@@ -445,82 +279,51 @@ local function GetAuraColor(unit)
     return false;
 end
 
-local function UpdateAurasColor(unitframe)
-    if not DB.AURAS_HPBAR_COLORING then
-        return false;
-    end
+local COLORING_FUNCTIONS = {
+    HIGH_THREAT = function(unitframe)
+        local result = false;
 
-    if DB.RAID_TARGET_HPBAR_COLORING and unitframe.data.raidIndex then
-        return false;
-    end
-
-    local r, g, b, a = GetAuraColor(unitframe.data.unit);
-
-    if not r then
-        return false;
-    end
-
-    local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
-
-    if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
-        unitframe.healthBar:SetStatusBarColor(r, g, b, a or 1);
-    end
-
-    return true;
-end
-
-local function UpdateRaidTarget(unitframe)
-    if not DB.RAID_TARGET_HPBAR_COLORING then
-        unitframe.data.raidIndex = nil;
-        return false;
-    end
-
-    local raidIndex = GetRaidTargetIndex(unitframe.data.unit);
-
-    if not raidIndex then
-        unitframe.data.raidIndex = nil;
-        return false;
-    end
-
-    if RAID_TARGET_COLORS[raidIndex] then
-        local color = RAID_TARGET_COLORS[raidIndex];
-        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
-
-        if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-            unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+        if not DB.THREAT_ENABLED or not DB.THREAT_COLOR_PRIO_HIGH then
+            unitframe.data.tpNeedUpdate = true;
+            return result;
         end
 
-        unitframe.data.raidIndex = raidIndex;
-
-        return true;
-    end
-
-    return false;
-end
-
-local function UpdateAuraColor(unitframe)
-    if unitframe.healthBar.highPrioColored or unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored then
-        unitframe.healthBar.auraColored = nil;
-    else
-        unitframe.healthBar.auraColored = UpdateAurasColor(unitframe);
-    end
-end
-
-local function UpdateRaidTargetColor(unitframe)
-    if unitframe.healthBar.highPrioColored or unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored then
-        unitframe.healthBar.raidTargetColored = nil;
-    else
-        unitframe.healthBar.raidTargetColored = UpdateRaidTarget(unitframe);
-        if not unitframe.healthBar.raidTargetColored then
-            UpdateAuraColor(unitframe);
+        if PLAYER_IS_TANK and DB.THREAT_COLOR_PRIO_HIGH_EXCLUDE_TANK_ROLE then
+            return result;
         end
-    end
-end
 
-local function UpdateCurrentTargetColor(unitframe)
-    if unitframe.healthBar.highPrioColored then
-        unitframe.healthBar.currentTargetColored = nil;
-    else
+        local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
+
+        if display and status == 3 and not IsPlayer(unitframe.data.unit) then
+            local r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
+
+            if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
+                UpdateThreatName(unitframe, display, r, g, b);
+            else
+                if UnitIsTapped(unitframe.data.unit) then
+                    if DB.THREAT_COLOR_ISTAPPED_BORDER then
+                        unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+                    end
+                else
+                    unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                    result = true;
+                end
+
+                UpdateThreatName(unitframe, display, r, g, b);
+            end
+
+            UpdateThreatPercentage(unitframe, display, r, g, b, a);
+            unitframe.data.tpNeedUpdate = false;
+        else
+            result = false;
+        end
+
+        return result;
+    end,
+
+    CURRENT_TARGET_FOCUS = function(unitframe)
+        local result = false;
+
         if DB.CURRENT_TARGET_COLOR_ENABLED and unitframe.data.isTarget then
             local color = DB.CURRENT_TARGET_USE_CLASS_COLOR and DB.CURRENT_TARGET_CLASS_COLOR or DB.CURRENT_TARGET_COLOR;
             local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
@@ -529,7 +332,7 @@ local function UpdateCurrentTargetColor(unitframe)
                 unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
             end
 
-            unitframe.healthBar.currentTargetColored = true;
+            result = true;
         elseif DB.CURRENT_FOCUS_COLOR_ENABLED and unitframe.data.isFocus then
             local color = DB.CURRENT_FOCUS_USE_CLASS_COLOR and DB.CURRENT_FOCUS_CLASS_COLOR or DB.CURRENT_FOCUS_COLOR;
             local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
@@ -538,25 +341,238 @@ local function UpdateCurrentTargetColor(unitframe)
                 unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
             end
 
-            unitframe.healthBar.currentTargetColored = true;
+            result = true;
         else
-            unitframe.healthBar.currentTargetColored = nil;
+            result = false;
+        end
+
+        return result;
+    end,
+
+    CUSTOM = function(unitframe)
+        local result = false;
+
+        LCG_PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
+        LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
+        LCG_ButtonGlow_Stop(unitframe.healthBar);
+
+        if DB.CUSTOM_NPC_ENABLED and DB.CUSTOM_NPC_DATA[unitframe.data.npcId] and DB.CUSTOM_NPC_DATA[unitframe.data.npcId].enabled then
+            local custom = DB.CUSTOM_NPC_DATA[unitframe.data.npcId];
+
+            if custom.color_enabled then
+                local color = Colors:Get(custom.color_name);
+                local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+                if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+                    unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+                end
+
+                result = true;
+            else
+                result = false;
+            end
+
+            if custom.glow_enabled then
+                if custom.glow_type == 1 then
+                    LCG_PixelGlow_Start(unitframe.healthBar, Colors:Get(custom.glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
+                elseif custom.glow_type == 2 then
+                    LCG_AutoCastGlow_Start(unitframe.healthBar, Colors:Get(custom.glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
+                elseif custom.glow_type == 3 then
+                    LCG_ButtonGlow_Start(unitframe.healthBar);
+                end
+            end
+        else
+            result = false;
+        end
+
+        return result;
+    end,
+
+    RAID_TARGET = function(unitframe)
+        local result = false;
+
+        if not DB.RAID_TARGET_HPBAR_COLORING then
+            unitframe.data.raidIndex = nil;
+            return result;
+        end
+
+        local raidIndex = GetRaidTargetIndex(unitframe.data.unit);
+
+        if not raidIndex then
+            unitframe.data.raidIndex = nil;
+            return result;
+        end
+
+        if RAID_TARGET_COLORS[raidIndex] then
+            local color = RAID_TARGET_COLORS[raidIndex];
+            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+            if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+            end
+
+            unitframe.data.raidIndex = raidIndex;
+
+            result = true;
+        end
+
+        return result;
+    end,
+
+    AURA = function(unitframe)
+        local result = false;
+
+        if not DB.AURAS_HPBAR_COLORING then
+            return result;
+        end
+
+        local r, g, b, a = GetAuraColor(unitframe.data.unit);
+
+        if not r then
+            return result;
+        end
+
+        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+        if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
+            unitframe.healthBar:SetStatusBarColor(r, g, b, a or 1);
+        end
+
+        result = true;
+
+        return result;
+    end,
+
+    EXECUTION = function(unitframe)
+        local result = false;
+
+        if DB.EXECUTION_ENABLED and (unitframe.data.healthPer <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= DB.EXECUTION_HIGH_PERCENT)) then
+            local color = DB.EXECUTION_COLOR;
+            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+            if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+            end
+
+            result = true;
+
+            if DB.EXECUTION_GLOW then
+                if not unitframe.healthBar.executionGlow then
+                    LCG_PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_EXECUTION');
+                    unitframe.healthBar.executionGlow = true;
+                end
+            else
+                LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
+                unitframe.healthBar.executionGlow = nil;
+            end
+        else
+            LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
+            unitframe.healthBar.executionGlow = nil;
+
+            result = false;
+        end
+
+        return result;
+    end,
+
+    THREAT = function(unitframe)
+        local result = false;
+
+        if not DB.THREAT_ENABLED then
+            unitframe.data.tpNeedUpdate = true;
+            return result;
+        end
+
+        local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
+        local offTank, petTank, playerPetTank = false, false, false;
+
+        if not status or status < 3 then
+            local tank_unit = unitframe.data.unit .. 'target';
+            if UnitExists(tank_unit) and not UnitIsUnit(tank_unit, 'player') then
+                if (UnitInParty(tank_unit) or UnitInRaid(tank_unit)) and UnitGroupRolesAssigned(tank_unit) == 'TANK' then
+                    -- group tank
+                    offTank = true;
+                elseif not UnitIsPlayer(tank_unit) then
+                    if UnitIsUnit(tank_unit, 'pet') then
+                        -- player's pet
+                        playerPetTank = true;
+                    elseif UnitPlayerControlled(tank_unit) then
+                        -- player controlled npc (pet, vehicle, totem)
+                        petTank = true;
+                    end
+                end
+            end
+        end
+
+        if display and not IsPlayer(unitframe.data.unit) then
+            local r, g, b, a;
+
+            if PLAYER_IS_TANK and offTank then
+                r, g, b, a = offTankColor[1], offTankColor[2], offTankColor[3], offTankColor[4];
+            elseif playerPetTank then
+                r, g, b, a = playerPetTankColor[1], playerPetTankColor[2], playerPetTankColor[3], playerPetTankColor[4];
+            elseif petTank then
+                r, g, b, a = petTankColor[1], petTankColor[2], petTankColor[3], petTankColor[4];
+            else
+                r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
+            end
+
+            if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
+                UpdateThreatName(unitframe, display, r, g, b);
+            else
+                if UnitIsTapped(unitframe.data.unit) then
+                    if DB.THREAT_COLOR_ISTAPPED_BORDER then
+                        unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+                    end
+                else
+                    unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                end
+
+                result = true;
+
+                UpdateThreatName(unitframe, display, r, g, b);
+            end
+
+            UpdateThreatPercentage(unitframe, display, r, g, b, a);
+            unitframe.data.tpNeedUpdate = false;
+        end
+
+        return result;
+    end,
+};
+
+local COLORING_PRIORITY = {
+    [1] = COLORING_FUNCTIONS.HIGH_THREAT,
+    [2] = COLORING_FUNCTIONS.CURRENT_TARGET_FOCUS,
+    [3] = COLORING_FUNCTIONS.CUSTOM,
+    [4] = COLORING_FUNCTIONS.RAID_TARGET,
+    [5] = COLORING_FUNCTIONS.AURA,
+    [6] = COLORING_FUNCTIONS.EXECUTION,
+    [7] = COLORING_FUNCTIONS.THREAT,
+};
+
+local function GetColoringFunctionPriority(func)
+    for priority, cFunc in ipairs(COLORING_PRIORITY) do
+        if cFunc == func then
+            return priority;
         end
     end
 end
 
---[[
-    Coloring prio:
-    0) Threat High
-    1) Current target
-    2) Custom
-    3) Raid target
-    4) Aura
-    5) Execution
-    6) Threat
-]]
+local function UpdateHealthBarColorByPriority(unitframe)
+    for priority, colorFunc in ipairs(COLORING_PRIORITY) do
+        local result = colorFunc(unitframe);
 
-function Module.UpdateHealthBar(unitframe)
+        if result then
+            unitframe.data.coloringResult   = result;
+            unitframe.data.coloringPriority = priority;
+
+            return result;
+        end
+    end
+end
+
+function UpdateHealthBarColor(unitframe, partial)
     if not unitframe:IsShown() or not unitframe.data.unit or unitframe.data.isPersonal then
         return;
     end
@@ -566,29 +582,10 @@ function Module.UpdateHealthBar(unitframe)
         return;
     end
 
-    Threat_HighPrioColor(unitframe);
-    UpdateCurrentTargetColor(unitframe);
-    UpdateCustomHealthBarColor(unitframe);
-    UpdateRaidTargetColor(unitframe);
-    UpdateAuraColor(unitframe);
+    local result = UpdateHealthBarColorByPriority(unitframe);
 
-    if unitframe.healthBar.highPrioColored or unitframe.healthBar.currentTargetColored or unitframe.healthBar.customColored or unitframe.healthBar.raidTargetColored or unitframe.healthBar.auraColored then
-        if DB.EXECUTION_ENABLED and (unitframe.data.healthPer <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= DB.EXECUTION_HIGH_PERCENT)) then
-            Execution_Start(unitframe, true);
-        else
-            Execution_Stop(unitframe);
-        end
-
-        return;
-    end
-
-    UpdateHealthColor(unitframe);
-
-    if DB.EXECUTION_ENABLED and (unitframe.data.healthPer <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= DB.EXECUTION_HIGH_PERCENT)) then
-        Execution_Start(unitframe);
-    else
-        Execution_Stop(unitframe);
-        Threat_UpdateColor(unitframe);
+    if not result and not partial then
+        UpdateHealthColor(unitframe);
     end
 end
 
@@ -898,7 +895,7 @@ function Module:UnitAdded(unitframe)
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
 
-    Module.UpdateHealthBar(unitframe);
+    UpdateHealthBarColor(unitframe);
 
     if unitframe.data.tpNeedUpdate then
         Threat_UpdatePercentage(unitframe);
@@ -906,12 +903,7 @@ function Module:UnitAdded(unitframe)
 end
 
 function Module:UnitRemoved(unitframe)
-    unitframe.healthBar.auraColored          = nil;
-    unitframe.healthBar.customColored        = nil;
-    unitframe.healthBar.raidTargetColored    = nil;
-    unitframe.healthBar.currentTargetColored = nil;
-    unitframe.healthBar.highPrioColored      = nil;
-
+    unitframe.data.wasAura      = nil;
     unitframe.data.raidIndex    = nil;
     unitframe.data.tpNeedUpdate = nil;
 
@@ -923,7 +915,18 @@ function Module:UnitRemoved(unitframe)
 end
 
 function Module:UnitAura(unitframe)
-    UpdateAuraColor(unitframe);
+    local priority = GetColoringFunctionPriority(COLORING_FUNCTIONS.AURA);
+
+    if not unitframe.data.coloringPriority or unitframe.data.coloringPriority >= priority then
+        local result = COLORING_FUNCTIONS.AURA(unitframe);
+
+        if result then
+            unitframe.data.wasAura = true;
+        elseif unitframe.data.wasAura then
+            unitframe.data.wasAura = nil;
+            UpdateHealthBarColor(unitframe);
+        end
+    end
 end
 
 function Module:Update(unitframe)
@@ -940,7 +943,7 @@ function Module:Update(unitframe)
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
 
-    Module.UpdateHealthBar(unitframe);
+    UpdateHealthBarColor(unitframe);
 
     if unitframe.data.tpNeedUpdate then
         Threat_UpdatePercentage(unitframe);
@@ -1024,7 +1027,7 @@ end
 function Module:RAID_TARGET_UPDATE()
     for _, unitframe in pairs(NP) do
         if unitframe.isActive and unitframe:IsShown() then
-            UpdateRaidTargetColor(unitframe);
+            UpdateHealthBarColor(unitframe, not unitframe.data.raidIndex);
         end
     end
 end
@@ -1033,7 +1036,7 @@ function Module:PLAYER_FOCUS_CHANGED()
     for _, unitframe in pairs(NP) do
         if unitframe.isActive and unitframe:IsShown() then
             UpdateExtraTexture(unitframe);
-            Module.UpdateHealthBar(unitframe);
+            UpdateHealthBarColor(unitframe);
         end
     end
 end
@@ -1257,7 +1260,7 @@ function Module:StartUp()
         end
 
         if DB.CURRENT_TARGET_COLOR_ENABLED or DB.CURRENT_FOCUS_COLOR_ENABLED then
-            Module.UpdateHealthBar(unitframe);
+            UpdateHealthBarColor(unitframe);
         end
     end);
 
@@ -1268,10 +1271,10 @@ function Module:StartUp()
         UpdateSizes(unitframe);
     end);
 
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', Module.UpdateHealthBar);
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', Module.UpdateHealthBar);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', UpdateHealthBarColor);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', UpdateHealthBarColor);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateAggroFlash', function(unitframe)
-        Module.UpdateHealthBar(unitframe);
+        UpdateHealthBarColor(unitframe);
 
         if unitframe.data.tpNeedUpdate then
             Threat_UpdatePercentage(unitframe);
