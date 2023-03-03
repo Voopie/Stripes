@@ -136,11 +136,13 @@ local function UpdateCustomCast(self, changedInterruptibleState)
 
     if castData.sound_enabled and not changedInterruptibleState then
         if castData.sound_on_you then
-            local targetUnit = self.unit .. 'target';
+            C_Timer.After(0.1, function()
+                local targetUnit = self.unit .. 'target';
 
-            if UnitExists(targetUnit) and UnitIsUnit(targetUnit, 'player') then
-                PlaySoundFile(LSM:Fetch('sound', castData.sound_name), castData.sound_channel or 'Master');
-            end
+                if UnitExists(targetUnit) and UnitIsUnit(targetUnit, 'player') then
+                    PlaySoundFile(LSM:Fetch('sound', castData.sound_name), castData.sound_channel or 'Master');
+                end
+            end);
         else
             PlaySoundFile(LSM:Fetch('sound', castData.sound_name), castData.sound_channel or 'Master');
         end
