@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('AbsorbBar');
 local ShortValue = U.ShortValue;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
--- Local config
+-- Local Config
 local ENABLED, AT_TOP;
 local ABSORB_TEXT_ENABLED, ABSORB_TEXT_COLOR, ABSORB_TEXT_ANCHOR, ABSORB_TEXT_X_OFFSET, ABSORB_TEXT_Y_OFFSET;
 

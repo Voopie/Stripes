@@ -9,7 +9,6 @@ local UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsPla
       UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
 local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack, UnitPlayerControlled = UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack, UnitPlayerControlled;
 local UnitInGuild = U.UnitInGuild;
-local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
 
 -- Stripes API
 local GetNpcIDByGUID, GetUnitLevel, GetUnitColor = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor;

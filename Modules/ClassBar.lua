@@ -1,7 +1,7 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('ClassBar');
 
--- Local config
+-- Local Config
 local ALPHA, SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
 local SHOW_ON_TARGET;
 

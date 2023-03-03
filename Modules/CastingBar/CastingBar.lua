@@ -17,7 +17,7 @@ local GetCachedName = Stripes.GetCachedName;
 -- Libraries
 local LSM = S.Libraries.LSM;
 
--- Local config
+-- Local Config
 local CUSTOM_CASTS_ENABLED;
 
 -- In fact, this is a copy paste from Blizzard/CastingBarFrame.lua

@@ -2,9 +2,6 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('SpellInterrupted');
 local Stripes = S:GetNameplateModule('Handler');
 
--- Lua API
-local pairs = pairs;
-
 -- WoW API
 local UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture = UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture;
 

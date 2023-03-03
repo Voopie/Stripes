@@ -4,7 +4,7 @@ local Module = S:NewNameplateModule('CombatIndicator');
 -- WoW API
 local UnitExists, UnitAffectingCombat = UnitExists, UnitAffectingCombat;
 
--- Local config
+-- Local Config
 local ENABLED, COLOR, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y, SIZE;
 
 local UPDATE_INTERVAL = 0.5;

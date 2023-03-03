@@ -8,7 +8,7 @@ local string_format = string.format;
 -- WoW API
 local UnitName = UnitName;
 
--- Local config
+-- Local Config
 local ENABLED, ONLY_ON_ME, TTD;
 
 local PlayerData = D.Player;

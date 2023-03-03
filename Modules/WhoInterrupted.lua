@@ -65,9 +65,6 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
 end
 
 function Module:UpdateLocalConfig()
-    NAME_TRANSLIT           = O.db.name_text_translit;
-    NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
-
     if O.db.who_interrupted_enabled then
         self:Enable();
     else
