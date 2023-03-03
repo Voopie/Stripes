@@ -164,7 +164,7 @@ local function CreateThreatPercentage(unitframe)
     unitframe.ThreatPercentage = frame;
 end
 
-local function UpdateThreatPercentage(unitframe, value, r, g, b, a)
+local function UpdateThreatPercentageTextAndColor(unitframe, value, r, g, b, a)
     if not value or not DB.TP_ENABLED then
         unitframe.ThreatPercentage.text:SetText('');
         return;
@@ -201,7 +201,7 @@ local function UpdateThreatName(unitframe, value, r, g, b)
     unitframe.data.threatColorB = b;
 end
 
-local function Threat_GetThreatSituationStatus(unit)
+local function GetUnitThreatSituationStatus(unit)
     if not unit then
         return;
     end
@@ -217,8 +217,8 @@ local function Threat_GetThreatSituationStatus(unit)
     return display, status, isTanking;
 end
 
-local function Threat_UpdatePercentage(unitframe)
-    local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
+local function UpdateThreatPercentage(unitframe)
+    local display, status = GetUnitThreatSituationStatus(unitframe.data.unit);
 
     if display and not IsPlayer(unitframe.data.unit) then
         local offTank, petTank, playerPetTank = false, false, false;
@@ -253,7 +253,7 @@ local function Threat_UpdatePercentage(unitframe)
             r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
         end
 
-        UpdateThreatPercentage(unitframe, display, r, g, b, a);
+        UpdateThreatPercentageTextAndColor(unitframe, display, r, g, b, a);
     end
 end
 
@@ -296,7 +296,7 @@ local COLORING_FUNCTIONS = {
             return result;
         end
 
-        local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
+        local display, status = GetUnitThreatSituationStatus(unitframe.data.unit);
 
         if display and status == 3 and not IsPlayer(unitframe.data.unit) then
             local r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
@@ -316,7 +316,7 @@ local COLORING_FUNCTIONS = {
                 UpdateThreatName(unitframe, display, r, g, b);
             end
 
-            UpdateThreatPercentage(unitframe, display, r, g, b, a);
+            UpdateThreatPercentageTextAndColor(unitframe, display, r, g, b, a);
             unitframe.data.tpNeedUpdate = false;
         else
             result = false;
@@ -487,7 +487,7 @@ local COLORING_FUNCTIONS = {
             return result;
         end
 
-        local display, status = Threat_GetThreatSituationStatus(unitframe.data.unit);
+        local display, status = GetUnitThreatSituationStatus(unitframe.data.unit);
         local offTank, petTank, playerPetTank = false, false, false;
 
         if not status or status < 3 then
@@ -537,7 +537,7 @@ local COLORING_FUNCTIONS = {
                 UpdateThreatName(unitframe, display, r, g, b);
             end
 
-            UpdateThreatPercentage(unitframe, display, r, g, b, a);
+            UpdateThreatPercentageTextAndColor(unitframe, display, r, g, b, a);
             unitframe.data.tpNeedUpdate = false;
         end
 
@@ -886,7 +886,7 @@ function Module:UnitAdded(unitframe)
     end
 
     CreateThreatPercentage(unitframe);
-    UpdateThreatPercentage(unitframe);
+    UpdateThreatPercentageTextAndColor(unitframe);
     CreateCustomBorder(unitframe);
     UpdateCustomBorder(unitframe);
     CreateExtraTexture(unitframe);
@@ -902,7 +902,7 @@ function Module:UnitAdded(unitframe)
     UpdateHealthBarColor(unitframe);
 
     if unitframe.data.tpNeedUpdate then
-        Threat_UpdatePercentage(unitframe);
+        UpdateThreatPercentage(unitframe);
     end
 end
 
@@ -950,7 +950,7 @@ function Module:Update(unitframe)
     UpdateHealthBarColor(unitframe);
 
     if unitframe.data.tpNeedUpdate then
-        Threat_UpdatePercentage(unitframe);
+        UpdateThreatPercentage(unitframe);
     end
 end
 
@@ -1293,7 +1293,7 @@ function Module:StartUp()
         UpdateHealthBarColor(unitframe);
 
         if unitframe.data.tpNeedUpdate then
-            Threat_UpdatePercentage(unitframe);
+            UpdateThreatPercentage(unitframe);
         end
     end);
 end
