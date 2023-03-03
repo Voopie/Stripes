@@ -362,6 +362,14 @@ function ModuleMixin:GetUnitFrame(unitframe)
     end
 end
 
+function ModuleMixin:ForAllActiveUnitFrames(func)
+    for _, frame in pairs(NP) do
+        if frame.isActive and frame:IsShown() then
+            func(frame);
+        end
+    end
+end
+
 function ModuleMixin:SecureHook(name, func1, func2, func3)
     if not _G[name] then
         return;
