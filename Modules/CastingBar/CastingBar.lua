@@ -19,6 +19,7 @@ local LSM = S.Libraries.LSM;
 
 -- Local Config
 local CUSTOM_CASTS_ENABLED;
+local CUSTOM_CASTS_DATA = {};
 
 -- In fact, this is a copy paste from Blizzard/CastingBarFrame.lua
 
@@ -98,8 +99,6 @@ local function UpdateInterruptReadyColorAndTick(self)
         end
     end
 end
-
-local CUSTOM_CASTS_DATA = {};
 
 local function UpdateCustomCast(self, changedInterruptibleState)
     local spellId  = self.spellID;
