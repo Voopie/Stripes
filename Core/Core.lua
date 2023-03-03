@@ -665,33 +665,33 @@ end
 AddOn:RegisterEvent('ADDON_LOADED');
 
 
--- Code from WeakAuras (https://github.com/WeakAuras/WeakAuras2/blob/main/WeakAurasOptions/Cache.lua)
+-- Modified code from WeakAuras (https://github.com/WeakAuras/WeakAuras2/blob/main/WeakAurasOptions/Cache.lua)
 -- It will only be rebuilt if the client build number and locale changes
 local string_find, string_lower = string.find, string.lower;
 local GetSpellInfo = GetSpellInfo;
-local cache, metaData, spellCacheCoroutine;
+local SpellCache, SpellCacheMetaData, SpellCacheCoroutine;
 
-local spellCache = CreateFrame('Frame');
-spellCache:Hide();
-spellCache:SetScript('OnUpdate', function()
+local SpellCacheUpdater = CreateFrame('Frame');
+SpellCacheUpdater:Hide();
+SpellCacheUpdater:SetScript('OnUpdate', function()
     -- Start timing
     local start = debugprofilestop();
 
     -- Resume as often as possible (Limit to 16ms per frame -> 60 FPS)
     while debugprofilestop() - start < 16 do
-        if coroutine.status(spellCacheCoroutine) ~= 'dead' then
-            local ok, msg = coroutine.resume(spellCacheCoroutine);
+        if coroutine.status(SpellCacheCoroutine) ~= 'dead' then
+            local ok, msg = coroutine.resume(SpellCacheCoroutine);
             if not ok then
-                geterrorhandler()(msg .. '\n' .. debugstack(spellCacheCoroutine));
+                geterrorhandler()(msg .. '\n' .. debugstack(SpellCacheCoroutine));
             end
         else
-            spellCache:Hide();
-            NAMESPACE[3].frame.Right.Auras:Update();
+            SpellCacheUpdater:Hide();
+            O.frame.Right.Auras:Update();
         end
     end
 end);
 
-spellCache.blockedSpellNames = {
+SpellCacheUpdater.blockedSpellNames = {
     ['dnt']    = true,
     ['[dnd]']  = true,
     ['test']   = true,
@@ -704,26 +704,26 @@ spellCache.blockedSpellNames = {
     ['boss']   = true,
 };
 
-function spellCache.isBlockedName(name)
-    for blockedName, status in pairs(spellCache.blockedSpellNames) do
+function SpellCacheUpdater.isBlockedName(name)
+    for blockedName, status in pairs(SpellCacheUpdater.blockedSpellNames) do
         if status and string_find(name, blockedName, 1, true) then
             return true;
         end
     end
 end
 
-function spellCache.Build()
-    if not cache then
-        error('spellCache has not been loaded. Call spellCache.Load(...) first.');
+function SpellCacheUpdater.Build()
+    if not SpellCache then
+        error('SpellCacheUpdater has not been loaded. Call SpellCacheUpdater.Load(...) first');
     end
 
-    if not metaData.needsRebuild then
+    if not SpellCacheMetaData.needsRebuild then
         return;
     end
 
-    wipe(cache);
+    wipe(SpellCache);
 
-    spellCacheCoroutine = coroutine.create(function()
+    SpellCacheCoroutine = coroutine.create(function()
         local id, misses = 0, 0;
 
         while misses < 80000 do
@@ -735,13 +735,13 @@ function spellCache.Build()
             -- 136243 is the a gear icon, we can ignore those spells
             if icon == 136243 then
                 misses = 0;
-            elseif name and name ~= '' and icon and nameLower and not spellCache.isBlockedName(nameLower) then
-                cache[name] = cache[name] or {};
+            elseif name and name ~= '' and icon and nameLower and not SpellCacheUpdater.isBlockedName(nameLower) then
+                SpellCache[name] = SpellCache[name] or {};
 
-                if not cache[name].spells or cache[name].spells == '' then
-                    cache[name].spells = id .. '=' .. icon;
+                if not SpellCache[name].spells or SpellCache[name].spells == '' then
+                    SpellCache[name].spells = id .. '=' .. icon;
                 else
-                    cache[name].spells = cache[name].spells .. ',' .. id .. '=' .. icon;
+                    SpellCache[name].spells = SpellCache[name].spells .. ',' .. id .. '=' .. icon;
                 end
 
                 misses = 0;
@@ -752,31 +752,31 @@ function spellCache.Build()
             coroutine.yield();
         end
 
-        metaData.needsRebuild = false;
+        SpellCacheMetaData.needsRebuild = false;
     end);
 
-    spellCache:Show();
+    SpellCacheUpdater:Show();
 end
 
-function spellCache.Load(data)
-    metaData = data;
-    cache    = metaData.data;
+function SpellCacheUpdater.Load(data)
+    SpellCacheMetaData = data;
+    SpellCache         = SpellCacheMetaData.data;
 
     local _, build = GetBuildInfo();
 
     local num = 0;
 
-    for _, _ in pairs(cache) do
+    for _, _ in pairs(SpellCache) do
         num = num + 1;
     end
 
-    if num < 39000 or metaData.locale ~= locale or metaData.build ~= build or not metaData.spellCacheStrings then
-        metaData.build             = build;
-        metaData.locale            = locale;
-        metaData.spellCacheStrings = true;
-        metaData.needsRebuild      = true;
+    if num < 39000 or SpellCacheMetaData.locale ~= locale or SpellCacheMetaData.build ~= build or not SpellCacheMetaData.spellCacheStrings then
+        SpellCacheMetaData.build             = build;
+        SpellCacheMetaData.locale            = locale;
+        SpellCacheMetaData.spellCacheStrings = true;
+        SpellCacheMetaData.needsRebuild      = true;
 
-        wipe(cache);
+        wipe(SpellCache);
     end
 end
 
@@ -807,8 +807,8 @@ function AddOn:ADDON_LOADED(addonName)
     StripesSpellDB      = StripesSpellDB or {};
     StripesSpellDB.data = StripesSpellDB.data or {};
 
-    spellCache.Load(StripesSpellDB);
-    spellCache.Build();
+    SpellCacheUpdater.Load(StripesSpellDB);
+    SpellCacheUpdater.Build();
 
     self:ForAllModules('StartUp');
     self:ForAllNameplateModules('StartUp');
