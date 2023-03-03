@@ -638,6 +638,7 @@ L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED'] = 'Aktivieren';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED_TOOLTIP'] = 'Benutzerdefinierte Effekte für bestimmte Zaubersprüche aktivieren';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID'] = 'Geben Sie die Zauber-ID ein';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_NEW_NAME'] = 'Besonderer Name';
+L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ON_YOU'] = 'Auf Sie';
 L['OPTIONS_CAST_BAR_FRAME_STRATA_TOOLTIP'] = 'Strata für Zauberbalken';
 L['OPTIONS_CAST_BAR_OFFSET_Y_TOOLTIP'] = 'Vertikaler Versatz der Zauberbalken';
 

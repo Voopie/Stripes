@@ -638,6 +638,7 @@ L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED'] = 'Enable';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ENABLED_TOOLTIP'] = 'Enable custom effects for specified spells';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_EDITBOX_ENTER_ID'] = 'Enter the spell ID';
 L['OPTIONS_CAST_BAR_CUSTOM_CASTS_NEW_NAME'] = 'Custom name';
+L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ON_YOU'] = 'On you';
 L['OPTIONS_CAST_BAR_FRAME_STRATA_TOOLTIP'] = 'Strata for cast bar';
 L['OPTIONS_CAST_BAR_OFFSET_Y_TOOLTIP'] = 'Vertical offset of the cast bar';
 

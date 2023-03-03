@@ -69,6 +69,7 @@ local function AddCustomCast(spellId)
         sound_enabled  = false,
         sound_name     = LSM.DefaultMedia.sound,
         sound_channel  = 'Master',
+        sound_on_you   = false,
     };
 end
 
@@ -115,6 +116,7 @@ ExtendedOptions.UpdateAll = function(self, frame)
     self.SoundEnabled:SetChecked(frame.sound_enabled);
     self.SoundChannel:SetList(O.Lists.sound_channels);
     self.SoundChannel:SetValue(frame.sound_channel);
+    self.SoundOnYou:SetChecked(frame.sound_on_you);
 
     self.NewNameBox:SetText(frame.new_name or frame.name);
 
@@ -279,6 +281,16 @@ ExtendedOptions.SoundChannel.OnValueChangedCallback = function(_, key, value)
     S:GetNameplateModule('Handler'):UpdateAll();
 end
 
+ExtendedOptions.SoundOnYou = E.CreateCheckButton(ExtendedOptions);
+ExtendedOptions.SoundOnYou:SetPosition('LEFT', ExtendedOptions.SoundChannel, 'RIGHT', 12, 0);
+ExtendedOptions.SoundOnYou:SetLabel(L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ON_YOU']);
+ExtendedOptions.SoundOnYou.Callback = function(self)
+    O.db.castbar_custom_casts_data[ExtendedOptions.id].sound_on_you = self:GetChecked();
+
+    panel:UpdateCustomCastsScroll();
+    S:GetNameplateModule('Handler'):UpdateAll();
+end
+
 ExtendedOptions.RemoveButton = E.CreateTextureButton(ExtendedOptions, S.Media.Icons.TEXTURE, S.Media.Icons.COORDS.TRASH_WHITE, { 1, 0.2, 0.2, 1});
 ExtendedOptions.RemoveButton:SetPosition('BOTTOMRIGHT', ExtendedOptions, 'BOTTOMRIGHT', -6, 8);
 ExtendedOptions.RemoveButton:SetSize(16, 16);
@@ -405,6 +417,12 @@ local function CreateCustomCastRow(frame)
     frame.SoundIcon:SetAtlas('chatframe-button-icon-voicechat');
     frame.SoundIcon:Hide();
 
+    frame.SoundOnYou = frame:CreateTexture(nil, 'OVERLAY');
+    frame.SoundOnYou:SetPoint('RIGHT', frame.SoundIcon, 'LEFT', 2, 0);
+    frame.SoundOnYou:SetSize(16, 16);
+    frame.SoundOnYou:SetAtlas('Adventures-Target-Indicator');
+    frame.SoundOnYou:Hide();
+
     frame:HookScript('OnEnter', function(self)
         self:SetBackdropColor(self.highlightColor[1], self.highlightColor[2], self.highlightColor[3], self.highlightColor[4]);
         self.ToggleExtendedOptions:SetVertexColor(1, 0.85, 0, 1);
@@ -487,6 +505,9 @@ local function UpdateCustomCastRow(frame)
 
     frame.SoundIcon:SetShown(frame.sound_enabled and frame.sound_name ~= LSM.DefaultMedia.sound);
     frame.SoundIcon.tooltip = frame.sound_name;
+
+    frame.SoundOnYou:SetShown(frame.sound_enabled and frame.sound_name ~= LSM.DefaultMedia.sound and frame.sound_on_you);
+    frame.SoundOnYou.tooltip = L['OPTIONS_CAST_BAR_CUSTOM_CASTS_ON_YOU'];
 
     frame.ToggleExtendedOptions:SetVertexColor(0.7, 0.7, 0.7, 1);
 
@@ -582,6 +603,7 @@ panel.UpdateCustomCastsScroll = function()
             frame.sound_enabled = data.sound_enabled;
             frame.sound_name    = data.sound_name or LSM.DefaultMedia.sound;
             frame.sound_channel = data.sound_channel or 'Master';
+            frame.sound_on_you  = data.sound_on_you;
 
             UpdateCustomCastRow(frame);
 
