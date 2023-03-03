@@ -126,6 +126,10 @@ local function UpdateHealthColor(frame)
                             r, g, b, a = DB.HPBAR_COLOR_ENEMY_NPC[1], DB.HPBAR_COLOR_ENEMY_NPC[2], DB.HPBAR_COLOR_ENEMY_NPC[3], DB.HPBAR_COLOR_ENEMY_NPC[4];
                         elseif frame.data.unitType == 'FRIENDLY_NPC' then
                             r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_NPC[1], DB.HPBAR_COLOR_FRIENDLY_NPC[2], DB.HPBAR_COLOR_FRIENDLY_NPC[3], DB.HPBAR_COLOR_FRIENDLY_NPC[4];
+                        elseif frame.data.unitType == 'FRIENDLY_PET' then
+                            r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_PET[1], DB.HPBAR_COLOR_FRIENDLY_PET[2], DB.HPBAR_COLOR_FRIENDLY_PET[3], DB.HPBAR_COLOR_FRIENDLY_PET[4];
+                        elseif frame.data.unitType == 'ENEMY_PET' then
+                            r, g, b, a = DB.HPBAR_COLOR_ENEMY_PET[1], DB.HPBAR_COLOR_ENEMY_PET[2], DB.HPBAR_COLOR_ENEMY_PET[3], DB.HPBAR_COLOR_ENEMY_PET[4];
                         else
                             r, g, b, a = UnitSelectionColor(frame.displayedUnit, frame.optionTable.colorHealthWithExtendedColors);
                         end
@@ -1146,6 +1150,12 @@ function Module:UpdateLocalConfig()
     DB.HPBAR_COLOR_ENEMY_PLAYER[3] = O.db.health_bar_color_enemy_player[3];
     DB.HPBAR_COLOR_ENEMY_PLAYER[4] = O.db.health_bar_color_enemy_player[4] or 1;
 
+    DB.HPBAR_COLOR_ENEMY_PET    = DB.HPBAR_COLOR_ENEMY_PET or {};
+    DB.HPBAR_COLOR_ENEMY_PET[1] = O.db.health_bar_color_enemy_pet[1];
+    DB.HPBAR_COLOR_ENEMY_PET[2] = O.db.health_bar_color_enemy_pet[2];
+    DB.HPBAR_COLOR_ENEMY_PET[3] = O.db.health_bar_color_enemy_pet[3];
+    DB.HPBAR_COLOR_ENEMY_PET[4] = O.db.health_bar_color_enemy_pet[4] or 1;
+
     DB.HPBAR_COLOR_FRIENDLY_NPC    = DB.HPBAR_COLOR_FRIENDLY_NPC or {};
     DB.HPBAR_COLOR_FRIENDLY_NPC[1] = O.db.health_bar_color_friendly_npc[1];
     DB.HPBAR_COLOR_FRIENDLY_NPC[2] = O.db.health_bar_color_friendly_npc[2];
@@ -1157,6 +1167,12 @@ function Module:UpdateLocalConfig()
     DB.HPBAR_COLOR_FRIENDLY_PLAYER[2] = O.db.health_bar_color_friendly_player[2];
     DB.HPBAR_COLOR_FRIENDLY_PLAYER[3] = O.db.health_bar_color_friendly_player[3];
     DB.HPBAR_COLOR_FRIENDLY_PLAYER[4] = O.db.health_bar_color_friendly_player[4] or 1;
+
+    DB.HPBAR_COLOR_FRIENDLY_PET    = DB.HPBAR_COLOR_FRIENDLY_PET or {};
+    DB.HPBAR_COLOR_FRIENDLY_PET[1] = O.db.health_bar_color_friendly_pet[1];
+    DB.HPBAR_COLOR_FRIENDLY_PET[2] = O.db.health_bar_color_friendly_pet[2];
+    DB.HPBAR_COLOR_FRIENDLY_PET[3] = O.db.health_bar_color_friendly_pet[3];
+    DB.HPBAR_COLOR_FRIENDLY_PET[4] = O.db.health_bar_color_friendly_pet[4] or 1;
 
     DB.HPBAR_COLOR_NEUTRAL    = DB.HPBAR_COLOR_NEUTRAL or {};
     DB.HPBAR_COLOR_NEUTRAL[1] = O.db.health_bar_color_neutral_npc[1];

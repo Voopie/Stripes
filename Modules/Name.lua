@@ -454,6 +454,16 @@ local function UpdateColor(unitframe)
         return;
     end
 
+    if unitframe.data.commonUnitType == 'PET' then
+        if COLORING_MODE_NPC == 1 then -- NONE
+            unitframe.name:SetVertexColor(1, 1, 1);
+        else
+            DefaultColor(unitframe);
+        end
+
+        return;
+    end
+
     if unitframe.data.commonUnitType == 'PLAYER' then
         if COLORING_MODE == 1 then -- NONE
             unitframe.name:SetVertexColor(1, 1, 1);

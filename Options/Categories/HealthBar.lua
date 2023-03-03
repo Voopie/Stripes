@@ -486,6 +486,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.health_bar_color_enemy_pet = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_enemy_pet:SetPosition('LEFT', self.health_bar_color_enemy_player.Label, 'RIGHT', 12, 0);
+    self.health_bar_color_enemy_pet:SetLabel(L['OPTIONS_HEALTH_BAR_COLOR_ENEMY_PET']);
+    self.health_bar_color_enemy_pet:SetTooltip(L['OPTIONS_HEALTH_BAR_COLOR_ENEMY_PET_TOOLTIP']);
+    self.health_bar_color_enemy_pet:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLOR_ENEMY_PET_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_enemy_pet:SetValue(unpack(O.db.health_bar_color_enemy_pet));
+    self.health_bar_color_enemy_pet.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_enemy_pet[1] = r;
+        O.db.health_bar_color_enemy_pet[2] = g;
+        O.db.health_bar_color_enemy_pet[3] = b;
+        O.db.health_bar_color_enemy_pet[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
     self.health_bar_color_friendly_npc = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
     self.health_bar_color_friendly_npc:SetPosition('TOPLEFT', self.health_bar_color_enemy_npc, 'BOTTOMLEFT', 0, -8);
     self.health_bar_color_friendly_npc:SetLabel(L['OPTIONS_HEALTH_BAR_COLOR_FRIENDLY_NPC']);
@@ -512,6 +527,21 @@ panel.Load = function(self)
         O.db.health_bar_color_friendly_player[2] = g;
         O.db.health_bar_color_friendly_player[3] = b;
         O.db.health_bar_color_friendly_player[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
+    self.health_bar_color_friendly_pet = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_friendly_pet:SetPosition('LEFT', self.health_bar_color_friendly_player.Label, 'RIGHT', 12, 0);
+    self.health_bar_color_friendly_pet:SetLabel(L['OPTIONS_HEALTH_BAR_COLOR_FRIENDLY_PET']);
+    self.health_bar_color_friendly_pet:SetTooltip(L['OPTIONS_HEALTH_BAR_COLOR_FRIENDLY_PET_TOOLTIP']);
+    self.health_bar_color_friendly_pet:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLOR_FRIENDLY_PET_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_friendly_pet:SetValue(unpack(O.db.health_bar_color_friendly_pet));
+    self.health_bar_color_friendly_pet.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_friendly_pet[1] = r;
+        O.db.health_bar_color_friendly_pet[2] = g;
+        O.db.health_bar_color_friendly_pet[3] = b;
+        O.db.health_bar_color_friendly_pet[4] = a or 1;
 
         Stripes:UpdateAll();
     end
@@ -568,8 +598,10 @@ panel.Load = function(self)
     ResetHealthBarColorsButton.Callback = function()
         panel.health_bar_color_enemy_npc:SetValue(unpack(O.DefaultValues.health_bar_color_enemy_npc));
         panel.health_bar_color_enemy_player:SetValue(unpack(O.DefaultValues.health_bar_color_enemy_player));
+        panel.health_bar_color_enemy_pet:SetValue(unpack(O.DefaultValues.health_bar_color_enemy_pet));
         panel.health_bar_color_friendly_npc:SetValue(unpack(O.DefaultValues.health_bar_color_friendly_npc));
         panel.health_bar_color_friendly_player:SetValue(unpack(O.DefaultValues.health_bar_color_friendly_player));
+        panel.health_bar_color_friendly_pet:SetValue(unpack(O.DefaultValues.health_bar_color_friendly_pet));
         panel.health_bar_color_neutral_npc:SetValue(unpack(O.DefaultValues.health_bar_color_neutral_npc));
         panel.health_bar_color_tapped:SetValue(unpack(O.DefaultValues.health_bar_color_tapped));
         panel.health_bar_color_dc:SetValue(unpack(O.DefaultValues.health_bar_color_dc));

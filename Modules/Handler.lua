@@ -7,7 +7,7 @@ local pairs, math_ceil, math_max = pairs, math.ceil, math.max;
 -- WoW API
 local UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
       UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
-local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack = UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack;
+local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack, UnitPlayerControlled = UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack, UnitPlayerControlled;
 local UnitInGuild = U.UnitInGuild;
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
 
@@ -276,6 +276,7 @@ end
 local function UpdateUnitReaction(unitframe)
     local unit = unitframe.data.unit;
 
+    unitframe.data.isPersonal   = false;
     unitframe.data.reaction     = UnitReaction('player', unit);
     unitframe.data.factionGroup = UnitFactionGroup(unit);
 
@@ -283,17 +284,35 @@ local function UpdateUnitReaction(unitframe)
         unitframe.data.unitType = 'SELF';
         unitframe.data.commonUnitType = 'SELF';
         unitframe.data.commonReaction = 'FRIENDLY';
+
+        unitframe.data.isPersonal = true;
     elseif UnitIsPVPSanctuary(unit) and not UnitIsEnemy('player', unit) then
-        unitframe.data.unitType = 'FRIENDLY_PLAYER';
-        unitframe.data.commonUnitType = 'PLAYER';
+        if unitframe.data.isPlayer then
+            unitframe.data.unitType = 'FRIENDLY_PLAYER';
+            unitframe.data.commonUnitType = 'PLAYER';
+        else
+            if UnitPlayerControlled(unit) then
+                unitframe.data.unitType = 'FRIENDLY_PET';
+                unitframe.data.commonUnitType = 'PET';
+            else
+                unitframe.data.unitType = 'FRIENDLY_NPC';
+                unitframe.data.commonUnitType = 'NPC';
+            end
+        end
+
         unitframe.data.commonReaction = 'FRIENDLY';
     elseif not UnitIsEnemy('player', unit) and (not unitframe.data.reaction or unitframe.data.reaction > 4) then
         if unitframe.data.isPlayer then
             unitframe.data.unitType = 'FRIENDLY_PLAYER';
             unitframe.data.commonUnitType = 'PLAYER';
         else
-            unitframe.data.unitType = 'FRIENDLY_NPC';
-            unitframe.data.commonUnitType = 'NPC';
+            if UnitPlayerControlled(unit) then
+                unitframe.data.unitType = 'FRIENDLY_PET';
+                unitframe.data.commonUnitType = 'PET';
+            else
+                unitframe.data.unitType = 'FRIENDLY_NPC';
+                unitframe.data.commonUnitType = 'NPC';
+            end
         end
 
         unitframe.data.commonReaction = 'FRIENDLY';
@@ -302,8 +321,13 @@ local function UpdateUnitReaction(unitframe)
             unitframe.data.unitType = 'ENEMY_PLAYER';
             unitframe.data.commonUnitType = 'PLAYER';
         else
-            unitframe.data.unitType = 'ENEMY_NPC';
-            unitframe.data.commonUnitType = 'NPC';
+            if UnitPlayerControlled(unit) then
+                unitframe.data.unitType = 'ENEMY_PET';
+                unitframe.data.commonUnitType = 'PET';
+            else
+                unitframe.data.unitType = 'ENEMY_NPC';
+                unitframe.data.commonUnitType = 'NPC';
+            end
         end
 
         unitframe.data.commonReaction = 'ENEMY';
@@ -846,8 +870,6 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
     UpdateConnection(unitframe);
     UpdateTarget(unitframe);
     UpdateFocus(unitframe);
-
-    unitframe.data.isPersonal = unitframe.data.unitType == 'SELF';
 
     unitframe.data.creatureType = not unitframe.data.isPlayer and UnitCreatureType(unit) or nil;
     unitframe.data.minus = UnitClassification(unit) == 'minus';

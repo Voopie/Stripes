@@ -311,7 +311,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~594
+-- ~596
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -423,8 +423,10 @@ O.DefaultValues = {
     health_bar_color_dc              = { 0.5, 0.5, 0.5, 1 },
     health_bar_color_tapped          = { 0.9, 0.9, 0.9, 1 },
     health_bar_color_friendly_player = { 0.667, 0.667, 1, 1 },
+    health_bar_color_friendly_pet    = { 0.667, 0.667, 1, 1 },
     health_bar_color_friendly_npc    = { 0, 1, 0, 1 },
     health_bar_color_enemy_player    = { 1, 0, 0, 1 },
+    health_bar_color_enemy_pet       = { 1, 0, 0, 1 },
     health_bar_color_enemy_npc       = { 1, 0, 0, 1 },
     health_bar_color_neutral_npc     = { 1, 1, 0, 1 },
 
