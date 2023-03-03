@@ -4,11 +4,7 @@ local Module = S:NewModule('TalkingHead');
 local PlayerState = D.Player.State;
 
 function Module:TALKINGHEAD_REQUESTED()
-    if not TalkingHeadFrame then
-        return;
-    end
-
-    if not O.db.talking_head_suppress then
+    if not (TalkingHeadFrame and O.db.talking_head_suppress) then
         return;
     end
 
