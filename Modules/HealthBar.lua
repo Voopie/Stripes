@@ -21,9 +21,6 @@ local LCG_AutoCastGlow_Start, LCG_AutoCastGlow_Stop, LCG_ButtonGlow_Start, LCG_B
 local LSM = S.Libraries.LSM;
 local LSM_MEDIATYPE_STATUSBAR = LSM.MediaType.STATUSBAR;
 
--- Nameplates frames
-local NP = S.NamePlates;
-
 -- Local Config
 local DB = {};
 
@@ -1029,20 +1026,16 @@ function Module:PLAYER_ROLES_ASSIGNED()
 end
 
 function Module:RAID_TARGET_UPDATE()
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe:IsShown() then
-            UpdateHealthBarColor(unitframe, not unitframe.data.raidIndex);
-        end
-    end
+    self:ForAllActiveUnitFrames(function(unitframe)
+        UpdateHealthBarColor(unitframe, not unitframe.data.raidIndex);
+    end);
 end
 
 function Module:PLAYER_FOCUS_CHANGED()
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe:IsShown() then
-            UpdateExtraTexture(unitframe);
-            UpdateHealthBarColor(unitframe);
-        end
-    end
+    self:ForAllActiveUnitFrames(function(unitframe)
+        UpdateExtraTexture(unitframe);
+        UpdateHealthBarColor(unitframe);
+    end);
 end
 
 function Module:UpdateLocalConfig()

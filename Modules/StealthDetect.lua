@@ -9,9 +9,6 @@ local LCG = S.Libraries.LCG;
 local LCG_PixelGlow_Start = LCG.PixelGlow_Start;
 local LCG_SUFFIX = 'S_STEALTHDETECT';
 
--- Nameplates
-local NP = S.NamePlates;
-
 -- Local Config
 local ENABLED, ALWAYS, NOT_IN_COMBAT;
 
@@ -221,11 +218,7 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateAll()
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe:IsShown() then
-            Update(unitframe);
-        end
-    end
+    self:ForAllActiveUnitFrames(Update);
 end
 
 function Module:UpdateLocalConfig()

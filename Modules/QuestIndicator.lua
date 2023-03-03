@@ -19,9 +19,6 @@ local Enum_TooltipDataLineType_QuestTitle, Enum_TooltipDataLineType_QuestObjecti
 -- Stripes API
 local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
 
--- Nameplates
-local NP = S.NamePlates;
-
 local PlayerState = D.Player.State;
 
 -- Local Config
@@ -245,7 +242,7 @@ local function UpdateStyle(unitframe)
     end
 end
 
-local function UpdateQuestLogIndexCache()
+function Module:UpdateQuestLogIndexCache()
     table_wipe(QuestLogIndexCache);
 
     for i = 1, C_QuestLog_GetNumQuestLogEntries() do
@@ -255,26 +252,18 @@ local function UpdateQuestLogIndexCache()
         end
     end
 
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe:IsShown() then
-            Update(unitframe, unitframe.data.unit);
-        end
-    end
+    self:ForAllActiveUnitFrames(Update);
 end
 
-local function UnitQuestLogChanged(unit)
+function Module:UnitQuestLogChanged(unit)
     if unit == 'player' then
-        UpdateQuestLogIndexCache();
+        self:UpdateQuestLogIndexCache();
     else
-        for _, unitframe in pairs(NP) do
-            if unitframe.isActive and unitframe:IsShown() then
-                Update(unitframe);
-            end
-        end
+        self:ForAllActiveUnitFrames(Update);
     end
 end
 
-local function QuestChanged(questID)
+function Module:QuestChanged(questID)
     if questID and C_QuestLog_IsQuestTask(questID) then
         local questName = C_TaskQuest_GetQuestInfoByQuestID(questID);
         if questName then
@@ -282,16 +271,16 @@ local function QuestChanged(questID)
         end
     end
 
-    UnitQuestLogChanged();
+    self:UnitQuestLogChanged();
 end
 
-local function QuestRemoved(questID)
+function Module:QuestRemoved(questID)
     local questName = C_TaskQuest_GetQuestInfoByQuestID(questID);
     if questName and QuestActiveCache[questName] then
         QuestActiveCache[questName] = nil;
     end
 
-    UnitQuestLogChanged();
+    self:UnitQuestLogChanged();
 end
 
 function Module:UnitAdded(unitframe)
@@ -341,9 +330,9 @@ function Module:StartUp()
     self:UpdateLocalConfig();
 
     self:RegisterEvent('PLAYER_LOGIN');
-    self:RegisterEvent('QUEST_ACCEPTED', QuestChanged);
-    self:RegisterEvent('QUEST_REMOVED', QuestRemoved);
-    self:RegisterEvent('QUEST_LOG_UPDATE', UpdateQuestLogIndexCache);
-    self:RegisterEvent('QUEST_WATCH_LIST_CHANGED', QuestChanged);
-    self:RegisterEvent('UNIT_QUEST_LOG_CHANGED', UnitQuestLogChanged);
+    self:RegisterEvent('QUEST_ACCEPTED', 'QuestChanged');
+    self:RegisterEvent('QUEST_REMOVED', 'QuestRemoved');
+    self:RegisterEvent('QUEST_LOG_UPDATE', 'UpdateQuestLogIndexCache');
+    self:RegisterEvent('QUEST_WATCH_LIST_CHANGED', 'QuestChanged');
+    self:RegisterEvent('UNIT_QUEST_LOG_CHANGED', 'UnitQuestLogChanged');
 end

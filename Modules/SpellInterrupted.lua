@@ -16,9 +16,6 @@ local GetUnitColor = U.GetUnitColor;
 local UpdateFontObject = Stripes.UpdateFontObject;
 local GetCachedName = Stripes.GetCachedName;
 
--- Nameplates
-local NP = S.NamePlates;
-
 -- Local Config
 local ENABLED, SIZE, COUNTDOWN_ENABLED, CASTER_NAME_SHOW, FRAME_STRATA;
 local POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
@@ -203,11 +200,11 @@ function Module:COMBAT_LOG_EVENT_UNFILTERED()
     local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId, _, _, extraSpellId = CombatLogGetCurrentEventInfo();
 
     if subEvent == 'SPELL_INTERRUPT' then
-        for _, unitframe in pairs(NP) do
-            if unitframe.isActive and unitframe:IsShown() and UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
+        self:ForAllActiveUnitFrames(function(unitframe)
+            if UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
                 OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId);
             end
-        end
+        end);
     end
 end
 

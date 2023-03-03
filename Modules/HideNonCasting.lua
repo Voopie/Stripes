@@ -7,16 +7,13 @@ local select = select;
 -- WoW API
 local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
 
--- Nameplates frames
-local NP = S.NamePlates;
-
 -- Local Config
 local ENABLED, SHOW_UNINTERRUPTIBLE, MODIFIER;
 
 local modifiers = O.Lists.hide_non_casting_modifiers;
 local visibilityState = true;
 
-local function UpdateVisibility(unitframe)
+function Module:UpdateVisibility(unitframe)
     if visibilityState then
         unitframe:Show();
         return;
@@ -38,36 +35,36 @@ local function UpdateVisibility(unitframe)
     unitframe:Hide();
 end
 
-local function ShowOnlyCasting()
+function Module:ShowOnlyCasting()
     visibilityState = false;
 
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe.data.unit then
-            UpdateVisibility(unitframe);
+    self:ForAllActiveUnitFrames(function(unitframe)
+        if unitframe.data.unit then
+            self:UpdateVisibility(unitframe);
         end
-    end
+    end);
 end
 
-local function ShowAll()
+function Module:ShowAll()
     visibilityState = true;
 
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe.data.unit then
-            UpdateVisibility(unitframe);
+    self:ForAllActiveUnitFrames(function(unitframe)
+        if unitframe.data.unit then
+            self:UpdateVisibility(unitframe);
         end
-    end
+    end);
 end
 
-local function CheckCasting(unit)
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe.data.unit == unit then
-            UpdateVisibility(unitframe);
+function Module:CheckCasting(unit)
+    self:ForAllActiveUnitFrames(function(unitframe)
+        if unitframe.data.unit == unit then
+            self:UpdateVisibility(unitframe);
         end
-    end
+    end);
 end
 
 function Module:UnitAdded(unitframe)
-    UpdateVisibility(unitframe);
+    self:UpdateVisibility(unitframe);
 end
 
 function Module:UpdateLocalConfig()
@@ -85,9 +82,9 @@ end
 function Module:MODIFIER_STATE_CHANGED(key, down)
     if key == modifiers[MODIFIER] then
         if down == 1 then
-            ShowOnlyCasting();
+            self:ShowOnlyCasting();
         else
-            ShowAll();
+            self:ShowAll();
         end
     end
 end
@@ -96,12 +93,12 @@ local KeyChecker = CreateFrame('Frame', nil, UIParent);
 
 function Module:Enable()
     self:RegisterEvent('MODIFIER_STATE_CHANGED');
-    self:RegisterEvent('UNIT_SPELLCAST_START', CheckCasting);
-    self:RegisterEvent('UNIT_SPELLCAST_STOP', CheckCasting);
+    self:RegisterEvent('UNIT_SPELLCAST_START', 'CheckCasting');
+    self:RegisterEvent('UNIT_SPELLCAST_STOP', 'CheckCasting');
 
     KeyChecker:SetScript('OnKeyDown', function(_, key)
         if ENABLED and key == 'TAB' then
-            ShowAll();
+            self:ShowAll();
         end
     end);
     KeyChecker:SetPropagateKeyboardInput(true);

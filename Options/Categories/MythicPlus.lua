@@ -166,10 +166,12 @@ panel.Load = function(self)
     self.explosive_orbs_counter.Callback = function(self)
         O.db.explosive_orbs_counter = self:GetChecked();
 
+        local MythicPlusExplosiveOrbs = S:GetNameplateModule('MythicPlusExplosiveOrbs');
+
         if O.db.explosive_orbs_counter then
-            S:GetNameplateModule('MythicPlusExplosiveOrbs').OrbsCounter:CountOrbs();
+            MythicPlusExplosiveOrbs:CountOrbs();
         else
-            S:GetNameplateModule('MythicPlusExplosiveOrbs').OrbsCounter:Hide();
+            MythicPlusExplosiveOrbs.OrbsCounterFrame:Hide();
         end
 
         Stripes:UpdateAll();

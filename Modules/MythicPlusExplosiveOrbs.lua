@@ -1,87 +1,80 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('MythicPlusExplosiveOrbs');
 
--- Lua API
-local pairs = pairs;
-
--- Nameplates frames
-local NP = S.NamePlates;
-
 -- Local Config
 local CROSSHAIR, COUNTER;
 
 local PlayerState = D.Player.State;
 
-local EXPLOSIVE_ID = 120651;
+local EXPLOSIVE_ID      = 120651;
 local EXPLOSIVE_TEXTURE = 2175503;
 
-local OrbsCounter = CreateFrame('Frame', 'Stripes_ExplosiveOrbsCounter', UIParent);
-OrbsCounter:SetPoint('CENTER', 0, -100);
-OrbsCounter:SetSize(44, 44);
-OrbsCounter:EnableMouse(true);
-OrbsCounter:SetMovable(true);
-OrbsCounter:SetClampedToScreen(true);
-OrbsCounter:RegisterForDrag('LeftButton');
-OrbsCounter:SetScript('OnDragStart', function(self) if self:IsMovable() then self:StartMoving(); end end);
-OrbsCounter:SetScript('OnDragStop', function(self) self:StopMovingOrSizing(); end);
+local OrbsCounterFrame = CreateFrame('Frame', 'Stripes_ExplosiveOrbsCounter', UIParent);
+OrbsCounterFrame:SetPoint('CENTER', 0, -100);
+OrbsCounterFrame:SetSize(44, 44);
+OrbsCounterFrame:EnableMouse(true);
+OrbsCounterFrame:SetMovable(true);
+OrbsCounterFrame:SetClampedToScreen(true);
+OrbsCounterFrame:RegisterForDrag('LeftButton');
+OrbsCounterFrame:SetScript('OnDragStart', function(self) if self:IsMovable() then self:StartMoving(); end end);
+OrbsCounterFrame:SetScript('OnDragStop', function(self) self:StopMovingOrSizing(); end);
 
-OrbsCounter.texture = OrbsCounter:CreateTexture(nil, 'ARTWORK');
-OrbsCounter.texture:SetPoint('CENTER', 0, 0);
-OrbsCounter.texture:SetTexture(EXPLOSIVE_TEXTURE);
-OrbsCounter.texture:SetTexCoord(0.05, 0.95, 0.1, 0.6)
-OrbsCounter.texture:SetVertexColor(1, 1, 1, 1);
-OrbsCounter.texture:SetSize(42, 42);
+OrbsCounterFrame.texture = OrbsCounterFrame:CreateTexture(nil, 'ARTWORK');
+OrbsCounterFrame.texture:SetPoint('CENTER', 0, 0);
+OrbsCounterFrame.texture:SetTexture(EXPLOSIVE_TEXTURE);
+OrbsCounterFrame.texture:SetTexCoord(0.05, 0.95, 0.1, 0.6)
+OrbsCounterFrame.texture:SetVertexColor(1, 1, 1, 1);
+OrbsCounterFrame.texture:SetSize(42, 42);
 
-OrbsCounter.border = OrbsCounter:CreateTexture(nil, 'BACKGROUND');
-OrbsCounter.border:SetColorTexture(1, 0, 0);
-OrbsCounter.border:SetPoint('TOPLEFT', OrbsCounter, -1, 1);
-OrbsCounter.border:SetPoint('BOTTOMRIGHT', OrbsCounter, 1, -1);
+OrbsCounterFrame.border = OrbsCounterFrame:CreateTexture(nil, 'BACKGROUND');
+OrbsCounterFrame.border:SetColorTexture(1, 0, 0);
+OrbsCounterFrame.border:SetPoint('TOPLEFT', OrbsCounterFrame, -1, 1);
+OrbsCounterFrame.border:SetPoint('BOTTOMRIGHT', OrbsCounterFrame, 1, -1);
 
-OrbsCounter.count = OrbsCounter:CreateFontString();
-OrbsCounter.count:SetPoint('CENTER', 0, 0);
-OrbsCounter.count:SetFont(S.Media.Fonts['BigNoodleToo Oblique'], 26, 'OUTLINE');
-OrbsCounter.count:SetTextColor(1, 1, 1);
-OrbsCounter.count:SetShadowOffset(1, -1);
-OrbsCounter.count:SetShadowColor(0, 0, 0);
+OrbsCounterFrame.count = OrbsCounterFrame:CreateFontString();
+OrbsCounterFrame.count:SetPoint('CENTER', 0, 0);
+OrbsCounterFrame.count:SetFont(S.Media.Fonts['BigNoodleToo Oblique'], 26, 'OUTLINE');
+OrbsCounterFrame.count:SetTextColor(1, 1, 1);
+OrbsCounterFrame.count:SetShadowOffset(1, -1);
+OrbsCounterFrame.count:SetShadowColor(0, 0, 0);
 
-OrbsCounter:Hide();
+OrbsCounterFrame:Hide();
 
 local counter = 0;
-local function CountOrbs()
+function Module:CountOrbs()
     if not COUNTER or not PlayerState.inMythicPlus then
-        OrbsCounter:Hide();
+        OrbsCounterFrame:Hide();
         return;
     end
 
     counter = 0;
 
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe:IsShown() and unitframe.data.npcId == EXPLOSIVE_ID then
+    self:ForAllActiveUnitFrames(function(unitframe)
+        if unitframe.data.npcId == EXPLOSIVE_ID then
             counter = counter + 1;
         end
-    end
+    end);
 
     if counter > 0 then
-        OrbsCounter.count:SetText(counter);
-        OrbsCounter:Show();
+        OrbsCounterFrame.count:SetText(counter);
+        OrbsCounterFrame:Show();
     else
-        OrbsCounter:Hide();
+        OrbsCounterFrame:Hide();
     end
 end
 
-OrbsCounter.CountOrbs = CountOrbs;
-Module.OrbsCounter = OrbsCounter;
+Module.OrbsCounterFrame = OrbsCounterFrame;
 
-local function Update(unitframe)
+function Module:UpdateExplosive(unitframe)
     if not PlayerState.inMythicPlus then
-        OrbsCounter:Hide();
+        OrbsCounterFrame:Hide();
 
         unitframe.Explosive:Hide();
 
         return;
     end
 
-    CountOrbs();
+    self:CountOrbs();
 
     if unitframe:IsShown() then
         if unitframe.data.npcId == EXPLOSIVE_ID then
@@ -92,15 +85,15 @@ local function Update(unitframe)
     end
 end
 
-local function Hide(unitframe)
-    CountOrbs();
+function Module:HideExplosive(unitframe)
+    self:CountOrbs();
 
     if unitframe.Explosive then
         unitframe.Explosive:Hide();
     end
 end
 
-local function Create(unitframe)
+function Module:CreateExplosive(unitframe)
     if unitframe.Explosive then
         return;
     end
@@ -136,16 +129,16 @@ local function Create(unitframe)
 end
 
 function Module:UnitAdded(unitframe)
-    Create(unitframe);
-    Update(unitframe);
+    self:CreateExplosive(unitframe);
+    self:UpdateExplosive(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
-    Hide(unitframe);
+    self:HideExplosive(unitframe);
 end
 
 function Module:Update(unitframe)
-    Update(unitframe);
+    self:UpdateExplosive(unitframe);
 end
 
 function Module:UpdateLocalConfig()

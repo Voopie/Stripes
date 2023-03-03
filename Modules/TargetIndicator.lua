@@ -1,14 +1,8 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('TargetIndicator');
 
--- Lua API
-local pairs = pairs;
-
 -- WoW API
 local UnitIsUnit, UnitExists = UnitIsUnit, UnitExists;
-
--- Nameplates
-local NP = S.NamePlates;
 
 -- Local Config
 local TARGET_INDICATOR_ENABLED, TARGET_GLOW_ENABLED, HOVER_GLOW_ENABLED;
@@ -148,20 +142,20 @@ local function UpdateStyle(unitframe)
     PixelUtil.SetHeight(unitframe.TargetIndicator.glowDown, GLOW_SIZE);
 end
 
-local function UpdateMouseoverUnit()
+function Module:UpdateMouseoverUnit()
     if not HOVER_GLOW_ENABLED then
         return;
     end
 
-    for _, unitframe in pairs(NP) do
-        if unitframe.isActive and unitframe:IsShown() and not unitframe.data.isTarget and not unitframe.data.isPersonal then
+    self:ForAllActiveUnitFrames(function(unitframe)
+        if not unitframe.data.isTarget and not unitframe.data.isPersonal then
             if MouseOnUnit(unitframe) then
                 Glow_Show(unitframe);
             else
                 Glow_Hide(unitframe);
             end
         end
-    end
+    end);
 end
 
 function Module:UnitAdded(unitframe)
@@ -225,5 +219,5 @@ end
 function Module:StartUp()
     self:UpdateLocalConfig();
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', UpdateTargetSelection);
-    self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', UpdateMouseoverUnit);
+    self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateMouseoverUnit');
 end
