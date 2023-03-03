@@ -91,6 +91,7 @@ S.Media.Icons2 = {
 
         -- 3rd row
         STAR_WHITE         = {  0, 1/4, 2/4, 3/4},
+        CROSS_SWORDS       = {1/4, 2/4, 2/4, 3/4},
 
         PALETTE_COLOR      = {0.71875, 1, 0.734375, 1},
     },
