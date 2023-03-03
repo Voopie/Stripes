@@ -365,6 +365,12 @@ function ModuleMixin:GetUnitFrame(unitframe)
     end
 end
 
+function ModuleMixin:ForAllUnitFrames(func)
+    for _, frame in pairs(NP) do
+        func(frame);
+    end
+end
+
 function ModuleMixin:ForAllActiveUnitFrames(func)
     for _, frame in pairs(NP) do
         if frame.isActive and frame:IsShown() then
@@ -381,6 +387,19 @@ function ModuleMixin:ProcessNamePlateForUnit(unit, func)
     end
 
     func(NP[nameplate]);
+end
+
+function ModuleMixin:AddedNamePlateForUnit(unit, func)
+    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
+    local unitframe = nameplate and nameplate.UnitFrame;
+
+    if not unitframe then
+        return;
+    end
+
+    NP[nameplate] = unitframe;
+
+    func(unitframe);
 end
 
 function ModuleMixin:SecureHook(name, func1, func2, func3)
