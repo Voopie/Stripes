@@ -1,15 +1,9 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('Level');
 
--- WoW API
-local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit;
-
 -- Stripes API
 local RGB2CFFHEX = U.RGB2CFFHEX;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
-
--- Nameplates
-local NP = S.NamePlates;
 
 -- Local Config
 local ENABLED, TEXT_FRAME_STRATA, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR, CUSTOM_COLOR_TEXT;
@@ -120,23 +114,11 @@ function Module:UpdateLocalConfig()
 end
 
 function Module:UNIT_LEVEL(unit)
-    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
-
-    if not nameplate or not NP[nameplate] then
-        return;
-    end
-
-    Update(NP[nameplate]);
+    self:ProcessNamePlateForUnit(unit, Update);
 end
 
 function Module:UNIT_FACTION(unit)
-    local nameplate = C_NamePlate_GetNamePlateForUnit(unit);
-
-    if not nameplate or not NP[nameplate] then
-        return;
-    end
-
-    Update(NP[nameplate]);
+    self:ProcessNamePlateForUnit(unit, Update);
 end
 
 function Module:StartUp()
