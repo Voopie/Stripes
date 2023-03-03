@@ -44,6 +44,7 @@ local durations = {
     [132409] = 6, -- Warlock -- Spell Lock NOTE: Command Demon when felhunter sacrificed
     [212619] = 6, -- Warlock -- Call Felhunter (Demonology honor talent)
     [  6552] = 4, -- Warrior -- Pummel
+    [351338] = 4, -- Evoker -- Quell
 };
 
 local auras = {
