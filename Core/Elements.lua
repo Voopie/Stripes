@@ -2611,6 +2611,7 @@ E.CreateColorPicker = function(parent, color)
     local hasOpacity = false;
 
     if not color.r and color[4] then
+---@diagnostic disable-next-line: cast-local-type
         hasOpacity = color[4];
         color = color;
     elseif color.a then
