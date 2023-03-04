@@ -1,2 +1,3 @@
 /.vscode
 .mailmap
+globals.lua
