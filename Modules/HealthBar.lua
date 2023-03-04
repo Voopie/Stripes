@@ -573,7 +573,7 @@ local function UpdateHealthBarColorByPriority(unitframe)
     end
 end
 
-function UpdateHealthBarColor(unitframe, partial)
+local function UpdateHealthBarColor(unitframe, partial)
     if not unitframe:IsShown() or not unitframe.data.unit or unitframe.data.isPersonal then
         return;
     end
