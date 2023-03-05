@@ -6,6 +6,7 @@ local pairs, ipairs = pairs, ipairs;
 
 -- WoW API
 local AuraUtil_ForEachAura = AuraUtil.ForEachAura;
+local C_UnitAuras_GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID;
 
 local filterHelpful = 'HELPFUL';
 local filterHarmful = 'HARMFUL';
@@ -54,6 +55,10 @@ function Module:GetAll(unit)
     return CACHE[unit];
 end
 
+function Module:CheckAuraInstanceID(unit, auraInstanceID)
+    return CACHE[unit] and CACHE[unit][auraInstanceID] ~= nil;
+end
+
 function Module:FullUpdate(unit)
     self:FlushUnit();
 
@@ -85,8 +90,8 @@ function Module:ProcessAuras(unit, unitAuraUpdateInfo)
 
         if unitAuraUpdateInfo.updatedAuraInstanceIDs ~= nil then
             for _, auraInstanceID in ipairs(unitAuraUpdateInfo.updatedAuraInstanceIDs) do
-                if CACHE[unit] and CACHE[unit][auraInstanceID] ~= nil then
-                    local newAura = C_UnitAuras.GetAuraDataByAuraInstanceID(unit, auraInstanceID);
+                if self:CheckAuraInstanceID(unit, auraInstanceID) then
+                    local newAura = C_UnitAuras_GetAuraDataByAuraInstanceID(unit, auraInstanceID);
                     CACHE[unit][auraInstanceID] = newAura;
                 end
             end
@@ -94,7 +99,7 @@ function Module:ProcessAuras(unit, unitAuraUpdateInfo)
 
         if unitAuraUpdateInfo.removedAuraInstanceIDs ~= nil then
             for _, auraInstanceID in ipairs(unitAuraUpdateInfo.removedAuraInstanceIDs) do
-                if CACHE[unit] and CACHE[unit][auraInstanceID] ~= nil then
+                if self:CheckAuraInstanceID(unit, auraInstanceID) then
                     CACHE[unit][auraInstanceID] = nil;
                 end
             end
