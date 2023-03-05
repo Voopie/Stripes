@@ -280,7 +280,7 @@ local function GetAuraColor(unit)
     if allAuras then
         for _, aura in pairs(allAuras) do
             if playerUnits[aura.sourceUnit] then
-                local spellData = O.db.auras_hpbar_color_data[aura.spellId] or O.db.auras_hpbar_color_data[aura.name];
+                local spellData = DB.AURAS_HPBAR_COLORING_DATA[aura.spellId] or DB.AURAS_HPBAR_COLORING_DATA[aura.name];
 
                 if spellData and spellData.enabled then
                     color = spellData.color;
@@ -323,7 +323,12 @@ local COLORING_FUNCTIONS = {
                         unitframe.healthBar.border:SetVertexColor(r, g, b, a);
                     end
                 else
-                    unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                    local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+                    if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
+                        unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                    end
+
                     result = true;
                 end
 
@@ -543,7 +548,11 @@ local COLORING_FUNCTIONS = {
                         unitframe.healthBar.border:SetVertexColor(r, g, b, a);
                     end
                 else
-                    unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                    local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+                    if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
+                        unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                    end
                 end
 
                 result = true;
@@ -1060,6 +1069,7 @@ end
 function Module:UpdateLocalConfig()
     DB.RAID_TARGET_HPBAR_COLORING = O.db.raid_target_hpbar_coloring;
     DB.AURAS_HPBAR_COLORING = O.db.auras_hpbar_color_enabled;
+    DB.AURAS_HPBAR_COLORING_DATA = O.db.auras_hpbar_color_data;
 
     DB.THREAT_ENABLED = O.db.threat_color_enabled;
     DB.THREAT_COLOR_ISTAPPED_BORDER = O.db.threat_color_istapped_border;
