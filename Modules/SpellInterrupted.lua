@@ -129,7 +129,7 @@ local function UpdateByAura(unitframe)
     local aura = UnitHasAura(unitframe.data.unit, auras);
 
     if not aura then
-        return
+        return;
     end
 
     unitframe.SpellInterrupted.icon:SetTexture(aura.icon);

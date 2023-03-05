@@ -858,21 +858,23 @@ local function CreateSpark(unitframe)
 end
 
 local function UpdateSpark(unitframe)
-    if unitframe.healthBar.Spark then
-        if DB.SPARK_SHOW then
-            unitframe.healthBar.Spark:SetSize(DB.SPARK_WIDTH, DB.SPARK_HEIGHT);
+    if not unitframe.healthBar.Spark then
+        return;
+    end
 
-            local _, maxValue = unitframe.healthBar:GetMinMaxValues();
-            local currentValue = unitframe.healthBar:GetValue();
+    if DB.SPARK_SHOW then
+        unitframe.healthBar.Spark:SetSize(DB.SPARK_WIDTH, DB.SPARK_HEIGHT);
 
-            if DB.SPARK_HIDE_AT_MAX_HEALTH and currentValue == maxValue then
-                unitframe.healthBar.Spark:Hide();
-            else
-                unitframe.healthBar.Spark:Show();
-            end
-        else
+        local _, maxValue = unitframe.healthBar:GetMinMaxValues();
+        local currentValue = unitframe.healthBar:GetValue();
+
+        if DB.SPARK_HIDE_AT_MAX_HEALTH and currentValue == maxValue then
             unitframe.healthBar.Spark:Hide();
+        else
+            unitframe.healthBar.Spark:Show();
         end
+    else
+        unitframe.healthBar.Spark:Hide();
     end
 end
 
@@ -1305,6 +1307,7 @@ function Module:StartUp()
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', UpdateHealthBarColor);
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', UpdateHealthBarColor);
+
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateAggroFlash', function(unitframe)
         UpdateHealthBarColor(unitframe);
 
