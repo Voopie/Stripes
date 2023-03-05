@@ -803,6 +803,7 @@ local function ResetNameplateData(unitframe)
     unitframe.data.unitGUID  = nil;
 
     unitframe.data.isPersonal = nil;
+    unitframe.data.isDead     = nil;
 
     unitframe.data.healthCurrent = 0;
 
