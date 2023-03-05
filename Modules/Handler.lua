@@ -171,6 +171,10 @@ do
     local CACHE = {};
 
     Stripes.GetCachedName = function(name, useTranslit, useReplaceDiacritics, useCut)
+        if not name then -- wut?!
+            return;
+        end
+
         if CACHE[name] then
             return CACHE[name];
         end
