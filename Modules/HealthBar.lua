@@ -26,15 +26,6 @@ local StripesThreatPercentageFont = CreateFont('StripesThreatPercentageFont');
 
 local DEFAULT_STATUSBAR_TEXTURE = 'Interface\\TargetingFrame\\UI-TargetingFrame-BarFill';
 
-Module.defaultStatusColors = {
-    [0] = { 1.00, 0.00, 0.00, 1 },  -- not tanking, lower threat than tank. (red)
-    [1] = { 0.75, 0.70, 0.15, 1 },  -- not tanking, higher threat than tank. (yellow)
-    [2] = { 1.00, 0.35, 0.10, 1 },  -- insecurely tanking, another unit have higher threat but not tanking. (orange)
-    [3] = { 0.15, 0.75, 0.15, 1 },  -- securely tanking, highest threat (green)
-};
-
-Module.defaultOffTankColor = { 0.60, 0.00, 0.85, 1 };
-
 local statusColors = {
     [0] = { 1.00, 0.00, 0.00, 1 },  -- not tanking, lower threat than tank. (red)
     [1] = { 0.75, 0.70, 0.15, 1 },  -- not tanking, higher threat than tank. (yellow)
@@ -42,8 +33,8 @@ local statusColors = {
     [3] = { 0.15, 0.75, 0.15, 1 },  -- securely tanking, highest threat (green)
 };
 
-local offTankColor = { 0.60, 0.00, 0.85, 1 };
-local petTankColor = { 0.00, 0.44, 1.00, 1 };
+local offTankColor       = { 0.60, 0.00, 0.85, 1 };
+local petTankColor       = { 0.00, 0.44, 1.00, 1 };
 local playerPetTankColor = { 0.00, 0.44, 1.00, 1 };
 
 local PLAYER_ROLE;

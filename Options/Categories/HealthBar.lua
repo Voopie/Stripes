@@ -1321,14 +1321,11 @@ panel.Load = function(self)
     ResetThreatColorsButton:SetTooltip(L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP']);
     ResetThreatColorsButton:AddToSearch(button, L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'], self.Tabs[4]);
     ResetThreatColorsButton.Callback = function()
-        local defaultStatusColors = S:GetNameplateModule('HealthBar').defaultStatusColors;
-        local defaultOffTankColor = S:GetNameplateModule('HealthBar').defaultOffTankColor;
-
-        panel.threat_color_status_0:SetValue(unpack(defaultStatusColors[0]));
-        panel.threat_color_status_1:SetValue(unpack(defaultStatusColors[1]));
-        panel.threat_color_status_2:SetValue(unpack(defaultStatusColors[2]));
-        panel.threat_color_status_3:SetValue(unpack(defaultStatusColors[3]));
-        panel.threat_color_offtank:SetValue(unpack(defaultOffTankColor));
+        panel.threat_color_status_0:SetValue(unpack(O.DefaultValues.threat_color_status_0));
+        panel.threat_color_status_1:SetValue(unpack(O.DefaultValues.threat_color_status_1));
+        panel.threat_color_status_2:SetValue(unpack(O.DefaultValues.threat_color_status_2));
+        panel.threat_color_status_3:SetValue(unpack(O.DefaultValues.threat_color_status_3));
+        panel.threat_color_offtank:SetValue(unpack(O.DefaultValues.threat_color_offtank));
         panel.threat_color_pettank:SetValue(unpack(O.DefaultValues.threat_color_pettank));
         panel.threat_color_playerpettank:SetValue(unpack(O.DefaultValues.threat_color_playerpettank));
     end
