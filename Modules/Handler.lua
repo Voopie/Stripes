@@ -257,6 +257,8 @@ local function UpdateHealth(unitframe)
     unitframe.data.healthMax     = math_max(UnitHealthMax(unitframe.data.unit) or 1, 1);
     unitframe.data.healthPerF    = 100 * (unitframe.data.healthCurrent / unitframe.data.healthMax);
     unitframe.data.healthPer     = math_ceil(unitframe.data.healthPerF);
+
+    unitframe.data.isDead = UnitIsDead(unitframe.data.unit);
 end
 
 local function UpdateLevel(unitframe)

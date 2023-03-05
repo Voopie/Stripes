@@ -591,6 +591,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.health_bar_color_dead = E.CreateColorPicker(self.TabsFrames['ColorsTab'].Content);
+    self.health_bar_color_dead:SetPosition('LEFT', self.health_bar_color_dc.Label, 'RIGHT', 12, 0);
+    self.health_bar_color_dead:SetLabel(L['OPTIONS_HEALTH_BAR_COLOR_DEAD']);
+    self.health_bar_color_dead:SetTooltip(L['OPTIONS_HEALTH_BAR_COLOR_DEAD_TOOLTIP']);
+    self.health_bar_color_dead:AddToSearch(button, L['OPTIONS_HEALTH_BAR_COLOR_DEAD_TOOLTIP'], self.Tabs[2]);
+    self.health_bar_color_dead:SetValue(unpack(O.db.health_bar_color_dead));
+    self.health_bar_color_dead.OnValueChanged = function(_, r, g, b, a)
+        O.db.health_bar_color_dead[1] = r;
+        O.db.health_bar_color_dead[2] = g;
+        O.db.health_bar_color_dead[3] = b;
+        O.db.health_bar_color_dead[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
     local ResetHealthBarColorsButton = E.CreateTextureButton(self.TabsFrames['ColorsTab'].Content, S.Media.Icons2.TEXTURE, S.Media.Icons2.COORDS.REFRESH_WHITE);
     ResetHealthBarColorsButton:SetPosition('TOPRIGHT', self.TabsFrames['ColorsTab'].Content, 'TOPRIGHT', -8, -4);
     ResetHealthBarColorsButton:SetTooltip(L['OPTIONS_HEALTH_BAR_COLORS_RESET_TOOLTIP']);
@@ -605,6 +620,7 @@ panel.Load = function(self)
         panel.health_bar_color_neutral_npc:SetValue(unpack(O.DefaultValues.health_bar_color_neutral_npc));
         panel.health_bar_color_tapped:SetValue(unpack(O.DefaultValues.health_bar_color_tapped));
         panel.health_bar_color_dc:SetValue(unpack(O.DefaultValues.health_bar_color_dc));
+        panel.health_bar_color_dead:SetValue(unpack(O.DefaultValues.health_bar_color_dead));
     end
 
     local ClassColorsHeader = E.CreateHeader(self.TabsFrames['ColorsTab'].Content, L['OPTIONS_HEALTH_BAR_COLORS_CLASS_HEADER']);

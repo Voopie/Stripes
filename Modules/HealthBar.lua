@@ -3,14 +3,13 @@ local Module = S:NewNameplateModule('HealthBar');
 local Colors = S:GetModule('Options_Colors');
 
 -- WoW API
-local UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
-      UnitIsFriend, UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
-local CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer = CompactUnitFrame_IsTapDenied, CompactUnitFrame_IsOnThreatListWithPlayer;
+local UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
+      UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local GetRaidTargetIndex = GetRaidTargetIndex;
 local AuraUtil_ForEachAura = AuraUtil.ForEachAura;
 
 -- Stripes API
-local UnitIsTapped, IsPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.IsPlayer, U.IsPlayerEffectivelyTank;
+local UnitIsTapped, UnitIsOnThreatListWithPlayer, IsPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.UnitIsOnThreatListWithPlayer, U.IsPlayer, U.IsPlayerEffectivelyTank;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Libraries
@@ -83,6 +82,14 @@ local function UpdateHealthColor(frame)
 
     if not frame.data.isConnected then
         r, g, b, a = DB.HPBAR_COLOR_DC[1], DB.HPBAR_COLOR_DC[2], DB.HPBAR_COLOR_DC[3], DB.HPBAR_COLOR_DC[4];
+    elseif frame.data.isDead then
+        r, g, b, a = DB.HPBAR_COLOR_DEAD[1], DB.HPBAR_COLOR_DEAD[2], DB.HPBAR_COLOR_DEAD[3], DB.HPBAR_COLOR_DEAD[4];
+
+        if frame.data.isPersonal and not frame.data.widgetsOnly then
+            if not frame.healthBar:IsShown() then
+                frame.healthBar:Show();
+            end
+        end
     else
         if frame.optionTable.healthBarColorOverride then
             local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
@@ -105,12 +112,12 @@ local function UpdateHealthColor(frame)
                 if not r then
                     r, g, b, a = 0.8, 0.8, 0.8, 1;
                 end
-            elseif CompactUnitFrame_IsTapDenied(frame) then
+            elseif UnitIsTapped(frame.unit) then
                 r, g, b, a = DB.HPBAR_COLOR_TAPPED[1], DB.HPBAR_COLOR_TAPPED[2], DB.HPBAR_COLOR_TAPPED[3], DB.HPBAR_COLOR_TAPPED[4];
             elseif frame.optionTable.colorHealthBySelection then
-                if frame.optionTable.considerSelectionInCombatAsHostile and CompactUnitFrame_IsOnThreatListWithPlayer(frame.displayedUnit) then
+                if frame.optionTable.considerSelectionInCombatAsHostile and UnitIsOnThreatListWithPlayer(frame.displayedUnit) then
                     r, g, b, a = DB.HPBAR_COLOR_ENEMY_NPC[1], DB.HPBAR_COLOR_ENEMY_NPC[2], DB.HPBAR_COLOR_ENEMY_NPC[3], DB.HPBAR_COLOR_ENEMY_NPC[4];
-                elseif frame.data.isPlayer and UnitIsFriend('player', frame.displayedUnit) then
+                elseif frame.data.isPlayer and frame.data.unitType == 'FRIENDLY_PLAYER' then
                     r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_PLAYER[1], DB.HPBAR_COLOR_FRIENDLY_PLAYER[2], DB.HPBAR_COLOR_FRIENDLY_PLAYER[3], DB.HPBAR_COLOR_FRIENDLY_PLAYER[4];
                 else
                     local selectionType = UnitSelectionType(frame.displayedUnit, frame.optionTable.colorHealthWithExtendedColors);
@@ -132,7 +139,7 @@ local function UpdateHealthColor(frame)
                         end
                     end
                 end
-            elseif UnitIsFriend('player', frame.displayedUnit) then
+            elseif frame.data.unitType == 'FRIENDLY_NPC' then
                 r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_NPC[1], DB.HPBAR_COLOR_FRIENDLY_NPC[2], DB.HPBAR_COLOR_FRIENDLY_NPC[3], DB.HPBAR_COLOR_FRIENDLY_NPC[4];
             else
                 r, g, b, a = DB.HPBAR_COLOR_ENEMY_NPC[1], DB.HPBAR_COLOR_ENEMY_NPC[2], DB.HPBAR_COLOR_ENEMY_NPC[3], DB.HPBAR_COLOR_ENEMY_NPC[4];
@@ -1124,6 +1131,12 @@ function Module:UpdateLocalConfig()
     DB.HPBAR_COLOR_DC[2] = O.db.health_bar_color_dc[2];
     DB.HPBAR_COLOR_DC[3] = O.db.health_bar_color_dc[3];
     DB.HPBAR_COLOR_DC[4] = O.db.health_bar_color_dc[4] or 1;
+
+    DB.HPBAR_COLOR_DEAD    = DB.HPBAR_COLOR_DEAD or {};
+    DB.HPBAR_COLOR_DEAD[1] = O.db.health_bar_color_dead[1];
+    DB.HPBAR_COLOR_DEAD[2] = O.db.health_bar_color_dead[2];
+    DB.HPBAR_COLOR_DEAD[3] = O.db.health_bar_color_dead[3];
+    DB.HPBAR_COLOR_DEAD[4] = O.db.health_bar_color_dead[4] or 1;
 
     DB.HPBAR_COLOR_TAPPED    = DB.HPBAR_COLOR_TAPPED or {};
     DB.HPBAR_COLOR_TAPPED[1] = O.db.health_bar_color_tapped[1];

@@ -311,7 +311,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~596
+-- ~597
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -421,6 +421,7 @@ O.DefaultValues = {
     health_bar_class_color_enemy    = C_CVar.GetCVar('ShowClassColorInNameplate') == '1',
 
     health_bar_color_dc              = { 0.5, 0.5, 0.5, 1 },
+    health_bar_color_dead            = { 0.5, 0.5, 0.5, 1 },
     health_bar_color_tapped          = { 0.9, 0.9, 0.9, 1 },
     health_bar_color_friendly_player = { 0.667, 0.667, 1, 1 },
     health_bar_color_friendly_pet    = { 0.667, 0.667, 1, 1 },
