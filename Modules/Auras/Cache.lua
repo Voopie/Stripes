@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewModule('Auras_Cache');
 
 -- Lua API
-local pairs, ipairs = pairs, ipairs;
+local pairs, ipairs, type = pairs, ipairs, type;
 
 -- WoW API
 local AuraUtil_ForEachAura = AuraUtil.ForEachAura;
