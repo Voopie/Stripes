@@ -11,7 +11,7 @@ StripesAPI.IsUnimportantUnit = function(unitId)
         return;
     end
 
-    return S:GetNameplateModule('Handler'):IsUnimportantUnit(unitId);
+    return StripesDB.UnimportantsUnits and StripesDB.UnimportantsUnits[unitId];
 end
 
 StripesAPI.AddUnimportantUnit = function(unitId)
@@ -23,7 +23,9 @@ StripesAPI.AddUnimportantUnit = function(unitId)
         return;
     end
 
-    S:GetNameplateModule('Handler'):AddUnimportantUnit(unitId);
+    if StripesDB.UnimportantsUnits then
+        StripesDB.UnimportantsUnits[unitId] = true;
+    end
 end
 
 StripesAPI.AddBatchUnimportantUnits = function(...)
@@ -43,9 +45,11 @@ StripesAPI.RemoveUnimportantUnit = function(unitId)
         return;
     end
 
-    S:GetNameplateModule('Handler'):RemoveUnimportantUnit(unitId);
+    if StripesDB.UnimportantsUnits and StripesDB.UnimportantsUnits[unitId] then
+        StripesDB.UnimportantsUnits[unitId] = nil;
+    end
 end
 
 StripesAPI.GetUnimportantUnits = function()
-    return S:GetNameplateModule('Handler'):GetUnimportantUnits();
+    return StripesDB.UnimportantsUnits;
 end

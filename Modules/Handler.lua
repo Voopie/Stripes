@@ -167,26 +167,6 @@ end
 Stripes.IsNameOnlyMode            = IsNameOnlyMode;
 Stripes.IsNameOnlyModeAndFriendly = IsNameOnlyModeAndFriendly;
 
-Stripes.IsUnimportantUnit = function(self, unitId)
-    return StripesDB.UnimportantsUnits and StripesDB.UnimportantsUnits[unitId];
-end
-
-Stripes.AddUnimportantUnit = function(self, unitId)
-    if StripesDB.UnimportantsUnits then
-        StripesDB.UnimportantsUnits[unitId] = true;
-    end
-end
-
-Stripes.RemoveUnimportantUnit = function(self, unitId)
-    if StripesDB.UnimportantsUnits and StripesDB.UnimportantsUnits[unitId] then
-        StripesDB.UnimportantsUnits[unitId] = nil;
-    end
-end
-
-Stripes.GetUnimportantUnits = function(self)
-    return StripesDB.UnimportantsUnits;
-end
-
 do
     local CACHE = {};
 
@@ -880,7 +860,7 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
         unitframe.isActive = true;
         S:ForAllNameplateModules('UnitAdded', unitframe);
 
-        if Stripes:IsUnimportantUnit(unitframe.data.npcId) then
+        if StripesAPI.IsUnimportantUnit(unitframe.data.npcId) then
             unitframe.data.isUnimportantUnit = true;
         end
 
