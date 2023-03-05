@@ -42,6 +42,12 @@ local NAME_ONLY_FRIENDLY_UNIT_TYPES = {
     ['FRIENDLY_NPC']    = true,
 };
 
+local playerUnits = {
+    ['player']  = true,
+    ['pet']     = true,
+    ['vehicle'] = true,
+};
+
 -- Updater
 Stripes.Updater = CreateFrame('Frame');
 
@@ -894,7 +900,9 @@ function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
 end
 
 function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
-    S:GetModule('Auras_Cache'):ProcessAuras(unit, unitAuraUpdateInfo);
+    if not playerUnits[unit] then
+        S:GetModule('Auras_Cache'):ProcessAuras(unit, unitAuraUpdateInfo);
+    end
 
     self:ProcessNamePlateForUnit(unit, function(unitframe)
         S:ForAllNameplateModules('UnitAura', unitframe, unitAuraUpdateInfo);
