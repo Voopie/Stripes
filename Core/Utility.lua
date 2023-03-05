@@ -7,8 +7,8 @@ local pairs, ipairs, select, type, unpack, tostring, tonumber, string_format, st
 local strsplit = strsplit;
 
 -- WoW API
-local UnitClassBase, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID =
-      UnitClassBase, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID;
+local UnitClassBase, UnitDetailedThreatSituation, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID =
+      UnitClassBase, UnitDetailedThreatSituation, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID;
 local UnitLevel, UnitEffectiveLevel, UnitGUID, UnitAffectingCombat, UnitClassification, UnitTreatAsPlayerForDisplay =
       UnitLevel, UnitEffectiveLevel, UnitGUID, UnitAffectingCombat, UnitClassification, UnitTreatAsPlayerForDisplay;
 local UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole = UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole;
@@ -44,6 +44,11 @@ end
 
 U.UnitIsTapped = function(unit)
     return not UnitPlayerControlled(unit) and UnitIsTapDenied(unit);
+end
+
+U.UnitIsOnThreatListWithPlayer = function(unit)
+    local _, threatStatus = UnitDetailedThreatSituation('player', unit);
+    return threatStatus ~= nil;
 end
 
 U.IsPlayer = function(unit)
