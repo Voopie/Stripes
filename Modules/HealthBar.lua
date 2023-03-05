@@ -6,7 +6,6 @@ local Colors = S:GetModule('Options_Colors');
 local UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
       UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local GetRaidTargetIndex = GetRaidTargetIndex;
-local AuraUtil_ForEachAura = AuraUtil.ForEachAura;
 
 -- Stripes API
 local UnitIsTapped, UnitIsOnThreatListWithPlayer, IsPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.UnitIsOnThreatListWithPlayer, U.IsPlayer, U.IsPlayerEffectivelyTank;
@@ -59,6 +58,12 @@ local RAID_TARGET_COLORS = {
     [6] = {  0.2,  0.5,    1, 1 }, -- BLUE   (SQUARE)
     [7] = {    1,  0.2, 0.25, 1 }, -- RED    (CROSS)
     [8] = {    1,    1,    1, 1 }, -- WHITE  (SKULL)
+};
+
+local playerUnits = {
+    ['player']  = true,
+    ['pet']     = true,
+    ['vehicle'] = true,
 };
 
 local function IsUseClassColor(unitframe)
@@ -262,25 +267,30 @@ local function UpdateThreatPercentage(unitframe)
 end
 
 local function GetAuraColor(unit)
-    local _, name, spellId;
-    local has = false;
+    local Cache = S:GetModule('Auras_Cache');
+
+    if not Cache then
+        return;
+    end
+
     local color;
 
-    AuraUtil_ForEachAura(unit, 'PLAYER HARMFUL', nil, function(...)
-        name, _, _, _, _, _, _, _, _, spellId = ...;
+    local allAuras = Cache:GetAll(unit);
 
-        local spellData = O.db.auras_hpbar_color_data[spellId] or O.db.auras_hpbar_color_data[name];
+    if allAuras then
+        for _, aura in pairs(allAuras) do
+            if playerUnits[aura.sourceUnit] then
+                local spellData = O.db.auras_hpbar_color_data[aura.spellId] or O.db.auras_hpbar_color_data[aura.name];
 
-        if spellData and spellData.enabled then
-            has = true;
-            color = spellData.color;
-            return true;
+                if spellData and spellData.enabled then
+                    color = spellData.color;
+                    break;
+                end
+            end
         end
+    end
 
-        return false;
-    end);
-
-    if has then
+    if color then
         return color[1], color[2], color[3], color[4] or 1;
     end
 

@@ -1,4 +1,6 @@
 <Ui>
+    <Script file="Cache.lua" />
+
     <Script file="Auras.lua" />
     <Script file="MythicPlus.lua" />
     <Script file="SpellSteal.lua" />

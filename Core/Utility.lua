@@ -362,39 +362,28 @@ U.IsAffixActive = function(affixID)
     return false;
 end
 
-U.UnitHasAura = function(unit, filter, neededAuraId)
-    if not (unit and filter and neededAuraId) then
-        return false;
+U.UnitHasAura = function(unit, spellId)
+    local Cache = S:GetModule('Auras_Cache');
+
+    if not Cache then
+        return;
     end
 
-    local has = false;
-    local name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod;
+    local isTable = type(spellId) == 'table';
 
-    local isTable = type(neededAuraId) == 'table';
+    if isTable then
+        local allAuras = Cache:GetAll(unit);
 
-    AuraUtil_ForEachAura(unit, filter, nil, function(...)
-        name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = ...;
-
-        if isTable then
-            if neededAuraId[spellId] then
-                has = true;
-                return true;
-            end
-        else
-            if spellId == neededAuraId then
-                has = true;
-                return true;
+        if allAuras then
+            for _, aura in pairs(allAuras) do
+                if spellId[aura.spellId] then
+                    return aura;
+                end
             end
         end
-
-        return false;
-    end);
-
-    if has then
-        return name, icon, count, debuffType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod;
+    else
+        return Cache:Get(unit, spellId);
     end
-
-    return false;
 end
 
 U.IsSpellKnown = function(spellId)

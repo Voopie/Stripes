@@ -126,24 +126,24 @@ local function UpdateByAura(unitframe)
         return;
     end
 
-    local _, icon, _, _, duration, expirationTime, source = UnitHasAura(unitframe.data.unit, 'HARMFUL', auras);
+    local aura = UnitHasAura(unitframe.data.unit, auras);
 
-    if not icon then
-        return;
+    if not aura then
+        return
     end
 
-    unitframe.SpellInterrupted.icon:SetTexture(icon);
+    unitframe.SpellInterrupted.icon:SetTexture(aura.icon);
 
-    CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, expirationTime - duration, duration, duration > 0, DRAW_EDGE);
+    CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, aura.expirationTime - aura.duration, aura.duration, aura.duration > 0, DRAW_EDGE);
 
-    unitframe.SpellInterrupted.expTime  = expirationTime;
+    unitframe.SpellInterrupted.expTime  = aura.expirationTime;
     unitframe.SpellInterrupted.destGUID = unitframe.data.unitGUID;
 
-    if CASTER_NAME_SHOW and source then
-        local name = GetCachedName(UnitName(source), true, true, false);
+    if CASTER_NAME_SHOW and aura.sourceUnit then
+        local name = GetCachedName(UnitName(aura.sourceUnit), true, true, false);
 
         unitframe.SpellInterrupted.casterName:SetText(name);
-        unitframe.SpellInterrupted.casterName:SetTextColor(GetUnitColor(source, 2));
+        unitframe.SpellInterrupted.casterName:SetTextColor(GetUnitColor(aura.sourceUnit, 2));
         unitframe.SpellInterrupted.casterName:Show();
     else
         unitframe.SpellInterrupted.casterName:Hide();

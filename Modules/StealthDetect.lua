@@ -17,9 +17,7 @@ local PlayerState = D.Player.State;
 local STEALTH_TEXTURE = 1391768;
 local GLOW_COLOR = { 0.64, 0.24, 0.94 };
 
-local stealthed;
-
-local FILTER = 'HELPFUL';
+local isStealthed;
 
 local auras = {
     [201626] = true, -- Sight Beyond Sight
@@ -180,13 +178,17 @@ local function Update(unitframe)
             if units[unitframe.data.npcId] then
                 found = true;
             else
-                found = UnitHasAura(unitframe.data.unit, FILTER, auras);
+                local aura = UnitHasAura(unitframe.data.unit, auras);
+
+                if aura then
+                    found = true;
+                end
             end
 
             if ALWAYS then
                 unitframe.StealthDetect:SetShown(found);
             else
-                unitframe.StealthDetect:SetShown(stealthed and found);
+                unitframe.StealthDetect:SetShown(isStealthed and found);
             end
         end
     else
@@ -222,7 +224,7 @@ function Module:UpdateAll()
 end
 
 function Module:UpdateLocalConfig()
-    stealthed = IsStealthed();
+    isStealthed = IsStealthed();
 
     ENABLED       = O.db.stealth_detect_enabled;
     ALWAYS        = O.db.stealth_detect_always;
@@ -243,7 +245,7 @@ function Module:UpdateLocalConfig()
 end
 
 function Module:UPDATE_STEALTH()
-    stealthed = IsStealthed();
+    isStealthed = IsStealthed();
 
     self:UpdateAll();
 end

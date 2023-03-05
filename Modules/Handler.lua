@@ -894,6 +894,8 @@ function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
 end
 
 function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
+    S:GetModule('Auras_Cache'):ProcessAuras(unit, unitAuraUpdateInfo);
+
     self:ProcessNamePlateForUnit(unit, function(unitframe)
         S:ForAllNameplateModules('UnitAura', unitframe, unitAuraUpdateInfo);
     end);
