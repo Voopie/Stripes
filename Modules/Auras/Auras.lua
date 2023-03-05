@@ -228,13 +228,13 @@ local function UpdateAuraStyle(aura, withoutMasque)
                 else
                     local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellID);
                     if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
-                        self.trullySpellId = GetTrulySpellId(self.spellID);
+                        self.trulySpellId = GetTrulySpellId(self.spellID);
 
-                        if self.trullySpellId and (pandemicKnownSpells[self.trullySpellId] or S_IsSpellKnown(self.trullySpellId)) then
+                        if self.trulySpellId and (pandemicKnownSpells[self.trulySpellId] or S_IsSpellKnown(self.trulySpellId)) then
                             self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
 
                             pandemicKnownSpells[self.spellID]       = true;
-                            pandemicKnownSpells[self.trullySpellId] = true;
+                            pandemicKnownSpells[self.trulySpellId] = true;
                         end
                     end
                 end

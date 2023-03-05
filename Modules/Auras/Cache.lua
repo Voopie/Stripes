@@ -116,4 +116,3 @@ function Module:FlushUnit(unit)
         CACHE[unit] = {};
     end
 end
-
