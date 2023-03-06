@@ -18,11 +18,14 @@ local Enum_TooltipDataLineType_QuestTitle, Enum_TooltipDataLineType_QuestObjecti
 
 -- Stripes API
 local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
+local UpdateFontObject = Stripes.UpdateFontObject;
 
 local PlayerState = D.Player.State;
 
 -- Local Config
 local ENABLED, POSITION;
+
+local StripesQuestIndicatorFont = CreateFont('StripesQuestIndicatorFont');
 
 local QuestActiveCache, QuestLogIndexCache = {}, {};
 
@@ -195,13 +198,6 @@ local function Create(unitframe)
     frame:Hide();
 
     frame.swordIcon = frame:CreateTexture(nil, 'BORDER', nil, 0);
-
-    if POSITION == 1 then
-        frame.swordIcon:SetPoint('BOTTOMRIGHT', frame, 'BOTTOMLEFT', -2, 0);
-    else
-        frame.swordIcon:SetPoint('BOTTOMLEFT', frame, 'BOTTOMRIGHT', 4, 0);
-    end
-
     frame.swordIcon:SetSize(16, 16);
     frame.swordIcon:SetTexture(S.Media.Icons2.TEXTURE);
     frame.swordIcon:SetTexCoord(unpack(S.Media.Icons2.COORDS.ROUNDSHIELD_SWORD));
@@ -213,11 +209,8 @@ local function Create(unitframe)
     frame.lootIcon:SetTexCoord(unpack(S.Media.Icons2.COORDS.LOOT));
     frame.lootIcon:Hide();
 
-    frame.counterText = frame:CreateFontString(nil, 'OVERLAY');
-    frame.counterText:SetFont(S.Media.Fonts['Systopie Bold'], 8, 'OUTLINE');
+    frame.counterText = frame:CreateFontString(nil, 'OVERLAY', 'StripesQuestIndicatorFont');
     frame.counterText:SetJustifyH('CENTER');
-    frame.counterText:SetShadowOffset(1, -1);
-    frame.counterText:SetTextColor(1, 1, 1);
 
     unitframe.QuestIndicator = frame;
 end
@@ -324,6 +317,8 @@ end
 function Module:UpdateLocalConfig()
     ENABLED  = O.db.quest_indicator_enabled;
     POSITION = O.db.quest_indicator_position;
+
+    UpdateFontObject(StripesQuestIndicatorFont, O.db.quest_indicator_font_value, O.db.quest_indicator_font_size, O.db.quest_indicator_font_flag, O.db.quest_indicator_font_shadow);
 end
 
 function Module:StartUp()

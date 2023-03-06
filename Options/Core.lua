@@ -311,7 +311,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~600
+-- ~604
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -726,6 +726,10 @@ O.DefaultValues = {
     -- Useful
     quest_indicator_enabled  = true,
     quest_indicator_position = 2, -- RIGHT
+    quest_indicator_font_value = 'Systopie Bold',
+    quest_indicator_font_size   = 8,
+    quest_indicator_font_flag   = 2, -- OUTLINE
+    quest_indicator_font_shadow = true,
 
     stealth_detect_enabled       = true,
     stealth_detect_always        = true,

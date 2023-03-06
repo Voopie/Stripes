@@ -59,6 +59,52 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.quest_indicator_font_value = E.CreateDropdown('font', self.TabsFrames['CommonTab'].Content);
+    self.quest_indicator_font_value:SetSize(160, 20);
+    self.quest_indicator_font_value:SetList(LSM:HashTable('font'));
+    self.quest_indicator_font_value:SetValue(O.db.quest_indicator_font_value);
+    self.quest_indicator_font_value:SetTooltip(L['OPTIONS_QUEST_INDICATOR_FONT_VALUE_TOOLTIP']);
+    self.quest_indicator_font_value.OnValueChangedCallback = function(_, value)
+        O.db.quest_indicator_font_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.quest_indicator_font_size = E.CreateSlider(self.TabsFrames['CommonTab'].Content);
+    self.quest_indicator_font_size:SetValues(O.db.quest_indicator_font_size, 3, 28, 1);
+    self.quest_indicator_font_size:SetTooltip(L['OPTIONS_QUEST_INDICATOR_FONT_SIZE_TOOLTIP']);
+    self.quest_indicator_font_size.OnValueChangedCallback = function(_, value)
+        O.db.quest_indicator_font_size = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.quest_indicator_font_flag = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.quest_indicator_font_flag:SetSize(160, 20);
+    self.quest_indicator_font_flag:SetList(O.Lists.font_flags_localized);
+    self.quest_indicator_font_flag:SetValue(O.db.quest_indicator_font_flag);
+    self.quest_indicator_font_flag:SetTooltip(L['OPTIONS_QUEST_INDICATOR_FONT_FLAG_TOOLTIP']);
+    self.quest_indicator_font_flag.OnValueChangedCallback = function(_, value)
+        O.db.quest_indicator_font_flag = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.quest_indicator_font_shadow = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
+    self.quest_indicator_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
+    self.quest_indicator_font_shadow:SetChecked(O.db.quest_indicator_font_shadow);
+    self.quest_indicator_font_shadow:SetTooltip(L['OPTIONS_QUEST_INDICATOR_FONT_SHADOW_TOOLTIP']);
+    self.quest_indicator_font_shadow.Callback = function(self)
+        O.db.quest_indicator_font_shadow = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.QuestIndicatorFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
+    self.QuestIndicatorFontOptions:SetH(60);
+    self.QuestIndicatorFontOptions:Add(self.quest_indicator_font_value):SetPosition('TOPLEFT', self.QuestIndicatorFontOptions, 'TOPLEFT', 8, -20);
+    self.QuestIndicatorFontOptions:Add(self.quest_indicator_font_size):SetPosition('LEFT', self.quest_indicator_font_value, 'RIGHT', 12, 0);
+    self.QuestIndicatorFontOptions:Add(self.quest_indicator_font_flag):SetPosition('LEFT', self.quest_indicator_font_size, 'RIGHT', 12, 0);
+    self.QuestIndicatorFontOptions:Add(self.quest_indicator_font_shadow):SetPosition('LEFT', self.quest_indicator_font_flag, 'RIGHT', 12, 0);
+    self.QuestIndicatorFontOptions.OpenButton:SetPosition('LEFT', self.quest_indicator_position, 'RIGHT', 16, 0);
+    self.QuestIndicatorFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
+
     self.stealth_detect_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.stealth_detect_enabled:SetPosition('TOPLEFT', self.quest_indicator_enabled, 'BOTTOMLEFT', 0, -8);
     self.stealth_detect_enabled:SetLabel(L['OPTIONS_STEALTH_DETECT_ENABLED']);
@@ -404,58 +450,50 @@ panel.Load = function(self)
     end
 
     self.spell_interrupted_icon_countdown_font_value = E.CreateDropdown('font', self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_icon_countdown_font_value:SetPosition('TOPLEFT', self.spell_interrupted_countdown_text, 'BOTTOMLEFT', 0, -4);
     self.spell_interrupted_icon_countdown_font_value:SetSize(160, 20);
     self.spell_interrupted_icon_countdown_font_value:SetList(LSM:HashTable('font'));
     self.spell_interrupted_icon_countdown_font_value:SetValue(O.db.spell_interrupted_icon_countdown_font_value);
     self.spell_interrupted_icon_countdown_font_value:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_VALUE']);
-    self.spell_interrupted_icon_countdown_font_value:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_VALUE'], self.Tabs[3]);
     self.spell_interrupted_icon_countdown_font_value.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_countdown_font_value = value;
         Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_countdown_font_size = E.CreateSlider(self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_icon_countdown_font_size:SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_value, 'RIGHT', 12, 0);
     self.spell_interrupted_icon_countdown_font_size:SetValues(O.db.spell_interrupted_icon_countdown_font_size, 3, 28, 1);
     self.spell_interrupted_icon_countdown_font_size:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_SIZE']);
-    self.spell_interrupted_icon_countdown_font_size:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_SIZE'], self.Tabs[3]);
     self.spell_interrupted_icon_countdown_font_size.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_countdown_font_size = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_countdown_font_flag = E.CreateDropdown('plain', self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_icon_countdown_font_flag:SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_size, 'RIGHT', 12, 0);
     self.spell_interrupted_icon_countdown_font_flag:SetSize(160, 20);
     self.spell_interrupted_icon_countdown_font_flag:SetList(O.Lists.font_flags_localized);
     self.spell_interrupted_icon_countdown_font_flag:SetValue(O.db.spell_interrupted_icon_countdown_font_flag);
     self.spell_interrupted_icon_countdown_font_flag:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_FLAG']);
-    self.spell_interrupted_icon_countdown_font_flag:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_FLAG'], self.Tabs[3]);
     self.spell_interrupted_icon_countdown_font_flag.OnValueChangedCallback = function(_, value)
         O.db.spell_interrupted_icon_countdown_font_flag = tonumber(value);
         Stripes:UpdateAll();
     end
 
     self.spell_interrupted_icon_countdown_font_shadow = E.CreateCheckButton(self.TabsFrames['SpellInterruptedTab'].Content);
-    self.spell_interrupted_icon_countdown_font_shadow:SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_flag, 'RIGHT', 12, 0);
     self.spell_interrupted_icon_countdown_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
     self.spell_interrupted_icon_countdown_font_shadow:SetChecked(O.db.spell_interrupted_icon_countdown_font_shadow);
     self.spell_interrupted_icon_countdown_font_shadow:SetTooltip(L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_SHADOW']);
-    self.spell_interrupted_icon_countdown_font_shadow:AddToSearch(button, L['OPTIONS_SPELL_INTERRUPTED_ICON_COUNTDOWN_FONT_SHADOW'], self.Tabs[3]);
     self.spell_interrupted_icon_countdown_font_shadow.Callback = function(self)
         O.db.spell_interrupted_icon_countdown_font_shadow = self:GetChecked();
         Stripes:UpdateAll();
     end
 
-    self.SpellInterruptedIconFontOptions = E.CreatePopOptions(self.TabsFrames['SpellInterruptedTab'].Content);
-    self.SpellInterruptedIconFontOptions:SetH(60);
-    self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_value):SetPosition('TOPLEFT', self.SpellInterruptedIconFontOptions, 'TOPLEFT', 8, -20);
-    self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_size):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_value, 'RIGHT', 12, 0);
-    self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_flag):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_size, 'RIGHT', 12, 0);
-    self.SpellInterruptedIconFontOptions:Add(self.spell_interrupted_icon_countdown_font_shadow):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_flag, 'RIGHT', 12, 0);
-    self.SpellInterruptedIconFontOptions.OpenButton:SetPosition('LEFT', self.spell_interrupted_icon_cooldown_draw_edge.Label, 'RIGHT', 16, 0);
-    self.SpellInterruptedIconFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
+    self.QuestIndicatorFontOptions = E.CreatePopOptions(self.TabsFrames['SpellInterruptedTab'].Content);
+    self.QuestIndicatorFontOptions:SetH(60);
+    self.QuestIndicatorFontOptions:Add(self.spell_interrupted_icon_countdown_font_value):SetPosition('TOPLEFT', self.QuestIndicatorFontOptions, 'TOPLEFT', 8, -20);
+    self.QuestIndicatorFontOptions:Add(self.spell_interrupted_icon_countdown_font_size):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_value, 'RIGHT', 12, 0);
+    self.QuestIndicatorFontOptions:Add(self.spell_interrupted_icon_countdown_font_flag):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_size, 'RIGHT', 12, 0);
+    self.QuestIndicatorFontOptions:Add(self.spell_interrupted_icon_countdown_font_shadow):SetPosition('LEFT', self.spell_interrupted_icon_countdown_font_flag, 'RIGHT', 12, 0);
+    self.QuestIndicatorFontOptions.OpenButton:SetPosition('LEFT', self.spell_interrupted_icon_cooldown_draw_edge.Label, 'RIGHT', 16, 0);
+    self.QuestIndicatorFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
 
     Delimiter = E.CreateDelimiter(self.TabsFrames['SpellInterruptedTab'].Content);
     Delimiter:SetPosition('TOPLEFT', self.spell_interrupted_icon_countdown_show, 'BOTTOMLEFT', 0, -4);
