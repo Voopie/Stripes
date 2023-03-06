@@ -12,6 +12,7 @@ local UnitInGuild = U.UnitInGuild;
 
 -- Stripes API
 local GetNpcIDByGUID, GetUnitLevel, GetUnitColor = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor;
+local IsPlayer = U.IsPlayer;
 local utf8sub = U.UTF8SUB;
 
 -- Libraries
@@ -324,7 +325,7 @@ local function UpdateStatus(unitframe)
     local unit = unitframe.data.unit;
 
     unitframe.data.name      = GetUnitName(unit, true);
-    unitframe.data.isPlayer  = UnitIsPlayer(unit);
+    unitframe.data.isPlayer  = IsPlayer(unit);
     unitframe.data.canAttack = UnitCanAttack('player', unit);
 
     UpdateUnitReaction(unitframe);
