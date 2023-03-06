@@ -352,6 +352,7 @@ panel.Load = function(self)
 
     self.ClassBarPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.ClassBarPositionOptions:SetH(80);
+    self.ClassBarPositionOptions:SetTitle(L['OPTIONS_VISIBILITY_SHOW_PERSONAL_RESOURCE_ONTARGET']);
     self.ClassBarPositionOptions:Add(self.class_bar_point):SetPosition('TOPLEFT', self.ClassBarPositionOptions, 'TOPLEFT', 12, -32);
     self.ClassBarPositionOptions:Add(self.class_bar_relative_point):SetPosition('LEFT', self.class_bar_point, 'RIGHT', 12, 0);
     self.ClassBarPositionOptions:Add(self.class_bar_offset_x):SetPosition('LEFT', self.class_bar_relative_point, 'RIGHT', 12, 0);
@@ -439,6 +440,7 @@ panel.Load = function(self)
 
     self.ClassificationIndicatorPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.ClassificationIndicatorPositionOptions:SetH(80);
+    self.ClassificationIndicatorPositionOptions:SetTitle(L['OPTIONS_CLASSIFICATION_INDICATOR_ENABLED']);
     self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_point):SetPosition('TOPLEFT', self.ClassificationIndicatorPositionOptions, 'TOPLEFT', 12, -32);
     self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_relative_point):SetPosition('LEFT', self.classification_indicator_point, 'RIGHT', 12, 0);
     self.ClassificationIndicatorPositionOptions:Add(self.classification_indicator_offset_x):SetPosition('LEFT', self.classification_indicator_relative_point, 'RIGHT', 12, 0);
@@ -568,6 +570,7 @@ panel.Load = function(self)
 
     self.RaidTargetPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.RaidTargetPositionOptions:SetH(120);
+    self.RaidTargetPositionOptions:SetTitle(L['OPTIONS_HEADER_RAID_TARGET_ICON']);
     self.RaidTargetPositionOptions:Add(self.raid_target_icon_position):SetPosition('TOPLEFT', self.RaidTargetPositionOptions, 'TOPLEFT', 12, -30);
     self.RaidTargetPositionOptions:Add(self.raid_target_icon_position_offset_x):SetPosition('LEFT', self.raid_target_icon_position, 'RIGHT', 12, 0);
     self.RaidTargetPositionOptions:Add(self.raid_target_icon_position_offset_y):SetPosition('LEFT', self.raid_target_icon_position_offset_x, 'RIGHT', 12, 0);
