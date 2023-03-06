@@ -969,6 +969,7 @@ panel.Load = function(self)
 
     self.CastBarTextFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.CastBarTextFontOptions:SetH(60);
+    self.CastBarTextFontOptions:SetTitle(L['OPTIONS_CAST_BAR_HEADER_CAST_NAME']);
     self.CastBarTextFontOptions:Add(self.castbar_text_font_value):SetPosition('TOPLEFT', self.CastBarTextFontOptions, 'TOPLEFT', 8, -20);
     self.CastBarTextFontOptions:Add(self.castbar_text_font_size):SetPosition('LEFT', self.castbar_text_font_value, 'RIGHT', 12, 0);
     self.CastBarTextFontOptions:Add(self.castbar_text_font_flag):SetPosition('LEFT', self.castbar_text_font_size, 'RIGHT', 12, 0);
@@ -1018,6 +1019,7 @@ panel.Load = function(self)
 
     self.CastBarTextPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.CastBarTextPositionOptions:SetH(72);
+    self.CastBarTextPositionOptions:SetTitle(L['OPTIONS_CAST_BAR_HEADER_CAST_NAME']);
     self.CastBarTextPositionOptions:Add(self.castbar_text_anchor):SetPosition('TOPLEFT', self.CastBarTextPositionOptions, 'TOPLEFT', 12, -24);
     self.CastBarTextPositionOptions:Add(self.castbar_text_offset_x):SetPosition('LEFT', self.castbar_text_anchor, 'RIGHT', 12, 0);
     self.CastBarTextPositionOptions:Add(self.castbar_text_offset_y):SetPosition('LEFT', self.castbar_text_offset_x, 'RIGHT', 12, 0);
@@ -1112,6 +1114,7 @@ panel.Load = function(self)
 
     self.CastBarTargetTextFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.CastBarTargetTextFontOptions:SetH(60);
+    self.CastBarTargetTextFontOptions:SetTitle(L['OPTIONS_CAST_BAR_TARGET_HEADER']);
     self.CastBarTargetTextFontOptions:Add(self.castbar_target_font_value):SetPosition('TOPLEFT', self.CastBarTargetTextFontOptions, 'TOPLEFT', 8, -20);
     self.CastBarTargetTextFontOptions:Add(self.castbar_target_font_size):SetPosition('LEFT', self.castbar_target_font_value, 'RIGHT', 12, 0);
     self.CastBarTargetTextFontOptions:Add(self.castbar_target_font_flag):SetPosition('LEFT', self.castbar_target_font_size, 'RIGHT', 12, 0);
@@ -1160,6 +1163,7 @@ panel.Load = function(self)
 
     self.CastBarTargetTextPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.CastBarTargetTextPositionOptions:SetH(60);
+    self.CastBarTargetTextPositionOptions:SetTitle(L['OPTIONS_CAST_BAR_TARGET_HEADER']);
     self.CastBarTargetTextPositionOptions:Add(self.castbar_target_point):SetPosition('TOPLEFT', self.CastBarTargetTextPositionOptions, 'TOPLEFT', 12, -20);
     self.CastBarTargetTextPositionOptions:Add(self.castbar_target_relative_point):SetPosition('LEFT', self.castbar_target_point, 'RIGHT', 12, 0);
     self.CastBarTargetTextPositionOptions:Add(self.castbar_target_offset_x):SetPosition('LEFT', self.castbar_target_relative_point, 'RIGHT', 12, 0);
@@ -1482,6 +1486,7 @@ panel.Load = function(self)
 
     self.CastBarTimerTextFontOptions = E.CreatePopOptions(self.TabsFrames['TimerTab'].Content);
     self.CastBarTimerTextFontOptions:SetH(60);
+    self.CastBarTimerTextFontOptions:SetTitle(L['OPTIONS_CAST_BAR_TAB_TIMER']);
     self.CastBarTimerTextFontOptions:Add(self.castbar_timer_font_value):SetPosition('TOPLEFT', self.CastBarTimerTextFontOptions, 'TOPLEFT', 8, -20);
     self.CastBarTimerTextFontOptions:Add(self.castbar_timer_font_size):SetPosition('LEFT', self.castbar_timer_font_value, 'RIGHT', 12, 0);
     self.CastBarTimerTextFontOptions:Add(self.castbar_timer_font_flag):SetPosition('LEFT', self.castbar_timer_font_size, 'RIGHT', 12, 0);
@@ -1530,6 +1535,7 @@ panel.Load = function(self)
 
     self.CastBarTimerTextPositionOptions = E.CreatePopOptions(self.TabsFrames['TimerTab'].Content);
     self.CastBarTimerTextPositionOptions:SetH(60);
+    self.CastBarTimerTextPositionOptions:SetTitle(L['OPTIONS_CAST_BAR_TAB_TIMER']);
     self.CastBarTimerTextPositionOptions:Add(self.castbar_timer_xside):SetPosition('TOPLEFT', self.CastBarTimerTextPositionOptions, 'TOPLEFT', 12, -20);
     self.CastBarTimerTextPositionOptions:Add(self.castbar_timer_anchor):SetPosition('LEFT', self.castbar_timer_xside, 'RIGHT', 12, 0);
     self.CastBarTimerTextPositionOptions:Add(self.castbar_timer_offset_x):SetPosition('LEFT', self.castbar_timer_anchor, 'RIGHT', 16, 0);
