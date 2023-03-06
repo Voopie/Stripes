@@ -179,6 +179,53 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.explosive_orbs_font_value = E.CreateDropdown('font', self);
+    self.explosive_orbs_font_value:SetSize(160, 20);
+    self.explosive_orbs_font_value:SetList(LSM:HashTable('font'));
+    self.explosive_orbs_font_value:SetValue(O.db.explosive_orbs_font_value);
+    self.explosive_orbs_font_value:SetTooltip(L['OPTIONS_EXPLOSIVE_ORBS_COUNTER_FONT_VALUE_TOOLTIP']);
+    self.explosive_orbs_font_value.OnValueChangedCallback = function(_, value)
+        O.db.explosive_orbs_font_value = value;
+        Stripes:UpdateAll();
+    end
+
+    self.explosive_orbs_font_size = E.CreateSlider(self);
+    self.explosive_orbs_font_size:SetValues(O.db.explosive_orbs_font_size, 3, 28, 1);
+    self.explosive_orbs_font_size:SetTooltip(L['OPTIONS_EXPLOSIVE_ORBS_COUNTER_FONT_SIZE_TOOLTIP']);
+    self.explosive_orbs_font_size.OnValueChangedCallback = function(_, value)
+        O.db.explosive_orbs_font_size = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.explosive_orbs_font_flag = E.CreateDropdown('plain', self);
+    self.explosive_orbs_font_flag:SetSize(160, 20);
+    self.explosive_orbs_font_flag:SetList(O.Lists.font_flags_localized);
+    self.explosive_orbs_font_flag:SetValue(O.db.explosive_orbs_font_flag);
+    self.explosive_orbs_font_flag:SetTooltip(L['OPTIONS_EXPLOSIVE_ORBS_COUNTER_FONT_FLAG_TOOLTIP']);
+    self.explosive_orbs_font_flag.OnValueChangedCallback = function(_, value)
+        O.db.explosive_orbs_font_flag = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
+    self.explosive_orbs_font_shadow = E.CreateCheckButton(self);
+    self.explosive_orbs_font_shadow:SetLabel(L['FONT_SHADOW_SHORT']);
+    self.explosive_orbs_font_shadow:SetChecked(O.db.explosive_orbs_font_shadow);
+    self.explosive_orbs_font_shadow:SetTooltip(L['OPTIONS_EXPLOSIVE_ORBS_COUNTER_FONT_SHADOW_TOOLTIP']);
+    self.explosive_orbs_font_shadow.Callback = function(self)
+        O.db.explosive_orbs_font_shadow = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.ExplosiveOrbsFontOptions = E.CreatePopOptions(self);
+    self.ExplosiveOrbsFontOptions:SetH(60);
+    self.ExplosiveOrbsFontOptions:SetTitle(L['OPTIONS_HEADER_EXPLOSIVE_ORBS']);
+    self.ExplosiveOrbsFontOptions:Add(self.explosive_orbs_font_value):SetPosition('TOPLEFT', self.ExplosiveOrbsFontOptions, 'TOPLEFT', 8, -20);
+    self.ExplosiveOrbsFontOptions:Add(self.explosive_orbs_font_size):SetPosition('LEFT', self.explosive_orbs_font_value, 'RIGHT', 12, 0);
+    self.ExplosiveOrbsFontOptions:Add(self.explosive_orbs_font_flag):SetPosition('LEFT', self.explosive_orbs_font_size, 'RIGHT', 12, 0);
+    self.ExplosiveOrbsFontOptions:Add(self.explosive_orbs_font_shadow):SetPosition('LEFT', self.explosive_orbs_font_flag, 'RIGHT', 12, 0);
+    self.ExplosiveOrbsFontOptions.OpenButton:SetPosition('LEFT', self.explosive_orbs_counter.Label, 'RIGHT', 16, 0);
+    self.ExplosiveOrbsFontOptions.OpenButton:SetLabel(L['FONT_OPTIONS']);
+
     local OtherHeader = E.CreateHeader(self, L['OPTIONS_OTHER']);
     OtherHeader:SetPosition('TOPLEFT', self.explosive_orbs_crosshair, 'BOTTOMLEFT', 0, -4);
     OtherHeader:SetW(self:GetWidth());

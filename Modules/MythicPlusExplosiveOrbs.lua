@@ -1,8 +1,14 @@
 local S, L, O, U, D, E = unpack(select(2, ...));
 local Module = S:NewNameplateModule('MythicPlusExplosiveOrbs');
+local Stripes = S:GetNameplateModule('Handler');
+
+-- Stripes API
+local UpdateFontObject = Stripes.UpdateFontObject;
 
 -- Local Config
 local CROSSHAIR, COUNTER;
+
+local StripesExplosiveOrbsFont = CreateFont('StripesExplosiveOrbsFont');
 
 local PlayerState = D.Player.State;
 
@@ -31,12 +37,8 @@ OrbsCounterFrame.border:SetColorTexture(1, 0, 0);
 OrbsCounterFrame.border:SetPoint('TOPLEFT', OrbsCounterFrame, -1, 1);
 OrbsCounterFrame.border:SetPoint('BOTTOMRIGHT', OrbsCounterFrame, 1, -1);
 
-OrbsCounterFrame.count = OrbsCounterFrame:CreateFontString();
+OrbsCounterFrame.count = OrbsCounterFrame:CreateFontString(nil, 'OVERLAY', 'StripesExplosiveOrbsFont');
 OrbsCounterFrame.count:SetPoint('CENTER', 0, 0);
-OrbsCounterFrame.count:SetFont(S.Media.Fonts['BigNoodleToo Oblique'], 26, 'OUTLINE');
-OrbsCounterFrame.count:SetTextColor(1, 1, 1);
-OrbsCounterFrame.count:SetShadowOffset(1, -1);
-OrbsCounterFrame.count:SetShadowColor(0, 0, 0);
 
 OrbsCounterFrame:Hide();
 
@@ -144,6 +146,8 @@ end
 function Module:UpdateLocalConfig()
     CROSSHAIR = O.db.explosive_orbs_crosshair;
     COUNTER   = O.db.explosive_orbs_counter;
+
+    UpdateFontObject(StripesExplosiveOrbsFont, O.db.explosive_orbs_font_value, O.db.explosive_orbs_font_size, O.db.explosive_orbs_font_flag, O.db.explosive_orbs_font_shadow);
 end
 
 function Module:StartUp()

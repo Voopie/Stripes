@@ -311,7 +311,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~604
+-- ~608
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -713,6 +713,10 @@ O.DefaultValues = {
 
     explosive_orbs_crosshair = false,
     explosive_orbs_counter   = false,
+    explosive_orbs_font_value  = 'BigNoodleToo Oblique',
+    explosive_orbs_font_size   = 26,
+    explosive_orbs_font_flag   = 2, -- OUTLINE
+    explosive_orbs_font_shadow = true,
 
     spiteful_enabled         = true,
     spiteful_show_only_on_me = true,
@@ -726,7 +730,7 @@ O.DefaultValues = {
     -- Useful
     quest_indicator_enabled  = true,
     quest_indicator_position = 2, -- RIGHT
-    quest_indicator_font_value = 'Systopie Bold',
+    quest_indicator_font_value  = 'Systopie Bold',
     quest_indicator_font_size   = 8,
     quest_indicator_font_flag   = 2, -- OUTLINE
     quest_indicator_font_shadow = true,
