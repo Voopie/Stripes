@@ -8,7 +8,7 @@ local UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitTh
 local GetRaidTargetIndex = GetRaidTargetIndex;
 
 -- Stripes API
-local UnitIsTapped, UnitIsOnThreatListWithPlayer, IsPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.UnitIsOnThreatListWithPlayer, U.IsPlayer, U.IsPlayerEffectivelyTank;
+local UnitIsTapped, UnitIsOnThreatListWithPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.UnitIsOnThreatListWithPlayer, U.IsPlayerEffectivelyTank;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Libraries
@@ -149,6 +149,22 @@ local function UpdateHealthColor(frame)
     end
 end
 
+local function GetUnitThreatSituationStatus(unit)
+    if not unit then
+        return;
+    end
+
+    local isTanking, status, threatpct = UnitDetailedThreatSituation('player', unit);
+    local display = threatpct;
+
+    if isTanking then
+        local lead = UnitThreatPercentageOfLead('player', unit);
+        display = lead == 0 and 100 or lead;
+    end
+
+    return display, status, isTanking;
+end
+
 local function CreateThreatPercentage(unitframe)
     if unitframe.ThreatPercentage then
         return;
@@ -201,26 +217,15 @@ local function UpdateThreatName(unitframe, value, r, g, b)
     unitframe.data.threatColorB = b;
 end
 
-local function GetUnitThreatSituationStatus(unit)
-    if not unit then
+local function UpdateThreatPercentage(unitframe)
+    if unitframe.data.isPlayer then
+        UpdateThreatPercentageTextAndColor(unitframe);
         return;
     end
 
-    local isTanking, status, threatpct = UnitDetailedThreatSituation('player', unit);
-    local display = threatpct;
-
-    if isTanking then
-        local lead = UnitThreatPercentageOfLead('player', unit);
-        display = lead == 0 and 100 or lead;
-    end
-
-    return display, status, isTanking;
-end
-
-local function UpdateThreatPercentage(unitframe)
     local display, status = GetUnitThreatSituationStatus(unitframe.data.unit);
 
-    if display and not IsPlayer(unitframe.data.unit) then
+    if display then
         local offTank, petTank, playerPetTank = false, false, false;
 
         if not status or status < 3 then
@@ -292,7 +297,7 @@ local COLORING_FUNCTIONS = {
     HIGH_THREAT = function(unitframe)
         local result = false;
 
-        if not DB.THREAT_ENABLED or not DB.THREAT_COLOR_PRIO_HIGH then
+        if unitframe.data.isPlayer or not (DB.THREAT_ENABLED and DB.THREAT_COLOR_PRIO_HIGH) then
             unitframe.data.tpNeedUpdate = true;
             return result;
         end
@@ -303,7 +308,7 @@ local COLORING_FUNCTIONS = {
 
         local display, status = GetUnitThreatSituationStatus(unitframe.data.unit);
 
-        if display and status == 3 and not IsPlayer(unitframe.data.unit) then
+        if display and status == 3 then
             local r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
 
             if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
@@ -369,6 +374,10 @@ local COLORING_FUNCTIONS = {
         LCG_PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
         LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
         LCG_ButtonGlow_Stop(unitframe.healthBar);
+
+        if unitframe.data.isPlayer then
+            return result;
+        end
 
         if DB.CUSTOM_NPC_ENABLED and DB.CUSTOM_NPC_DATA[unitframe.data.npcId] and DB.CUSTOM_NPC_DATA[unitframe.data.npcId].enabled then
             local custom = DB.CUSTOM_NPC_DATA[unitframe.data.npcId];
@@ -492,7 +501,7 @@ local COLORING_FUNCTIONS = {
     THREAT = function(unitframe)
         local result = false;
 
-        if not DB.THREAT_ENABLED then
+        if unitframe.data.isPlayer or not DB.THREAT_ENABLED then
             unitframe.data.tpNeedUpdate = true;
             return result;
         end
@@ -518,7 +527,7 @@ local COLORING_FUNCTIONS = {
             end
         end
 
-        if display and not IsPlayer(unitframe.data.unit) then
+        if display then
             local r, g, b, a;
 
             if PLAYER_IS_TANK and offTank then
@@ -862,7 +871,7 @@ local function UpdateSpark(unitframe)
         return;
     end
 
-    if DB.SPARK_SHOW then
+    if DB.SPARK_SHOW and not unitframe.data.isPersonal then
         unitframe.healthBar.Spark:SetSize(DB.SPARK_WIDTH, DB.SPARK_HEIGHT);
 
         local _, maxValue = unitframe.healthBar:GetMinMaxValues();
@@ -879,7 +888,7 @@ local function UpdateSpark(unitframe)
 end
 
 local function UpdateSparkPosition(unitframe)
-    if unitframe.healthBar.Spark and DB.SPARK_SHOW then
+    if unitframe.healthBar.Spark and DB.SPARK_SHOW and not unitframe.data.isPersonal then
         local _, maxValue = unitframe.healthBar:GetMinMaxValues();
         local currentValue = unitframe.healthBar:GetValue();
 
