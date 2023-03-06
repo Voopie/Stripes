@@ -2717,6 +2717,9 @@ do
         frame:SetBackdropColor(0.1, 0.1, 0.1, 1);
         frame:Hide();
 
+        frame.Title = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+        frame.Title:SetPoint('BOTTOM', frame, 'TOP', 0, 2);
+
         frame:HookScript('OnShow', function(self)
             Fader:SetParent(parent);
             Fader:SetAllPoints(O.frame.Main);
@@ -2740,6 +2743,10 @@ do
             object:SetParent(self);
 
             return object;
+        end
+
+        frame.SetTitle = function(self, text)
+            self.Title:SetText(text);
         end
 
         frame.OpenButton = E.CreateButton(parent);
