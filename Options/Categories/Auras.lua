@@ -1642,6 +1642,7 @@ panel.Load = function(self)
 
     self.AurasCooldownFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.AurasCooldownFontOptions:SetH(60);
+    self.AurasCooldownFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_COMMON'] .. ' ' .. L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
     self.AurasCooldownFontOptions:Add(self.auras_cooldown_font_value):SetPosition('TOPLEFT', self.AurasCooldownFontOptions, 'TOPLEFT', 8, -20);
     self.AurasCooldownFontOptions:Add(self.auras_cooldown_font_size):SetPosition('LEFT', self.auras_cooldown_font_value, 'RIGHT', 12, 0);
     self.AurasCooldownFontOptions:Add(self.auras_cooldown_font_flag):SetPosition('LEFT', self.auras_cooldown_font_size, 'RIGHT', 12, 0);
@@ -1690,6 +1691,7 @@ panel.Load = function(self)
 
     self.AurasCooldownPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.AurasCooldownPositionOptions:SetH(60);
+    self.AurasCooldownPositionOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_COMMON'] .. ' ' .. L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
     self.AurasCooldownPositionOptions:Add(self.auras_cooldown_point):SetPosition('TOPLEFT', self.AurasCooldownPositionOptions, 'TOPLEFT', 12, -20);
     self.AurasCooldownPositionOptions:Add(self.auras_cooldown_relative_point):SetPosition('LEFT', self.auras_cooldown_point, 'RIGHT', 12, 0);
     self.AurasCooldownPositionOptions:Add(self.auras_cooldown_offset_x):SetPosition('LEFT', self.auras_cooldown_relative_point, 'RIGHT', 8, 0)
@@ -1758,6 +1760,7 @@ panel.Load = function(self)
 
     self.AurasCountFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.AurasCountFontOptions:SetH(60);
+    self.AurasCountFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_COMMON'] .. ' ' .. L['OPTIONS_AURAS_COUNT_TEXT']);
     self.AurasCountFontOptions:Add(self.auras_count_font_value):SetPosition('TOPLEFT', self.AurasCountFontOptions, 'TOPLEFT', 8, -20);
     self.AurasCountFontOptions:Add(self.auras_count_font_size):SetPosition('LEFT', self.auras_count_font_value, 'RIGHT', 12, 0);
     self.AurasCountFontOptions:Add(self.auras_count_font_flag):SetPosition('LEFT', self.auras_count_font_size, 'RIGHT', 12, 0);
@@ -1806,6 +1809,7 @@ panel.Load = function(self)
 
     self.AurasCountPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.AurasCountPositionOptions:SetH(60);
+    self.AurasCountPositionOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_COMMON'] .. ' ' .. L['OPTIONS_AURAS_COUNT_TEXT']);
     self.AurasCountPositionOptions:Add(self.auras_count_point):SetPosition('TOPLEFT', self.AurasCountPositionOptions, 'TOPLEFT', 12, -20);
     self.AurasCountPositionOptions:Add(self.auras_count_relative_point):SetPosition('LEFT', self.auras_count_point, 'RIGHT', 12, 0);
     self.AurasCountPositionOptions:Add(self.auras_count_offset_x):SetPosition('LEFT', self.auras_count_relative_point, 'RIGHT', 8, 0)
@@ -2077,6 +2081,7 @@ panel.Load = function(self)
 
     self.AurasSpellstealCooldownFontOptions = E.CreatePopOptions(self.TabsFrames['SpellstealTab'].Content);
     self.AurasSpellstealCooldownFontOptions:SetH(60);
+    self.AurasSpellstealCooldownFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_SPELLSTEAL'] .. ' ' .. L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
     self.AurasSpellstealCooldownFontOptions:Add(self.auras_spellsteal_cooldown_font_value):SetPosition('TOPLEFT', self.AurasSpellstealCooldownFontOptions, 'TOPLEFT', 8, -20);
     self.AurasSpellstealCooldownFontOptions:Add(self.auras_spellsteal_cooldown_font_size):SetPosition('LEFT', self.auras_spellsteal_cooldown_font_value, 'RIGHT', 12, 0);
     self.AurasSpellstealCooldownFontOptions:Add(self.auras_spellsteal_cooldown_font_flag):SetPosition('LEFT', self.auras_spellsteal_cooldown_font_size, 'RIGHT', 12, 0);
@@ -2125,6 +2130,7 @@ panel.Load = function(self)
 
     self.AurasSpellstealCooldownPositionOptions = E.CreatePopOptions(self.TabsFrames['SpellstealTab'].Content);
     self.AurasSpellstealCooldownPositionOptions:SetH(60);
+    self.AurasSpellstealCooldownPositionOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_SPELLSTEAL'] .. ' ' .. L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
     self.AurasSpellstealCooldownPositionOptions:Add(self.auras_spellsteal_cooldown_point):SetPosition('TOPLEFT', self.AurasSpellstealCooldownPositionOptions, 'TOPLEFT', 12, -20);
     self.AurasSpellstealCooldownPositionOptions:Add(self.auras_spellsteal_cooldown_relative_point):SetPosition('LEFT', self.auras_spellsteal_cooldown_point, 'RIGHT', 12, 0);
     self.AurasSpellstealCooldownPositionOptions:Add(self.auras_spellsteal_cooldown_offset_x):SetPosition('LEFT', self.auras_spellsteal_cooldown_relative_point, 'RIGHT', 8, 0)
@@ -2193,6 +2199,7 @@ panel.Load = function(self)
 
     self.AurasSpellstealCountFontOptions = E.CreatePopOptions(self.TabsFrames['SpellstealTab'].Content);
     self.AurasSpellstealCountFontOptions:SetH(60);
+    self.AurasSpellstealCountFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_SPELLSTEAL'] .. ' ' .. L['OPTIONS_AURAS_COUNT_TEXT']);
     self.AurasSpellstealCountFontOptions:Add(self.auras_spellsteal_count_font_value):SetPosition('TOPLEFT', self.AurasSpellstealCountFontOptions, 'TOPLEFT', 8, -20);
     self.AurasSpellstealCountFontOptions:Add(self.auras_spellsteal_count_font_size):SetPosition('LEFT', self.auras_spellsteal_count_font_value, 'RIGHT', 12, 0);
     self.AurasSpellstealCountFontOptions:Add(self.auras_spellsteal_count_font_flag):SetPosition('LEFT', self.auras_spellsteal_count_font_size, 'RIGHT', 12, 0);
@@ -2241,6 +2248,7 @@ panel.Load = function(self)
 
     self.AurasSpellstealCountPositionOptions = E.CreatePopOptions(self.TabsFrames['SpellstealTab'].Content);
     self.AurasSpellstealCountPositionOptions:SetH(60);
+    self.AurasSpellstealCountPositionOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_SPELLSTEAL'] .. ' ' .. L['OPTIONS_AURAS_COUNT_TEXT']);
     self.AurasSpellstealCountPositionOptions:Add(self.auras_spellsteal_count_point):SetPosition('TOPLEFT', self.AurasSpellstealCountPositionOptions, 'TOPLEFT', 12, -20);
     self.AurasSpellstealCountPositionOptions:Add(self.auras_spellsteal_count_relative_point):SetPosition('LEFT', self.auras_spellsteal_count_point, 'RIGHT', 12, 0);
     self.AurasSpellstealCountPositionOptions:Add(self.auras_spellsteal_count_offset_x):SetPosition('LEFT', self.auras_spellsteal_count_relative_point, 'RIGHT', 8, 0)
@@ -2469,6 +2477,7 @@ panel.Load = function(self)
 
     self.AurasMythicPlusCooldownFontOptions = E.CreatePopOptions(self.TabsFrames['MythicPlusTab'].Content);
     self.AurasMythicPlusCooldownFontOptions:SetH(60);
+    self.AurasMythicPlusCooldownFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_MYTHICPLUS'] .. ' ' .. L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
     self.AurasMythicPlusCooldownFontOptions:Add(self.auras_mythicplus_cooldown_font_value):SetPosition('TOPLEFT', self.AurasMythicPlusCooldownFontOptions, 'TOPLEFT', 8, -20);
     self.AurasMythicPlusCooldownFontOptions:Add(self.auras_mythicplus_cooldown_font_size):SetPosition('LEFT', self.auras_mythicplus_cooldown_font_value, 'RIGHT', 12, 0);
     self.AurasMythicPlusCooldownFontOptions:Add(self.auras_mythicplus_cooldown_font_flag):SetPosition('LEFT', self.auras_mythicplus_cooldown_font_size, 'RIGHT', 12, 0);
@@ -2517,6 +2526,7 @@ panel.Load = function(self)
 
     self.AurasMythicPlusCooldownPositionOptions = E.CreatePopOptions(self.TabsFrames['MythicPlusTab'].Content);
     self.AurasMythicPlusCooldownPositionOptions:SetH(60);
+    self.AurasMythicPlusCooldownPositionOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_MYTHICPLUS'] .. ' ' .. L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
     self.AurasMythicPlusCooldownPositionOptions:Add(self.auras_mythicplus_cooldown_point):SetPosition('TOPLEFT', self.AurasMythicPlusCooldownPositionOptions, 'TOPLEFT', 12, -20);
     self.AurasMythicPlusCooldownPositionOptions:Add(self.auras_mythicplus_cooldown_relative_point):SetPosition('LEFT', self.auras_mythicplus_cooldown_point, 'RIGHT', 12, 0);
     self.AurasMythicPlusCooldownPositionOptions:Add(self.auras_mythicplus_cooldown_offset_x):SetPosition('LEFT', self.auras_mythicplus_cooldown_relative_point, 'RIGHT', 8, 0)
@@ -2585,6 +2595,7 @@ panel.Load = function(self)
 
     self.AurasMythicPlusCountFontOptions = E.CreatePopOptions(self.TabsFrames['MythicPlusTab'].Content);
     self.AurasMythicPlusCountFontOptions:SetH(60);
+    self.AurasMythicPlusCountFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_MYTHICPLUS'] .. ' ' .. L['OPTIONS_AURAS_COUNT_TEXT']);
     self.AurasMythicPlusCountFontOptions:Add(self.auras_mythicplus_count_font_value):SetPosition('TOPLEFT', self.AurasMythicPlusCountFontOptions, 'TOPLEFT', 8, -20);
     self.AurasMythicPlusCountFontOptions:Add(self.auras_mythicplus_count_font_size):SetPosition('LEFT', self.auras_mythicplus_count_font_value, 'RIGHT', 12, 0);
     self.AurasMythicPlusCountFontOptions:Add(self.auras_mythicplus_count_font_flag):SetPosition('LEFT', self.auras_mythicplus_count_font_size, 'RIGHT', 12, 0);
@@ -2633,6 +2644,7 @@ panel.Load = function(self)
 
     self.AurasMythicPlusCountPositionOptions = E.CreatePopOptions(self.TabsFrames['MythicPlusTab'].Content);
     self.AurasMythicPlusCountPositionOptions:SetH(60);
+    self.AurasMythicPlusCountPositionOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_MYTHICPLUS'] .. ' ' .. L['OPTIONS_AURAS_COUNT_TEXT']);
     self.AurasMythicPlusCountPositionOptions:Add(self.auras_mythicplus_count_point):SetPosition('TOPLEFT', self.AurasMythicPlusCountPositionOptions, 'TOPLEFT', 12, -20);
     self.AurasMythicPlusCountPositionOptions:Add(self.auras_mythicplus_count_relative_point):SetPosition('LEFT', self.auras_mythicplus_count_point, 'RIGHT', 12, 0);
     self.AurasMythicPlusCountPositionOptions:Add(self.auras_mythicplus_count_offset_x):SetPosition('LEFT', self.auras_mythicplus_count_relative_point, 'RIGHT', 8, 0)
@@ -2880,6 +2892,7 @@ panel.Load = function(self)
 
     self.AurasImportantCooldownFontOptions = E.CreatePopOptions(self.TabsFrames['ImportantTab'].Content);
     self.AurasImportantCooldownFontOptions:SetH(60);
+    self.AurasImportantCooldownFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_IMPORTANT'] .. ' ' .. L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
     self.AurasImportantCooldownFontOptions:Add(self.auras_important_cooldown_font_value):SetPosition('TOPLEFT', self.AurasImportantCooldownFontOptions, 'TOPLEFT', 8, -20);
     self.AurasImportantCooldownFontOptions:Add(self.auras_important_cooldown_font_size):SetPosition('LEFT', self.auras_important_cooldown_font_value, 'RIGHT', 12, 0);
     self.AurasImportantCooldownFontOptions:Add(self.auras_important_cooldown_font_flag):SetPosition('LEFT', self.auras_important_cooldown_font_size, 'RIGHT', 12, 0);
@@ -2928,6 +2941,7 @@ panel.Load = function(self)
 
     self.AurasImportantCooldownPositionOptions = E.CreatePopOptions(self.TabsFrames['ImportantTab'].Content);
     self.AurasImportantCooldownPositionOptions:SetH(60);
+    self.AurasImportantCooldownPositionOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_IMPORTANT'] .. ' ' .. L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
     self.AurasImportantCooldownPositionOptions:Add(self.auras_important_cooldown_point):SetPosition('TOPLEFT', self.AurasImportantCooldownPositionOptions, 'TOPLEFT', 12, -20);
     self.AurasImportantCooldownPositionOptions:Add(self.auras_important_cooldown_relative_point):SetPosition('LEFT', self.auras_important_cooldown_point, 'RIGHT', 12, 0);
     self.AurasImportantCooldownPositionOptions:Add(self.auras_important_cooldown_offset_x):SetPosition('LEFT', self.auras_important_cooldown_relative_point, 'RIGHT', 8, 0)
@@ -2996,6 +3010,7 @@ panel.Load = function(self)
 
     self.AurasImportantCountFontOptions = E.CreatePopOptions(self.TabsFrames['ImportantTab'].Content);
     self.AurasImportantCountFontOptions:SetH(60);
+    self.AurasImportantCountFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_IMPORTANT'] .. ' ' .. L['OPTIONS_AURAS_COUNT_TEXT']);
     self.AurasImportantCountFontOptions:Add(self.auras_important_count_font_value):SetPosition('TOPLEFT', self.AurasImportantCountFontOptions, 'TOPLEFT', 8, -20);
     self.AurasImportantCountFontOptions:Add(self.auras_important_count_font_size):SetPosition('LEFT', self.auras_important_count_font_value, 'RIGHT', 12, 0);
     self.AurasImportantCountFontOptions:Add(self.auras_important_count_font_flag):SetPosition('LEFT', self.auras_important_count_font_size, 'RIGHT', 12, 0);
@@ -3044,6 +3059,7 @@ panel.Load = function(self)
 
     self.AurasImportantCountPositionOptions = E.CreatePopOptions(self.TabsFrames['ImportantTab'].Content);
     self.AurasImportantCountPositionOptions:SetH(60);
+    self.AurasImportantCountPositionOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_IMPORTANT'] .. ' ' .. L['OPTIONS_AURAS_COUNT_TEXT']);
     self.AurasImportantCountPositionOptions:Add(self.auras_important_count_point):SetPosition('TOPLEFT', self.AurasImportantCountPositionOptions, 'TOPLEFT', 12, -20);
     self.AurasImportantCountPositionOptions:Add(self.auras_important_count_relative_point):SetPosition('LEFT', self.auras_important_count_point, 'RIGHT', 12, 0);
     self.AurasImportantCountPositionOptions:Add(self.auras_important_count_offset_x):SetPosition('LEFT', self.auras_important_count_relative_point, 'RIGHT', 8, 0)
@@ -3108,6 +3124,7 @@ panel.Load = function(self)
 
     self.AurasImportantCasterNameFontOptions = E.CreatePopOptions(self.TabsFrames['ImportantTab'].Content);
     self.AurasImportantCasterNameFontOptions:SetH(60);
+    self.AurasImportantCasterNameFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_IMPORTANT'] .. ' ' .. L['OPTIONS_AURAS_IMPORTANT_CASTERNAME_TEXT']);
     self.AurasImportantCasterNameFontOptions:Add(self.auras_important_castername_font_value):SetPosition('TOPLEFT', self.AurasImportantCasterNameFontOptions, 'TOPLEFT', 8, -20);
     self.AurasImportantCasterNameFontOptions:Add(self.auras_important_castername_font_size):SetPosition('LEFT', self.auras_important_castername_font_value, 'RIGHT', 12, 0);
     self.AurasImportantCasterNameFontOptions:Add(self.auras_important_castername_font_flag):SetPosition('LEFT', self.auras_important_castername_font_size, 'RIGHT', 12, 0);
@@ -3325,6 +3342,7 @@ panel.Load = function(self)
 
     self.AurasCustomCooldownFontOptions = E.CreatePopOptions(self.TabsFrames['CustomTab'].Content);
     self.AurasCustomCooldownFontOptions:SetH(60);
+    self.AurasCustomCooldownFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_CUSTOM'] .. ' ' .. L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
     self.AurasCustomCooldownFontOptions:Add(self.auras_custom_cooldown_font_value):SetPosition('TOPLEFT', self.AurasCustomCooldownFontOptions, 'TOPLEFT', 8, -20);
     self.AurasCustomCooldownFontOptions:Add(self.auras_custom_cooldown_font_size):SetPosition('LEFT', self.auras_custom_cooldown_font_value, 'RIGHT', 12, 0);
     self.AurasCustomCooldownFontOptions:Add(self.auras_custom_cooldown_font_flag):SetPosition('LEFT', self.auras_custom_cooldown_font_size, 'RIGHT', 12, 0);
@@ -3373,6 +3391,7 @@ panel.Load = function(self)
 
     self.AurasCustomCooldownPositionOptions = E.CreatePopOptions(self.TabsFrames['CustomTab'].Content);
     self.AurasCustomCooldownPositionOptions:SetH(60);
+    self.AurasCustomCooldownPositionOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_CUSTOM'] .. ' ' .. L['OPTIONS_AURAS_COUNTDOWN_TEXT']);
     self.AurasCustomCooldownPositionOptions:Add(self.auras_custom_cooldown_point):SetPosition('TOPLEFT', self.AurasCustomCooldownPositionOptions, 'TOPLEFT', 12, -20);
     self.AurasCustomCooldownPositionOptions:Add(self.auras_custom_cooldown_relative_point):SetPosition('LEFT', self.auras_custom_cooldown_point, 'RIGHT', 12, 0);
     self.AurasCustomCooldownPositionOptions:Add(self.auras_custom_cooldown_offset_x):SetPosition('LEFT', self.auras_custom_cooldown_relative_point, 'RIGHT', 8, 0)
@@ -3441,6 +3460,7 @@ panel.Load = function(self)
 
     self.AurasCustomCountFontOptions = E.CreatePopOptions(self.TabsFrames['CustomTab'].Content);
     self.AurasCustomCountFontOptions:SetH(60);
+    self.AurasCustomCountFontOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_CUSTOM'] .. ' ' .. L['OPTIONS_AURAS_COUNT_TEXT']);
     self.AurasCustomCountFontOptions:Add(self.auras_custom_count_font_value):SetPosition('TOPLEFT', self.AurasCustomCountFontOptions, 'TOPLEFT', 8, -20);
     self.AurasCustomCountFontOptions:Add(self.auras_custom_count_font_size):SetPosition('LEFT', self.auras_custom_count_font_value, 'RIGHT', 12, 0);
     self.AurasCustomCountFontOptions:Add(self.auras_custom_count_font_flag):SetPosition('LEFT', self.auras_custom_count_font_size, 'RIGHT', 12, 0);
@@ -3489,6 +3509,7 @@ panel.Load = function(self)
 
     self.AurasCustomCountPositionOptions = E.CreatePopOptions(self.TabsFrames['CustomTab'].Content);
     self.AurasCustomCountPositionOptions:SetH(60);
+    self.AurasCustomCountPositionOptions:SetTitle(L['OPTIONS_CATEGORY_AURAS'] .. ' ' .. L['OPTIONS_AURAS_TAB_CUSTOM'] .. ' ' .. L['OPTIONS_AURAS_COUNT_TEXT']);
     self.AurasCustomCountPositionOptions:Add(self.auras_custom_count_point):SetPosition('TOPLEFT', self.AurasCustomCountPositionOptions, 'TOPLEFT', 12, -20);
     self.AurasCustomCountPositionOptions:Add(self.auras_custom_count_relative_point):SetPosition('LEFT', self.auras_custom_count_point, 'RIGHT', 12, 0);
     self.AurasCustomCountPositionOptions:Add(self.auras_custom_count_offset_x):SetPosition('LEFT', self.auras_custom_count_relative_point, 'RIGHT', 8, 0)
