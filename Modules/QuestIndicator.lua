@@ -153,7 +153,7 @@ local function Update(unitframe, unit)
             end
         elseif questLogIndex then
             questId = C_QuestLog_GetQuestIDForLogIndex(questLogIndex);
-            local objectives = C_QuestLog_GetQuestObjectives(questId);
+            local objectives = questId and C_QuestLog_GetQuestObjectives(questId);
             if objectives then
                 for _, objectiveInfo in pairs(objectives) do
                     if not objectiveInfo.text then
