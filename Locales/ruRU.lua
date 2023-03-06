@@ -490,6 +490,7 @@ L['OPTIONS_THREAT_COLOR_PETTANK_TOOLTIP'] = 'Питомец (статуя мон
 L['OPTIONS_THREAT_COLOR_PLAYERPETTANK_TOOLTIP'] = 'Ваш питомец сейчас танкует';
 L['OPTIONS_RESET_THREAT_COLORS'] = 'Сбросить цвета';
 L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'] = 'Сбросить цвета угрозы на значения по умолчанию';
+L['OPTIONS_THREAT_PERCENTAGE_HEADER'] = 'Угроза в процентах';
 L['OPTIONS_THREAT_PERCENTAGE_ENABLED'] = 'Показывать проценты';
 L['OPTIONS_THREAT_PERCENTAGE_ENABLED_TOOLTIP'] = 'Показывать в процентах текущую угрозу';
 L['OPTIONS_THREAT_PERCENTAGE_COLORING'] = 'Окрашивать';

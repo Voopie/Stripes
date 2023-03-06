@@ -490,6 +490,7 @@ L['OPTIONS_THREAT_COLOR_PETTANK_TOOLTIP'] = 'Pet (monk statue, shaman elemental,
 L['OPTIONS_THREAT_COLOR_PLAYERPETTANK_TOOLTIP'] = 'Your pet is now tanking';
 L['OPTIONS_RESET_THREAT_COLORS'] = 'Reset colors';
 L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'] = 'Reset threat colors to default values';
+L['OPTIONS_THREAT_PERCENTAGE_HEADER'] = 'Threat percentage';
 L['OPTIONS_THREAT_PERCENTAGE_ENABLED'] = 'Show percentages';
 L['OPTIONS_THREAT_PERCENTAGE_ENABLED_TOOLTIP'] = 'Show the current threat as a percentage';
 L['OPTIONS_THREAT_PERCENTAGE_COLORING'] = 'Coloring';

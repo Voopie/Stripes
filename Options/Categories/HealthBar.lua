@@ -376,6 +376,7 @@ panel.Load = function(self)
 
     self.AbsorbTextFontOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.AbsorbTextFontOptions:SetH(60);
+    self.AbsorbTextFontOptions:SetTitle(L['OPTIONS_HEADER_ABSORB']);
     self.AbsorbTextFontOptions:Add(self.absorb_text_font_value):SetPosition('TOPLEFT', self.AbsorbTextFontOptions, 'TOPLEFT', 8, -20);
     self.AbsorbTextFontOptions:Add(self.absorb_text_font_size):SetPosition('LEFT', self.absorb_text_font_value, 'RIGHT', 12, 0);
     self.AbsorbTextFontOptions:Add(self.absorb_text_font_flag):SetPosition('LEFT', self.absorb_text_font_size, 'RIGHT', 12, 0);
@@ -416,6 +417,7 @@ panel.Load = function(self)
 
     self.AbsorbTextPositionOptions = E.CreatePopOptions(self.TabsFrames['CommonTab'].Content);
     self.AbsorbTextPositionOptions:SetH(72);
+    self.AbsorbTextPositionOptions:SetTitle(L['OPTIONS_HEADER_ABSORB']);
     self.AbsorbTextPositionOptions:Add(self.absorb_text_anchor):SetPosition('TOPLEFT', self.AbsorbTextPositionOptions, 'TOPLEFT', 12, -24);
     self.AbsorbTextPositionOptions:Add(self.absorb_text_x_offset):SetPosition('LEFT', self.absorb_text_anchor, 'RIGHT', 16, 0);
     self.AbsorbTextPositionOptions:Add(self.absorb_text_y_offset):SetPosition('LEFT', self.absorb_text_x_offset, 'RIGHT', 16, 0);
@@ -1493,6 +1495,7 @@ panel.Load = function(self)
 
     self.ThreatTextFontOptions = E.CreatePopOptions(self.TabsFrames['ThreatTab'].Content);
     self.ThreatTextFontOptions:SetH(60);
+    self.ThreatTextFontOptions:SetTitle(L['OPTIONS_THREAT_PERCENTAGE_HEADER']);
     self.ThreatTextFontOptions:Add(self.threat_percentage_font_value):SetPosition('TOPLEFT', self.ThreatTextFontOptions, 'TOPLEFT', 8, -20);
     self.ThreatTextFontOptions:Add(self.threat_percentage_font_size):SetPosition('LEFT', self.threat_percentage_font_value, 'RIGHT', 12, 0);
     self.ThreatTextFontOptions:Add(self.threat_percentage_font_flag):SetPosition('LEFT', self.threat_percentage_font_size, 'RIGHT', 12, 0);
@@ -1541,6 +1544,7 @@ panel.Load = function(self)
 
     self.ThreatTextPositionOptions = E.CreatePopOptions(self.TabsFrames['ThreatTab'].Content);
     self.ThreatTextPositionOptions:SetH(60);
+    self.ThreatTextPositionOptions:SetTitle(L['OPTIONS_THREAT_PERCENTAGE_HEADER']);
     self.ThreatTextPositionOptions:Add(self.threat_percentage_point):SetPosition('TOPLEFT', self.ThreatTextPositionOptions, 'TOPLEFT', 12, -20);
     self.ThreatTextPositionOptions:Add(self.threat_percentage_relative_point):SetPosition('LEFT', self.threat_percentage_point, 'RIGHT', 12, 0);
     self.ThreatTextPositionOptions:Add(self.threat_percentage_offset_x):SetPosition('LEFT', self.threat_percentage_relative_point, 'RIGHT', 8, 0);

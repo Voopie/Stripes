@@ -490,6 +490,7 @@ L['OPTIONS_THREAT_COLOR_PETTANK_TOOLTIP'] = 'Haustier (Mönchsstatue, Schamanene
 L['OPTIONS_THREAT_COLOR_PLAYERPETTANK_TOOLTIP'] = 'Dein Haustier tankt jetzt';
 L['OPTIONS_RESET_THREAT_COLORS'] = 'Farben zurücksetzen';
 L['OPTIONS_RESET_THREAT_COLORS_TOOLTIP'] = 'Bedrohungsfarben auf Standardwerte zurücksetzen';
+L['OPTIONS_THREAT_PERCENTAGE_HEADER'] = 'Prozentsatz der Bedrohung';
 L['OPTIONS_THREAT_PERCENTAGE_ENABLED'] = 'Prozentwerte anzeigen';
 L['OPTIONS_THREAT_PERCENTAGE_ENABLED_TOOLTIP'] = 'Die aktuelle Bedrohung als Prozentsatz anzeigen';
 L['OPTIONS_THREAT_PERCENTAGE_COLORING'] = 'Färbung';
