@@ -224,8 +224,8 @@ end
 
 function Module:UnitAdded(unitframe)
     Create(unitframe);
-    Update(unitframe);
     UpdateGlow(unitframe);
+    Update(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
@@ -237,8 +237,8 @@ function Module:UnitAura(unitframe)
 end
 
 function Module:Update(unitframe)
-    Update(unitframe);
     UpdateGlow(unitframe);
+    Update(unitframe);
 end
 
 function Module:UpdateAll()
