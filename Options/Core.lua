@@ -311,7 +311,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~597
+-- ~600
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -730,6 +730,9 @@ O.DefaultValues = {
     stealth_detect_enabled       = true,
     stealth_detect_always        = true,
     stealth_detect_not_in_combat = true,
+    stealth_detect_glow_enabled  = true,
+    stealth_detect_glow_type     = 1,
+    stealth_detect_glow_color    = { 0.65, 0.25, 0.95, 1 },
 
     totem_icon_enabled = false,
 

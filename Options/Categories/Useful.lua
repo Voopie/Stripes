@@ -98,6 +98,36 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.stealth_detect_glow_type = E.CreateDropdown('plain', self.TabsFrames['CommonTab'].Content);
+    self.stealth_detect_glow_type:SetPosition('LEFT', self.stealth_detect_not_in_combat.Label, 'RIGHT', 12, 0);
+    self.stealth_detect_glow_type:SetSize(120, 20);
+    self.stealth_detect_glow_type:SetList(O.Lists.glow_type_short_with_none);
+    self.stealth_detect_glow_type:SetValue(O.db.stealth_detect_glow_type);
+    self.stealth_detect_glow_type:SetTooltip(L['OPTIONS_STEALTH_DETECT_GLOW_TOOLTIP']);
+    self.stealth_detect_glow_type:AddToSearch(button, L['OPTIONS_STEALTH_DETECT_GLOW_TOOLTIP'], self.Tabs[1]);
+    self.stealth_detect_glow_type.OnValueChangedCallback = function(_, value)
+        value = tonumber(value);
+
+        O.db.stealth_detect_glow_enabled = value ~= 0;
+        O.db.stealth_detect_glow_type    = value;
+
+        Stripes:UpdateAll();
+    end
+
+    self.stealth_detect_glow_color = E.CreateColorPicker(self.TabsFrames['CommonTab'].Content);
+    self.stealth_detect_glow_color:SetPosition('LEFT', self.stealth_detect_glow_type, 'RIGHT', 12, 0);
+    self.stealth_detect_glow_color:SetTooltip(L['OPTIONS_STEALTH_DETECT_GLOW_COLOR_TOOLTIP']);
+    self.stealth_detect_glow_color:AddToSearch(button, L['OPTIONS_STEALTH_DETECT_GLOW_COLOR_TOOLTIP'], self.Tabs[1]);
+    self.stealth_detect_glow_color:SetValue(unpack(O.db.stealth_detect_glow_color));
+    self.stealth_detect_glow_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.stealth_detect_glow_color[1] = r;
+        O.db.stealth_detect_glow_color[2] = g;
+        O.db.stealth_detect_glow_color[3] = b;
+        O.db.stealth_detect_glow_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
     self.totem_icon_enabled = E.CreateCheckButton(self.TabsFrames['CommonTab'].Content);
     self.totem_icon_enabled:SetPosition('TOPLEFT', self.stealth_detect_enabled, 'BOTTOMLEFT', 0, -8);
     self.totem_icon_enabled:SetLabel(L['OPTIONS_TOTEM_ICON_ENABLED']);

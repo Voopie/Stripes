@@ -6,16 +6,16 @@ local UnitHasAura = U.UnitHasAura;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
-local LCG_PixelGlow_Start = LCG.PixelGlow_Start;
+local LCG_PixelGlow_Start, LCG_PixelGlow_Stop = LCG.PixelGlow_Start, LCG.PixelGlow_Stop;
+local LCG_AutoCastGlow_Start, LCG_AutoCastGlow_Stop, LCG_ButtonGlow_Start, LCG_ButtonGlow_Stop = LCG.AutoCastGlow_Start, LCG.AutoCastGlow_Stop, LCG.ButtonGlow_Start, LCG.ButtonGlow_Stop;
 local LCG_SUFFIX = 'S_STEALTHDETECT';
 
 -- Local Config
-local ENABLED, ALWAYS, NOT_IN_COMBAT;
+local ENABLED, ALWAYS, NOT_IN_COMBAT, GLOW_ENABLED, GLOW_TYPE, GLOW_COLOR;
 
 local PlayerState = D.Player.State;
 
 local STEALTH_TEXTURE = 1391768;
-local GLOW_COLOR = { 0.64, 0.24, 0.94 };
 
 local isStealthed;
 
@@ -159,9 +159,7 @@ local function Create(unitframe)
     frame.border:SetColorTexture(0.3, 0.3, 0.3);
 
     frame.glow = CreateFrame('Frame', nil, frame);
-    frame.glow:SetAllPoints(frame.icon)
-
-    LCG_PixelGlow_Start(frame.glow, GLOW_COLOR, 8, nil, 8, nil, 1, 1, nil, LCG_SUFFIX);
+    frame.glow:SetAllPoints(frame.icon);
 
     frame:Hide();
 
@@ -196,6 +194,28 @@ local function Update(unitframe)
     end
 end
 
+local function UpdateGlow(unitframe)
+    local glowFrame = unitframe.StealthDetect and unitframe.StealthDetect.glow;
+
+    if not glowFrame then
+        return;
+    end
+
+    LCG_PixelGlow_Stop(glowFrame, LCG_SUFFIX);
+    LCG_AutoCastGlow_Stop(glowFrame, LCG_SUFFIX);
+    LCG_ButtonGlow_Stop(glowFrame);
+
+    if GLOW_ENABLED then
+        if GLOW_TYPE == 1 then
+            LCG_PixelGlow_Start(glowFrame, GLOW_COLOR, 8, nil, 8, nil, 1, 1, nil, LCG_SUFFIX);
+        elseif GLOW_TYPE == 2 then
+            LCG_AutoCastGlow_Start(glowFrame, GLOW_COLOR, nil, nil, nil, nil, nil, LCG_SUFFIX);
+        elseif GLOW_TYPE == 3 then
+            LCG_ButtonGlow_Start(glowFrame);
+        end
+    end
+end
+
 local function Hide(unitframe)
     if unitframe.StealthDetect then
         unitframe.StealthDetect:Hide();
@@ -205,6 +225,7 @@ end
 function Module:UnitAdded(unitframe)
     Create(unitframe);
     Update(unitframe);
+    UpdateGlow(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
@@ -217,6 +238,7 @@ end
 
 function Module:Update(unitframe)
     Update(unitframe);
+    UpdateGlow(unitframe);
 end
 
 function Module:UpdateAll()
@@ -229,6 +251,19 @@ function Module:UpdateLocalConfig()
     ENABLED       = O.db.stealth_detect_enabled;
     ALWAYS        = O.db.stealth_detect_always;
     NOT_IN_COMBAT = O.db.stealth_detect_not_in_combat;
+
+    GLOW_ENABLED = O.db.stealth_detect_glow_enabled;
+    GLOW_TYPE    = O.db.stealth_detect_glow_type;
+
+    if not GLOW_TYPE or GLOW_TYPE == 0 then
+        GLOW_ENABLED = false;
+    end
+
+    GLOW_COLOR    = GLOW_COLOR or {};
+    GLOW_COLOR[1] = O.db.stealth_detect_glow_color[1];
+    GLOW_COLOR[2] = O.db.stealth_detect_glow_color[2];
+    GLOW_COLOR[3] = O.db.stealth_detect_glow_color[3];
+    GLOW_COLOR[4] = O.db.stealth_detect_glow_color[4] or 1;
 
     if ENABLED then
         self:RegisterEvent('UPDATE_STEALTH');
