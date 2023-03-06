@@ -135,6 +135,7 @@ panel.Load = function(self)
 
     self.NameFontOptions = E.CreatePopOptions(self.TabsFrames['NameTab'].Content);
     self.NameFontOptions:SetH(60);
+    self.NameFontOptions:SetTitle(L['OPTIONS_COMMON_TAB_NAME']);
     self.NameFontOptions:Add(self.name_text_font_value):SetPosition('TOPLEFT', self.NameFontOptions, 'TOPLEFT', 8, -20);
     self.NameFontOptions:Add(self.name_text_font_size):SetPosition('LEFT', self.name_text_font_value, 'RIGHT', 12, 0);
     self.NameFontOptions:Add(self.name_text_font_flag):SetPosition('LEFT', self.name_text_font_size, 'RIGHT', 12, 0);
@@ -203,6 +204,7 @@ panel.Load = function(self)
 
     self.NamePositionOptions = E.CreatePopOptions(self.TabsFrames['NameTab'].Content);
     self.NamePositionOptions:SetH(120);
+    self.NamePositionOptions:SetTitle(L['OPTIONS_COMMON_TAB_NAME']);
     self.NamePositionOptions:Add(self.name_text_position_v):SetPosition('TOPLEFT', self.NamePositionOptions, 'TOPLEFT', 12, -30);
     self.NamePositionOptions:Add(self.name_text_position):SetPosition('LEFT', self.name_text_position_v, 'RIGHT', 12, 0);
     self.NamePositionOptions:Add(self.name_text_offset_x):SetPosition('LEFT', self.name_text_position, 'RIGHT', 12, 0);
@@ -629,6 +631,7 @@ panel.Load = function(self)
 
     self.HealthFontOptions = E.CreatePopOptions(self.TabsFrames['HealthTextTab'].Content);
     self.HealthFontOptions:SetH(60);
+    self.HealthFontOptions:SetTitle(L['OPTIONS_COMMON_TAB_HEALTHTEXT']);
     self.HealthFontOptions:Add(self.health_text_font_value):SetPosition('TOPLEFT', self.HealthFontOptions, 'TOPLEFT', 8, -20);
     self.HealthFontOptions:Add(self.health_text_font_size):SetPosition('LEFT', self.health_text_font_value, 'RIGHT', 12, 0);
     self.HealthFontOptions:Add(self.health_text_font_flag):SetPosition('LEFT', self.health_text_font_size, 'RIGHT', 12, 0);
@@ -956,6 +959,7 @@ panel.Load = function(self)
 
     self.LevelFontOptions = E.CreatePopOptions(self.TabsFrames['LevelTextTab'].Content);
     self.LevelFontOptions:SetH(60);
+    self.LevelFontOptions:SetTitle(L['OPTIONS_COMMON_TAB_LEVELTEXT']);
     self.LevelFontOptions:Add(self.level_text_font_value):SetPosition('TOPLEFT', self.LevelFontOptions, 'TOPLEFT', 8, -20);
     self.LevelFontOptions:Add(self.level_text_font_size):SetPosition('LEFT', self.level_text_font_value, 'RIGHT', 12, 0);
     self.LevelFontOptions:Add(self.level_text_font_flag):SetPosition('LEFT', self.level_text_font_size, 'RIGHT', 12, 0);
@@ -1005,6 +1009,7 @@ panel.Load = function(self)
 
     self.LevelPositionOptions = E.CreatePopOptions(self.TabsFrames['LevelTextTab'].Content);
     self.LevelPositionOptions:SetH(120);
+    self.LevelPositionOptions:SetTitle(L['OPTIONS_COMMON_TAB_LEVELTEXT']);
     self.LevelPositionOptions:Add(self.level_text_anchor):SetPosition('TOPLEFT', self.LevelPositionOptions, 'TOPLEFT', 12, -30);
     self.LevelPositionOptions:Add(self.level_text_x_offset):SetPosition('LEFT', self.level_text_anchor, 'RIGHT', 16, 0);
     self.LevelPositionOptions:Add(self.level_text_y_offset):SetPosition('LEFT', self.level_text_x_offset, 'RIGHT', 16, 0);
