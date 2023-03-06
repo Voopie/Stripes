@@ -87,6 +87,7 @@ panel.Load = function(self)
 
     self.PercentageFontOptions = E.CreatePopOptions(self);
     self.PercentageFontOptions:SetH(60);
+    self.PercentageFontOptions:SetTitle(L['OPTIONS_HEADER_PERCENTAGE']);
     self.PercentageFontOptions:Add(self.mythic_plus_percentage_font_value):SetPosition('TOPLEFT', self.PercentageFontOptions, 'TOPLEFT', 8, -20);
     self.PercentageFontOptions:Add(self.mythic_plus_percentage_font_size):SetPosition('LEFT', self.mythic_plus_percentage_font_value, 'RIGHT', 12, 0);
     self.PercentageFontOptions:Add(self.mythic_plus_percentage_font_flag):SetPosition('LEFT', self.mythic_plus_percentage_font_size, 'RIGHT', 12, 0);
@@ -135,6 +136,7 @@ panel.Load = function(self)
 
     self.PercentagePositionOptions = E.CreatePopOptions(self);
     self.PercentagePositionOptions:SetH(60);
+    self.PercentagePositionOptions:SetTitle(L['OPTIONS_HEADER_PERCENTAGE']);
     self.PercentagePositionOptions:Add(self.mythic_plus_percentage_point):SetPosition('TOPLEFT', self.PercentagePositionOptions, 'TOPLEFT', 12, -20);
     self.PercentagePositionOptions:Add(self.mythic_plus_percentage_relative_point):SetPosition('LEFT', self.mythic_plus_percentage_point, 'RIGHT', 12, 0);
     self.PercentagePositionOptions:Add(self.mythic_plus_percentage_offset_x):SetPosition('LEFT', self.mythic_plus_percentage_relative_point, 'RIGHT', 12, 0);
