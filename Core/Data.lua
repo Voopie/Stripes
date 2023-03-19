@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 local Data = S:NewModule('Core_Data');
 
 local TEEMING_AFFIX_ID = 5;

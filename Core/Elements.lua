@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewModule('Elements');
 
 local MEDIA_PATH = 'Interface\\AddOns\\' .. S.AddonName .. '\\Media\\';

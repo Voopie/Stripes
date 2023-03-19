@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewModule('Options_Categories_CastBar');
 local Profile = S:GetModule('Options_Categories_Profiles');
 local Colors = S:GetModule('Options_Colors');

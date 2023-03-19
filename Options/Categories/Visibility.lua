@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewModule('Options_Categories_Visibility');
 
 O.frame.Left.Visibility, O.frame.Right.Visibility = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_VISIBILITY']), 'visibility', 3);

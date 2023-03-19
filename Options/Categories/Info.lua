@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewModule('Options_Categories_Info');
 
 O.frame.Left.Info, O.frame.Right.Info = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_INFO']), 'info', 20);

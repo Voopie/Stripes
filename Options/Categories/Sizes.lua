@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewModule('Options_Categories_Sizes');
 
 -- C_NamePlate.SetNamePlateEnemySize(154, 64); -- Large

@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('Auras');
 local Stripes = S:GetNameplateModule('Handler');
 

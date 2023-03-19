@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewModule('Options_Categories_Home');
 
 O.frame.Left.Home, O.frame.Right.Home = O.CreateCategory('', 'home', 0, true);

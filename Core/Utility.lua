@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 
 -- Lua API
 local pairs, ipairs, select, type, unpack, tostring, tonumber, string_format, string_find, string_len, string_sub, string_gsub, string_byte, math_floor = pairs, ipairs, select, type, unpack, tostring, tonumber, string.format, string.find, string.len, string.sub, string.gsub, string.byte, math.floor;

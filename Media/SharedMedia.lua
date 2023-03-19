@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 
 local LSM = S.Libraries.LSM;
 local M = 'Interface\\AddOns\\' .. S.AddonName .. '\\Media\\';

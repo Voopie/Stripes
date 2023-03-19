@@ -1,4 +1,4 @@
-local S, L, O, U, D, E = unpack(select(2, ...));
+local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewModule('CastingBar');
 local Colors = S:GetModule('Options_Colors');
 local Stripes = S:GetNameplateModule('Handler');
