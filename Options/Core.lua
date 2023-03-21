@@ -311,7 +311,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~608
+-- ~609
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -334,6 +334,7 @@ O.DefaultValues = {
     class_icon_enabled               = false,
     class_icon_arena_only            = false,
     class_icon_enemy_only            = true,
+    friend_icon_enabled              = false,
     target_name_enabled              = true,
     target_name_only_enemy           = true,
     target_name_not_me               = false,

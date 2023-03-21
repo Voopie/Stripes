@@ -459,8 +459,19 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.friend_icon_enabled = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
+    self.friend_icon_enabled:SetPosition('TOPLEFT', self.class_icon_enabled, 'BOTTOMLEFT', 0, -8);
+    self.friend_icon_enabled:SetLabel(L['OPTIONS_FRIEND_ICON_ENABLED']);
+    self.friend_icon_enabled:SetTooltip(L['OPTIONS_FRIEND_ICON_ENABLED_TOOLTIP']);
+    self.friend_icon_enabled:SetChecked(O.db.friend_icon_enabled);
+    self.friend_icon_enabled:AddToSearch(button, L['OPTIONS_FRIEND_ICON_ENABLED_TOOLTIP'], self.Tabs[1]);
+    self.friend_icon_enabled.Callback = function(self)
+        O.db.friend_icon_enabled = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
     Delimiter = E.CreateDelimiter(self.TabsFrames['NameTab'].Content);
-    Delimiter:SetPosition('TOPLEFT', self.class_icon_enabled, 'BOTTOMLEFT', 0, -4);
+    Delimiter:SetPosition('TOPLEFT', self.friend_icon_enabled, 'BOTTOMLEFT', 0, -4);
     Delimiter:SetW(self:GetWidth());
 
     self.name_text_show_arenaid = E.CreateCheckButton(self.TabsFrames['NameTab'].Content);
