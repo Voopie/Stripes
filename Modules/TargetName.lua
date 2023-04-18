@@ -63,7 +63,6 @@ local function TargetChanged(unitframe)
                 targetName = utf8sub(targetName, 0, health_len) .. GREY_COLOR_START .. utf8sub(targetName, health_len + 1) .. "|r";
             end
 
-
             if ROLE_ICON and partyRolesCache[unitframe.data.targetName] then
                 unitframe.TargetName:SetText('» ' .. partyRolesCache[unitframe.data.targetName] .. ' '.. targetName);
             else
@@ -85,9 +84,13 @@ local function OnUpdate(unitframe)
     end
 
     local name = UnitName(unitframe.data.unit .. 'target');
+    local health = UnitHealth(unitframe.data.unit .. 'target');
+    local healthMax = UnitHealthMax(unitframe.data.unit .. 'target');
 
-    if unitframe.data.targetName ~= name then
+    if unitframe.data.targetName ~= name or unitframe.data.targetHealth ~= health then
         unitframe.data.targetName = name;
+        unitframe.data.targetHealth = health;
+        unitframe.data.targetHealthMax = healthMax;
         TargetChanged(unitframe);
     end
 end
