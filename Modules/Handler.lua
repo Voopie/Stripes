@@ -818,6 +818,8 @@ local function ResetNameplateData(unitframe)
     unitframe.data.level = nil;
 
     unitframe.data.targetName = nil;
+    unitframe.data.targetHealth = nil;
+    unitframe.data.targetHealthMax = nil;
 
     unitframe.data.inCombatWithPlayer = nil;
 
@@ -854,6 +856,8 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
         unitframe.data.creatureType = not unitframe.data.isPlayer and UnitCreatureType(unit) or nil;
         unitframe.data.minus = UnitClassification(unit) == 'minus';
         unitframe.data.targetName = UnitName(unit .. 'target');
+        unitframe.data.targetHealth = UnitHealth(unit .. 'target');
+        unitframe.data.targetHealthMax = UnitHealthMax(unit .. 'target');
 
         if unitframe.data.widgetsOnly then
             unitframe.data.previousType = nil;

@@ -2,10 +2,14 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('TargetName');
 local Stripes = S:GetNameplateModule('Handler');
 
+-- Lua API
+local strlenutf8 = strlenutf8;
+
 -- WoW API
 local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitGroupRolesAssigned;
 
 -- Stripes API
+local utf8sub = U.UTF8SUB;
 local GetUnitColor = U.GetUnitColor;
 local ShouldShowName = Stripes.ShouldShowName;
 local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
@@ -26,6 +30,8 @@ local ROLE_ICONS = {
     ['HEALER']  = INLINE_HEALER_ICON,
     ['NONE']    = '',
 };
+
+local GREY_COLOR_START = '|cff666666';
 
 local function TargetChanged(unitframe)
     if not unitframe.TargetName then
@@ -52,6 +58,11 @@ local function TargetChanged(unitframe)
             end
         else
             local targetName = GetCachedName(unitframe.data.targetName, true, true, true);
+            if unitframe.data.targetHealth and unitframe.data.targetHealth > 0 and unitframe.data.targetHealthMax and unitframe.data.targetHealthMax > 0 then
+                local health_len = strlenutf8(targetName) * (unitframe.data.targetHealth / unitframe.data.targetHealthMax);
+                targetName = utf8sub(targetName, 0, health_len) .. GREY_COLOR_START .. utf8sub(targetName, health_len + 1) .. "|r";
+            end
+
 
             if ROLE_ICON and partyRolesCache[unitframe.data.targetName] then
                 unitframe.TargetName:SetText('» ' .. partyRolesCache[unitframe.data.targetName] .. ' '.. targetName);
