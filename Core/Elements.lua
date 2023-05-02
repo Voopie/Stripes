@@ -439,6 +439,7 @@ E.CreateScrollFrame = function(parent, scrollStep, scrollChild)
     scrollArea.scrollChild = scrollChild;
     scrollArea.scrollBarHideable = true;
     scrollArea.noScrollThumb     = false;
+    scrollArea.noScrollBar       = true;
 
     local scrollBar        = scrollArea.ScrollBar;
     local scrollUpButton   = scrollBar.ScrollUpButton;
