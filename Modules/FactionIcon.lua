@@ -29,7 +29,9 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    if ENABLED and unitframe.data.commonUnitType == 'PLAYER' and ShouldShowName(unitframe) and factionIcons[unitframe.data.factionGroup] then
+    local shouldShow = ENABLED and unitframe.data.commonUnitType == 'PLAYER' and ShouldShowName(unitframe) and factionIcons[unitframe.data.factionGroup];
+
+    if shouldShow then
         unitframe.FactionIcon.icon:SetTexture(factionIcons[unitframe.data.factionGroup]);
         unitframe.FactionIcon:Show();
     else
