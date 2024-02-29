@@ -2418,7 +2418,7 @@ local NewColorPicker do
         b:SetText('#' .. b.hexColor);
 
         b:SetScript('OnClick', function(self)
-            ColorPickerFrame:SetColorRGB(U.HEX2RGB(self.hexColor));
+            ColorPickerFrame.Content.ColorPicker:SetColorRGB(U.HEX2RGB(self.hexColor));
             ColorPickerFrame.opacity = 1;
         end);
 
@@ -2497,7 +2497,8 @@ local NewColorPicker do
             self.opacity = 1 - self.opacity;
             self.opening = true;
 
-            OpenColorPicker(self);
+            ColorPickerFrame:SetupColorPickerAndShow(self);
+
             ColorPickerFrame:SetFrameStrata('TOOLTIP');
             ColorPickerFrame:Raise();
 
@@ -2560,7 +2561,7 @@ local NewColorPicker do
 
         holder.opacityFunc = function()
             local r, g, b = ColorPickerFrame:GetColorRGB();
-            local a = 1 - OpacitySliderFrame:GetValue();
+            local a = 1 - ColorPickerFrame:GetColorAlpha();
 
             holder:SetValue(r, g, b, a);
         end
@@ -2571,7 +2572,7 @@ local NewColorPicker do
             end
 
             local r, g, b = ColorPickerFrame:GetColorRGB();
-            local a = 1 - OpacitySliderFrame:GetValue();
+            local a = 1 - ColorPickerFrame:GetColorAlpha();
 
             holder:SetValue(r, g, b, a);
         end
@@ -2596,7 +2597,7 @@ local NewColorPicker do
         ColorPickerButtons:Hide();
     end);
 
-    ColorPickerOkayButton:HookScript('OnClick', function()
+    ColorPickerFrame.Footer.OkayButton:HookScript('OnClick', function()
         StripesDB.last_used_hex_color = U.RGB2HEX(ColorPickerFrame:GetColorRGB());
 
         LastUsedColorButton:SetColor(StripesDB.last_used_hex_color);
