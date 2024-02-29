@@ -4,7 +4,7 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local pairs, ipairs, select, type, unpack, tostring, tonumber, string_format, string_find, string_len, string_sub, string_gsub, string_byte, math_floor = pairs, ipairs, select, type, unpack, tostring, tonumber, string.format, string.find, string.len, string.sub, string.gsub, string.byte, math.floor;
 
 -- WoW/Lua API
-local strsplit = strsplit;
+local strsplit, GetTime = strsplit, GetTime;
 
 -- WoW API
 local UnitClassBase, UnitDetailedThreatSituation, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID =
@@ -131,12 +131,9 @@ do
         local tooltipData = C_TooltipInfo.GetHyperlink(string_format(UNIT_CREATURE_LINK, id));
 
         if tooltipData then
-            TooltipUtil.SurfaceArgs(tooltipData);
-
             local line = tooltipData.lines and tooltipData.lines[1];
 
             if line then
-                TooltipUtil.SurfaceArgs(line);
                 name = line.leftText or UNKNOWN;
             end
 
@@ -162,12 +159,9 @@ do
         local tooltipData = C_TooltipInfo.GetHyperlink(string_format(UNIT_CREATURE_LINK, id));
 
         if tooltipData then
-            TooltipUtil.SurfaceArgs(tooltipData);
-
             local line = tooltipData.lines and tooltipData.lines[2];
 
             if line then
-                TooltipUtil.SurfaceArgs(line);
                 sublabel = line and line.leftText;
             end
         end
@@ -361,27 +355,41 @@ U.IsAffixActive = function(affixID)
     return false;
 end
 
-U.UnitHasAura = function(unit, spellId)
+U.UnitHasAura = function(unit, spellIdOrTable, checkFunction)
     local Cache = S:GetModule('Auras_Cache');
 
     if not Cache then
         return;
     end
 
-    local isTable = type(spellId) == 'table';
-
-    if isTable then
+    if checkFunction then
         local allAuras = Cache:GetAll(unit);
 
         if allAuras then
             for _, aura in pairs(allAuras) do
-                if spellId[aura.spellId] then
+                if checkFunction(aura) then
                     return aura;
                 end
             end
         end
     else
-        return Cache:Get(unit, spellId);
+        local isTable = type(spellIdOrTable) == 'table';
+
+        if isTable then
+            local allAuras = Cache:GetAll(unit);
+
+            if allAuras then
+                for _, aura in pairs(allAuras) do
+                    if spellIdOrTable[aura.spellId] then
+                        return aura;
+                    end
+                end
+            end
+        else
+            local aura = Cache:Get(unit, spellIdOrTable);
+
+            return aura;
+        end
     end
 end
 
@@ -685,7 +693,7 @@ U.GlowStopAll = function(frame, glowKey)
     LCG.ButtonGlow_Stop(frame);
 end
 
-U.MakeAutoFontSize = function(fontString, fontSizeStep, fontSizeMinLimit)
+U.AutoAdjustFontSize = function(fontString, fontSizeStep, fontSizeMinLimit)
     if not fontString or fontString.autoFontSize then
         return;
     end
@@ -696,7 +704,7 @@ U.MakeAutoFontSize = function(fontString, fontSizeStep, fontSizeMinLimit)
     hooksecurefunc(fontString, 'SetText', function(self, text)
         local fontValue, fontSize, fontOutline = self:GetFont();
 
-        if fontSize == fontSizeMinLimit then
+        if fontSize <= fontSizeMinLimit then
             return;
         end
 
