@@ -42,23 +42,14 @@ local function TargetChanged(unitframe)
             if NOT_ME then
                 unitframe.TargetName:SetText('');
             else
-                if ROLE_ICON and partyRolesCache[PlayerData.Name] then
-                    unitframe.TargetName:SetText('» ' .. partyRolesCache[PlayerData.Name] .. ' ' .. YOU);
-                else
-                    unitframe.TargetName:SetText('» ' .. YOU);
-                end
-
+                local roleIconText = ROLE_ICON and partyRolesCache[PlayerData.Name] and ('» ' .. partyRolesCache[PlayerData.Name] .. ' ' .. YOU) or ('» ' .. YOU);
+                unitframe.TargetName:SetText(roleIconText);
                 unitframe.TargetName:SetTextColor(1, 0.2, 0.2);
             end
         else
             local targetName = GetCachedName(unitframe.data.targetName, true, true, true);
-
-            if ROLE_ICON and partyRolesCache[unitframe.data.targetName] then
-                unitframe.TargetName:SetText('» ' .. partyRolesCache[unitframe.data.targetName] .. ' '.. targetName);
-            else
-                unitframe.TargetName:SetText('» ' .. targetName);
-            end
-
+            local roleIconText = ROLE_ICON and partyRolesCache[unitframe.data.targetName] and ('» ' .. partyRolesCache[unitframe.data.targetName] .. ' ' .. targetName) or ('» ' .. targetName);
+            unitframe.TargetName:SetText(roleIconText);
             unitframe.TargetName:SetTextColor(GetUnitColor(unitframe.data.unit .. 'target', 2));
         end
 
