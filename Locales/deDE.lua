@@ -111,7 +111,7 @@ L['SPEC_HEALER_ONLY'] = 'Nur Heiler';
 L['MINIMAP_BUTTON_LMB'] = 'Linksklick';
 L['MINIMAP_BUTTON_OPEN'] = 'Öffne «Stripes» AddOn Fenster';
 L['MINIMAP_BUTTON_RMB'] = 'Rechtsklick';
-L['MINIMAP_BUTTON_HIDE'] = 'Verstecke diesen Button';
+L['MINIMAP_BUTTON_HIDE'] = 'Blenden Sie die Schaltfläche auf der Minikarte aus';
 L['MINIMAP_BUTTON_COMMAND_SHOW'] = 'Gib den Befehl /stripes minimap ein, um den Minimap Button erneut anzuzeigen';
 L['MINIMAP_ACTIVE_PROFILE'] = 'Aktives Profil';
 

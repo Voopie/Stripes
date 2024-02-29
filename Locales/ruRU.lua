@@ -111,7 +111,7 @@ L['SPEC_HEALER_ONLY'] = 'Только лекарь';
 L['MINIMAP_BUTTON_LMB'] = 'ЛКМ';
 L['MINIMAP_BUTTON_OPEN'] = 'Открыть настройки «Stripes»';
 L['MINIMAP_BUTTON_RMB'] = 'ПКМ';
-L['MINIMAP_BUTTON_HIDE'] = 'Скрыть эту кнопку';
+L['MINIMAP_BUTTON_HIDE'] = 'Скрыть кнопку у миникарты';
 L['MINIMAP_BUTTON_COMMAND_SHOW'] = 'Напишите в чате /stripes minimap, чтобы снова показать кнопку у миникарты';
 L['MINIMAP_ACTIVE_PROFILE'] = 'Активный профиль';
 

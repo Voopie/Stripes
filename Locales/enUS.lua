@@ -111,7 +111,7 @@ L['SPEC_HEALER_ONLY'] = 'Healer only';
 L['MINIMAP_BUTTON_LMB'] = 'LMB';
 L['MINIMAP_BUTTON_OPEN'] = 'Open «Stripes» options';
 L['MINIMAP_BUTTON_RMB'] = 'RMB';
-L['MINIMAP_BUTTON_HIDE'] = 'Hide this button';
+L['MINIMAP_BUTTON_HIDE'] = 'Hide the button on the minimap';
 L['MINIMAP_BUTTON_COMMAND_SHOW'] = 'Use /stripes minimap to show the minimap button again';
 L['MINIMAP_ACTIVE_PROFILE'] = 'Active profile';
 
