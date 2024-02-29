@@ -11,11 +11,13 @@ local MAX_NUM_RESULTS = 5;
 local GLOW_TIME_SECONDS = 5;
 local BUTTON_HEIGHT = 28;
 
-local glowColor = {1, 0.33, 0};
+local glowColor = { 1, 0.33, 0 };
 
 local searchIndex = {};
 local frame;
 local buttons = {};
+
+Module.numResults = 0;
 
 function Module:GetList()
     return searchIndex;
@@ -166,7 +168,7 @@ function Module:KeyHandling(editbox, key)
     buttons[editbox.tabIndex]:SetFocus();
 end
 
-function Module:AddButton(name, func, numResults, editbox)
+function Module:AddButton(name, func, editbox)
     if not frame then
         return;
     end
@@ -177,12 +179,12 @@ function Module:AddButton(name, func, numResults, editbox)
 
     button:ClearAllPoints();
 
-    if numResults == 1 then
+    if self.numResults == 1 then
         PixelUtil.SetPoint(button, 'TOPLEFT', frame, 'TOPLEFT', 0, 0);
         PixelUtil.SetPoint(button, 'TOPRIGHT', frame, 'TOPRIGHT', 0, 0);
     else
-        PixelUtil.SetPoint(button, 'TOPLEFT', buttons[numResults - 1], 'BOTTOMLEFT', 0, 0);
-        PixelUtil.SetPoint(button, 'TOPRIGHT', buttons[numResults - 1], 'BOTTOMRIGHT', 0, 0);
+        PixelUtil.SetPoint(button, 'TOPLEFT', buttons[self.numResults - 1], 'BOTTOMLEFT', 0, 0);
+        PixelUtil.SetPoint(button, 'TOPRIGHT', buttons[self.numResults - 1], 'BOTTOMRIGHT', 0, 0);
     end
 
     if isNew then
@@ -276,66 +278,76 @@ function Module:AddButton(name, func, numResults, editbox)
     button:Show();
 end
 
+function Module:ClearSearchData(editbox)
+    self.numResults = 0;
+
+    wipe(buttons);
+    editbox.tabIndex = 0;
+    frame.buttonPool:ReleaseAll();
+end
+
+function Module:PerformExactSearch(searchString, editbox)
+    for name, func in pairs(self:GetList()) do
+        if L[name] and string_find(string_lower(L[name]), searchString, 1, true) then
+            self.numResults = self.numResults + 1;
+
+            self:AddButton(L[name], func, editbox);
+
+            if self.numResults == MAX_NUM_RESULTS then
+                break;
+            end
+        end
+    end
+end
 
 local prepareFuzzy = {};
 
-local function GetCallback(str)
+local function GetFuzzyCallback(searchString)
     for name, func in pairs(searchIndex) do
-        if L[name] == str then
+        if L[name] == searchString then
             return func;
         end
     end
 end
 
-function Module:Find(editbox, str)
-    assert(type(str) == 'string', string.format('bad argument to %s (string expected, got %s)', 'Find', type(str)));
-    str = string_lower(str);
+function Module:PerformFuzzySearch(searchString, editbox)
+    wipe(prepareFuzzy);
 
-    local numResults = 0;
-
-    if strlenutf8(str) > 2 then
-        editbox.tabIndex = 0;
-        wipe(buttons);
-        frame.buttonPool:ReleaseAll();
-
-        if USE_FUZZY then
-            wipe(prepareFuzzy);
-
-            for name, _ in pairs(self:GetList()) do
-                if L[name] then
-                    table.insert(prepareFuzzy, L[name]);
-                end
-            end
-
-            local filtered = FZY.filter(str, prepareFuzzy);
-
-            table.sort(filtered, function(a, b) return a[3] > b[3]; end);
-
-            for _, result in ipairs(filtered) do
-                numResults = numResults + 1;
-
-                self:AddButton(prepareFuzzy[result[1]], GetCallback(prepareFuzzy[result[1]]), numResults, editbox);
-
-                if numResults == MAX_NUM_RESULTS then
-                    break;
-                end
-            end
-        else
-            for name, func in pairs(self:GetList()) do
-                if L[name] and string_find(string_lower(L[name]), str, 1, true) then
-                    numResults = numResults + 1;
-
-                    self:AddButton(L[name], func, numResults, editbox);
-
-                    if numResults == MAX_NUM_RESULTS then
-                        break;
-                    end
-                end
-            end
+    for name, _ in pairs(self:GetList()) do
+        if L[name] then
+            table.insert(prepareFuzzy, L[name]);
         end
     end
 
-    if numResults > 0 then
+    local filtered = FZY.filter(searchString, prepareFuzzy);
+    table.sort(filtered, function(a, b) return a[3] > b[3]; end);
+
+    for _, result in ipairs(filtered) do
+        self.numResults = self.numResults + 1;
+
+        self:AddButton(prepareFuzzy[result[1]], GetFuzzyCallback(prepareFuzzy[result[1]]), editbox);
+
+        if self.numResults == MAX_NUM_RESULTS then
+            break;
+        end
+    end
+end
+
+function Module:Find(editbox, searchString)
+    assert(type(searchString) == 'string', string.format('bad argument to %s (string expected, got %s)', 'Find', type(searchString)));
+    searchString = string_lower(searchString);
+
+    self:ClearSearchData(editbox);
+
+    if strlenutf8(searchString) > 2 then
+        if USE_FUZZY then
+            self:PerformFuzzySearch(searchString, editbox);
+        else
+            self:PerformExactSearch(searchString, editbox);
+        end
+    end
+
+    if self.numResults > 0 then
         self:UpdateFrameSize();
         self:ShowFrame();
     else
