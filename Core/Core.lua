@@ -76,71 +76,71 @@ local embeds     = Eventer.frame.embeds;
 local embedsUnit = Eventer.frameUnit.embedsUnit;
 local addons     = Eventer.frame.addons;
 
-Eventer.frame:SetScript('OnEvent', function(_, event, ...)
-    if not embeds[event] then
+Eventer.frame:SetScript('OnEvent', function(_, eventName, ...)
+    if not embeds[eventName] then
         return;
     end
 
-    for _, data in ipairs(embeds[event]) do
-        for callback, func in pairs(data) do
-            if func == 0 then
-                callback[event](callback, ...);
+    for _, entry in ipairs(embeds[eventName]) do
+        for registeredCallback, registeredFunction in pairs(entry) do
+            if registeredFunction == 0 then
+                registeredCallback[eventName](registeredCallback, ...);
             else
-                if callback[func] then
-                    callback[func](callback, ...);
+                if registeredCallback[registeredFunction] then
+                    registeredCallback[registeredFunction](registeredCallback, ...);
                 else
-                    func(...);
+                    registeredFunction(...);
                 end
             end
         end
     end
 end);
 
-Eventer.frameUnit:SetScript('OnEvent', function(_, event, ...)
-    if not embedsUnit[event] then
+Eventer.frameUnit:SetScript('OnEvent', function(_, eventName, ...)
+    if not embedsUnit[eventName] then
         return;
     end
 
-    for _, data in ipairs(embedsUnit[event]) do
-        for callback, func in pairs(data) do
-            if func == 0 then
-                callback[event](callback, ...);
+    for _, entry in ipairs(embedsUnit[eventName]) do
+        for registeredCallback, registeredFunction in pairs(entry) do
+            if registeredFunction == 0 then
+                registeredCallback[eventName](registeredCallback, ...);
             else
-                if callback[func] then
-                    callback[func](callback, ...);
+                if registeredCallback[registeredFunction] then
+                    registeredCallback[registeredFunction](registeredCallback, ...);
                 else
-                    func(...);
+                    registeredFunction(...);
                 end
             end
         end
     end
 end);
 
-function Eventer:RegisterEvent(event, callback, func)
-    if self:IsEventRegistered(event, callback) then
+function Eventer:RegisterEvent(eventName, eventCallback, eventFunction)
+    if self:IsEventRegistered(eventName, eventCallback) then
         return;
     end
 
-    if func == nil then
-        func = 0;
+    if eventFunction == nil then
+        eventFunction = 0;
     end
 
-    if embeds[event] == nil then
-        embeds[event] = {};
-        Eventer.frame:RegisterEvent(event);
+    if embeds[eventName] == nil then
+        embeds[eventName] = {};
+        Eventer.frame:RegisterEvent(eventName);
     end
 
-    table_insert(embeds[event], { [callback] = func });
+    table_insert(embeds[eventName], { [eventCallback] = eventFunction });
 end
 
-function Eventer:IsEventRegistered(event, callback)
-    if not embeds[event] then
+function Eventer:IsEventRegistered(eventName, eventCallback)
+    if not embeds[eventName] then
         return false;
     end
 
-    for _, data in ipairs(embeds[event]) do
-        for c, _ in pairs(data) do
-            if callback == c then
+    for _, entry in ipairs(embeds[eventName]) do
+        for registeredCallback, _ in pairs(entry) do
+            if registeredCallback == eventCallback then
                 return true;
             end
         end
@@ -149,14 +149,14 @@ function Eventer:IsEventRegistered(event, callback)
     return false;
 end
 
-function Eventer:IsUnitEventRegistered(event, callback)
-    if not embedsUnit[event] then
+function Eventer:IsUnitEventRegistered(eventName, eventCallback)
+    if not embedsUnit[eventName] then
         return false;
     end
 
-    for _, data in ipairs(embedsUnit[event]) do
-        for c, _ in pairs(data) do
-            if callback == c then
+    for _, entry in ipairs(embedsUnit[eventName]) do
+        for registeredCallback, _ in pairs(entry) do
+            if registeredCallback == eventCallback then
                 return true;
             end
         end
@@ -165,137 +165,138 @@ function Eventer:IsUnitEventRegistered(event, callback)
     return false;
 end
 
-function Eventer:RegisterUnitEvent(event, callback, unit1, unit2, func)
+function Eventer:RegisterUnitEvent(eventName, eventCallback, unit1, unit2, func)
     if func == nil then
         func = 0;
     end
 
     unit1 = unit1 or 'player';
 
-    if embedsUnit[event] == nil then
-        embedsUnit[event] = {};
+    if embedsUnit[eventName] == nil then
+        embedsUnit[eventName] = {};
 
         if unit2 and unit2 ~= '' then
-            Eventer.frameUnit:RegisterUnitEvent(event, unit1, unit2);
+            Eventer.frameUnit:RegisterUnitEvent(eventName, unit1, unit2);
         else
-            Eventer.frameUnit:RegisterUnitEvent(event, unit1);
+            Eventer.frameUnit:RegisterUnitEvent(eventName, unit1);
         end
     end
 
-    table_insert(embedsUnit[event], { [callback] = func });
+    table_insert(embedsUnit[eventName], { [eventCallback] = func });
 end
 
-function Eventer:UnregisterEvent(event, callback)
-    if not embeds[event] then
+function Eventer:UnregisterEvent(eventName, eventCallback)
+    if not embeds[eventName] then
         return;
     end
 
-    if not self:IsEventRegistered(event, callback) then
+    if not self:IsEventRegistered(eventName, eventCallback) then
         return;
     end
 
-    for index, data in ipairs(embeds[event]) do
-        for cb, _ in pairs(data) do
-            if cb == callback then
-                table_remove(embeds[event], index);
+    for i, entry in ipairs(embeds[eventName]) do
+        for registeredCallback, _ in pairs(entry) do
+            if registeredCallback == eventCallback then
+                table_remove(embeds[eventName], i);
             end
         end
     end
 
-    if #embeds[event] == 0 then
-        embeds[event] = nil;
-        Eventer.frame:UnregisterEvent(event);
+    if #embeds[eventName] == 0 then
+        embeds[eventName] = nil;
+        Eventer.frame:UnregisterEvent(eventName);
     end
 end
 
-function Eventer:UnregisterUnitEvent(event, callback)
-    if not embedsUnit[event] then
+function Eventer:UnregisterUnitEvent(eventName, eventCallback)
+    if not embedsUnit[eventName] then
         return;
     end
 
-    for index, data in ipairs(embedsUnit[event]) do
-        for cb, _ in pairs(data) do
-            if cb == callback then
-                table_remove(embedsUnit[event], index)
+    for i, entry in ipairs(embedsUnit[eventName]) do
+        for registeredCallback, _ in pairs(entry) do
+            if registeredCallback == eventCallback then
+                table_remove(embedsUnit[eventName], i)
             end
         end
     end
 
-    if #embedsUnit[event] == 0 then
-        embedsUnit[event] = nil;
-        Eventer.frameUnit:UnregisterEvent(event);
+    if #embedsUnit[eventName] == 0 then
+        embedsUnit[eventName] = nil;
+        Eventer.frameUnit:UnregisterEvent(eventName);
     end
 end
 
-function Eventer:ADDON_LOADED(name)
-    if not addons[name] then
+function Eventer:ADDON_LOADED(addonName)
+    if not addons[addonName] then
         return;
     end
 
-    for _, data in ipairs(addons[name]) do
-        for callback, func in pairs(data) do
-            if func == 0 then
-                callback[name](callback);
+    for _, entry in ipairs(addons[addonName]) do
+        for registeredCallback, registeredFunction in pairs(entry) do
+            if registeredFunction == 0 then
+                registeredCallback[addonName](registeredCallback);
             else
-                if callback[func] then
-                    callback[func](callback, name);
+                if registeredCallback[registeredFunction] then
+                    registeredCallback[registeredFunction](registeredCallback, addonName);
                 else
-                    func(name);
+                    registeredFunction(addonName);
                 end
             end
 
-            if func or func == 0 or callback[func] then
-                self:UnregisterAddon(name, callback, func);
+            if registeredFunction or registeredFunction == 0 or registeredCallback[registeredFunction] then
+                self:UnregisterAddon(addonName, registeredCallback, registeredFunction);
             end
         end
     end
 end
 
-function Eventer:RegisterAddon(name, callback, func)
-    if func == nil then
-        func = 0;
+function Eventer:RegisterAddon(addonName, addonCallback, addonFunction)
+    if addonFunction == nil then
+        addonFunction = 0;
     end
 
-    if IsAddOnLoaded(name) then
-        if func == 0 then
-            callback[name](callback);
+    if IsAddOnLoaded(addonName) then
+        if addonFunction == 0 then
+            addonCallback[addonName](addonCallback);
         else
-            if callback[func] then
-                callback[func](callback, name);
+            if addonCallback[addonFunction] then
+                addonCallback[addonFunction](addonCallback, addonName);
             else
-                func(name);
+                addonFunction(addonName);
             end
         end
     else
         self:RegisterEvent('ADDON_LOADED', self);
 
-        if addons[name] == nil then
-            addons[name] = {};
+        if addons[addonName] == nil then
+            addons[addonName] = {};
         end
 
-        table_insert(addons[name], { [callback] = func });
+        table_insert(addons[addonName], { [addonCallback] = addonFunction });
     end
 end
 
-function Eventer:UnregisterAddon(name, callback, func)
-    if not addons[name] then
+function Eventer:UnregisterAddon(addonName, addonCallback, addonFunction)
+    if not addons[addonName] then
         return;
     end
 
-    if func == nil then
-        func = 0;
+    if addonFunction == nil then
+        addonFunction = 0;
     end
 
-    for index, data in ipairs(addons[name]) do
-        for cb, ff in pairs(data) do
-            if cb == callback and ff == func then
-                table_remove(addons[name], index);
+    for i, entry in ipairs(addons[addonName]) do
+        for registeredCallback, registeredFunction in pairs(entry) do
+            if registeredCallback == addonCallback and registeredFunction == addonFunction then
+                table_remove(addons[addonName], i);
+                break;
             end
         end
     end
 
-    if #addons[name] == 0 then
-        addons[name] = nil;
+    if #addons[addonName] == 0 then
+        addons[addonName] = nil;
     end
 end
 
@@ -303,36 +304,36 @@ AddOn.Eventer = Eventer;
 
 local ModuleMixin = {};
 
-function ModuleMixin:RegisterEvent(event, func)
-    Eventer:RegisterEvent(event, self, func);
+function ModuleMixin:RegisterEvent(eventName, func)
+    Eventer:RegisterEvent(eventName, self, func);
 end
 
-function ModuleMixin:UnregisterEvent(event)
-    Eventer:UnregisterEvent(event, self);
+function ModuleMixin:UnregisterEvent(eventName)
+    Eventer:UnregisterEvent(eventName, self);
 end
 
-function ModuleMixin:IsEventRegistered(event)
-    return Eventer:IsEventRegistered(event, self);
+function ModuleMixin:IsEventRegistered(eventName)
+    return Eventer:IsEventRegistered(eventName, self);
 end
 
-function ModuleMixin:RegisterUnitEvent(event, unit1, unit2, func)
-    Eventer:RegisterUnitEvent(event, self, unit1, unit2, func);
+function ModuleMixin:RegisterUnitEvent(eventName, unit1, unit2, func)
+    Eventer:RegisterUnitEvent(eventName, self, unit1, unit2, func);
 end
 
-function ModuleMixin:UnregisterUnitEvent(event)
-    Eventer:UnregisterUnitEvent(event, self);
+function ModuleMixin:UnregisterUnitEvent(eventName)
+    Eventer:UnregisterUnitEvent(eventName, self);
 end
 
-function ModuleMixin:IsUnitEventRegistered(event)
-    return Eventer:IsUnitEventRegistered(event, self);
+function ModuleMixin:IsUnitEventRegistered(eventName)
+    return Eventer:IsUnitEventRegistered(eventName, self);
 end
 
-function ModuleMixin:RegisterAddon(name, func)
-    Eventer:RegisterAddon(name, self, func);
+function ModuleMixin:RegisterAddon(addonName, func)
+    Eventer:RegisterAddon(addonName, self, func);
 end
 
-function ModuleMixin:UnregisterAddon(name)
-    Eventer:UnregisterAddon(name, self);
+function ModuleMixin:UnregisterAddon(addonName)
+    Eventer:UnregisterAddon(addonName, self);
 end
 
 function ModuleMixin:CheckNamePlate(nameplate)
@@ -402,42 +403,24 @@ function ModuleMixin:AddedNamePlateForUnit(unit, func)
     func(unitframe);
 end
 
-function ModuleMixin:SecureHook(name, func1, func2, func3)
-    if not _G[name] then
-        return;
+function ModuleMixin:SecureHook(objectName, methodName, func)
+    if not _G[objectName] then
+        error('SecureHook: «' .. objectName.. '» is not exists! («' .. self.Name .. '»)');
     end
 
-    if self.Hooks[name] then
-        error('SecureHook: «' .. name .. '» was already hooked in «' .. self.Name .. '» module!');
+    if self.Hooks[objectName] and self.Hooks[objectName][methodName] then
+        error('SecureHook: «' .. objectName .. '.' .. methodName .. ' » was already hooked in «' .. self.Name .. '» module!');
     end
 
-    if func3 then
-        self.Hooks[name] = function(...)
-            func1(...);
-            func2(...);
-            func3(...);
-        end
-    elseif func2 then
-        self.Hooks[name] = function(...)
-            func1(...);
-            func2(...);
-        end
-    else
-        self.Hooks[name] = func1;
-    end
+    self.Hooks[objectName] = self.Hooks[objectName] or {};
+    self.Hooks[objectName][methodName] = true;
 
-    if type(self.Hooks[name]) == 'table' then
-        for hookMethod, hookFunc2 in pairs(self.Hooks[name]) do
-            hooksecurefunc(_G[name], hookMethod, hookFunc2);
-        end
-    else
-        hooksecurefunc(name, self.Hooks[name]);
-    end
+    hooksecurefunc(_G[objectName], methodName, func);
 end
 
 function ModuleMixin:SecureUnitFrameHook(name, func1, func2, func3)
     if not _G[name] then
-        return;
+        error('SecureUnitFrameHook: «' .. name.. '» is not exists! («' .. self.Name .. '»)');
     end
 
     if self.Hooks[name] then
@@ -553,8 +536,7 @@ MinimapButton.Initialize = function()
     local LDB_Stripes = LDB:NewDataObject('Stripes', {
         type          = 'launcher',
         text          = 'Stripes',
-        icon          = NAMESPACE[1].Media.StripesArt.TEXTURE,
-        iconCoords    = NAMESPACE[1].Media.StripesArt.COORDS.MINI_NOSTROKE_GRADIENT,
+        icon          = NAMESPACE[1].Media.LOGO_MINI,
         OnClick       = MinimapButton.OnClick,
         OnTooltipShow = MinimapButton.OnTooltipShow,
     });
@@ -566,6 +548,8 @@ MinimapButton.Initialize = function()
             LDBIcon:GetMinimapButton('Stripes').icon.UpdateCoord = MinimapButton.UpdateCoord;
             LDBIcon:GetMinimapButton('Stripes').icon:UpdateCoord();
         end
+
+        LDBIcon:AddButtonToCompartment('Stripes');
     end
 end
 
