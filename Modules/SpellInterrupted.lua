@@ -23,27 +23,26 @@ local StripesSpellInterruptedCooldownFont = CreateFont('StripesSpellInterruptedC
 local StripesSpellInterruptedCasterFont   = CreateFont('StripesSpellInterruptedCasterFont');
 
 local durations = {
-    [ 47528] = 4, -- Death Knight -- Mind Freeze
-    [ 47476] = 3, -- Death Knight (Blood) -- Strangulate (PvP talent)
+    [ 47528] = 3, -- Death Knight -- Mind Freeze
+    [ 47476] = 4, -- Death Knight (Blood) -- Strangulate (PvP talent)
     [183752] = 3, -- Demon Hunter -- Disrupt
-    [204490] = 6, -- Demon Hunter (Vengeance) -- Sigil of Silence
     [ 32737] = 3, -- Demon Hunter (Vengeance) -- Sigil of Silence (hmmm... Arcane Torrent?)
-    [106839] = 4, -- Druid (Feral/Guardian) -- Skull bash
-    [ 78675] = 5, -- Druid (Balance) -- Solar beam
+    [106839] = 3, -- Druid (Feral/Guardian) -- Skull bash
+    [ 78675] = 8, -- Druid (Balance) -- Solar beam
     [147362] = 3, -- Hunter -- Counter shot
     [187707] = 3, -- Hunter (Survival) -- Muzzle
-    [  2139] = 6, -- Mage -- Counterspell
-    [116705] = 4, -- Monk -- Spear Hand Strike
+    [  2139] = 5, -- Mage -- Counterspell
+    [116705] = 3, -- Monk -- Spear Hand Strike
     [ 31935] = 3, -- Paladin (Protection) -- Avenger's Shield
-    [ 96231] = 4, -- Paladin -- Rebuke
-    [ 15487] = 3, -- Priest (Shadow) -- Silence
-    [  1766] = 5, -- Rogue -- Kick
-    [ 57994] = 3, -- Shaman -- Wild Shear
-    [ 19647] = 6, -- Warlock -- Spell Lock (felhunter)
-    [119910] = 6, -- Warlock -- Spell Lock NOTE: Command Demon when felhunter summoned
-    [132409] = 6, -- Warlock -- Spell Lock NOTE: Command Demon when felhunter sacrificed
-    [212619] = 6, -- Warlock -- Call Felhunter (Demonology honor talent)
-    [  6552] = 4, -- Warrior -- Pummel
+    [ 96231] = 3, -- Paladin -- Rebuke
+    [ 15487] = 4, -- Priest (Shadow) -- Silence
+    [  1766] = 3, -- Rogue -- Kick
+    [ 57994] = 2, -- Shaman -- Wild Shear
+    [ 19647] = 5, -- Warlock -- Spell Lock (felhunter)
+    [119910] = 5, -- Warlock -- Spell Lock NOTE: Command Demon when felhunter summoned
+    [132409] = 5, -- Warlock -- Spell Lock NOTE: Command Demon when felhunter sacrificed
+    [212619] = 5, -- Warlock -- Call Felhunter (Demonology honor talent)
+    [  6552] = 3, -- Warrior -- Pummel
     [351338] = 4, -- Evoker -- Quell
 };
 
@@ -53,9 +52,10 @@ local auras = {
     [204490] = true, -- Sigil of Silence - Demon Hunter (Vengeance)
     [202137] = true, -- Sigil of Silence - Demon Hunter (Vengeance)
     [207682] = true, -- Sigil of Silence - Demon Hunter (Vengeance)
+    [214459] = true, -- Choking Flames - Ember of Nullification (Trinket)
 };
 
-local DEFAULT_DURATION = 4;
+local DEFAULT_DURATION = 3;
 
 local function Create(unitframe)
     if unitframe.SpellInterrupted then
@@ -129,6 +129,13 @@ local function UpdateByAura(unitframe)
     local aura = UnitHasAura(unitframe.data.unit, auras);
 
     if not aura then
+        if not unitframe.SpellInterrupted.onInterrupt then
+            unitframe.SpellInterrupted.expTime  = 0;
+            unitframe.SpellInterrupted.destGUID = nil;
+            unitframe.SpellInterrupted.byAura   = nil;
+            unitframe.SpellInterrupted:Hide();
+        end
+
         return;
     end
 
@@ -138,6 +145,7 @@ local function UpdateByAura(unitframe)
 
     unitframe.SpellInterrupted.expTime  = aura.expirationTime;
     unitframe.SpellInterrupted.destGUID = unitframe.data.unitGUID;
+    unitframe.SpellInterrupted.byAura   = true;
 
     if CASTER_NAME_SHOW and aura.sourceUnit then
         local name = GetCachedName(UnitName(aura.sourceUnit), true, true, false);
@@ -156,6 +164,7 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
     if not spellId then
         unitframe.SpellInterrupted.expTime  = 0;
         unitframe.SpellInterrupted.destGUID = nil;
+        unitframe.SpellInterrupted.onInterrupt = nil;
         unitframe.SpellInterrupted:Hide();
         return;
     end
@@ -166,8 +175,9 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
 
     CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, GetTime(), duration, duration > 0, true);
 
-    unitframe.SpellInterrupted.expTime  = GetTime() + duration;
-    unitframe.SpellInterrupted.destGUID = destGUID;
+    unitframe.SpellInterrupted.expTime     = GetTime() + duration;
+    unitframe.SpellInterrupted.destGUID    = destGUID;
+    unitframe.SpellInterrupted.onInterrupt = true;
 
     if CASTER_NAME_SHOW and (sourceGUID and sourceGUID ~= '') then
         local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(sourceGUID);
