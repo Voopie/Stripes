@@ -11,6 +11,9 @@ local TEXTURE = S.Media.Path .. 'Textures\\icons_healers';
 local SOUNDFILE_ID = 567458;
 
 local mobsIDs = {
+    -- Cataclysm
+    [41096] = true, -- Throne of the Tides: Naz'jar Oracle
+
     -- Warlords of Draenor
     [75713] = true, -- Shadowmoon Burial Grounds: Shadowmoon Bone-Mender
 
