@@ -34,25 +34,13 @@ local function Update(unitframe)
         return;
     end
 
-    if ONLY_IN_ARENA then
-        if PlayerState.inArena then
-            unitframe.ClassIcon.icon:SetTexCoord(unpack(classIconsCoords[unitframe.data.className]));
-            unitframe.ClassIcon:Show();
-        else
-            unitframe.ClassIcon:Hide();
-        end
+    local shouldShow = ONLY_IN_ARENA and PlayerState.inArena or ONLY_ENEMY and unitframe.data.unitType == 'ENEMY_PLAYER' or not ONLY_IN_ARENA and not ONLY_ENEMY;
+
+    if shouldShow then
+        unitframe.ClassIcon.icon:SetTexCoord(unpack(classIconsCoords[unitframe.data.className]));
+        unitframe.ClassIcon:Show();
     else
-        if ONLY_ENEMY then
-            if unitframe.data.unitType == 'ENEMY_PLAYER' then
-                unitframe.ClassIcon.icon:SetTexCoord(unpack(classIconsCoords[unitframe.data.className]));
-                unitframe.ClassIcon:Show();
-            else
-                unitframe.ClassIcon:Hide();
-            end
-        else
-            unitframe.ClassIcon.icon:SetTexCoord(unpack(classIconsCoords[unitframe.data.className]));
-            unitframe.ClassIcon:Show();
-        end
+        unitframe.ClassIcon:Hide();
     end
 end
 
