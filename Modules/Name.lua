@@ -61,59 +61,44 @@ local WHO_MODES = {
     [3] = 'ENEMY_NPC',
 };
 
+local ABBREVIATED_CACHE = {};
+local CUTTED_CACHE = {};
+local FIRST_MODE_CACHE = {};
+
+
 local function UpdateFont(unitframe)
     unitframe.name:SetFontObject(StripesNameFont);
 end
 
 local function GetPlayerName(unitframe)
-    if NAME_TRANSLIT then
-        if NAME_WITH_TITLE_ENABLED then
-            if unitframe.data.unitType == NAME_WITH_TITLE_UNIT_TYPE or NAME_WITH_TITLE_UNIT_TYPE == 'ALL' then
-                if NAME_REPLACE_DIACRITICS then
-                    return LDC:Replace(LT:Transliterate(unitframe.data.namePVP or unitframe.data.name));
-                else
-                    return LT:Transliterate(unitframe.data.namePVP or unitframe.data.name);
-                end
-            end
-        elseif NAME_WITHOUT_REALM then
-            if NAME_REPLACE_DIACRITICS then
-                return LDC:Replace(LT:Transliterate(unitframe.data.nameWoRealm or unitframe.data.name));
-            else
-                return LT:Transliterate(unitframe.data.nameWoRealm or unitframe.data.name);
-            end
-        end
+    local name = unitframe.data.name;
 
-        return NAME_REPLACE_DIACRITICS and LDC:Replace(LT:Transliterate(unitframe.data.name)) or LT:Transliterate(unitframe.data.name);
-    else
-        if NAME_WITH_TITLE_ENABLED then
-            if unitframe.data.unitType == NAME_WITH_TITLE_UNIT_TYPE or NAME_WITH_TITLE_UNIT_TYPE == 'ALL' then
-                if NAME_REPLACE_DIACRITICS then
-                    return LDC:Replace(unitframe.data.namePVP or unitframe.data.name);
-                else
-                    return unitframe.data.namePVP or unitframe.data.name;
-                end
-            end
-        elseif NAME_WITHOUT_REALM then
-            if NAME_REPLACE_DIACRITICS then
-                return LDC:Replace(unitframe.data.nameWoRealm or unitframe.data.name);
-            else
-                return unitframe.data.nameWoRealm or unitframe.data.name;
-            end
-        end
-
-        return NAME_REPLACE_DIACRITICS and LDC:Replace(unitframe.data.name) or unitframe.data.name;
+    if NAME_WITH_TITLE_ENABLED and (unitframe.data.unitType == NAME_WITH_TITLE_UNIT_TYPE or NAME_WITH_TITLE_UNIT_TYPE == 'ALL') then
+        name = unitframe.data.namePVP or name;
+    elseif NAME_WITHOUT_REALM then
+        name = unitframe.data.nameWoRealm or name;
     end
+
+    if NAME_TRANSLIT then
+        name = LT:Transliterate(name);
+    end
+
+    if NAME_REPLACE_DIACRITICS then
+        name = LDC:Replace(name);
+    end
+
+    return name;
 end
 
-local function AbbrSub(t)
+local function AbbreviateNameWithDot(t)
     return utf8sub(t, 1, 1) .. '.';
 end
 
-local function AbbrSubSpace(t)
+local function AbbreviateNameWithDotAndSpace(t)
     return utf8sub(t, 1, 1) .. '. ';
 end
 
-local function AbbrLast(name)
+local function AbbreviateNameLastWord(name)
     for n in string_gmatch(name, ABBR_LAST_FORMAT) do
         name = n;
     end
@@ -121,7 +106,7 @@ local function AbbrLast(name)
     return name;
 end
 
-local function AbbrFirst(name)
+local function AbbreviateNameFirstWord(name)
     for n in string_gmatch(name, ABBR_LAST_FORMAT) do
         return n;
     end
@@ -129,201 +114,206 @@ local function AbbrFirst(name)
     return name;
 end
 
-local ABBR_CACHE = {};
-
-local GetAbbreviatedName = {
-    [1] = function(name)
-        local oldName = name;
-        local keyName = oldName .. FIRST_MODE;
-
-        if ABBR_CACHE[keyName] then
-            return ABBR_CACHE[keyName];
-        end
-
-        if FIRST_MODE == 1 then
-            name = string_gsub(name or '', ABBR_FORMAT, AbbrSub);
-        elseif FIRST_MODE == 2 then
-            name = firstUpper(string_gsub(name or '', ABBR_FORMAT, AbbrSub));
-        elseif FIRST_MODE == 3 then
-            name = firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSub));
-        end
-
-        ABBR_CACHE[keyName] = name;
-
+local function ApplyCaseTransformation(name, caseTransformation)
+    if caseTransformation == 'upper' then
+        return firstUpper(name);
+    elseif caseTransformation == 'lower' then
+        return firstLower(name);
+    else
         return name;
-    end,
+    end
+end
 
-    [2] = function(name)
-        local oldName = name;
-        local keyName = oldName .. FIRST_MODE .. 'SPACE';
+local function GetCaseTransformation()
+    if FIRST_MODE == 2 then
+        return 'upper';
+    elseif FIRST_MODE == 3 then
+        return 'lower';
+    else
+        return 'none';
+    end
+end
 
-        if ABBR_CACHE[keyName] then
-            return ABBR_CACHE[keyName];
-        end
+local function GetCacheKey(oldName, suffix)
+    return oldName .. FIRST_MODE .. (suffix or '');
+end
 
-        if FIRST_MODE == 1 then
-            name = string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace);
-        elseif FIRST_MODE == 2 then
-            name = firstUpper(string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace));
-        elseif FIRST_MODE == 3 then
-            name = firstLower(string_gsub(name or '', ABBR_FORMAT, AbbrSubSpace));
-        end
+local function GetAbbreviatedName(name)
+    local oldName = name;
+    local caseTransformation = GetCaseTransformation();
+    local suffix = ABBR_MODE == 2 and 'SPACE' or ABBR_MODE == 3 and 'LAST' or ABBR_MODE == 4 and 'FIRST' or 'WOSPACE';
+    local keyName = GetCacheKey(oldName, suffix);
 
-        ABBR_CACHE[keyName] = name;
+    if ABBREVIATED_CACHE[keyName] then
+        return ABBREVIATED_CACHE[keyName];
+    end
 
-        return name;
-    end,
+    local format = ABBR_FORMAT;
+    local abbreviatedFunction = AbbreviateNameWithDot;
 
-    [3] = function(name)
-        local oldName = name;
-        local keyName = oldName .. FIRST_MODE .. 'LAST';
+    if ABBR_MODE == 2 then
+        abbreviatedFunction = AbbreviateNameWithDotAndSpace;
+    elseif ABBR_MODE == 3 then
+        abbreviatedFunction = AbbreviateNameLastWord;
+    elseif ABBR_MODE == 4 then
+        abbreviatedFunction = AbbreviateNameFirstWord;
+        format = ABBR_LAST_FORMAT;
+    end
 
-        if ABBR_CACHE[keyName] then
-            return ABBR_CACHE[keyName];
-        end
+    name = string_gsub(name or '', format, abbreviatedFunction);
+    name = ApplyCaseTransformation(name, caseTransformation);
 
-        if FIRST_MODE == 1 then
-            name = AbbrLast(name or '');
-        elseif FIRST_MODE == 2 then
-            name = firstUpper(AbbrLast(name or ''));
-        elseif FIRST_MODE == 3 then
-            name = firstLower(AbbrLast(name or ''));
-        end
+    ABBREVIATED_CACHE[keyName] = name;
 
-        ABBR_CACHE[keyName] = name;
-
-        return name;
-    end,
-
-    [4] = function(name)
-        local oldName = name;
-        local keyName = oldName .. FIRST_MODE .. 'FIRST';
-
-        if ABBR_CACHE[keyName] then
-            return ABBR_CACHE[keyName];
-        end
-
-        if FIRST_MODE == 1 then
-            name = AbbrFirst(name or '');
-        elseif FIRST_MODE == 2 then
-            name = firstUpper(AbbrFirst(name or ''));
-        elseif FIRST_MODE == 3 then
-            name = firstLower(AbbrFirst(name or ''));
-        end
-
-        ABBR_CACHE[keyName] = name;
-
-        return name;
-    end,
-};
-
-local CUTTED_CACHE = {};
+    return name;
+end
 
 local function GetCuttedName(name)
     local oldName = name;
-    local keyName = oldName .. FIRST_MODE .. NAME_CUT_NUMBER;
+    local caseTransformation = GetCaseTransformation();
+    local keyName = GetCacheKey(oldName, NAME_CUT_NUMBER);
 
     if CUTTED_CACHE[keyName] then
         return CUTTED_CACHE[keyName];
     end
 
-    if FIRST_MODE == 1 then
-        name = utf8sub(name, 0, NAME_CUT_NUMBER) or '';
-    elseif FIRST_MODE == 2 then
-        name = firstUpper(utf8sub(name, 0, NAME_CUT_NUMBER) or '');
-    elseif FIRST_MODE == 3 then
-        name = firstLower(utf8sub(name, 0, NAME_CUT_NUMBER) or '');
-    end
+    name = utf8sub(name, 0, NAME_CUT_NUMBER) or '';
+    name = ApplyCaseTransformation(name, caseTransformation);
 
     CUTTED_CACHE[keyName] = name;
 
     return name;
 end
 
-local function GetCustomName(npcId)
-    if npcId and O.db.custom_npc[npcId] then
-        return O.db.custom_npc[npcId].enabled and O.db.custom_npc[npcId].npc_new_name;
+local function GetFirstModeName(name)
+    local oldName = name;
+    local caseTransformation = GetCaseTransformation();
+    local keyName = GetCacheKey(oldName);
+
+    if FIRST_MODE_CACHE[keyName] then
+        return FIRST_MODE_CACHE[keyName];
+    end
+
+    name = ApplyCaseTransformation(name, caseTransformation);
+
+    FIRST_MODE_CACHE[keyName] = name;
+
+    return name;
+end
+
+local function HandleCustomName(unitframe)
+    if not CUSTOM_NPC_ENABLED then
+        unitframe.data.nameCustom = nil;
+        return false;
+    end
+
+    local npcId     = unitframe.data.npcId;
+    local customNpc = O.db.custom_npc[npcId];
+
+    if customNpc and customNpc.enabled and customNpc.npc_new_name then
+        unitframe.name:SetText(customNpc.npc_new_name);
+        unitframe.data.nameCustom = customNpc.npc_new_name;
+
+        return true;
     end
 end
 
-local FIRST_MODE_CACHE = {};
+local function HandleAbbreviatedName(unitframe)
+    if not ABBR_ENABLED then
+        unitframe.data.nameAbbr = nil;
+        return false;
+    end
+
+    if ABRR_UNIT_TYPE == 'ALL' or ABRR_UNIT_TYPE == unitframe.data.unitType then
+        local name;
+
+        if NAME_CUT_ENABLED and (NAME_CUT_UNIT_TYPE == 'ALL' or NAME_CUT_UNIT_TYPE == unitframe.data.unitType) then
+            name = GetCuttedName(GetAbbreviatedName(unitframe.data.name));
+        else
+            name = GetAbbreviatedName(unitframe.data.name);
+        end
+
+        unitframe.name:SetText(name);
+        unitframe.data.nameAbbr = name;
+
+        return true;
+    end
+end
+
+local function HandleCuttedName(unitframe)
+    if not NAME_CUT_ENABLED then
+        unitframe.data.nameCut = nil;
+        return false;
+    end
+
+    if NAME_CUT_UNIT_TYPE == 'ALL' or NAME_CUT_UNIT_TYPE == unitframe.data.unitType then
+        local name = GetCuttedName(unitframe.data.name);
+
+        unitframe.name:SetText(name);
+        unitframe.data.nameCut = name;
+
+        return true;
+    end
+end
+
+local function HandleFirstModeName(unitframe)
+    if FIRST_MODE == 1 then
+        unitframe.data.nameFirst = nil;
+        return false;
+    end
+
+    local name = GetFirstModeName(unitframe.data.name);
+
+    unitframe.name:SetText(name);
+    unitframe.data.nameFirst = name;
+
+    return true;
+end
+
+local function HandleArenaName(unitframe)
+    local arenaId = GetUnitArenaId(unitframe.data.unit);
+
+    if not arenaId then
+        return;
+    end
+
+    if SHOW_ARENA_ID_SOLO then
+        unitframe.name:SetText(arenaId);
+    else
+        unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, GetPlayerName(unitframe)));
+    end
+end
+
+local function HandlePlayerName(unitframe)
+    unitframe.name:SetText(GetPlayerName(unitframe));
+end
+
+-- ORDER IS IMPORTANT!
+local HandleNpcNameFunctions = {
+    HandleCustomName,
+    HandleAbbreviatedName,
+    HandleCuttedName,
+    HandleFirstModeName,
+};
 
 local function UpdateName(unitframe)
     if unitframe.data.commonUnitType == 'NPC' then
-        local customName = CUSTOM_NPC_ENABLED and GetCustomName(unitframe.data.npcId);
+        for _, handleFunction in ipairs(HandleNpcNameFunctions) do
+            local result = handleFunction(unitframe);
 
-        -- I don't like this Leaning Tower of Pisa...
-        if customName then
-            unitframe.name:SetText(customName);
-        elseif ABBR_ENABLED then
-            if unitframe.data.unitType == ABRR_UNIT_TYPE or ABRR_UNIT_TYPE == 'ALL' then
-                if NAME_CUT_ENABLED and (unitframe.data.unitType == NAME_CUT_UNIT_TYPE or NAME_CUT_UNIT_TYPE == 'ALL') then
-                    unitframe.name:SetText(utf8sub(GetAbbreviatedName[ABBR_MODE](unitframe.data.name) or '', 0, NAME_CUT_NUMBER));
-                else
-                    unitframe.name:SetText(GetAbbreviatedName[ABBR_MODE](unitframe.data.name));
-                end
-
-                unitframe.data.nameAbbr = unitframe.name:GetText();
-            else
-                if NAME_CUT_ENABLED then
-                    if unitframe.data.unitType == NAME_CUT_UNIT_TYPE or NAME_CUT_UNIT_TYPE == 'ALL' then
-                        unitframe.name:SetText(GetCuttedName(unitframe.data.name));
-                        unitframe.data.nameCut = unitframe.name:GetText();
-                    else
-                        unitframe.data.nameCut = nil;
-                    end
-                end
-
-                unitframe.data.nameAbbr = nil;
+            if result then
+                break;
             end
-        elseif NAME_CUT_ENABLED then
-            if unitframe.data.unitType == NAME_CUT_UNIT_TYPE or NAME_CUT_UNIT_TYPE == 'ALL' then
-                unitframe.name:SetText(GetCuttedName(unitframe.data.name));
-                unitframe.data.nameCut = unitframe.name:GetText();
-            else
-                unitframe.data.nameCut = nil;
-            end
-        elseif FIRST_MODE ~= 1 then
-            local nameFirst;
-
-            if FIRST_MODE_CACHE[unitframe.data.name .. FIRST_MODE] then
-                nameFirst = FIRST_MODE_CACHE[unitframe.data.name .. FIRST_MODE];
-            else
-                if FIRST_MODE == 2 then
-                    nameFirst = firstUpper(unitframe.data.name);
-                elseif FIRST_MODE == 3 then
-                    nameFirst = firstLower(unitframe.data.name);
-                end
-
-                FIRST_MODE_CACHE[unitframe.data.name .. FIRST_MODE] = nameFirst;
-            end
-
-            unitframe.name:SetText(nameFirst);
-            unitframe.data.nameFirst = nameFirst;
-        else
-            unitframe.data.nameAbbr  = nil;
-            unitframe.data.nameCut   = nil;
-            unitframe.data.nameFirst = nil;
         end
     end
 
-    if PlayerState.inArena and SHOW_ARENA_ID and unitframe.data.unitType == 'ENEMY_PLAYER' then
-        local arenaId = GetUnitArenaId(unitframe.data.unit);
-        if not arenaId then
-            return;
-        end
-
-        if SHOW_ARENA_ID_SOLO then
-            unitframe.name:SetText(arenaId);
-        else
-            unitframe.name:SetText(string_format(ARENAID_STRING_FORMAT, arenaId, GetPlayerName(unitframe)));
-        end
-
+    if unitframe.data.unitType == 'ENEMY_PLAYER' and SHOW_ARENA_ID and PlayerState.inArena then
+        HandleArenaName(unitframe);
         return;
     end
 
     if unitframe.data.unitType == 'ENEMY_PLAYER' or (unitframe.data.unitType == 'FRIENDLY_PLAYER' and not (IsNameOnlyMode() and NAME_ONLY_COLOR_HEALTH)) then
-        unitframe.name:SetText(GetPlayerName(unitframe));
+        HandlePlayerName(unitframe);
     end
 end
 
@@ -343,89 +333,95 @@ local function DefaultColor(frame)
     end
 end
 
+local function SetInitialTruncatedNameAnchor(unitframe, isLeftH, isCenterH, isRightH)
+    if not TRUNCATE then
+        return;
+    end
+
+    local offsetX1 = isLeftH and 0 or OFFSET_X;
+    local offsetY1 = 0;
+
+    local offsetX2 = isRightH and 0 or OFFSET_X;
+    local offsetY2 = 0;
+
+    PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', offsetX1, offsetY1);
+    PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', offsetX2, offsetY2);
+end
+
 local function UpdateAnchor(unitframe)
     unitframe.name:ClearAllPoints();
 
     if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
         unitframe.name:SetParent(unitframe);
+        unitframe.name:SetDrawLayer('ARTWORK', 0);
         unitframe.name:SetJustifyH('CENTER');
         PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, NAME_ONLY_OFFSET_Y);
 
         return;
     end
 
+    local isLeftH, isCenterH, isRightH  = POSITION == 1, POSITION == 2, POSITION == 3;
+    local isTopV,  isCenterV, isBottomV = POSITION_V == 1, POSITION_V == 2, POSITION_V == 3;
+
     unitframe.name:SetParent(unitframe.NameHolder or unitframe.healthBar);
     unitframe.name:SetDrawLayer('OVERLAY', 7);
+    unitframe.name:SetJustifyH(isLeftH and 'LEFT' or isCenterH and 'CENTER' or 'RIGHT');
 
-    if POSITION == 1 then -- LEFT
-        unitframe.name:SetJustifyH('LEFT');
+    SetInitialTruncatedNameAnchor(unitframe, isLeftH, isCenterH, isRightH);
 
+    if isLeftH then -- LEFT
         if TRUNCATE then
-            PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', 0, 0);
-            PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, 0);
-
-            if POSITION_V == 1 then
+            if isTopV then
                 PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
-            elseif POSITION_V == 2 then
+            elseif isCenterV then
                 PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, OFFSET_Y);
-            elseif POSITION_V == 3 then
+            elseif isBottomV then
                 PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
             end
         else
-            if POSITION_V == 1 then
+            if isTopV then
                 PixelUtil.SetPoint(unitframe.name, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', OFFSET_X, OFFSET_Y);
-            elseif POSITION_V == 2 then
+            elseif isCenterV then
                 PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, OFFSET_Y);
-            elseif POSITION_V == 3 then
+            elseif isBottomV then
                 PixelUtil.SetPoint(unitframe.name, 'TOPLEFT', unitframe.healthBar, 'BOTTOMLEFT', OFFSET_X, OFFSET_Y);
             end
         end
-
-    elseif POSITION == 2 then -- CENTER
-        unitframe.name:SetJustifyH('CENTER');
-
+    elseif isCenterH then -- CENTER
         if TRUNCATE then
-            PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, 0);
-            PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, 0);
-
-            if POSITION_V == 1 then
+            if isTopV then
                 PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
-            elseif POSITION_V == 2 then
+            elseif isCenterV then
                 PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, OFFSET_Y);
                 PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, OFFSET_Y);
-            elseif POSITION_V == 3 then
+            elseif isBottomV then
                 PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
             end
         else
-            if POSITION_V == 1 then
+            if isTopV then
                 PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, OFFSET_Y);
-            elseif POSITION_V == 2 then
+            elseif isCenterV then
                 PixelUtil.SetPoint(unitframe.name, 'CENTER', unitframe.healthBar, 'CENTER', OFFSET_X, OFFSET_Y);
-            elseif POSITION_V == 3 then
+            elseif isBottomV then
                 PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', OFFSET_X, OFFSET_Y);
             end
         end
-    elseif POSITION == 3 then -- RIGHT
-        unitframe.name:SetJustifyH('RIGHT');
-
+    elseif isRightH then -- RIGHT
         if TRUNCATE then
-            PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, 0);
-            PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, 0);
-
-            if POSITION_V == 1 then
+            if isTopV then
                 PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
-            elseif POSITION_V == 2 then
+            elseif isCenterV then
                 PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, OFFSET_Y);
                 PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, OFFSET_Y);
-            elseif POSITION_V == 3 then
+            elseif isBottomV then
                 PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
             end
         else
-            if POSITION_V == 1 then
+            if isTopV then
                 PixelUtil.SetPoint(unitframe.name, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', OFFSET_X, OFFSET_Y);
-            elseif POSITION_V == 2 then
+            elseif isCenterV then
                 PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, OFFSET_Y);
-            elseif POSITION_V == 3 then
+            elseif isBottomV then
                 PixelUtil.SetPoint(unitframe.name, 'TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', OFFSET_X, OFFSET_Y);
             end
         end
@@ -441,7 +437,7 @@ local function UpdateColor(unitframe)
     end
 
     if unitframe.data.commonUnitType == 'NPC' then
-        if unitframe.data.threatNameColored then
+        if unitframe.data.threatNameColored and unitframe.data.threatColorR then
             unitframe.name:SetVertexColor(unitframe.data.threatColorR, unitframe.data.threatColorG, unitframe.data.threatColorB);
         else
             if COLORING_MODE_NPC == 1 then -- NONE
@@ -519,7 +515,7 @@ local function UpdateRaidTargetIcon(unitframe)
     unitframe.RaidTargetFrame:SetShown(RAID_TARGET_ICON_SHOW);
 end
 
-local function NameOnly_UpdateHealthBar(unitframe)
+local function UpdateHealthBarVisibility(unitframe)
     if unitframe.data.isPersonal then
         return;
     end
@@ -534,55 +530,61 @@ local function NameOnly_UpdateHealthBar(unitframe)
     else
         UpdateRaidTargetIconPosition[RAID_TARGET_ICON_POSITION](unitframe);
 
-        unitframe.healthBar:SetShown(not unitframe.data.widgetsOnly);
+        if unitframe.data.widgetsOnly or unitframe.data.isGameObject then
+            unitframe.healthBar:Hide();
+        else
+            unitframe.healthBar:Show();
+        end
+    end
+end
+
+local function GetNameAndLevel(unitframe, isFriendlyPlayer, isFriendlyPlayerOrNpc)
+    local name, level = '', '';
+
+    if isFriendlyPlayer then
+        name = GetPlayerName(unitframe);
+
+        if NAME_ONLY_SHOW_LEVEL and unitframe.data.level and unitframe.data.diff then
+            level = U.RGB2CFFHEX(unitframe.data.diff) .. unitframe.data.level .. ' P|r ';
+        end
+    elseif isFriendlyPlayerOrNpc then
+        name = unitframe.data.nameCustom or unitframe.data.nameAbbr or unitframe.data.nameCut or unitframe.data.nameFirst or unitframe.data.name;
+
+        if NAME_ONLY_SHOW_LEVEL and unitframe.data.level and unitframe.data.diff and unitframe.data.classification then
+            level = U.RGB2CFFHEX(unitframe.data.diff) .. unitframe.data.level .. unitframe.data.classification .. '|r ';
+        end
+    end
+
+    return name, level;
+end
+
+local function GetHealthLength(unitframe, name)
+    return strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
+end
+
+local function HandleNameHealth(unitframe, isFriendlyPlayer, isFriendlyPlayerOrNpc)
+    if isFriendlyPlayer and not unitframe.data.isConnected then
+        unitframe.name:SetText(GREY_COLOR_START .. GetPlayerName(unitframe));
+        return;
+    end
+
+    if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
+        local name, level = GetNameAndLevel(unitframe, isFriendlyPlayer, isFriendlyPlayerOrNpc);
+        local healthLength = GetHealthLength(unitframe, name);
+        unitframe.name:SetText(level .. utf8sub(name, 0, healthLength) .. GREY_COLOR_START .. utf8sub(name, healthLength + 1));
     end
 end
 
 local function NameOnly_UpdateNameHealth(unitframe)
-    if not IsNameOnlyMode() then
-        return;
+    if not IsNameOnlyMode() or not NAME_ONLY_COLOR_HEALTH then
+        return
     end
 
-    if NAME_ONLY_COLOR_HEALTH then
-        local level = '';
+    local isFriendlyPlayer      = unitframe.data.unitType == 'FRIENDLY_PLAYER' and not unitframe.data.canAttack;
+    local isFriendlyPlayerOrNpc = not NAME_ONLY_FRIENDLY_PLAYERS_ONLY and IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack);
 
-        if unitframe.data.unitType == 'FRIENDLY_PLAYER' and not unitframe.data.canAttack then
-            if unitframe.data.isConnected then
-                if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
-                    local name = GetPlayerName(unitframe);
-
-                    if NAME_ONLY_SHOW_LEVEL and unitframe.data.level and unitframe.data.diff then
-                        level = U.RGB2CFFHEX(unitframe.data.diff) .. unitframe.data.level .. ' P|r ';
-                    end
-
-                    local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
-
-                    unitframe.name:SetText(level .. utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
-                end
-            else
-                unitframe.name:SetText(GREY_COLOR_START .. GetPlayerName(unitframe));
-            end
-        elseif not NAME_ONLY_FRIENDLY_PLAYERS_ONLY and IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
-            local name = unitframe.data.name;
-
-            if ABBR_ENABLED and unitframe.data.nameAbbr and unitframe.data.nameAbbr ~= '' then
-                name = unitframe.data.nameAbbr;
-            elseif NAME_CUT_ENABLED and unitframe.data.nameCut and unitframe.data.nameCut ~= '' then
-                name = unitframe.data.nameCut;
-            elseif unitframe.data.nameFirst and unitframe.data.nameFirst ~= '' then
-                name = unitframe.data.nameFirst;
-            end
-
-            if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
-                if NAME_ONLY_SHOW_LEVEL and unitframe.data.level and unitframe.data.diff and unitframe.data.classification then
-                    level = U.RGB2CFFHEX(unitframe.data.diff) .. unitframe.data.level .. unitframe.data.classification .. '|r ';
-                end
-
-                local health_len = strlenutf8(name) * (unitframe.data.healthCurrent / unitframe.data.healthMax);
-
-                unitframe.name:SetText(level .. utf8sub(name, 0, health_len) .. GREY_COLOR_START .. utf8sub(name, health_len + 1));
-            end
-        end
+    if isFriendlyPlayer or isFriendlyPlayerOrNpc then
+        HandleNameHealth(unitframe, isFriendlyPlayer, isFriendlyPlayerOrNpc);
     end
 end
 
@@ -639,6 +641,11 @@ end
 
 local function UpdateClassificationIndicator(unitframe)
     if not unitframe.classificationIndicator then
+        return;
+    end
+
+    if unitframe.data.isSoftInteract and not unitframe.data.isSoftEnemy then
+        unitframe.classificationIndicator:Hide();
         return;
     end
 
@@ -704,8 +711,8 @@ function Module:UnitAdded(unitframe)
     UpdateName(unitframe);
     UpdateColor(unitframe);
     UpdateNameVisibility(unitframe);
+    UpdateHealthBarVisibility(unitframe);
 
-    NameOnly_UpdateHealthBar(unitframe);
     NameOnly_UpdateNameHealth(unitframe);
     NameOnly_CreateGuildName(unitframe);
     NameOnly_UpdateGuildName(unitframe);
@@ -731,8 +738,8 @@ function Module:Update(unitframe)
     UpdateName(unitframe);
     UpdateColor(unitframe);
     UpdateNameVisibility(unitframe);
+    UpdateHealthBarVisibility(unitframe);
 
-    NameOnly_UpdateHealthBar(unitframe);
     NameOnly_UpdateNameHealth(unitframe);
     NameOnly_CreateGuildName(unitframe);
     NameOnly_UpdateGuildName(unitframe);
@@ -838,8 +845,8 @@ function Module:StartUp()
         UpdateName(unitframe);
         UpdateColor(unitframe);
         UpdateNameVisibility(unitframe);
+        UpdateHealthBarVisibility(unitframe);
 
-        NameOnly_UpdateHealthBar(unitframe);
         NameOnly_UpdateNameHealth(unitframe);
         NameOnly_UpdateGuildName(unitframe);
 
@@ -848,10 +855,11 @@ function Module:StartUp()
 
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', function(unitframe)
         UpdateAnchor(unitframe);
-        NameOnly_UpdateHealthBar(unitframe);
+        UpdateHealthBarVisibility(unitframe);
     end);
 
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateWidgetsOnlyMode', NameOnly_UpdateHealthBar);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateWidgetsOnlyMode', UpdateHealthBarVisibility);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', UpdateHealthBarVisibility);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateClassificationIndicator', UpdateClassificationIndicator);
 end
