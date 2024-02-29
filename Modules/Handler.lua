@@ -43,12 +43,6 @@ local NAME_ONLY_FRIENDLY_UNIT_TYPES = {
     ['FRIENDLY_NPC']    = true,
 };
 
-local playerUnits = {
-    ['player']  = true,
-    ['pet']     = true,
-    ['vehicle'] = true,
-};
-
 -- Updater
 Stripes.Updater = CreateFrame('Frame');
 
@@ -257,7 +251,7 @@ local function UpdateLevel(unitframe)
 end
 
 local function UpdateAbsorbs(unitframe)
-    unitframe.data.absorbAmount = UnitGetTotalAbsorbs(unitframe.data.unit) or 0;
+    unitframe.data.absorbAmount = unitframe.data.unit and UnitGetTotalAbsorbs(unitframe.data.unit) or 0;
 end
 
 local function UpdateUnitReaction(unitframe)
@@ -324,9 +318,10 @@ end
 local function UpdateStatus(unitframe)
     local unit = unitframe.data.unit;
 
-    unitframe.data.name      = GetUnitName(unit, true);
-    unitframe.data.isPlayer  = IsPlayer(unit);
-    unitframe.data.canAttack = UnitCanAttack('player', unit);
+    unitframe.data.name         = GetUnitName(unit, true);
+    unitframe.data.isPlayer     = IsPlayer(unit);
+    unitframe.data.canAttack    = UnitCanAttack('player', unit);
+    unitframe.data.isGameObject = UnitIsGameObject(unit);
 
     UpdateUnitReaction(unitframe);
 
@@ -341,7 +336,7 @@ local function UpdateStatus(unitframe)
 end
 
 local function UpdateWidgetStatus(unitframe)
-    unitframe.data.widgetsOnly = UnitNameplateShowsWidgetsOnly(unitframe.data.unit);
+    unitframe.data.widgetsOnly = unitframe.data.unit and UnitNameplateShowsWidgetsOnly(unitframe.data.unit);
 end
 
 local function UpdateClassification(unitframe)
@@ -353,7 +348,17 @@ local function UpdateConnection(unitframe)
 end
 
 local function UpdateTarget(unitframe)
-    unitframe.data.isTarget = unitframe.displayedUnit and UnitIsUnit(unitframe.displayedUnit, 'target');
+    if unitframe.displayedUnit then
+        unitframe.data.isTarget       = UnitIsUnit(unitframe.displayedUnit, 'target');
+        unitframe.data.isSoftEnemy    = UnitIsUnit(unitframe.displayedUnit, 'softenemy');
+        unitframe.data.isSoftFriend   = UnitIsUnit(unitframe.displayedUnit, 'softfriend');
+        unitframe.data.isSoftInteract = UnitIsUnit(unitframe.displayedUnit, 'softinteract');
+    else
+        unitframe.data.isTarget       = nil;
+        unitframe.data.isSoftEnemy    = nil;
+        unitframe.data.isSoftFriend   = nil;
+        unitframe.data.isSoftInteract = nil;
+    end
 end
 
 local function UpdateFocus(unitframe)
@@ -787,10 +792,19 @@ local function ResetNameplateData(unitframe)
     unitframe.data.unit      = nil;
     unitframe.data.unitGUID  = nil;
 
+    unitframe.data.isGameObject = nil;
+
+    unitframe.data.level          = nil;
+    unitframe.data.classification = nil;
+    unitframe.data.diff           = nil;
+
     unitframe.data.isPersonal = nil;
     unitframe.data.isDead     = nil;
 
     unitframe.data.healthCurrent = 0;
+    unitframe.data.healthMax     = 1;
+    unitframe.data.healthPerF    = 0;
+    unitframe.data.healthPer     = 0;
 
     unitframe.data.reaction = nil;
 
@@ -806,6 +820,7 @@ local function ResetNameplateData(unitframe)
 
     unitframe.data.className = nil;
 
+    unitframe.data.nameCustom = nil;
     unitframe.data.nameAbbr = nil;
     unitframe.data.nameCut = nil;
     unitframe.data.nameFirst = nil;
@@ -821,8 +836,16 @@ local function ResetNameplateData(unitframe)
 
     unitframe.data.inCombatWithPlayer = nil;
 
-    unitframe.data.isTarget = nil;
+    unitframe.data.isTarget       = nil;
+    unitframe.data.isSoftEnemy    = nil;
+    unitframe.data.isSoftFriend   = nil;
+    unitframe.data.isSoftInteract = nil;
+
     unitframe.data.isFocus  = nil;
+
+    unitframe.data.colorR = nil;
+    unitframe.data.colorG = nil;
+    unitframe.data.colorB = nil;
 
     unitframe.data.threatNameColored = nil;
     unitframe.data.threatColorR = nil;
@@ -833,6 +856,10 @@ local function ResetNameplateData(unitframe)
 end
 
 function Stripes:NAME_PLATE_UNIT_ADDED(unit)
+    if not D.PlayerUnits[unit] then
+        S:GetModule('Auras_Cache'):ProcessAuras(unit);
+    end
+
     self:AddedNamePlateForUnit(unit, function(unitframe)
         unitframe.data = unitframe.data or {};
 
@@ -878,6 +905,10 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
 end
 
 function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
+    if not D.PlayerUnits[unit] then
+        S:GetModule('Auras_Cache'):FlushUnit(unit);
+    end
+
     self:ProcessNamePlateForUnit(unit, function(unitframe)
         unitframe.isActive = false;
         ResetNameplateData(unitframe);
@@ -886,7 +917,7 @@ function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
 end
 
 function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
-    if not playerUnits[unit] then
+    if not D.PlayerUnits[unit] then
         S:GetModule('Auras_Cache'):ProcessAuras(unit, unitAuraUpdateInfo);
     end
 
@@ -896,6 +927,8 @@ function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
 end
 
 function Stripes:PLAYER_TARGET_CHANGED()
+    S:GetModule('Auras_Cache'):ProcessAuras('target');
+
     self:ProcessNamePlateForUnit('target', function(unitframe)
         S:ForAllNameplateModules('UnitAura', unitframe);
     end);
