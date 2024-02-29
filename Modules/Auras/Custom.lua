@@ -92,9 +92,14 @@ local function CreateBuffFrame(unitframe)
         local spellId = aura.spellId;
         local caster  = aura.sourceUnit;
 
-        local spellData = O.db.auras_custom_data[spellId] or O.db.auras_custom_data[name];
+        local spellData;
+        if O.db.auras_custom_data[spellId] and O.db.auras_custom_data[spellId].enabled then
+            spellData = O.db.auras_custom_data[spellId];
+        elseif O.db.auras_custom_data[name] and O.db.auras_custom_data[name].enabled then
+            spellData = O.db.auras_custom_data[name];
+        end
 
-        if spellData and spellData.enabled and (not spellData.own_only or (playerUnits[caster] and spellData.own_only)) then
+        if spellData and (not spellData.own_only or (playerUnits[caster] and spellData.own_only)) then
             return true;
         end
 
