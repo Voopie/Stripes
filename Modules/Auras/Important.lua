@@ -49,7 +49,8 @@ local additionalAuras = {
     [81261] = true, -- Solar Beam
 
     -- Paladin
-    [10326] = true, -- Turn Evil
+    [10326]  = true, -- Turn Evil
+    [255941] = true, -- Wake of Ashes
 
     -- Priest
     [453] = true, -- Mind Soothe
@@ -62,6 +63,9 @@ local additionalAuras = {
 
     -- Demon Hunter
     [370970] = true, -- The Hunt (Root)
+
+    -- Evoker
+    [360806] = true, -- Sleep Walk
 
     -- Covenant
     [331866] = true, -- Agent of Chaos (Venthyr)
