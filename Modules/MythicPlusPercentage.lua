@@ -57,13 +57,7 @@ local function Update(unitframe)
     end
 
     if count and max and maxTeeming then
-        if PlayerState.inMythicPlusTeeming then
-            weight = count / maxTeeming;
-        else
-            weight = count / max;
-        end
-
-        weight = weight * 100;
+        weight = (PlayerState.inMythicPlusTeeming and (count / maxTeeming) or (count / max)) * 100;
     end
 
     if weight and weight > 0 then
