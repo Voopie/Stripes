@@ -60,26 +60,30 @@ local function CreateBuffFrame(unitframe)
 
         self:ClearAllPoints();
 
+        local squareOffset = SQUARE and 6 or 0;
+
         if uf.BuffFrame.buffPool:GetNumActive() > 0 then
             if STATIC_POSITION then
-                self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 1 + OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
+                self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 1 + OFFSET_X, 2 + squareOffset + OFFSET_Y);
             else
                 self:SetPoint('BOTTOM', uf.BuffFrame, 'TOP', OFFSET_X, 4 + OFFSET_Y);
             end
         else
             if ShouldShowName(uf) then
                 if STATIC_POSITION then
-                    self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
+                    self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 2 + squareOffset + OFFSET_Y);
                 else
-                    local offset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
-                    self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+                    local nameOffset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
+                    self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 2 + nameOffset + squareOffset + BUFFFRAME_OFFSET_Y + OFFSET_Y);
                 end
             else
                 if STATIC_POSITION then
                     self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
                 else
-                    local offset = uf.BuffFrame:GetBaseYOffset() + (uf.data.isTarget and uf.BuffFrame:GetTargetYOffset() or 0.0);
-                    self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+                    local buffFrameBaseYOffset = uf.BuffFrame:GetBaseYOffset();
+                    local buffFrameTargetYOffset = uf.data.isTarget and uf.BuffFrame:GetTargetYOffset() or 0;
+
+                    self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 5 + buffFrameBaseYOffset + buffFrameTargetYOffset + squareOffset + BUFFFRAME_OFFSET_Y + OFFSET_Y);
                 end
             end
         end
@@ -233,7 +237,7 @@ local function CreateBuffFrame(unitframe)
             elseif AURAS_DIRECTION == 2 then
                 buff:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + SPACING_X)), 0);
             else
-                self.buffList[1]:SetPoint('TOP', -(buff:GetWidth()/2)*(buffIndex-1), 0);
+                self.buffList[1]:SetPoint('TOP', -(buff:GetWidth() / 2) * (buffIndex - 1), 0);
 
                 if buffIndex > 1 then
                     buff:SetPoint('TOPLEFT', self.buffList[buffIndex - 1], 'TOPRIGHT', SPACING_X, 0);
