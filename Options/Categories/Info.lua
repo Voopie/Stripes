@@ -17,11 +17,11 @@ panel.Load = function(self)
 
     self.DiscordUserPseudoLink = E.CreatePseudoLink(self);
     self.DiscordUserPseudoLink:SetPosition('RIGHT', self.DiscordLogoTexture, 'LEFT', -12, 0);
-    self.DiscordUserPseudoLink:SetText('Voopie#1090');
+    self.DiscordUserPseudoLink:SetText('Voopie');
 
     self.DiscordPseudoLink = E.CreatePseudoLink(self);
     self.DiscordPseudoLink:SetPosition('LEFT', self.DiscordLogoTexture, 'RIGHT', 12, 0);
-    self.DiscordPseudoLink:SetText('rWy6KG94ec');
+    self.DiscordPseudoLink:SetText('COMING SOON');
 
     self.AndText = Mixin(self:CreateFontString(nil, 'ARTWORK', 'StripesCategoryButtonNormalFont'), E.PixelPerfectMixin);
     self.AndText:SetPosition('CENTER', self, 'CENTER', 0, 0);
