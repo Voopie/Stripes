@@ -80,12 +80,6 @@ local function UpdateHealthColor(frame)
         r, g, b, a = DB.HPBAR_COLOR_DC[1], DB.HPBAR_COLOR_DC[2], DB.HPBAR_COLOR_DC[3], DB.HPBAR_COLOR_DC[4];
     elseif frame.data.isDead then
         r, g, b, a = DB.HPBAR_COLOR_DEAD[1], DB.HPBAR_COLOR_DEAD[2], DB.HPBAR_COLOR_DEAD[3], DB.HPBAR_COLOR_DEAD[4];
-
-        if frame.data.isPersonal and not frame.data.widgetsOnly then
-            if not frame.healthBar:IsShown() then
-                frame.healthBar:Show();
-            end
-        end
     else
         if frame.optionTable.healthBarColorOverride then
             local healthBarColorOverride = frame.optionTable.healthBarColorOverride;
@@ -229,16 +223,16 @@ local function UpdateThreatPercentage(unitframe)
         local offTank, petTank, playerPetTank = false, false, false;
 
         if not status or status < 3 then
-            local tank_unit = unitframe.data.unit .. 'target';
-            if UnitExists(tank_unit) and not UnitIsUnit(tank_unit, 'player') then
-                if (UnitInParty(tank_unit) or UnitInRaid(tank_unit)) and UnitGroupRolesAssigned(tank_unit) == 'TANK' then
+            local tankUnit = unitframe.data.unit .. 'target';
+            if UnitExists(tankUnit) and not UnitIsUnit(tankUnit, 'player') then
+                if (UnitInParty(tankUnit) or UnitInRaid(tankUnit)) and UnitGroupRolesAssigned(tankUnit) == 'TANK' then
                     -- group tank
                     offTank = true;
-                elseif not UnitIsPlayer(tank_unit) then
-                    if UnitIsUnit(tank_unit, 'pet') then
+                elseif not UnitIsPlayer(tankUnit) then
+                    if UnitIsUnit(tankUnit, 'pet') then
                         -- player's pet
                         playerPetTank = true;
-                    elseif UnitPlayerControlled(tank_unit) then
+                    elseif UnitPlayerControlled(tankUnit) then
                         -- player controlled npc (pet, vehicle, totem)
                         petTank = true;
                     end
@@ -269,25 +263,24 @@ local function GetAuraColor(unit)
         return;
     end
 
-    local color;
+    local auraColor;
 
-    local allAuras = Cache:GetAll(unit);
+    U.UnitHasAura(unit, nil, function(aura)
+        if playerUnits[aura.sourceUnit] then
+            if DB.AURAS_HPBAR_COLORING_DATA[aura.spellId] and DB.AURAS_HPBAR_COLORING_DATA[aura.spellId].enabled then
+                auraColor = DB.AURAS_HPBAR_COLORING_DATA[aura.spellId].color;
+            elseif DB.AURAS_HPBAR_COLORING_DATA[aura.name] and DB.AURAS_HPBAR_COLORING_DATA[aura.name].enabled then
+                auraColor = DB.AURAS_HPBAR_COLORING_DATA[aura.name].color;
+            end
 
-    if allAuras then
-        for _, aura in pairs(allAuras) do
-            if playerUnits[aura.sourceUnit] then
-                local spellData = DB.AURAS_HPBAR_COLORING_DATA[aura.spellId] or DB.AURAS_HPBAR_COLORING_DATA[aura.name];
-
-                if spellData and spellData.enabled then
-                    color = spellData.color;
-                    break;
-                end
+            if auraColor then
+                return true;
             end
         end
-    end
+    end);
 
-    if color then
-        return color[1], color[2], color[3], color[4] or 1;
+    if auraColor and auraColor[1] then
+        return auraColor[1], auraColor[2], auraColor[3], auraColor[4] or 1;
     end
 
     return false;
@@ -295,7 +288,7 @@ end
 
 local COLORING_FUNCTIONS = {
     HIGH_THREAT = function(unitframe)
-        local result = false;
+        local result = nil;
 
         if unitframe.data.isPlayer or not (DB.THREAT_ENABLED and DB.THREAT_COLOR_PRIO_HIGH) then
             unitframe.data.tpNeedUpdate = true;
@@ -325,7 +318,7 @@ local COLORING_FUNCTIONS = {
                         unitframe.healthBar:SetStatusBarColor(r, g, b, a);
                     end
 
-                    result = true;
+                    result = 'HIGH_THREAT';
                 end
 
                 UpdateThreatName(unitframe, display, r, g, b);
@@ -333,15 +326,57 @@ local COLORING_FUNCTIONS = {
 
             UpdateThreatPercentageTextAndColor(unitframe, display, r, g, b, a);
             unitframe.data.tpNeedUpdate = false;
-        else
-            result = false;
+        end
+
+        return result;
+    end,
+
+    LOW_THREAT = function(unitframe)
+        local result = nil;
+
+        if not PLAYER_IS_TANK or unitframe.data.isPlayer or not (DB.THREAT_ENABLED and DB.THREAT_COLOR_PRIO_HIGH) then
+            unitframe.data.tpNeedUpdate = true;
+            return result;
+        end
+
+        if D.NPCS_WO_AGGRO[unitframe.data.npcId] then
+            return;
+        end
+
+        local display, status = GetUnitThreatSituationStatus(unitframe.data.unit);
+
+        if display and status < 3 then
+            local r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
+
+            if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
+                UpdateThreatName(unitframe, display, r, g, b);
+            else
+                if UnitIsTapped(unitframe.data.unit) then
+                    if DB.THREAT_COLOR_ISTAPPED_BORDER then
+                        unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+                    end
+                else
+                    local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+
+                    if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
+                        unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                    end
+
+                    result = 'LOW_THREAT';
+                end
+
+                UpdateThreatName(unitframe, display, r, g, b);
+            end
+
+            UpdateThreatPercentageTextAndColor(unitframe, display, r, g, b, a);
+            unitframe.data.tpNeedUpdate = false;
         end
 
         return result;
     end,
 
     CURRENT_TARGET_FOCUS = function(unitframe)
-        local result = false;
+        local result = nil;
 
         if DB.CURRENT_TARGET_COLOR_ENABLED and unitframe.data.isTarget then
             local color = DB.CURRENT_TARGET_USE_CLASS_COLOR and DB.CURRENT_TARGET_CLASS_COLOR or DB.CURRENT_TARGET_COLOR;
@@ -351,7 +386,7 @@ local COLORING_FUNCTIONS = {
                 unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
             end
 
-            result = true;
+            result = 'CURRENT_TARGET';
         elseif DB.CURRENT_FOCUS_COLOR_ENABLED and unitframe.data.isFocus then
             local color = DB.CURRENT_FOCUS_USE_CLASS_COLOR and DB.CURRENT_FOCUS_CLASS_COLOR or DB.CURRENT_FOCUS_COLOR;
             local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
@@ -360,16 +395,14 @@ local COLORING_FUNCTIONS = {
                 unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
             end
 
-            result = true;
-        else
-            result = false;
+            result = 'CURRENT_FOCUS';
         end
 
         return result;
     end,
 
     CUSTOM = function(unitframe)
-        local result = false;
+        local result = nil;
 
         LCG_PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
         LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
@@ -390,9 +423,7 @@ local COLORING_FUNCTIONS = {
                     unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
                 end
 
-                result = true;
-            else
-                result = false;
+                result = 'CUSTOM';
             end
 
             if custom.glow_enabled then
@@ -404,15 +435,13 @@ local COLORING_FUNCTIONS = {
                     LCG_ButtonGlow_Start(unitframe.healthBar);
                 end
             end
-        else
-            result = false;
         end
 
         return result;
     end,
 
     RAID_TARGET = function(unitframe)
-        local result = false;
+        local result = nil;
 
         if not DB.RAID_TARGET_HPBAR_COLORING then
             unitframe.data.raidIndex = nil;
@@ -436,14 +465,14 @@ local COLORING_FUNCTIONS = {
 
             unitframe.data.raidIndex = raidIndex;
 
-            result = true;
+            result = 'RAID_TARGET';
         end
 
         return result;
     end,
 
     AURA = function(unitframe)
-        local result = false;
+        local result = nil;
 
         if not DB.AURAS_HPBAR_COLORING then
             return result;
@@ -461,13 +490,13 @@ local COLORING_FUNCTIONS = {
             unitframe.healthBar:SetStatusBarColor(r, g, b, a or 1);
         end
 
-        result = true;
+        result = 'AURA';
 
         return result;
     end,
 
     EXECUTION = function(unitframe)
-        local result = false;
+        local result = nil;
 
         if DB.EXECUTION_ENABLED and (unitframe.data.healthPer <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= DB.EXECUTION_HIGH_PERCENT)) then
             local color = DB.EXECUTION_COLOR;
@@ -477,7 +506,7 @@ local COLORING_FUNCTIONS = {
                 unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
             end
 
-            result = true;
+            result = 'EXECUTION';
 
             if DB.EXECUTION_GLOW then
                 if not unitframe.healthBar.executionGlow then
@@ -491,15 +520,13 @@ local COLORING_FUNCTIONS = {
         else
             LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
             unitframe.healthBar.executionGlow = nil;
-
-            result = false;
         end
 
         return result;
     end,
 
     THREAT = function(unitframe)
-        local result = false;
+        local result = nil;
 
         if unitframe.data.isPlayer or not DB.THREAT_ENABLED then
             unitframe.data.tpNeedUpdate = true;
@@ -555,7 +582,7 @@ local COLORING_FUNCTIONS = {
                     end
                 end
 
-                result = true;
+                result = 'THREAT';
 
                 UpdateThreatName(unitframe, display, r, g, b);
             end
@@ -570,12 +597,13 @@ local COLORING_FUNCTIONS = {
 
 local COLORING_PRIORITY = {
     [1] = COLORING_FUNCTIONS.HIGH_THREAT,
-    [2] = COLORING_FUNCTIONS.CURRENT_TARGET_FOCUS,
-    [3] = COLORING_FUNCTIONS.CUSTOM,
-    [4] = COLORING_FUNCTIONS.RAID_TARGET,
-    [5] = COLORING_FUNCTIONS.AURA,
-    [6] = COLORING_FUNCTIONS.EXECUTION,
-    [7] = COLORING_FUNCTIONS.THREAT,
+    [2] = COLORING_FUNCTIONS.LOW_THREAT,
+    [3] = COLORING_FUNCTIONS.CURRENT_TARGET_FOCUS,
+    [4] = COLORING_FUNCTIONS.CUSTOM,
+    [5] = COLORING_FUNCTIONS.RAID_TARGET,
+    [6] = COLORING_FUNCTIONS.AURA,
+    [7] = COLORING_FUNCTIONS.EXECUTION,
+    [8] = COLORING_FUNCTIONS.THREAT,
 };
 
 local function GetColoringFunctionPriority(func)
@@ -861,7 +889,7 @@ local function CreateSpark(unitframe)
     end
 
     unitframe.healthBar.Spark = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
-    unitframe.healthBar.Spark:SetPoint('CENTER', 0, 0);
+    unitframe.healthBar.Spark:SetPoint('CENTER', unitframe.healthBar:GetStatusBarTexture(), 'RIGHT', 0, 0);
     unitframe.healthBar.Spark:SetTexture('Interface\\CastingBar\\UI-CastingBar-Spark');
     unitframe.healthBar.Spark:SetBlendMode('ADD');
 end
@@ -889,14 +917,16 @@ end
 
 local function UpdateSparkPosition(unitframe)
     if unitframe.healthBar.Spark and DB.SPARK_SHOW and not unitframe.data.isPersonal then
-        local _, maxValue = unitframe.healthBar:GetMinMaxValues();
-        local currentValue = unitframe.healthBar:GetValue();
+        if DB.SPARK_HIDE_AT_MAX_HEALTH then
+            local _, maxValue = unitframe.healthBar:GetMinMaxValues();
+            local currentValue = unitframe.healthBar:GetValue();
 
-        if DB.SPARK_HIDE_AT_MAX_HEALTH and currentValue == maxValue then
-            unitframe.healthBar.Spark:Hide();
+            if currentValue == maxValue then
+                unitframe.healthBar.Spark:Hide();
+            else
+                unitframe.healthBar.Spark:Show();
+            end
         else
-            local sparkPosition = (currentValue / maxValue) * unitframe.healthBar:GetWidth();
-            unitframe.healthBar.Spark:SetPoint('CENTER', unitframe.healthBar, 'LEFT', sparkPosition, 0);
             unitframe.healthBar.Spark:Show();
         end
     end
@@ -935,6 +965,14 @@ function Module:UnitRemoved(unitframe)
     unitframe.data.wasAura      = nil;
     unitframe.data.raidIndex    = nil;
     unitframe.data.tpNeedUpdate = nil;
+
+    unitframe.data.coloringResult   = nil;
+    unitframe.data.coloringPriority = nil;
+
+    unitframe.data.threatNameColored = nil;
+    unitframe.data.threatColorR = nil;
+    unitframe.data.threatColorG = nil;
+    unitframe.data.threatColorB = nil;
 
     LCG_PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
     LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
