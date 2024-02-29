@@ -29,38 +29,49 @@ local blacklist = {
 };
 
 local function OnInterrupt(unitframe, guid, sourceName)
-    if guid and guid ~= '' then
-        local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(guid);
-        if name then
-            name = GetCachedName(name, true, true, false);
-            unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(englishClass, 1), INTERRUPTED, name));
-        else
-            if U_UnitIsPetByGUID(guid) then
-                name = GetCachedName(sourceName, true, true, false);
-                unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(sourceName, 1), INTERRUPTED, name));
-            end
-        end
+    if not guid or guid == '' then
+        return;
+    end
+
+    local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(guid);
+    local classColor;
+
+    if name then
+        name       = GetCachedName(name, true, true, false);
+        classColor = U_GetClassColor(englishClass, 1);
+    elseif U_UnitIsPetByGUID(guid) then
+        name       = GetCachedName(sourceName, true, true, false);
+        classColor = U_GetClassColor(sourceName, 1);
+    end
+
+    if classColor then
+        unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, classColor, INTERRUPTED, name));
     end
 end
 
-function Module:COMBAT_LOG_EVENT_UNFILTERED()
+local function HandleCombatLogEvent()
     local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId = CombatLogGetCurrentEventInfo();
 
-    if subEvent == 'SPELL_INTERRUPT' then
-        self:ForAllActiveUnitFrames(function(unitframe)
+    local isInterrupt   = subEvent == 'SPELL_INTERRUPT';
+    local isAuraApplied = subEvent == 'SPELL_AURA_APPLIED' and not blacklist[spellId];
+
+    if not (isInterrupt or isAuraApplied) then
+        return;
+    end
+
+    local isCrowdControl = false;
+
+    if isAuraApplied then
+        local flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
+        isCrowdControl = flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0;
+    end
+
+    if isInterrupt or isCrowdControl then
+        Module:ForAllActiveUnitFrames(function(unitframe)
             if UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
                 OnInterrupt(unitframe, sourceGUID, sourceName);
             end
         end);
-    elseif subEvent == 'SPELL_AURA_APPLIED' and not blacklist[spellId] then
-        local flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
-        if flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0 then
-            self:ForAllActiveUnitFrames(function(unitframe)
-                if UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
-                    OnInterrupt(unitframe, sourceGUID, sourceName);
-                end
-            end);
-        end
     end
 end
 
@@ -73,7 +84,7 @@ function Module:UpdateLocalConfig()
 end
 
 function Module:Enable()
-    self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED');
+    self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED', HandleCombatLogEvent);
 end
 
 function Module:Disable()
