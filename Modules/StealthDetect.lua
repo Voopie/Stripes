@@ -60,12 +60,6 @@ local auras = {
 };
 
 local units = {
-    -- Mists of Pandaria
-    -- Dungeons
-    -- [200126] = true, -- Fallen Waterspeaker (Temple of the Jade Serpent)
-    -- [200131] = true, -- Sha-Touched Guardian (Temple of the Jade Serpent)
-    -- [200137] = true, -- Depraved Mistweave (Temple of the Jade Serpent)
-
     -- Legion
     -- Dungeons
     [91796]  = true, -- Skrog Wavecrasher (Eye of Azshara)
