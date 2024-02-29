@@ -66,22 +66,18 @@ local function UpdateTargetSelection(unitframe)
         return;
     end
 
-    if unitframe.data.isPersonal then
+    if unitframe.data.isPersonal or not unitframe.data.isTarget then
         unitframe.TargetIndicator:Hide();
         return;
     end
 
-    if unitframe.data.isTarget then
-        unitframe.TargetIndicator:Show();
+    unitframe.TargetIndicator.left:SetShown(TARGET_INDICATOR_ENABLED);
+    unitframe.TargetIndicator.right:SetShown(TARGET_INDICATOR_ENABLED);
 
-        unitframe.TargetIndicator.left:SetShown(TARGET_INDICATOR_ENABLED);
-        unitframe.TargetIndicator.right:SetShown(TARGET_INDICATOR_ENABLED);
+    unitframe.TargetIndicator.glowUp:SetShown(TARGET_GLOW_ENABLED);
+    unitframe.TargetIndicator.glowDown:SetShown(TARGET_GLOW_ENABLED);
 
-        unitframe.TargetIndicator.glowUp:SetShown(TARGET_GLOW_ENABLED);
-        unitframe.TargetIndicator.glowDown:SetShown(TARGET_GLOW_ENABLED);
-    else
-        unitframe.TargetIndicator:Hide();
-    end
+    unitframe.TargetIndicator:Show();
 end
 
 local function CreateTargetIndicator(unitframe)
