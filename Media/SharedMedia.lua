@@ -8,6 +8,8 @@ S.Media = {};
 
 S.Media.Path = M;
 
+S.Media.LOGO_MINI = M .. 'Textures\\Assets\\stripes_logo_mini.blp';
+
 S.Media.DUNGEON_ICON = 'Interface\\MINIMAP\\Dungeon';
 S.Media.RAID_ICON = 'Interface\\MINIMAP\\Raid';
 
