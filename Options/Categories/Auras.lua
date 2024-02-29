@@ -235,7 +235,7 @@ local function CreateCustomAuraRow(frame)
     frame.IdText:SetPoint('LEFT', frame.Icon, 'RIGHT', 10, 0);
     frame.IdText:SetSize(60, ROW_HEIGHT);
     frame.IdText:SetTextColor(0.67, 0.67, 0.67);
-    U.MakeAutoFontSize(frame.IdText);
+    U.AutoAdjustFontSize(frame.IdText);
 
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.IdText, 'RIGHT', 2, 0);
@@ -460,7 +460,7 @@ local function CreateBlackListRow(frame)
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
     frame.NameText:SetSize(150, ROW_HEIGHT);
-    U.MakeAutoFontSize(frame.NameText);
+    U.AutoAdjustFontSize(frame.NameText);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
     frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
@@ -638,7 +638,7 @@ local function CreateWhiteListRow(frame)
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
     frame.NameText:SetSize(150, ROW_HEIGHT);
-    U.MakeAutoFontSize(frame.NameText);
+    U.AutoAdjustFontSize(frame.NameText);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
     frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
@@ -817,7 +817,7 @@ local function CreateHPBarColorRow(frame)
     frame.NameText = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsNormalFont');
     frame.NameText:SetPoint('LEFT', frame.Icon, 'RIGHT', 8, 0);
     frame.NameText:SetSize(120, ROW_HEIGHT);
-    U.MakeAutoFontSize(frame.NameText);
+    U.AutoAdjustFontSize(frame.NameText);
 
     frame.RemoveButton = Mixin(CreateFrame('Button', nil, frame), E.PixelPerfectMixin);
     frame.RemoveButton:SetPosition('RIGHT', frame, 'RIGHT', -8, 0);
