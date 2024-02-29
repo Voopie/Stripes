@@ -12,7 +12,7 @@ local pairs, tonumber, math_ceil, string_match, table_wipe = pairs, tonumber, ma
 -- WoW API
 local C_TaskQuest_GetQuestProgressBarInfo, C_QuestLog_GetQuestObjectives, C_QuestLog_GetQuestIDForLogIndex = C_TaskQuest.GetQuestProgressBarInfo, C_QuestLog.GetQuestObjectives, C_QuestLog.GetQuestIDForLogIndex;
 local C_QuestLog_GetNumQuestLogEntries, C_QuestLog_GetInfo, C_QuestLog_IsQuestTask, C_TaskQuest_GetQuestInfoByQuestID = C_QuestLog.GetNumQuestLogEntries, C_QuestLog.GetInfo, C_QuestLog.IsQuestTask, C_TaskQuest.GetQuestInfoByQuestID;
-local C_TooltipInfo_GetUnit, TooltipUtil_SurfaceArgs = C_TooltipInfo.GetUnit, TooltipUtil.SurfaceArgs;
+local C_TooltipInfo_GetUnit = C_TooltipInfo.GetUnit;
 local TooltipUtil_FindLinesFromData = TooltipUtil.FindLinesFromData;
 local Enum_TooltipDataLineType_QuestTitle, Enum_TooltipDataLineType_QuestObjective = Enum.TooltipDataLineType.QuestTitle, Enum.TooltipDataLineType.QuestObjective;
 
@@ -48,8 +48,6 @@ local function GetQuestProgress(unit)
     if not tooltipData then
         return;
     end
-
-    TooltipUtil_SurfaceArgs(tooltipData);
 
     local lines = TooltipUtil_FindLinesFromData(questLines, tooltipData);
 
