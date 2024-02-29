@@ -9,7 +9,7 @@ local string_format = string.format;
 local UnitName = UnitName;
 
 -- Local Config
-local ENABLED, ONLY_ON_ME, TTD;
+local ENABLED, ONLY_ON_ME, TIME_TO_DIE;
 
 local PlayerData = D.Player;
 
@@ -52,43 +52,28 @@ local function Update(unitframe)
     end
 
     if unitframe:IsShown() then
-        if ENABLED and unitframe.data.npcId == SPITEFUL_NPC_ID then
-            if ONLY_ON_ME then
-                unitframe.Spiteful.icon:SetShown(unitframe.data.targetName == PlayerData.Name);
-            else
-                unitframe.Spiteful.icon:Show();
-            end
+        local showIcon = unitframe.data.npcId == SPITEFUL_NPC_ID;
+        local showTTD  = showIcon and TIME_TO_DIE and unitframe.data.healthPerF;
 
-            if TTD then
-                unitframe.Spiteful.ttd:SetText(string_format('%.1f%s', unitframe.data.healthPerF / 8, L['SECOND_SHORT']));
-                unitframe.Spiteful.ttd:Show();
-            else
-                unitframe.Spiteful.ttd:Hide();
-            end
-        else
-            unitframe.Spiteful.icon:Hide();
-            unitframe.Spiteful.ttd:Hide();
+        unitframe.Spiteful.icon:SetShown(showIcon and (ONLY_ON_ME and unitframe.data.targetName == PlayerData.Name or not ONLY_ON_ME));
+        unitframe.Spiteful.ttd:SetShown(showTTD);
+
+        if showTTD then
+            unitframe.Spiteful.ttd:SetText(string.format('%.1f%s', unitframe.data.healthPerF / 8, L['SECOND_SHORT']))
         end
     end
 end
 
 local function OnUpdate(unitframe)
-    if not unitframe.Spiteful then
+    if not unitframe.Spiteful or not unitframe.data.unit then
         return;
     end
 
-    local name = UnitName(unitframe.data.unit .. 'target');
+    local targetName = UnitName(unitframe.data.unit .. 'target');
+    local shouldUpdate = TIME_TO_DIE or targetName ~= unitframe.data.targetName or targetName == PlayerData.Name;
 
-    if not unitframe.data.targetName or (name and name == PlayerData.Name) then
-        Update(unitframe);
-    end
-
-    if unitframe.data.targetName ~= name then
-        unitframe.data.targetName = name;
-        Update(unitframe);
-    end
-
-    if TTD then
+    if shouldUpdate then
+        unitframe.data.targetName = targetName;
         Update(unitframe);
     end
 end
@@ -114,9 +99,9 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    ENABLED    = O.db.spiteful_enabled;
-    ONLY_ON_ME = O.db.spiteful_show_only_on_me;
-    TTD        = O.db.spiteful_ttd_enabled;
+    ENABLED     = O.db.spiteful_enabled;
+    ONLY_ON_ME  = O.db.spiteful_show_only_on_me;
+    TIME_TO_DIE = O.db.spiteful_ttd_enabled;
 
     local isSpitefulCurrentWeek = U.IsAffixCurrent(123);
 
