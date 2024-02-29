@@ -34,11 +34,7 @@ local function Update(unitframe)
 
     local unitGUID = unitframe.data.unitGUID;
 
-    if not unitGUID then
-        unitframe.FriendIcon:Hide();
-    else
-        unitframe.FriendIcon:SetShown(C_FriendList.IsFriend(unitGUID));
-    end
+    unitframe.FriendIcon:SetShown(unitGUID and C_FriendList.IsFriend(unitGUID));
 end
 
 function Module:UnitAdded(unitframe)
