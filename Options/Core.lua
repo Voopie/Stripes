@@ -157,11 +157,7 @@ O.Lists = {
         [7]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_BH'],
         [8]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_TNO'],
         [9]  = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_DF_NLTH'],
-        [10] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_MOP_TOTJS'],
-        [11] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_WOD_SBG'],
-        [12] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_LEGION_HOV'],
-        [13] = S.Media.DUNGEON_ICON_INLINE .. L['DUNGEON_LEGION_COS'],
-        [14] = S.Media.RAID_ICON_INLINE    .. L['RAID_DF_VOTI'],
+        [10] = S.Media.RAID_ICON_INLINE    .. L['RAID_DF_VOTI'],
     },
 
     quest_indicator_position = {
@@ -1286,6 +1282,7 @@ function Module:Migration_UnimportantUnits()
             [189707] = true, -- Chaotic Essence (SL, Season 4, Raid Fated Affix)
             [191714] = true, -- Seeking Stormling (DF, Vault of the Incarnates, Raszageth P2.5)
             [197398] = true, -- Hungry Lasher (DF, Algeth'ar Academy, Overgrown Ancient)
+            [211306] = true, -- Fiery Vines (DF, Amirdrassil, the Dream's Hope, Tindral Sageswift)
         };
     end
 end
