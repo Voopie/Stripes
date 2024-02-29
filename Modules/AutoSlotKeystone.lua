@@ -1,7 +1,7 @@
 local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewModule('AutoSlotKeystone');
 
-function Module:Slot()
+local function TrySlotKeystone()
     if not O.db.mythic_plus_auto_slot_keystone then
         return;
     end
@@ -31,7 +31,7 @@ function Module:Slot()
 end
 
 function Module:Blizzard_ChallengesUI()
-    ChallengesKeystoneFrame:HookScript('OnShow', self.Slot);
+    ChallengesKeystoneFrame:HookScript('OnShow', TrySlotKeystone);
 end
 
 function Module:StartUp()
