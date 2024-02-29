@@ -5,41 +5,58 @@ local Module = S:NewNameplateModule('ClassBar');
 local ALPHA, SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
 local SHOW_ON_TARGET;
 
-local function UpdatePosition(unitframe)
-    if not SHOW_ON_TARGET then
-        return;
-    end
+local function UpdatePositionForUnitFrame(unitframe)
+    local mechanicFrame = NamePlateDriverFrame.classNamePlateMechanicFrame;
 
-    if not NamePlateDriverFrame.classNamePlateMechanicFrame then
+    if not (mechanicFrame and SHOW_ON_TARGET) then
         return;
     end
 
     if unitframe.data.isPersonal then
         if NamePlateDriverFrame.classNamePlatePowerBar then
-            NamePlateDriverFrame.classNamePlateMechanicFrame:ClearAllPoints();
-            NamePlateDriverFrame.classNamePlateMechanicFrame:SetPoint('TOP', NamePlateDriverFrame.classNamePlatePowerBar, 'BOTTOM', 0, NamePlateDriverFrame.classNamePlateMechanicFrame.paddingOverride or -4);
+            mechanicFrame:ClearAllPoints();
+            mechanicFrame:SetPoint('TOP', NamePlateDriverFrame.classNamePlatePowerBar, 'BOTTOM', 0, NamePlateDriverFrame.classNamePlateMechanicFrame.paddingOverride or -4);
         end
-    else
-        if unitframe.data.isTarget then
-            NamePlateDriverFrame.classNamePlateMechanicFrame:ClearAllPoints();
-            PixelUtil.SetPoint(NamePlateDriverFrame.classNamePlateMechanicFrame, POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    elseif unitframe.data.isTarget then
+        mechanicFrame:ClearAllPoints();
+        mechanicFrame:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    end
+end
+
+local function UpdatePositionForDriverFrame()
+    local mechanicFrame = NamePlateDriverFrame.classNamePlateMechanicFrame;
+
+    if not (mechanicFrame and SHOW_ON_TARGET) then
+        return;
+    end
+
+    local namePlatePlayer = C_NamePlate.GetNamePlateForUnit('player');
+    local namePlateTarget = C_NamePlate.GetNamePlateForUnit('target');
+
+    if namePlatePlayer then
+        if NamePlateDriverFrame.classNamePlatePowerBar then
+            mechanicFrame:ClearAllPoints();
+            mechanicFrame:SetPoint('TOP', NamePlateDriverFrame.classNamePlatePowerBar, 'BOTTOM', 0, mechanicFrame.paddingOverride or -4);
         end
+    elseif namePlateTarget then
+        mechanicFrame:ClearAllPoints();
+        mechanicFrame:SetPoint(POINT, namePlateTarget.UnitFrame.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
     end
 end
 
 local function UpdateAlphaAndScale()
-    if NamePlateDriverFrame.classNamePlateMechanicFrame then
-        NamePlateDriverFrame.classNamePlateMechanicFrame:SetAlpha(ALPHA);
-        NamePlateDriverFrame.classNamePlateMechanicFrame:SetScale(SCALE);
-    end
-end
+    local mechanicFrame = NamePlateDriverFrame.classNamePlateMechanicFrame;
 
-function Module:UnitAdded(unitframe)
-    UpdatePosition(unitframe);
+    if not mechanicFrame then
+        return;
+    end
+
+    mechanicFrame:SetAlpha(ALPHA);
+    mechanicFrame:SetScale(SCALE);
 end
 
 function Module:Update(unitframe)
-    UpdatePosition(unitframe);
+    UpdatePositionForUnitFrame(unitframe);
 end
 
 function Module:UpdateLocalConfig()
@@ -58,5 +75,5 @@ end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', UpdatePosition);
+    self:SecureHook('NamePlateDriverFrame', 'SetupClassNameplateBars', UpdatePositionForDriverFrame);
 end
