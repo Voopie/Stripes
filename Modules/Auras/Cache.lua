@@ -32,17 +32,9 @@ function Module:Get(unit, spellId)
 
     local byName = type(spellId) == 'string';
 
-    if byName then
-        for _, aura in pairs(CACHE[unit]) do
-            if aura.name == spellId then
-                return aura;
-            end
-        end
-    else
-        for _, aura in pairs(CACHE[unit]) do
-            if aura.spellId == spellId then
-                return aura;
-            end
+    for _, aura in pairs(CACHE[unit]) do
+        if (byName and aura.name == spellId) or (not byName and aura.spellId == spellId) then
+            return aura;
         end
     end
 end
