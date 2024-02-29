@@ -89,28 +89,16 @@ function Module:MODIFIER_STATE_CHANGED(key, down)
     end
 end
 
-local KeyChecker = CreateFrame('Frame', nil, UIParent);
-
 function Module:Enable()
     self:RegisterEvent('MODIFIER_STATE_CHANGED');
     self:RegisterEvent('UNIT_SPELLCAST_START', 'CheckCasting');
     self:RegisterEvent('UNIT_SPELLCAST_STOP', 'CheckCasting');
-
-    KeyChecker:SetScript('OnKeyDown', function(_, key)
-        if ENABLED and key == 'TAB' then
-            self:ShowAll();
-        end
-    end);
-    KeyChecker:SetPropagateKeyboardInput(true);
 end
 
 function Module:Disable()
     self:UnregisterEvent('MODIFIER_STATE_CHANGED');
     self:UnregisterEvent('UNIT_SPELLCAST_START');
     self:UnregisterEvent('UNIT_SPELLCAST_STOP');
-
-    KeyChecker:SetScript('OnKeyDown', nil);
-    KeyChecker:SetPropagateKeyboardInput(false);
 end
 
 function Module:StartUp()
