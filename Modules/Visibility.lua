@@ -11,7 +11,7 @@ local SHOW_ENEMY, SHOW_FRIENDLY, ENEMY_ONLY_IN_COMBAT, FRIENDLY_ONLY_IN_COMBAT;
 
 local wasInCombat = false;
 
-local function ZoneChanged()
+local function HandleVisibility()
     if U.PlayerInCombat() then
         wasInCombat = true;
         return;
@@ -47,20 +47,20 @@ function Module:PLAYER_LOGIN()
     self:RegisterEvent('ZONE_CHANGED_NEW_AREA');
     self:RegisterEvent('GARRISON_UPDATE');
 
-    ZoneChanged();
+    HandleVisibility();
 end
 
 function Module:ZONE_CHANGED_NEW_AREA()
-    C_Timer.After(0.15, ZoneChanged);
+    C_Timer.After(0.15, HandleVisibility);
 end
 
 function Module:GARRISON_UPDATE()
-    C_Timer.After(0.15, ZoneChanged);
+    C_Timer.After(0.15, HandleVisibility);
 end
 
 function Module:PLAYER_REGEN_ENABLED()
     if wasInCombat then
-        ZoneChanged();
+        HandleVisibility();
         wasInCombat = false;
     end
 
