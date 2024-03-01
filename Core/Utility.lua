@@ -72,13 +72,17 @@ U.UnitInGuild = function(unit)
 end
 
 U.UnitIsCasting = function(unit)
-    local spellId = select(9, UnitCastingInfo(unit));
-
-    if not spellId then
-        spellId = select(8, UnitChannelInfo(unit));
+    if not unit then
+        return;
     end
 
-    return spellId;
+    local _, _, _, _, _, _, _, notInterruptible, spellId = UnitCastingInfo(unit);
+
+    if not spellId then
+        _, _, _, _, _, _, notInterruptible, spellId = UnitChannelInfo(unit);
+    end
+
+    return spellId, notInterruptible;
 end
 
 U.IsPlayerEffectivelyTank = function()
