@@ -3,11 +3,11 @@ local Module = S:NewNameplateModule('StealthDetect');
 
 -- Stripes API
 local UnitHasAura = U.UnitHasAura;
+local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
-local LCG_PixelGlow_Start, LCG_PixelGlow_Stop = LCG.PixelGlow_Start, LCG.PixelGlow_Stop;
-local LCG_AutoCastGlow_Start, LCG_AutoCastGlow_Stop, LCG_ButtonGlow_Start, LCG_ButtonGlow_Stop = LCG.AutoCastGlow_Start, LCG.AutoCastGlow_Stop, LCG.ButtonGlow_Start, LCG.ButtonGlow_Stop;
+local LCG_PixelGlow_Start = LCG.PixelGlow_Start;
 local LCG_SUFFIX = 'S_STEALTHDETECT';
 
 -- Local Config
@@ -200,17 +200,13 @@ local function UpdateGlow(unitframe)
         return;
     end
 
-    LCG_PixelGlow_Stop(glowFrame, LCG_SUFFIX);
-    LCG_AutoCastGlow_Stop(glowFrame, LCG_SUFFIX);
-    LCG_ButtonGlow_Stop(glowFrame);
+    U_GlowStopAll(glowFrame, LCG_SUFFIX);
 
     if GLOW_ENABLED then
         if GLOW_TYPE == 1 then
             LCG_PixelGlow_Start(glowFrame, GLOW_COLOR, 8, nil, 8, nil, 1, 1, nil, LCG_SUFFIX);
-        elseif GLOW_TYPE == 2 then
-            LCG_AutoCastGlow_Start(glowFrame, GLOW_COLOR, nil, nil, nil, nil, nil, LCG_SUFFIX);
-        elseif GLOW_TYPE == 3 then
-            LCG_ButtonGlow_Start(glowFrame);
+        else
+            U_GlowStart(glowFrame, GLOW_TYPE, GLOW_COLOR, LCG_SUFFIX)
         end
     end
 end
