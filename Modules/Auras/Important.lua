@@ -93,15 +93,19 @@ local function CreateBuffFrame(unitframe)
     frame.UpdateAnchor = function(self)
         local uf = self:GetParent();
 
+        local squareOffset = SQUARE and 6 or 0;
+
         if uf.BuffFrame.buffPool:GetNumActive() > 0 then
-            self:SetPoint('BOTTOMLEFT', uf.BuffFrame, 'TOPLEFT', OFFSET_X, 4 + (SQUARE and 6 or 0) + OFFSET_Y);
+            self:SetPoint('BOTTOMLEFT', uf.BuffFrame, 'TOPLEFT', OFFSET_X, 4 + squareOffset + OFFSET_Y);
         else
             if ShouldShowName(uf) then
-                local offset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
-                self:SetPoint('BOTTOMLEFT', uf.healthBar, 'TOPLEFT', OFFSET_X, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+                local nameOffset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
+                self:SetPoint('BOTTOMLEFT', uf.healthBar, 'TOPLEFT', OFFSET_X, 2 + nameOffset + squareOffset + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             else
-                local offset = uf.BuffFrame:GetBaseYOffset() + (uf.data.isTarget and uf.BuffFrame:GetTargetYOffset() or 0.0);
-                self:SetPoint('BOTTOMLEFT', uf.healthBar, 'TOPLEFT', OFFSET_X, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+                local buffFrameBaseYOffset = uf.BuffFrame:GetBaseYOffset();
+                local buffFrameTargetYOffset = uf.data.isTarget and uf.BuffFrame:GetTargetYOffset() or 0;
+
+                self:SetPoint('BOTTOMLEFT', uf.healthBar, 'TOPLEFT', OFFSET_X, 5 + buffFrameBaseYOffset + buffFrameTargetYOffset + squareOffset + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             end
         end
 
