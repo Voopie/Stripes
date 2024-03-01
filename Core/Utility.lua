@@ -4,7 +4,7 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local pairs, ipairs, select, type, unpack, tostring, tonumber, string_format, string_find, string_len, string_sub, string_gsub, string_byte, math_floor = pairs, ipairs, select, type, unpack, tostring, tonumber, string.format, string.find, string.len, string.sub, string.gsub, string.byte, math.floor;
 
 -- WoW/Lua API
-local strsplit, GetTime = strsplit, GetTime;
+local strsplit = strsplit;
 
 -- WoW API
 local UnitClassBase, UnitDetailedThreatSituation, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID =
