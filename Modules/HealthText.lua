@@ -83,6 +83,10 @@ local UpdateHealthTextFormat = {
 };
 
 local function Update(unitframe)
+    if not ENABLED then
+        return;
+    end
+
     if unitframe.data.isPersonal or (SHOW_ONLY_ON_TARGET and not unitframe.data.isTarget) or (HIDE_FULL and unitframe.data.healthCurrent == unitframe.data.healthMax) then
         unitframe.HealthText.text:SetText('');
         unitframe.HealthText.LeftText:SetText('');
