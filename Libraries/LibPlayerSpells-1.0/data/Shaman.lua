@@ -1,6 +1,6 @@
 --[[
 LibPlayerSpells-1.0 - Additional information about player spells.
-(c) 2013-2018 Adirelle (adirelle@gmail.com)
+(c) 2013-2021 Adirelle (adirelle@gmail.com)
 
 This file is part of LibPlayerSpells-1.0.
 
@@ -20,7 +20,7 @@ along with LibPlayerSpells-1.0. If not, see <http://www.gnu.org/licenses/>.
 
 local lib = LibStub('LibPlayerSpells-1.0')
 if not lib then return end
-lib:__RegisterSpells('SHAMAN', 90002, 1, {
+lib:__RegisterSpells('SHAMAN', 90001, 1, {
 	COOLDOWN = {
 		   8143, -- Tremor Totem
 		  17364, -- Stormstrike (Enhancement)
@@ -51,15 +51,7 @@ lib:__RegisterSpells('SHAMAN', 90002, 1, {
 				CROWD_CTRL = {
 					[64695] = 'ROOT', -- Earthgrab (Restoration talent)
 					INCAPACITATE = {
-						 51514, -- Hex (Frog)
-						210873, -- Hex (Compy)
-						211004, -- Hex (Spider)
-						211010, -- Hex (Snake)
-						211015, -- Hex (Cockroach)
-						269352, -- Hex (Skeletal Hatchling)
-						277778, -- Hex (Zandalari Tendonripper)
-						277784, -- Hex (Wicker Mongrel)
-						309328, -- Hex (Living Honey)
+						 51514, -- Hex
 						197214, -- Sundering (Enhancement talent)
 					},
 					STUN = {

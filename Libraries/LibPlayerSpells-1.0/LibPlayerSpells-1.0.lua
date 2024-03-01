@@ -1,6 +1,6 @@
 --[[
 LibPlayerSpells-1.0 - Additional information about player spells.
-(c) 2013-2018 Adirelle (adirelle@gmail.com)
+(c) 2013-2021 Adirelle (adirelle@gmail.com)
 
 This file is part of LibPlayerSpells-1.0.
 
@@ -18,15 +18,15 @@ You should have received a copy of the GNU General Public License
 along with LibPlayerSpells-1.0. If not, see <http://www.gnu.org/licenses/>.
 --]]
 
-local MAJOR, MINOR, lib = "LibPlayerSpells-1.0", 11
+local MAJOR, MINOR, lib = "LibPlayerSpells-1.0", 14
 if LibStub then
 	local oldMinor
 	lib, oldMinor = LibStub:NewLibrary(MAJOR, MINOR)
 	if not lib then return end
 
-	if oldMinor and oldMinor < 8 then
-		-- The internal data changed at minor 8, wipe anything coming from the previous version
-		wipe(lib)
+	if oldMinor and oldMinor < 14 then
+		-- Evoker was added as 13 and not picked up
+		_G.wipe(lib)
 	end
 else
 	lib = {}
@@ -37,20 +37,13 @@ if AdiDebug then
 	Debug = AdiDebug:Embed({}, MAJOR)
 end
 
-local _G = _G
-local ceil = _G.ceil
-local error = _G.error
+local floor = _G.floor
 local format = _G.format
 local GetSpellInfo = _G.GetSpellInfo
 local gsub = _G.string.gsub
-local ipairs = _G.ipairs
-local max = _G.max
-local next = _G.next
-local pairs = _G.pairs
-local setmetatable = _G.setmetatable
-local tonumber = _G.tonumber
-local tostring = _G.tostring
-local type = _G.type
+local strsplit = _G.strsplit
+local strtrim = _G.strtrim
+local tinsert = _G.tinsert
 local wipe = _G.wipe
 
 local bor = _G.bit.bor
@@ -78,6 +71,7 @@ lib.constants = {
 	WARLOCK      = 0x00000400,
 	WARRIOR      = 0x00000800,
 	RACIAL       = 0x00001000, -- Racial trait
+	EVOKER       = 0x00002000,
 
 	-- Crowd control types, *requires* CROWD_CTRL, else this messes up sources
 	DISORIENT    = 0x00000001,
@@ -147,6 +141,7 @@ lib.masks = {
 		constants.DEATHKNIGHT,
 		constants.DEMONHUNTER,
 		constants.DRUID,
+		constants.EVOKER,
 		constants.HUNTER,
 		constants.MAGE,
 		constants.MONK,
@@ -161,6 +156,7 @@ lib.masks = {
 		constants.DEATHKNIGHT,
 		constants.DEMONHUNTER,
 		constants.DRUID,
+		constants.EVOKER,
 		constants.HUNTER,
 		constants.MAGE,
 		constants.MONK,
@@ -208,6 +204,7 @@ lib.__categories = lib.__categories or {
 	DEATHKNIGHT = {},
 	DEMONHUNTER = {},
 	DRUID       = {},
+	EVOKER      = {},
 	HUNTER      = {},
 	MAGE        = {},
 	MONK        = {},
@@ -342,7 +339,8 @@ local function FilterIterator(tester, spellId)
 	repeat
 		spellId, flags = next(spells, spellId)
 		if spellId and tester(flags) then
-			return spellId, flags, providers[spellId], modifiers[spellId], specials.CROWD_CTRL[spellId], sources[spellId], specials.DISPEL[spellId]
+			return spellId, flags, providers[spellId], modifiers[spellId],
+				specials.CROWD_CTRL[spellId], sources[spellId], specials.DISPEL[spellId]
 		end
 	until not spellId
 end
@@ -419,7 +417,8 @@ end
 function lib:GetSpellInfo(spellId)
 	local flags = spellId and spells[spellId]
 	if flags then
-		return flags, providers[spellId], modifiers[spellId], specials.CROWD_CTRL[spellId], sources[spellId], specials.DISPEL[spellId]
+		return flags, providers[spellId], modifiers[spellId],
+			specials.CROWD_CTRL[spellId], sources[spellId], specials.DISPEL[spellId]
 	end
 end
 
@@ -429,7 +428,7 @@ end
 local function FilterSpellId(spellId, spellType, errors)
 	if type(spellId) == "table"  then
 		local ids = {}
-		for i, subId in pairs(spellId) do
+		for _, subId in pairs(spellId) do
 			local validated = FilterSpellId(subId, spellType, errors)
 			if validated then
 				tinsert(ids, validated)
@@ -552,7 +551,7 @@ function lib:__RegisterSpells(category, interface, minor, newSpells, newProvider
 				crowd_ctrl[spellId] = band(flags, CROWD_CTRL_TYPE)
 				-- clear the crowd control flags
 				flags = band(flags, NOT_CC_TYPE)
-			elseif band(flags, TYPE) == DISPEL then
+			elseif math.abs(band(flags, TYPE)) == DISPEL then -- use math.abs to counter signed int luabitop in tests
 				dispels[spellId] = band(flags, DISPEL_TYPE)
 				-- clear the dispel flags
 				flags = band(flags, NOT_DISPEL_TYPE)
