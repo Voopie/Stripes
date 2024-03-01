@@ -122,13 +122,15 @@ local function CreateBuffFrame(unitframe)
 
         local uf = self:GetParent();
         local unit = uf.data.unit or uf.unit;
+        local squareOffset = SQUARE and 6 or 0;
 
         if unit and ShouldShowName(uf) then
-            local offset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
-            self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+            local nameOffset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
+            self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 0, 2 + nameOffset + squareOffset + BUFFFRAME_OFFSET_Y + OFFSET_Y);
         else
-            local offset = uf.BuffFrame:GetBaseYOffset() + (uf.data.isTarget and uf.BuffFrame:GetTargetYOffset() or 0.0);
-            self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y + OFFSET_Y);
+            local buffFrameBaseYOffset = uf.BuffFrame:GetBaseYOffset();
+            local buffFrameTargetYOffset = uf.data.isTarget and uf.BuffFrame:GetTargetYOffset() or 0;
+            self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 0, 5 + buffFrameBaseYOffset + buffFrameTargetYOffset + squareOffset + BUFFFRAME_OFFSET_Y + OFFSET_Y);
         end
 
         if AURAS_DIRECTION == 1 then
