@@ -122,7 +122,7 @@ local function IsOnPandemic(aura)
     local startTimeMs, durationMs = aura.Cooldown:GetCooldownTimes();
     local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
 
-    return remTimeMs > 0 and remTimeMs <= durationMs/100*PANDEMIC_PERCENT;
+    return remTimeMs > 0 and remTimeMs <= (durationMs / 100 * PANDEMIC_PERCENT);
 end
 
 local function ResetPandemic(unitframe)
@@ -143,19 +143,20 @@ local function IsOnExpireGlow(aura)
     local startTimeMs, durationMs = aura.Cooldown:GetCooldownTimes();
     local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
 
-    return remTimeMs > 0 and remTimeMs <= durationMs/100*EXPIRE_GLOW_PERCENT;
+    return remTimeMs > 0 and remTimeMs <= (durationMs / 100 * EXPIRE_GLOW_PERCENT);
 end
 
 local function SortMethodFunction(a, b)
-    if not a.expires or not b.expires then
-        return;
-    end
+    local aExpires = a.expires or 0;
+    local bExpires = b.expires or 0;
 
     if SORT_METHOD == 1 then      -- EXPIRES ASC
-        return a.expires < b.expires;
+        return aExpires < bExpires;
     elseif SORT_METHOD == 2 then  -- EXPIRES DESC
-        return a.expires > b.expires;
+        return aExpires > bExpires;
     end
+
+    return false;
 end
 
 local function UpdateAnchor(self)
