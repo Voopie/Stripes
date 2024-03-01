@@ -162,15 +162,18 @@ end
 local function UpdateAnchor(self)
     local unitframe = self:GetParent();
     local unit = unitframe.unit or unitframe.data.unit;
+    local squareOffset = SQUARE and 6 or 0;
 
     self:ClearAllPoints();
 
     if unit and ShouldShowName(unitframe) then
-        local offset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
-        PixelUtil.SetPoint(self, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 2 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
+        local nameOffset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
+        PixelUtil.SetPoint(self, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 2 + nameOffset + squareOffset + BUFFFRAME_OFFSET_Y);
     else
-        local offset = self:GetBaseYOffset() + (unitframe.data.isTarget and self:GetTargetYOffset() or 0.0);
-        PixelUtil.SetPoint(self, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + offset + (SQUARE and 6 or 0) + BUFFFRAME_OFFSET_Y);
+        local buffFrameBaseYOffset = self:GetBaseYOffset();
+        local buffFrameTargetYOffset = unitframe.data.isTarget and self:GetTargetYOffset() or 0;
+
+        PixelUtil.SetPoint(self, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + buffFrameBaseYOffset + buffFrameTargetYOffset + squareOffset + BUFFFRAME_OFFSET_Y);
     end
 
     if AURAS_DIRECTION == 1 then
@@ -567,7 +570,6 @@ local function Update(unitframe, unitAuraUpdateInfo)
     unitframe.BuffFrame.UpdateBuffs    = UpdateBuffs;
 
     OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo);
-    --unitframe.BuffFrame:UpdateBuffs();
 end
 
 local function UpdateStyle(unitframe)
