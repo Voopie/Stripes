@@ -1,11 +1,8 @@
 local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('HideNonCasting');
 
--- Lua API
-local select = select;
-
--- WoW API
-local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
+-- Stripes API
+local U_UnitIsCasting = U.UnitIsCasting;
 
 -- Local Config
 local ENABLED, SHOW_UNINTERRUPTIBLE, MODIFIER;
@@ -19,20 +16,9 @@ function Module:UpdateVisibility(unitframe)
         return;
     end
 
-    local notInterruptible, spellId = select(8, UnitCastingInfo(unitframe.data.unit));
+    local spellId, notInterruptible = U_UnitIsCasting(unitframe.data.unit);
 
-    if not spellId then
-        notInterruptible, spellId = select(7, UnitChannelInfo(unitframe.data.unit));
-    end
-
-    if spellId then
-        if SHOW_UNINTERRUPTIBLE or not notInterruptible then
-            unitframe:Show();
-            return;
-        end
-    end
-
-    unitframe:Hide();
+    unitframe:SetShown(spellId and (SHOW_UNINTERRUPTIBLE or not notInterruptible));
 end
 
 function Module:ShowOnlyCasting()
