@@ -34,35 +34,43 @@ end
 
 local UpdateHealthTextFormat = {
     [1] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s  %d' .. PCT_SIGN) or ('%s  %.1f' .. PCT_SIGN) , ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF)
+        local formatString = string.format('%s  %s%s', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [2] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s | %d' .. PCT_SIGN) or ('%s | %.1f' .. PCT_SIGN), ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        local formatString = string.format('%s | %s%s', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [3] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s - %d' .. PCT_SIGN) or ('%s - %.1f' .. PCT_SIGN), ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        local formatString = string.format('%s - %s%s', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [4] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s / %d' .. PCT_SIGN) or ('%s / %.1f' .. PCT_SIGN), ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        local formatString = string.format('%s / %s%s', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [5] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s [%d' .. PCT_SIGN ..']') or ('%s  [%.1f' .. PCT_SIGN .. ']'), ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        local formatString = string.format('%s  [%s%s]', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [6] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%s (%d' .. PCT_SIGN .. ')') or ('%s  (%.1f' .. PCT_SIGN .. ')'), ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF);
+        local formatString = string.format('%s  (%s%s)', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [7] = function(unitframe, fontObject)
-        fontObject:SetFormattedText('%s', ShortValue(unitframe.data.healthCurrent));
+        local formatString = '%s';
+        fontObject:SetFormattedText(formatString, ShortValue(unitframe.data.healthCurrent));
     end,
 
     [8] = function(unitframe, fontObject)
-        fontObject:SetFormattedText(unitframe.data.healthPerF == 100 and ('%d' .. PCT_SIGN) or ('%.1f' .. PCT_SIGN), unitframe.data.healthPerF);
+        local formatString = string.format('%s%s', unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [9] = function(unitframe, fontObject)
