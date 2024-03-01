@@ -60,6 +60,10 @@ local auras = {
 };
 
 local units = {
+    -- Cataclysm
+    -- Dungeons
+    [40936] = true, -- Faceless Watcher (Throne of the Tides)
+
     -- Legion
     -- Dungeons
     [91796]  = true, -- Skrog Wavecrasher (Eye of Azshara)
@@ -130,6 +134,7 @@ local units = {
     [195265] = true, -- Stormcaller Arynga (The Nokhud Offensive)
     [195696] = true, -- Primalist Thunderbeast (The Nokhud Offensive)
     [187897] = true, -- Defier Draghar (Ruby Life Pools)
+    [206214] = true, -- Infinite Infiltrator (Dawn of the Infinite: Galakrond's Fall)
 };
 
 local function Create(unitframe)
