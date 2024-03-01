@@ -45,16 +45,16 @@ local function Update(unitframe)
     end
 end
 
-local function UpdateShow(unitframe)
-    if not unitframe.data.level then
-        unitframe.LevelText:Hide();
-        return;
-    end
+local function UpdateVisibility(unitframe)
+    local level        = unitframe.data.level;
+    local enabled      = ENABLED and level and not unitframe.data.isPersonal;
+    local levelUnknown = level == '??';
+    local levelMaxed   = type(level) == 'number' and level >= D.MaxLevel;
 
-    if HIDE_MAX then
-        unitframe.LevelText:SetShown(ENABLED and not (unitframe.data.level == '??' or unitframe.data.level >= D.MaxLevel) and not unitframe.data.isPersonal);
+    if not enabled or (HIDE_MAX and (levelUnknown or levelMaxed)) then
+        unitframe.LevelText:Hide();
     else
-        unitframe.LevelText:SetShown(ENABLED and not unitframe.data.isPersonal);
+        unitframe.LevelText:Show();
     end
 end
 
@@ -72,7 +72,7 @@ end
 function Module:UnitAdded(unitframe)
     Create(unitframe);
     Update(unitframe);
-    UpdateShow(unitframe);
+    UpdateVisibility(unitframe);
     UpdateStyle(unitframe);
 end
 
@@ -84,7 +84,7 @@ end
 
 function Module:Update(unitframe)
     Update(unitframe);
-    UpdateShow(unitframe);
+    UpdateVisibility(unitframe);
     UpdateStyle(unitframe);
 end
 
