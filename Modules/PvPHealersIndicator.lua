@@ -211,16 +211,26 @@ function Module:UpdateLocalConfig()
     OFFSET_X       = O.db.pvp_healers_icon_offset_x;
     OFFSET_Y       = O.db.pvp_healers_icon_offset_y;
     STRATA         = O.db.pvp_healers_icon_strata ~= 1 and O.Lists.frame_strata[O.db.pvp_healers_icon_strata] or 1;
+
+    if ENABLED then
+        self:RegisterEvent('ARENA_OPPONENT_UPDATE', UpdateData);
+        self:RegisterEvent('UPDATE_BATTLEFIELD_SCORE', UpdateData);
+        self:RegisterEvent('PLAYER_ENTERING_WORLD', function()
+            table_wipe(Healers);
+        end);
+    else
+        self:UnregisterEvent('ARENA_OPPONENT_UPDATE');
+        self:UnregisterEvent('UPDATE_BATTLEFIELD_SCORE');
+        self:UnregisterEvent('PLAYER_ENTERING_WORLD');
+    end
+
+    if ENABLED and SOUND_ENABLED then
+        self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', UpdateMouseoverUnit);
+    else
+        self:UnregisterEvent('UPDATE_MOUSEOVER_UNIT');
+    end
 end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-
-    self:RegisterEvent('PLAYER_ENTERING_WORLD', function()
-        table_wipe(Healers);
-    end);
-
-    self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', UpdateMouseoverUnit);
-    self:RegisterEvent('ARENA_OPPONENT_UPDATE', UpdateData);
-    self:RegisterEvent('UPDATE_BATTLEFIELD_SCORE', UpdateData);
 end
