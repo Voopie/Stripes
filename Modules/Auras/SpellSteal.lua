@@ -78,7 +78,7 @@ local function CreateBuffFrame(unitframe)
                 end
             else
                 if STATIC_POSITION then
-                    self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 2 + (SQUARE and 6 or 0) + OFFSET_Y);
+                    self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 2 + squareOffset + OFFSET_Y);
                 else
                     local buffFrameBaseYOffset = uf.BuffFrame:GetBaseYOffset();
                     local buffFrameTargetYOffset = uf.data.isTarget and uf.BuffFrame:GetTargetYOffset() or 0;
