@@ -132,10 +132,6 @@ local function Update(unitframe)
 end
 
 local function UpdateMouseoverUnit()
-    if not SOUND_ENABLED then
-        return;
-    end
-
     if mobsIDs[GetNpcID('mouseover')] then
         PlaySoundFile(SOUNDFILE_ID);
     end
@@ -165,9 +161,14 @@ function Module:UpdateLocalConfig()
     OFFSET_X       = O.db.pve_healers_icon_offset_x;
     OFFSET_Y       = O.db.pve_healers_icon_offset_y;
     STRATA         = O.db.pve_healers_icon_strata ~= 1 and O.Lists.frame_strata[O.db.pve_healers_icon_strata] or 1;
+
+    if ENABLED and SOUND_ENABLED then
+        self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', UpdateMouseoverUnit);
+    else
+        self:UnregisterEvent('UPDATE_MOUSEOVER_UNIT');
+    end
 end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-    self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', UpdateMouseoverUnit);
 end
