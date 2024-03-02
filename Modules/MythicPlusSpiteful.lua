@@ -59,7 +59,7 @@ local function Update(unitframe)
         unitframe.Spiteful.ttd:SetShown(showTTD);
 
         if showTTD then
-            unitframe.Spiteful.ttd:SetText(string.format('%.1f%s', unitframe.data.healthPerF / 8, L['SECOND_SHORT']))
+            unitframe.Spiteful.ttd:SetText(string_format('%.1f%s', unitframe.data.healthPerF / 8, L['SECOND_SHORT']))
         end
     end
 end
