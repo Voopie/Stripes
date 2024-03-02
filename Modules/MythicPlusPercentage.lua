@@ -21,7 +21,6 @@ local MDT;
 local MDT_GetEnemyInfo;
 
 local percentPattern = '%.2f%%';
-local EMPTY_STRING = '';
 
 local function Create(unitframe)
     if unitframe.MythicPlusPercentage then
@@ -39,7 +38,7 @@ end
 
 local function Update(unitframe)
     if not ENABLED or not PlayerState.inMythicPlus then
-        unitframe.MythicPlusPercentage.text:SetText(EMPTY_STRING);
+        unitframe.MythicPlusPercentage.text:SetText('');
         return;
     end
 
@@ -65,7 +64,7 @@ local function Update(unitframe)
         PixelUtil.SetPoint(unitframe.MythicPlusPercentage.text, POINT, unitframe.MythicPlusPercentage, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
         unitframe.MythicPlusPercentage.text:SetText(string_format(percentPattern, weight));
     else
-        unitframe.MythicPlusPercentage.text:SetText(EMPTY_STRING);
+        unitframe.MythicPlusPercentage.text:SetText('');
     end
 end
 
@@ -76,7 +75,7 @@ end
 
 function Module:UnitRemoved(unitframe)
     if unitframe.MythicPlusPercentage then
-        unitframe.MythicPlusPercentage.text:SetText(EMPTY_STRING);
+        unitframe.MythicPlusPercentage.text:SetText('');
     end
 end
 
