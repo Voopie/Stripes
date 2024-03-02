@@ -47,6 +47,10 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
+    if not unitframe.CombatIndicator then
+        return;
+    end
+
     unitframe.CombatIndicator.elapsed = UPDATE_INTERVAL + 0.01;
     unitframe.CombatIndicator:SetShown(ENABLED and not unitframe.data.isPersonal);
 
