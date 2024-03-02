@@ -253,6 +253,7 @@ D.ModelBlacklist = {
 D.NPCS_WO_AGGRO = {
     [120651] = true, -- Explosives
     [174773] = true, -- Spiteful Shade
+    [211306] = true, -- Fiery Vines
 };
 
 D.NPCs = {
