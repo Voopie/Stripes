@@ -44,7 +44,7 @@ local function OnInterrupt(unitframe, guid, sourceName)
         classColor = U_GetClassColor(sourceName, 1);
     end
 
-    if classColor then
+    if classColor and unitframe.castingBar then
         unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, classColor, INTERRUPTED, name));
     end
 end
