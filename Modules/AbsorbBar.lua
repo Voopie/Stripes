@@ -29,14 +29,14 @@ local function Create(unitframe)
     absorbBar:SetBackdrop(BACKDROP);
     absorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 0);
 
-    absorbBar.t = absorbBar:CreateTexture(nil, 'ARTWORK');
-    absorbBar.t:SetTexture('Interface\\RaidFrame\\Shield-Fill', 'REPEAT', 'REPEAT');
-    absorbBar.t:SetAlpha(0.65);
-    absorbBar.t:SetHorizTile(true);
-    absorbBar.t:SetVertTile(true);
+    absorbBar.texture = absorbBar:CreateTexture(nil, 'ARTWORK');
+    absorbBar.texture:SetTexture('Interface\\RaidFrame\\Shield-Fill', 'REPEAT', 'REPEAT');
+    absorbBar.texture:SetAlpha(0.65);
+    absorbBar.texture:SetHorizTile(true);
+    absorbBar.texture:SetVertTile(true);
 
     absorbBar.overlay = absorbBar:CreateTexture(nil, 'OVERLAY');
-    absorbBar.overlay:SetAllPoints(absorbBar.t);
+    absorbBar.overlay:SetAllPoints(absorbBar.texture);
     absorbBar.overlay:SetTexture('Interface\\RaidFrame\\Shield-Overlay', 'REPEAT', 'REPEAT');
     absorbBar.overlay:SetHorizTile(true);
     absorbBar.overlay:SetVertTile(true);
@@ -50,7 +50,7 @@ local function Create(unitframe)
         PixelUtil.SetHeight(absorbBar, 2);
     end
 
-    absorbBar:SetStatusBarTexture(absorbBar.t);
+    absorbBar:SetStatusBarTexture(absorbBar.texture);
     absorbBar:SetValue(0);
     absorbBar:Hide();
 
@@ -83,24 +83,27 @@ local function Update(unitframe)
     unitframe.totalAbsorb:Hide();
     unitframe.totalAbsorbOverlay:Hide();
 
-    local absorbAmount = unitframe.data.absorbAmount;
+    local absorbAmount  = unitframe.data.absorbAmount;
+    local healthMax     = unitframe.data.healthMax;
+    local healthCurrent = unitframe.data.healthCurrent;
+
     local absorbBar    = unitframe.AbsorbBar;
     local absorbText   = unitframe.AbsorbText;
 
-    if unitframe.data.healthMax > 0 and absorbAmount > 0 then
-        absorbBar:SetMinMaxValues(0, unitframe.data.healthMax);
+    if healthMax > 0 and absorbAmount > 0 then
+        absorbBar:SetMinMaxValues(0, healthMax);
         absorbBar:SetValue(absorbAmount);
         absorbBar:Show();
 
         if not AT_TOP then
             absorbBar:ClearAllPoints();
 
-            if (unitframe.data.healthMax - unitframe.data.healthCurrent) >= absorbAmount then
+            if (healthMax - healthCurrent) >= absorbAmount then
                 absorbBar:SetAllPoints(unitframe.totalAbsorb);
-                absorbBar.t:SetAlpha(0.85);
+                absorbBar.texture:SetAlpha(0.85);
             else
                 absorbBar:SetAllPoints(unitframe.healthBar);
-                absorbBar.t:SetAlpha(0.65);
+                absorbBar.texture:SetAlpha(0.65);
             end
         end
 
