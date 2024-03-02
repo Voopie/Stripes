@@ -168,6 +168,7 @@ function Module:UpdateLocalConfig()
     ABSORB_TEXT_COLOR[2] = O.db.absorb_text_color[2];
     ABSORB_TEXT_COLOR[3] = O.db.absorb_text_color[3];
     ABSORB_TEXT_COLOR[4] = O.db.absorb_text_color[4] or 1;
+
     UpdateFontObject(StripesAbsorbTextFont, O.db.absorb_text_font_value, O.db.absorb_text_font_size, O.db.absorb_text_font_flag, O.db.absorb_text_font_shadow);
 end
 

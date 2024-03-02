@@ -20,7 +20,7 @@ local ShouldShowName = Stripes.ShouldShowName;
 local IsNameOnlyMode = Stripes.IsNameOnlyMode;
 local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
 local UpdateFontObject = Stripes.UpdateFontObject;
-local GetCachedName = Stripes.GetCachedName
+local GetCachedName = Stripes.GetCachedName;
 
 -- Libraries
 local LT = S.Libraries.LT;
