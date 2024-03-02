@@ -4,10 +4,10 @@ local Module = S:NewModule('MythicPlus_QuestUnwatch');
 -- Lua API
 local ipairs, table_insert = ipairs, table.insert;
 
-function Module:Watch()
-    local watchedQuests = #O.db.mythic_plus_questunwatch_data;
+local function Watch()
+    local watchedQuests = type(O.db.mythic_plus_questunwatch_data) == 'table' and #O.db.mythic_plus_questunwatch_data or 0;
 
-    if not watchedQuests or watchedQuests == 0 then
+    if watchedQuests == 0 then
         return;
     end
 
@@ -18,7 +18,7 @@ function Module:Watch()
     wipe(O.db.mythic_plus_questunwatch_data);
 end
 
-function Module:Unwatch()
+local function Unwatch()
     wipe(O.db.mythic_plus_questunwatch_data);
 
     local questId, questLogIndex, questInfo;
@@ -41,33 +41,20 @@ function Module:Unwatch()
     end
 end
 
-function Module:PLAYER_ENTERING_WORLD()
+function Module:UpdateLocalConfig()
     if O.db.mythic_plus_questunwatch_enabled then
-        self:Watch();
-    end
-end
-
-function Module:CHALLENGE_MODE_START()
-    if O.db.mythic_plus_questunwatch_enabled then
-        self:Unwatch();
-    end
-end
-
-function Module:CHALLENGE_MODE_COMPLETED()
-    if O.db.mythic_plus_questunwatch_enabled then
-        self:Watch();
-    end
-end
-
-function Module:CHALLENGE_MODE_RESET()
-    if O.db.mythic_plus_questunwatch_enabled then
-        self:Watch();
+        self:RegisterEvent('PLAYER_ENTERING_WORLD', Watch);
+        self:RegisterEvent('CHALLENGE_MODE_START', Unwatch);
+        self:RegisterEvent('CHALLENGE_MODE_COMPLETED', Watch);
+        self:RegisterEvent('CHALLENGE_MODE_RESET', Watch);
+    else
+        self:UnregisterEvent('PLAYER_ENTERING_WORLD');
+        self:UnregisterEvent('CHALLENGE_MODE_START');
+        self:UnregisterEvent('CHALLENGE_MODE_COMPLETED');
+        self:UnregisterEvent('CHALLENGE_MODE_RESET');
     end
 end
 
 function Module:StartUp()
-    self:RegisterEvent('PLAYER_ENTERING_WORLD');
-    self:RegisterEvent('CHALLENGE_MODE_START');
-    self:RegisterEvent('CHALLENGE_MODE_COMPLETED');
-    self:RegisterEvent('CHALLENGE_MODE_RESET');
+    self:UpdateLocalConfig();
 end
