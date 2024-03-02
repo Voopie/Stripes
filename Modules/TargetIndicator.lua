@@ -14,15 +14,17 @@ local GLOW_TEXTURE = S.Media.Path .. 'Textures\\glow';
 local GLOW_UPDATE_INTERVAL = 0.1;
 
 local function Glow_Show(unitframe)
+    local targetIndicator = unitframe.TargetIndicator;
+
     if not unitframe.data.isTarget then
-        unitframe.TargetIndicator.left:Hide();
-        unitframe.TargetIndicator.right:Hide();
+        targetIndicator.left:Hide();
+        targetIndicator.right:Hide();
     end
 
-    unitframe.TargetIndicator:Show();
+    targetIndicator:Show();
 
-    unitframe.TargetIndicator.glowUp:Show();
-    unitframe.TargetIndicator.glowDown:Show();
+    targetIndicator.glowUp:Show();
+    targetIndicator.glowDown:Show();
 end
 
 local function Glow_Hide(unitframe)
@@ -30,13 +32,15 @@ local function Glow_Hide(unitframe)
         return;
     end
 
-    unitframe.TargetIndicator:Hide();
+    local targetIndicator = unitframe.TargetIndicator;
 
-    unitframe.TargetIndicator.glowUp:Hide();
-    unitframe.TargetIndicator.glowDown:Hide();
+    targetIndicator:Hide();
 
-    unitframe.TargetIndicator.left:Hide();
-    unitframe.TargetIndicator.right:Hide();
+    targetIndicator.glowUp:Hide();
+    targetIndicator.glowDown:Hide();
+
+    targetIndicator.left:Hide();
+    targetIndicator.right:Hide();
 end
 
 local function MouseOnUnit(unitframe)
@@ -71,13 +75,15 @@ local function UpdateTargetSelection(unitframe)
         return;
     end
 
-    unitframe.TargetIndicator.left:SetShown(TARGET_INDICATOR_ENABLED);
-    unitframe.TargetIndicator.right:SetShown(TARGET_INDICATOR_ENABLED);
+    local targetIndicator = unitframe.TargetIndicator;
 
-    unitframe.TargetIndicator.glowUp:SetShown(TARGET_GLOW_ENABLED);
-    unitframe.TargetIndicator.glowDown:SetShown(TARGET_GLOW_ENABLED);
+    targetIndicator.left:SetShown(TARGET_INDICATOR_ENABLED);
+    targetIndicator.right:SetShown(TARGET_INDICATOR_ENABLED);
 
-    unitframe.TargetIndicator:Show();
+    targetIndicator.glowUp:SetShown(TARGET_GLOW_ENABLED);
+    targetIndicator.glowDown:SetShown(TARGET_GLOW_ENABLED);
+
+    targetIndicator:Show();
 end
 
 local function CreateTargetIndicator(unitframe)
@@ -119,23 +125,25 @@ local function CreateTargetIndicator(unitframe)
 end
 
 local function UpdateStyle(unitframe)
-    PixelUtil.SetSize(unitframe.TargetIndicator.left, SIZE, SIZE);
-    PixelUtil.SetSize(unitframe.TargetIndicator.right, SIZE, SIZE);
+    local targetIndicator = unitframe.TargetIndicator;
 
-    PixelUtil.SetPoint(unitframe.TargetIndicator.left, 'RIGHT', unitframe.healthBar, 'LEFT', -(X_OFFSET), Y_OFFSET);
-    PixelUtil.SetPoint(unitframe.TargetIndicator.right, 'LEFT', unitframe.healthBar, 'RIGHT', X_OFFSET, Y_OFFSET);
+    PixelUtil.SetSize(targetIndicator.left, SIZE, SIZE);
+    PixelUtil.SetSize(targetIndicator.right, SIZE, SIZE);
 
-    unitframe.TargetIndicator.left:SetTexture(TEXTURE);
-    unitframe.TargetIndicator.right:SetTexture(TEXTURE);
+    PixelUtil.SetPoint(targetIndicator.left, 'RIGHT', unitframe.healthBar, 'LEFT', -(X_OFFSET), Y_OFFSET);
+    PixelUtil.SetPoint(targetIndicator.right, 'LEFT', unitframe.healthBar, 'RIGHT', X_OFFSET, Y_OFFSET);
 
-    unitframe.TargetIndicator.left:SetVertexColor(unpack(TARGET_INDICATOR_COLOR));
-    unitframe.TargetIndicator.right:SetVertexColor(unpack(TARGET_INDICATOR_COLOR));
+    targetIndicator.left:SetTexture(TEXTURE);
+    targetIndicator.right:SetTexture(TEXTURE);
 
-    unitframe.TargetIndicator.glowUp:SetVertexColor(unpack(TARGET_GLOW_COLOR));
-    unitframe.TargetIndicator.glowDown:SetVertexColor(unpack(TARGET_GLOW_COLOR));
+    targetIndicator.left:SetVertexColor(unpack(TARGET_INDICATOR_COLOR));
+    targetIndicator.right:SetVertexColor(unpack(TARGET_INDICATOR_COLOR));
 
-    PixelUtil.SetHeight(unitframe.TargetIndicator.glowUp, GLOW_SIZE);
-    PixelUtil.SetHeight(unitframe.TargetIndicator.glowDown, GLOW_SIZE);
+    targetIndicator.glowUp:SetVertexColor(unpack(TARGET_GLOW_COLOR));
+    targetIndicator.glowDown:SetVertexColor(unpack(TARGET_GLOW_COLOR));
+
+    PixelUtil.SetHeight(targetIndicator.glowUp, GLOW_SIZE);
+    PixelUtil.SetHeight(targetIndicator.glowDown, GLOW_SIZE);
 end
 
 function Module:UpdateMouseoverUnit()
