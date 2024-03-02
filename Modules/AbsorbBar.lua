@@ -84,34 +84,36 @@ local function Update(unitframe)
     unitframe.totalAbsorbOverlay:Hide();
 
     local absorbAmount = unitframe.data.absorbAmount;
+    local absorbBar    = unitframe.AbsorbBar;
+    local absorbText   = unitframe.AbsorbText;
 
     if unitframe.data.healthMax > 0 and absorbAmount > 0 then
-        unitframe.AbsorbBar:SetMinMaxValues(0, unitframe.data.healthMax);
-        unitframe.AbsorbBar:SetValue(absorbAmount);
-        unitframe.AbsorbBar:Show();
+        absorbBar:SetMinMaxValues(0, unitframe.data.healthMax);
+        absorbBar:SetValue(absorbAmount);
+        absorbBar:Show();
 
         if not AT_TOP then
-            unitframe.AbsorbBar:ClearAllPoints();
+            absorbBar:ClearAllPoints();
 
             if (unitframe.data.healthMax - unitframe.data.healthCurrent) >= absorbAmount then
-                unitframe.AbsorbBar:SetAllPoints(unitframe.totalAbsorb);
-                unitframe.AbsorbBar.t:SetAlpha(0.85);
+                absorbBar:SetAllPoints(unitframe.totalAbsorb);
+                absorbBar.t:SetAlpha(0.85);
             else
-                unitframe.AbsorbBar:SetAllPoints(unitframe.healthBar);
-                unitframe.AbsorbBar.t:SetAlpha(0.65);
+                absorbBar:SetAllPoints(unitframe.healthBar);
+                absorbBar.t:SetAlpha(0.65);
             end
         end
 
         if ABSORB_TEXT_ENABLED then
-            unitframe.AbsorbText.text:SetText(ShortValue(absorbAmount));
-            unitframe.AbsorbText:Show();
+            absorbText.text:SetText(ShortValue(absorbAmount));
+            absorbText:Show();
         else
-            unitframe.AbsorbText:Hide();
+            absorbText:Hide();
         end
     else
-        unitframe.AbsorbBar:SetValue(0);
-        unitframe.AbsorbBar:Hide();
-        unitframe.AbsorbText:Hide();
+        absorbBar:SetValue(0);
+        absorbBar:Hide();
+        absorbText:Hide();
     end
 end
 
@@ -121,21 +123,24 @@ local function UpdateShow(unitframe)
 end
 
 local function UpdateStyle(unitframe)
-    unitframe.AbsorbBar:ClearAllPoints();
+    local absorbBar  = unitframe.AbsorbBar;
+    local absorbText = unitframe.AbsorbText;
+
+    absorbBar:ClearAllPoints();
 
     if not AT_TOP then
-        unitframe.AbsorbBar:SetAllPoints(unitframe.healthBar);
-        unitframe.AbsorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 0);
+        absorbBar:SetAllPoints(unitframe.healthBar);
+        absorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 0);
     else
-        PixelUtil.SetPoint(unitframe.AbsorbBar, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', -0.5, 0);
-        PixelUtil.SetPoint(unitframe.AbsorbBar, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0.5, 0);
-        unitframe.AbsorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
-        PixelUtil.SetHeight(unitframe.AbsorbBar, 2);
+        PixelUtil.SetPoint(absorbBar, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', -0.5, 0);
+        PixelUtil.SetPoint(absorbBar, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0.5, 0);
+        absorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
+        PixelUtil.SetHeight(absorbBar, 2);
     end
 
-    unitframe.AbsorbText.text:ClearAllPoints();
-    PixelUtil.SetPoint(unitframe.AbsorbText.text, ABSORB_TEXT_ANCHOR, unitframe.AbsorbText, ABSORB_TEXT_ANCHOR, ABSORB_TEXT_X_OFFSET, ABSORB_TEXT_Y_OFFSET);
-    unitframe.AbsorbText.text:SetTextColor(ABSORB_TEXT_COLOR[1], ABSORB_TEXT_COLOR[2], ABSORB_TEXT_COLOR[3], ABSORB_TEXT_COLOR[4]);
+    absorbText.text:ClearAllPoints();
+    PixelUtil.SetPoint(absorbText.text, ABSORB_TEXT_ANCHOR, absorbText, ABSORB_TEXT_ANCHOR, ABSORB_TEXT_X_OFFSET, ABSORB_TEXT_Y_OFFSET);
+    absorbText.text:SetTextColor(ABSORB_TEXT_COLOR[1], ABSORB_TEXT_COLOR[2], ABSORB_TEXT_COLOR[3], ABSORB_TEXT_COLOR[4]);
 end
 
 function Module:UnitAdded(unitframe)
