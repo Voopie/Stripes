@@ -1287,11 +1287,33 @@ function Module:Migration_UnimportantUnits()
     end
 end
 
-function Module:RunMigrations()
-    self:Migration_ColorsAndCategories();
-    self:Migration_CustomColorsAndNames();
-    self:Migration_FontValueOptions();
-    self:Migration_UnimportantUnits();
+local MigrationsFunctions = {
+    ['Migration_ColorsAndCategories']  = { majorVersion = 1, minorVersion = 24 },
+    ['Migration_CustomColorsAndNames'] = { majorVersion = 1, minorVersion = 28 },
+    ['Migration_FontValueOptions']     = { majorVersion = 1, minorVersion = 28 },
+    ['Migration_UnimportantUnits']     = { majorVersion = 1, minorVersion = 29 },
+};
+
+function Module:RunAllMigrations()
+    for functionName, _ in pairs(MigrationsFunctions) do
+        if self[functionName] then
+            self[functionName](self);
+        end
+    end
+end
+
+function Module:RunStartUpMigrations()
+    for migrationFunctionName, migrationData in pairs(MigrationsFunctions) do
+        self:MigrateToVersion(migrationData.majorVersion, migrationData.minorVersion, migrationFunctionName);
+    end
+end
+
+function Module:MigrateToVersion(migrationMajorVersion, migrationMinorVersion, migrationName)
+    if (self.prevMajorVersion == 0 and self.prevMinorVersion == 0) or (self.prevMajorVersion == migrationMajorVersion and self.prevMinorVersion < migrationMinorVersion) then
+        if self[migrationName] then
+            self[migrationName](self);
+        end
+    end
 end
 
 function Module:StartUp()
@@ -1335,24 +1357,9 @@ function Module:StartUp()
     self:RenameDefaultProfile();
 
     local majorVersion, minorVersion = strsplit('.', (StripesDB.version or ''));
-    majorVersion, minorVersion = tonumber(majorVersion or 0) or 0, tonumber(minorVersion or 0) or 0;
+    self.prevMajorVersion, self.prevMinorVersion = tonumber(majorVersion or 0) or 0, tonumber(minorVersion or 0) or 0;
 
-    -- migration to 1.24
-    if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 24) then
-        self:Migration_ColorsAndCategories();
-    end
-
-    -- migration to 1.28 (DF 1st version)
-    if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 28) then
-        self:Migration_CustomColorsAndNames();
-        self:Migration_FontValueOptions();
-    end
-
-    -- migration to 1.29
-    if (majorVersion == 0 and minorVersion == 0) or (majorVersion == 1 and minorVersion < 29) then
-        self:Migration_UnimportantUnits();
-    end
-
+    self:RunStartUpMigrations();
     self:CleanUp();
 
     StripesDB.version = S.Version;

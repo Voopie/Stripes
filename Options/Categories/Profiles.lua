@@ -216,7 +216,7 @@ local function ImportProfile(name, data)
     panel.ActiveProfileValue:SetText(O.activeProfileName);
     panel.EditActiveProfileName:SetShown(O.activeProfileId ~= O.PROFILE_DEFAULT_ID);
 
-    Options:RunMigrations();
+    Options:RunAllMigrations();
     Options:CleanUp();
 
     O.UpdatePanelAll();
