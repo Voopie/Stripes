@@ -33,7 +33,7 @@ local function Update(unitframe)
         return;
     end
 
-    if not ENABLED or not unitframe.data.className or not ShouldShowName(unitframe) then
+    if not (ENABLED and unitframe.data.className and ShouldShowName(unitframe)) then
         unitframe.ClassIcon:Hide();
         return;
     end
