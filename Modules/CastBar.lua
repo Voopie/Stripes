@@ -85,73 +85,42 @@ local function UpdateStyle(unitframe)
 
     local healthBarHeight = healthBar.sHeight or 12;
 
+    PixelUtil.SetHeight(castingBar, ON_HP_BAR and healthBarHeight or BAR_HEIGHT);
+
     if ON_HP_BAR then
-        PixelUtil.SetHeight(castingBar, healthBarHeight);
         PixelUtil.SetPoint(healthBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6 + 2 + BAR_HEIGHT);
 
-        if unitframe.data.isPersonal then
-            PixelUtil.SetWidth(healthBar, PLAYER_WIDTH - WIDTH_OFFSET);
-        elseif unitframe.data.commonReaction == 'ENEMY' then
-            PixelUtil.SetWidth(healthBar, ENEMY_WIDTH - WIDTH_OFFSET);
-        elseif unitframe.data.commonReaction == 'FRIENDLY' then
-            PixelUtil.SetWidth(healthBar, FRIENDLY_WIDTH - WIDTH_OFFSET);
-        end
+        local healthBarWidth = unitframe.data.isPersonal and PLAYER_WIDTH or (unitframe.data.commonReaction == 'ENEMY' and ENEMY_WIDTH or FRIENDLY_WIDTH);
+        PixelUtil.SetWidth(healthBar, healthBarWidth - WIDTH_OFFSET);
 
         PixelUtil.SetPoint(castingBar, 'BOTTOMLEFT', healthBar, 'TOPLEFT', 0, -healthBarHeight);
         PixelUtil.SetPoint(castingBar, 'BOTTOMRIGHT', healthBar, 'TOPRIGHT', 0, -healthBarHeight);
 
-        if ICON_RIGHT_SIDE then
-            PixelUtil.SetPoint(castingBarIcon, 'LEFT', castingBar, 'RIGHT', 0, 0);
-        else
-            PixelUtil.SetPoint(castingBarIcon, 'RIGHT', castingBar, 'LEFT', 0, 0);
-        end
-
+        PixelUtil.SetPoint(castingBarIcon, ICON_RIGHT_SIDE and 'LEFT' or 'RIGHT', castingBar, ICON_RIGHT_SIDE and 'RIGHT' or 'LEFT', 0, 0);
         PixelUtil.SetSize(castingBarIcon, healthBarHeight, healthBarHeight);
-
-        PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, 'CENTER', 0, 0);
     else
-        PixelUtil.SetHeight(castingBar, BAR_HEIGHT);
         PixelUtil.SetPoint(castingBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6);
 
-        if unitframe.data.isPersonal then
-            PixelUtil.SetWidth(castingBar, PLAYER_WIDTH - WIDTH_OFFSET);
-        elseif unitframe.data.commonReaction == 'ENEMY' then
-            PixelUtil.SetWidth(castingBar, ENEMY_WIDTH - WIDTH_OFFSET);
-        elseif unitframe.data.commonReaction == 'FRIENDLY' then
-            PixelUtil.SetWidth(castingBar, FRIENDLY_WIDTH - WIDTH_OFFSET);
-        end
+        local castingBarWidth = unitframe.data.isPersonal and PLAYER_WIDTH or (unitframe.data.commonReaction == 'ENEMY' and ENEMY_WIDTH or FRIENDLY_WIDTH);
+        PixelUtil.SetWidth(castingBar, castingBarWidth - WIDTH_OFFSET);
 
         PixelUtil.SetPoint(healthBar, 'BOTTOMLEFT', castingBar, 'TOPLEFT', 0, CAST_BAR_OFFSET_Y);
         PixelUtil.SetPoint(healthBar, 'BOTTOMRIGHT', castingBar, 'TOPRIGHT', 0, CAST_BAR_OFFSET_Y);
 
-        if ICON_RIGHT_SIDE then
-            if ICON_LARGE then
-                PixelUtil.SetPoint(castingBarIcon, 'TOPLEFT', healthBar, 'TOPRIGHT', 1, 0.5);
-                PixelUtil.SetPoint(castingBarIcon, 'BOTTOMLEFT', castingBar, 'BOTTOMRIGHT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
-                PixelUtil.SetWidth(castingBarIcon, healthBarHeight + BAR_HEIGHT + 2 + (BORDER_ENABLED and BORDER_SIZE or 0));
+        local iconWidth = BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0);
 
-                PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, 'BOTTOM', 0, 0);
-            else
-                PixelUtil.SetPoint(castingBarIcon, 'LEFT', castingBar, 'RIGHT', 0, 0);
-                PixelUtil.SetSize(castingBarIcon, BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0), BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0));
-
-                PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, 'CENTER', 0, 0);
-            end
+        if ICON_LARGE then
+            PixelUtil.SetPoint(castingBarIcon, ICON_RIGHT_SIDE and 'TOPLEFT' or 'TOPRIGHT', healthBar, ICON_RIGHT_SIDE and 'TOPRIGHT' or 'TOPLEFT', ICON_RIGHT_SIDE and 1 or -1, 0.5);
+            PixelUtil.SetPoint(castingBarIcon, ICON_RIGHT_SIDE and 'BOTTOMLEFT' or 'BOTTOMRIGHT', castingBar, ICON_RIGHT_SIDE and 'BOTTOMRIGHT' or 'BOTTOMLEFT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
+            PixelUtil.SetWidth(castingBarIcon, 2 + healthBarHeight + iconWidth);
         else
-            if ICON_LARGE then
-                PixelUtil.SetPoint(castingBarIcon, 'TOPRIGHT', healthBar, 'TOPLEFT', -1, 0.5);
-                PixelUtil.SetPoint(castingBarIcon, 'BOTTOMRIGHT', castingBar, 'BOTTOMLEFT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
-                PixelUtil.SetWidth(castingBarIcon, healthBarHeight + BAR_HEIGHT + 2 + (BORDER_ENABLED and BORDER_SIZE or 0));
-
-                PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, 'BOTTOM', 0, 0);
-            else
-                PixelUtil.SetPoint(castingBarIcon, 'RIGHT', castingBar, 'LEFT', 0, 0);
-                PixelUtil.SetSize(castingBarIcon, BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0), BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0));
-
-                PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, 'CENTER', 0, 0);
-            end
+            PixelUtil.SetPoint(castingBarIcon, ICON_RIGHT_SIDE and 'LEFT' or 'RIGHT', castingBar, ICON_RIGHT_SIDE and 'RIGHT' or 'LEFT', 0, 0);
+            PixelUtil.SetSize(castingBarIcon, iconWidth, iconWidth);
         end
     end
+
+    -- Shield Icon Position
+    PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, (ON_HP_BAR or not ICON_LARGE) and 'CENTER' or 'BOTTOM', 0, 0);
 end
 
 local function UpdateColors(unitframe)
