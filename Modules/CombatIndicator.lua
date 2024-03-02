@@ -16,10 +16,12 @@ local function OnUpdate(self, elapsed)
         return;
     end
 
-    local unit = self:GetParent():GetParent().data.unit;
+    local unitframe = self:GetParent():GetParent();
+    local unit      = unitframe.data.unit;
+    local isEnemy   = unitframe.data.commonReaction == 'ENEMY';
 
     if unit and UnitAffectingCombat(unit) or (UnitExists(unit .. 'pet') and UnitAffectingCombat(unit .. 'pet')) then
-        self.icon:SetShown(self:GetParent():GetParent().data.commonReaction == 'ENEMY');
+        self.icon:SetShown(isEnemy);
     else
         self.icon:Hide();
     end
@@ -51,15 +53,16 @@ local function Update(unitframe)
         return;
     end
 
-    unitframe.CombatIndicator.elapsed = UPDATE_INTERVAL + 0.01;
-    unitframe.CombatIndicator:SetShown(ENABLED and not unitframe.data.isPersonal);
+    local combatIndicator     = unitframe.CombatIndicator;
+    local combatIndicatorIcon = combatIndicator.icon;
 
-    unitframe.CombatIndicator.icon:ClearAllPoints();
-    PixelUtil.SetPoint(unitframe.CombatIndicator.icon, POINT, unitframe.CombatIndicator, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    combatIndicator.elapsed = UPDATE_INTERVAL + 0.01;
+    combatIndicator:SetShown(ENABLED and not unitframe.data.isPersonal);
 
-    PixelUtil.SetSize(unitframe.CombatIndicator.icon, SIZE, SIZE);
-
-    unitframe.CombatIndicator.icon:SetVertexColor(COLOR[1], COLOR[2], COLOR[3], COLOR[4]);
+    combatIndicatorIcon:ClearAllPoints();
+    PixelUtil.SetPoint(combatIndicatorIcon, POINT, combatIndicator, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    PixelUtil.SetSize(combatIndicatorIcon, SIZE, SIZE);
+    combatIndicatorIcon:SetVertexColor(COLOR[1], COLOR[2], COLOR[3], COLOR[4]);
 end
 
 local function Hide(unitframe)
