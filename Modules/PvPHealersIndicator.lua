@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('PvPHealersIndicator');
 
 -- Lua API
-local string_gsub, string_format, table_wipe, unpack, ipairs = string.gsub, string.format, wipe, unpack, ipairs;
+local string_gsub, string_format, table_wipe, ipairs = string.gsub, string.format, wipe, ipairs;
 
 -- WoW API
 local GetArenaOpponentSpec, GetNumArenaOpponentSpecs, GetBattlefieldScore, GetNumBattlefieldScores = GetArenaOpponentSpec, GetNumArenaOpponentSpecs, GetBattlefieldScore, GetNumBattlefieldScores;
