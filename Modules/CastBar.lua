@@ -73,75 +73,80 @@ local function UpdateBarTexture(unitframe)
 end
 
 local function UpdateStyle(unitframe)
-    unitframe.castingBar:ClearAllPoints();
-    unitframe.castingBar.Icon:ClearAllPoints();
+    local castingBar             = unitframe.castingBar;
+    local castingBarIcon         = castingBar.Icon;
+    local castingBarBorderShield = castingBar.BorderShield;
 
-    unitframe.healthBar:ClearAllPoints();
+    local healthBar = unitframe.healthBar;
+
+    castingBar:ClearAllPoints();
+    castingBarIcon:ClearAllPoints();
+    healthBar:ClearAllPoints();
 
     if ON_HP_BAR then
-        PixelUtil.SetHeight(unitframe.castingBar, unitframe.healthBar.sHeight or 12);
-        PixelUtil.SetPoint(unitframe.healthBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6 + 2 + BAR_HEIGHT);
+        PixelUtil.SetHeight(castingBar, healthBar.sHeight or 12);
+        PixelUtil.SetPoint(healthBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6 + 2 + BAR_HEIGHT);
 
         if unitframe.data.isPersonal then
-            PixelUtil.SetWidth(unitframe.healthBar, PLAYER_WIDTH - WIDTH_OFFSET);
+            PixelUtil.SetWidth(healthBar, PLAYER_WIDTH - WIDTH_OFFSET);
         elseif unitframe.data.commonReaction == 'ENEMY' then
-            PixelUtil.SetWidth(unitframe.healthBar, ENEMY_WIDTH - WIDTH_OFFSET);
+            PixelUtil.SetWidth(healthBar, ENEMY_WIDTH - WIDTH_OFFSET);
         elseif unitframe.data.commonReaction == 'FRIENDLY' then
-            PixelUtil.SetWidth(unitframe.healthBar, FRIENDLY_WIDTH - WIDTH_OFFSET);
+            PixelUtil.SetWidth(healthBar, FRIENDLY_WIDTH - WIDTH_OFFSET);
         end
 
-        PixelUtil.SetPoint(unitframe.castingBar, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', 0, -(unitframe.healthBar.sHeight or 12));
-        PixelUtil.SetPoint(unitframe.castingBar, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, -(unitframe.healthBar.sHeight or 12));
+        PixelUtil.SetPoint(castingBar, 'BOTTOMLEFT', healthBar, 'TOPLEFT', 0, -(healthBar.sHeight or 12));
+        PixelUtil.SetPoint(castingBar, 'BOTTOMRIGHT', healthBar, 'TOPRIGHT', 0, -(healthBar.sHeight or 12));
 
         if ICON_RIGHT_SIDE then
-            PixelUtil.SetPoint(unitframe.castingBar.Icon, 'LEFT', unitframe.castingBar, 'RIGHT', 0, 0);
+            PixelUtil.SetPoint(castingBarIcon, 'LEFT', castingBar, 'RIGHT', 0, 0);
         else
-            PixelUtil.SetPoint(unitframe.castingBar.Icon, 'RIGHT', unitframe.castingBar, 'LEFT', 0, 0);
+            PixelUtil.SetPoint(castingBarIcon, 'RIGHT', castingBar, 'LEFT', 0, 0);
         end
 
-        PixelUtil.SetSize(unitframe.castingBar.Icon, unitframe.healthBar.sHeight or 12, unitframe.healthBar.sHeight or 12);
+        PixelUtil.SetSize(castingBarIcon, healthBar.sHeight or 12, healthBar.sHeight or 12);
 
-        PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'CENTER', 0, 0);
+        PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, 'CENTER', 0, 0);
     else
-        PixelUtil.SetHeight(unitframe.castingBar, BAR_HEIGHT);
-        PixelUtil.SetPoint(unitframe.castingBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6);
+        PixelUtil.SetHeight(castingBar, BAR_HEIGHT);
+        PixelUtil.SetPoint(castingBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6);
 
         if unitframe.data.isPersonal then
-            PixelUtil.SetWidth(unitframe.castingBar, PLAYER_WIDTH - WIDTH_OFFSET);
+            PixelUtil.SetWidth(castingBar, PLAYER_WIDTH - WIDTH_OFFSET);
         elseif unitframe.data.commonReaction == 'ENEMY' then
-            PixelUtil.SetWidth(unitframe.castingBar, ENEMY_WIDTH - WIDTH_OFFSET);
+            PixelUtil.SetWidth(castingBar, ENEMY_WIDTH - WIDTH_OFFSET);
         elseif unitframe.data.commonReaction == 'FRIENDLY' then
-            PixelUtil.SetWidth(unitframe.castingBar, FRIENDLY_WIDTH - WIDTH_OFFSET);
+            PixelUtil.SetWidth(castingBar, FRIENDLY_WIDTH - WIDTH_OFFSET);
         end
 
-        PixelUtil.SetPoint(unitframe.healthBar, 'BOTTOMLEFT', unitframe.castingBar, 'TOPLEFT', 0, CAST_BAR_OFFSET_Y);
-        PixelUtil.SetPoint(unitframe.healthBar, 'BOTTOMRIGHT', unitframe.castingBar, 'TOPRIGHT', 0, CAST_BAR_OFFSET_Y);
+        PixelUtil.SetPoint(healthBar, 'BOTTOMLEFT', castingBar, 'TOPLEFT', 0, CAST_BAR_OFFSET_Y);
+        PixelUtil.SetPoint(healthBar, 'BOTTOMRIGHT', castingBar, 'TOPRIGHT', 0, CAST_BAR_OFFSET_Y);
 
         if ICON_RIGHT_SIDE then
             if ICON_LARGE then
-                PixelUtil.SetPoint(unitframe.castingBar.Icon, 'TOPLEFT', unitframe.healthBar, 'TOPRIGHT', 1, 0.5);
-                PixelUtil.SetPoint(unitframe.castingBar.Icon, 'BOTTOMLEFT', unitframe.castingBar, 'BOTTOMRIGHT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
-                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + BAR_HEIGHT + 2 + (BORDER_ENABLED and BORDER_SIZE or 0));
+                PixelUtil.SetPoint(castingBarIcon, 'TOPLEFT', healthBar, 'TOPRIGHT', 1, 0.5);
+                PixelUtil.SetPoint(castingBarIcon, 'BOTTOMLEFT', castingBar, 'BOTTOMRIGHT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
+                PixelUtil.SetWidth(castingBarIcon, (healthBar.sHeight or 12) + BAR_HEIGHT + 2 + (BORDER_ENABLED and BORDER_SIZE or 0));
 
-                PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'BOTTOM', 0, 0);
+                PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, 'BOTTOM', 0, 0);
             else
-                PixelUtil.SetPoint(unitframe.castingBar.Icon, 'LEFT', unitframe.castingBar, 'RIGHT', 0, 0);
-                PixelUtil.SetSize(unitframe.castingBar.Icon, BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0), BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0));
+                PixelUtil.SetPoint(castingBarIcon, 'LEFT', castingBar, 'RIGHT', 0, 0);
+                PixelUtil.SetSize(castingBarIcon, BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0), BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0));
 
-                PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'CENTER', 0, 0);
+                PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, 'CENTER', 0, 0);
             end
         else
             if ICON_LARGE then
-                PixelUtil.SetPoint(unitframe.castingBar.Icon, 'TOPRIGHT', unitframe.healthBar, 'TOPLEFT', -1, 0.5);
-                PixelUtil.SetPoint(unitframe.castingBar.Icon, 'BOTTOMRIGHT', unitframe.castingBar, 'BOTTOMLEFT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
-                PixelUtil.SetWidth(unitframe.castingBar.Icon, (unitframe.healthBar.sHeight or 12) + BAR_HEIGHT + 2 + (BORDER_ENABLED and BORDER_SIZE or 0));
+                PixelUtil.SetPoint(castingBarIcon, 'TOPRIGHT', healthBar, 'TOPLEFT', -1, 0.5);
+                PixelUtil.SetPoint(castingBarIcon, 'BOTTOMRIGHT', castingBar, 'BOTTOMLEFT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
+                PixelUtil.SetWidth(castingBarIcon, (healthBar.sHeight or 12) + BAR_HEIGHT + 2 + (BORDER_ENABLED and BORDER_SIZE or 0));
 
-                PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'BOTTOM', 0, 0);
+                PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, 'BOTTOM', 0, 0);
             else
-                PixelUtil.SetPoint(unitframe.castingBar.Icon, 'RIGHT', unitframe.castingBar, 'LEFT', 0, 0);
-                PixelUtil.SetSize(unitframe.castingBar.Icon, BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0), BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0));
+                PixelUtil.SetPoint(castingBarIcon, 'RIGHT', castingBar, 'LEFT', 0, 0);
+                PixelUtil.SetSize(castingBarIcon, BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0), BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0));
 
-                PixelUtil.SetPoint(unitframe.castingBar.BorderShield, 'CENTER', unitframe.castingBar.Icon, 'CENTER', 0, 0);
+                PixelUtil.SetPoint(castingBarBorderShield, 'CENTER', castingBarIcon, 'CENTER', 0, 0);
             end
         end
     end
@@ -152,63 +157,63 @@ local function UpdateColors(unitframe)
         return;
     end
 
-    StripesCastingBar_SetStartCastColor(unitframe.castingBar, START_CAST_COLOR[1], START_CAST_COLOR[2], START_CAST_COLOR[3], START_CAST_COLOR[4]);
-    StripesCastingBar_SetStartChannelColor(unitframe.castingBar, START_CHANNEL_COLOR[1], START_CHANNEL_COLOR[2], START_CHANNEL_COLOR[3], START_CHANNEL_COLOR[4]);
-    StripesCastingBar_SetNonInterruptibleCastColor(unitframe.castingBar, NONINTERRUPTIBLE_COLOR[1], NONINTERRUPTIBLE_COLOR[2], NONINTERRUPTIBLE_COLOR[3], NONINTERRUPTIBLE_COLOR[4]);
-    StripesCastingBar_SetFailedCastColor(unitframe.castingBar, FAILED_CAST_COLOR[1], FAILED_CAST_COLOR[2], FAILED_CAST_COLOR[3], FAILED_CAST_COLOR[4]);
-    StripesCastingBar_SetInterruptReadyInTimeCastColor(unitframe.castingBar, INTERRUPT_READY_IN_TIME_COLOR[1], INTERRUPT_READY_IN_TIME_COLOR[2], INTERRUPT_READY_IN_TIME_COLOR[3], INTERRUPT_READY_IN_TIME_COLOR[4]);
-    StripesCastingBar_SetInterruptNotReadyCastColor(unitframe.castingBar, INTERRUPT_NOT_READY_COLOR[1], INTERRUPT_NOT_READY_COLOR[2], INTERRUPT_NOT_READY_COLOR[3], INTERRUPT_NOT_READY_COLOR[4]);
+    local castingBar = unitframe.castingBar;
 
-    if unitframe.castingBar.InterruptReadyTick then
-        unitframe.castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
+    StripesCastingBar_SetStartCastColor(castingBar, START_CAST_COLOR[1], START_CAST_COLOR[2], START_CAST_COLOR[3], START_CAST_COLOR[4]);
+    StripesCastingBar_SetStartChannelColor(castingBar, START_CHANNEL_COLOR[1], START_CHANNEL_COLOR[2], START_CHANNEL_COLOR[3], START_CHANNEL_COLOR[4]);
+    StripesCastingBar_SetNonInterruptibleCastColor(castingBar, NONINTERRUPTIBLE_COLOR[1], NONINTERRUPTIBLE_COLOR[2], NONINTERRUPTIBLE_COLOR[3], NONINTERRUPTIBLE_COLOR[4]);
+    StripesCastingBar_SetFailedCastColor(castingBar, FAILED_CAST_COLOR[1], FAILED_CAST_COLOR[2], FAILED_CAST_COLOR[3], FAILED_CAST_COLOR[4]);
+    StripesCastingBar_SetInterruptReadyInTimeCastColor(castingBar, INTERRUPT_READY_IN_TIME_COLOR[1], INTERRUPT_READY_IN_TIME_COLOR[2], INTERRUPT_READY_IN_TIME_COLOR[3], INTERRUPT_READY_IN_TIME_COLOR[4]);
+    StripesCastingBar_SetInterruptNotReadyCastColor(castingBar, INTERRUPT_NOT_READY_COLOR[1], INTERRUPT_NOT_READY_COLOR[2], INTERRUPT_NOT_READY_COLOR[3], INTERRUPT_NOT_READY_COLOR[4]);
+
+    if castingBar.InterruptReadyTick then
+        castingBar.InterruptReadyTick:SetVertexColor(INTERRUPT_READY_TICK_COLOR[1], INTERRUPT_READY_TICK_COLOR[2], INTERRUPT_READY_TICK_COLOR[3], INTERRUPT_READY_TICK_COLOR[4]);
     end
 end
 
-local function UpdateCastNameTextPosition(unitframe)
-    unitframe.castingBar.Text:ClearAllPoints();
+local function UpdateTextPosition(unitframe)
+    local castingBarText = unitframe.castingBar.Text;
+
+    castingBarText:ClearAllPoints();
 
     if TEXT_POSITION == 1 then -- LEFT
-        unitframe.castingBar.Text:SetJustifyH('LEFT');
+        castingBarText:SetJustifyH('LEFT');
 
         if TEXT_TRUNCATE then
-            unitframe.castingBar.Text:SetWordWrap(false);
-            unitframe.castingBar.Text:SetPoint('RIGHT', 0, 0);
-            unitframe.castingBar.Text:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+            castingBarText:SetWordWrap(false);
+            castingBarText:SetPoint('RIGHT', 0, 0);
+            castingBarText:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
         else
-            unitframe.castingBar.Text:SetWordWrap(true);
-            unitframe.castingBar.Text:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+            castingBarText:SetWordWrap(true);
+            castingBarText:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
         end
     elseif TEXT_POSITION == 2 then -- CENTER
-        unitframe.castingBar.Text:SetJustifyH('CENTER');
+        castingBarText:SetJustifyH('CENTER');
 
         if TEXT_TRUNCATE then
-            unitframe.castingBar.Text:SetWordWrap(false);
-            unitframe.castingBar.Text:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
-            unitframe.castingBar.Text:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+            castingBarText:SetWordWrap(false);
+            castingBarText:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+            castingBarText:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
         else
-            unitframe.castingBar.Text:SetWordWrap(true);
-            unitframe.castingBar.Text:SetPoint('CENTER', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+            castingBarText:SetWordWrap(true);
+            castingBarText:SetPoint('CENTER', TEXT_X_OFFSET, TEXT_Y_OFFSET);
         end
     else -- RIGHT
-        unitframe.castingBar.Text:SetJustifyH('RIGHT');
+        castingBarText:SetJustifyH('RIGHT');
 
         if TEXT_TRUNCATE then
-            unitframe.castingBar.Text:SetWordWrap(false);
-            unitframe.castingBar.Text:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
-            unitframe.castingBar.Text:SetPoint('LEFT', 0, 0);
+            castingBarText:SetWordWrap(false);
+            castingBarText:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+            castingBarText:SetPoint('LEFT', 0, 0);
         else
-            unitframe.castingBar.Text:SetWordWrap(true);
-            unitframe.castingBar.Text:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
+            castingBarText:SetWordWrap(true);
+            castingBarText:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
         end
     end
 end
 
 local function CreateCastingBarAndTimer(unitframe)
-    if not unitframe.castBar then
-        return;
-    end
-
-    if unitframe.castingBar and unitframe.castingBar.Timer then
+    if not unitframe.castBar or (unitframe.castingBar and unitframe.castingBar.Timer) then
         return;
     end
 
@@ -217,7 +222,7 @@ local function CreateCastingBarAndTimer(unitframe)
         unitframe.castingBar:SetFrameStrata(CAST_BAR_FRAME_STRATA == 1 and unitframe.castingBar:GetParent():GetFrameStrata() or CAST_BAR_FRAME_STRATA);
     end
 
-    UpdateCastNameTextPosition(unitframe);
+    UpdateTextPosition(unitframe);
 
     unitframe.castingBar.Timer = unitframe.castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarTimerFont');
     PixelUtil.SetPoint(unitframe.castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_ANCHOR, unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
@@ -235,54 +240,57 @@ local function CreateCastingBarAndTimer(unitframe)
 end
 
 local function UpdateVisibility(unitframe)
-    if unitframe.castBar then
-        unitframe.castBar:UnregisterAllEvents();
-        unitframe.castBar:Hide();
+    local castBar = unitframe.castBar;
+
+    if castBar then
+        castBar:UnregisterAllEvents();
+        castBar:Hide();
     end
 
-    if unitframe.castingBar then
-        if unitframe.data.isUnimportantUnit then
-            StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
-            return;
-        end
+    local castingBar = unitframe.castingBar;
 
-        if unitframe.data.isPersonal then
-            StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
-        else
-            if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
-                StripesCastingBar_SetUnit(unitframe.castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
-            else
-                StripesCastingBar_SetUnit(unitframe.castingBar, unitframe.data.unit, SHOW_TRADE_SKILLS, SHOW_SHIELD);
-                unitframe.castingBar:SetFrameStrata(CAST_BAR_FRAME_STRATA == 1 and unitframe.castingBar:GetParent():GetFrameStrata() or CAST_BAR_FRAME_STRATA);
-            end
-        end
-
-        unitframe.castingBar.iconWhenNoninterruptible     = SHOW_ICON_NOTINTERRUPTIBLE;
-        unitframe.castingBar.showInterruptReadyTick       = SHOW_INTERRUPT_READY_TICK;
-        unitframe.castingBar.useInterruptReadyInTimeColor = USE_INTERRUPT_READY_IN_TIME_COLOR;
-        unitframe.castingBar.useInterruptNotReadyColor    = USE_INTERRUPT_NOT_READY_COLOR;
-        unitframe.castingBar.showCastTargetName           = TARGET_NAME_ENABLED;
-        unitframe.castingBar.castTargetNameOnlyEnemy      = TARGET_NAME_ONLY_ENEMY;
-        unitframe.castingBar.castTargetNameInSpellName    = TARGET_NAME_IN_SPELL_NAME;
-        unitframe.castingBar.castTargetNameUseClassColor  = TARGET_NAME_CLASS_COLOR;
-
-        if BORDER_ENABLED then
-            unitframe.castingBar.border:SetVertexColor(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
-            unitframe.castingBar.border:SetBorderSizes(BORDER_SIZE, BORDER_SIZE - 0.5);
-            unitframe.castingBar.border:UpdateSizes();
-            unitframe.castingBar.border:Show();
-        else
-            unitframe.castingBar.border:Hide();
-        end
-
-        UpdateCastNameTextPosition(unitframe);
-
-        unitframe.castingBar.Timer:ClearAllPoints();
-        PixelUtil.SetPoint(unitframe.castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_ANCHOR, unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y);
-
-        unitframe.castingBar.TargetText:ClearAllPoints();
-        PixelUtil.SetPoint(unitframe.castingBar.TargetText, TARGET_NAME_POINT, unitframe.castingBar, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y);
+    if not castingBar then
+        return;
     end
+
+    local ufData = unitframe.data;
+    local unit   = ufData.unit;
+
+    if ufData.isUnimportantUnit or ufData.isPersonal or (IsNameOnlyModeAndFriendly(ufData.unitType, ufData.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance))) then
+        StripesCastingBar_SetUnit(castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
+        return;
+    end
+
+    StripesCastingBar_SetUnit(castingBar, unit, SHOW_TRADE_SKILLS, SHOW_SHIELD);
+
+    castingBar:SetFrameStrata(CAST_BAR_FRAME_STRATA == 1 and castingBar:GetParent():GetFrameStrata() or CAST_BAR_FRAME_STRATA);
+    castingBar.iconWhenNoninterruptible     = SHOW_ICON_NOTINTERRUPTIBLE;
+    castingBar.showInterruptReadyTick       = SHOW_INTERRUPT_READY_TICK;
+    castingBar.useInterruptReadyInTimeColor = USE_INTERRUPT_READY_IN_TIME_COLOR;
+    castingBar.useInterruptNotReadyColor    = USE_INTERRUPT_NOT_READY_COLOR;
+    castingBar.showCastTargetName           = TARGET_NAME_ENABLED;
+    castingBar.castTargetNameOnlyEnemy      = TARGET_NAME_ONLY_ENEMY;
+    castingBar.castTargetNameInSpellName    = TARGET_NAME_IN_SPELL_NAME;
+    castingBar.castTargetNameUseClassColor  = TARGET_NAME_CLASS_COLOR;
+
+    local castingBarBorder = castingBar.border;
+
+    if BORDER_ENABLED then
+        castingBarBorder:SetVertexColor(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
+        castingBarBorder:SetBorderSizes(BORDER_SIZE, BORDER_SIZE - 0.5);
+        castingBarBorder:UpdateSizes();
+        castingBarBorder:Show();
+    else
+        castingBarBorder:Hide();
+    end
+
+    UpdateTextPosition(unitframe);
+
+    castingBar.Timer:ClearAllPoints();
+    PixelUtil.SetPoint(castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_ANCHOR, castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, TIMER_OFFSET_Y);
+
+    castingBar.TargetText:ClearAllPoints();
+    PixelUtil.SetPoint(castingBar.TargetText, TARGET_NAME_POINT, castingBar, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y);
 end
 
 local function UpdateBorderSizes(unitframe)
