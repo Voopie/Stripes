@@ -29,6 +29,10 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
+    if not unitframe.FactionIcon then
+        return;
+    end
+
     local shouldShow = ENABLED and unitframe.data.commonUnitType == 'PLAYER' and ShouldShowName(unitframe) and factionIcons[unitframe.data.factionGroup];
 
     if shouldShow then
