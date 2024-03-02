@@ -1,9 +1,6 @@
 local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewModule('MythicPlus_QuestUnwatch');
 
--- Lua API
-local ipairs, table_insert = ipairs, table.insert;
-
 local function Watch()
     local watchedQuests = #O.db.mythic_plus_questunwatch_data;
 
