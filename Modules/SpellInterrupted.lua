@@ -99,26 +99,28 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    if ENABLED then
-        unitframe.SpellInterrupted.cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-        unitframe.SpellInterrupted.cooldown:SetDrawEdge(DRAW_EDGE);
-        unitframe.SpellInterrupted.cooldown:SetDrawSwipe(DRAW_SWIPE);
-
-        if FRAME_STRATA == 1 then
-            unitframe.SpellInterrupted:SetFrameStrata(unitframe.SpellInterrupted:GetParent():GetFrameStrata());
-        else
-            unitframe.SpellInterrupted:SetFrameStrata(FRAME_STRATA);
-        end
-
-        unitframe.SpellInterrupted.icon:ClearAllPoints();
-        PixelUtil.SetPoint(unitframe.SpellInterrupted.icon, POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
-
-        unitframe.SpellInterrupted.icon:SetSize(SIZE, SIZE);
-
-        unitframe.SpellInterrupted:SetShown(unitframe.SpellInterrupted.expTime > GetTime() and unitframe.data.unitGUID == unitframe.SpellInterrupted.destGUID);
-    else
-        unitframe.SpellInterrupted:Hide();
+    if not unitframe.SpellInterrupted then
+        return;
     end
+
+    local spellInterruptedFrame = unitframe.SpellInterrupted;
+
+    if not ENABLED then
+        spellInterruptedFrame:Hide();
+        return;
+    end
+
+    spellInterruptedFrame:SetFrameStrata(FRAME_STRATA == 1 and spellInterruptedFrame:GetParent():GetFrameStrata() or FRAME_STRATA);
+
+    spellInterruptedFrame.cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+    spellInterruptedFrame.cooldown:SetDrawEdge(DRAW_EDGE);
+    spellInterruptedFrame.cooldown:SetDrawSwipe(DRAW_SWIPE);
+
+    spellInterruptedFrame.icon:ClearAllPoints();
+    PixelUtil.SetPoint(spellInterruptedFrame.icon, POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    spellInterruptedFrame.icon:SetSize(SIZE, SIZE);
+
+    spellInterruptedFrame:SetShown(spellInterruptedFrame.expTime > GetTime() and unitframe.data.unitGUID == spellInterruptedFrame.destGUID);
 end
 
 local function UpdateByAura(unitframe)
@@ -139,25 +141,27 @@ local function UpdateByAura(unitframe)
         return;
     end
 
+    local spellInterruptedFrame = unitframe.SpellInterrupted;
+
     unitframe.SpellInterrupted.icon:SetTexture(aura.icon);
 
-    CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, aura.expirationTime - aura.duration, aura.duration, aura.duration > 0, DRAW_EDGE);
+    CooldownFrame_Set(spellInterruptedFrame.cooldown, aura.expirationTime - aura.duration, aura.duration, aura.duration > 0, DRAW_EDGE);
 
-    unitframe.SpellInterrupted.expTime  = aura.expirationTime;
-    unitframe.SpellInterrupted.destGUID = unitframe.data.unitGUID;
-    unitframe.SpellInterrupted.byAura   = true;
+    spellInterruptedFrame.expTime  = aura.expirationTime;
+    spellInterruptedFrame.destGUID = unitframe.data.unitGUID;
+    spellInterruptedFrame.byAura   = true;
 
     if CASTER_NAME_SHOW and aura.sourceUnit then
         local name = GetCachedName(UnitName(aura.sourceUnit), true, true, false);
 
-        unitframe.SpellInterrupted.casterName:SetText(name);
-        unitframe.SpellInterrupted.casterName:SetTextColor(GetUnitColor(aura.sourceUnit, 2));
-        unitframe.SpellInterrupted.casterName:Show();
+        spellInterruptedFrame.casterName:SetText(name);
+        spellInterruptedFrame.casterName:SetTextColor(GetUnitColor(aura.sourceUnit, 2));
+        spellInterruptedFrame.casterName:Show();
     else
-        unitframe.SpellInterrupted.casterName:Hide();
+        spellInterruptedFrame.casterName:Hide();
     end
 
-    unitframe.SpellInterrupted:Show();
+    spellInterruptedFrame:Show();
 end
 
 local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId)
@@ -171,13 +175,15 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
 
     local duration = durations[spellId] or DEFAULT_DURATION;
 
-    unitframe.SpellInterrupted.icon:SetTexture(GetSpellTexture(SHOW_INTERRUPTED_ICON and extraSpellId or spellId));
+    local spellInterruptedFrame = unitframe.SpellInterrupted;
 
-    CooldownFrame_Set(unitframe.SpellInterrupted.cooldown, GetTime(), duration, duration > 0, true);
+    spellInterruptedFrame.icon:SetTexture(GetSpellTexture(SHOW_INTERRUPTED_ICON and extraSpellId or spellId));
 
-    unitframe.SpellInterrupted.expTime     = GetTime() + duration;
-    unitframe.SpellInterrupted.destGUID    = destGUID;
-    unitframe.SpellInterrupted.onInterrupt = true;
+    CooldownFrame_Set(spellInterruptedFrame.cooldown, GetTime(), duration, duration > 0, true);
+
+    spellInterruptedFrame.expTime     = GetTime() + duration;
+    spellInterruptedFrame.destGUID    = destGUID;
+    spellInterruptedFrame.onInterrupt = true;
 
     if CASTER_NAME_SHOW and (sourceGUID and sourceGUID ~= '') then
         local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(sourceGUID);
@@ -185,35 +191,39 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
         if name then
             name = GetCachedName(name, true, true, false);
 
-            unitframe.SpellInterrupted.casterName:SetText(name);
-            unitframe.SpellInterrupted.casterName:SetTextColor(U_GetClassColor(englishClass, 2));
-            unitframe.SpellInterrupted.casterName:Show();
+            spellInterruptedFrame.casterName:SetText(name);
+            spellInterruptedFrame.casterName:SetTextColor(U_GetClassColor(englishClass, 2));
+            spellInterruptedFrame.casterName:Show();
         elseif U_UnitIsPetByGUID(sourceGUID) then
             name = GetCachedName(sourceName, true, true, false);
 
-            unitframe.SpellInterrupted.casterName:SetText(name);
-            unitframe.SpellInterrupted.casterName:SetTextColor(U_GetClassColor(sourceName, 2));
-            unitframe.SpellInterrupted.casterName:Show();
+            spellInterruptedFrame.casterName:SetText(name);
+            spellInterruptedFrame.casterName:SetTextColor(U_GetClassColor(sourceName, 2));
+            spellInterruptedFrame.casterName:Show();
         else
-            unitframe.SpellInterrupted.casterName:Hide();
+            spellInterruptedFrame.casterName:Hide();
         end
     else
-        unitframe.SpellInterrupted.casterName:Hide();
+        spellInterruptedFrame.casterName:Hide();
     end
 
-    unitframe.SpellInterrupted:Show();
+    spellInterruptedFrame:Show();
 end
 
-function Module:COMBAT_LOG_EVENT_UNFILTERED()
+local function HandleCombatLogEvent()
     local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId, _, _, extraSpellId = CombatLogGetCurrentEventInfo();
 
-    if subEvent == 'SPELL_INTERRUPT' then
-        self:ForAllActiveUnitFrames(function(unitframe)
-            if UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
-                OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId);
-            end
-        end);
+    local isInterrupt = subEvent == 'SPELL_INTERRUPT';
+
+    if not isInterrupt then
+        return;
     end
+
+    Module:ForAllActiveUnitFrames(function(unitframe)
+        if UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
+            OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId);
+        end
+    end);
 end
 
 function Module:UnitAdded(unitframe)
@@ -265,7 +275,7 @@ function Module:UpdateLocalConfig()
 end
 
 function Module:Enable()
-    self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED');
+    self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED', HandleCombatLogEvent);
 end
 
 function Module:Disable()
