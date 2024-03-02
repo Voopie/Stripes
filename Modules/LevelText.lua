@@ -111,6 +111,14 @@ function Module:UpdateLocalConfig()
     SHOW_ONLY_ON_TARGET = O.db.level_text_show_only_on_target;
 
     UpdateFontObject(StripesLevelTextFont, O.db.level_text_font_value, O.db.level_text_font_size, O.db.level_text_font_flag, O.db.level_text_font_shadow);
+
+    if ENABLED then
+        self:RegisterEvent('UNIT_LEVEL');
+        self:RegisterEvent('UNIT_FACTION');
+    else
+        self:UnregisterEvent('UNIT_LEVEL');
+        self:UnregisterEvent('UNIT_FACTION');
+    end
 end
 
 function Module:UNIT_LEVEL(unit)
@@ -123,7 +131,4 @@ end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-
-    self:RegisterEvent('UNIT_LEVEL');
-    self:RegisterEvent('UNIT_FACTION');
 end
