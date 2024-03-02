@@ -115,20 +115,22 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    if ENABLED and (unitframe.data.npcId and mobsIDs[unitframe.data.npcId]) then
-        if STRATA == 1 then
-            unitframe.PVEHealers:SetFrameStrata(unitframe.healthBar:GetFrameStrata());
-        else
-            unitframe.PVEHealers:SetFrameStrata(STRATA);
-        end
-
-        unitframe.PVEHealers:SetScale(ICON_SCALE);
-        unitframe.PVEHealers.icon:ClearAllPoints();
-        unitframe.PVEHealers.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
-        unitframe.PVEHealers:Show();
-    else
-        unitframe.PVEHealers:Hide();
+    if not unitframe.PVEHealers then
+        return;
     end
+
+    if not (ENABLED and unitframe.data.npcId and mobsIDs[unitframe.data.npcId]) then
+        unitframe.PVEHealers:Hide();
+        return;
+    end
+
+    local pveHealersFrame = unitframe.PVEHealers;
+
+    pveHealersFrame:SetFrameStrata(STRATA == 1 and unitframe.healthBar:GetFrameStrata() or STRATA);
+    pveHealersFrame:SetScale(ICON_SCALE);
+    pveHealersFrame.icon:ClearAllPoints();
+    pveHealersFrame.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    pveHealersFrame:Show();
 end
 
 local function UpdateMouseoverUnit()
