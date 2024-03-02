@@ -1,5 +1,5 @@
 local S, L, O, U, D, E = unpack((select(2, ...)));
-local Module = S:NewModule('MythicPlus_QuestUnwatch');
+local Module = S:NewModule('MythicPlusQuestUnwatch');
 
 local function Watch()
     local watchedQuests = #O.db.mythic_plus_questunwatch_data;
@@ -31,7 +31,7 @@ local function Unwatch()
 
                 if questInfo and not questInfo.isHidden and not questInfo.isHeader then
                     C_QuestLog.RemoveQuestWatch(questId);
-                    table_insert(O.db.mythic_plus_questunwatch_data, questId);
+                    table.insert(O.db.mythic_plus_questunwatch_data, questId);
                 end
             end
         end
