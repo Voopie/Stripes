@@ -166,30 +166,27 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    if ENABLED then
-        if NOT_IN_COMBAT and PlayerState.inCombat then
-            unitframe.StealthDetect:Hide();
-        else
-            local found = false;
-
-            if units[unitframe.data.npcId] then
-                found = true;
-            else
-                local aura = UnitHasAura(unitframe.data.unit, auras);
-
-                if aura then
-                    found = true;
-                end
-            end
-
-            if ALWAYS then
-                unitframe.StealthDetect:SetShown(found);
-            else
-                unitframe.StealthDetect:SetShown(isStealthed and found);
-            end
-        end
-    else
+    if not ENABLED or (NOT_IN_COMBAT and PlayerState.inCombat) then
         unitframe.StealthDetect:Hide();
+        return;
+    end
+
+    local found = false;
+
+    if units[unitframe.data.npcId] then
+        found = true;
+    else
+        local aura = UnitHasAura(unitframe.data.unit, auras);
+
+        if aura then
+            found = true;
+        end
+    end
+
+    if ALWAYS then
+        unitframe.StealthDetect:SetShown(found);
+    else
+        unitframe.StealthDetect:SetShown(isStealthed and found);
     end
 end
 
