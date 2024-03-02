@@ -29,6 +29,10 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
+    if not unitframe.ClassIcon then
+        return;
+    end
+
     if not ENABLED or not unitframe.data.className or not ShouldShowName(unitframe) then
         unitframe.ClassIcon:Hide();
         return;
