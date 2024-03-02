@@ -274,6 +274,27 @@ function Module:QuestRemoved(questID)
     self:UnitQuestLogChanged();
 end
 
+function Module:UpdateQuestActive()
+    local uiMapID = C_Map.GetBestMapForUnit('player');
+
+    if not uiMapID then
+        return;
+    end
+
+    table_wipe(QuestActiveCache);
+
+    for _, task in pairs(C_TaskQuest.GetQuestsForPlayerByMapID(uiMapID) or {}) do
+        if task.inProgress then
+            local questID = task.questId;
+            local questName = C_TaskQuest_GetQuestInfoByQuestID(questID);
+
+            if questName then
+                QuestActiveCache[questName] = questID;
+            end
+        end
+    end
+end
+
 function Module:UnitAdded(unitframe)
     Create(unitframe);
     Update(unitframe);
@@ -293,23 +314,6 @@ end
 
 function Module:PLAYER_LOGIN()
     C_CVar.SetCVar('showQuestTrackingTooltips', 1); -- !!!
-
-    local uiMapID = C_Map.GetBestMapForUnit('player');
-
-    if not uiMapID then
-        return;
-    end
-
-    for _, task in pairs(C_TaskQuest.GetQuestsForPlayerByMapID(uiMapID) or {}) do
-        if task.inProgress then
-            local questID = task.questId;
-            local questName = C_TaskQuest_GetQuestInfoByQuestID(questID);
-
-            if questName then
-                QuestActiveCache[questName] = questID;
-            end
-        end
-    end
 end
 
 function Module:UpdateLocalConfig()
@@ -317,15 +321,26 @@ function Module:UpdateLocalConfig()
     POSITION = O.db.quest_indicator_position;
 
     UpdateFontObject(StripesQuestIndicatorFont, O.db.quest_indicator_font_value, O.db.quest_indicator_font_size, O.db.quest_indicator_font_flag, O.db.quest_indicator_font_shadow);
+
+    if ENABLED then
+        self:RegisterEvent('QUEST_ACCEPTED', 'QuestChanged');
+        self:RegisterEvent('QUEST_REMOVED', 'QuestRemoved');
+        self:RegisterEvent('QUEST_LOG_UPDATE', 'UpdateQuestLogIndexCache');
+        self:RegisterEvent('QUEST_WATCH_LIST_CHANGED', 'QuestChanged');
+        self:RegisterEvent('UNIT_QUEST_LOG_CHANGED', 'UnitQuestLogChanged');
+
+        self:UpdateQuestLogIndexCache();
+        self:UpdateQuestActive();
+    else
+        self:UnregisterEvent('QUEST_ACCEPTED');
+        self:UnregisterEvent('QUEST_REMOVED');
+        self:UnregisterEvent('QUEST_LOG_UPDATE');
+        self:UnregisterEvent('QUEST_WATCH_LIST_CHANGED');
+        self:UnregisterEvent('UNIT_QUEST_LOG_CHANGED');
+    end
 end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
-
     self:RegisterEvent('PLAYER_LOGIN');
-    self:RegisterEvent('QUEST_ACCEPTED', 'QuestChanged');
-    self:RegisterEvent('QUEST_REMOVED', 'QuestRemoved');
-    self:RegisterEvent('QUEST_LOG_UPDATE', 'UpdateQuestLogIndexCache');
-    self:RegisterEvent('QUEST_WATCH_LIST_CHANGED', 'QuestChanged');
-    self:RegisterEvent('UNIT_QUEST_LOG_CHANGED', 'UnitQuestLogChanged');
 end
