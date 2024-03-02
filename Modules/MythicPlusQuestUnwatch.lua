@@ -5,7 +5,7 @@ local Module = S:NewModule('MythicPlus_QuestUnwatch');
 local ipairs, table_insert = ipairs, table.insert;
 
 local function Watch()
-    local watchedQuests = type(O.db.mythic_plus_questunwatch_data) == 'table' and #O.db.mythic_plus_questunwatch_data or 0;
+    local watchedQuests = #O.db.mythic_plus_questunwatch_data;
 
     if watchedQuests == 0 then
         return;
