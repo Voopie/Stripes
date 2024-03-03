@@ -12,7 +12,7 @@ local CooldownFrame_Set, UnitName, AuraUtil_ForEachAura = CooldownFrame_Set, Uni
 local GetUnitColor = U.GetUnitColor;
 local ShouldShowName = Stripes.ShouldShowName;
 local UpdateFontObject = Stripes.UpdateFontObject;
-local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
+local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Libraries
 local LPS = S.Libraries.LPS;
@@ -42,7 +42,6 @@ local StripesAurasImportantCountFont    = CreateFont('StripesAurasImportantCount
 local StripesAurasImportantCasterFont   = CreateFont('StripesAurasImportantCasterFont');
 
 local MAX_OFFSET_Y = -9;
-local filter = 'HARMFUL';
 
 local additionalAuras = {
     -- Druid
@@ -164,13 +163,13 @@ local function CreateBuffFrame(unitframe)
             return;
         end
 
-        local filterString = filter;
+        local filterString = 'HARMFUL';
 
         local previousFilter = self.filter;
         local previousUnit   = self.unit;
 
         self.unit   = unit;
-        self.filter = filter;
+        self.filter = filterString;
 
         local aurasChanged = false;
         if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filterString ~= previousFilter then
@@ -251,7 +250,7 @@ local function CreateBuffFrame(unitframe)
                 buff.CasterName:SetFontObject(StripesAurasImportantCasterFont);
 
                 if GLOW_ENABLED then
-                    GlowStart(buff, GLOW_TYPE, GLOW_COLOR);
+                    U_GlowStart(buff, GLOW_TYPE, GLOW_COLOR);
                 end
 
                 if MASQUE_SUPPORT and Stripes.Masque then
@@ -270,7 +269,7 @@ local function CreateBuffFrame(unitframe)
             buff.sourceUnit     = aura.sourceUnit;
 
             self.buffList[1]:ClearAllPoints();
-            self.buffList[1]:SetPoint('CENTER', -(self.buffList[1]:GetWidth()/2)*(buffIndex-1), 0);
+            self.buffList[1]:SetPoint('CENTER', -(self.buffList[1]:GetWidth() / 2) * (buffIndex - 1), 0);
 
             if buffIndex > 1 then
                 buff:ClearAllPoints();
@@ -379,10 +378,10 @@ local function CreateBuffFrame(unitframe)
             buff.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
             if GLOW_ENABLED then
-                GlowStopAll(buff);
-                GlowStart(buff, GLOW_TYPE, GLOW_COLOR);
+                U_GlowStopAll(buff);
+                U_GlowStart(buff, GLOW_TYPE, GLOW_COLOR);
             else
-                GlowStopAll(buff);
+                U_GlowStopAll(buff);
             end
         end
     end
