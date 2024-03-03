@@ -11,6 +11,7 @@ local CooldownFrame_Set, GetTime, AuraUtil_ForEachAura = CooldownFrame_Set, GetT
 -- Stripes API
 local ShouldShowName   = Stripes.ShouldShowName;
 local UpdateFontObject = Stripes.UpdateFontObject;
+local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED;
@@ -29,13 +30,8 @@ local SPACING_X;
 local DRAW_EDGE, DRAW_SWIPE;
 local AURAS_DIRECTION, AURAS_MAX_DISPLAY;
 
--- Libraries
-local LCG = S.Libraries.LCG;
-
 local StripesAurasSpellStealCooldownFont = CreateFont('StripesAurasSpellStealCooldownFont');
 local StripesAurasSpellStealCountFont    = CreateFont('StripesAurasSpellStealCountFont');
-
-local filter = 'HELPFUL';
 
 local MAX_OFFSET_Y = -9;
 
@@ -132,13 +128,13 @@ local function CreateBuffFrame(unitframe)
             return;
         end
 
-        local filterString = filter;
+        local filterString = 'HELPFUL';
 
         local previousFilter = self.filter;
         local previousUnit   = self.unit;
 
         self.unit   = unit;
-        self.filter = filter;
+        self.filter = filterString;
 
         local aurasChanged = false;
         if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filterString ~= previousFilter then
@@ -294,19 +290,11 @@ local function CreateBuffFrame(unitframe)
             return;
         end
 
-        if GLOW_TYPE == 1 then
-            LCG.PixelGlow_Start(buff, GLOW_COLOR);
-        elseif GLOW_TYPE == 2 then
-            LCG.AutoCastGlow_Start(buff, GLOW_COLOR);
-        elseif GLOW_TYPE == 3 then
-            LCG.ButtonGlow_Start(buff, GLOW_COLOR);
-        end
+        U_GlowStart(buff, GLOW_TYPE, GLOW_COLOR);
     end
 
     frame.StopGlow = function(self, buff)
-        LCG.PixelGlow_Stop(buff);
-        LCG.AutoCastGlow_Stop(buff);
-        LCG.ButtonGlow_Stop(buff);
+        U_GlowStopAll(buff);
     end
 
     frame.UpdateStyle = function(self)
