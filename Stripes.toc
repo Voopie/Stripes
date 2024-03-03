@@ -3,7 +3,7 @@
 ## Title: Stripes
 ## Notes: Yet another nameplates customization addon
 ## Notes-ruRU: Еще один аддон для кастомизации неймплейтов 
-## Version: 1.38
+## Version: 1.39
 ## IconTexture: Interface\AddOns\Stripes\Media\Textures\Assets\stripes_logo_mini.blp
 ## SavedVariables: StripesDB, StripesSpellDB
 
