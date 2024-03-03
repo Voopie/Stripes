@@ -47,11 +47,7 @@ local pandemicKnownSpells = {};
 local StripesAurasModCooldownFont = CreateFont('StripesAurasModCooldownFont');
 local StripesAurasModCountFont    = CreateFont('StripesAurasModCountFont');
 
-local units = {
-    ['player']  = true,
-    ['pet']     = true,
-    ['vehicle'] = true,
-};
+local playerUnits = D.PlayerUnits;
 
 local blacklistAurasNameCache = {};
 local whitelistAurasNameCache = {};
@@ -112,6 +108,34 @@ local function UpdateWhitelistCache()
             whitelistAurasNameCache[spellName] = nil;
         end
     end
+end
+
+local function isAuraWhitelisted(name, spellId)
+    if whitelistAurasNameCache[name] then
+        return true;
+    elseif O.db.auras_whitelist[name] and O.db.auras_whitelist[name].enabled then
+        whitelistAurasNameCache[name] = spellId;
+        return true;
+    elseif spellId and O.db.auras_whitelist[spellId] and O.db.auras_whitelist[spellId].enabled then
+        whitelistAurasNameCache[name] = spellId;
+        return true;
+    end
+
+    return false;
+end
+
+local function isAuraBlacklisted(name, spellId)
+    if blacklistAurasNameCache[name] then
+        return true;
+    elseif O.db.auras_blacklist[name] and O.db.auras_blacklist[name].enabled then
+        blacklistAurasNameCache[name] = spellId;
+        return true;
+    elseif spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
+        blacklistAurasNameCache[name] = spellId;
+        return true;
+    end
+
+    return false;
 end
 
 local function IsOnPandemic(aura)
@@ -237,7 +261,7 @@ local function UpdateAuraStyle(aura, withoutMasque)
                         if self.trulySpellId and (pandemicKnownSpells[self.trulySpellId] or S_IsSpellKnown(self.trulySpellId)) then
                             self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
 
-                            pandemicKnownSpells[self.spellID]       = true;
+                            pandemicKnownSpells[self.spellID]      = true;
                             pandemicKnownSpells[self.trulySpellId] = true;
                         end
                     end
@@ -275,59 +299,41 @@ local function FilterShouldShowBuff(self, aura, forceAll, isSelf)
         return false;
     end
 
-    local name    = aura.name;
-    local spellId = aura.spellId;
-    local caster  = aura.sourceUnit;
+    local name       = aura.name;
+    local spellId    = aura.spellId;
+    local sourceUnit = aura.sourceUnit;
 
     if XLIST_MODE == 2 then -- BLACKLIST
-        if blacklistAurasNameCache[name] then
-            return false;
-        elseif O.db.auras_blacklist[name] and O.db.auras_blacklist[name].enabled then
-            blacklistAurasNameCache[name] = spellId;
-            return false;
-        elseif spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
-            blacklistAurasNameCache[name] = spellId;
-            return false;
-        end
+        return not isAuraBlacklisted(name, spellId);
     elseif XLIST_MODE == 3 then -- WHITELIST
-        if whitelistAurasNameCache[name] then
-            return units[caster];
-        elseif O.db.auras_whitelist[name] and O.db.auras_whitelist[name].enabled then
-            whitelistAurasNameCache[name] = spellId;
-            return units[caster];
-        elseif spellId and O.db.auras_whitelist[spellId] and O.db.auras_whitelist[spellId].enabled then
-            whitelistAurasNameCache[name] = spellId;
-            return units[caster];
+        return isAuraWhitelisted(name, spellId) and playerUnits[sourceUnit];
+    end
+
+    if FILTER_PLAYER_ENABLED and not isSelf then
+        return playerUnits[sourceUnit];
+    else
+        return aura.nameplateShowAll or forceAll or (aura.nameplateShowPersonal and playerUnits[sourceUnit]);
+    end
+end
+
+local function ParseAllAuras(self, forceAll, isSelf)
+    if self.auras == nil then
+        self.auras = TableUtil.CreatePriorityTable(AuraUtil.DefaultAuraCompare, TableUtil.Constants.AssociativePriorityTable);
+    else
+        self.auras:Clear();
+    end
+
+    local function HandleAura(aura)
+        if FilterShouldShowBuff(self, aura, forceAll, isSelf) then
+            self.auras[aura.auraInstanceID] = aura;
         end
 
         return false;
     end
 
-    if FILTER_PLAYER_ENABLED and not isSelf then
-        return units[caster];
-    else
-        return aura.nameplateShowAll or forceAll or (aura.nameplateShowPersonal and units[caster]);
-    end
-end
-
-local function ParseAllAuras(self, forceAll, isSelf)
-	if self.auras == nil then
-		self.auras = TableUtil.CreatePriorityTable(AuraUtil.DefaultAuraCompare, TableUtil.Constants.AssociativePriorityTable);
-	else
-		self.auras:Clear();
-	end
-
-	local function HandleAura(aura)
-		if FilterShouldShowBuff(self, aura, forceAll, isSelf) then
-			self.auras[aura.auraInstanceID] = aura;
-		end
-
-		return false;
-	end
-
-	local batchCount = nil;
-	local usePackedAura = true;
-	AuraUtil.ForEachAura(self.unit, self.filter, batchCount, HandleAura, usePackedAura);
+    local batchCount = nil;
+    local usePackedAura = true;
+    AuraUtil.ForEachAura(self.unit, self.filter, batchCount, HandleAura, usePackedAura);
 end
 
 local function OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo)
@@ -436,12 +442,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
             buff.needUpdate = true;
         end
 
-        if isNew then
-            UpdateAuraStyle(buff);
-            buff.needUpdate = nil;
-        end
-
-        if buff.needUpdate then
+        if isNew or buff.needUpdate then
             UpdateAuraStyle(buff);
             buff.needUpdate = nil;
         end
@@ -459,7 +460,8 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
 
         if BORDER_COLOR_ENABLED then
             if aura.dispelName and DebuffTypeColor[aura.dispelName]then
-                buff.Border:SetColorTexture(DebuffTypeColor[aura.dispelName].r, DebuffTypeColor[aura.dispelName].g, DebuffTypeColor[aura.dispelName].b, 1);
+                local debuffColor = DebuffTypeColor[aura.dispelName];
+                buff.Border:SetColorTexture(debuffColor.r, debuffColor.g, debuffColor.b, 1);
             else
                 buff.Border:SetColorTexture(0, 0, 0, 1);
             end
