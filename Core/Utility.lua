@@ -54,6 +54,10 @@ U.IsPlayer = function(unit)
     return UnitIsPlayer(unit) or UnitTreatAsPlayerForDisplay(unit);
 end
 
+U.IsRealPlayer = function(unit)
+    return UnitIsPlayer(unit);
+end
+
 U.UnitIsPet = function(unit)
     return (not UnitIsPlayer(unit) and UnitPlayerControlled(unit));
 end

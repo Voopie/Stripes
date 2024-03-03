@@ -12,7 +12,7 @@ local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType
 
 -- Stripes API
 local GetNpcIDByGUID, GetUnitLevel, GetUnitColor, UnitInGuild = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor, U.UnitInGuild;
-local IsPlayer = U.IsPlayer;
+local IsPlayer, IsRealPlayer = U.IsPlayer, U.IsRealPlayer;
 local utf8sub = U.UTF8SUB;
 
 -- Libraries
@@ -320,6 +320,9 @@ local function UpdateStatus(unitframe)
 
     unitframe.data.name         = GetUnitName(unit, true);
     unitframe.data.isPlayer     = IsPlayer(unit);
+    unitframe.data.isRealPlayer = IsRealPlayer(unit);
+    unitframe.data.isNpc        = not unitframe.data.isPlayer;
+    unitframe.data.isRealNpc    = not unitframe.data.isRealPlayer;
     unitframe.data.canAttack    = UnitCanAttack('player', unit);
     unitframe.data.isGameObject = UnitIsGameObject(unit);
 
