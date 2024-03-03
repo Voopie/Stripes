@@ -153,11 +153,9 @@ local function CreateBuffFrame(unitframe)
             else
                 return HelpfulList[aura.spellId];
             end
-        elseif not isHelpful and HarmfulList[aura.spellId] then
-            return true;
+        else
+            return HarmfulList[aura.spellId];
         end
-
-        return false;
     end
 
     frame.ParseAllAuras = function(self)
