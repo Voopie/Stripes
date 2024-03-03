@@ -304,7 +304,10 @@ local function FilterShouldShowBuff(self, aura, forceAll, isSelf)
     local sourceUnit = aura.sourceUnit;
 
     if XLIST_MODE == 2 then -- BLACKLIST
-        return not isAuraBlacklisted(name, spellId);
+        local isBlacklisted = isAuraBlacklisted(name, spellId);
+        if isBlacklisted then
+            return false;
+        end
     elseif XLIST_MODE == 3 then -- WHITELIST
         return isAuraWhitelisted(name, spellId) and playerUnits[sourceUnit];
     end
