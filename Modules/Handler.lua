@@ -5,13 +5,13 @@ local Stripes = S:NewNameplateModule('Handler');
 local pairs, math_ceil, math_max = pairs, math.ceil, math.max;
 
 -- WoW API
-local UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
-      UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsPlayer, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
-local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack, UnitPlayerControlled = UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack, UnitPlayerControlled;
-local UnitInGuild = U.UnitInGuild;
+local UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly =
+      UnitIsUnit, UnitExists, UnitName, GetUnitName, UnitFactionGroup, UnitIsEnemy, UnitIsConnected, UnitClassification, UnitReaction, UnitIsPVPSanctuary, UnitNameplateShowsWidgetsOnly;
+local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack, UnitPlayerControlled =
+      UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack, UnitPlayerControlled;
 
 -- Stripes API
-local GetNpcIDByGUID, GetUnitLevel, GetUnitColor = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor;
+local GetNpcIDByGUID, GetUnitLevel, GetUnitColor, UnitInGuild = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor, U.UnitInGuild;
 local IsPlayer = U.IsPlayer;
 local utf8sub = U.UTF8SUB;
 
