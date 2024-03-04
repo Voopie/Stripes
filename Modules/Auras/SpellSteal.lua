@@ -195,9 +195,10 @@ local function CreateBuffFrame(unitframe)
                 buff.Cooldown:SetDrawSwipe(DRAW_SWIPE);
                 buff.Cooldown:SetFrameStrata('HIGH');
                 buff.Cooldown:SetCountdownFont('StripesAurasSpellStealCooldownFont');
-                buff.Cooldown:GetRegions():ClearAllPoints();
-                buff.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, buff.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-                buff.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+                buff.Cooldown.Countdown = buff.Cooldown:GetRegions();
+                buff.Cooldown.Countdown:ClearAllPoints();
+                buff.Cooldown.Countdown:SetPoint(COUNTDOWN_POINT, buff.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+                buff.Cooldown.Countdown:SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
                 buff.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
                 buff.CountFrame:SetFrameStrata('HIGH');
@@ -337,9 +338,9 @@ local function CreateBuffFrame(unitframe)
             buff.Cooldown:SetDrawSwipe(DRAW_SWIPE);
             buff.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
-            buff.Cooldown:GetRegions():ClearAllPoints();
-            buff.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, buff.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-            buff.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+            buff.Cooldown.Countdown:ClearAllPoints();
+            buff.Cooldown.Countdown:SetPoint(COUNTDOWN_POINT, buff.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+            buff.Cooldown.Countdown:SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
 
             buff.CountFrame.Count:ClearAllPoints();
             buff.CountFrame.Count:SetPoint(COUNT_POINT, buff.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
