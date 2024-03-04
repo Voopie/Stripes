@@ -2,9 +2,8 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('HealthText');
 
 -- Stripes API
-local ShortValue = U.ShortValue;
-local LargeNumberFormat = U.LargeNumberFormat;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local U_ShortValue, U_LargeNumberFormat = U.ShortValue, U.LargeNumberFormat;
 
 -- Local Config
 local ENABLED, TEXT_FRAME_STRATA, HIDE_FULL, DISPLAY_MODE, SHOW_PCT_SIGN, PCT_SIGN, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR;
@@ -34,38 +33,38 @@ end
 
 local UpdateHealthTextFormat = {
     [1] = function(unitframe, fontObject)
-        local formatString = string.format('%s  %s%s', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        local formatString = string.format('%s  %s%s', U_ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
         fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [2] = function(unitframe, fontObject)
-        local formatString = string.format('%s | %s%s', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        local formatString = string.format('%s | %s%s', U_ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
         fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [3] = function(unitframe, fontObject)
-        local formatString = string.format('%s - %s%s', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        local formatString = string.format('%s - %s%s', U_ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
         fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [4] = function(unitframe, fontObject)
-        local formatString = string.format('%s / %s%s', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        local formatString = string.format('%s / %s%s', U_ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
         fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [5] = function(unitframe, fontObject)
-        local formatString = string.format('%s  [%s%s]', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        local formatString = string.format('%s  [%s%s]', U_ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
         fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [6] = function(unitframe, fontObject)
-        local formatString = string.format('%s  (%s%s)', ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
+        local formatString = string.format('%s  (%s%s)', U_ShortValue(unitframe.data.healthCurrent), unitframe.data.healthPerF == 100 and '%d' or '%.1f', PCT_SIGN)
         fontObject:SetFormattedText(formatString, unitframe.data.healthPerF);
     end,
 
     [7] = function(unitframe, fontObject)
         local formatString = '%s';
-        fontObject:SetFormattedText(formatString, ShortValue(unitframe.data.healthCurrent));
+        fontObject:SetFormattedText(formatString, U_ShortValue(unitframe.data.healthCurrent));
     end,
 
     [8] = function(unitframe, fontObject)
@@ -78,7 +77,7 @@ local UpdateHealthTextFormat = {
     end,
 
     [10] = function(unitframe, fontObject)
-        fontObject:SetText(LargeNumberFormat(unitframe.data.healthCurrent));
+        fontObject:SetText(U_LargeNumberFormat(unitframe.data.healthCurrent));
     end,
 };
 

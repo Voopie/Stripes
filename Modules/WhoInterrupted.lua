@@ -19,8 +19,8 @@ local GetCachedName = Stripes.GetCachedName;
 -- Libraries
 local LPS = S.Libraries.LPS;
 local LPS_GetSpellInfo = LPS.GetSpellInfo;
-local CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.STUN);
-local CROWD_CTRL = LPS.constants.CROWD_CTRL;
+local LPS_CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.STUN);
+local LPS_CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
 local INTERRUPTED_FORMAT = '|cff%s%s! [%s]|r';
 
@@ -63,7 +63,7 @@ local function HandleCombatLogEvent()
 
     if isAuraApplied then
         local flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
-        isCrowdControl = flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0;
+        isCrowdControl = flags and cc and bit_band(flags, LPS_CROWD_CTRL) > 0 and bit_band(cc, LPS_CC_TYPES) > 0;
     end
 
     if isInterrupt or isCrowdControl then

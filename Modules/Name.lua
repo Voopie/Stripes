@@ -10,17 +10,15 @@ local strlenutf8 = strlenutf8;
 local UnitSelectionColor = UnitSelectionColor;
 
 -- Stripes API
-local utf8sub = U.UTF8SUB;
-local firstUpper, firstLower = U.FirstToUpper, U.FirstToLower;
-local GetUnitArenaId = U.GetUnitArenaId;
-local PlayerState = D.Player.State;
-local UnitIsTapped = U.UnitIsTapped;
-local GetNpcSubLabelByID = U.GetNpcSubLabelByID;
 local ShouldShowName = Stripes.ShouldShowName;
 local IsNameOnlyMode = Stripes.IsNameOnlyMode;
 local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
 local UpdateFontObject = Stripes.UpdateFontObject;
 local GetCachedName = Stripes.GetCachedName;
+local U_utf8sub, U_firstUpper, U_firstLower = U.UTF8SUB, U.FirstToUpper, U.FirstToLower;
+local U_UnitIsTapped, U_GetUnitArenaId, U_GetNpcSubLabelByID = U.UnitIsTapped, U.GetUnitArenaId, U.GetNpcSubLabelByID;
+
+local PlayerState = D.Player.State;
 
 -- Libraries
 local LT = S.Libraries.LT;
@@ -91,11 +89,11 @@ local function GetPlayerName(unitframe)
 end
 
 local function AbbreviateNameWithDot(t)
-    return utf8sub(t, 1, 1) .. '.';
+    return U_utf8sub(t, 1, 1) .. '.';
 end
 
 local function AbbreviateNameWithDotAndSpace(t)
-    return utf8sub(t, 1, 1) .. '. ';
+    return U_utf8sub(t, 1, 1) .. '. ';
 end
 
 local function AbbreviateNameLastWord(name)
@@ -116,9 +114,9 @@ end
 
 local function ApplyCaseTransformation(name, caseTransformation)
     if caseTransformation == 'upper' then
-        return firstUpper(name);
+        return U_firstUpper(name);
     elseif caseTransformation == 'lower' then
-        return firstLower(name);
+        return U_firstLower(name);
     else
         return name;
     end
@@ -177,7 +175,7 @@ local function GetCuttedName(name)
         return CUTTED_CACHE[keyName];
     end
 
-    name = utf8sub(name, 0, NAME_CUT_NUMBER) or '';
+    name = U_utf8sub(name, 0, NAME_CUT_NUMBER) or '';
     name = ApplyCaseTransformation(name, caseTransformation);
 
     CUTTED_CACHE[keyName] = name;
@@ -271,7 +269,7 @@ local function HandleFirstModeName(unitframe)
 end
 
 local function HandleArenaName(unitframe)
-    local arenaId = GetUnitArenaId(unitframe.data.unit);
+    local arenaId = U_GetUnitArenaId(unitframe.data.unit);
 
     if not arenaId then
         return;
@@ -326,7 +324,7 @@ local function DefaultColor(frame)
         return;
     end
 
-    if UnitIsTapped(frame.data.unit) then
+    if U_UnitIsTapped(frame.data.unit) then
         frame.name:SetVertexColor(0.5, 0.5, 0.5);
     elseif frame.optionTable.colorNameBySelection then
         frame.name:SetVertexColor(UnitSelectionColor(frame.data.unit, frame.optionTable.colorNameWithExtendedColors));
@@ -571,7 +569,7 @@ local function HandleNameHealth(unitframe, isFriendlyPlayer, isFriendlyPlayerOrN
     if unitframe.data.healthCurrent > 0 and unitframe.data.healthMax > 0 then
         local name, level = GetNameAndLevel(unitframe, isFriendlyPlayer, isFriendlyPlayerOrNpc);
         local healthLength = GetHealthLength(unitframe, name);
-        unitframe.name:SetText(level .. utf8sub(name, 0, healthLength) .. GREY_COLOR_START .. utf8sub(name, healthLength + 1));
+        unitframe.name:SetText(level .. U_utf8sub(name, 0, healthLength) .. GREY_COLOR_START .. U_utf8sub(name, healthLength + 1));
     end
 end
 
@@ -622,7 +620,7 @@ local function NameOnly_UpdateGuildName(unitframe)
 
             unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
         elseif IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
-            local subLabel = GetNpcSubLabelByID(unitframe.data.npcId);
+            local subLabel = U_GetNpcSubLabelByID(unitframe.data.npcId);
 
             if subLabel then
                 unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, subLabel));

@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('StealthDetect');
 
 -- Stripes API
-local UnitHasAura = U.UnitHasAura;
+local U_UnitHasAura = U.UnitHasAura;
 local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Libraries
@@ -176,7 +176,7 @@ local function Update(unitframe)
     if units[unitframe.data.npcId] then
         found = true;
     else
-        local aura = UnitHasAura(unitframe.data.unit, auras);
+        local aura = U_UnitHasAura(unitframe.data.unit, auras);
 
         if aura then
             found = true;

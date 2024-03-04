@@ -6,10 +6,10 @@ local Stripes = S:GetNameplateModule('Handler');
 local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitGroupRolesAssigned;
 
 -- Stripes API
-local GetUnitColor = U.GetUnitColor;
 local ShouldShowName = Stripes.ShouldShowName;
 local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
 local GetCachedName = Stripes.GetCachedName;
+local U_GetUnitColor = U.GetUnitColor;
 
 -- Local Config
 local ENABLED, ONLY_ENEMY, NOT_ME, ROLE_ICON;
@@ -50,7 +50,7 @@ local function TargetChanged(unitframe)
             local targetName = GetCachedName(unitframe.data.targetName, true, true, true);
             local roleIconText = ROLE_ICON and partyRolesCache[unitframe.data.targetName] and ('» ' .. partyRolesCache[unitframe.data.targetName] .. ' ' .. targetName) or ('» ' .. targetName);
             unitframe.TargetName:SetText(roleIconText);
-            unitframe.TargetName:SetTextColor(GetUnitColor(unitframe.data.unit .. 'target', 2));
+            unitframe.TargetName:SetTextColor(U_GetUnitColor(unitframe.data.unit .. 'target', 2));
         end
 
         unitframe.TargetName:Show();

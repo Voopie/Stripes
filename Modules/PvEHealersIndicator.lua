@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('PvEHealersIndicator');
 
 -- Sripes API
-local GetNpcID = U.GetNpcID;
+local U_GetNpcID = U.GetNpcID;
 
 -- Local Config
 local ENABLED, SOUND_ENABLED, ICON_SCALE, POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y, STRATA;
@@ -134,7 +134,7 @@ local function Update(unitframe)
 end
 
 local function UpdateMouseoverUnit()
-    if mobsIDs[GetNpcID('mouseover')] then
+    if mobsIDs[U_GetNpcID('mouseover')] then
         PlaySoundFile(SOUNDFILE_ID);
     end
 end

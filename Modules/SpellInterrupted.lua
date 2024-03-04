@@ -3,13 +3,10 @@ local Module = S:NewNameplateModule('SpellInterrupted');
 local Stripes = S:GetNameplateModule('Handler');
 
 -- WoW API
-local UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture = UnitName, CombatLogGetCurrentEventInfo, UnitExists, GetSpellTexture;
+local UnitName, UnitExists, GetSpellTexture, CombatLogGetCurrentEventInfo = UnitName, UnitExists, GetSpellTexture, CombatLogGetCurrentEventInfo;
 
 -- Stripes API
-local UnitHasAura = U.UnitHasAura;
-local U_GetClassColor = U.GetClassColor;
-local U_UnitIsPetByGUID = U.UnitIsPetByGUID;
-local GetUnitColor = U.GetUnitColor;
+local U_UnitHasAura, U_UnitIsPetByGUID, U_GetUnitColor, U_GetClassColor = U.UnitHasAura, U.UnitIsPetByGUID, U.GetClassColor, U.GetUnitColor;
 local UpdateFontObject = Stripes.UpdateFontObject;
 local GetCachedName = Stripes.GetCachedName;
 
@@ -128,7 +125,7 @@ local function UpdateByAura(unitframe)
         return;
     end
 
-    local aura = UnitHasAura(unitframe.data.unit, auras);
+    local aura = U_UnitHasAura(unitframe.data.unit, auras);
 
     if not aura then
         if not unitframe.SpellInterrupted.onInterrupt then
@@ -155,7 +152,7 @@ local function UpdateByAura(unitframe)
         local name = GetCachedName(UnitName(aura.sourceUnit), true, true, false);
 
         spellInterruptedFrame.casterName:SetText(name);
-        spellInterruptedFrame.casterName:SetTextColor(GetUnitColor(aura.sourceUnit, 2));
+        spellInterruptedFrame.casterName:SetTextColor(U_GetUnitColor(aura.sourceUnit, 2));
         spellInterruptedFrame.casterName:Show();
     else
         spellInterruptedFrame.casterName:Hide();
