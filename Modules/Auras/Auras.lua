@@ -7,18 +7,19 @@ local ipairs, tonumber, math_max, table_wipe, table_sort, bit_band = ipairs, ton
 
 -- Wow API
 local CooldownFrame_Set = CooldownFrame_Set;
+local DebuffTypeColor = DebuffTypeColor;
 
 -- Stripes API
 local ShouldShowName   = Stripes.ShouldShowName;
 local UpdateFontObject = Stripes.UpdateFontObject;
-local GetTrulySpellId, S_IsSpellKnown = U.GetTrulySpellId, U.IsSpellKnown;
-local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
+local U_GetTrulySpellId, U_IsSpellKnown = U.GetTrulySpellId, U.IsSpellKnown;
+local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Libraries
 local LPS = S.Libraries.LPS;
 local LPS_GetSpellInfo = LPS.GetSpellInfo;
-local CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.ROOT, LPS.constants.STUN);
-local CROWD_CTRL = LPS.constants.CROWD_CTRL;
+local LPS_CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.ROOT, LPS.constants.STUN);
+local LPS_CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
 -- Local Config
 local BUFFFRAME_IS_ACTIVE, FILTER_PLAYER_ENABLED, XLIST_MODE, SPACING_X, AURAS_DIRECTION, AURAS_MAX_DISPLAY;
@@ -36,19 +37,16 @@ local EXPIRE_GLOW_ENABLED, EXPIRE_GLOW_PERCENT, EXPIRE_GLOW_COLOR, EXPIRE_GLOW_T
 local MASQUE_SUPPORT;
 local SHOW_DEBUFFS_ON_FRIENDLY;
 
-local DebuffTypeColor = DebuffTypeColor;
-
 local MAX_OFFSET_Y = -9;
-local PANDEMIC_PERCENT = 30;
+local PANDEMIC_PERCENT = 0.3;
 local UPDATE_INTERVAL = 0.33;
-
-local pandemicKnownSpells = {};
 
 local StripesAurasModCooldownFont = CreateFont('StripesAurasModCooldownFont');
 local StripesAurasModCountFont    = CreateFont('StripesAurasModCountFont');
 
 local playerUnits = D.PlayerUnits;
 
+local pandemicKnownSpells = {};
 local blacklistAurasNameCache = {};
 local whitelistAurasNameCache = {};
 
@@ -110,7 +108,7 @@ local function UpdateWhitelistCache()
     end
 end
 
-local function isAuraWhitelisted(name, spellId)
+local function IsAuraWhitelisted(name, spellId)
     if whitelistAurasNameCache[name] then
         return true;
     elseif O.db.auras_whitelist[name] and O.db.auras_whitelist[name].enabled then
@@ -124,7 +122,7 @@ local function isAuraWhitelisted(name, spellId)
     return false;
 end
 
-local function isAuraBlacklisted(name, spellId)
+local function IsAuraBlacklisted(name, spellId)
     if blacklistAurasNameCache[name] then
         return true;
     elseif O.db.auras_blacklist[name] and O.db.auras_blacklist[name].enabled then
@@ -138,7 +136,7 @@ local function isAuraBlacklisted(name, spellId)
     return false;
 end
 
-local function IsOnPandemic(aura)
+local function IsAuraOnPandemic(aura)
     if not PANDEMIC_ENABLED or not COUNTDOWN_ENABLED or aura:GetParent():GetParent().data.isPersonal then
         return;
     end
@@ -146,20 +144,20 @@ local function IsOnPandemic(aura)
     local startTimeMs, durationMs = aura.Cooldown:GetCooldownTimes();
     local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
 
-    return remTimeMs > 0 and remTimeMs <= (durationMs / 100 * PANDEMIC_PERCENT);
+    return remTimeMs > 0 and remTimeMs <= (durationMs * PANDEMIC_PERCENT);
 end
 
-local function ResetPandemic(unitframe)
+local function ResetAllAurasPandemic(unitframe)
     if unitframe.BuffFrame and unitframe.BuffFrame.buffList then
         for _, aura in ipairs(unitframe.BuffFrame.buffList) do
-            GlowStopAll(aura);
+            U_GlowStopAll(aura);
 
-            aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+            aura.Cooldown.Countdown:SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
         end
     end
 end
 
-local function IsOnExpireGlow(aura)
+local function IsAuraOnExpireGlow(aura)
     if not EXPIRE_GLOW_ENABLED then
         return;
     end
@@ -167,10 +165,10 @@ local function IsOnExpireGlow(aura)
     local startTimeMs, durationMs = aura.Cooldown:GetCooldownTimes();
     local remTimeMs = startTimeMs - (GetTime() * 1000 - durationMs);
 
-    return remTimeMs > 0 and remTimeMs <= (durationMs / 100 * EXPIRE_GLOW_PERCENT);
+    return remTimeMs > 0 and remTimeMs <= (durationMs * EXPIRE_GLOW_PERCENT);
 end
 
-local function SortMethodFunction(a, b)
+local function AuraComparator(a, b)
     local aExpires = a.expires or 0;
     local bExpires = b.expires or 0;
 
@@ -231,10 +229,11 @@ local function UpdateAuraStyle(aura, withoutMasque)
     aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
     aura.Cooldown:SetCountdownFont('StripesAurasModCooldownFont');
-    aura.Cooldown:GetRegions():ClearAllPoints();
-    aura.Cooldown:GetRegions():SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-    aura.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
-    aura.Cooldown:GetRegions():SetDrawLayer('OVERLAY', 7);
+    aura.Cooldown.Countdown = aura.Cooldown:GetRegions();
+    aura.Cooldown.Countdown:ClearAllPoints();
+    aura.Cooldown.Countdown:SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+    aura.Cooldown.Countdown:SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+    aura.Cooldown.Countdown:SetDrawLayer('OVERLAY', 7);
 
     aura.CountFrame:SetFrameStrata('HIGH');
     aura.CountFrame.Count:ClearAllPoints();
@@ -250,16 +249,18 @@ local function UpdateAuraStyle(aura, withoutMasque)
                 return;
             end
 
-            if self.spellID and IsOnPandemic(self) then
+            if self.spellID and IsAuraOnPandemic(self) then
                 if pandemicKnownSpells[self.spellID] then
-                    self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
+                    self.Cooldown.Countdown:SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
                 else
                     local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellID);
-                    if not flags or not cc or not (bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0) then
-                        self.trulySpellId = GetTrulySpellId(self.spellID);
+                    local isCrowdControl = not flags or not cc or not (bit_band(flags, LPS_CROWD_CTRL) > 0 and bit_band(cc, LPS_CC_TYPES) > 0);
 
-                        if self.trulySpellId and (pandemicKnownSpells[self.trulySpellId] or S_IsSpellKnown(self.trulySpellId)) then
-                            self.Cooldown:GetRegions():SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
+                    if isCrowdControl then
+                        self.trulySpellId = U_GetTrulySpellId(self.spellID);
+
+                        if self.trulySpellId and (pandemicKnownSpells[self.trulySpellId] or U_IsSpellKnown(self.trulySpellId)) then
+                            self.Cooldown.Countdown:SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
 
                             pandemicKnownSpells[self.spellID]      = true;
                             pandemicKnownSpells[self.trulySpellId] = true;
@@ -267,20 +268,20 @@ local function UpdateAuraStyle(aura, withoutMasque)
                     end
                 end
             else
-                self.Cooldown:GetRegions():SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+                self.Cooldown.Countdown:SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
             end
 
-            if IsOnExpireGlow(self) then
-                GlowStart(self, EXPIRE_GLOW_TYPE, EXPIRE_GLOW_COLOR);
+            if IsAuraOnExpireGlow(self) then
+                U_GlowStart(self, EXPIRE_GLOW_TYPE, EXPIRE_GLOW_COLOR);
             else
-                GlowStopAll(self);
+                U_GlowStopAll(self);
             end
 
             self.elapsed = 0;
         end);
 
         aura.Cooldown:HookScript('OnCooldownDone', function(self)
-            GlowStopAll(self:GetParent());
+            U_GlowStopAll(self:GetParent());
         end);
 
         aura.Hooked = true;
@@ -304,12 +305,12 @@ local function FilterShouldShowBuff(self, aura, forceAll, isSelf)
     local sourceUnit = aura.sourceUnit;
 
     if XLIST_MODE == 2 then -- BLACKLIST
-        local isBlacklisted = isAuraBlacklisted(name, spellId);
+        local isBlacklisted = IsAuraBlacklisted(name, spellId);
         if isBlacklisted then
             return false;
         end
     elseif XLIST_MODE == 3 then -- WHITELIST
-        return isAuraWhitelisted(name, spellId) and playerUnits[sourceUnit];
+        return IsAuraWhitelisted(name, spellId) and playerUnits[sourceUnit];
     end
 
     if FILTER_PLAYER_ENABLED and not isSelf then
@@ -498,7 +499,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
             end
 
             if #unitframe.SortBuffs > 0 then
-                table_sort(unitframe.SortBuffs, SortMethodFunction);
+                table_sort(unitframe.SortBuffs, AuraComparator);
 
                 local firstBuffIndex, lastBuff;
 
@@ -627,14 +628,14 @@ end
 
 function Module:UnitAdded(unitframe)
     if unitframe.data.isPersonal then
-        ResetPandemic(unitframe);
+        ResetAllAurasPandemic(unitframe);
     end
 
     Update(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
-    ResetPandemic(unitframe);
+    ResetAllAurasPandemic(unitframe);
 end
 
 function Module:UnitAura(unitframe, unitAuraUpdateInfo)
@@ -642,7 +643,7 @@ function Module:UnitAura(unitframe, unitAuraUpdateInfo)
 end
 
 function Module:Update(unitframe)
-    ResetPandemic(unitframe);
+    ResetAllAurasPandemic(unitframe);
 
     Update(unitframe);
 
@@ -712,7 +713,7 @@ function Module:UpdateLocalConfig()
     PANDEMIC_COLOR[4] = O.db.auras_pandemic_color[4] or 1;
 
     EXPIRE_GLOW_ENABLED  = O.db.auras_expire_glow_enabled;
-    EXPIRE_GLOW_PERCENT  = O.db.auras_expire_glow_percent;
+    EXPIRE_GLOW_PERCENT  = (O.db.auras_expire_glow_percent or 20)/100;
     EXPIRE_GLOW_COLOR    = EXPIRE_GLOW_COLOR or {};
     EXPIRE_GLOW_COLOR[1] = O.db.auras_expire_glow_color[1];
     EXPIRE_GLOW_COLOR[2] = O.db.auras_expire_glow_color[2];
