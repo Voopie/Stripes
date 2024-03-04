@@ -8,7 +8,7 @@ local UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitTh
 local GetRaidTargetIndex = GetRaidTargetIndex;
 
 -- Stripes API
-local UnitIsTapped, UnitIsOnThreatListWithPlayer, IsPlayerEffectivelyTank = U.UnitIsTapped, U.UnitIsOnThreatListWithPlayer, U.IsPlayerEffectivelyTank;
+local U_UnitIsTapped, U_UnitIsOnThreatListWithPlayer, U_IsPlayerEffectivelyTank = U.UnitIsTapped, U.UnitIsOnThreatListWithPlayer, U.IsPlayerEffectivelyTank;
 local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Libraries
@@ -102,10 +102,10 @@ local function UpdateHealthColor(frame)
                 if not r then
                     r, g, b, a = 0.8, 0.8, 0.8, 1;
                 end
-            elseif UnitIsTapped(frame.unit) then
+            elseif U_UnitIsTapped(frame.unit) then
                 r, g, b, a = DB.HPBAR_COLOR_TAPPED[1], DB.HPBAR_COLOR_TAPPED[2], DB.HPBAR_COLOR_TAPPED[3], DB.HPBAR_COLOR_TAPPED[4];
             elseif frame.optionTable.colorHealthBySelection then
-                if frame.optionTable.considerSelectionInCombatAsHostile and UnitIsOnThreatListWithPlayer(frame.displayedUnit) then
+                if frame.optionTable.considerSelectionInCombatAsHostile and U_UnitIsOnThreatListWithPlayer(frame.displayedUnit) then
                     r, g, b, a = DB.HPBAR_COLOR_ENEMY_NPC[1], DB.HPBAR_COLOR_ENEMY_NPC[2], DB.HPBAR_COLOR_ENEMY_NPC[3], DB.HPBAR_COLOR_ENEMY_NPC[4];
                 elseif frame.data.isPlayer and frame.data.unitType == 'FRIENDLY_PLAYER' then
                     r, g, b, a = DB.HPBAR_COLOR_FRIENDLY_PLAYER[1], DB.HPBAR_COLOR_FRIENDLY_PLAYER[2], DB.HPBAR_COLOR_FRIENDLY_PLAYER[3], DB.HPBAR_COLOR_FRIENDLY_PLAYER[4];
@@ -307,7 +307,7 @@ local COLORING_FUNCTIONS = {
             if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
                 UpdateThreatName(unitframe, display, r, g, b);
             else
-                if UnitIsTapped(unitframe.data.unit) then
+                if U_UnitIsTapped(unitframe.data.unit) then
                     if DB.THREAT_COLOR_ISTAPPED_BORDER then
                         unitframe.healthBar.border:SetVertexColor(r, g, b, a);
                     end
@@ -351,7 +351,7 @@ local COLORING_FUNCTIONS = {
             if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
                 UpdateThreatName(unitframe, display, r, g, b);
             else
-                if UnitIsTapped(unitframe.data.unit) then
+                if U_UnitIsTapped(unitframe.data.unit) then
                     if DB.THREAT_COLOR_ISTAPPED_BORDER then
                         unitframe.healthBar.border:SetVertexColor(r, g, b, a);
                     end
@@ -570,7 +570,7 @@ local COLORING_FUNCTIONS = {
             if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
                 UpdateThreatName(unitframe, display, r, g, b);
             else
-                if UnitIsTapped(unitframe.data.unit) then
+                if U_UnitIsTapped(unitframe.data.unit) then
                     if DB.THREAT_COLOR_ISTAPPED_BORDER then
                         unitframe.healthBar.border:SetVertexColor(r, g, b, a);
                     end
@@ -1056,7 +1056,7 @@ local function UpdateReverseThreat()
 end
 
 function Module:PLAYER_LOGIN()
-    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+    PLAYER_IS_TANK = U_IsPlayerEffectivelyTank();
     PLAYER_ROLE    = U.GetPlayerRole();
 
     UpdateReverseThreat();
@@ -1067,7 +1067,7 @@ function Module:PLAYER_SPECIALIZATION_CHANGED(unit)
         return;
     end
 
-    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+    PLAYER_IS_TANK = U_IsPlayerEffectivelyTank();
     PLAYER_ROLE    = U.GetPlayerRole();
 
     UpdateReverseThreat();
@@ -1085,7 +1085,7 @@ function Module:ROLE_CHANGED_INFORM(changedName, _, _, newRole)
 end
 
 function Module:PLAYER_ROLES_ASSIGNED()
-    PLAYER_IS_TANK = IsPlayerEffectivelyTank();
+    PLAYER_IS_TANK = U_IsPlayerEffectivelyTank();
     PLAYER_ROLE    = U.GetPlayerRole();
 
     UpdateReverseThreat();
