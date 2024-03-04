@@ -9,16 +9,16 @@ local bit_band, math_max = bit.band, math.max;
 local CooldownFrame_Set, UnitName, AuraUtil_ForEachAura = CooldownFrame_Set, UnitName, AuraUtil.ForEachAura;
 
 -- Sripes API
-local GetUnitColor = U.GetUnitColor;
 local ShouldShowName = Stripes.ShouldShowName;
 local UpdateFontObject = Stripes.UpdateFontObject;
+local U_GetUnitColor = U.GetUnitColor;
 local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Libraries
 local LPS = S.Libraries.LPS;
 local LPS_GetSpellInfo = LPS.GetSpellInfo;
-local CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.ROOT, LPS.constants.STUN);
-local CROWD_CTRL = LPS.constants.CROWD_CTRL;
+local LPS_CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.ROOT, LPS.constants.STUN);
+local LPS_CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED, CASTER_NAME_SHOW;
@@ -124,7 +124,7 @@ local function CreateBuffFrame(unitframe)
             spellFound = true;
         else
             local flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
-            if flags and cc and bit_band(flags, CROWD_CTRL) > 0 and bit_band(cc, CC_TYPES) > 0 then
+            if flags and cc and bit_band(flags, LPS_CROWD_CTRL) > 0 and bit_band(cc, LPS_CC_TYPES) > 0 then
                 spellFound = true;
             end
         end
@@ -291,7 +291,7 @@ local function CreateBuffFrame(unitframe)
                 local unitname = buff.sourceUnit and UnitName(buff.sourceUnit);
                 if unitname then
                     buff.CasterName:SetText(unitname);
-                    buff.CasterName:SetTextColor(GetUnitColor(buff.sourceUnit, 2));
+                    buff.CasterName:SetTextColor(U_GetUnitColor(buff.sourceUnit, 2));
                     buff.CasterName:Show();
                 else
                     buff.CasterName:Hide();
