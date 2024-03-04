@@ -76,11 +76,11 @@ local additionalAuras = {
 };
 
 local function CreateBuffFrame(unitframe)
-    if unitframe.ImportantAuras then
+    if unitframe.AurasImportant then
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentImportantAuras', unitframe);
+    local frame = CreateFrame('Frame', '$parentAurasImportant', unitframe);
     frame:SetSize(14, 14);
 
     frame.buffList = {};
@@ -387,22 +387,22 @@ local function CreateBuffFrame(unitframe)
         end
     end
 
-    unitframe.ImportantAuras = frame;
+    unitframe.AurasImportant = frame;
 end
 
 function Module:UnitAdded(unitframe)
     CreateBuffFrame(unitframe);
-    unitframe.ImportantAuras:UpdateBuffs();
+    unitframe.AurasImportant:UpdateBuffs();
 end
 
 function Module:UnitRemoved(unitframe)
-    if unitframe.ImportantAuras then
-        unitframe.ImportantAuras:Hide();
+    if unitframe.AurasImportant then
+        unitframe.AurasImportant:Hide();
     end
 end
 
 function Module:UnitAura(unitframe, unitAuraUpdateInfo)
-    unitframe.ImportantAuras:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
+    unitframe.AurasImportant:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
 end
 
 function Module:Update(unitframe)
@@ -410,8 +410,8 @@ function Module:Update(unitframe)
         Stripes.MasqueAurasImportantGroup:ReSkin();
     end
 
-    unitframe.ImportantAuras:UpdateBuffs();
-    unitframe.ImportantAuras:UpdateStyle();
+    unitframe.AurasImportant:UpdateBuffs();
+    unitframe.AurasImportant:UpdateStyle();
 end
 
 function Module:UpdateLocalConfig()
@@ -486,6 +486,6 @@ end
 function Module:StartUp()
     self:UpdateLocalConfig();
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
-        unitframe.ImportantAuras:UpdateAnchor();
+        unitframe.AurasImportant:UpdateAnchor();
     end);
 end
