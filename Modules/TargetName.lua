@@ -7,16 +7,13 @@ local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitG
 
 -- Stripes API
 local ShouldShowName = Stripes.ShouldShowName;
-local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
 local GetCachedName = Stripes.GetCachedName;
 local U_GetUnitColor = U.GetUnitColor;
 
 -- Local Config
 local ENABLED, ONLY_ENEMY, NOT_ME, ROLE_ICON;
-local NAME_ONLY_MODE;
 
 local PlayerData = D.Player;
-local PlayerState = D.Player.State;
 local YOU = YOU;
 
 local partyRolesCache = {};
@@ -85,7 +82,7 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance)) then
+    if Stripes.NameOnly:IsActive(unitframe) then
         unitframe.TargetName:SetParent(unitframe);
     else
         unitframe.TargetName:SetParent(unitframe.healthBar);
@@ -120,8 +117,6 @@ function Module:UpdateLocalConfig()
     ONLY_ENEMY = O.db.target_name_only_enemy;
     NOT_ME     = O.db.target_name_not_me;
     ROLE_ICON  = O.db.target_name_role_icon;
-
-    NAME_ONLY_MODE = O.db.name_only_friendly_mode;
 
     if ENABLED then
         Stripes.Updater:Add('TargetName', OnUpdate);

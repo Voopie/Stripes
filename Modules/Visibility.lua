@@ -2,9 +2,6 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('Visibility');
 local Stripes = S:GetNameplateModule('Handler');
 
--- Stripes API
-local IsNameOnlyMode = Stripes.IsNameOnlyMode;
-
 -- Local Config
 local SHOW_ALWAYS_INSTANCE, SHOW_ALWAYS_OPENWORLD, SHOW_ALWAYS_PVP_INSTANCE, MAX_DISTANCE_INSTANCE, MAX_DISTANCE_OPENWORLD, MAX_DISTANCE_PVP_INSTANCE;
 local SHOW_ENEMY, SHOW_FRIENDLY, ENEMY_ONLY_IN_COMBAT, FRIENDLY_ONLY_IN_COMBAT;
@@ -28,7 +25,7 @@ local function HandleVisibility()
         Stripes.SetCVar('nameplateMaxDistance', MAX_DISTANCE_OPENWORLD);
     end
 
-    if IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+    if Stripes.NameOnly:IsEnabled() and O.db.name_only_friendly_stacking then
         if U.IsInInstance() then
             C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
         else

@@ -17,7 +17,6 @@ local TooltipUtil_FindLinesFromData = TooltipUtil.FindLinesFromData;
 local Enum_TooltipDataLineType_QuestTitle, Enum_TooltipDataLineType_QuestObjective = Enum.TooltipDataLineType.QuestTitle, Enum.TooltipDataLineType.QuestObjective;
 
 -- Stripes API
-local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
 local UpdateFontObject = Stripes.UpdateFontObject;
 
 local PlayerState = D.Player.State;
@@ -216,7 +215,7 @@ end
 local function UpdateStyle(unitframe)
     unitframe.QuestIndicator:ClearAllPoints();
 
-    if IsNameOnlyModeAndFriendly(unitframe.data.unitType, unitframe.data.canAttack) then
+    if Stripes.NameOnly:IsUnitFrameFriendly(unitframe) then
         unitframe.QuestIndicator:SetAllPoints(unitframe.name);
     else
         unitframe.QuestIndicator:SetAllPoints(unitframe.healthBar);

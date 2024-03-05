@@ -14,6 +14,7 @@ local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType
 local GetNpcIDByGUID, GetUnitLevel, GetUnitColor, UnitInGuild = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor, U.UnitInGuild;
 local IsPlayer, IsRealPlayer = U.IsPlayer, U.IsRealPlayer;
 local utf8sub = U.UTF8SUB;
+local PlayerState = D.Player.State;
 
 -- Libraries
 local LT = S.Libraries.LT;
@@ -34,14 +35,13 @@ if Masque then
 end
 
 -- Local Config
-local NAME_TEXT_ENABLED, NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY;
+local NAME_TEXT_ENABLED;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
 
-local NAME_ONLY_FRIENDLY_UNIT_TYPES = {
-    ['FRIENDLY_PLAYER'] = true,
-    ['FRIENDLY_NPC']    = true,
-};
+local NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_MODE;
+local NAME_ONLY_OFFSET_Y, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_SHOW_LEVEL;
+local NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 
 -- Updater
 Stripes.Updater = CreateFrame('Frame');
@@ -139,28 +139,82 @@ Stripes.ShouldShowName = function(unitframe)
     return NAME_TEXT_ENABLED and (unitframe.unit and SSN(unitframe));
 end
 
-local function IsNameOnlyMode()
-    return NAME_ONLY_FRIENDLY_ENABLED;
-end
+Stripes.NameOnly = {
+    FriendlyModes = {
+        [1] = 'anywhere',
+        [2] = 'openworld',
+    },
 
-local function IsNameOnlyModeAndFriendly(unitType, canAttack)
-    if not NAME_ONLY_FRIENDLY_ENABLED or canAttack then
-        return false;
-    end
+    FriendlyUnitTypes = {
+        ['FRIENDLY_PLAYER'] = true,
+        ['FRIENDLY_NPC']    = true,
+    },
 
-    if NAME_ONLY_FRIENDLY_PLAYERS_ONLY then
-        return unitType == 'FRIENDLY_PLAYER';
-    else
-        if not canAttack then
-            return true;
-        else
-            return NAME_ONLY_FRIENDLY_UNIT_TYPES[unitType];
+    GetMode = function(self)
+        return self.FriendlyModes[NAME_ONLY_MODE];
+    end,
+
+    IsUnitTypeFriendly = function(self, unitType)
+        return self.FriendlyUnitTypes[unitType];
+    end,
+
+    IsEnabled = function()
+        return NAME_ONLY_FRIENDLY_ENABLED;
+    end,
+
+    IsFriendlyPlayersOnly = function()
+        return NAME_ONLY_FRIENDLY_PLAYERS_ONLY;
+    end,
+
+    IsUnitFrameFriendly = function(self, unitframe)
+        local unitType  = unitframe.data.unitType;
+        local canAttack = unitframe.data.canAttack;
+
+        if not self:IsEnabled() or canAttack then
+            return false;
         end
-    end
-end
 
-Stripes.IsNameOnlyMode            = IsNameOnlyMode;
-Stripes.IsNameOnlyModeAndFriendly = IsNameOnlyModeAndFriendly;
+        if self:IsFriendlyPlayersOnly() then
+            return unitType == 'FRIENDLY_PLAYER';
+        else
+            return canAttack and self:IsUnitTypeFriendly(unitType) or true;
+        end
+    end,
+
+    IsActive = function(self, unitframe)
+        local currentMode = self:GetMode();
+
+        return self:IsUnitFrameFriendly(unitframe) and (currentMode == 'anywhere' or (currentMode == 'openworld' and not PlayerState.inInstance));
+    end,
+
+    ShouldShowGuildName = function(self)
+        return NAME_ONLY_GUILD_NAME;
+    end,
+
+    GetGuildNameColor = function(self)
+        return NAME_ONLY_GUILD_NAME_COLOR;
+    end,
+
+    GetGuildNameSameColor = function(self)
+        return NAME_ONLY_GUILD_NAME_SAME_COLOR;
+    end,
+
+    GetNameOffsetY = function(self)
+        return NAME_ONLY_OFFSET_Y;
+    end,
+
+    IsNameClassColoring = function(self)
+        return NAME_ONLY_COLOR_CLASS;
+    end,
+
+    IsNameHealthColoring = function(self)
+        return NAME_ONLY_COLOR_HEALTH;
+    end,
+
+    ShouldShowLevel = function(self)
+        return NAME_ONLY_SHOW_LEVEL;
+    end,
+};
 
 do
     local CACHE = {};
@@ -212,7 +266,7 @@ local function UpdateSizesSafe()
 
     C_NamePlate.SetNamePlateEnemySize(O.db.size_enemy_clickable_width, O.db.size_enemy_clickable_height);
 
-    if IsNameOnlyMode() and O.db.name_only_friendly_stacking then
+    if Stripes.NameOnly:IsEnabled() and O.db.name_only_friendly_stacking then
         if U.IsInInstance() then
             C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
         else
@@ -968,8 +1022,25 @@ end
 
 function Stripes:UpdateLocalConfig()
     NAME_TEXT_ENABLED               = O.db.name_text_enabled;
+
     NAME_ONLY_FRIENDLY_ENABLED      = O.db.name_only_friendly_enabled;
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
+    NAME_ONLY_MODE                  = O.db.name_only_friendly_mode;
+    NAME_ONLY_OFFSET_Y     = O.db.name_only_friendly_y_offset;
+    NAME_ONLY_COLOR_CLASS  = O.db.name_only_friendly_color_name_by_class;
+    NAME_ONLY_COLOR_HEALTH = O.db.name_only_friendly_color_name_by_health;
+    NAME_ONLY_SHOW_LEVEL   = O.db.name_only_friendly_show_level;
+    NAME_ONLY_GUILD_NAME   = O.db.name_only_friendly_guild_name;
+    NAME_ONLY_GUILD_NAME_COLOR = NAME_ONLY_GUILD_NAME_COLOR or {};
+    NAME_ONLY_GUILD_NAME_COLOR[1] = O.db.name_only_friendly_guild_name_color[1];
+    NAME_ONLY_GUILD_NAME_COLOR[2] = O.db.name_only_friendly_guild_name_color[2];
+    NAME_ONLY_GUILD_NAME_COLOR[3] = O.db.name_only_friendly_guild_name_color[3];
+    NAME_ONLY_GUILD_NAME_COLOR[4] = O.db.name_only_friendly_guild_name_color[4] or 1;
+    NAME_ONLY_GUILD_NAME_SAME_COLOR = NAME_ONLY_GUILD_NAME_SAME_COLOR or {};
+    NAME_ONLY_GUILD_NAME_SAME_COLOR[1] = O.db.name_only_friendly_guild_name_same_color[1];
+    NAME_ONLY_GUILD_NAME_SAME_COLOR[2] = O.db.name_only_friendly_guild_name_same_color[2];
+    NAME_ONLY_GUILD_NAME_SAME_COLOR[3] = O.db.name_only_friendly_guild_name_same_color[3];
+    NAME_ONLY_GUILD_NAME_SAME_COLOR[4] = O.db.name_only_friendly_guild_name_same_color[4] or 1;
 
     NAME_TRANSLIT           = O.db.name_text_translit;
     NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;

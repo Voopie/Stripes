@@ -7,8 +7,6 @@ local string_format, math_max = string.format, math.max;
 
 -- Stripes API
 local UpdateFontObject = Stripes.UpdateFontObject;
-local IsNameOnlyModeAndFriendly = Stripes.IsNameOnlyModeAndFriendly;
-local PlayerState = D.Player.State;
 
 -- Libraries
 local LSM = S.Libraries.LSM;
@@ -22,7 +20,6 @@ local STATUSBAR_TEXTURE;
 local ENEMY_WIDTH, FRIENDLY_WIDTH, PLAYER_WIDTH;
 local SHOW_TRADE_SKILLS, SHOW_SHIELD, SHOW_ICON_NOTINTERRUPTIBLE;
 local SHOW_INTERRUPT_READY_TICK, INTERRUPT_READY_TICK_COLOR;
-local NAME_ONLY_MODE;
 local BORDER_ENABLED, BORDER_COLOR, BORDER_SIZE;
 local BAR_HEIGHT;
 local TEXT_POSITION, TEXT_X_OFFSET, TEXT_Y_OFFSET, TEXT_TRUNCATE;
@@ -224,10 +221,9 @@ local function UpdateVisibility(unitframe)
         return;
     end
 
-    local ufData = unitframe.data;
-    local unit   = ufData.unit;
+    local unit   = unitframe.data.unit;
 
-    if ufData.isUnimportantUnit or ufData.isPersonal or (IsNameOnlyModeAndFriendly(ufData.unitType, ufData.canAttack) and (NAME_ONLY_MODE == 1 or (NAME_ONLY_MODE == 2 and not PlayerState.inInstance))) then
+    if unitframe.data.isUnimportantUnit or unitframe.data.isPersonal or Stripes.NameOnly:IsActive(unitframe) then
         StripesCastingBar_SetUnit(castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
         return;
     end
@@ -235,6 +231,7 @@ local function UpdateVisibility(unitframe)
     StripesCastingBar_SetUnit(castingBar, unit, SHOW_TRADE_SKILLS, SHOW_SHIELD);
 
     castingBar:SetFrameStrata(CAST_BAR_FRAME_STRATA == 1 and castingBar:GetParent():GetFrameStrata() or CAST_BAR_FRAME_STRATA);
+
     castingBar.iconWhenNoninterruptible     = SHOW_ICON_NOTINTERRUPTIBLE;
     castingBar.showInterruptReadyTick       = SHOW_INTERRUPT_READY_TICK;
     castingBar.useInterruptReadyInTimeColor = USE_INTERRUPT_READY_IN_TIME_COLOR;
@@ -332,8 +329,6 @@ function Module:UpdateLocalConfig()
     ON_HP_BAR       = O.db.castbar_on_hp_bar;
     ICON_LARGE      = O.db.castbar_icon_large;
     ICON_RIGHT_SIDE = O.db.castbar_icon_right_side;
-
-    NAME_ONLY_MODE = O.db.name_only_friendly_mode;
 
     START_CAST_COLOR    = START_CAST_COLOR or {};
     START_CAST_COLOR[1] = O.db.castbar_start_cast_color[1];
