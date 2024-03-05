@@ -25,7 +25,7 @@ local function HandleVisibility()
         Stripes.SetCVar('nameplateMaxDistance', MAX_DISTANCE_OPENWORLD);
     end
 
-    if Stripes.NameOnly:IsEnabled() and O.db.name_only_friendly_stacking then
+    if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsFriendlyStacking() then
         if U.IsInInstance() then
             C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
         else

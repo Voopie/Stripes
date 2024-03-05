@@ -39,7 +39,7 @@ local NAME_TEXT_ENABLED;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
 
-local NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_MODE;
+local NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_MODE, NAME_ONLY_FRIENDLY_STACKING;
 local NAME_ONLY_OFFSET_Y, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_SHOW_LEVEL;
 local NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 
@@ -187,6 +187,10 @@ Stripes.NameOnly = {
         return self:IsUnitFrameFriendly(unitframe) and (currentMode == 'anywhere' or (currentMode == 'openworld' and not PlayerState.inInstance));
     end,
 
+    IsFriendlyStacking = function(self)
+        return NAME_ONLY_FRIENDLY_STACKING;
+    end,
+
     ShouldShowGuildName = function(self)
         return NAME_ONLY_GUILD_NAME;
     end,
@@ -266,7 +270,7 @@ local function UpdateSizesSafe()
 
     C_NamePlate.SetNamePlateEnemySize(O.db.size_enemy_clickable_width, O.db.size_enemy_clickable_height);
 
-    if Stripes.NameOnly:IsEnabled() and O.db.name_only_friendly_stacking then
+    if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsFriendlyStacking() then
         if U.IsInInstance() then
             C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
         else
@@ -1025,6 +1029,7 @@ function Stripes:UpdateLocalConfig()
 
     NAME_ONLY_FRIENDLY_ENABLED      = O.db.name_only_friendly_enabled;
     NAME_ONLY_FRIENDLY_PLAYERS_ONLY = O.db.name_only_friendly_players_only;
+    NAME_ONLY_FRIENDLY_STACKING     = O.db.name_only_friendly_stacking;
     NAME_ONLY_MODE                  = O.db.name_only_friendly_mode;
     NAME_ONLY_OFFSET_Y     = O.db.name_only_friendly_y_offset;
     NAME_ONLY_COLOR_CLASS  = O.db.name_only_friendly_color_name_by_class;
