@@ -188,19 +188,22 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
 
     if CASTER_NAME_SHOW and (sourceGUID and sourceGUID ~= '') then
         local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(sourceGUID);
-        local useTranslit, useReplaceDiacritics, useCut = true, true, false;
+        local casterNameText, casterNameUnit;
 
         if name then
-            name = GetCachedName(name, useTranslit, useReplaceDiacritics, useCut);
-
-            spellInterruptedFrame.casterName:SetText(name);
-            spellInterruptedFrame.casterName:SetTextColor(U_GetClassColor(englishClass, 2));
-            spellInterruptedFrame.casterName:Show();
+            casterNameText = name;
+            casterNameUnit = englishClass;
         elseif U_UnitIsPetByGUID(sourceGUID) then
-            name = GetCachedName(sourceName, useTranslit, useReplaceDiacritics, useCut);
+            casterNameText = sourceName
+            casterNameUnit = sourceName;
+        end
 
-            spellInterruptedFrame.casterName:SetText(name);
-            spellInterruptedFrame.casterName:SetTextColor(U_GetClassColor(sourceName, 2));
+        if casterNameText and casterNameUnit then
+            local useTranslit, useReplaceDiacritics, useCut = true, true, false;
+            casterNameText = GetCachedName(casterNameText, useTranslit, useReplaceDiacritics, useCut);
+
+            spellInterruptedFrame.casterName:SetText(casterNameText);
+            spellInterruptedFrame.casterName:SetTextColor(U_GetClassColor(casterNameUnit, 2));
             spellInterruptedFrame.casterName:Show();
         else
             spellInterruptedFrame.casterName:Hide();
