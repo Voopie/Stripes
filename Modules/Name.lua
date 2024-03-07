@@ -635,6 +635,56 @@ local function NameOnly_UpdateGuildName(unitframe)
     end
 end
 
+local function NameOnly_CreateBackground(unitframe)
+    if unitframe.NameOnlyBackground then
+        return;
+    end
+
+    local texture = unitframe:CreateTexture(nil, 'BACKGROUND');
+    texture:SetTexture(S.Media.Path .. 'Textures\\Assets\\circle_bg_white.blp');
+    texture:Hide();
+
+    unitframe.NameOnlyBackground = texture;
+end
+
+local function NameOnly_UpdateBackground(unitframe)
+    if not unitframe.NameOnlyBackground then
+        return;
+    end
+
+    local color = Stripes.NameOnly:GetBackgroundColor();
+
+    unitframe.NameOnlyBackground:SetVertexColor(color[1], color[2], color[3], color[4]);
+end
+
+local function NameOnly_UpdateBackgroundVisibility(unitframe)
+    if not unitframe.NameOnlyBackground then
+        return;
+    end
+
+    if not (Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:ShouldShowBackground() and ShouldShowName(unitframe)) then
+        unitframe.NameOnlyBackground:Hide();
+        return;
+    end
+
+    local texture = unitframe.NameOnlyBackground;
+    local width, height, offsetY = 0, 0, 0;
+
+    if unitframe.GuildName and unitframe.GuildName:IsShown() then
+        local extraHeight = 12;
+        width   = math.max(unitframe.name:GetStringWidth(), unitframe.GuildName.text:GetStringWidth()) * 1.5;
+        height  = unitframe.name:GetStringHeight() + unitframe.GuildName.text:GetStringHeight() + extraHeight;
+        offsetY = -((height - extraHeight) * 0.25);
+    else
+        width  = unitframe.name:GetStringWidth()  * 1.5;
+        height = unitframe.name:GetStringHeight() * 2.2;
+    end
+
+    texture:SetSize(width, height);
+    texture:SetPoint('CENTER', unitframe.name, 'CENTER', 0, offsetY);
+    texture:Show();
+end
+
 local function UpdateClassificationIndicator(unitframe)
     if not unitframe.classificationIndicator then
         return;
@@ -712,6 +762,9 @@ function Module:UnitAdded(unitframe)
     NameOnly_UpdateNameHealth(unitframe);
     NameOnly_CreateGuildName(unitframe);
     NameOnly_UpdateGuildName(unitframe);
+    NameOnly_CreateBackground(unitframe);
+    NameOnly_UpdateBackground(unitframe);
+    NameOnly_UpdateBackgroundVisibility(unitframe);
 
     UpdateRaidTargetIcon(unitframe);
 
@@ -739,6 +792,9 @@ function Module:Update(unitframe)
     NameOnly_UpdateNameHealth(unitframe);
     NameOnly_CreateGuildName(unitframe);
     NameOnly_UpdateGuildName(unitframe);
+    NameOnly_CreateBackground(unitframe);
+    NameOnly_UpdateBackground(unitframe);
+    NameOnly_UpdateBackgroundVisibility(unitframe);
 
     UpdateRaidTargetIcon(unitframe);
 
@@ -820,6 +876,7 @@ function Module:StartUp()
 
         NameOnly_UpdateNameHealth(unitframe);
         NameOnly_UpdateGuildName(unitframe);
+        NameOnly_UpdateBackgroundVisibility(unitframe);
 
         UpdateAnchor(unitframe);
     end);

@@ -307,7 +307,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~609
+-- ~611
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -688,6 +688,8 @@ O.DefaultValues = {
     name_only_friendly_players_only          = false,
     name_only_friendly_stacking              = false,
     name_only_friendly_show_level            = false,
+    name_only_friendly_show_background       = true,
+    name_only_friendly_background_color      = { 0, 0, 0, 0.6 },
 
     selected_alpha      = tonumber(C_CVar.GetCVar('nameplateSelectedAlpha')), -- 1
     max_alpha           = tonumber(C_CVar.GetCVar('nameplateMaxAlpha')), -- 1

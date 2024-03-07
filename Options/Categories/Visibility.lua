@@ -1034,8 +1034,35 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.name_only_friendly_show_background = E.CreateCheckButton(self.TabsFrames['FriendlyTab'].Content);
+    self.name_only_friendly_show_background:SetPosition('TOPLEFT', self.name_only_friendly_guild_name, 'BOTTOMLEFT', 0, -8);
+    self.name_only_friendly_show_background:SetLabel(L['OPTIONS_VISIBILITY_NAME_ONLY_SHOW_BACKGROUND']);
+    self.name_only_friendly_show_background:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_SHOW_BACKGROUND_TOOLTIP']);
+    self.name_only_friendly_show_background:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_SHOW_BACKGROUND_TOOLTIP'], self.Tabs[3]);
+    self.name_only_friendly_show_background:SetChecked(O.db.name_only_friendly_show_background);
+    self.name_only_friendly_show_background:SetEnabled(O.db.name_only_friendly_enabled);
+    self.name_only_friendly_show_background.Callback = function(self)
+        O.db.name_only_friendly_show_background = self:GetChecked();
+        Stripes:UpdateAll();
+    end
+
+    self.name_only_friendly_background_color = E.CreateColorPicker(self.TabsFrames['FriendlyTab'].Content);
+    self.name_only_friendly_background_color:SetPosition('LEFT', self.name_only_friendly_show_background.Label, 'RIGHT', 12, 0);
+    self.name_only_friendly_background_color:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_BACKGROUND_COLOR_TOOLTIP']);
+    self.name_only_friendly_background_color:AddToSearch(button, L['OPTIONS_VISIBILITY_NAME_ONLY_BACKGROUND_COLOR_TOOLTIP'], self.Tabs[3]);
+    self.name_only_friendly_background_color:SetValue(unpack(O.db.name_only_friendly_background_color));
+    self.name_only_friendly_background_color:SetEnabled(O.db.name_only_friendly_enabled);
+    self.name_only_friendly_background_color.OnValueChanged = function(_, r, g, b, a)
+        O.db.name_only_friendly_background_color[1] = r;
+        O.db.name_only_friendly_background_color[2] = g;
+        O.db.name_only_friendly_background_color[3] = b;
+        O.db.name_only_friendly_background_color[4] = a or 1;
+
+        Stripes:UpdateAll();
+    end
+
     self.name_only_friendly_y_offset = E.CreateSlider(self.TabsFrames['FriendlyTab'].Content);
-    self.name_only_friendly_y_offset:SetPosition('TOPLEFT', self.name_only_friendly_guild_name, 'BOTTOMLEFT', 0, -28);
+    self.name_only_friendly_y_offset:SetPosition('TOPLEFT', self.name_only_friendly_show_background, 'BOTTOMLEFT', 0, -28);
     self.name_only_friendly_y_offset:SetW(137);
     self.name_only_friendly_y_offset:SetLabel(L['OPTIONS_VISIBILITY_NAME_ONLY_Y_OFFSET']);
     self.name_only_friendly_y_offset:SetTooltip(L['OPTIONS_VISIBILITY_NAME_ONLY_Y_OFFSET_TOOLTIP']);

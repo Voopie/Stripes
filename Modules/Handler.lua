@@ -42,6 +42,7 @@ local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
 local NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_MODE, NAME_ONLY_FRIENDLY_STACKING;
 local NAME_ONLY_OFFSET_Y, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_SHOW_LEVEL;
 local NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
+local NAME_ONLY_SHOW_BACKGROUND, NAME_ONLY_BACKGROUND_COLOR;
 
 -- Updater
 Stripes.Updater = CreateFrame('Frame');
@@ -217,6 +218,14 @@ Stripes.NameOnly = {
 
     ShouldShowLevel = function(self)
         return NAME_ONLY_SHOW_LEVEL;
+    end,
+
+    ShouldShowBackground = function(self)
+        return NAME_ONLY_SHOW_BACKGROUND;
+    end,
+
+    GetBackgroundColor = function(self)
+        return NAME_ONLY_BACKGROUND_COLOR;
     end,
 };
 
@@ -1046,6 +1055,13 @@ function Stripes:UpdateLocalConfig()
     NAME_ONLY_GUILD_NAME_SAME_COLOR[2] = O.db.name_only_friendly_guild_name_same_color[2];
     NAME_ONLY_GUILD_NAME_SAME_COLOR[3] = O.db.name_only_friendly_guild_name_same_color[3];
     NAME_ONLY_GUILD_NAME_SAME_COLOR[4] = O.db.name_only_friendly_guild_name_same_color[4] or 1;
+    NAME_ONLY_SHOW_BACKGROUND = O.db.name_only_friendly_show_background;
+    NAME_ONLY_BACKGROUND_COLOR = NAME_ONLY_BACKGROUND_COLOR or {};
+    NAME_ONLY_BACKGROUND_COLOR[1] = O.db.name_only_friendly_background_color[1];
+    NAME_ONLY_BACKGROUND_COLOR[2] = O.db.name_only_friendly_background_color[2];
+    NAME_ONLY_BACKGROUND_COLOR[3] = O.db.name_only_friendly_background_color[3];
+    NAME_ONLY_BACKGROUND_COLOR[4] = O.db.name_only_friendly_background_color[4] or 1;
+
 
     NAME_TRANSLIT           = O.db.name_text_translit;
     NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
