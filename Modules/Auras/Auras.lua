@@ -254,9 +254,9 @@ local function UpdateAuraStyle(aura, withoutMasque)
                     self.Cooldown.Countdown:SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
                 else
                     local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellID);
-                    local isCrowdControl = not flags or not cc or not (bit_band(flags, LPS_CROWD_CTRL) > 0 and bit_band(cc, LPS_CC_TYPES) > 0);
+                    local isNotCrowdControl = not flags or not cc or not (bit_band(flags, LPS_CROWD_CTRL) > 0 and bit_band(cc, LPS_CC_TYPES) > 0);
 
-                    if isCrowdControl then
+                    if isNotCrowdControl then
                         self.trulySpellId = U_GetTrulySpellId(self.spellID);
 
                         if self.trulySpellId and (pandemicKnownSpells[self.trulySpellId] or U_IsSpellKnown(self.trulySpellId)) then
