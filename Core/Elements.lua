@@ -2494,7 +2494,6 @@ local NewColorPicker do
             end
 
             self.r, self.g, self.b, self.opacity = self:GetValue();
-            self.opacity = 1 - self.opacity;
             self.opening = true;
 
             ColorPickerFrame:SetupColorPickerAndShow(self);
@@ -2555,13 +2554,13 @@ local NewColorPicker do
         holder.hasOpacity = hasOpacity;
 
         holder.cancelFunc = function()
-            holder:SetValue(holder.r, holder.g, holder.b, holder.hasOpacity and (1 - holder.opacity) or 1);
+            holder:SetValue(holder.r, holder.g, holder.b, holder.hasOpacity and holder.opacity or 1);
             ColorPickerButtons:Hide();
         end
 
         holder.opacityFunc = function()
             local r, g, b = ColorPickerFrame:GetColorRGB();
-            local a = 1 - ColorPickerFrame:GetColorAlpha();
+            local a = ColorPickerFrame:GetColorAlpha();
 
             holder:SetValue(r, g, b, a);
         end
@@ -2572,7 +2571,7 @@ local NewColorPicker do
             end
 
             local r, g, b = ColorPickerFrame:GetColorRGB();
-            local a = 1 - ColorPickerFrame:GetColorAlpha();
+            local a = ColorPickerFrame:GetColorAlpha();
 
             holder:SetValue(r, g, b, a);
         end
