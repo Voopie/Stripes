@@ -130,27 +130,25 @@ local function UpdateStyle(unitframe)
     PixelUtil.SetSize(targetIndicator.left, SIZE, SIZE);
     PixelUtil.SetSize(targetIndicator.right, SIZE, SIZE);
 
-    PixelUtil.SetPoint(targetIndicator.left, 'RIGHT', unitframe.healthBar, 'LEFT', -(X_OFFSET), Y_OFFSET);
+    PixelUtil.SetPoint(targetIndicator.left, 'RIGHT', unitframe.healthBar, 'LEFT', -X_OFFSET, Y_OFFSET);
     PixelUtil.SetPoint(targetIndicator.right, 'LEFT', unitframe.healthBar, 'RIGHT', X_OFFSET, Y_OFFSET);
 
     targetIndicator.left:SetTexture(TEXTURE);
     targetIndicator.right:SetTexture(TEXTURE);
 
-    targetIndicator.left:SetVertexColor(unpack(TARGET_INDICATOR_COLOR));
-    targetIndicator.right:SetVertexColor(unpack(TARGET_INDICATOR_COLOR));
+    local r, g, b, a = TARGET_INDICATOR_COLOR[1], TARGET_INDICATOR_COLOR[2], TARGET_INDICATOR_COLOR[3], TARGET_INDICATOR_COLOR[4];
+    targetIndicator.left:SetVertexColor(r, g, b, a);
+    targetIndicator.right:SetVertexColor(r, g, b, a);
 
-    targetIndicator.glowUp:SetVertexColor(unpack(TARGET_GLOW_COLOR));
-    targetIndicator.glowDown:SetVertexColor(unpack(TARGET_GLOW_COLOR));
+    r, g, b, a = TARGET_GLOW_COLOR[1], TARGET_GLOW_COLOR[2], TARGET_GLOW_COLOR[3], TARGET_GLOW_COLOR[4];
+    targetIndicator.glowUp:SetVertexColor(r, g, b, a);
+    targetIndicator.glowDown:SetVertexColor(r, g, b, a);
 
     PixelUtil.SetHeight(targetIndicator.glowUp, GLOW_SIZE);
     PixelUtil.SetHeight(targetIndicator.glowDown, GLOW_SIZE);
 end
 
 function Module:UpdateMouseoverUnit()
-    if not HOVER_GLOW_ENABLED then
-        return;
-    end
-
     self:ForAllActiveUnitFrames(function(unitframe)
         if not unitframe.data.isTarget and not unitframe.data.isPersonal then
             if MouseOnUnit(unitframe) then
@@ -218,10 +216,15 @@ function Module:UpdateLocalConfig()
         TARGET_GLOW_COLOR[3] = O.db.target_glow_color[3];
         TARGET_GLOW_COLOR[4] = O.db.target_glow_color[4] or 1;
     end
+
+    if HOVER_GLOW_ENABLED then
+        self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateMouseoverUnit');
+    else
+        self:UnregisterEvent('UPDATE_MOUSEOVER_UNIT');
+    end
 end
 
 function Module:StartUp()
     self:UpdateLocalConfig();
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', UpdateTargetSelection);
-    self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateMouseoverUnit');
 end
