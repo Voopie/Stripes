@@ -221,7 +221,7 @@ local function UpdateVisibility(unitframe)
         return;
     end
 
-    local unit   = unitframe.data.unit;
+    local unit = unitframe.data.unit;
 
     if unitframe.data.isUnimportantUnit or unitframe.data.isPersonal or Stripes.NameOnly:IsActive(unitframe) then
         StripesCastingBar_SetUnit(castingBar, nil, SHOW_TRADE_SKILLS, SHOW_SHIELD);
