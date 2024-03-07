@@ -121,8 +121,10 @@ local function Update(unitframe)
 end
 
 local function UpdateShow(unitframe)
-    unitframe.AbsorbBar:SetShown(ENABLED and unitframe.AbsorbBar:GetValue() ~= 0 and not unitframe.data.isPersonal);
-    unitframe.AbsorbText:SetShown(ABSORB_TEXT_ENABLED and unitframe.AbsorbBar:GetValue() ~= 0 and not unitframe.data.isPersonal);
+    local shouldShow = unitframe.AbsorbBar:GetValue() ~= 0 and not unitframe.data.isPersonal;
+
+    unitframe.AbsorbBar:SetShown(ENABLED and shouldShow);
+    unitframe.AbsorbText:SetShown(ABSORB_TEXT_ENABLED and shouldShow);
 end
 
 local function UpdateStyle(unitframe)
