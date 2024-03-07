@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('TargetIndicator');
 local UnitIsUnit, UnitExists = UnitIsUnit, UnitExists;
 
 -- Local Config
-local TARGET_INDICATOR_ENABLED, TARGET_GLOW_ENABLED, HOVER_GLOW_ENABLED;
+local TARGET_INDICATOR_ENABLED, TARGET_GLOW_ENABLED;
 local TEXTURE, TARGET_INDICATOR_COLOR, TARGET_GLOW_COLOR;
 local SIZE, X_OFFSET, Y_OFFSET;
 local GLOW_SIZE;
@@ -180,7 +180,6 @@ end
 function Module:UpdateLocalConfig()
     TARGET_INDICATOR_ENABLED = O.db.target_indicator_enabled;
     TARGET_GLOW_ENABLED      = O.db.target_glow_enabled;
-    HOVER_GLOW_ENABLED       = O.db.hover_glow_enabled;
 
     SIZE     = O.db.target_indicator_size;
     X_OFFSET = O.db.target_indicator_x_offset;
@@ -217,7 +216,7 @@ function Module:UpdateLocalConfig()
         TARGET_GLOW_COLOR[4] = O.db.target_glow_color[4] or 1;
     end
 
-    if HOVER_GLOW_ENABLED then
+    if O.db.hover_glow_enabled then
         self:RegisterEvent('UPDATE_MOUSEOVER_UNIT', 'UpdateMouseoverUnit');
     else
         self:UnregisterEvent('UPDATE_MOUSEOVER_UNIT');
