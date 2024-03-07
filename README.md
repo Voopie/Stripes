@@ -6,7 +6,7 @@
 
 ### ***Features:***
 - Customization of nameplates for everyone, not just hardcore players!
-- A wide variety of settings (over 550)
+- A wide variety of settings (over 600)
 - Profiles with exporting / importing
 - It's easier to try once than to read walls of text!
 
@@ -19,4 +19,4 @@
 ## Copyright
 
 All Rights Reserved unless otherwise explicitly stated.
-Copyright (c) 2021 Ilya Miller
+Copyright (c) 2021 - 2024 Ilya Miller
