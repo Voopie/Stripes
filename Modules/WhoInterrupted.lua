@@ -28,24 +28,27 @@ local blacklist = {
     [197214] = true, -- Sundering (Shaman Enhancement talent)
 };
 
-local function OnInterrupt(unitframe, guid, sourceName)
-    if not guid or guid == '' then
+local function OnInterrupt(unitframe, sourceGUID, sourceName)
+    if not sourceGUID or sourceGUID == '' or not unitframe.castingBar then
         return;
     end
 
-    local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(guid);
-    local classColor;
+    local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(sourceGUID);
+    local casterNameText, casterNameUnit;
 
     if name then
-        name       = GetCachedName(name, true, true, false);
-        classColor = U_GetClassColor(englishClass, 1);
-    elseif U_UnitIsPetByGUID(guid) then
-        name       = GetCachedName(sourceName, true, true, false);
-        classColor = U_GetClassColor(sourceName, 1);
+        casterNameText = name;
+        casterNameUnit = englishClass;
+    elseif U_UnitIsPetByGUID(sourceGUID) then
+        casterNameText = sourceName
+        casterNameUnit = sourceName;
     end
 
-    if classColor and unitframe.castingBar then
-        unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, classColor, INTERRUPTED, name));
+    if casterNameText and casterNameUnit then
+        local useTranslit, useReplaceDiacritics, useCut = true, true, false;
+        casterNameText = GetCachedName(casterNameText, useTranslit, useReplaceDiacritics, useCut);
+
+        unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(casterNameUnit, 1), INTERRUPTED, casterNameText));
     end
 end
 
