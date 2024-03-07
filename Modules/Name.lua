@@ -876,7 +876,6 @@ function Module:StartUp()
 
         NameOnly_UpdateNameHealth(unitframe);
         NameOnly_UpdateGuildName(unitframe);
-        NameOnly_UpdateBackgroundVisibility(unitframe);
 
         UpdateAnchor(unitframe);
     end);
