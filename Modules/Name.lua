@@ -662,7 +662,7 @@ local function NameOnly_UpdateBackgroundVisibility(unitframe)
         return;
     end
 
-    if not (Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:ShouldShowBackground() and ShouldShowName(unitframe)) then
+    if not (Stripes.NameOnly:IsActive(unitframe) and Stripes.NameOnly:ShouldShowBackground() and ShouldShowName(unitframe)) then
         unitframe.NameOnlyBackground:Hide();
         return;
     end
