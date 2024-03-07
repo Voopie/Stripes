@@ -183,11 +183,9 @@ local function Update(unitframe)
         end
     end
 
-    if ALWAYS then
-        unitframe.StealthDetect:SetShown(found);
-    else
-        unitframe.StealthDetect:SetShown(isStealthed and found);
-    end
+    local shouldShow = ALWAYS and found or (isStealthed and found);
+
+    unitframe.StealthDetect:SetShown(shouldShow);
 end
 
 local function UpdateGlow(unitframe)
