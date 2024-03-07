@@ -6,7 +6,8 @@ local Stripes = S:GetNameplateModule('Handler');
 local UnitName, UnitExists, GetSpellTexture, CombatLogGetCurrentEventInfo = UnitName, UnitExists, GetSpellTexture, CombatLogGetCurrentEventInfo;
 
 -- Stripes API
-local U_UnitHasAura, U_UnitIsPetByGUID, U_GetUnitColor, U_GetClassColor = U.UnitHasAura, U.UnitIsPetByGUID, U.GetClassColor, U.GetUnitColor;
+local U_UnitHasAura, U_UnitIsPetByGUID, U_GetUnitColor, U_GetClassColor =
+      U.UnitHasAura, U.UnitIsPetByGUID, U.GetUnitColor, U.GetClassColor;
 local UpdateFontObject = Stripes.UpdateFontObject;
 local GetCachedName = Stripes.GetCachedName;
 
@@ -148,11 +149,14 @@ local function UpdateByAura(unitframe)
     spellInterruptedFrame.destGUID = unitframe.data.unitGUID;
     spellInterruptedFrame.byAura   = true;
 
-    if CASTER_NAME_SHOW and aura.sourceUnit then
-        local name = GetCachedName(UnitName(aura.sourceUnit), true, true, false);
+    local sourceUnit = aura.sourceUnit;
+
+    if CASTER_NAME_SHOW and sourceUnit then
+        local useTranslit, useReplaceDiacritics, useCut = true, true, false;
+        local name = GetCachedName(UnitName(sourceUnit), useTranslit, useReplaceDiacritics, useCut);
 
         spellInterruptedFrame.casterName:SetText(name);
-        spellInterruptedFrame.casterName:SetTextColor(U_GetUnitColor(aura.sourceUnit, 2));
+        spellInterruptedFrame.casterName:SetTextColor(U_GetUnitColor(sourceUnit, 2));
         spellInterruptedFrame.casterName:Show();
     else
         spellInterruptedFrame.casterName:Hide();
@@ -184,15 +188,16 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
 
     if CASTER_NAME_SHOW and (sourceGUID and sourceGUID ~= '') then
         local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(sourceGUID);
+        local useTranslit, useReplaceDiacritics, useCut = true, true, false;
 
         if name then
-            name = GetCachedName(name, true, true, false);
+            name = GetCachedName(name, useTranslit, useReplaceDiacritics, useCut);
 
             spellInterruptedFrame.casterName:SetText(name);
             spellInterruptedFrame.casterName:SetTextColor(U_GetClassColor(englishClass, 2));
             spellInterruptedFrame.casterName:Show();
         elseif U_UnitIsPetByGUID(sourceGUID) then
-            name = GetCachedName(sourceName, true, true, false);
+            name = GetCachedName(sourceName, useTranslit, useReplaceDiacritics, useCut);
 
             spellInterruptedFrame.casterName:SetText(name);
             spellInterruptedFrame.casterName:SetTextColor(U_GetClassColor(sourceName, 2));
