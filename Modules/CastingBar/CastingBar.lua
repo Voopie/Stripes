@@ -162,7 +162,8 @@ local function UpdateCastTargetName(self)
     local targetUnit = self.unit .. 'target';
 
     if UnitExists(targetUnit) and not UnitIsUnit(self.unit, targetUnit) then
-        local targetName = GetCachedName(UnitName(targetUnit), true, true, false);
+        local useTranslit, useReplaceDiacritics, useCut = true, true, false;
+        local targetName = GetCachedName(UnitName(targetUnit), useTranslit, useReplaceDiacritics, useCut);
 
         if self.castTargetNameInSpellName and self.spellName then
             local classColor = self.castTargetNameUseClassColor and GetUnitColor(targetUnit, true) or 'ffffff';

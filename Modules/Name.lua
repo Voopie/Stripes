@@ -606,7 +606,8 @@ local function NameOnly_UpdateGuildName(unitframe)
 
     if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:ShouldShowGuildName() then
         if unitframe.data.unitType == 'FRIENDLY_PLAYER' and unitframe.data.guild then
-            local guild = GetCachedName(unitframe.data.guild, true, true, false);
+            local useTranslit, useReplaceDiacritics, useCut = true, true, false;
+            local guild = GetCachedName(unitframe.data.guild, useTranslit, useReplaceDiacritics, useCut);
 
             unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, guild));
 

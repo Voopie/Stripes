@@ -44,7 +44,8 @@ local function TargetChanged(unitframe)
                 unitframe.TargetName:SetTextColor(1, 0.2, 0.2);
             end
         else
-            local targetName = GetCachedName(unitframe.data.targetName, true, true, true);
+            local useTranslit, useReplaceDiacritics, useCut = true, true, true;
+            local targetName = GetCachedName(unitframe.data.targetName, useTranslit, useReplaceDiacritics, useCut);
             local roleIconText = ROLE_ICON and partyRolesCache[unitframe.data.targetName] and ('» ' .. partyRolesCache[unitframe.data.targetName] .. ' ' .. targetName) or ('» ' .. targetName);
             unitframe.TargetName:SetText(roleIconText);
             unitframe.TargetName:SetTextColor(U_GetUnitColor(unitframe.data.unit .. 'target', 2));
