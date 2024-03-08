@@ -29,18 +29,18 @@ local function Create(unitframe)
     absorbBar:SetBackdrop(BACKDROP);
     absorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 0);
 
-    absorbBar.texture = absorbBar:CreateTexture(nil, 'ARTWORK');
-    absorbBar.texture:SetTexture('Interface\\RaidFrame\\Shield-Fill', 'REPEAT', 'REPEAT');
-    absorbBar.texture:SetAlpha(0.65);
-    absorbBar.texture:SetHorizTile(true);
-    absorbBar.texture:SetVertTile(true);
+    local texture = absorbBar:CreateTexture(nil, 'ARTWORK');
+    texture:SetTexture('Interface\\RaidFrame\\Shield-Fill', 'REPEAT', 'REPEAT');
+    texture:SetAlpha(0.65);
+    texture:SetHorizTile(true);
+    texture:SetVertTile(true);
 
-    absorbBar.overlay = absorbBar:CreateTexture(nil, 'OVERLAY');
-    absorbBar.overlay:SetAllPoints(absorbBar.texture);
-    absorbBar.overlay:SetTexture('Interface\\RaidFrame\\Shield-Overlay', 'REPEAT', 'REPEAT');
-    absorbBar.overlay:SetHorizTile(true);
-    absorbBar.overlay:SetVertTile(true);
-    absorbBar.overlay.tileSize = 32;
+    local overlay = absorbBar:CreateTexture(nil, 'OVERLAY');
+    overlay:SetAllPoints(texture);
+    overlay:SetTexture('Interface\\RaidFrame\\Shield-Overlay', 'REPEAT', 'REPEAT');
+    overlay:SetHorizTile(true);
+    overlay:SetVertTile(true);
+    overlay.tileSize = 32;
 
     if AT_TOP then
         absorbBar:ClearAllPoints();
@@ -60,6 +60,9 @@ local function Create(unitframe)
     PixelUtil.SetPoint(absorbText.text, ABSORB_TEXT_ANCHOR, absorbText, ABSORB_TEXT_ANCHOR, ABSORB_TEXT_X_OFFSET, ABSORB_TEXT_Y_OFFSET);
     absorbText.text:SetTextColor(ABSORB_TEXT_COLOR[1], ABSORB_TEXT_COLOR[2], ABSORB_TEXT_COLOR[3], ABSORB_TEXT_COLOR[4]);
     absorbText:Hide();
+
+    absorbBar.texture = texture;
+    absorbBar.overlay = overlay;
 
     unitframe.AbsorbBar = absorbBar;
     unitframe.AbsorbText = absorbText;
