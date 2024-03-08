@@ -33,16 +33,19 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
     frame:SetFrameStrata('HIGH');
 
-    frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, 0);
-    frame.icon:SetTexture(TOTEM_TEXTURE);
-    frame.icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
-    frame.icon:SetSize(24, 16);
+    local icon = frame:CreateTexture(nil, 'OVERLAY');
+    icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, 0);
+    icon:SetTexture(TOTEM_TEXTURE);
+    icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
+    icon:SetSize(24, 16);
 
-    frame.border = frame:CreateTexture(nil, 'BORDER');
-    frame.border:SetPoint('TOPLEFT', frame.icon, 'TOPLEFT', -1, 1);
-    frame.border:SetPoint('BOTTOMRIGHT', frame.icon, 'BOTTOMRIGHT', 1, -1);
-    frame.border:SetColorTexture(0.3, 0.3, 0.3);
+    local border = frame:CreateTexture(nil, 'BORDER');
+    border:SetPoint('TOPLEFT', icon, 'TOPLEFT', -1, 1);
+    border:SetPoint('BOTTOMRIGHT', icon, 'BOTTOMRIGHT', 1, -1);
+    border:SetColorTexture(0.3, 0.3, 0.3);
+
+    frame.icon   = icon;
+    frame.border = border;
 
     frame:Hide();
 
