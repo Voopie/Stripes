@@ -26,15 +26,18 @@ local function Create(unitframe)
     frame:SetSize(32, 32);
     frame:SetFrameStrata('LOW');
 
-    frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetAllPoints();
-    frame.icon:SetTexture(SPITEFUL_TEXTURE);
-    frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
-    frame.icon:Hide();
+    local icon = frame:CreateTexture(nil, 'OVERLAY');
+    icon:SetAllPoints();
+    icon:SetTexture(SPITEFUL_TEXTURE);
+    icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+    icon:Hide();
 
-    frame.ttd = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
-    frame.ttd:SetPoint('TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', 0, 0);
-    frame.ttd:Hide();
+    local ttd = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
+    ttd:SetPoint('TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', 0, 0);
+    ttd:Hide();
+
+    frame.icon = icon;
+    frame.ttd  = ttd;
 
     unitframe.Spiteful = frame;
 end
