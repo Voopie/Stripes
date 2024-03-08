@@ -64,7 +64,7 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
     frame:SetFrameLevel(frame:GetFrameLevel() + 100);
 
-    local icon frame:CreateTexture(nil, 'OVERLAY');
+    local icon = frame:CreateTexture(nil, 'OVERLAY');
     icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
     icon:SetSize(SIZE, SIZE);
 

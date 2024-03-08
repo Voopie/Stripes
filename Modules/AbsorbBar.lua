@@ -50,7 +50,7 @@ local function Create(unitframe)
         PixelUtil.SetHeight(absorbBar, 2);
     end
 
-    absorbBar:SetStatusBarTexture(absorbBar.texture);
+    absorbBar:SetStatusBarTexture(texture);
     absorbBar:SetValue(0);
     absorbBar:Hide();
 

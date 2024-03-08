@@ -123,6 +123,7 @@ local function Update(unitframe, unit)
 
     if not (progressGlob and questType) then
         questIndicator:Hide();
+        return;
     end
 
     questIndicator.counterText:SetText(objectiveCount > 0 and objectiveCount or '?');
