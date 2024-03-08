@@ -118,69 +118,71 @@ local function Update(unitframe, unit)
         return;
     end
 
+    local questIndicator = unitframe.QuestIndicator;
     local progressGlob, questType, objectiveCount, questLogIndex, questId = GetQuestProgress(unit);
-    if progressGlob and questType then
-        unitframe.QuestIndicator.counterText:SetText(objectiveCount > 0 and objectiveCount or '?');
 
-        if questType == 1 then
-            unitframe.QuestIndicator.counterText:SetTextColor(1, 1, 1);
-        elseif questType == 2 then
-            unitframe.QuestIndicator.counterText:SetTextColor(1, 0.42, 0.3);
-        elseif questType == 3 then
-            unitframe.QuestIndicator.counterText:SetTextColor(0.15, 0.65, 1);
-        end
-
-        local lootIconShow = false;
-
-        if questId then
-            local objectives = C_QuestLog_GetQuestObjectives(questId);
-            if objectives then
-                for _, objectiveInfo in pairs(objectives) do
-                    if not objectiveInfo.text then
-                        break;
-                    end
-
-                    if not objectiveInfo.finished then
-                        if LOOT_TYPES[objectiveInfo.type] then
-                            lootIconShow = true;
-                            break;
-                        end
-                    end
-                end
-            end
-        elseif questLogIndex then
-            questId = C_QuestLog_GetQuestIDForLogIndex(questLogIndex);
-            local objectives = questId and C_QuestLog_GetQuestObjectives(questId);
-            if objectives then
-                for _, objectiveInfo in pairs(objectives) do
-                    if not objectiveInfo.text then
-                        break;
-                    end
-
-                    if not objectiveInfo.finished then
-                        if LOOT_TYPES[objectiveInfo.type] then
-                            lootIconShow = true;
-                            break;
-                        end
-                    end
-                end
-            end
-        end
-
-        if lootIconShow then
-            unitframe.QuestIndicator.swordIcon:Hide();
-            unitframe.QuestIndicator.lootIcon:Show();
-            unitframe.QuestIndicator.counterText:SetPoint('CENTER', unitframe.QuestIndicator.lootIcon, 'CENTER', 1, -3);
-        else
-            unitframe.QuestIndicator.swordIcon:Show();
-            unitframe.QuestIndicator.lootIcon:Hide();
-            unitframe.QuestIndicator.counterText:SetPoint('CENTER', unitframe.QuestIndicator.swordIcon, 'CENTER', -2, -2);
-        end
-
-        unitframe.QuestIndicator:Show();
-    else
-        unitframe.QuestIndicator:Hide();
+    if not (progressGlob and questType) then
+        questIndicator:Hide();
     end
+
+    questIndicator.counterText:SetText(objectiveCount > 0 and objectiveCount or '?');
+
+    if questType == 1 then
+        questIndicator.counterText:SetTextColor(1, 1, 1);
+    elseif questType == 2 then
+        questIndicator.counterText:SetTextColor(1, 0.42, 0.3);
+    elseif questType == 3 then
+        questIndicator.counterText:SetTextColor(0.15, 0.65, 1);
+    end
+
+    local lootIconShow = false;
+
+    if questId then
+        local objectives = C_QuestLog_GetQuestObjectives(questId);
+        if objectives then
+            for _, objectiveInfo in pairs(objectives) do
+                if not objectiveInfo.text then
+                    break;
+                end
+
+                if not objectiveInfo.finished then
+                    if LOOT_TYPES[objectiveInfo.type] then
+                        lootIconShow = true;
+                        break;
+                    end
+                end
+            end
+        end
+    elseif questLogIndex then
+        questId = C_QuestLog_GetQuestIDForLogIndex(questLogIndex);
+        local objectives = questId and C_QuestLog_GetQuestObjectives(questId);
+        if objectives then
+            for _, objectiveInfo in pairs(objectives) do
+                if not objectiveInfo.text then
+                    break;
+                end
+
+                if not objectiveInfo.finished then
+                    if LOOT_TYPES[objectiveInfo.type] then
+                        lootIconShow = true;
+                        break;
+                    end
+                end
+            end
+        end
+    end
+
+    if lootIconShow then
+        questIndicator.swordIcon:Hide();
+        questIndicator.lootIcon:Show();
+        questIndicator.counterText:SetPoint('CENTER', questIndicator.lootIcon, 'CENTER', 1, -3);
+    else
+        questIndicator.swordIcon:Show();
+        questIndicator.lootIcon:Hide();
+        questIndicator.counterText:SetPoint('CENTER', questIndicator.swordIcon, 'CENTER', -2, -2);
+    end
+
+    questIndicator:Show();
 end
 
 local function Create(unitframe)
@@ -194,41 +196,47 @@ local function Create(unitframe)
     frame:SetFrameLevel(frame:GetFrameLevel() + 50);
     frame:Hide();
 
-    frame.swordIcon = frame:CreateTexture(nil, 'BORDER', nil, 0);
-    frame.swordIcon:SetSize(16, 16);
-    frame.swordIcon:SetTexture(S.Media.Icons2.TEXTURE);
-    frame.swordIcon:SetTexCoord(unpack(S.Media.Icons2.COORDS.ROUNDSHIELD_SWORD));
+    local swordIcon = frame:CreateTexture(nil, 'BORDER', nil, 0);
+    swordIcon:SetSize(16, 16);
+    swordIcon:SetTexture(S.Media.Icons2.TEXTURE);
+    swordIcon:SetTexCoord(unpack(S.Media.Icons2.COORDS.ROUNDSHIELD_SWORD));
 
-    frame.lootIcon = frame:CreateTexture(nil, 'BORDER', nil, 1);
-    frame.lootIcon:SetPoint('BOTTOMLEFT', frame.swordIcon, 'BOTTOMLEFT', -3, 0);
-    frame.lootIcon:SetSize(16, 16);
-    frame.lootIcon:SetTexture(S.Media.Icons2.TEXTURE);
-    frame.lootIcon:SetTexCoord(unpack(S.Media.Icons2.COORDS.LOOT));
-    frame.lootIcon:Hide();
+    local lootIcon = frame:CreateTexture(nil, 'BORDER', nil, 1);
+    lootIcon:SetPoint('BOTTOMLEFT', swordIcon, 'BOTTOMLEFT', -3, 0);
+    lootIcon:SetSize(16, 16);
+    lootIcon:SetTexture(S.Media.Icons2.TEXTURE);
+    lootIcon:SetTexCoord(unpack(S.Media.Icons2.COORDS.LOOT));
+    lootIcon:Hide();
 
-    frame.counterText = frame:CreateFontString(nil, 'OVERLAY', 'StripesQuestIndicatorFont');
-    frame.counterText:SetJustifyH('CENTER');
+    local counterText = frame:CreateFontString(nil, 'OVERLAY', 'StripesQuestIndicatorFont');
+    counterText:SetJustifyH('CENTER');
+
+    frame.swordIcon   = swordIcon;
+    frame.lootIcon    = lootIcon;
+    frame.counterText = counterText;
 
     unitframe.QuestIndicator = frame;
 end
 
 local function UpdateStyle(unitframe)
-    unitframe.QuestIndicator:ClearAllPoints();
+    local questIndicator = unitframe.QuestIndicator;
+
+    questIndicator:ClearAllPoints();
 
     if Stripes.NameOnly:IsUnitFrameFriendly(unitframe) then
-        unitframe.QuestIndicator:SetAllPoints(unitframe.name);
+        questIndicator:SetAllPoints(unitframe.name);
     else
-        unitframe.QuestIndicator:SetAllPoints(unitframe.healthBar);
+        questIndicator:SetAllPoints(unitframe.healthBar);
     end
 
-    unitframe.QuestIndicator.swordIcon:ClearAllPoints();
+    questIndicator.swordIcon:ClearAllPoints();
 
     if POSITION == 1 then
-        unitframe.QuestIndicator.swordIcon:SetPoint('BOTTOMRIGHT', unitframe.QuestIndicator, 'BOTTOMLEFT', -2, 0);
-        unitframe.QuestIndicator.lootIcon:SetPoint('BOTTOMLEFT', unitframe.QuestIndicator.swordIcon, 'BOTTOMLEFT', -1, 0);
+        questIndicator.swordIcon:SetPoint('BOTTOMRIGHT', questIndicator, 'BOTTOMLEFT', -2, 0);
+        questIndicator.lootIcon:SetPoint('BOTTOMLEFT', questIndicator.swordIcon, 'BOTTOMLEFT', -1, 0);
     else
-        unitframe.QuestIndicator.swordIcon:SetPoint('BOTTOMLEFT', unitframe.QuestIndicator, 'BOTTOMRIGHT', 4, 0);
-        unitframe.QuestIndicator.lootIcon:SetPoint('BOTTOMLEFT', unitframe.QuestIndicator.swordIcon, 'BOTTOMLEFT', -3, 0);
+        questIndicator.swordIcon:SetPoint('BOTTOMLEFT', questIndicator, 'BOTTOMRIGHT', 4, 0);
+        questIndicator.lootIcon:SetPoint('BOTTOMLEFT', questIndicator.swordIcon, 'BOTTOMLEFT', -3, 0);
     end
 end
 
