@@ -12,10 +12,12 @@ local function Create(unitframe)
     local frame = CreateFrame('Frame', '$parentFriendIcon', unitframe);
     frame:SetAllPoints(unitframe.healthBar);
 
-    frame.Icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.Icon:SetPoint('LEFT', unitframe.name, 'RIGHT', 2, -1);
-    frame.Icon:SetSize(10, 10);
-    frame.Icon:SetAtlas('UI-HUD-UnitFrame-Player-Group-FriendOnlineIcon-2x');
+    local icon = frame:CreateTexture(nil, 'OVERLAY');
+    icon:SetPoint('LEFT', unitframe.name, 'RIGHT', 2, -1);
+    icon:SetSize(10, 10);
+    icon:SetAtlas('UI-HUD-UnitFrame-Player-Group-FriendOnlineIcon-2x');
+
+    frame.icon = icon;
 
     frame:Hide();
 
