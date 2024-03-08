@@ -131,9 +131,11 @@ local function Create(unitframe)
     local frame = CreateFrame('Frame', '$parentPVPHealersIcon', unitframe);
     frame:SetAllPoints(unitframe.healthBar);
 
-    frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
-    frame.icon:SetSize(32, 32);
+    local icon = frame:CreateTexture(nil, 'OVERLAY');
+    icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    icon:SetSize(32, 32);
+
+    frame.icon = icon;
 
     frame:Hide();
 
