@@ -192,19 +192,21 @@ local function CreateCastingBarAndTimer(unitframe)
 
     UpdateTextPosition(unitframe);
 
-    unitframe.castingBar.Timer = unitframe.castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarTimerFont');
-    PixelUtil.SetPoint(unitframe.castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_ANCHOR, unitframe.castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
-    unitframe.castingBar.Timer:SetTextColor(1, 1, 1);
-    unitframe.castingBar.updateDelay = updateDelay;
-    unitframe.castingBar:HookScript('OnUpdate', OnUpdate);
+    local castingBar = unitframe.castingBar;
 
-    unitframe.castingBar.TargetText:ClearAllPoints();
-    PixelUtil.SetPoint(unitframe.castingBar.TargetText, TARGET_NAME_POINT, unitframe.castingBar, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y);
+    castingBar.Timer = castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarTimerFont');
+    PixelUtil.SetPoint(castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_ANCHOR, castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
+    castingBar.Timer:SetTextColor(1, 1, 1);
+    castingBar.updateDelay = updateDelay;
+    castingBar:HookScript('OnUpdate', OnUpdate);
 
-    StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.Icon);
-    StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.BorderShield);
-    StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.Timer);
-    StripesCastingBar_AddWidgetForFade(unitframe.castingBar, unitframe.castingBar.TargetText);
+    castingBar.TargetText:ClearAllPoints();
+    PixelUtil.SetPoint(castingBar.TargetText, TARGET_NAME_POINT, castingBar, TARGET_NAME_RELATIVE_POINT, TARGET_NAME_OFFSET_X, TARGET_NAME_OFFSET_Y);
+
+    StripesCastingBar_AddWidgetForFade(castingBar, castingBar.Icon);
+    StripesCastingBar_AddWidgetForFade(castingBar, castingBar.BorderShield);
+    StripesCastingBar_AddWidgetForFade(castingBar, castingBar.Timer);
+    StripesCastingBar_AddWidgetForFade(castingBar, castingBar.TargetText);
 end
 
 local function UpdateVisibility(unitframe)
