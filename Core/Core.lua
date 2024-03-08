@@ -644,6 +644,41 @@ function AddOn:CheckIncompatibleAddons()
         StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'namePlateM+');
         return;
     end
+
+    if IsAddOnLoaded('BetterBlizzPlates') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'BetterBlizzPlates');
+        return;
+    end
+
+    if IsAddOnLoaded('NamePlatesThreat') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'NamePlatesThreat');
+        return;
+    end
+
+    if IsAddOnLoaded('KiwiPlates') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'KiwiPlates');
+        return;
+    end
+
+    if IsAddOnLoaded('NameplateColors') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'NameplateColors');
+        return;
+    end
+
+    if IsAddOnLoaded('NamePlateKAI') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'NamePlateKAI');
+        return;
+    end
+
+    if IsAddOnLoaded('PlateColor') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'PlateColor');
+        return;
+    end
+
+    if IsAddOnLoaded('SimpleThreatPlates') then
+        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'SimpleThreatPlates');
+        return;
+    end
 end
 
 AddOn:RegisterEvent('ADDON_LOADED');
