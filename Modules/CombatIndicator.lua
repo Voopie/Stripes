@@ -34,10 +34,12 @@ local function Create(unitframe)
     local frame = CreateFrame('Frame', '$parentCombatIndicator', unitframe.healthBar);
     frame:SetAllPoints();
 
-    frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetTexture(S.Media.Icons2.TEXTURE);
-    frame.icon:SetTexCoord(unpack(S.Media.Icons2.COORDS.CROSS_SWORDS));
-    frame.icon:Hide();
+    local icon = frame:CreateTexture(nil, 'OVERLAY');
+    icon:SetTexture(S.Media.Icons2.TEXTURE);
+    icon:SetTexCoord(unpack(S.Media.Icons2.COORDS.CROSS_SWORDS));
+    icon:Hide();
+
+    frame.icon = icon;
 
     frame.elapsed = 0;
     frame:SetScript('OnUpdate', OnUpdate);
