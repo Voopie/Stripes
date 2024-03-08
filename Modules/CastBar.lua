@@ -139,44 +139,88 @@ local function UpdateColors(unitframe)
     end
 end
 
+-- '[XY]_OFFSET' will be replaced with TEXT_[XY]_OFFSET
+local castBarTextPositions = {
+    [1] = { -- LEFT
+        justifyH = 'LEFT',
+        positions = {
+            truncate = {
+                wordWrap = false,
+                points = {
+                    { 'RIGHT', 0, 0 },
+                    { 'LEFT', 'X_OFFSET', 'Y_OFFSET' },
+                }
+            },
+
+            nontruncate = {
+                wordWrap = true,
+                points = {
+                    { 'LEFT', 'X_OFFSET', 'Y_OFFSET' },
+                }
+            }
+        }
+    },
+
+    [2] = { -- CENTER
+        justifyH = 'CENTER',
+        positions = {
+            truncate = {
+                wordWrap = false,
+                points = {
+                    { 'RIGHT', 'X_OFFSET', 'Y_OFFSET' },
+                    { 'LEFT', 'X_OFFSET', 'Y_OFFSET' },
+                }
+            },
+
+            nontruncate = {
+                wordWrap = true,
+                points = {
+                    { 'CENTER', 'X_OFFSET', 'Y_OFFSET' },
+                }
+            }
+        }
+    },
+
+    [3] = { -- RIGHT
+        justifyH = 'RIGHT',
+        positions = {
+            truncate = {
+                wordWrap = false,
+                points = {
+                    { 'RIGHT', 'X_OFFSET', 'Y_OFFSET' },
+                    { 'LEFT', 0, 0 },
+                }
+            },
+
+            nontruncate = {
+                wordWrap = true,
+                points = {
+                    { 'RIGHT', 'X_OFFSET', 'Y_OFFSET' },
+                }
+            }
+        }
+    }
+};
+
 local function UpdateTextPosition(unitframe)
     local castingBarText = unitframe.castingBar.Text;
 
+    local posTable  = castBarTextPositions[TEXT_POSITION];
+    local modeTable = TEXT_TRUNCATE and posTable.positions.truncate or posTable.positions.nontruncate;
+
+    local justifyH = posTable.justifyH;
+    local wordWrap = modeTable.wordWrap;
+    local points   = modeTable.points;
+
     castingBarText:ClearAllPoints();
+    castingBarText:SetJustifyH(justifyH);
+    castingBarText:SetWordWrap(wordWrap);
 
-    if TEXT_POSITION == 1 then -- LEFT
-        castingBarText:SetJustifyH('LEFT');
+    for _, point in ipairs(points) do
+        local xOffset = point[2] == 'X_OFFSET' and TEXT_X_OFFSET or point[2];
+        local yOffset = point[3] == 'Y_OFFSET' and TEXT_Y_OFFSET or point[3];
 
-        if TEXT_TRUNCATE then
-            castingBarText:SetWordWrap(false);
-            castingBarText:SetPoint('RIGHT', 0, 0);
-            castingBarText:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
-        else
-            castingBarText:SetWordWrap(true);
-            castingBarText:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
-        end
-    elseif TEXT_POSITION == 2 then -- CENTER
-        castingBarText:SetJustifyH('CENTER');
-
-        if TEXT_TRUNCATE then
-            castingBarText:SetWordWrap(false);
-            castingBarText:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
-            castingBarText:SetPoint('LEFT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
-        else
-            castingBarText:SetWordWrap(true);
-            castingBarText:SetPoint('CENTER', TEXT_X_OFFSET, TEXT_Y_OFFSET);
-        end
-    else -- RIGHT
-        castingBarText:SetJustifyH('RIGHT');
-
-        if TEXT_TRUNCATE then
-            castingBarText:SetWordWrap(false);
-            castingBarText:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
-            castingBarText:SetPoint('LEFT', 0, 0);
-        else
-            castingBarText:SetWordWrap(true);
-            castingBarText:SetPoint('RIGHT', TEXT_X_OFFSET, TEXT_Y_OFFSET);
-        end
+        castingBarText:SetPoint(point[1], xOffset, yOffset);
     end
 end
 
