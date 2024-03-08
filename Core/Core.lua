@@ -595,89 +595,103 @@ StaticPopupDialogs['STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON'] = {
     preferredIndex = STATICPOPUPS_NUMDIALOGS,
 };
 
+local incompatibleAddons = {
+    {
+        addonName = 'Plater',
+        titleName = 'Plater Nameplates',
+    },
+
+    {
+        addonName = 'ElvUI',
+        titleName = 'ElvUI Nameplates',
+        checkFunction = function()
+            return ElvUI[1] and ElvUI[1].private and ElvUI[1].private.nameplates and ElvUI[1].private.nameplates.enable;
+        end
+    },
+
+    {
+        addonName = 'Kui_Nameplates',
+        titleName = 'KuiNameplates',
+    },
+
+    {
+        addonName = 'ThreatPlates',
+        titleName = 'ThreatPlates',
+    },
+
+    {
+        addonName = 'TidyPlates',
+        titleName = 'TidyPlates',
+    },
+
+    {
+        addonName = 'NeatPlates',
+        titleName = 'NeatPlates',
+    },
+
+    {
+        addonName = 'nPlates',
+        titleName = 'nPlates',
+    },
+
+    {
+        addonName = 'PhantomPlates',
+        titleName = 'PhantomPlates',
+    },
+
+    {
+        addonName = 'Nameplates',
+        titleName = 'namePlateM+',
+    },
+
+    {
+        addonName = 'BetterBlizzPlates',
+        titleName = 'BetterBlizzPlates',
+    },
+
+    {
+        addonName = 'NamePlatesThreat',
+        titleName = 'NamePlatesThreat',
+    },
+
+    {
+        addonName = 'KiwiPlates',
+        titleName = 'KiwiPlates',
+    },
+
+    {
+        addonName = 'NameplateColors',
+        titleName = 'NameplateColors',
+    },
+
+    {
+        addonName = 'NamePlateKAI',
+        titleName = 'NamePlateKAI',
+    },
+
+    {
+        addonName = 'PlateColor',
+        titleName = 'PlateColor',
+    },
+
+    {
+        addonName = 'SimpleThreatPlates',
+        titleName = 'SimpleThreatPlates',
+    },
+};
+
 function AddOn:CheckIncompatibleAddons()
     if StripesDB.dontWarnAddons then
         return;
     end
 
-    if IsAddOnLoaded('Plater') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'Plater Nameplates');
-        return;
-    end
+    for _, data in ipairs(incompatibleAddons) do
+        local isAddonLoaded = IsAddOnLoaded(data.addonName);
 
-    if IsAddOnLoaded('ElvUI') and (ElvUI[1] and ElvUI[1].private and ElvUI[1].private.nameplates and ElvUI[1].private.nameplates.enable) then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'ElvUI Nameplates');
-        return;
-    end
-
-    if IsAddOnLoaded('Kui_Nameplates') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'KuiNameplates');
-        return;
-    end
-
-    if IsAddOnLoaded('ThreatPlates') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'ThreatPlates');
-        return;
-    end
-
-    if IsAddOnLoaded('TidyPlates') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'TidyPlates');
-        return;
-    end
-
-    if IsAddOnLoaded('NeatPlates') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'NeatPlates');
-        return;
-    end
-
-    if IsAddOnLoaded('nPlates') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'nPlates');
-        return;
-    end
-
-    if IsAddOnLoaded('PhantomPlates') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'PhantomPlates');
-        return;
-    end
-
-    if IsAddOnLoaded('Nameplates') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'namePlateM+');
-        return;
-    end
-
-    if IsAddOnLoaded('BetterBlizzPlates') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'BetterBlizzPlates');
-        return;
-    end
-
-    if IsAddOnLoaded('NamePlatesThreat') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'NamePlatesThreat');
-        return;
-    end
-
-    if IsAddOnLoaded('KiwiPlates') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'KiwiPlates');
-        return;
-    end
-
-    if IsAddOnLoaded('NameplateColors') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'NameplateColors');
-        return;
-    end
-
-    if IsAddOnLoaded('NamePlateKAI') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'NamePlateKAI');
-        return;
-    end
-
-    if IsAddOnLoaded('PlateColor') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'PlateColor');
-        return;
-    end
-
-    if IsAddOnLoaded('SimpleThreatPlates') then
-        StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', 'SimpleThreatPlates');
-        return;
+        if isAddonLoaded and (not data.checkFunction or data.checkFunction()) then
+            StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', data.titleName);
+            break;
+        end
     end
 end
 
