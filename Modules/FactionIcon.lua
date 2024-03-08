@@ -19,9 +19,11 @@ local function Create(unitframe)
     local frame = CreateFrame('Frame', '$parentFactionIcon', unitframe);
     frame:SetAllPoints(unitframe.healthBar);
 
-    frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    PixelUtil.SetPoint(frame.icon, 'RIGHT', unitframe.name, 'LEFT', -2, 0);
-    PixelUtil.SetSize(frame.icon, 12, 12);
+    local icon = frame:CreateTexture(nil, 'OVERLAY');
+    PixelUtil.SetPoint(icon, 'RIGHT', unitframe.name, 'LEFT', -2, 0);
+    PixelUtil.SetSize(icon, 12, 12);
+
+    frame.icon = icon;
 
     frame:Hide();
 
