@@ -445,7 +445,9 @@ function Module:UnitRemoved(unitframe)
 end
 
 function Module:UnitAura(unitframe, unitAuraUpdateInfo)
-    unitframe.AurasMythicPlus:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
+    if unitframe.AurasMythicPlus then
+        unitframe.AurasMythicPlus:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
+    end
 end
 
 function Module:Update(unitframe)
@@ -453,9 +455,11 @@ function Module:Update(unitframe)
         Stripes.MasqueAurasMythicGroup:ReSkin();
     end
 
-    unitframe.AurasMythicPlus.spacing = SPACING_X;
-    unitframe.AurasMythicPlus:UpdateBuffs();
-    unitframe.AurasMythicPlus:UpdateStyle();
+    if unitframe.AurasMythicPlus then
+        unitframe.AurasMythicPlus.spacing = SPACING_X;
+        unitframe.AurasMythicPlus:UpdateBuffs();
+        unitframe.AurasMythicPlus:UpdateStyle();
+    end
 end
 
 function Module:UpdateLocalConfig()
@@ -521,7 +525,9 @@ end
 function Module:StartUp()
     self:UpdateLocalConfig();
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
-        unitframe.AurasMythicPlus:UpdateAnchor();
+        if unitframe.AurasMythicPlus then
+            unitframe.AurasMythicPlus:UpdateAnchor();
+        end
     end);
 
     -- All-Consuming Spite (Spiteful) timer update

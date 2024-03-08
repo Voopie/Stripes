@@ -402,7 +402,9 @@ function Module:UnitRemoved(unitframe)
 end
 
 function Module:UnitAura(unitframe, unitAuraUpdateInfo)
-    unitframe.AurasImportant:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
+    if unitframe.AurasImportant then
+        unitframe.AurasImportant:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
+    end
 end
 
 function Module:Update(unitframe)
@@ -410,8 +412,10 @@ function Module:Update(unitframe)
         Stripes.MasqueAurasImportantGroup:ReSkin();
     end
 
-    unitframe.AurasImportant:UpdateBuffs();
-    unitframe.AurasImportant:UpdateStyle();
+    if unitframe.AurasImportant then
+        unitframe.AurasImportant:UpdateBuffs();
+        unitframe.AurasImportant:UpdateStyle();
+    end
 end
 
 function Module:UpdateLocalConfig()
@@ -486,6 +490,8 @@ end
 function Module:StartUp()
     self:UpdateLocalConfig();
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
-        unitframe.AurasImportant:UpdateAnchor();
+        if unitframe.AurasImportant then
+            unitframe.AurasImportant:UpdateAnchor();
+        end
     end);
 end

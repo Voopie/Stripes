@@ -365,8 +365,10 @@ function Module:Update(unitframe)
         Stripes.MasqueAurasCustomGroup:ReSkin();
     end
 
-    unitframe.AurasCustom:UpdateBuffs();
-    unitframe.AurasCustom:UpdateStyle();
+    if unitframe.AurasCustom then
+        unitframe.AurasCustom:UpdateBuffs();
+        unitframe.AurasCustom:UpdateStyle();
+    end
 end
 
 function Module:UpdateLocalConfig()
@@ -428,6 +430,8 @@ end
 function Module:StartUp()
     self:UpdateLocalConfig();
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
-        unitframe.AurasCustom:UpdateAnchor();
+        if unitframe.AurasCustom then
+            unitframe.AurasCustom:UpdateAnchor();
+        end
     end);
 end

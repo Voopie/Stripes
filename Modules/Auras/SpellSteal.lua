@@ -368,7 +368,9 @@ function Module:UnitRemoved(unitframe)
 end
 
 function Module:UnitAura(unitframe, unitAuraUpdateInfo)
-    unitframe.AurasSpellSteal:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
+    if unitframe.AurasSpellSteal then
+        unitframe.AurasSpellSteal:UpdateBuffs(unitframe.data.unit, unitAuraUpdateInfo);
+    end
 end
 
 function Module:Update(unitframe)
@@ -376,9 +378,11 @@ function Module:Update(unitframe)
         Stripes.MasqueAurasSpellstealGroup:ReSkin();
     end
 
-    unitframe.AurasSpellSteal.spacing = SPACING_X;
-    unitframe.AurasSpellSteal:UpdateBuffs();
-    unitframe.AurasSpellSteal:UpdateStyle();
+    if unitframe.AurasSpellSteal then
+        unitframe.AurasSpellSteal.spacing = SPACING_X;
+        unitframe.AurasSpellSteal:UpdateBuffs();
+        unitframe.AurasSpellSteal:UpdateStyle();
+    end
 end
 
 function Module:UpdateLocalConfig()
@@ -452,6 +456,8 @@ end
 function Module:StartUp()
     self:UpdateLocalConfig();
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
-        unitframe.AurasSpellSteal:UpdateAnchor();
+        if unitframe.AurasSpellSteal then
+            unitframe.AurasSpellSteal:UpdateAnchor();
+        end
     end);
 end
