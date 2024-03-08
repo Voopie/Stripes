@@ -156,9 +156,9 @@ local function Update(unitframe)
     end
 
     local specID = HealerSpecs[Healers[name]];
+    local iconCoords = ICON_COORDS[specID];
 
     local pvpHealersFrame = unitframe.PVPHealers;
-    local iconCoords = ICON_COORDS[specID];
 
     if iconCoords then
         pvpHealersFrame:SetFrameStrata(STRATA == 1 and unitframe.healthBar:GetFrameStrata() or STRATA);
@@ -174,10 +174,6 @@ local function Update(unitframe)
 end
 
 local function UpdateMouseoverUnit()
-    if not SOUND_ENABLED then
-        return;
-    end
-
     if not PlayerState.inPvPInstance then
         return;
     end
