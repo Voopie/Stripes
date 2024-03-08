@@ -686,9 +686,7 @@ function AddOn:CheckIncompatibleAddons()
     end
 
     for _, data in ipairs(incompatibleAddons) do
-        local isAddonLoaded = IsAddOnLoaded(data.addonName);
-
-        if isAddonLoaded and (not data.checkFunction or data.checkFunction()) then
+        if IsAddOnLoaded(data.addonName) and (not data.checkFunction or data.checkFunction()) then
             StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', data.titleName);
             break;
         end
