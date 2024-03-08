@@ -75,11 +75,13 @@ local function Create(unitframe)
         return;
     end
 
-    unitframe.TargetName = unitframe:CreateFontString(nil, 'OVERLAY', 'StripesNameFont');
-    PixelUtil.SetPoint(unitframe.TargetName, 'LEFT', unitframe.name, 'RIGHT', 2, 0);
-    unitframe.TargetName:SetDrawLayer('OVERLAY', 7);
-    unitframe.TargetName:SetTextColor(1, 1, 1, 1);
-    unitframe.TargetName:Hide();
+    local targetName = unitframe:CreateFontString(nil, 'OVERLAY', 'StripesNameFont');
+    PixelUtil.SetPoint(targetName, 'LEFT', unitframe.name, 'RIGHT', 2, 0);
+    targetName:SetDrawLayer('OVERLAY', 7);
+    targetName:SetTextColor(1, 1, 1, 1);
+    targetName:Hide();
+
+    unitframe.TargetName = targetName;
 end
 
 local function Update(unitframe)
