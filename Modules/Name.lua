@@ -591,8 +591,10 @@ local function NameOnly_CreateGuildName(unitframe)
     local frame = CreateFrame('Frame', '$parentGuildName', unitframe);
     frame:SetAllPoints(unitframe.healthBar);
 
-    frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesGuildNameFont');
-    PixelUtil.SetPoint(frame.text, 'TOP', unitframe.name, 'BOTTOM', 0, -1);
+    local text = frame:CreateFontString(nil, 'OVERLAY', 'StripesGuildNameFont');
+    PixelUtil.SetPoint(text, 'TOP', unitframe.name, 'BOTTOM', 0, -1);
+
+    frame.text = text;
 
     frame:Hide();
 
@@ -604,35 +606,41 @@ local function NameOnly_UpdateGuildName(unitframe)
         return;
     end
 
-    if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:ShouldShowGuildName() then
-        if unitframe.data.unitType == 'FRIENDLY_PLAYER' and unitframe.data.guild then
-            local useTranslit, useReplaceDiacritics, useCut = true, true, false;
-            local guild = GetCachedName(unitframe.data.guild, useTranslit, useReplaceDiacritics, useCut);
+    local guildName = unitframe.GuildName;
 
-            unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, guild));
-
-            local guildColor = D.Player.GuildName == unitframe.data.guild and Stripes.NameOnly:GetGuildNameSameColor() or Stripes.NameOnly:GetGuildNameColor();
-            unitframe.GuildName.text:SetTextColor(guildColor[1], guildColor[2], guildColor[3], guildColor[4]);
-
-            unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
-        elseif Stripes.NameOnly:IsUnitFrameFriendly(unitframe) then
-            local subLabel = U_GetNpcSubLabelByID(unitframe.data.npcId);
-
-            if subLabel then
-                local subLabelColor = Stripes.NameOnly:GetGuildNameColor();
-
-                unitframe.GuildName.text:SetText(string_format(GUILD_NAME_FORMAT, subLabel));
-                unitframe.GuildName.text:SetTextColor(subLabelColor[1], subLabelColor[2], subLabelColor[3], subLabelColor[4]);
-                unitframe.GuildName:SetShown(not unitframe.healthBar:IsShown());
-            else
-                unitframe.GuildName:Hide();
-            end
-        else
-            unitframe.GuildName:Hide();
-        end
-    else
-        unitframe.GuildName:Hide();
+    if not (Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:ShouldShowGuildName() and not unitframe.healthBar:IsShown()) then
+        guildName:Hide();
+        return;
     end
+
+    local shouldShow = false;
+
+    if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
+        local useTranslit, useReplaceDiacritics, useCut = true, true, false;
+        local guild = GetCachedName(unitframe.data.guild, useTranslit, useReplaceDiacritics, useCut);
+
+        if guild then
+            local guildColor = D.Player.GuildName == unitframe.data.guild and Stripes.NameOnly:GetGuildNameSameColor() or Stripes.NameOnly:GetGuildNameColor();
+
+            guildName.text:SetText(string_format(GUILD_NAME_FORMAT, guild));
+            guildName.text:SetTextColor(guildColor[1], guildColor[2], guildColor[3], guildColor[4]);
+
+            shouldShow = true;
+        end
+    elseif Stripes.NameOnly:IsUnitFrameFriendly(unitframe) then
+        local subLabel = U_GetNpcSubLabelByID(unitframe.data.npcId);
+
+        if subLabel then
+            local subLabelColor = Stripes.NameOnly:GetGuildNameColor();
+
+            guildName.text:SetText(string_format(GUILD_NAME_FORMAT, subLabel));
+            guildName.text:SetTextColor(subLabelColor[1], subLabelColor[2], subLabelColor[3], subLabelColor[4]);
+
+            shouldShow = true;
+        end
+    end
+
+    guildName:SetShown(shouldShow);
 end
 
 local function NameOnly_CreateBackground(unitframe)
