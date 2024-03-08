@@ -64,29 +64,34 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
     frame:SetFrameLevel(frame:GetFrameLevel() + 100);
 
-    frame.icon = frame:CreateTexture(nil, 'OVERLAY');
-    frame.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
-    frame.icon:SetSize(SIZE, SIZE);
+    local icon frame:CreateTexture(nil, 'OVERLAY');
+    icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
+    icon:SetSize(SIZE, SIZE);
 
-    frame.border = frame:CreateTexture(nil, 'BORDER');
-    frame.border:SetPoint('TOPLEFT', frame.icon, 'TOPLEFT', -1, 1);
-    frame.border:SetPoint('BOTTOMRIGHT', frame.icon, 'BOTTOMRIGHT', 1, -1);
-    frame.border:SetColorTexture(0.1, 0.1, 0.1);
+    local border = frame:CreateTexture(nil, 'BORDER');
+    border:SetPoint('TOPLEFT', icon, 'TOPLEFT', -1, 1);
+    border:SetPoint('BOTTOMRIGHT', icon, 'BOTTOMRIGHT', 1, -1);
+    border:SetColorTexture(0.1, 0.1, 0.1);
 
-    frame.cooldown = CreateFrame('Cooldown', nil, frame, 'CooldownFrameTemplate');
-    frame.cooldown:SetAllPoints(frame.icon);
-    frame.cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-    frame.cooldown:SetDrawEdge(DRAW_EDGE);
-    frame.cooldown:SetDrawSwipe(DRAW_SWIPE);
-    frame.cooldown:GetRegions():SetFontObject(StripesSpellInterruptedCooldownFont);
-    frame.cooldown:HookScript('OnCooldownDone', function(self)
+    local cooldown = CreateFrame('Cooldown', nil, frame, 'CooldownFrameTemplate');
+    cooldown:SetAllPoints(icon);
+    cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+    cooldown:SetDrawEdge(DRAW_EDGE);
+    cooldown:SetDrawSwipe(DRAW_SWIPE);
+    cooldown:GetRegions():SetFontObject(StripesSpellInterruptedCooldownFont);
+    cooldown:HookScript('OnCooldownDone', function(self)
         self:GetParent().expTime = 0;
         self:GetParent().destGUID = nil;
         self:GetParent():Hide();
     end);
 
-    frame.casterName = frame:CreateFontString(nil, 'ARTWORK', 'StripesSpellInterruptedCasterFont');
-    PixelUtil.SetPoint(frame.casterName, 'BOTTOM', frame.icon, 'TOP', 0, 2);
+    local casterName = frame:CreateFontString(nil, 'ARTWORK', 'StripesSpellInterruptedCasterFont');
+    PixelUtil.SetPoint(casterName, 'BOTTOM', icon, 'TOP', 0, 2);
+
+    frame.icon       = icon;
+    frame.border     = border;
+    frame.cooldown   = cooldown;
+    frame.casterName = casterName;
 
     frame.expTime = 0;
     frame.destGUID = nil;
