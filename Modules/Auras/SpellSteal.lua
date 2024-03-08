@@ -234,7 +234,7 @@ local function CreateBuffFrame(unitframe)
             elseif AURAS_DIRECTION == 2 then
                 buff:SetPoint('TOPRIGHT', -((buffIndex - 1) * (20 + SPACING_X)), 0);
             else
-                self.buffList[1]:SetPoint('TOP', -(buff:GetWidth() / 2) * (buffIndex - 1), 0);
+                self.buffList[1]:SetPoint('TOP', -(buff:GetWidth() * 0.5) * (buffIndex - 1), 0);
 
                 if buffIndex > 1 then
                     buff:SetPoint('TOPLEFT', self.buffList[buffIndex - 1], 'TOPRIGHT', SPACING_X, 0);

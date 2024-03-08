@@ -270,7 +270,7 @@ local function CreateBuffFrame(unitframe)
             buff.sourceUnit     = aura.sourceUnit;
 
             self.buffList[1]:ClearAllPoints();
-            self.buffList[1]:SetPoint('CENTER', -(self.buffList[1]:GetWidth() / 2) * (buffIndex - 1), 0);
+            self.buffList[1]:SetPoint('CENTER', -(self.buffList[1]:GetWidth() * 0.5) * (buffIndex - 1), 0);
 
             if buffIndex > 1 then
                 buff:ClearAllPoints();

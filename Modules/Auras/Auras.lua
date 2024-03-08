@@ -254,7 +254,7 @@ local function UpdateAuraStyle(aura, withoutMasque)
                     self.Cooldown.Countdown:SetTextColor(PANDEMIC_COLOR[1], PANDEMIC_COLOR[2], PANDEMIC_COLOR[3], PANDEMIC_COLOR[4]);
                 else
                     local flags, _, _, cc = LPS_GetSpellInfo(LPS, self.spellID);
-                    local isNotCrowdControl = not flags or not cc or not (bit_band(flags, LPS_CROWD_CTRL) > 0 and bit_band(cc, LPS_CC_TYPES) > 0);
+                    local isNotCrowdControl = not (flags and cc and bit_band(flags, LPS_CROWD_CTRL) > 0 and bit_band(cc, LPS_CC_TYPES) > 0);
 
                     if isNotCrowdControl then
                         self.trulySpellId = U_GetTrulySpellId(self.spellID);
@@ -516,7 +516,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
                                 firstBuffIndex = data.buffIndex;
                             end
 
-                            unitframe.SortBuffs[firstBuffIndex]:SetPoint('TOP', -(unitframe.SortBuffs[firstBuffIndex]:GetWidth()/2)*(i-1), 0);
+                            unitframe.SortBuffs[firstBuffIndex]:SetPoint('TOP', -(unitframe.SortBuffs[firstBuffIndex]:GetWidth() * 0.5) * (i - 1), 0);
 
                             if i > 1 and firstBuffIndex ~= data.buffIndex then
                                 if lastBuff then
@@ -548,7 +548,7 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
                         firstBuffIndex = buff.layoutIndex;
                     end
 
-                    firstBuff:SetPoint('TOP', -(firstBuff:GetWidth() / 2) * (activeCount - 1), 0);
+                    firstBuff:SetPoint('TOP', -(firstBuff:GetWidth() * 0.5) * (activeCount - 1), 0);
 
                     if activeCount > 1 and firstBuffIndex ~= buff.layoutIndex then
                         if lastBuff then
