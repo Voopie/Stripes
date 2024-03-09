@@ -35,10 +35,10 @@ local function Update(unitframe)
         return;
     end
 
-    local shouldShow = ENABLED and unitframe.data.commonUnitType == 'PLAYER' and ShouldShowName(unitframe) and factionIcons[unitframe.data.factionGroup];
+    local shouldShowTexture = ENABLED and unitframe.data.commonUnitType == 'PLAYER' and ShouldShowName(unitframe) and factionIcons[unitframe.data.factionGroup];
 
-    if shouldShow then
-        unitframe.FactionIcon.icon:SetTexture(factionIcons[unitframe.data.factionGroup]);
+    if shouldShowTexture then
+        unitframe.FactionIcon.icon:SetTexture(shouldShowTexture);
         unitframe.FactionIcon:Show();
     else
         unitframe.FactionIcon:Hide();
