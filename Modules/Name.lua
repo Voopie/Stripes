@@ -214,41 +214,37 @@ local function HandleCustomName(unitframe)
 end
 
 local function HandleAbbreviatedName(unitframe)
-    if not ABBR_ENABLED then
+    if not (ABBR_ENABLED and (ABRR_UNIT_TYPE == 'ALL' or ABRR_UNIT_TYPE == unitframe.data.unitType)) then
         unitframe.data.nameAbbr = nil;
         return false;
     end
 
-    if ABRR_UNIT_TYPE == 'ALL' or ABRR_UNIT_TYPE == unitframe.data.unitType then
-        local name;
+    local name;
 
-        if NAME_CUT_ENABLED and (NAME_CUT_UNIT_TYPE == 'ALL' or NAME_CUT_UNIT_TYPE == unitframe.data.unitType) then
-            name = GetCuttedName(GetAbbreviatedName(unitframe.data.name));
-        else
-            name = GetAbbreviatedName(unitframe.data.name);
-        end
-
-        unitframe.name:SetText(name);
-        unitframe.data.nameAbbr = name;
-
-        return true;
+    if NAME_CUT_ENABLED and (NAME_CUT_UNIT_TYPE == 'ALL' or NAME_CUT_UNIT_TYPE == unitframe.data.unitType) then
+        name = GetCuttedName(GetAbbreviatedName(unitframe.data.name));
+    else
+        name = GetAbbreviatedName(unitframe.data.name);
     end
+
+    unitframe.name:SetText(name);
+    unitframe.data.nameAbbr = name;
+
+    return true;
 end
 
 local function HandleCuttedName(unitframe)
-    if not NAME_CUT_ENABLED then
+    if not (NAME_CUT_ENABLED and (NAME_CUT_UNIT_TYPE == 'ALL' or NAME_CUT_UNIT_TYPE == unitframe.data.unitType)) then
         unitframe.data.nameCut = nil;
         return false;
     end
 
-    if NAME_CUT_UNIT_TYPE == 'ALL' or NAME_CUT_UNIT_TYPE == unitframe.data.unitType then
-        local name = GetCuttedName(unitframe.data.name);
+    local name = GetCuttedName(unitframe.data.name);
 
-        unitframe.name:SetText(name);
-        unitframe.data.nameCut = name;
+    unitframe.name:SetText(name);
+    unitframe.data.nameCut = name;
 
-        return true;
-    end
+    return true;
 end
 
 local function HandleFirstModeName(unitframe)
