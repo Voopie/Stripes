@@ -31,7 +31,7 @@ L['BACKGROUND'] = 'Hintergrund';
 L['MAX_SHORT'] = 'Max .';
 L['SECOND_SHORT'] = 's.';
 
-L['SPELL_CACHE_UPDATE_IN_PROGRESS'] = 'Aktualisierung des Zaubercaches im Gange';
+L['SPELL_CACHE_UPDATE_IN_PROGRESS'] = 'Aktualisierung des Zaubercaches im Gange...';
 
 L['AVAILABLE_COMMANDS'] = 'Verfügbare Befehle';
 L['COMMAND_MINIMAP_DESCRIPTION'] = 'Umschalten der Sichtbarkeit der Minimap-Schaltfläche';

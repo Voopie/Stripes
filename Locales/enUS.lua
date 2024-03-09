@@ -31,7 +31,7 @@ L['BACKGROUND'] = 'Background';
 L['MAX_SHORT'] = 'Max';
 L['SECOND_SHORT'] = 's';
 
-L['SPELL_CACHE_UPDATE_IN_PROGRESS'] = 'Spell cache update in progress';
+L['SPELL_CACHE_UPDATE_IN_PROGRESS'] = 'Spell cache update in progress...';
 
 L['AVAILABLE_COMMANDS'] = 'Available commands';
 L['COMMAND_MINIMAP_DESCRIPTION'] = 'Toggle visibility of the minimap button';
