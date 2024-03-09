@@ -113,6 +113,8 @@ O.OpenOptions = function()
     wasNotified = false;
 
     O.frame:Show();
+
+    S.SpellCacheUpdater.Init();
 end
 
 O.CloseOptions = function()
@@ -337,6 +339,22 @@ O.frame.Right = Mixin(CreateFrame('Frame', nil, O.frame.Main, 'BackdropTemplate'
 O.frame.Right:SetPosition('TOPLEFT', O.frame.Left, 'TOPRIGHT', 0, 0);
 O.frame.Right:SetPosition('BOTTOMLEFT', O.frame.Left, 'BOTTOMRIGHT', 0, 0);
 O.frame.Right:SetW(600);
+
+O.frame.UpdatingSpellsCache = Mixin(CreateFrame('Button', nil, O.frame.Main, 'BackdropTemplate'), E.PixelPerfectMixin);
+O.frame.UpdatingSpellsCache:SetPosition('TOPLEFT', O.frame.TopBar, 'BOTTOMLEFT', 0, 0);
+O.frame.UpdatingSpellsCache:SetPosition('BOTTOMRIGHT', O.frame, 'BOTTOMRIGHT', 0, 0);
+O.frame.UpdatingSpellsCache:SetFrameLevel(1000);
+O.frame.UpdatingSpellsCache:SetBackdrop({ bgFile = 'Interface\\Buttons\\WHITE8x8' });
+O.frame.UpdatingSpellsCache:SetBackdropColor(0.1, 0.1, 0.1, 1);
+
+O.frame.UpdatingSpellsCache.Spinner = Mixin(CreateFrame('Frame', nil, O.frame.UpdatingSpellsCache, 'SpinnerTemplate'), E.PixelPerfectMixin);
+O.frame.UpdatingSpellsCache.Spinner:SetPosition('CENTER', O.frame.UpdatingSpellsCache, 'CENTER', 0, 0);
+
+O.frame.UpdatingSpellsCache.Text = Mixin(O.frame.UpdatingSpellsCache:CreateFontString(nil, 'ARTWORK', 'StripesLargeHighlightFont'), E.PixelPerfectMixin);
+O.frame.UpdatingSpellsCache.Text:SetPosition('BOTTOM', O.frame.UpdatingSpellsCache.Spinner, 'TOP', 0, 8);
+O.frame.UpdatingSpellsCache.Text:SetText(L['SPELL_CACHE_UPDATE_IN_PROGRESS']);
+
+O.frame.UpdatingSpellsCache:Hide();
 
 local panels = {};
 

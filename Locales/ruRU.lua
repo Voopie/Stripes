@@ -31,6 +31,8 @@ L['BACKGROUND'] = 'Фон';
 L['MAX_SHORT'] = 'Макс.';
 L['SECOND_SHORT'] = 'c.';
 
+L['SPELL_CACHE_UPDATE_IN_PROGRESS'] = 'Происходит обновление кэша заклинаний';
+
 L['AVAILABLE_COMMANDS'] = 'Доступные команды';
 L['COMMAND_MINIMAP_DESCRIPTION'] = 'Переключить видимость кнопки у миникарты';
 L['COMMAND_PROFILE_DESCRIPTION'] = 'Сменить профиль (/stripes profile PROFILENAME)';

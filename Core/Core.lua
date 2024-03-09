@@ -536,7 +536,7 @@ MinimapButton.Initialize = function()
     local LDB_Stripes = LDB:NewDataObject('Stripes', {
         type          = 'launcher',
         text          = 'Stripes',
-        icon          = NAMESPACE[1].Media.LOGO_MINI,
+        icon          = S.Media.LOGO_MINI,
         OnClick       = MinimapButton.OnClick,
         OnTooltipShow = MinimapButton.OnTooltipShow,
     });
@@ -568,7 +568,7 @@ end
 
 MinimapButton.OnClick = function(_, button)
     if button == 'LeftButton' then
-        NAMESPACE[3]:ToggleOptions();
+        O:ToggleOptions();
     elseif button == 'RightButton' then
         MinimapButton:ToggleShown();
     end
@@ -580,7 +580,12 @@ MinimapButton.OnTooltipShow = function(tooltip)
     tooltip:AddDoubleLine(L['MINIMAP_BUTTON_LMB'], L['MINIMAP_BUTTON_OPEN'], 1, 0.85, 0, 1, 1, 1);
     tooltip:AddDoubleLine(L['MINIMAP_BUTTON_RMB'], L['MINIMAP_BUTTON_HIDE'], 1, 0.85, 0, 1, 1, 1);
     tooltip:AddLine(' ');
-    tooltip:AddDoubleLine(L['MINIMAP_ACTIVE_PROFILE'], NAMESPACE[3].activeProfileName, 1, 0.85, 0, 1, 1, 1);
+    tooltip:AddDoubleLine(L['MINIMAP_ACTIVE_PROFILE'], O.activeProfileName, 1, 0.85, 0, 1, 1, 1);
+
+    if O.isUpdatingSpells then
+        tooltip:AddLine(' ');
+        tooltip:AddLine(L['SPELL_CACHE_UPDATE_IN_PROGRESS'], 1, 0.55, 0);
+    end
 end
 
 StaticPopupDialogs['STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON'] = {
@@ -716,7 +721,10 @@ SpellCacheUpdater:SetScript('OnUpdate', function()
                 geterrorhandler()(msg .. '\n' .. debugstack(SpellCacheCoroutine));
             end
         else
+            O.isUpdatingSpells = false;
             SpellCacheUpdater:Hide();
+
+            O.frame.UpdatingSpellsCache:Hide();
             O.frame.Right.Auras:Update();
         end
     end
@@ -786,6 +794,9 @@ function SpellCacheUpdater.Build()
         SpellCacheMetaData.needsRebuild = false;
     end);
 
+    O.isUpdatingSpells = true;
+    O.frame.UpdatingSpellsCache:Show();
+
     SpellCacheUpdater:Show();
 end
 
@@ -811,6 +822,16 @@ function SpellCacheUpdater.Load(data)
     end
 end
 
+AddOn.SpellCacheUpdater = {
+    Init = function()
+        StripesSpellDB      = StripesSpellDB or {};
+        StripesSpellDB.data = StripesSpellDB.data or {};
+
+        SpellCacheUpdater.Load(StripesSpellDB);
+        SpellCacheUpdater.Build();
+    end,
+}
+
 local function PrepareUnimportantUnitsNames()
     local units = StripesAPI.GetUnimportantUnits();
     if units then
@@ -834,12 +855,6 @@ function AddOn:ADDON_LOADED(addonName)
     if StripesDB.spellCache then
         StripesDB.spellCache = nil;
     end
-
-    StripesSpellDB      = StripesSpellDB or {};
-    StripesSpellDB.data = StripesSpellDB.data or {};
-
-    SpellCacheUpdater.Load(StripesSpellDB);
-    SpellCacheUpdater.Build();
 
     self:ForAllModules('StartUp');
     self:ForAllNameplateModules('StartUp');
