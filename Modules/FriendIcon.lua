@@ -13,9 +13,9 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');
-    icon:SetPoint('LEFT', unitframe.name, 'RIGHT', 2, -1);
-    icon:SetSize(10, 10);
-    icon:SetAtlas('UI-HUD-UnitFrame-Player-Group-FriendOnlineIcon-2x');
+    icon:SetPoint('LEFT', unitframe.name, 'RIGHT', 0, 0);
+    icon:SetSize(12, 12);
+    icon:SetAtlas('groupfinder-icon-friend');
 
     frame.icon = icon;
 
