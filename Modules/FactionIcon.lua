@@ -20,8 +20,8 @@ local function Create(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');
-    PixelUtil.SetPoint(icon, 'RIGHT', unitframe.name, 'LEFT', -2, 0);
-    PixelUtil.SetSize(icon, 12, 12);
+    icon:SetPoint('RIGHT', unitframe.name, 'LEFT', -2, 0);
+    icon:SetSize(12, 12);
 
     frame.icon = icon;
 
