@@ -328,20 +328,174 @@ local function DefaultColor(frame)
     end
 end
 
-local function SetInitialTruncatedNameAnchor(unitframe, isLeftH, isCenterH, isRightH)
-    if not TRUNCATE then
-        return;
-    end
+-- 'OFFSET_[XY]' will be replaced with OFFSET_[XY]
+local namePositions = {
+    [1] = { -- LEFT
+        justifyH = 'LEFT',
+        positions = {
+            truncate = {
+                [1] = { -- TOP
+                    points = {
+                        { 'RIGHT', 'RIGHT', 0, 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
+                        { 'BOTTOM', 'TOP', 0, 'OFFSET_Y' },
+                    }
+                },
 
-    local offsetX1 = isLeftH and 0 or OFFSET_X;
-    local offsetY1 = 0;
+                [2] = { -- CENTER 
+                    points = {
+                        { 'RIGHT', 'RIGHT', 0, 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                },
 
-    local offsetX2 = isRightH and 0 or OFFSET_X;
-    local offsetY2 = 0;
+                [3] = { -- BOTTOM
+                    points = {
+                        { 'RIGHT', 'RIGHT', 0, 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
+                        { 'TOP', 'BOTTOM', 0, 'OFFSET_Y' },
+                    }
+                }
+            },
 
-    PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', offsetX1, offsetY1);
-    PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', offsetX2, offsetY2);
-end
+            nontruncate = {
+                [1] = { -- TOP
+                    points = {
+                        { 'RIGHT', 'RIGHT', 0, 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
+                        { 'BOTTOMLEFT', 'TOPLEFT', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                },
+
+                [2] = { -- CENTER 
+                    points = {
+                        { 'RIGHT', 'RIGHT', 0, 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                },
+
+                [3] = { -- BOTTOM
+                    points = {
+                        { 'RIGHT', 'RIGHT', 0, 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
+                        { 'TOPLEFT', 'BOTTOMLEFT', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                }
+            },
+        },
+    },
+
+    [2] = { -- CENTER
+        justifyH = 'CENTER',
+        positions = {
+            truncate = {
+                [1] = { -- TOP
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
+                        { 'BOTTOM', 'TOP', 0, 'OFFSET_Y' },
+                    }
+                },
+
+                [2] = { -- CENTER 
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 'OFFSET_Y' },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                },
+
+                [3] = { -- BOTTOM
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
+                        { 'TOP', 'BOTTOM', 0, 'OFFSET_Y' },
+                    }
+                }
+            },
+
+            nontruncate = {
+                [1] = { -- TOP
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
+                        { 'BOTTOM', 'TOP', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                },
+
+                [2] = { -- CENTER 
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
+                        { 'CENTER', 'CENTER', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                },
+
+                [3] = { -- BOTTOM
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
+                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
+                        { 'TOP', 'BOTTOM', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                }
+            },
+        },
+    },
+
+    [3] = { -- RIGHT
+        justifyH = 'RIGHT',
+        positions = {
+            truncate = {
+                [1] = { -- TOP
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
+                        { 'LEFT', 'LEFT', 0, 0 },
+                        { 'BOTTOM', 'TOP', 0, 'OFFSET_Y' },
+                    }
+                },
+
+                [2] = { -- CENTER 
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 'OFFSET_Y' },
+                        { 'LEFT', 'LEFT', 0, 'OFFSET_Y' },
+                    }
+                },
+
+                [3] = { -- BOTTOM
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
+                        { 'LEFT', 'LEFT', 0, 0 },
+                        { 'TOP', 'BOTTOM', 0, 'OFFSET_Y' },
+                    }
+                }
+            },
+
+            nontruncate = {
+                [1] = { -- TOP
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
+                        { 'LEFT', 'LEFT', 0, 0 },
+                        { 'BOTTOMRIGHT', 'TOPRIGHT', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                },
+
+                [2] = { -- CENTER 
+                    points = {
+                        { 'LEFT', 'LEFT', 0, 0 },
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                },
+
+                [3] = { -- BOTTOM
+                    points = {
+                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
+                        { 'LEFT', 'LEFT', 0, 0 },
+                        { 'TOPRIGHT', 'BOTTOMRIGHT', 'OFFSET_X', 'OFFSET_Y' },
+                    }
+                }
+            },
+        },
+    },
+};
 
 local function UpdateAnchor(unitframe)
     unitframe.name:ClearAllPoints();
@@ -355,71 +509,22 @@ local function UpdateAnchor(unitframe)
         return;
     end
 
-    local isLeftH, isCenterH, isRightH  = POSITION == 1, POSITION == 2, POSITION == 3;
-    local isTopV,  isCenterV, isBottomV = POSITION_V == 1, POSITION_V == 2, POSITION_V == 3;
+    local positionsTable        = namePositions[POSITION];
+    local truncateModeTable     = TRUNCATE and positionsTable.positions.truncate or positionsTable.positions.nontruncate;
+    local verticalPositionTable = truncateModeTable[POSITION_V];
+
+    local points = verticalPositionTable.points;
+    local justifyH = positionsTable.justifyH;
 
     unitframe.name:SetParent(unitframe.NameHolder or unitframe.healthBar);
     unitframe.name:SetDrawLayer('OVERLAY', 7);
-    unitframe.name:SetJustifyH(isLeftH and 'LEFT' or isCenterH and 'CENTER' or 'RIGHT');
+    unitframe.name:SetJustifyH(justifyH);
 
-    SetInitialTruncatedNameAnchor(unitframe, isLeftH, isCenterH, isRightH);
+    for _, point in ipairs(points) do
+        local xOffset = point[3] == 'OFFSET_X' and OFFSET_X or point[3];
+        local yOffset = point[4] == 'OFFSET_Y' and OFFSET_Y or point[4];
 
-    if isLeftH then -- LEFT
-        if TRUNCATE then
-            if isTopV then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
-            elseif isCenterV then
-                PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, OFFSET_Y);
-            elseif isBottomV then
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
-            end
-        else
-            if isTopV then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', OFFSET_X, OFFSET_Y);
-            elseif isCenterV then
-                PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, OFFSET_Y);
-            elseif isBottomV then
-                PixelUtil.SetPoint(unitframe.name, 'TOPLEFT', unitframe.healthBar, 'BOTTOMLEFT', OFFSET_X, OFFSET_Y);
-            end
-        end
-    elseif isCenterH then -- CENTER
-        if TRUNCATE then
-            if isTopV then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
-            elseif isCenterV then
-                PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, OFFSET_Y);
-                PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', OFFSET_X, OFFSET_Y);
-            elseif isBottomV then
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
-            end
-        else
-            if isTopV then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', OFFSET_X, OFFSET_Y);
-            elseif isCenterV then
-                PixelUtil.SetPoint(unitframe.name, 'CENTER', unitframe.healthBar, 'CENTER', OFFSET_X, OFFSET_Y);
-            elseif isBottomV then
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', OFFSET_X, OFFSET_Y);
-            end
-        end
-    elseif isRightH then -- RIGHT
-        if TRUNCATE then
-            if isTopV then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, OFFSET_Y);
-            elseif isCenterV then
-                PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, OFFSET_Y);
-                PixelUtil.SetPoint(unitframe.name, 'LEFT', unitframe.healthBar, 'LEFT', 0, OFFSET_Y);
-            elseif isBottomV then
-                PixelUtil.SetPoint(unitframe.name, 'TOP', unitframe.healthBar, 'BOTTOM', 0, OFFSET_Y);
-            end
-        else
-            if isTopV then
-                PixelUtil.SetPoint(unitframe.name, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', OFFSET_X, OFFSET_Y);
-            elseif isCenterV then
-                PixelUtil.SetPoint(unitframe.name, 'RIGHT', unitframe.healthBar, 'RIGHT', OFFSET_X, OFFSET_Y);
-            elseif isBottomV then
-                PixelUtil.SetPoint(unitframe.name, 'TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', OFFSET_X, OFFSET_Y);
-            end
-        end
+        PixelUtil.SetPoint(unitframe.name, point[1], unitframe.healthBar, point[2], xOffset, yOffset);
     end
 
     PixelUtil.SetHeight(unitframe.name, unitframe.name:GetLineHeight() + 1);
