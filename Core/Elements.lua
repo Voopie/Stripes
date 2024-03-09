@@ -2696,14 +2696,16 @@ do
         insets   = { left = 0, right = 0, top = 0, bottom = 0 },
     };
 
-    local FONT_BACKDROP = {
+    local POPUP_BACKDROP = {
         bgFile   = 'Interface\\Buttons\\WHITE8x8',
         insets   = { left = 1, right = 1, top = 1, bottom = 1 },
+        edgeFile = 'Interface\\Buttons\\WHITE8x8',
+        edgeSize = 1,
     };
 
     local Fader = CreateFrame('Button', nil, UIParent, 'BackdropTemplate');
     Fader:SetBackdrop(BACKDROP);
-    Fader:SetBackdropColor(0, 0, 0, 0.75);
+    Fader:SetBackdropColor(0, 0, 0, 0.95);
     Fader:Hide();
     Fader:SetScript('OnClick', function(self)
         self.Holder:Hide();
@@ -2714,11 +2716,12 @@ do
         local frame = Mixin(CreateFrame('Button', nil, parent, 'BackdropTemplate'), E.PixelPerfectMixin);
         frame:SetPosition('CENTER', Fader, 'CENTER', 0, 40);
         frame:SetSize(600, 300);
-        frame:SetBackdrop(FONT_BACKDROP);
+        frame:SetBackdrop(POPUP_BACKDROP);
         frame:SetBackdropColor(0.1, 0.1, 0.1, 1);
+        frame:SetBackdropBorderColor(0.2, 0.2, 0.2, 1);
         frame:Hide();
 
-        frame.Title = frame:CreateFontString(nil, 'ARTWORK', 'StripesOptionsHighlightFont');
+        frame.Title = frame:CreateFontString(nil, 'ARTWORK', 'StripesLargeHighlightFont');
         frame.Title:SetPoint('BOTTOM', frame, 'TOP', 0, 2);
 
         frame:HookScript('OnShow', function(self)
@@ -2749,6 +2752,19 @@ do
         frame.SetTitle = function(self, text)
             self.Title:SetText(text);
         end
+
+        frame.CloseButton = CreateFrame('Button', nil, frame);
+        frame.CloseButton:SetPoint('BOTTOMRIGHT', frame, 'TOPRIGHT', -4, 4);
+        frame.CloseButton:SetSize(14, 14);
+        frame.CloseButton:SetNormalTexture(S.Media.Icons.TEXTURE);
+        frame.CloseButton:GetNormalTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.CROSS_WHITE));
+        frame.CloseButton:GetNormalTexture():SetVertexColor(0.7, 0.7, 0.7, 1);
+        frame.CloseButton:SetHighlightTexture(S.Media.Icons.TEXTURE, 'BLEND');
+        frame.CloseButton:GetHighlightTexture():SetTexCoord(unpack(S.Media.Icons.COORDS.CROSS_WHITE));
+        frame.CloseButton:GetHighlightTexture():SetVertexColor(1, 0.85, 0, 1);
+        frame.CloseButton:SetScript('OnClick', function(self)
+            self:GetParent():Hide();
+        end);
 
         frame.OpenButton = E.CreateButton(parent);
         frame.OpenButton:SetHighlightColor('cccccc');
