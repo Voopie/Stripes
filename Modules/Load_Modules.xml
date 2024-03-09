@@ -18,8 +18,7 @@
     <Script file="TargetName.lua" />
     <Script file="TargetIndicator.lua" />
     <Script file="HideNonCasting.lua" />
-    <Script file="WhoInterrupted.lua" />
-    <Script file="SpellInterrupted.lua" />
+    <Script file="Interrupted.lua" />
     <Script file="Visibility.lua" />
     <Script file="MythicPlusPercentage.lua" />
     <Script file="MythicPlusExplosiveOrbs.lua" />

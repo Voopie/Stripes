@@ -1,24 +1,38 @@
 local S, L, O, U, D, E = unpack((select(2, ...)));
-local Module = S:NewNameplateModule('SpellInterrupted');
+local Module = S:NewNameplateModule('Interrupted');
 local Stripes = S:GetNameplateModule('Handler');
 
+-- Lua API
+local string_format, bit_band = string.format, bit.band;
+
 -- WoW API
-local UnitName, UnitExists, GetSpellTexture, CombatLogGetCurrentEventInfo = UnitName, UnitExists, GetSpellTexture, CombatLogGetCurrentEventInfo;
+local UnitName, UnitExists, GetPlayerInfoByGUID, GetSpellTexture, CombatLogGetCurrentEventInfo =
+      UnitName, UnitExists, GetPlayerInfoByGUID, GetSpellTexture, CombatLogGetCurrentEventInfo;
 
 -- Stripes API
 local U_UnitHasAura, U_UnitIsPetByGUID, U_GetUnitColor, U_GetClassColor =
       U.UnitHasAura, U.UnitIsPetByGUID, U.GetUnitColor, U.GetClassColor;
-local UpdateFontObject = Stripes.UpdateFontObject;
 local GetCachedName = Stripes.GetCachedName;
+local UpdateFontObject = Stripes.UpdateFontObject;
+
+-- Libraries
+local LPS = S.Libraries.LPS;
+local LPS_GetSpellInfo = LPS.GetSpellInfo;
+local LPS_CC_TYPES = bit.bor(LPS.constants.DISORIENT, LPS.constants.INCAPACITATE, LPS.constants.STUN);
+local LPS_CROWD_CTRL = LPS.constants.CROWD_CTRL;
 
 -- Local Config
-local ENABLED, SIZE, COUNTDOWN_ENABLED, CASTER_NAME_SHOW, FRAME_STRATA;
-local POINT, RELATIVE_POINT, OFFSET_X, OFFSET_Y;
-local DRAW_SWIPE, DRAW_EDGE;
-local SHOW_INTERRUPTED_ICON;
+local WI_ENABLED;
+local SI_ENABLED, SI_SIZE, SI_COUNTDOWN_ENABLED, SI_CASTER_NAME_SHOW, SI_FRAME_STRATA, SI_POINT, SI_RELATIVE_POINT, SI_OFFSET_X, SI_OFFSET_Y, SI_DRAW_SWIPE, SI_DRAW_EDGE, SI_SHOW_INTERRUPTED_ICON;
 
 local StripesSpellInterruptedCooldownFont = CreateFont('StripesSpellInterruptedCooldownFont');
 local StripesSpellInterruptedCasterFont   = CreateFont('StripesSpellInterruptedCasterFont');
+
+local blacklist = {
+    [197214] = true, -- Sundering (Shaman Enhancement talent)
+};
+
+local INTERRUPTED_FORMAT = '|cff%s' .. INTERRUPTED .. '! [%s]|r';
 
 local durations = {
     [ 47528] = 3, -- Death Knight -- Mind Freeze
@@ -66,7 +80,7 @@ local function Create(unitframe)
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');
     icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
-    icon:SetSize(SIZE, SIZE);
+    icon:SetSize(SI_SIZE, SI_SIZE);
 
     local border = frame:CreateTexture(nil, 'BORDER');
     border:SetPoint('TOPLEFT', icon, 'TOPLEFT', -1, 1);
@@ -75,9 +89,9 @@ local function Create(unitframe)
 
     local cooldown = CreateFrame('Cooldown', nil, frame, 'CooldownFrameTemplate');
     cooldown:SetAllPoints(icon);
-    cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-    cooldown:SetDrawEdge(DRAW_EDGE);
-    cooldown:SetDrawSwipe(DRAW_SWIPE);
+    cooldown:SetHideCountdownNumbers(not SI_COUNTDOWN_ENABLED);
+    cooldown:SetDrawEdge(SI_DRAW_EDGE);
+    cooldown:SetDrawSwipe(SI_DRAW_SWIPE);
     cooldown:GetRegions():SetFontObject(StripesSpellInterruptedCooldownFont);
     cooldown:HookScript('OnCooldownDone', function(self)
         self:GetParent().expTime = 0;
@@ -108,26 +122,26 @@ local function Update(unitframe)
 
     local spellInterruptedFrame = unitframe.SpellInterrupted;
 
-    if not ENABLED then
+    if not SI_ENABLED then
         spellInterruptedFrame:Hide();
         return;
     end
 
-    spellInterruptedFrame:SetFrameStrata(FRAME_STRATA == 1 and spellInterruptedFrame:GetParent():GetFrameStrata() or FRAME_STRATA);
+    spellInterruptedFrame:SetFrameStrata(SI_FRAME_STRATA == 1 and spellInterruptedFrame:GetParent():GetFrameStrata() or SI_FRAME_STRATA);
 
-    spellInterruptedFrame.cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-    spellInterruptedFrame.cooldown:SetDrawEdge(DRAW_EDGE);
-    spellInterruptedFrame.cooldown:SetDrawSwipe(DRAW_SWIPE);
+    spellInterruptedFrame.cooldown:SetHideCountdownNumbers(not SI_COUNTDOWN_ENABLED);
+    spellInterruptedFrame.cooldown:SetDrawEdge(SI_DRAW_EDGE);
+    spellInterruptedFrame.cooldown:SetDrawSwipe(SI_DRAW_SWIPE);
 
     spellInterruptedFrame.icon:ClearAllPoints();
-    PixelUtil.SetPoint(spellInterruptedFrame.icon, POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
-    spellInterruptedFrame.icon:SetSize(SIZE, SIZE);
+    PixelUtil.SetPoint(spellInterruptedFrame.icon, SI_POINT, unitframe.healthBar, SI_RELATIVE_POINT, SI_OFFSET_X, SI_OFFSET_Y);
+    spellInterruptedFrame.icon:SetSize(SI_SIZE, SI_SIZE);
 
     spellInterruptedFrame:SetShown(spellInterruptedFrame.expTime > GetTime() and unitframe.data.unitGUID == spellInterruptedFrame.destGUID);
 end
 
 local function UpdateByAura(unitframe)
-    if not ENABLED or not unitframe.data.unit then
+    if not SI_ENABLED or not unitframe.data.unit then
         return;
     end
 
@@ -148,7 +162,7 @@ local function UpdateByAura(unitframe)
 
     unitframe.SpellInterrupted.icon:SetTexture(aura.icon);
 
-    CooldownFrame_Set(spellInterruptedFrame.cooldown, aura.expirationTime - aura.duration, aura.duration, aura.duration > 0, DRAW_EDGE);
+    CooldownFrame_Set(spellInterruptedFrame.cooldown, aura.expirationTime - aura.duration, aura.duration, aura.duration > 0, SI_DRAW_EDGE);
 
     spellInterruptedFrame.expTime  = aura.expirationTime;
     spellInterruptedFrame.destGUID = unitframe.data.unitGUID;
@@ -156,7 +170,7 @@ local function UpdateByAura(unitframe)
 
     local sourceUnit = aura.sourceUnit;
 
-    if CASTER_NAME_SHOW and sourceUnit then
+    if SI_CASTER_NAME_SHOW and sourceUnit then
         local useTranslit, useReplaceDiacritics, useCut = true, true, false;
         local name = GetCachedName(UnitName(sourceUnit), useTranslit, useReplaceDiacritics, useCut);
 
@@ -170,7 +184,7 @@ local function UpdateByAura(unitframe)
     spellInterruptedFrame:Show();
 end
 
-local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId)
+local function OnInterruptIcon(unitframe, spellId, casterNameText, casterNameUnit, destGUID, extraSpellId)
     if not spellId then
         unitframe.SpellInterrupted.expTime  = 0;
         unitframe.SpellInterrupted.destGUID = nil;
@@ -183,7 +197,7 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
 
     local spellInterruptedFrame = unitframe.SpellInterrupted;
 
-    spellInterruptedFrame.icon:SetTexture(GetSpellTexture(SHOW_INTERRUPTED_ICON and extraSpellId or spellId));
+    spellInterruptedFrame.icon:SetTexture(GetSpellTexture(SI_SHOW_INTERRUPTED_ICON and extraSpellId or spellId));
 
     CooldownFrame_Set(spellInterruptedFrame.cooldown, GetTime(), duration, duration > 0, true);
 
@@ -191,28 +205,10 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
     spellInterruptedFrame.destGUID    = destGUID;
     spellInterruptedFrame.onInterrupt = true;
 
-    if CASTER_NAME_SHOW and (sourceGUID and sourceGUID ~= '') then
-        local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(sourceGUID);
-        local casterNameText, casterNameUnit;
-
-        if name then
-            casterNameText = name;
-            casterNameUnit = englishClass;
-        elseif U_UnitIsPetByGUID(sourceGUID) then
-            casterNameText = sourceName
-            casterNameUnit = sourceName;
-        end
-
-        if casterNameText and casterNameUnit then
-            local useTranslit, useReplaceDiacritics, useCut = true, true, false;
-            casterNameText = GetCachedName(casterNameText, useTranslit, useReplaceDiacritics, useCut);
-
-            spellInterruptedFrame.casterName:SetText(casterNameText);
-            spellInterruptedFrame.casterName:SetTextColor(U_GetClassColor(casterNameUnit, 2));
-            spellInterruptedFrame.casterName:Show();
-        else
-            spellInterruptedFrame.casterName:Hide();
-        end
+    if SI_CASTER_NAME_SHOW and casterNameText and casterNameUnit then
+        spellInterruptedFrame.casterName:SetText(casterNameText);
+        spellInterruptedFrame.casterName:SetTextColor(U_GetClassColor(casterNameUnit, 2));
+        spellInterruptedFrame.casterName:Show();
     else
         spellInterruptedFrame.casterName:Hide();
     end
@@ -220,20 +216,75 @@ local function OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName,
     spellInterruptedFrame:Show();
 end
 
-local function HandleCombatLogEvent()
-    local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId, _, _, extraSpellId = CombatLogGetCurrentEventInfo();
 
-    local isInterrupt = subEvent == 'SPELL_INTERRUPT';
-
-    if not isInterrupt then
+local function OnInterruptCastBar(unitframe, casterNameText, casterNameUnit)
+    if not unitframe.castingBar then
         return;
     end
 
-    Module:ForAllActiveUnitFrames(function(unitframe)
-        if UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
-            OnInterrupt(unitframe, spellId, sourceGUID, destGUID, sourceName, extraSpellId);
-        end
-    end);
+    if casterNameText and casterNameUnit then
+        unitframe.castingBar.Text:SetText(string_format(INTERRUPTED_FORMAT, U_GetClassColor(casterNameUnit, 1), casterNameText));
+    end
+end
+
+local function GetCasterInfo(sourceGUID, sourceName)
+    if not sourceGUID or sourceGUID == '' then
+        return;
+    end
+
+    local _, englishClass, _, _, _, name = GetPlayerInfoByGUID(sourceGUID);
+    local casterNameText, casterNameUnit;
+
+    if name then
+        casterNameText = name;
+        casterNameUnit = englishClass;
+    elseif U_UnitIsPetByGUID(sourceGUID) then
+        casterNameText = sourceName;
+        casterNameUnit = sourceName;
+    end
+
+    if casterNameText and casterNameUnit then
+        local useTranslit, useReplaceDiacritics, useCut = true, true, false;
+        casterNameText = GetCachedName(casterNameText, useTranslit, useReplaceDiacritics, useCut);
+
+        return casterNameUnit, casterNameText;
+    end
+end
+
+-- SPELL_INTERRUPT is used by both (WI & SI)
+-- SPELL_AURA_APPLIED is used only by WI
+local function HandleCombatLogEvent()
+    local _, subEvent, _, sourceGUID, sourceName, _, _, destGUID, _, _, _, spellId, _, _, extraSpellId = CombatLogGetCurrentEventInfo();
+
+    local isInterrupt   = subEvent == 'SPELL_INTERRUPT';
+    local isAuraApplied = subEvent == 'SPELL_AURA_APPLIED' and WI_ENABLED and not blacklist[spellId];
+
+    if not (isInterrupt or isAuraApplied) then
+        return;
+    end
+
+    local isCrowdControl = false;
+
+    if isAuraApplied then
+        local flags, _, _, cc = LPS_GetSpellInfo(LPS, spellId);
+        isCrowdControl = flags and cc and bit_band(flags, LPS_CROWD_CTRL) > 0 and bit_band(cc, LPS_CC_TYPES) > 0;
+    end
+
+    if isInterrupt or isCrowdControl then
+        Module:ForAllActiveUnitFrames(function(unitframe)
+            if UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
+                local casterNameUnit, casterNameText = GetCasterInfo(sourceGUID, sourceName);
+
+                if WI_ENABLED then
+                    OnInterruptCastBar(unitframe, casterNameUnit, casterNameText);
+                end
+
+                if SI_ENABLED and isInterrupt and not isCrowdControl then
+                    OnInterruptIcon(unitframe, spellId, casterNameText, casterNameUnit, destGUID, extraSpellId);
+                end
+            end
+        end);
+    end
 end
 
 function Module:UnitAdded(unitframe)
@@ -258,26 +309,25 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    ENABLED           = O.db.spell_interrupted_icon;
-    SIZE              = O.db.spell_interrupted_icon_size;
-    COUNTDOWN_ENABLED = O.db.spell_interrupted_icon_countdown_show;
-    CASTER_NAME_SHOW  = O.db.spell_interrupted_icon_caster_name_show;
-    FRAME_STRATA      = O.db.spell_interrupted_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.spell_interrupted_icon_frame_strata] or 1;
+    WI_ENABLED   = O.db.who_interrupted_enabled;
+    SI_ENABLED = O.db.spell_interrupted_icon;
 
-    POINT          = O.Lists.frame_points[O.db.spell_interrupted_icon_point] or 'LEFT';
-    RELATIVE_POINT = O.Lists.frame_points[O.db.spell_interrupted_icon_relative_point] or 'RIGHT';
-    OFFSET_X       = O.db.spell_interrupted_icon_offset_x;
-    OFFSET_Y       = O.db.spell_interrupted_icon_offset_y;
-
-    DRAW_SWIPE = O.db.spell_interrupted_icon_cooldown_draw_swipe;
-    DRAW_EDGE  = O.db.spell_interrupted_icon_cooldown_draw_edge;
-
-    SHOW_INTERRUPTED_ICON = O.db.spell_interrupted_icon_show_interrupted_icon;
+    SI_SIZE                  = O.db.spell_interrupted_icon_size;
+    SI_COUNTDOWN_ENABLED     = O.db.spell_interrupted_icon_countdown_show;
+    SI_CASTER_NAME_SHOW      = O.db.spell_interrupted_icon_caster_name_show;
+    SI_FRAME_STRATA          = O.db.spell_interrupted_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.spell_interrupted_icon_frame_strata] or 1;
+    SI_POINT                 = O.Lists.frame_points[O.db.spell_interrupted_icon_point] or 'LEFT';
+    SI_RELATIVE_POINT        = O.Lists.frame_points[O.db.spell_interrupted_icon_relative_point] or 'RIGHT';
+    SI_OFFSET_X              = O.db.spell_interrupted_icon_offset_x;
+    SI_OFFSET_Y              = O.db.spell_interrupted_icon_offset_y;
+    SI_DRAW_SWIPE            = O.db.spell_interrupted_icon_cooldown_draw_swipe;
+    SI_DRAW_EDGE             = O.db.spell_interrupted_icon_cooldown_draw_edge;
+    SI_SHOW_INTERRUPTED_ICON = O.db.spell_interrupted_icon_show_interrupted_icon;
 
     UpdateFontObject(StripesSpellInterruptedCooldownFont, O.db.spell_interrupted_icon_countdown_font_value, O.db.spell_interrupted_icon_countdown_font_size, O.db.spell_interrupted_icon_countdown_font_flag, O.db.spell_interrupted_icon_countdown_font_shadow);
     UpdateFontObject(StripesSpellInterruptedCasterFont, O.db.spell_interrupted_icon_caster_name_font_value, O.db.spell_interrupted_icon_caster_name_font_size, O.db.spell_interrupted_icon_caster_name_font_flag, O.db.spell_interrupted_icon_caster_name_font_shadow);
 
-    if ENABLED then
+    if WI_ENABLED or SI_ENABLED then
         self:Enable();
     else
         self:Disable();
