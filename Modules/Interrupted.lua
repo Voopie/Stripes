@@ -276,7 +276,7 @@ local function HandleCombatLogEvent()
                 local casterNameUnit, casterNameText = GetCasterInfo(sourceGUID, sourceName);
 
                 if WI_ENABLED then
-                    OnInterruptCastBar(unitframe, casterNameUnit, casterNameText);
+                    OnInterruptCastBar(unitframe, casterNameText, casterNameUnit);
                 end
 
                 if SI_ENABLED and isInterrupt and not isCrowdControl then
@@ -309,7 +309,7 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateLocalConfig()
-    WI_ENABLED   = O.db.who_interrupted_enabled;
+    WI_ENABLED = O.db.who_interrupted_enabled;
     SI_ENABLED = O.db.spell_interrupted_icon;
 
     SI_SIZE                  = O.db.spell_interrupted_icon_size;
