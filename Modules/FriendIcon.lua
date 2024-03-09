@@ -1,6 +1,8 @@
 local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('FriendIcon');
 
+local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
+
 -- Local Config
 local ENABLED;
 
@@ -34,9 +36,10 @@ local function Update(unitframe)
         return;
     end
 
-    local unitGUID = unitframe.data.unitGUID;
+    local unitGUID   = unitframe.data.unitGUID;
+    local shouldShow = ShouldShowName(unitframe) and unitGUID and C_FriendList.IsFriend(unitGUID);
 
-    unitframe.FriendIcon:SetShown(unitGUID and C_FriendList.IsFriend(unitGUID));
+    unitframe.FriendIcon:SetShown(shouldShow);
 end
 
 function Module:UnitAdded(unitframe)
