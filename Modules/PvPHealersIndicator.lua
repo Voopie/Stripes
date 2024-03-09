@@ -90,10 +90,8 @@ local function UpdateData()
     local numOpps = GetNumArenaOpponentSpecs();
 
     if numOpps == 0 then
-        local _, name, talentSpec;
-
         for i = 1, GetNumBattlefieldScores() do
-            name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
+            local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, talentSpec = GetBattlefieldScore(i);
             if name then
                 name = string_gsub(name, '%-' .. string_gsub(D.Player.RealmNormalized, '[%s%-]', ''), '');
                 if name and HealerSpecs[talentSpec] then
