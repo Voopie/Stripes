@@ -59,8 +59,8 @@ local function Update(unitframe)
     combatIndicator:SetShown(ENABLED and not unitframe.data.isPersonal);
 
     combatIndicatorIcon:ClearAllPoints();
-    PixelUtil.SetPoint(combatIndicatorIcon, POINT, combatIndicator, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
-    PixelUtil.SetSize(combatIndicatorIcon, SIZE, SIZE);
+    combatIndicatorIcon:SetPoint(POINT, combatIndicator, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    combatIndicatorIcon:SetSize(SIZE, SIZE);
     combatIndicatorIcon:SetVertexColor(COLOR[1], COLOR[2], COLOR[3], COLOR[4]);
 end
 
