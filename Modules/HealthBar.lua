@@ -678,41 +678,45 @@ local function UpdateBorderSizes(unitframe)
         borderSize, minPixels = 1, 2;
     end
 
-    PixelUtil.SetWidth(unitframe.healthBar.border.Left, borderSize, minPixels);
-    PixelUtil.SetPoint(unitframe.healthBar.border.Left, 'TOPRIGHT', unitframe.healthBar.border, 'TOPLEFT', 0, borderSize, 0, minPixels);
-    PixelUtil.SetPoint(unitframe.healthBar.border.Left, 'BOTTOMRIGHT', unitframe.healthBar.border, 'BOTTOMLEFT', 0, -borderSize, 0, minPixels);
+    local healthBarBorder = unitframe.healthBar.border;
 
-    PixelUtil.SetWidth(unitframe.healthBar.border.Right, borderSize, minPixels);
-    PixelUtil.SetPoint(unitframe.healthBar.border.Right, 'TOPLEFT', unitframe.healthBar.border, 'TOPRIGHT', 0, borderSize, 0, minPixels);
-    PixelUtil.SetPoint(unitframe.healthBar.border.Right, 'BOTTOMLEFT', unitframe.healthBar.border, 'BOTTOMRIGHT', 0, -borderSize, 0, minPixels);
+    PixelUtil.SetWidth(healthBarBorder.Left, borderSize, minPixels);
+    PixelUtil.SetPoint(healthBarBorder.Left, 'TOPRIGHT', healthBarBorder, 'TOPLEFT', 0, borderSize, 0, minPixels);
+    PixelUtil.SetPoint(healthBarBorder.Left, 'BOTTOMRIGHT', healthBarBorder, 'BOTTOMLEFT', 0, -borderSize, 0, minPixels);
 
-    PixelUtil.SetHeight(unitframe.healthBar.border.Bottom, borderSize, minPixels);
-    PixelUtil.SetPoint(unitframe.healthBar.border.Bottom, 'TOPLEFT', unitframe.healthBar.border, 'BOTTOMLEFT', 0, 0);
-    PixelUtil.SetPoint(unitframe.healthBar.border.Bottom, 'TOPRIGHT', unitframe.healthBar.border, 'BOTTOMRIGHT', 0, 0);
+    PixelUtil.SetWidth(healthBarBorder.Right, borderSize, minPixels);
+    PixelUtil.SetPoint(healthBarBorder.Right, 'TOPLEFT', healthBarBorder, 'TOPRIGHT', 0, borderSize, 0, minPixels);
+    PixelUtil.SetPoint(healthBarBorder.Right, 'BOTTOMLEFT', healthBarBorder, 'BOTTOMRIGHT', 0, -borderSize, 0, minPixels);
 
-    if unitframe.healthBar.border.Top then
-        PixelUtil.SetHeight(unitframe.healthBar.border.Top, borderSize, minPixels);
-        PixelUtil.SetPoint(unitframe.healthBar.border.Top, 'BOTTOMLEFT', unitframe.healthBar.border, 'TOPLEFT', 0, 0);
-        PixelUtil.SetPoint(unitframe.healthBar.border.Top, 'BOTTOMRIGHT', unitframe.healthBar.border, 'TOPRIGHT', 0, 0);
+    PixelUtil.SetHeight(healthBarBorder.Bottom, borderSize, minPixels);
+    PixelUtil.SetPoint(healthBarBorder.Bottom, 'TOPLEFT', healthBarBorder, 'BOTTOMLEFT', 0, 0);
+    PixelUtil.SetPoint(healthBarBorder.Bottom, 'TOPRIGHT', healthBarBorder, 'BOTTOMRIGHT', 0, 0);
+
+    if healthBarBorder.Top then
+        PixelUtil.SetHeight(healthBarBorder.Top, borderSize, minPixels);
+        PixelUtil.SetPoint(healthBarBorder.Top, 'BOTTOMLEFT', healthBarBorder, 'TOPLEFT', 0, 0);
+        PixelUtil.SetPoint(healthBarBorder.Top, 'BOTTOMRIGHT', healthBarBorder, 'TOPRIGHT', 0, 0);
     end
 
     if unitframe.data.isPersonal and unitframe.powerBar and unitframe.powerBar:IsShown() then
-        PixelUtil.SetWidth(unitframe.powerBar.border.Left, borderSize, minPixels);
-        PixelUtil.SetPoint(unitframe.powerBar.border.Left, 'TOPRIGHT', unitframe.powerBar.border, 'TOPLEFT', 0, borderSize, 0, minPixels);
-        PixelUtil.SetPoint(unitframe.powerBar.border.Left, 'BOTTOMRIGHT', unitframe.powerBar.border, 'BOTTOMLEFT', 0, -borderSize, 0, minPixels);
+        local powerBarBorder = unitframe.powerBar.border;
 
-        PixelUtil.SetWidth(unitframe.powerBar.border.Right, borderSize, minPixels);
-        PixelUtil.SetPoint(unitframe.powerBar.border.Right, 'TOPLEFT', unitframe.powerBar.border, 'TOPRIGHT', 0, borderSize, 0, minPixels);
-        PixelUtil.SetPoint(unitframe.powerBar.border.Right, 'BOTTOMLEFT', unitframe.powerBar.border, 'BOTTOMRIGHT', 0, -borderSize, 0, minPixels);
+        PixelUtil.SetWidth(powerBarBorder.Left, borderSize, minPixels);
+        PixelUtil.SetPoint(powerBarBorder.Left, 'TOPRIGHT', powerBarBorder, 'TOPLEFT', 0, borderSize, 0, minPixels);
+        PixelUtil.SetPoint(powerBarBorder.Left, 'BOTTOMRIGHT', powerBarBorder, 'BOTTOMLEFT', 0, -borderSize, 0, minPixels);
 
-        PixelUtil.SetHeight(unitframe.powerBar.border.Bottom, borderSize, minPixels);
-        PixelUtil.SetPoint(unitframe.powerBar.border.Bottom, 'TOPLEFT', unitframe.powerBar.border, 'BOTTOMLEFT', 0, 0);
-        PixelUtil.SetPoint(unitframe.powerBar.border.Bottom, 'TOPRIGHT', unitframe.powerBar.border, 'BOTTOMRIGHT', 0, 0);
+        PixelUtil.SetWidth(powerBarBorder.Right, borderSize, minPixels);
+        PixelUtil.SetPoint(powerBarBorder.Right, 'TOPLEFT', powerBarBorder, 'TOPRIGHT', 0, borderSize, 0, minPixels);
+        PixelUtil.SetPoint(powerBarBorder.Right, 'BOTTOMLEFT', powerBarBorder, 'BOTTOMRIGHT', 0, -borderSize, 0, minPixels);
 
-        if unitframe.powerBar.border.Top then
-            PixelUtil.SetHeight(unitframe.powerBar.border.Top, borderSize, minPixels);
-            PixelUtil.SetPoint(unitframe.powerBar.border.Top, 'BOTTOMLEFT', unitframe.powerBar.border, 'TOPLEFT', 0, 0);
-            PixelUtil.SetPoint(unitframe.powerBar.border.Top, 'BOTTOMRIGHT', unitframe.powerBar.border, 'TOPRIGHT', 0, 0);
+        PixelUtil.SetHeight(powerBarBorder.Bottom, borderSize, minPixels);
+        PixelUtil.SetPoint(powerBarBorder.Bottom, 'TOPLEFT', powerBarBorder, 'BOTTOMLEFT', 0, 0);
+        PixelUtil.SetPoint(powerBarBorder.Bottom, 'TOPRIGHT', powerBarBorder, 'BOTTOMRIGHT', 0, 0);
+
+        if powerBarBorder.Top then
+            PixelUtil.SetHeight(powerBarBorder.Top, borderSize, minPixels);
+            PixelUtil.SetPoint(powerBarBorder.Top, 'BOTTOMLEFT', powerBarBorder, 'TOPLEFT', 0, 0);
+            PixelUtil.SetPoint(powerBarBorder.Top, 'BOTTOMRIGHT', powerBarBorder, 'TOPRIGHT', 0, 0);
         end
     end
 end
@@ -754,20 +758,22 @@ local function UpdateClickableArea(unitframe)
     end
 
     if not unitframe.ClickableArea then
-        unitframe.ClickableArea = CreateFrame('Frame', nil, unitframe);
+        local clickableArea = CreateFrame('Frame', nil, unitframe);
 
-        unitframe.ClickableArea.background = unitframe.ClickableArea:CreateTexture(nil, 'BACKGROUND', nil, -7);
-        unitframe.ClickableArea.background:SetTexture('Interface\\Buttons\\WHITE8x8');
-        unitframe.ClickableArea.background:SetAllPoints(unitframe.ClickableArea);
-        unitframe.ClickableArea.background:SetVertexColor(1, 1, 1, 0.3);
+        clickableArea.background = clickableArea:CreateTexture(nil, 'BACKGROUND', nil, -7);
+        clickableArea.background:SetTexture('Interface\\Buttons\\WHITE8x8');
+        clickableArea.background:SetAllPoints(clickableArea);
+        clickableArea.background:SetVertexColor(1, 1, 1, 0.3);
 
-        unitframe.ClickableArea.border = unitframe.ClickableArea:CreateTexture(nil, 'BACKGROUND', nil, -8);
-        unitframe.ClickableArea.border:SetTexture('Interface\\Buttons\\WHITE8x8');
-        unitframe.ClickableArea.border:SetPoint('TOPLEFT', unitframe.ClickableArea, 'TOPLEFT', -2, 2);
-        unitframe.ClickableArea.border:SetPoint('BOTTOMRIGHT', unitframe.ClickableArea, 'BOTTOMRIGHT', 2, -2);
-        unitframe.ClickableArea.border:SetVertexColor(0.3, 0.3, 0.3, 0.8);
+        clickableArea.border = clickableArea:CreateTexture(nil, 'BACKGROUND', nil, -8);
+        clickableArea.border:SetTexture('Interface\\Buttons\\WHITE8x8');
+        clickableArea.border:SetPoint('TOPLEFT', clickableArea, 'TOPLEFT', -2, 2);
+        clickableArea.border:SetPoint('BOTTOMRIGHT', clickableArea, 'BOTTOMRIGHT', 2, -2);
+        clickableArea.border:SetVertexColor(0.3, 0.3, 0.3, 0.8);
 
-        unitframe.ClickableArea:SetPoint('CENTER');
+        clickableArea:SetPoint('CENTER');
+
+        unitframe.ClickableArea = clickableArea;
     end
 
     if unitframe.data.commonReaction == 'ENEMY' then
@@ -794,14 +800,17 @@ local function UpdateCustomBorder(unitframe)
         return;
     end
 
-    if DB.CUSTOM_BORDER_ENABLED then
-        unitframe.healthBar.CustomBorderTexture:SetTexture(DB.CUSTOM_BORDER_PATH);
-        unitframe.healthBar.CustomBorderTexture:SetPoint('CENTER', DB.CUSTOM_BORDER_X_OFFSET, DB.CUSTOM_BORDER_Y_OFFSET);
-        unitframe.healthBar.CustomBorderTexture:SetSize(DB.CUSTOM_BORDER_WIDTH, unitframe.data.minus and DB.CUSTOM_BORDER_HEIGHT_MINUS or DB.CUSTOM_BORDER_HEIGHT);
-        unitframe.healthBar.CustomBorderTexture:Show();
-    else
+    if not DB.CUSTOM_BORDER_ENABLED then
         unitframe.healthBar.CustomBorderTexture:Hide();
+        return;
     end
+
+    local healthBarCustomBorderTexture = unitframe.healthBar.CustomBorderTexture;
+
+    healthBarCustomBorderTexture:SetTexture(DB.CUSTOM_BORDER_PATH);
+    healthBarCustomBorderTexture:SetPoint('CENTER', DB.CUSTOM_BORDER_X_OFFSET, DB.CUSTOM_BORDER_Y_OFFSET);
+    healthBarCustomBorderTexture:SetSize(DB.CUSTOM_BORDER_WIDTH, unitframe.data.minus and DB.CUSTOM_BORDER_HEIGHT_MINUS or DB.CUSTOM_BORDER_HEIGHT);
+    healthBarCustomBorderTexture:Show();
 end
 
 local function UpdateBackgroundTexture(unitframe)
@@ -888,10 +897,12 @@ local function CreateSpark(unitframe)
         return;
     end
 
-    unitframe.healthBar.Spark = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
-    unitframe.healthBar.Spark:SetPoint('CENTER', unitframe.healthBar:GetStatusBarTexture(), 'RIGHT', 0, 0);
-    unitframe.healthBar.Spark:SetTexture('Interface\\CastingBar\\UI-CastingBar-Spark');
-    unitframe.healthBar.Spark:SetBlendMode('ADD');
+    local spark = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
+    spark:SetPoint('CENTER', unitframe.healthBar:GetStatusBarTexture(), 'RIGHT', 0, 0);
+    spark:SetTexture('Interface\\CastingBar\\UI-CastingBar-Spark');
+    spark:SetBlendMode('ADD');
+
+    unitframe.healthBar.Spark = spark;
 end
 
 local function UpdateSpark(unitframe)
