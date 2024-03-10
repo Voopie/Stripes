@@ -53,18 +53,6 @@ function Module:UnitAdded(unitframe)
     self:UpdateVisibility(unitframe);
 end
 
-function Module:UpdateLocalConfig()
-    ENABLED               = O.db.hide_non_casting_enabled;
-    MODIFIER              = O.db.hide_non_casting_modifier;
-    SHOW_UNINTERRUPTIBLE  = O.db.hide_non_casting_show_uninterruptible;
-
-    if ENABLED then
-        self:Enable();
-    else
-        self:Disable();
-    end
-end
-
 function Module:MODIFIER_STATE_CHANGED(key, down)
     if key == modifiers[MODIFIER] then
         if down == 1 then
@@ -75,16 +63,20 @@ function Module:MODIFIER_STATE_CHANGED(key, down)
     end
 end
 
-function Module:Enable()
-    self:RegisterEvent('MODIFIER_STATE_CHANGED');
-    self:RegisterEvent('UNIT_SPELLCAST_START', 'CheckCasting');
-    self:RegisterEvent('UNIT_SPELLCAST_STOP', 'CheckCasting');
-end
+function Module:UpdateLocalConfig()
+    ENABLED               = O.db.hide_non_casting_enabled;
+    MODIFIER              = O.db.hide_non_casting_modifier;
+    SHOW_UNINTERRUPTIBLE  = O.db.hide_non_casting_show_uninterruptible;
 
-function Module:Disable()
-    self:UnregisterEvent('MODIFIER_STATE_CHANGED');
-    self:UnregisterEvent('UNIT_SPELLCAST_START');
-    self:UnregisterEvent('UNIT_SPELLCAST_STOP');
+    if ENABLED then
+        self:RegisterEvent('MODIFIER_STATE_CHANGED');
+        self:RegisterEvent('UNIT_SPELLCAST_START', 'CheckCasting');
+        self:RegisterEvent('UNIT_SPELLCAST_STOP', 'CheckCasting');
+    else
+        self:UnregisterEvent('MODIFIER_STATE_CHANGED');
+        self:UnregisterEvent('UNIT_SPELLCAST_START');
+        self:UnregisterEvent('UNIT_SPELLCAST_STOP');
+    end
 end
 
 function Module:StartUp()

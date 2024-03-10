@@ -328,18 +328,10 @@ function Module:UpdateLocalConfig()
     UpdateFontObject(StripesSpellInterruptedCasterFont, O.db.spell_interrupted_icon_caster_name_font_value, O.db.spell_interrupted_icon_caster_name_font_size, O.db.spell_interrupted_icon_caster_name_font_flag, O.db.spell_interrupted_icon_caster_name_font_shadow);
 
     if WI_ENABLED or SI_ENABLED then
-        self:Enable();
+        self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED', HandleCombatLogEvent);
     else
-        self:Disable();
+        self:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED');
     end
-end
-
-function Module:Enable()
-    self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED', HandleCombatLogEvent);
-end
-
-function Module:Disable()
-    self:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED');
 end
 
 function Module:StartUp()
