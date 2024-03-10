@@ -22,8 +22,8 @@ local function Create(unitframe)
     local frame = CreateFrame('Frame', '$parentHealthText', unitframe.healthBar);
     frame:SetAllPoints(unitframe.healthBar);
 
-    frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
-    frame.LeftText = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
+    frame.text      = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
+    frame.LeftText  = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
     frame.RightText = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
 
     frame:Hide();
@@ -127,11 +127,7 @@ local function UpdateStyle(unitframe)
         unitframe.HealthText.RightText:SetTextColor(1, 1, 1, 1);
     end
 
-    if TEXT_FRAME_STRATA == 1 then
-        unitframe.HealthText:SetFrameStrata(unitframe.HealthText:GetParent():GetFrameStrata());
-    else
-        unitframe.HealthText:SetFrameStrata(TEXT_FRAME_STRATA);
-    end
+    unitframe.HealthText:SetFrameStrata(TEXT_FRAME_STRATA == 1 and unitframe.HealthText:GetParent():GetFrameStrata() or TEXT_FRAME_STRATA);
 end
 
 function Module:UnitAdded(unitframe)
