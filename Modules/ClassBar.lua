@@ -18,8 +18,12 @@ local function UpdatePositionForUnitFrame(unitframe)
             mechanicFrame:SetPoint('TOP', NamePlateDriverFrame.classNamePlatePowerBar, 'BOTTOM', 0, NamePlateDriverFrame.classNamePlateMechanicFrame.paddingOverride or -4);
         end
     elseif unitframe.data.isTarget then
-        mechanicFrame:ClearAllPoints();
-        mechanicFrame:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+        if unitframe.data.canAttack then
+            mechanicFrame:ClearAllPoints();
+            mechanicFrame:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+        else
+            mechanicFrame:Hide();
+        end
     end
 end
 
@@ -39,8 +43,12 @@ local function UpdatePositionForDriverFrame()
             mechanicFrame:SetPoint('TOP', NamePlateDriverFrame.classNamePlatePowerBar, 'BOTTOM', 0, mechanicFrame.paddingOverride or -4);
         end
     elseif namePlateTarget then
-        mechanicFrame:ClearAllPoints();
-        mechanicFrame:SetPoint(POINT, namePlateTarget.UnitFrame.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+        if UnitCanAttack('player', 'target') then
+            mechanicFrame:ClearAllPoints();
+            mechanicFrame:SetPoint(POINT, namePlateTarget.UnitFrame.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+        else
+            mechanicFrame:Hide();
+        end
     end
 end
 
