@@ -167,9 +167,11 @@ local function CreateThreatPercentage(unitframe)
     local frame = CreateFrame('Frame', '$parentThreatPercentage', unitframe);
     frame:SetAllPoints(unitframe.healthBar);
 
-    frame.text = frame:CreateFontString(nil, 'BACKGROUND', 'StripesThreatPercentageFont');
-    PixelUtil.SetPoint(frame.text, DB.TP_POINT, frame, DB.TP_RELATIVE_POINT, DB.TP_OFFSET_X, DB.TP_OFFSET_Y);
-    frame.text:SetTextColor(1, 1, 1, 1);
+    local text = frame:CreateFontString(nil, 'BACKGROUND', 'StripesThreatPercentageFont');
+    text:SetPoint(DB.TP_POINT, frame, DB.TP_RELATIVE_POINT, DB.TP_OFFSET_X, DB.TP_OFFSET_Y);
+    text:SetTextColor(1, 1, 1, 1);
+
+    frame.text = text;
 
     unitframe.ThreatPercentage = frame;
 end
@@ -190,8 +192,10 @@ local function UpdateThreatPercentageTextAndColor(unitframe, value, r, g, b, a)
 end
 
 local function UpdateThreatPercentagePosition(unitframe)
-    unitframe.ThreatPercentage.text:ClearAllPoints();
-    PixelUtil.SetPoint(unitframe.ThreatPercentage.text, DB.TP_POINT, unitframe.ThreatPercentage, DB.TP_RELATIVE_POINT, DB.TP_OFFSET_X, DB.TP_OFFSET_Y);
+    local threatPercentage = unitframe.ThreatPercentage;
+
+    threatPercentage.text:ClearAllPoints();
+    threatPercentage.text:SetPoint(DB.TP_POINT, threatPercentage, DB.TP_RELATIVE_POINT, DB.TP_OFFSET_X, DB.TP_OFFSET_Y);
 end
 
 local function UpdateThreatName(unitframe, value, r, g, b)
@@ -267,10 +271,16 @@ local function GetAuraColor(unit)
 
     U.UnitHasAura(unit, nil, function(aura)
         if playerUnits[aura.sourceUnit] then
-            if DB.AURAS_HPBAR_COLORING_DATA[aura.spellId] and DB.AURAS_HPBAR_COLORING_DATA[aura.spellId].enabled then
-                auraColor = DB.AURAS_HPBAR_COLORING_DATA[aura.spellId].color;
-            elseif DB.AURAS_HPBAR_COLORING_DATA[aura.name] and DB.AURAS_HPBAR_COLORING_DATA[aura.name].enabled then
-                auraColor = DB.AURAS_HPBAR_COLORING_DATA[aura.name].color;
+            local dataBySpellId = DB.AURAS_HPBAR_COLORING_DATA[aura.spellId];
+
+            if dataBySpellId and dataBySpellId.enabled then
+                auraColor = dataBySpellId.color;
+            else
+                local dataBySpellName = DB.AURAS_HPBAR_COLORING_DATA[aura.name];
+
+                if dataBySpellName and dataBySpellName.enabled then
+                    auraColor = dataBySpellName.color;
+                end
             end
 
             if auraColor then
