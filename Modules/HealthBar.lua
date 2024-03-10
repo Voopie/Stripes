@@ -760,18 +760,21 @@ local function UpdateClickableArea(unitframe)
     if not unitframe.ClickableArea then
         local clickableArea = CreateFrame('Frame', nil, unitframe);
 
-        clickableArea.background = clickableArea:CreateTexture(nil, 'BACKGROUND', nil, -7);
-        clickableArea.background:SetTexture('Interface\\Buttons\\WHITE8x8');
-        clickableArea.background:SetAllPoints(clickableArea);
-        clickableArea.background:SetVertexColor(1, 1, 1, 0.3);
+        local background = clickableArea:CreateTexture(nil, 'BACKGROUND', nil, -7);
+        background:SetTexture('Interface\\Buttons\\WHITE8x8');
+        background:SetAllPoints(clickableArea);
+        background:SetVertexColor(1, 1, 1, 0.3);
 
-        clickableArea.border = clickableArea:CreateTexture(nil, 'BACKGROUND', nil, -8);
-        clickableArea.border:SetTexture('Interface\\Buttons\\WHITE8x8');
-        clickableArea.border:SetPoint('TOPLEFT', clickableArea, 'TOPLEFT', -2, 2);
-        clickableArea.border:SetPoint('BOTTOMRIGHT', clickableArea, 'BOTTOMRIGHT', 2, -2);
-        clickableArea.border:SetVertexColor(0.3, 0.3, 0.3, 0.8);
+        local border = clickableArea:CreateTexture(nil, 'BACKGROUND', nil, -8);
+        border:SetTexture('Interface\\Buttons\\WHITE8x8');
+        border:SetPoint('TOPLEFT', clickableArea, 'TOPLEFT', -2, 2);
+        border:SetPoint('BOTTOMRIGHT', clickableArea, 'BOTTOMRIGHT', 2, -2);
+        border:SetVertexColor(0.3, 0.3, 0.3, 0.8);
 
         clickableArea:SetPoint('CENTER');
+
+        clickableArea.background = background;
+        clickableArea.border     = border;
 
         unitframe.ClickableArea = clickableArea;
     end
