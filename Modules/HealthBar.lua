@@ -835,54 +835,41 @@ local function UpdateBackgroundTexture(unitframe)
     unitframe.healthBar.background:SetVertexColor(DB.HEALTH_BAR_BACKGROUND_COLOR[1], DB.HEALTH_BAR_BACKGROUND_COLOR[2], DB.HEALTH_BAR_BACKGROUND_COLOR[3], DB.HEALTH_BAR_BACKGROUND_COLOR[4]);
 end
 
+local function SetHealthBarTexture(unitframe, textureValue)
+    if textureValue == unitframe.healthBar.textureValue then
+        return;
+    end
+
+    unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, textureValue));
+    unitframe.healthBar.textureValue = textureValue;
+end
+
 local function CreateExtraTexture(unitframe)
     if unitframe.healthBar.ExtraTexture then
         return;
     end
 
-    unitframe.healthBar.ExtraTexture = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
-    unitframe.healthBar.ExtraTexture:SetAllPoints();
-    unitframe.healthBar.ExtraTexture:Hide();
+    local extraTexture = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
+    extraTexture:SetAllPoints();
+    extraTexture:Hide();
+
+    unitframe.healthBar.ExtraTexture = extraTexture;
 end
 
-local function UpdateExtraTargetTexture(unitframe)
-    if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED then
-        if DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY then
-            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
+local function SetExtraTextureAndColor(unitframe, textureValue, textureColor)
+    local extraTexture = unitframe.healthBar.ExtraTexture;
+    local r, g, b, a = extraTexture:GetVertexColor();
 
-            unitframe.healthBar.ExtraTexture:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
-            unitframe.healthBar.ExtraTexture:SetVertexColor(DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[1], DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[2], DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[3], DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[4]);
-            unitframe.healthBar.ExtraTexture:Show();
-        else
-            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE));
-            unitframe.healthBar.ExtraTexture:Hide();
-        end
-    else
-        unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
-        unitframe.healthBar.ExtraTexture:Hide();
+    local isSameValue = textureValue == extraTexture.textureValue;
+    local isSameColor = r == textureColor[1] and g == textureColor[2] and b == textureColor[3] and a == textureColor[4];
+
+    if isSameValue and isSameColor then
+        return;
     end
-end
 
-local function UpdateExtraFocusTexture(unitframe)
-    if DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED then
-        if DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY then
-            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
-
-            unitframe.healthBar.ExtraTexture:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE));
-            unitframe.healthBar.ExtraTexture:SetVertexColor(DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[1], DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[2], DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[3], DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR[4]);
-            unitframe.healthBar.ExtraTexture:Show();
-        else
-            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE));
-            unitframe.healthBar.ExtraTexture:Hide();
-        end
-    else
-        if unitframe.data.isTarget then
-            UpdateExtraTargetTexture(unitframe);
-        else
-            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
-            unitframe.healthBar.ExtraTexture:Hide();
-        end
-    end
+    extraTexture:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, textureValue));
+    extraTexture:SetVertexColor(textureColor[1], textureColor[2], textureColor[3], textureColor[4]);
+    extraTexture.textureValue = textureValue;
 end
 
 local function UpdateExtraTexture(unitframe)
@@ -891,15 +878,29 @@ local function UpdateExtraTexture(unitframe)
     end
 
     if unitframe.data.isPersonal then
-        unitframe.healthBar:SetStatusBarTexture(DEFAULT_STATUSBAR_TEXTURE);
+        SetHealthBarTexture(unitframe, DEFAULT_STATUSBAR_TEXTURE);
         unitframe.healthBar.ExtraTexture:Hide();
     else
-        if unitframe.data.isFocus then
-            UpdateExtraFocusTexture(unitframe);
-        elseif unitframe.data.isTarget then
-            UpdateExtraTargetTexture(unitframe);
+        local isTarget = unitframe.data.isTarget;
+        local isFocus  = unitframe.data.isFocus;
+
+        local textureEnabled = isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED;
+
+        if textureEnabled then
+            local textureOverlay = isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY or isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY;
+            local textureValue   = isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE or isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE;
+            local textureColor   = isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR or isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR;
+
+            if textureOverlay then
+                SetHealthBarTexture(unitframe, DB.HEALTH_BAR_TEXTURE);
+                SetExtraTextureAndColor(unitframe, textureValue, textureColor);
+                unitframe.healthBar.ExtraTexture:Show();
+            else
+                SetHealthBarTexture(unitframe, textureValue);
+                unitframe.healthBar.ExtraTexture:Hide();
+            end
         else
-            unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_TEXTURE));
+            SetHealthBarTexture(unitframe, DB.HEALTH_BAR_TEXTURE);
             unitframe.healthBar.ExtraTexture:Hide();
         end
     end
