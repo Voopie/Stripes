@@ -10,9 +10,12 @@ local ENABLED, SHOW_UNINTERRUPTIBLE, MODIFIER;
 local modifiers = O.Lists.hide_non_casting_modifiers;
 local visibilityState = true;
 
-function Module:UpdateVisibility(unitframe)
+local function UpdateVisibility(unitframe)
     if visibilityState then
-        unitframe:Show();
+        if not unitframe:IsShown() then
+            unitframe:Show();
+        end
+
         return;
     end
 
@@ -21,46 +24,42 @@ function Module:UpdateVisibility(unitframe)
     unitframe:SetShown(spellId and (SHOW_UNINTERRUPTIBLE or not notInterruptible));
 end
 
-function Module:ShowOnlyCasting()
+local function ShowOnlyCasting()
     visibilityState = false;
 
-    self:ForAllActiveUnitFrames(function(unitframe)
+    Module:ForAllActiveUnitFrames(function(unitframe)
         if unitframe.data.unit then
-            self:UpdateVisibility(unitframe);
+            UpdateVisibility(unitframe);
         end
     end);
 end
 
-function Module:ShowAll()
+local function ShowAll()
     visibilityState = true;
 
-    self:ForAllActiveUnitFrames(function(unitframe)
+    Module:ForAllActiveUnitFrames(function(unitframe)
         if unitframe.data.unit then
-            self:UpdateVisibility(unitframe);
+            UpdateVisibility(unitframe);
         end
     end);
 end
 
-function Module:CheckCasting(unit)
-    self:ForAllActiveUnitFrames(function(unitframe)
-        if unitframe.data.unit == unit then
-            self:UpdateVisibility(unitframe);
+local function CheckCasting(unit)
+    Module:ProcessNamePlateForUnit(unit, UpdateVisibility);
+end
+
+local function OnModifierChanged(key, down)
+    if key == modifiers[MODIFIER] then
+        if down == 1 then
+            ShowOnlyCasting();
+        else
+            ShowAll();
         end
-    end);
+    end
 end
 
 function Module:UnitAdded(unitframe)
-    self:UpdateVisibility(unitframe);
-end
-
-function Module:MODIFIER_STATE_CHANGED(key, down)
-    if key == modifiers[MODIFIER] then
-        if down == 1 then
-            self:ShowOnlyCasting();
-        else
-            self:ShowAll();
-        end
-    end
+    UpdateVisibility(unitframe);
 end
 
 function Module:UpdateLocalConfig()
@@ -69,9 +68,9 @@ function Module:UpdateLocalConfig()
     SHOW_UNINTERRUPTIBLE  = O.db.hide_non_casting_show_uninterruptible;
 
     if ENABLED then
-        self:RegisterEvent('MODIFIER_STATE_CHANGED');
-        self:RegisterEvent('UNIT_SPELLCAST_START', 'CheckCasting');
-        self:RegisterEvent('UNIT_SPELLCAST_STOP', 'CheckCasting');
+        self:RegisterEvent('MODIFIER_STATE_CHANGED', OnModifierChanged);
+        self:RegisterEvent('UNIT_SPELLCAST_START', CheckCasting);
+        self:RegisterEvent('UNIT_SPELLCAST_STOP', CheckCasting);
     else
         self:UnregisterEvent('MODIFIER_STATE_CHANGED');
         self:UnregisterEvent('UNIT_SPELLCAST_START');
