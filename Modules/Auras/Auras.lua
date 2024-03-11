@@ -61,9 +61,9 @@ end
 local function UpdateBlacklistCache()
     local name;
 
-    for spellId, data in pairs(O.db.auras_blacklist) do
+    for spellIdOrName, data in pairs(O.db.auras_blacklist) do
         if not data.enabled then
-            name = type(spellId) == 'string' and spellId or BlacklistCacheFindAuraNameById(spellId);
+            name = type(spellIdOrName) == 'string' and spellIdOrName or BlacklistCacheFindAuraNameById(spellIdOrName);
 
             if name then
                 blacklistAurasNameCache[name] = nil;
@@ -79,10 +79,10 @@ local function UpdateBlacklistCache()
     end
 end
 
-local function WhitelistCacheFindAuraNameById(id)
-    for name, spellId in pairs(whitelistAurasNameCache) do
-        if spellId == id then
-            return name;
+local function WhitelistCacheFindAuraNameById(neededSpellId)
+    for spellName, spellId in pairs(whitelistAurasNameCache) do
+        if spellId == neededSpellId then
+            return spellName;
         end
     end
 end
@@ -90,9 +90,9 @@ end
 local function UpdateWhitelistCache()
     local name;
 
-    for spellId, data in pairs(O.db.auras_whitelist) do
+    for spellIdOrName, data in pairs(O.db.auras_whitelist) do
         if not data.enabled then
-            name = type(spellId) == 'string' and spellId or WhitelistCacheFindAuraNameById(spellId);
+            name = type(spellIdOrName) == 'string' and spellIdOrName or WhitelistCacheFindAuraNameById(spellIdOrName);
 
             if name then
                 whitelistAurasNameCache[name] = nil;
@@ -108,28 +108,28 @@ local function UpdateWhitelistCache()
     end
 end
 
-local function IsAuraWhitelisted(name, spellId)
-    if whitelistAurasNameCache[name] then
+local function IsAuraWhitelisted(spellName, spellId)
+    if whitelistAurasNameCache[spellName] then
         return true;
-    elseif O.db.auras_whitelist[name] and O.db.auras_whitelist[name].enabled then
-        whitelistAurasNameCache[name] = spellId;
+    elseif O.db.auras_whitelist[spellName] and O.db.auras_whitelist[spellName].enabled then
+        whitelistAurasNameCache[spellName] = spellId;
         return true;
     elseif spellId and O.db.auras_whitelist[spellId] and O.db.auras_whitelist[spellId].enabled then
-        whitelistAurasNameCache[name] = spellId;
+        whitelistAurasNameCache[spellName] = spellId;
         return true;
     end
 
     return false;
 end
 
-local function IsAuraBlacklisted(name, spellId)
-    if blacklistAurasNameCache[name] then
+local function IsAuraBlacklisted(spellName, spellId)
+    if blacklistAurasNameCache[spellName] then
         return true;
-    elseif O.db.auras_blacklist[name] and O.db.auras_blacklist[name].enabled then
-        blacklistAurasNameCache[name] = spellId;
+    elseif O.db.auras_blacklist[spellName] and O.db.auras_blacklist[spellName].enabled then
+        blacklistAurasNameCache[spellName] = spellId;
         return true;
     elseif spellId and O.db.auras_blacklist[spellId] and O.db.auras_blacklist[spellId].enabled then
-        blacklistAurasNameCache[name] = spellId;
+        blacklistAurasNameCache[spellName] = spellId;
         return true;
     end
 
@@ -300,17 +300,17 @@ local function FilterShouldShowBuff(self, aura, forceAll, isSelf)
         return false;
     end
 
-    local name       = aura.name;
+    local spellName  = aura.name;
     local spellId    = aura.spellId;
     local sourceUnit = aura.sourceUnit;
 
     if XLIST_MODE == 2 then -- BLACKLIST
-        local isBlacklisted = IsAuraBlacklisted(name, spellId);
+        local isBlacklisted = IsAuraBlacklisted(spellName, spellId);
         if isBlacklisted then
             return false;
         end
     elseif XLIST_MODE == 3 then -- WHITELIST
-        return IsAuraWhitelisted(name, spellId) and playerUnits[sourceUnit];
+        return IsAuraWhitelisted(spellName, spellId) and playerUnits[sourceUnit];
     end
 
     if FILTER_PLAYER_ENABLED and not isSelf then
