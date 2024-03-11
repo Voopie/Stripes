@@ -27,7 +27,7 @@ end
 local function ShowOnlyCasting()
     visibilityState = false;
 
-    Module:ForAllActiveUnitFrames(function(unitframe)
+    Module:ForAllUnitFrames(function(unitframe)
         if unitframe.data.unit then
             UpdateVisibility(unitframe);
         end
@@ -37,7 +37,7 @@ end
 local function ShowAll()
     visibilityState = true;
 
-    Module:ForAllActiveUnitFrames(function(unitframe)
+    Module:ForAllUnitFrames(function(unitframe)
         if unitframe.data.unit then
             UpdateVisibility(unitframe);
         end
