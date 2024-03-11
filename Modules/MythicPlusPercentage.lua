@@ -30,8 +30,10 @@ local function Create(unitframe)
     local frame = CreateFrame('Frame', '$parentMythicPlusPercentage', unitframe);
     frame:SetAllPoints(unitframe.healthBar);
 
-    frame.text = frame:CreateFontString(nil, 'BACKGROUND', 'StripesMythicPlusPercentageFont');
-    frame.text:SetTextColor(1, 1, 1);
+    local text = frame:CreateFontString(nil, 'BACKGROUND', 'StripesMythicPlusPercentageFont');
+    text:SetTextColor(1, 1, 1);
+
+    frame.text = text;
 
     unitframe.MythicPlusPercentage = frame;
 end
@@ -59,18 +61,24 @@ local function Update(unitframe)
         weight = (PlayerState.inMythicPlusTeeming and (count / maxTeeming) or (count / max)) * 100;
     end
 
-    if weight and weight > 0 then
-        unitframe.MythicPlusPercentage.text:ClearAllPoints();
-        PixelUtil.SetPoint(unitframe.MythicPlusPercentage.text, POINT, unitframe.MythicPlusPercentage, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
-        unitframe.MythicPlusPercentage.text:SetText(string_format(percentPattern, weight));
-    else
-        unitframe.MythicPlusPercentage.text:SetText('');
+    unitframe.MythicPlusPercentage.text:SetText(weight and weight > 0 and string_format(percentPattern, weight) or '');
+end
+
+local function UpdatePosition(unitframe)
+    if not unitframe.MythicPlusPercentage then
+        return;
     end
+
+    local mythicPlusPercentage = unitframe.MythicPlusPercentage;
+
+    mythicPlusPercentage.text:ClearAllPoints();
+    mythicPlusPercentage.text:SetPoint(POINT, mythicPlusPercentage, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
 end
 
 function Module:UnitAdded(unitframe)
     Create(unitframe);
     Update(unitframe);
+    UpdatePosition(unitframe);
 end
 
 function Module:UnitRemoved(unitframe)
@@ -81,6 +89,7 @@ end
 
 function Module:Update(unitframe)
     Update(unitframe);
+    UpdatePosition(unitframe);
 end
 
 function Module:UpdateLocalConfig()
