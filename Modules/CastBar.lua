@@ -308,13 +308,15 @@ local function UpdateVisibility(unitframe)
 end
 
 local function UpdateBorderSizes(unitframe)
-    if BORDER_ENABLED and unitframe.castingBar then
-        unitframe.castingBar.border:UpdateSizes();
+    if not (BORDER_ENABLED and unitframe.castingBar) then
+        return;
     end
+
+    unitframe.castingBar.border:UpdateSizes();
 end
 
 local function UpdateBackgroundTexture(unitframe)
-    if not unitframe.castingBar.background then
+    if not (unitframe.castingBar and unitframe.castingBar.background) then
         return;
     end
 
