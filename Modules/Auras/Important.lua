@@ -229,16 +229,17 @@ local function CreateBuffFrame(unitframe)
                 buff.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
                 buff.Border:SetShown(not BORDER_HIDE);
 
-                buff.Cooldown:SetDrawEdge(DRAW_EDGE);
-                buff.Cooldown:SetDrawSwipe(DRAW_SWIPE);
-                buff.Cooldown:SetFrameStrata('HIGH');
-                buff.Cooldown:SetCountdownFont('StripesAurasImportantCooldownFont');
-                buff.Cooldown.Countdown = buff.Cooldown:GetRegions();
-                buff.Cooldown.Countdown:ClearAllPoints();
-                buff.Cooldown.Countdown:SetPoint(COUNTDOWN_POINT, buff.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-                buff.Cooldown.Countdown:SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
-                buff.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-                buff.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
+                local cooldown = buff.Cooldown;
+                cooldown:SetDrawEdge(DRAW_EDGE);
+                cooldown:SetDrawSwipe(DRAW_SWIPE);
+                cooldown:SetFrameStrata('HIGH');
+                cooldown:SetCountdownFont('StripesAurasImportantCooldownFont');
+                cooldown.Countdown = cooldown:GetRegions();
+                cooldown.Countdown:ClearAllPoints();
+                cooldown.Countdown:SetPoint(COUNTDOWN_POINT, cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+                cooldown.Countdown:SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+                cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+                cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
                 buff.CountFrame:SetFrameStrata('HIGH');
                 buff.CountFrame.Count:ClearAllPoints();
@@ -256,7 +257,7 @@ local function CreateBuffFrame(unitframe)
 
                 if MASQUE_SUPPORT and Stripes.Masque then
                     Stripes.MasqueAurasImportantGroup:RemoveButton(buff);
-                    Stripes.MasqueAurasImportantGroup:AddButton(buff, { Icon = buff.Icon, Cooldown = buff.Cooldown }, 'Aura', true);
+                    Stripes.MasqueAurasImportantGroup:AddButton(buff, { Icon = buff.Icon, Cooldown = cooldown }, 'Aura', true);
                 end
 
                 self.buffList[buffIndex] = buff;

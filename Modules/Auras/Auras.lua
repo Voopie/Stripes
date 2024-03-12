@@ -222,18 +222,18 @@ local function UpdateAuraStyle(aura, withoutMasque)
         aura.Icon:SetTexCoord(0.05, 0.95, 0.1, 0.6);
     end
 
-    aura.Cooldown:SetFrameStrata('HIGH');
-    aura.Cooldown:SetDrawEdge(DRAW_EDGE);
-    aura.Cooldown:SetDrawSwipe(DRAW_SWIPE);
-    aura.Cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
-    aura.Cooldown.noCooldownCount = SUPPRESS_OMNICC;
-
-    aura.Cooldown:SetCountdownFont('StripesAurasModCooldownFont');
-    aura.Cooldown.Countdown = aura.Cooldown:GetRegions();
-    aura.Cooldown.Countdown:ClearAllPoints();
-    aura.Cooldown.Countdown:SetPoint(COUNTDOWN_POINT, aura.Cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
-    aura.Cooldown.Countdown:SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
-    aura.Cooldown.Countdown:SetDrawLayer('OVERLAY', 7);
+    local cooldown = aura.Cooldown;
+    cooldown:SetFrameStrata('HIGH');
+    cooldown:SetDrawEdge(DRAW_EDGE);
+    cooldown:SetDrawSwipe(DRAW_SWIPE);
+    cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
+    cooldown.noCooldownCount = SUPPRESS_OMNICC;
+    cooldown:SetCountdownFont('StripesAurasModCooldownFont');
+    cooldown.Countdown = cooldown:GetRegions();
+    cooldown.Countdown:ClearAllPoints();
+    cooldown.Countdown:SetPoint(COUNTDOWN_POINT, cooldown, COUNTDOWN_RELATIVE_POINT, COUNTDOWN_OFFSET_X, COUNTDOWN_OFFSET_Y);
+    cooldown.Countdown:SetTextColor(TEXT_COOLDOWN_COLOR[1], TEXT_COOLDOWN_COLOR[2], TEXT_COOLDOWN_COLOR[3], TEXT_COOLDOWN_COLOR[4]);
+    cooldown.Countdown:SetDrawLayer('OVERLAY', 7);
 
     aura.CountFrame:SetFrameStrata('HIGH');
     aura.CountFrame.Count:ClearAllPoints();
@@ -290,7 +290,7 @@ local function UpdateAuraStyle(aura, withoutMasque)
     if not withoutMasque then
         if MASQUE_SUPPORT and Stripes.Masque then
             Stripes.MasqueAurasGroup:RemoveButton(aura);
-            Stripes.MasqueAurasGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+            Stripes.MasqueAurasGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = cooldown }, 'Aura', true);
         end
     end
 end
@@ -488,22 +488,24 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
                 table_wipe(unitframe.SortBuffs);
             end
 
+            local sortBuffsTable = unitframe.SortBuffs;
+
             local activeCount = 1;
             for buff in self.buffPool:EnumerateActive() do
-                unitframe.SortBuffs[activeCount]           = unitframe.SortBuffs[activeCount] or {};
-                unitframe.SortBuffs[activeCount].buffIndex = activeCount;
-                unitframe.SortBuffs[activeCount].expires   = tonumber(buff.expirationTime) or 0;
-                unitframe.SortBuffs[activeCount].buff      = buff;
+                sortBuffsTable[activeCount]           = sortBuffsTable[activeCount] or {};
+                sortBuffsTable[activeCount].buffIndex = activeCount;
+                sortBuffsTable[activeCount].expires   = tonumber(buff.expirationTime) or 0;
+                sortBuffsTable[activeCount].buff      = buff;
 
                 activeCount = activeCount + 1;
             end
 
-            if #unitframe.SortBuffs > 0 then
-                table_sort(unitframe.SortBuffs, AuraComparator);
+            if #sortBuffsTable > 0 then
+                table_sort(sortBuffsTable, AuraComparator);
 
                 local firstBuffIndex, lastBuff;
 
-                for i, data in ipairs(unitframe.SortBuffs) do
+                for i, data in ipairs(sortBuffsTable) do
                     if data.buff then
                         data.buff:ClearAllPoints();
 
@@ -516,14 +518,14 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
                                 firstBuffIndex = data.buffIndex;
                             end
 
-                            unitframe.SortBuffs[firstBuffIndex]:SetPoint('TOP', -(unitframe.SortBuffs[firstBuffIndex]:GetWidth() * 0.5) * (i - 1), 0);
+                            sortBuffsTable[firstBuffIndex]:SetPoint('TOP', -(sortBuffsTable[firstBuffIndex]:GetWidth() * 0.5) * (i - 1), 0);
 
                             if i > 1 and firstBuffIndex ~= data.buffIndex then
                                 if lastBuff then
                                     data.buff:SetPoint('TOPLEFT', lastBuff, 'TOPRIGHT', SPACING_X, 0);
                                     lastBuff = data.buff;
                                 else
-                                    data.buff:SetPoint('TOPLEFT', unitframe.SortBuffs[firstBuffIndex], 'TOPRIGHT', SPACING_X, 0);
+                                    data.buff:SetPoint('TOPLEFT', sortBuffsTable[firstBuffIndex], 'TOPRIGHT', SPACING_X, 0);
                                     lastBuff = data.buff;
                                 end
                             end
