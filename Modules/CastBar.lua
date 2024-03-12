@@ -238,9 +238,12 @@ local function CreateCastingBarAndTimer(unitframe)
 
     local castingBar = unitframe.castingBar;
 
-    castingBar.Timer = castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarTimerFont');
-    PixelUtil.SetPoint(castingBar.Timer, TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_ANCHOR, castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
-    castingBar.Timer:SetTextColor(1, 1, 1);
+    local timer = castingBar:CreateFontString(nil, 'OVERLAY', 'StripesCastBarTimerFont');
+    timer:SetPoint(TIMER_XSIDE == 1 and ANCHOR_MIRROR[TIMER_ANCHOR] or TIMER_ANCHOR, castingBar, TIMER_ANCHOR, TIMER_OFFSET_X, 0);
+    timer:SetTextColor(1, 1, 1);
+
+    castingBar.Timer = timer;
+
     castingBar.updateDelay = updateDelay;
     castingBar:HookScript('OnUpdate', OnUpdate);
 
