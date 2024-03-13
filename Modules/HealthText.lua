@@ -101,33 +101,37 @@ local function Update(unitframe)
 end
 
 local function UpdateShow(unitframe)
-    unitframe.HealthText:SetShown((ENABLED and not unitframe.data.isPersonal));
+    local healthText = unitframe.HealthText;
 
-    unitframe.HealthText.text:SetShown(not IS_DOUBLE);
-    unitframe.HealthText.LeftText:SetShown(IS_DOUBLE);
-    unitframe.HealthText.RightText:SetShown(IS_DOUBLE);
+    healthText:SetShown((ENABLED and not unitframe.data.isPersonal));
+
+    healthText.text:SetShown(not IS_DOUBLE);
+    healthText.LeftText:SetShown(IS_DOUBLE);
+    healthText.RightText:SetShown(IS_DOUBLE);
 end
 
 local function UpdateStyle(unitframe)
-    unitframe.HealthText.text:ClearAllPoints();
-    unitframe.HealthText.LeftText:ClearAllPoints();
-    unitframe.HealthText.RightText:ClearAllPoints();
+    local healthText = unitframe.HealthText;
 
-    PixelUtil.SetPoint(unitframe.HealthText.text, TEXT_ANCHOR, unitframe.HealthText, TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET);
-    PixelUtil.SetPoint(unitframe.HealthText.LeftText, BLOCK_1_TEXT_ANCHOR, unitframe.HealthText, BLOCK_1_TEXT_ANCHOR, BLOCK_1_TEXT_X_OFFSET, BLOCK_1_TEXT_Y_OFFSET);
-    PixelUtil.SetPoint(unitframe.HealthText.RightText, BLOCK_2_TEXT_ANCHOR, unitframe.HealthText, BLOCK_2_TEXT_ANCHOR, BLOCK_2_TEXT_X_OFFSET, BLOCK_2_TEXT_Y_OFFSET);
+    healthText.text:ClearAllPoints();
+    healthText.LeftText:ClearAllPoints();
+    healthText.RightText:ClearAllPoints();
+
+    PixelUtil.SetPoint(healthText.text, TEXT_ANCHOR, healthText, TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET);
+    PixelUtil.SetPoint(healthText.LeftText, BLOCK_1_TEXT_ANCHOR, healthText, BLOCK_1_TEXT_ANCHOR, BLOCK_1_TEXT_X_OFFSET, BLOCK_1_TEXT_Y_OFFSET);
+    PixelUtil.SetPoint(healthText.RightText, BLOCK_2_TEXT_ANCHOR, healthText, BLOCK_2_TEXT_ANCHOR, BLOCK_2_TEXT_X_OFFSET, BLOCK_2_TEXT_Y_OFFSET);
 
     if CUSTOM_COLOR_ENABLED then
-        unitframe.HealthText.text:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
-        unitframe.HealthText.LeftText:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
-        unitframe.HealthText.RightText:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
+        healthText.text:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
+        healthText.LeftText:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
+        healthText.RightText:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
     else
-        unitframe.HealthText.text:SetTextColor(1, 1, 1, 1);
-        unitframe.HealthText.LeftText:SetTextColor(1, 1, 1, 1);
-        unitframe.HealthText.RightText:SetTextColor(1, 1, 1, 1);
+        healthText.text:SetTextColor(1, 1, 1, 1);
+        healthText.LeftText:SetTextColor(1, 1, 1, 1);
+        healthText.RightText:SetTextColor(1, 1, 1, 1);
     end
 
-    unitframe.HealthText:SetFrameStrata(TEXT_FRAME_STRATA == 1 and unitframe.HealthText:GetParent():GetFrameStrata() or TEXT_FRAME_STRATA);
+    healthText:SetFrameStrata(TEXT_FRAME_STRATA == 1 and healthText:GetParent():GetFrameStrata() or TEXT_FRAME_STRATA);
 end
 
 function Module:UnitAdded(unitframe)
@@ -165,11 +169,11 @@ function Module:UpdateLocalConfig()
 
     CUSTOM_COLOR_ENABLED    = O.db.health_text_custom_color_enabled;
 
-    CUSTOM_COLOR            = CUSTOM_COLOR or {};
-    CUSTOM_COLOR[1]         = O.db.health_text_custom_color[1];
-    CUSTOM_COLOR[2]         = O.db.health_text_custom_color[2];
-    CUSTOM_COLOR[3]         = O.db.health_text_custom_color[3];
-    CUSTOM_COLOR[4]         = O.db.health_text_custom_color[4] or 1;
+    CUSTOM_COLOR    = CUSTOM_COLOR or {};
+    CUSTOM_COLOR[1] = O.db.health_text_custom_color[1];
+    CUSTOM_COLOR[2] = O.db.health_text_custom_color[2];
+    CUSTOM_COLOR[3] = O.db.health_text_custom_color[3];
+    CUSTOM_COLOR[4] = O.db.health_text_custom_color[4] or 1;
 
     IS_DOUBLE = O.db.health_text_block_mode == 2;
     DISPLAY_MODE_BLOCK_1 = math.max(math.min(O.db.health_text_block_1_display_mode, #UpdateHealthTextFormat), 1);
