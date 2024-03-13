@@ -121,15 +121,16 @@ local function UpdateStyle(unitframe)
     PixelUtil.SetPoint(healthText.LeftText, BLOCK_1_TEXT_ANCHOR, healthText, BLOCK_1_TEXT_ANCHOR, BLOCK_1_TEXT_X_OFFSET, BLOCK_1_TEXT_Y_OFFSET);
     PixelUtil.SetPoint(healthText.RightText, BLOCK_2_TEXT_ANCHOR, healthText, BLOCK_2_TEXT_ANCHOR, BLOCK_2_TEXT_X_OFFSET, BLOCK_2_TEXT_Y_OFFSET);
 
+    local r, g, b, a = 1, 1, 1, 1;
+
     if CUSTOM_COLOR_ENABLED then
-        healthText.text:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
-        healthText.LeftText:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
-        healthText.RightText:SetTextColor(CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4]);
-    else
-        healthText.text:SetTextColor(1, 1, 1, 1);
-        healthText.LeftText:SetTextColor(1, 1, 1, 1);
-        healthText.RightText:SetTextColor(1, 1, 1, 1);
+        r, g, b, a = CUSTOM_COLOR[1], CUSTOM_COLOR[2], CUSTOM_COLOR[3], CUSTOM_COLOR[4];
     end
+
+    healthText.text:SetTextColor(r, g, b, a);
+    healthText.LeftText:SetTextColor(r, g, b, a);
+    healthText.RightText:SetTextColor(r, g, b, a);
+
 
     healthText:SetFrameStrata(TEXT_FRAME_STRATA == 1 and healthText:GetParent():GetFrameStrata() or TEXT_FRAME_STRATA);
 end
