@@ -6,7 +6,7 @@ local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local U_RGB2CFFHEX = U.RGB2CFFHEX;
 
 -- Local Config
-local ENABLED, TEXT_FRAME_STRATA, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR, CUSTOM_COLOR_TEXT;
+local ENABLED, TEXT_FRAME_STRATA, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR_CODE;
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
 local SHOW_ONLY_ON_TARGET;
 
@@ -22,8 +22,10 @@ local function Create(unitframe)
     local frame = CreateFrame('Frame', '$parentLevelText', unitframe.healthBar);
     frame:SetAllPoints(unitframe.healthBar);
 
-    frame.text = frame:CreateFontString(nil, 'OVERLAY', 'StripesLevelTextFont');
-    frame.text:SetTextColor(1, 1, 1);
+    local text = frame:CreateFontString(nil, 'OVERLAY', 'StripesLevelTextFont');
+    text:SetTextColor(1, 1, 1);
+
+    frame.text = text;
 
     frame:Hide();
 
@@ -39,7 +41,7 @@ local function Update(unitframe)
     if USE_DIFF_COLOR then
         unitframe.LevelText.text:SetText(U_RGB2CFFHEX(unitframe.data.diff) .. unitframe.data.level .. unitframe.data.classification .. CLOSE_COLOR);
     elseif CUSTOM_COLOR_ENABLED then
-        unitframe.LevelText.text:SetText(CUSTOM_COLOR_TEXT .. unitframe.data.level .. unitframe.data.classification .. CLOSE_COLOR);
+        unitframe.LevelText.text:SetText(CUSTOM_COLOR_CODE .. unitframe.data.level .. unitframe.data.classification .. CLOSE_COLOR);
     else
         unitframe.LevelText.text:SetText(unitframe.data.level .. unitframe.data.classification);
     end
@@ -61,12 +63,7 @@ end
 local function UpdateStyle(unitframe)
     unitframe.LevelText.text:ClearAllPoints();
     PixelUtil.SetPoint(unitframe.LevelText.text, TEXT_ANCHOR, unitframe.LevelText, TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET);
-
-    if TEXT_FRAME_STRATA == 1 then
-        unitframe.LevelText:SetFrameStrata(unitframe.LevelText:GetParent():GetFrameStrata());
-    else
-        unitframe.LevelText:SetFrameStrata(TEXT_FRAME_STRATA);
-    end
+    unitframe.LevelText:SetFrameStrata(TEXT_FRAME_STRATA == 1 and unitframe.LevelText:GetParent():GetFrameStrata() or TEXT_FRAME_STRATA);
 end
 
 function Module:UnitAdded(unitframe)
@@ -101,12 +98,7 @@ function Module:UpdateLocalConfig()
 
     CUSTOM_COLOR_ENABLED = O.db.level_text_custom_color_enabled;
 
-    CUSTOM_COLOR    = CUSTOM_COLOR or {};
-    CUSTOM_COLOR[1] = O.db.level_text_custom_color[1];
-    CUSTOM_COLOR[2] = O.db.level_text_custom_color[2];
-    CUSTOM_COLOR[3] = O.db.level_text_custom_color[3];
-    CUSTOM_COLOR[4] = O.db.level_text_custom_color[4] or 1;
-    CUSTOM_COLOR_TEXT = U_RGB2CFFHEX(CUSTOM_COLOR);
+    CUSTOM_COLOR_CODE = U_RGB2CFFHEX(O.db.level_text_custom_color);
 
     SHOW_ONLY_ON_TARGET = O.db.level_text_show_only_on_target;
 
