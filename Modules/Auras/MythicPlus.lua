@@ -96,8 +96,6 @@ local HarmfulList = {
 };
 
 local PlayerState = D.Player.State;
-local filterHelpful = 'HELPFUL';
-local filterHarmful = 'HARMFUL';
 
 local MAX_OFFSET_Y = -9;
 
@@ -184,8 +182,8 @@ local function CreateBuffFrame(unitframe)
         local batchCount = nil;
         local usePackedAura = true;
 
-        AuraUtil_ForEachAura(self.unit, filterHelpful, batchCount, HandleAuraHelpful, usePackedAura);
-        AuraUtil_ForEachAura(self.unit, filterHarmful, batchCount, HandleAuraHarmful, usePackedAura);
+        AuraUtil_ForEachAura(self.unit, 'HELPFUL', batchCount, HandleAuraHelpful, usePackedAura);
+        AuraUtil_ForEachAura(self.unit, 'HARMFUL', batchCount, HandleAuraHarmful, usePackedAura);
     end
 
     frame.UpdateBuffs = function(self, unit, unitAuraUpdateInfo)
@@ -198,22 +196,20 @@ local function CreateBuffFrame(unitframe)
             return;
         end
 
-        local filterString = filterHelpful;
-
         local previousFilter = self.filter;
         local previousUnit   = self.unit;
 
         self.unit   = unit;
-        self.filter = filterHelpful;
+        self.filter = 'HELPFUL';
 
         local aurasChanged = false;
-        if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filterString ~= previousFilter then
+        if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or self.filter ~= previousFilter then
             self:ParseAllAuras();
             aurasChanged = true;
         else
             if unitAuraUpdateInfo.addedAuras ~= nil then
                 for _, aura in ipairs(unitAuraUpdateInfo.addedAuras) do
-                    if self:ShouldShowBuff(aura, aura.isHelpful) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filterString) then
+                    if self:ShouldShowBuff(aura, aura.isHelpful) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, self.filter) then
                         self.auras[aura.auraInstanceID] = aura;
                         aurasChanged = true;
                     end
