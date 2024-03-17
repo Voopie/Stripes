@@ -248,30 +248,33 @@ local function CreateBuffFrame(unitframe)
 
         local buffIndex = 1;
 
-        wipe(unitframe.AurasMythicPlus.compactList);
+        wipe(self.compactList);
+
+        local compactList = self.compactList;
 
         self.auras:Iterate(function(auraInstanceID, aura)
-            local aCount = aura.applications == 0 and 1 or aura.applications;
+            local spellId      = aura.spellId;
+            local applications = aura.applications == 0 and 1 or aura.applications;
 
-            if not unitframe.AurasMythicPlus.compactList[aura.spellId] then
-                unitframe.AurasMythicPlus.compactList[aura.spellId] = {
-                    spellId        = aura.spellId,
+            if not compactList[spellId] then
+                compactList[spellId] = {
+                    spellId        = spellId,
                     name           = aura.name,
                     icon           = aura.icon,
-                    applications   = aCount,
+                    applications   = applications,
                     duration       = aura.duration,
                     expirationTime = aura.expirationTime,
                     auraInstanceID = aura.auraInstanceID,
                     isHelpful      = aura.isHelpful,
                 };
             else
-                unitframe.AurasMythicPlus.compactList[aura.spellId].applications   = unitframe.AurasMythicPlus.compactList[aura.spellId].applications + aCount;
-                unitframe.AurasMythicPlus.compactList[aura.spellId].duration       = aura.duration;
-                unitframe.AurasMythicPlus.compactList[aura.spellId].expirationTime = aura.expirationTime;
+                compactList[spellId].applications   = compactList[spellId].applications + applications;
+                compactList[spellId].duration       = aura.duration;
+                compactList[spellId].expirationTime = aura.expirationTime;
             end
         end);
 
-        for _, aura in pairs(unitframe.AurasMythicPlus.compactList) do
+        for _, aura in pairs(compactList) do
             local buff = self.buffList[buffIndex];
 
             if not buff then
@@ -299,10 +302,11 @@ local function CreateBuffFrame(unitframe)
                 cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
                 cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
-                buff.CountFrame.Count:ClearAllPoints();
-                buff.CountFrame.Count:SetPoint(COUNT_POINT, buff.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
-                buff.CountFrame.Count:SetFontObject(StripesAurasMythicPlusCountFont);
-                buff.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
+                local countFrameCount = buff.CountFrame.Count;
+                countFrameCount:ClearAllPoints();
+                countFrameCount:SetPoint(COUNT_POINT, buff.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+                countFrameCount:SetFontObject(StripesAurasMythicPlusCountFont);
+                countFrameCount:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
                 if MASQUE_SUPPORT and Stripes.Masque then
                     Stripes.MasqueAurasMythicGroup:RemoveButton(buff);
@@ -341,9 +345,9 @@ local function CreateBuffFrame(unitframe)
                 buff.CountFrame.Count:Hide();
             end
 
-            if aura.spellId == 343553 then
-                local dur = tonumber(string.format('%.0f', unitframe.data.healthPerF / 8));
-                CooldownFrame_Set(buff.Cooldown, GetTime(), dur, dur > 0, DRAW_EDGE);
+            if aura.spellId == 343553 then -- Spiteful affix
+                local duration = tonumber(string.format('%.0f', uf.data.healthPerF / 8));
+                CooldownFrame_Set(buff.Cooldown, GetTime(), duration, duration > 0, DRAW_EDGE);
             else
                 CooldownFrame_Set(buff.Cooldown, aura.expirationTime - aura.duration, aura.duration, aura.duration > 0, DRAW_EDGE);
             end
