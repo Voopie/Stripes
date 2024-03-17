@@ -8,9 +8,6 @@ local pairs, ipairs, type = pairs, ipairs, type;
 local AuraUtil_ForEachAura = AuraUtil.ForEachAura;
 local C_UnitAuras_GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID;
 
-local filterHelpful = 'HELPFUL';
-local filterHarmful = 'HARMFUL';
-
 local CACHE = {};
 
 function Module:Add(unit, aura)
@@ -62,8 +59,8 @@ function Module:FullUpdate(unit)
         return false;
     end
 
-    AuraUtil_ForEachAura(unit, filterHarmful, nil, HandleAura, true);
-    AuraUtil_ForEachAura(unit, filterHelpful, nil, HandleAura, true);
+    AuraUtil_ForEachAura(unit, 'HARMFUL', nil, HandleAura, true);
+    AuraUtil_ForEachAura(unit, 'HELPFUL', nil, HandleAura, true);
 end
 
 function Module:ProcessAuras(unit, unitAuraUpdateInfo)
