@@ -10,7 +10,7 @@ local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
 local GetTime = GetTime;
 
 -- Stripes API
-local GetUnitColor = U.GetUnitColor;
+local GetUnitColor, U_GetInterruptSpellId = U.GetUnitColor, U.GetInterruptSpellId;
 local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
 local GetCachedName = Stripes.GetCachedName;
 
@@ -22,7 +22,6 @@ local CUSTOM_CASTS_ENABLED;
 local CUSTOM_CASTS_DATA = {};
 
 -- In fact, this is a copy paste from Blizzard/CastingBarFrame.lua
-
 local FAILED = FAILED;
 local INTERRUPTED = INTERRUPTED;
 
@@ -30,39 +29,19 @@ local CASTING_BAR_ALPHA_STEP = 0.05;
 local CASTING_BAR_FLASH_STEP = 0.2;
 local CASTING_BAR_HOLD_TIME = 1;
 
-local GetInterruptSpellId = U.GetInterruptSpellId;
-
--- Based on Plater mod (Interrupt not ready Cast Color + Custom Cast Color) by Continuity
 local function GetInterruptReadyTickPosition(self)
     if not self.interruptSpellId then
         return 0, false, false;
     end
 
-    local interruptCD, interruptStart, interruptDuration = 0, 0, 0;
-    local interruptWillBeReady, interruptReady;
-
     local cooldownStart, cooldownDuration = GetSpellCooldown(self.interruptSpellId);
-    local tmpInterruptCD = (cooldownStart > 0 and cooldownDuration - (GetTime() - cooldownStart)) or 0;
-
-    if interruptCD == 0 or (tmpInterruptCD < interruptCD) then
-        interruptCD       = tmpInterruptCD;
-        interruptDuration = cooldownDuration;
-        interruptStart    = cooldownStart;
-    end
-
-    interruptReady = cooldownStart == 0;
-
-    if self.channeling then
-        interruptWillBeReady = interruptCD < self.value;
-    else
-        interruptWillBeReady = interruptCD < (self.maxValue - self.value);
-    end
+    local interruptCD = cooldownStart > 0 and cooldownDuration - (GetTime() - cooldownStart) or 0;
+    local interruptReady = cooldownStart == 0;
+    local interruptWillBeReady = interruptCD < (self.channeling and self.value or (self.maxValue - self.value));
 
     local tickPosition = 0;
-
     if interruptCD > 0 and interruptWillBeReady then
-        tickPosition = (interruptStart + interruptDuration - (self.startTime / 1000)) / self.maxValue;
-
+        tickPosition = (cooldownStart + cooldownDuration - (self.startTime / 1000)) / self.maxValue;
         if self.channeling then
             tickPosition = 1 - tickPosition;
         end
@@ -72,31 +51,32 @@ local function GetInterruptReadyTickPosition(self)
 end
 
 local function UpdateInterruptReadyColorAndTick(self)
-    if self.InterruptReadyTick then
-        if self.notInterruptible or not UnitCanAttack('player', self.unit) then
+    if not self.InterruptReadyTick or self.notInterruptible or not UnitCanAttack('player', self.unit) then
+        if self.InterruptReadyTick then
             self.InterruptReadyTick:Hide();
-        else
-            local tickPosition, interruptReady, interruptWillBeReady = GetInterruptReadyTickPosition(self);
-
-            if not self.customColored then
-                if not interruptReady then
-                    if self.useInterruptReadyInTimeColor and interruptWillBeReady then
-                        self:SetStatusBarColor(self.interruptReadyInTimeColor:GetRGBA());
-                    elseif self.useInterruptNotReadyColor then
-                        self:SetStatusBarColor(self.interruptNotReadyColor:GetRGBA());
-                    end
-                else
-                    self:SetStatusBarColor(StripesCastingBar_GetEffectiveStartColor(self, self.channeling, self.notInterruptible):GetRGBA());
-                end
-            end
-
-            if tickPosition == 0 or not self.showInterruptReadyTick then
-                self.InterruptReadyTick:Hide();
-            else
-                self.InterruptReadyTick:SetPoint('CENTER', self, tickPosition < 0 and 'RIGHT' or 'LEFT', self:GetWidth() * tickPosition, 0);
-                self.InterruptReadyTick:Show();
-            end
         end
+        return;
+    end
+
+    local tickPosition, interruptReady, interruptWillBeReady = GetInterruptReadyTickPosition(self);
+
+    if not self.customColored then
+        if not interruptReady then
+            if self.useInterruptReadyInTimeColor and interruptWillBeReady then
+                self:SetStatusBarColor(self.interruptReadyInTimeColor:GetRGBA());
+            elseif self.useInterruptNotReadyColor then
+                self:SetStatusBarColor(self.interruptNotReadyColor:GetRGBA());
+            end
+        else
+            self:SetStatusBarColor(StripesCastingBar_GetEffectiveStartColor(self, self.channeling, self.notInterruptible):GetRGBA());
+        end
+    end
+
+    if tickPosition == 0 or not self.showInterruptReadyTick then
+        self.InterruptReadyTick:Hide();
+    else
+        self.InterruptReadyTick:SetPoint('CENTER', self, tickPosition < 0 and 'RIGHT' or 'LEFT', self:GetWidth() * tickPosition, 0);
+        self.InterruptReadyTick:Show();
     end
 end
 
@@ -104,7 +84,7 @@ local function UpdateCustomCast(self, changedInterruptibleState)
     local spellId  = self.spellID;
     local castData = spellId and CUSTOM_CASTS_DATA[spellId];
 
-    if not CUSTOM_CASTS_ENABLED or not spellId or not castData or not castData.enabled then
+    if not (CUSTOM_CASTS_ENABLED and castData and castData.enabled) then
         GlowStopAll(self);
         self.customColored = nil;
         return;
@@ -430,7 +410,7 @@ function StripesCastingBar_SetUnit(self, unit, showTradeSkills, showShield)
             self:RegisterUnitEvent('UNIT_SPELLCAST_FAILED', unit);
             self:RegisterEvent('PLAYER_ENTERING_WORLD');
 
-            self.interruptSpellId = GetInterruptSpellId();
+            self.interruptSpellId = U_GetInterruptSpellId();
 
             StripesCastingBar_OnEvent(self, 'PLAYER_ENTERING_WORLD');
         else
