@@ -128,22 +128,20 @@ local function CreateBuffFrame(unitframe)
             return;
         end
 
-        local filterString = 'HELPFUL';
-
         local previousFilter = self.filter;
         local previousUnit   = self.unit;
 
         self.unit   = unit;
-        self.filter = filterString;
+        self.filter = 'HELPFUL';
 
         local aurasChanged = false;
-        if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filterString ~= previousFilter then
+        if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or self.filter ~= previousFilter then
             self:ParseAllAuras();
             aurasChanged = true;
         else
             if unitAuraUpdateInfo.addedAuras ~= nil then
                 for _, aura in ipairs(unitAuraUpdateInfo.addedAuras) do
-                    if self:ShouldShowBuff(aura) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filterString) then
+                    if self:ShouldShowBuff(aura) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, self.filter) then
                         self.auras[aura.auraInstanceID] = aura;
                         aurasChanged = true;
                     end

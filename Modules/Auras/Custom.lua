@@ -29,14 +29,7 @@ local AURAS_DIRECTION, AURAS_MAX_DISPLAY;
 local StripesAurasCustomCooldownFont = CreateFont('StripesAurasCustomCooldownFont');
 local StripesAurasCustomCountFont    = CreateFont('StripesAurasCustomCountFont');
 
-local filterHelpful = 'HELPFUL';
-local filterHarmful = 'HARMFUL';
-
-local playerUnits = {
-    ['player']  = true,
-    ['pet']     = true,
-    ['vehicle'] = true,
-};
+local playerUnits = D.PlayerUnits;
 
 local MAX_OFFSET_Y = -9;
 
@@ -126,8 +119,8 @@ local function CreateBuffFrame(unitframe)
         local batchCount = nil;
         local usePackedAura = true;
 
-        AuraUtil_ForEachAura(self.unit, filterHarmful, batchCount, HandleAura, usePackedAura);
-        AuraUtil_ForEachAura(self.unit, filterHelpful, batchCount, HandleAura, usePackedAura);
+        AuraUtil_ForEachAura(self.unit, 'HARMFUL', batchCount, HandleAura, usePackedAura);
+        AuraUtil_ForEachAura(self.unit, 'HELPFUL', batchCount, HandleAura, usePackedAura);
     end
 
     frame.UpdateBuffs = function(self, unit, unitAuraUpdateInfo)
@@ -140,22 +133,20 @@ local function CreateBuffFrame(unitframe)
             return;
         end
 
-        local filterString = filterHarmful;
-
         local previousFilter = self.filter;
         local previousUnit   = self.unit;
 
         self.unit   = unit;
-        self.filter = filterHarmful;
+        self.filter = 'HARMFUL';
 
         local aurasChanged = false;
-        if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or filterString ~= previousFilter then
+        if unitAuraUpdateInfo == nil or unitAuraUpdateInfo.isFullUpdate or unit ~= previousUnit or self.auras == nil or self.filter ~= previousFilter then
             self:ParseAllAuras();
             aurasChanged = true;
         else
             if unitAuraUpdateInfo.addedAuras ~= nil then
                 for _, aura in ipairs(unitAuraUpdateInfo.addedAuras) do
-                    if self:ShouldShowBuff(aura) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filterString) then
+                    if self:ShouldShowBuff(aura) and not C_UnitAuras.IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, self.filter) then
                         self.auras[aura.auraInstanceID] = aura;
                         aurasChanged = true;
                     end
@@ -214,10 +205,11 @@ local function CreateBuffFrame(unitframe)
                 cooldown:SetHideCountdownNumbers(not COUNTDOWN_ENABLED);
                 cooldown.noCooldownCount = SUPPRESS_OMNICC;
 
-                buff.CountFrame.Count:ClearAllPoints();
-                buff.CountFrame.Count:SetPoint(COUNT_POINT, buff.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
-                buff.CountFrame.Count:SetFontObject(StripesAurasCustomCountFont);
-                buff.CountFrame.Count:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
+                local countFrameCount = buff.CountFrame.Count;
+                countFrameCount:ClearAllPoints();
+                countFrameCount:SetPoint(COUNT_POINT, buff.CountFrame, COUNT_RELATIVE_POINT, COUNT_OFFSET_X, COUNT_OFFSET_Y);
+                countFrameCount:SetFontObject(StripesAurasCustomCountFont);
+                countFrameCount:SetTextColor(TEXT_COUNT_COLOR[1], TEXT_COUNT_COLOR[2], TEXT_COUNT_COLOR[3], TEXT_COUNT_COLOR[4]);
 
                 buff.Border:SetColorTexture(BORDER_COLOR[1], BORDER_COLOR[2], BORDER_COLOR[3], BORDER_COLOR[4]);
                 buff.Border:SetShown(not BORDER_HIDE);
