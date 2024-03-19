@@ -271,7 +271,7 @@ local function HandleCombatLogEvent()
     end
 
     if isInterrupt or isCrowdControl then
-        Module:ForAllActiveUnitFrames(function(unitframe)
+        Module:ForAllActiveAndShownUnitFrames(function(unitframe)
             if UnitExists(unitframe.data.unit) and unitframe.data.unitGUID == destGUID then
                 local casterNameUnit, casterNameText = GetCasterInfo(sourceGUID, sourceName);
 

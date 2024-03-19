@@ -236,7 +236,7 @@ function Module:Update(unitframe)
 end
 
 function Module:UpdateAll()
-    self:ForAllActiveUnitFrames(Update);
+    self:ForAllActiveAndShownUnitFrames(Update);
 end
 
 function Module:UpdateLocalConfig()

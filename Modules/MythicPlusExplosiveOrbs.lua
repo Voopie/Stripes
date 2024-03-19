@@ -51,7 +51,7 @@ function Module:CountOrbs()
 
     counter = 0;
 
-    self:ForAllActiveUnitFrames(function(unitframe)
+    self:ForAllActiveAndShownUnitFrames(function(unitframe)
         if unitframe.data.npcId == EXPLOSIVE_ID then
             counter = counter + 1;
         end

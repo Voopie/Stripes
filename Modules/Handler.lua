@@ -77,7 +77,7 @@ Stripes.Updater.OnUpdate = function(_, elapsed)
     if updaterElapsed >= UPDATER_INTERVAL then
         updaterElapsed = 0;
 
-        Stripes:ForAllActiveUnitFrames(function(unitframe)
+        Stripes:ForAllActiveAndShownUnitFrames(function(unitframe)
             for _, func in pairs(UpdaterList) do
                 func(unitframe);
             end
@@ -1013,7 +1013,7 @@ function Stripes:UNIT_FACTION(unit)
 end
 
 function Stripes:PLAYER_FOCUS_CHANGED()
-    self:ForAllActiveUnitFrames(UpdateFocus);
+    self:ForAllActiveAndShownUnitFrames(UpdateFocus);
 end
 
 function Stripes:PLAYER_LOGIN()

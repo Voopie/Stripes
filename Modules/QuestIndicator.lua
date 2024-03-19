@@ -251,14 +251,14 @@ function Module:UpdateQuestLogIndexCache()
         end
     end
 
-    self:ForAllActiveUnitFrames(Update);
+    self:ForAllActiveAndShownUnitFrames(Update);
 end
 
 function Module:UnitQuestLogChanged(unit)
     if unit == 'player' then
         self:UpdateQuestLogIndexCache();
     else
-        self:ForAllActiveUnitFrames(Update);
+        self:ForAllActiveAndShownUnitFrames(Update);
     end
 end
 

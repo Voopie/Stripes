@@ -151,7 +151,7 @@ local function UpdateStyle(unitframe)
 end
 
 function Module:UpdateMouseoverUnit()
-    self:ForAllActiveUnitFrames(function(unitframe)
+    self:ForAllActiveAndShownUnitFrames(function(unitframe)
         if not unitframe.data.isTarget and not unitframe.data.isPersonal then
             if MouseOnUnit(unitframe) then
                 Glow_Show(unitframe);

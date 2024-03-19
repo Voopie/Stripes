@@ -1113,13 +1113,13 @@ function Module:PLAYER_ROLES_ASSIGNED()
 end
 
 function Module:RAID_TARGET_UPDATE()
-    self:ForAllActiveUnitFrames(function(unitframe)
+    self:ForAllActiveAndShownUnitFrames(function(unitframe)
         UpdateHealthBarColor(unitframe, not unitframe.data.raidIndex);
     end);
 end
 
 function Module:PLAYER_FOCUS_CHANGED()
-    self:ForAllActiveUnitFrames(function(unitframe)
+    self:ForAllActiveAndShownUnitFrames(function(unitframe)
         UpdateExtraTexture(unitframe);
         UpdateHealthBarColor(unitframe);
     end);
