@@ -11,8 +11,8 @@ local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType
       UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack, UnitPlayerControlled, UnitIsGameObject;
 
 -- Stripes API
-local GetNpcIDByGUID, GetUnitLevel, GetUnitColor, UnitInGuild = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor, U.UnitInGuild;
-local IsPlayer, IsRealPlayer = U.IsPlayer, U.IsRealPlayer;
+local U_GetNpcIDByGUID, U_GetUnitLevel, U_GetUnitColor, U_UnitInGuild = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor, U.UnitInGuild;
+local U_IsPlayer, U_IsRealPlayer = U.IsPlayer, U.IsRealPlayer;
 local utf8sub = U.UTF8SUB;
 local PlayerState = D.Player.State;
 
@@ -38,7 +38,6 @@ end
 local NAME_TEXT_ENABLED;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local NAME_CUT_ENABLED, NAME_CUT_NUMBER;
-
 local NAME_ONLY_FRIENDLY_ENABLED, NAME_ONLY_FRIENDLY_PLAYERS_ONLY, NAME_ONLY_MODE, NAME_ONLY_FRIENDLY_STACKING;
 local NAME_ONLY_OFFSET_Y, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ONLY_SHOW_LEVEL;
 local NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
@@ -314,7 +313,7 @@ local function UpdateHealth(unitframe)
 end
 
 local function UpdateLevel(unitframe)
-    unitframe.data.level, unitframe.data.classification, unitframe.data.diff = GetUnitLevel(unitframe.data.unit);
+    unitframe.data.level, unitframe.data.classification, unitframe.data.diff = U_GetUnitLevel(unitframe.data.unit);
 end
 
 local function UpdateAbsorbs(unitframe)
@@ -386,8 +385,8 @@ local function UpdateStatus(unitframe)
     local unit = unitframe.data.unit;
 
     unitframe.data.name         = GetUnitName(unit, true);
-    unitframe.data.isPlayer     = IsPlayer(unit);
-    unitframe.data.isRealPlayer = IsRealPlayer(unit);
+    unitframe.data.isPlayer     = U_IsPlayer(unit);
+    unitframe.data.isRealPlayer = U_IsRealPlayer(unit);
     unitframe.data.isNpc        = not unitframe.data.isPlayer;
     unitframe.data.isRealNpc    = not unitframe.data.isRealPlayer;
     unitframe.data.canAttack    = UnitCanAttack('player', unit);
@@ -401,7 +400,7 @@ local function UpdateStatus(unitframe)
     end
 
     if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
-        unitframe.data.guild = UnitInGuild(unit);
+        unitframe.data.guild = U_UnitInGuild(unit);
     end
 end
 
@@ -410,7 +409,7 @@ local function UpdateWidgetStatus(unitframe)
 end
 
 local function UpdateClassification(unitframe)
-    unitframe.data.level, unitframe.data.classification, unitframe.data.diff = GetUnitLevel(unitframe.data.unit);
+    unitframe.data.level, unitframe.data.classification, unitframe.data.diff = U_GetUnitLevel(unitframe.data.unit);
 end
 
 local function UpdateConnection(unitframe)
@@ -440,11 +439,11 @@ local function UpdateClassName(unitframe)
 end
 
 local function UpdateNpcId(unitframe)
-    unitframe.data.npcId = not unitframe.data.isPlayer and GetNpcIDByGUID(unitframe.data.unitGUID, true) or 0;
+    unitframe.data.npcId = not unitframe.data.isPlayer and U_GetNpcIDByGUID(unitframe.data.unitGUID, true) or 0;
 end
 
 local function UpdateUnitColor(unitframe)
-    unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB = GetUnitColor(unitframe.data.unit, 2);
+    unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB = U_GetUnitColor(unitframe.data.unit, 2);
 end
 
 local function CVarsReset()
