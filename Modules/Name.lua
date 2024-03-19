@@ -761,7 +761,7 @@ local function NameOnly_UpdateBackgroundVisibility(unitframe)
         return;
     end
 
-    if not (Stripes.NameOnly:IsActive(unitframe) and Stripes.NameOnly:ShouldShowBackground() and ShouldShowName(unitframe)) then
+    if not (unitframe.isActive and Stripes.NameOnly:IsActive(unitframe) and Stripes.NameOnly:ShouldShowBackground() and ShouldShowName(unitframe)) then
         unitframe.NameOnlyBackground:Hide();
         return;
     end
@@ -882,6 +882,10 @@ end
 function Module:UnitRemoved(unitframe)
     if unitframe.GuildName then
         unitframe.GuildName:Hide();
+    end
+
+    if unitframe.NameOnlyBackground then
+        unitframe.NameOnlyBackground:Hide();
     end
 end
 
