@@ -322,14 +322,14 @@ D.KickByClassId = {
     [8]  = { [1] = 2139,   [2] = 2139,   [3] = 2139,   [5] = 2139 },   -- Mage
     [10] = { [1] = 116705, [2] = 116705, [3] = 116705, [5] = 116705 }, -- Monk
     [11] = { [1] = 78675,  [2] = 106839, [3] = 106839, [4] = nil },    -- Druid
-    [12] = { [1] = 183752, [2] = 183752, [5] = 183752 },               -- Demon Hunter
+    [12] = { [1] = 183752, [2] = 183752,               [5] = 183752 }, -- Demon Hunter
     [13] = { [1] = 351338, [2] = 351338, [3] = 351338, [5] = 351338 }, -- Evoker
 };
 
 local function UpdateSpecialization()
-    D.Player.SpecIndex = GetSpecialization() or 0;
-    D.Player.SpecId    = GetSpecializationInfo(D.Player.SpecIndex) or 0;
-    D.Player.SpecRole  = GetSpecializationRole(D.Player.SpecIndex) or 'NONE';
+    D.Player.SpecIndex    = GetSpecialization() or 0;
+    D.Player.SpecId       = GetSpecializationInfo(D.Player.SpecIndex) or 0;
+    D.Player.SpecRole     = GetSpecializationRole(D.Player.SpecIndex) or 'NONE';
     D.Player.SpecRoleEnum = GetSpecializationRoleEnum(D.Player.SpecIndex);
 end
 
