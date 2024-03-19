@@ -29,32 +29,28 @@ local function TargetChanged(unitframe)
         return;
     end
 
-    if not ENABLED or unitframe.data.isUnimportantUnit or not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.isPersonal or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
+    if not ENABLED or not unitframe.data.targetName or unitframe.data.isUnimportantUnit or not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.isPersonal or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
         unitframe.TargetName:Hide();
         return;
     end
 
-    if unitframe.data.targetName then
-        if unitframe.data.targetName == PlayerData.Name then
-            if NOT_ME then
-                unitframe.TargetName:SetText('');
-            else
-                local roleIconText = ROLE_ICON and partyRolesCache[PlayerData.Name] and ('» ' .. partyRolesCache[PlayerData.Name] .. ' ' .. YOU) or ('» ' .. YOU);
-                unitframe.TargetName:SetText(roleIconText);
-                unitframe.TargetName:SetTextColor(1, 0.2, 0.2);
-            end
+    if unitframe.data.targetName == PlayerData.Name then
+        if NOT_ME then
+            unitframe.TargetName:SetText('');
         else
-            local useTranslit, useReplaceDiacritics, useCut = true, true, true;
-            local targetName = GetCachedName(unitframe.data.targetName, useTranslit, useReplaceDiacritics, useCut);
-            local roleIconText = ROLE_ICON and partyRolesCache[unitframe.data.targetName] and ('» ' .. partyRolesCache[unitframe.data.targetName] .. ' ' .. targetName) or ('» ' .. targetName);
+            local roleIconText = ROLE_ICON and partyRolesCache[PlayerData.Name] and ('» ' .. partyRolesCache[PlayerData.Name] .. ' ' .. YOU) or ('» ' .. YOU);
             unitframe.TargetName:SetText(roleIconText);
-            unitframe.TargetName:SetTextColor(U_GetUnitColor(unitframe.data.unit .. 'target', 2));
+            unitframe.TargetName:SetTextColor(1, 0.2, 0.2);
         end
-
-        unitframe.TargetName:Show();
     else
-        unitframe.TargetName:Hide();
+        local useTranslit, useReplaceDiacritics, useCut = true, true, true;
+        local targetName = GetCachedName(unitframe.data.targetName, useTranslit, useReplaceDiacritics, useCut);
+        local roleIconText = ROLE_ICON and partyRolesCache[unitframe.data.targetName] and ('» ' .. partyRolesCache[unitframe.data.targetName] .. ' ' .. targetName) or ('» ' .. targetName);
+        unitframe.TargetName:SetText(roleIconText);
+        unitframe.TargetName:SetTextColor(U_GetUnitColor(unitframe.data.unit .. 'target', 2));
     end
+
+    unitframe.TargetName:Show();
 end
 
 local function OnUpdate(unitframe)
