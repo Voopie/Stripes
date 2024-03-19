@@ -308,22 +308,6 @@ local function UpdateName(unitframe)
     end
 end
 
-local function DefaultColor(frame)
-    if not frame.data.unit then
-        return;
-    end
-
-    if frame.UpdateNameOverride and frame:UpdateNameOverride() then
-        return;
-    end
-
-    if U_UnitIsTapped(frame.data.unit) then
-        frame.name:SetVertexColor(0.5, 0.5, 0.5);
-    elseif frame.optionTable.colorNameBySelection then
-        frame.name:SetVertexColor(UnitSelectionColor(frame.data.unit, frame.optionTable.colorNameWithExtendedColors));
-    end
-end
-
 -- 'OFFSET_[XY]' will be replaced with OFFSET_[XY]
 local namePositions = {
     [1] = { -- LEFT
@@ -526,6 +510,22 @@ local function UpdateAnchor(unitframe)
     PixelUtil.SetHeight(unitframe.name, unitframe.name:GetLineHeight() + 1);
 end
 
+local function SetDefaultNameColor(frame)
+    if not frame.data.unit then
+        return;
+    end
+
+    if frame.UpdateNameOverride and frame:UpdateNameOverride() then
+        return;
+    end
+
+    if U_UnitIsTapped(frame.data.unit) then
+        frame.name:SetVertexColor(0.5, 0.5, 0.5);
+    elseif frame.optionTable.colorNameBySelection then
+        frame.name:SetVertexColor(UnitSelectionColor(frame.data.unit, frame.optionTable.colorNameWithExtendedColors));
+    end
+end
+
 local function UpdateColor(unitframe)
     if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsNameClassColoring() and unitframe.data.unitType == 'FRIENDLY_PLAYER' then
         unitframe.name:SetVertexColor(unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB);
@@ -539,33 +539,23 @@ local function UpdateColor(unitframe)
             if COLORING_MODE_NPC == 1 then -- NONE
                 unitframe.name:SetVertexColor(1, 1, 1);
             else
-                DefaultColor(unitframe);
+                SetDefaultNameColor(unitframe);
             end
         end
-
-        return;
-    end
-
-    if unitframe.data.commonUnitType == 'PET' then
+    elseif unitframe.data.commonUnitType == 'PET' then
         if COLORING_MODE_NPC == 1 then -- NONE
             unitframe.name:SetVertexColor(1, 1, 1);
         else
-            DefaultColor(unitframe);
+            SetDefaultNameColor(unitframe);
         end
-
-        return;
-    end
-
-    if unitframe.data.commonUnitType == 'PLAYER' then
+    elseif unitframe.data.commonUnitType == 'PLAYER' then
         if COLORING_MODE == 1 then -- NONE
             unitframe.name:SetVertexColor(1, 1, 1);
         elseif COLORING_MODE == 2 then -- CLASS COLOR
             unitframe.name:SetVertexColor(unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB);
         else -- FACTION COLOR
-            DefaultColor(unitframe);
+            SetDefaultNameColor(unitframe);
         end
-
-        return;
     end
 end
 
@@ -795,59 +785,65 @@ local function NameOnly_UpdateBackgroundVisibility(unitframe)
 end
 
 local function UpdateClassificationIndicator(unitframe)
-    if not unitframe.classificationIndicator then
+    local classificationIndicator = unitframe.classificationIndicator;
+
+    if not classificationIndicator then
         return;
     end
 
     if unitframe.data.isSoftInteract and not unitframe.data.isSoftEnemy then
-        unitframe.classificationIndicator:Hide();
+        classificationIndicator:Hide();
         return;
     end
 
     if unitframe.optionTable.showPvPClassificationIndicator and unitframe.unit and CompactUnitFrame_UpdatePvPClassificationIndicator(unitframe) then
-        unitframe.classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
+        classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
 
-        if unitframe.classificationIndicator.wasChanged then
-            unitframe.classificationIndicator:SetTexCoord(0, 1, 0, 1);
-            unitframe.classificationIndicator:SetVertexColor(1, 1, 1, 1);
+        if classificationIndicator.wasChanged then
+            classificationIndicator:SetTexCoord(0, 1, 0, 1);
+            classificationIndicator:SetVertexColor(1, 1, 1, 1);
 
-            unitframe.classificationIndicator.wasChanged = nil;
+            classificationIndicator.wasChanged = nil;
         end
 
         return;
     elseif not CLASSIFICATION_INDICATOR_ENABLED or not unitframe.optionTable.showClassificationIndicator then
-        unitframe.classificationIndicator:Hide();
+        classificationIndicator:Hide();
     else
         if CLASSIFICATION_INDICATOR_STAR and unitframe.data.classification then
-            unitframe.classificationIndicator:SetTexture(S.Media.Icons2.TEXTURE);
-            unitframe.classificationIndicator:SetTexCoord(unpack(S.Media.Icons2.COORDS.STAR_WHITE));
-            unitframe.classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
+            classificationIndicator:SetTexture(S.Media.Icons2.TEXTURE);
+            classificationIndicator:SetTexCoord(unpack(S.Media.Icons2.COORDS.STAR_WHITE));
+            classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
 
-            if unitframe.data.classification == '+' or unitframe.data.classification == 'b' then
-                unitframe.classificationIndicator:SetVertexColor(0.85, 0.65, 0.13, 1);
-            elseif unitframe.data.classification == 'r' then
-                unitframe.classificationIndicator:SetVertexColor(0.8, 0.4, 0.15, 1);
-            elseif unitframe.data.classification == 'r+' then
-                unitframe.classificationIndicator:SetVertexColor(0.6, 0.6, 0.6, 1);
+            local classification = unitframe.data.classification;
+
+            if classification == '+' or classification == 'b' then
+                classificationIndicator:SetVertexColor(0.85, 0.65, 0.13, 1);
+            elseif classification == 'r' then
+                classificationIndicator:SetVertexColor(0.8, 0.4, 0.15, 1);
+            elseif classification == 'r+' then
+                classificationIndicator:SetVertexColor(0.6, 0.6, 0.6, 1);
             end
 
-            unitframe.classificationIndicator.wasChanged = true;
+            classificationIndicator.wasChanged = true;
         else
-            unitframe.classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
+            classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
 
-            if unitframe.classificationIndicator.wasChanged then
-                unitframe.classificationIndicator:SetTexCoord(0, 1, 0, 1);
-                unitframe.classificationIndicator:SetVertexColor(1, 1, 1, 1);
+            if classificationIndicator.wasChanged then
+                classificationIndicator:SetTexCoord(0, 1, 0, 1);
+                classificationIndicator:SetVertexColor(1, 1, 1, 1);
 
-                unitframe.classificationIndicator.wasChanged = nil;
+                classificationIndicator.wasChanged = nil;
             end
         end
     end
 end
 
 local function UpdateClassificationIndicatorPosition(unitframe)
-    unitframe.classificationIndicator:ClearAllPoints();
-    unitframe.classificationIndicator:SetPoint(CLASSIFICATION_INDICATOR_POINT, unitframe.healthBar, CLASSIFICATION_INDICATOR_RELATIVE_POINT, CLASSIFICATION_INDICATOR_OFFSET_X, CLASSIFICATION_INDICATOR_OFFSET_Y);
+    local classificationIndicator = unitframe.classificationIndicator;
+
+    classificationIndicator:ClearAllPoints();
+    classificationIndicator:SetPoint(CLASSIFICATION_INDICATOR_POINT, unitframe.healthBar, CLASSIFICATION_INDICATOR_RELATIVE_POINT, CLASSIFICATION_INDICATOR_OFFSET_X, CLASSIFICATION_INDICATOR_OFFSET_Y);
 end
 
 local function UpdateNameHolder(unitframe)
