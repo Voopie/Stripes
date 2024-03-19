@@ -372,6 +372,14 @@ function ModuleMixin:ForAllUnitFrames(func)
     end
 end
 
+function ModuleMixin:ForAllActiveUnitFrames(func)
+    for _, frame in pairs(NP) do
+        if frame.isActive then
+            func(frame);
+        end
+    end
+end
+
 function ModuleMixin:ForAllActiveAndShownUnitFrames(func)
     for _, frame in pairs(NP) do
         if frame.isActive and frame:IsShown() then
