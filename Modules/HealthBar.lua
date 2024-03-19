@@ -51,11 +51,7 @@ local RAID_TARGET_COLORS = {
     [8] = {    1,    1,    1, 1 }, -- WHITE  (SKULL)
 };
 
-local playerUnits = {
-    ['player']  = true,
-    ['pet']     = true,
-    ['vehicle'] = true,
-};
+local playerUnits = D.PlayerUnits;
 
 local function IsUseClassColor(unitframe)
     if unitframe.data.unitType == 'ENEMY_PLAYER' and DB.HEALTH_BAR_CLASS_COLOR_ENEMY then
