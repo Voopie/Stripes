@@ -1,9 +1,9 @@
-## Interface: 100205
+## Interface: 100206
 ## Author: Voopie
 ## Title: Stripes
 ## Notes: Yet another nameplates customization addon
 ## Notes-ruRU: Еще один аддон для кастомизации неймплейтов 
-## Version: 1.40.2
+## Version: 1.41
 ## IconTexture: Interface\AddOns\Stripes\Media\Textures\Assets\stripes_logo_mini.blp
 ## SavedVariables: StripesDB, StripesSpellDB
 
