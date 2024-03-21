@@ -292,6 +292,34 @@ local function GetAuraColor(unit)
     return false;
 end
 
+local function UpdateExecutionGlow(unitframe, shouldExecute)
+    local isExecutionGlow = unitframe.data.isExecutionGlow;
+    local healthPercent   = unitframe.data.healthPer;
+
+    shouldExecute = shouldExecute == nil and (DB.EXECUTION_ENABLED and (healthPercent <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and healthPercent >= DB.EXECUTION_HIGH_PERCENT))) or shouldExecute;
+
+    if not shouldExecute then
+        if isExecutionGlow then
+            LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
+            unitframe.data.isExecutionGlow = nil;
+        end
+
+        return;
+    end
+
+    if DB.EXECUTION_GLOW then
+        if shouldExecute and not isExecutionGlow then
+            LCG_PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_EXECUTION');
+            unitframe.data.isExecutionGlow = true;
+        end
+    else
+        if isExecutionGlow then
+            LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
+            unitframe.data.isExecutionGlow = nil;
+        end
+    end
+end
+
 local COLORING_FUNCTIONS = {
     HIGH_THREAT = function(unitframe)
         local result = nil;
@@ -330,6 +358,7 @@ local COLORING_FUNCTIONS = {
                 UpdateThreatName(unitframe, display, r, g, b);
             end
 
+            UpdateExecutionGlow(unitframe);
             UpdateThreatPercentageTextAndColor(unitframe, display, r, g, b, a);
             unitframe.data.tpNeedUpdate = false;
         end
@@ -374,6 +403,7 @@ local COLORING_FUNCTIONS = {
                 UpdateThreatName(unitframe, display, r, g, b);
             end
 
+            UpdateExecutionGlow(unitframe);
             UpdateThreatPercentageTextAndColor(unitframe, display, r, g, b, a);
             unitframe.data.tpNeedUpdate = false;
         end
@@ -504,29 +534,25 @@ local COLORING_FUNCTIONS = {
     EXECUTION = function(unitframe)
         local result = nil;
 
-        if DB.EXECUTION_ENABLED and (unitframe.data.healthPer <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and unitframe.data.healthPer >= DB.EXECUTION_HIGH_PERCENT)) then
-            local color = DB.EXECUTION_COLOR;
-            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+        local healthPercent = unitframe.data.healthPer;
+        local shouldExecute = DB.EXECUTION_ENABLED and (healthPercent <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and healthPercent >= DB.EXECUTION_HIGH_PERCENT));
 
-            if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
-            end
-
-            result = 'EXECUTION';
-
-            if DB.EXECUTION_GLOW then
-                if not unitframe.healthBar.executionGlow then
-                    LCG_PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_EXECUTION');
-                    unitframe.healthBar.executionGlow = true;
-                end
-            else
-                LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
-                unitframe.healthBar.executionGlow = nil;
-            end
-        else
-            LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
-            unitframe.healthBar.executionGlow = nil;
+        if not shouldExecute then
+            UpdateExecutionGlow(unitframe, shouldExecute);
+            return result;
         end
+
+        result = 'EXECUTION';
+
+        local color = DB.EXECUTION_COLOR;
+        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+        local colorChanged = color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA;
+
+        if colorChanged then
+            unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+        end
+
+        UpdateExecutionGlow(unitframe, shouldExecute);
 
         return result;
     end,
@@ -989,6 +1015,8 @@ function Module:UnitRemoved(unitframe)
 
     unitframe.data.coloringResult   = nil;
     unitframe.data.coloringPriority = nil;
+
+    unitframe.data.isExecutionGlow = nil;
 
     unitframe.data.threatNameColored = nil;
     unitframe.data.threatColorR = nil;
