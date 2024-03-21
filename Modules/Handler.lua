@@ -43,6 +43,13 @@ local NAME_ONLY_OFFSET_Y, NAME_ONLY_COLOR_CLASS, NAME_ONLY_COLOR_HEALTH, NAME_ON
 local NAME_ONLY_GUILD_NAME, NAME_ONLY_GUILD_NAME_COLOR, NAME_ONLY_GUILD_NAME_SAME_COLOR;
 local NAME_ONLY_SHOW_BACKGROUND, NAME_ONLY_BACKGROUND_COLOR;
 
+local excludeAuraUnits = {
+    ['target']       = true,
+    ['softenemy']    = true,
+    ['softfriend']   = true,
+    ['softinteract'] = true,
+};
+
 -- Updater
 Stripes.Updater = CreateFrame('Frame');
 
@@ -925,7 +932,7 @@ local function ResetNameplateData(unitframe)
 end
 
 function Stripes:NAME_PLATE_UNIT_ADDED(unit)
-    if not D.PlayerUnits[unit] then
+    if not (D.PlayerUnits[unit] or excludeAuraUnits[unit]) then
         S:GetModule('Auras_Cache'):ProcessAuras(unit);
     end
 
@@ -974,7 +981,7 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
 end
 
 function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
-    if not D.PlayerUnits[unit] then
+    if not (D.PlayerUnits[unit] or excludeAuraUnits[unit]) then
         S:GetModule('Auras_Cache'):FlushUnit(unit);
     end
 
@@ -986,7 +993,7 @@ function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
 end
 
 function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
-    if not D.PlayerUnits[unit] then
+    if not (D.PlayerUnits[unit] or excludeAuraUnits[unit]) then
         S:GetModule('Auras_Cache'):ProcessAuras(unit, unitAuraUpdateInfo);
     end
 
@@ -996,8 +1003,6 @@ function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
 end
 
 function Stripes:PLAYER_TARGET_CHANGED()
-    S:GetModule('Auras_Cache'):ProcessAuras('target');
-
     self:ProcessNamePlateForUnit('target', function(unitframe)
         S:ForAllNameplateModules('UnitAura', unitframe);
     end);
