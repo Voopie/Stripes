@@ -537,19 +537,15 @@ local COLORING_FUNCTIONS = {
         local healthPercent = unitframe.data.healthPer;
         local shouldExecute = DB.EXECUTION_ENABLED and (healthPercent <= DB.EXECUTION_LOW_PERCENT or (DB.EXECUTION_HIGH_ENABLED and healthPercent >= DB.EXECUTION_HIGH_PERCENT));
 
-        if not shouldExecute then
-            UpdateExecutionGlow(unitframe, shouldExecute);
-            return result;
-        end
+        if shouldExecute then
+            local color = DB.EXECUTION_COLOR;
+            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
 
-        result = 'EXECUTION';
+            if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
+                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+            end
 
-        local color = DB.EXECUTION_COLOR;
-        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
-        local colorChanged = color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA;
-
-        if colorChanged then
-            unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+            result = 'EXECUTION';
         end
 
         UpdateExecutionGlow(unitframe, shouldExecute);
