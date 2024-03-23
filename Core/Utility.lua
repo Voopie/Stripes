@@ -15,7 +15,8 @@ local UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole = UnitGro
 local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
 local GetQuestDifficultyColor = GetQuestDifficultyColor;
 local IsInGuild, GetGuildInfo = IsInGuild, GetGuildInfo;
-local IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map_GetBestMapForUnit = IsActiveBattlefieldArena, GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map.GetBestMapForUnit
+local IsActiveBattlefieldArena, GetZonePVPInfo,       IsInInstance, UnitInBattleground, C_Map_GetBestMapForUnit =
+      IsActiveBattlefieldArena, C_PvP.GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map.GetBestMapForUnit
 local GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell = GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell;
 
 -- WoW C API

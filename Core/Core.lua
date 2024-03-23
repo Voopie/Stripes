@@ -39,8 +39,8 @@ local L = setmetatable(NAMESPACE[2], {
 });
 
 AddOn.AddonName        = ADDON_NAME;
-AddOn.Title            = GetAddOnMetadata(ADDON_NAME, 'Title');
-AddOn.Version          = GetAddOnMetadata(ADDON_NAME, 'Version');
+AddOn.Title            = C_AddOns.GetAddOnMetadata(ADDON_NAME, 'Title');
+AddOn.Version          = C_AddOns.GetAddOnMetadata(ADDON_NAME, 'Version');
 AddOn.ClientLocale     = gameLocale;
 AddOn.Modules          = {};
 AddOn.NameplateModules = {};
@@ -256,7 +256,7 @@ function Eventer:RegisterAddon(addonName, addonCallback, addonFunction)
         addonFunction = 0;
     end
 
-    if IsAddOnLoaded(addonName) then
+    if C_AddOns.IsAddOnLoaded(addonName) then
         if addonFunction == 0 then
             addonCallback[addonName](addonCallback);
         else
@@ -699,7 +699,7 @@ function AddOn:CheckIncompatibleAddons()
     end
 
     for _, data in ipairs(incompatibleAddons) do
-        if IsAddOnLoaded(data.addonName) and (not data.checkFunction or data.checkFunction()) then
+        if C_AddOns.IsAddOnLoaded(data.addonName) and (not data.checkFunction or data.checkFunction()) then
             StaticPopup_Show('STRIPES_INCOMPATIBLE_NAMEPLATES_ADDON', data.titleName);
             break;
         end
