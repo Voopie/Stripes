@@ -196,6 +196,8 @@ local function UpdateThreatName(unitframe, value, r, g, b)
 end
 
 local function GetThreatColor(unitframe, display)
+    display = display or unitframe.data.threatDisplay;
+
     if not display then
         return;
     end
