@@ -11,9 +11,9 @@ local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType
       UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType, UnitPVPName, UnitCanAttack, UnitPlayerControlled, UnitIsGameObject;
 
 -- Stripes API
-local U_GetNpcIDByGUID, U_GetUnitLevel, U_GetUnitColor, U_UnitInGuild = U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor, U.UnitInGuild;
-local U_IsPlayer, U_IsRealPlayer = U.IsPlayer, U.IsRealPlayer;
-local utf8sub = U.UTF8SUB;
+local U_GetNpcIDByGUID, U_GetUnitLevel, U_GetUnitColor, U_UnitInGuild, U_IsPlayer, U_IsRealPlayer, U_GetUnitThreatSituationStatus =
+      U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor, U.UnitInGuild, U.IsPlayer, U.IsRealPlayer, U.GetUnitThreatSituationStatus;
+local U_utf8sub = U.UTF8SUB;
 local PlayerState = D.Player.State;
 
 -- Libraries
@@ -258,7 +258,7 @@ do
         end
 
         if useCut and NAME_CUT_ENABLED then
-            newName = utf8sub(newName, 0, NAME_CUT_NUMBER);
+            newName = U_utf8sub(newName, 0, NAME_CUT_NUMBER);
         end
 
         if newName ~= name then
@@ -451,6 +451,10 @@ end
 
 local function UpdateUnitColor(unitframe)
     unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB = U_GetUnitColor(unitframe.data.unit, 2);
+end
+
+local function UpdateThreat(unitframe)
+    unitframe.data.threatDisplay, unitframe.data.threatStatus, unitframe.data.threatIsTanking = U_GetUnitThreatSituationStatus(unitframe.data.unit);
 end
 
 local function CVarsReset()
@@ -928,6 +932,10 @@ local function ResetNameplateData(unitframe)
     unitframe.data.threatColorG = nil;
     unitframe.data.threatColorB = nil;
 
+    unitframe.data.threatDisplay   = nil;
+    unitframe.data.threatStatus    = nil;
+    unitframe.data.threatIsTanking = nil;
+
     unitframe.data.isUnimportantUnit = nil;
 end
 
@@ -953,6 +961,7 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
         UpdateConnection(unitframe);
         UpdateTarget(unitframe);
         UpdateFocus(unitframe);
+        UpdateThreat(unitframe);
 
         unitframe.data.creatureType = not unitframe.data.isPlayer and UnitCreatureType(unit) or nil;
         unitframe.data.minus = UnitClassification(unit) == 'minus';
@@ -1037,6 +1046,14 @@ function Stripes:PLAYER_REGEN_ENABLED()
     UpdateSizesSafe();
 end
 
+function Stripes:UNIT_THREAT_LIST_UPDATE(unit)
+    self:ProcessNamePlateForUnit(unit, UpdateThreat);
+end
+
+function Stripes:UNIT_THREAT_SITUATION_UPDATE(unit)
+    self:ProcessNamePlateForUnit(unit, UpdateThreat);
+end
+
 function Stripes:UpdateLocalConfig()
     NAME_TEXT_ENABLED               = O.db.name_text_enabled;
 
@@ -1095,6 +1112,8 @@ function Stripes:StartUp()
     self:RegisterEvent('UNIT_LEVEL');
     self:RegisterEvent('UNIT_FACTION');
     self:RegisterEvent('PLAYER_FOCUS_CHANGED');
+    self:RegisterEvent('UNIT_THREAT_LIST_UPDATE');
+    self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE');
 
     hooksecurefunc(C_CVar, 'SetCVar', HookSetCVar);
     hooksecurefunc(NamePlateDriverFrame, 'UpdateNamePlateOptions', UpdateSizesSafe);

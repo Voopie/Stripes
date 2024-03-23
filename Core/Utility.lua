@@ -7,12 +7,12 @@ local pairs, ipairs, select, type, unpack, tostring, tonumber, string_format, st
 local strsplit = strsplit;
 
 -- WoW API
-local UnitClassBase, UnitDetailedThreatSituation, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID =
-      UnitClassBase, UnitDetailedThreatSituation, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID;
+local UnitClassBase, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID =
+      UnitClassBase, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitIsTapDenied, UnitIsDeadOrGhost, UnitIsConnected, UnitIsPlayer, UnitPlayerControlled, UnitSelectionColor, GetPlayerInfoByGUID;
 local UnitLevel, UnitEffectiveLevel, UnitGUID, UnitAffectingCombat, UnitClassification, UnitTreatAsPlayerForDisplay =
       UnitLevel, UnitEffectiveLevel, UnitGUID, UnitAffectingCombat, UnitClassification, UnitTreatAsPlayerForDisplay;
-local UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole = UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole;
-local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
+local UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole, UnitCastingInfo, UnitChannelInfo =
+      UnitGroupRolesAssigned, GetSpecialization, GetSpecializationRole, UnitCastingInfo, UnitChannelInfo;
 local GetQuestDifficultyColor = GetQuestDifficultyColor;
 local IsInGuild, GetGuildInfo = IsInGuild, GetGuildInfo;
 local IsActiveBattlefieldArena, GetZonePVPInfo,       IsInInstance, UnitInBattleground, C_Map_GetBestMapForUnit =
@@ -118,6 +118,22 @@ U.IsInArena = function()
     else
         return false;
     end
+end
+
+U.GetUnitThreatSituationStatus = function(unit)
+    if not unit then
+        return;
+    end
+
+    local isTanking, status, threatpct = UnitDetailedThreatSituation('player', unit);
+    local display = threatpct;
+
+    if isTanking then
+        local lead = UnitThreatPercentageOfLead('player', unit);
+        display = lead == 0 and 100 or lead;
+    end
+
+    return display, status, isTanking;
 end
 
 do

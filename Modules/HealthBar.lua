@@ -3,8 +3,8 @@ local Module = S:NewNameplateModule('HealthBar');
 local Colors = S:GetModule('Options_Colors');
 
 -- WoW API
-local UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
-      UnitSelectionType, UnitSelectionColor, UnitDetailedThreatSituation, UnitThreatPercentageOfLead, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
+local UnitSelectionType, UnitSelectionColor, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned =
+      UnitSelectionType, UnitSelectionColor, UnitTreatAsPlayerForDisplay, UnitPlayerControlled, UnitExists, UnitIsUnit, UnitIsPlayer, UnitInParty, UnitInRaid, UnitGroupRolesAssigned;
 local GetRaidTargetIndex = GetRaidTargetIndex;
 
 -- Stripes API
@@ -34,7 +34,7 @@ local statusColors = {
 };
 
 local offTankColor       = { 0.60, 0.00, 0.85, 1 };
-local petTankColor       = { 0.00, 0.44, 1.00, 1 };
+local otherPetTankColor  = { 0.00, 0.44, 1.00, 1 };
 local playerPetTankColor = { 0.00, 0.44, 1.00, 1 };
 
 local PLAYER_ROLE;
@@ -139,22 +139,6 @@ local function UpdateHealthColor(frame)
     end
 end
 
-local function GetUnitThreatSituationStatus(unit)
-    if not unit then
-        return;
-    end
-
-    local isTanking, status, threatpct = UnitDetailedThreatSituation('player', unit);
-    local display = threatpct;
-
-    if isTanking then
-        local lead = UnitThreatPercentageOfLead('player', unit);
-        display = lead == 0 and 100 or lead;
-    end
-
-    return display, status, isTanking;
-end
-
 local function CreateThreatPercentage(unitframe)
     if unitframe.ThreatPercentage then
         return;
@@ -211,47 +195,57 @@ local function UpdateThreatName(unitframe, value, r, g, b)
     unitframe.data.threatColorB = b;
 end
 
+local function GetThreatColor(unitframe, display)
+    if not display then
+        return;
+    end
+
+    local status = unitframe.data.threatStatus;
+    local offTank, otherPetTank, playerPetTank = false, false, false;
+
+    if not status or status < 3 then
+        local tankUnit = unitframe.data.unit .. 'target';
+        if UnitExists(tankUnit) and not UnitIsUnit(tankUnit, 'player') then
+            if (UnitInParty(tankUnit) or UnitInRaid(tankUnit)) and UnitGroupRolesAssigned(tankUnit) == 'TANK' then
+                -- group tank
+                offTank = true;
+            elseif not UnitIsPlayer(tankUnit) then
+                if UnitIsUnit(tankUnit, 'pet') then
+                    -- player's pet
+                    playerPetTank = true;
+                elseif UnitPlayerControlled(tankUnit) then
+                    -- other player controlled npc (pet, vehicle, totem)
+                    otherPetTank = true;
+                end
+            end
+        end
+    end
+
+    local r, g, b, a;
+
+    if PLAYER_IS_TANK and offTank then
+        r, g, b, a = offTankColor[1], offTankColor[2], offTankColor[3], offTankColor[4];
+    elseif playerPetTank then
+        r, g, b, a = playerPetTankColor[1], playerPetTankColor[2], playerPetTankColor[3], playerPetTankColor[4];
+    elseif otherPetTank then
+        r, g, b, a = otherPetTankColor[1], otherPetTankColor[2], otherPetTankColor[3], otherPetTankColor[4];
+    else
+        r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
+    end
+
+    return r, g, b, a;
+end
+
 local function UpdateThreatPercentage(unitframe)
     if unitframe.data.isPlayer then
         UpdateThreatPercentageTextAndColor(unitframe);
         return;
     end
 
-    local display, status = GetUnitThreatSituationStatus(unitframe.data.unit);
+    local display = unitframe.data.threatDisplay;
+    local r, g, b, a = GetThreatColor(unitframe, display);
 
-    if display then
-        local offTank, petTank, playerPetTank = false, false, false;
-
-        if not status or status < 3 then
-            local tankUnit = unitframe.data.unit .. 'target';
-            if UnitExists(tankUnit) and not UnitIsUnit(tankUnit, 'player') then
-                if (UnitInParty(tankUnit) or UnitInRaid(tankUnit)) and UnitGroupRolesAssigned(tankUnit) == 'TANK' then
-                    -- group tank
-                    offTank = true;
-                elseif not UnitIsPlayer(tankUnit) then
-                    if UnitIsUnit(tankUnit, 'pet') then
-                        -- player's pet
-                        playerPetTank = true;
-                    elseif UnitPlayerControlled(tankUnit) then
-                        -- player controlled npc (pet, vehicle, totem)
-                        petTank = true;
-                    end
-                end
-            end
-        end
-
-        local r, g, b, a;
-
-        if PLAYER_IS_TANK and offTank then
-            r, g, b, a = offTankColor[1], offTankColor[2], offTankColor[3], offTankColor[4];
-        elseif playerPetTank then
-            r, g, b, a = playerPetTankColor[1], playerPetTankColor[2], playerPetTankColor[3], playerPetTankColor[4];
-        elseif petTank then
-            r, g, b, a = petTankColor[1], petTankColor[2], petTankColor[3], petTankColor[4];
-        else
-            r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
-        end
-
+    if r then
         UpdateThreatPercentageTextAndColor(unitframe, display, r, g, b, a);
     end
 end
@@ -333,7 +327,7 @@ local COLORING_FUNCTIONS = {
             return result;
         end
 
-        local display, status = GetUnitThreatSituationStatus(unitframe.data.unit);
+        local display, status = unitframe.data.threatDisplay, unitframe.data.threatStatus;
 
         if display and status == 3 then
             local r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
@@ -378,7 +372,7 @@ local COLORING_FUNCTIONS = {
             return;
         end
 
-        local display, status = GetUnitThreatSituationStatus(unitframe.data.unit);
+        local display, status = unitframe.data.threatDisplay, unitframe.data.threatStatus;
 
         if display and status < 3 then
             local r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
@@ -561,40 +555,10 @@ local COLORING_FUNCTIONS = {
             return result;
         end
 
-        local display, status = GetUnitThreatSituationStatus(unitframe.data.unit);
-        local offTank, petTank, playerPetTank = false, false, false;
+        local display = unitframe.data.threatDisplay;
+        local r, g, b, a = GetThreatColor(unitframe, display);
 
-        if not status or status < 3 then
-            local tank_unit = unitframe.data.unit .. 'target';
-            if UnitExists(tank_unit) and not UnitIsUnit(tank_unit, 'player') then
-                if (UnitInParty(tank_unit) or UnitInRaid(tank_unit)) and UnitGroupRolesAssigned(tank_unit) == 'TANK' then
-                    -- group tank
-                    offTank = true;
-                elseif not UnitIsPlayer(tank_unit) then
-                    if UnitIsUnit(tank_unit, 'pet') then
-                        -- player's pet
-                        playerPetTank = true;
-                    elseif UnitPlayerControlled(tank_unit) then
-                        -- player controlled npc (pet, vehicle, totem)
-                        petTank = true;
-                    end
-                end
-            end
-        end
-
-        if display then
-            local r, g, b, a;
-
-            if PLAYER_IS_TANK and offTank then
-                r, g, b, a = offTankColor[1], offTankColor[2], offTankColor[3], offTankColor[4];
-            elseif playerPetTank then
-                r, g, b, a = playerPetTankColor[1], playerPetTankColor[2], playerPetTankColor[3], playerPetTankColor[4];
-            elseif petTank then
-                r, g, b, a = petTankColor[1], petTankColor[2], petTankColor[3], petTankColor[4];
-            else
-                r, g, b, a = statusColors[status][1], statusColors[status][2], statusColors[status][3], statusColors[status][4];
-            end
-
+        if r then
             if DB.THREAT_NAME_COLORING and DB.THREAT_NAME_ONLY then
                 UpdateThreatName(unitframe, display, r, g, b);
             else
@@ -688,15 +652,11 @@ local function UpdateBorder(unitframe)
 
     if DB.SAME_BORDER_COLOR then
         unitframe.healthBar.border:SetVertexColor(unitframe.healthBar:GetStatusBarTexture():GetVertexColor());
-        return;
-    end
-
-    if unitframe.data.isTarget then
+    elseif unitframe.data.isTarget then
         unitframe.healthBar.border:SetVertexColor(DB.BORDER_SELECTED_COLOR[1], DB.BORDER_SELECTED_COLOR[2], DB.BORDER_SELECTED_COLOR[3], DB.BORDER_SELECTED_COLOR[4]);
-        return;
+    else
+        unitframe.healthBar.border:SetVertexColor(DB.BORDER_COLOR[1], DB.BORDER_COLOR[2], DB.BORDER_COLOR[3], DB.BORDER_COLOR[4]);
     end
-
-    unitframe.healthBar.border:SetVertexColor(DB.BORDER_COLOR[1], DB.BORDER_COLOR[2], DB.BORDER_COLOR[3], DB.BORDER_COLOR[4]);
 end
 
 local function UpdateBorderSizes(unitframe)
@@ -1167,10 +1127,10 @@ function Module:UpdateLocalConfig()
     offTankColor[3] = O.db.threat_color_offtank[3];
     offTankColor[4] = O.db.threat_color_offtank[4] or 1;
 
-    petTankColor[1] = O.db.threat_color_pettank[1];
-    petTankColor[2] = O.db.threat_color_pettank[2];
-    petTankColor[3] = O.db.threat_color_pettank[3];
-    petTankColor[4] = O.db.threat_color_pettank[4] or 1;
+    otherPetTankColor[1] = O.db.threat_color_pettank[1];
+    otherPetTankColor[2] = O.db.threat_color_pettank[2];
+    otherPetTankColor[3] = O.db.threat_color_pettank[3];
+    otherPetTankColor[4] = O.db.threat_color_pettank[4] or 1;
 
     playerPetTankColor[1] = O.db.threat_color_playerpettank[1];
     playerPetTankColor[2] = O.db.threat_color_playerpettank[2];
