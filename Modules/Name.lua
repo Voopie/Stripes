@@ -202,8 +202,7 @@ local function HandleCustomName(unitframe)
         return false;
     end
 
-    local npcId     = unitframe.data.npcId;
-    local customNpc = O.db.custom_npc[npcId];
+    local customNpc = O.db.custom_npc[unitframe.data.npcId];
 
     if customNpc and customNpc.enabled and customNpc.npc_new_name then
         unitframe.name:SetText(customNpc.npc_new_name);
@@ -298,12 +297,12 @@ local function UpdateName(unitframe)
         end
     end
 
-    if unitframe.data.unitType == 'ENEMY_PLAYER' and SHOW_ARENA_ID and PlayerState.inArena then
-        HandleArenaName(unitframe);
-        return;
-    end
+    local isEnemyPlayer    = unitframe.data.unitType == 'ENEMY_PLAYER';
+    local isFriendlyPlayer = unitframe.data.unitType == 'FRIENDLY_PLAYER';
 
-    if unitframe.data.unitType == 'ENEMY_PLAYER' or (unitframe.data.unitType == 'FRIENDLY_PLAYER' and not (Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsNameHealthColoring())) then
+    if isEnemyPlayer and SHOW_ARENA_ID and PlayerState.inArena then
+        HandleArenaName(unitframe);
+    elseif isEnemyPlayer or (isFriendlyPlayer and not (Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsNameHealthColoring())) then
         HandlePlayerName(unitframe);
     end
 end
@@ -532,7 +531,9 @@ local function UpdateColor(unitframe)
         return;
     end
 
-    if unitframe.data.commonUnitType == 'NPC' then
+    local commonUnitType = unitframe.data.commonUnitType;
+
+    if commonUnitType == 'NPC' then
         if unitframe.data.threatNameColored and unitframe.data.threatColorR then
             unitframe.name:SetVertexColor(unitframe.data.threatColorR, unitframe.data.threatColorG, unitframe.data.threatColorB);
         else
@@ -542,13 +543,13 @@ local function UpdateColor(unitframe)
                 SetDefaultNameColor(unitframe);
             end
         end
-    elseif unitframe.data.commonUnitType == 'PET' then
+    elseif commonUnitType == 'PET' then
         if COLORING_MODE_NPC == 1 then -- NONE
             unitframe.name:SetVertexColor(1, 1, 1);
         else
             SetDefaultNameColor(unitframe);
         end
-    elseif unitframe.data.commonUnitType == 'PLAYER' then
+    elseif commonUnitType == 'PLAYER' then
         if COLORING_MODE == 1 then -- NONE
             unitframe.name:SetVertexColor(1, 1, 1);
         elseif COLORING_MODE == 2 then -- CLASS COLOR
@@ -683,7 +684,7 @@ local function NameOnly_CreateGuildName(unitframe)
     frame:SetAllPoints(unitframe.healthBar);
 
     local text = frame:CreateFontString(nil, 'OVERLAY', 'StripesGuildNameFont');
-    PixelUtil.SetPoint(text, 'TOP', unitframe.name, 'BOTTOM', 0, -1);
+    text:SetPoint('TOP', unitframe.name, 'BOTTOM', 0, -1);
 
     frame.text = text;
 
