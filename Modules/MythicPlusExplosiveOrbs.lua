@@ -3,7 +3,7 @@ local Module = S:NewNameplateModule('MythicPlusExplosiveOrbs');
 local Stripes = S:GetNameplateModule('Handler');
 
 -- Stripes API
-local UpdateFontObject = Stripes.UpdateFontObject;
+local S_UpdateFontObject = Stripes.UpdateFontObject;
 
 -- Local Config
 local CROSSHAIR, COUNTER;
@@ -147,7 +147,7 @@ function Module:UpdateLocalConfig()
     CROSSHAIR = O.db.explosive_orbs_crosshair;
     COUNTER   = O.db.explosive_orbs_counter;
 
-    UpdateFontObject(StripesExplosiveOrbsFont, O.db.explosive_orbs_font_value, O.db.explosive_orbs_font_size, O.db.explosive_orbs_font_flag, O.db.explosive_orbs_font_shadow);
+    S_UpdateFontObject(StripesExplosiveOrbsFont, O.db.explosive_orbs_font_value, O.db.explosive_orbs_font_size, O.db.explosive_orbs_font_flag, O.db.explosive_orbs_font_shadow);
 end
 
 function Module:StartUp()

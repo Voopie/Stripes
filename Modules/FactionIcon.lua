@@ -1,7 +1,7 @@
 local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('FactionIcon');
 
-local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
+local S_ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
 
 -- Local Config
 local ENABLED;
@@ -35,7 +35,7 @@ local function Update(unitframe)
         return;
     end
 
-    local shouldShowTexture = ENABLED and unitframe.data.commonUnitType == 'PLAYER' and ShouldShowName(unitframe) and factionIcons[unitframe.data.factionGroup];
+    local shouldShowTexture = ENABLED and unitframe.data.commonUnitType == 'PLAYER' and S_ShouldShowName(unitframe) and factionIcons[unitframe.data.factionGroup];
 
     if shouldShowTexture then
         unitframe.FactionIcon.icon:SetTexture(shouldShowTexture);

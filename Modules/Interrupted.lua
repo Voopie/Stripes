@@ -10,10 +10,9 @@ local UnitName, UnitExists, GetPlayerInfoByGUID, GetSpellTexture, CombatLogGetCu
       UnitName, UnitExists, GetPlayerInfoByGUID, GetSpellTexture, CombatLogGetCurrentEventInfo;
 
 -- Stripes API
+local S_GetCachedName, S_UpdateFontObject = Stripes.GetCachedName, Stripes.UpdateFontObject;
 local U_UnitHasAura, U_UnitIsPetByGUID, U_GetUnitColor, U_GetClassColor =
       U.UnitHasAura, U.UnitIsPetByGUID, U.GetUnitColor, U.GetClassColor;
-local GetCachedName = Stripes.GetCachedName;
-local UpdateFontObject = Stripes.UpdateFontObject;
 
 -- Libraries
 local LPS = S.Libraries.LPS;
@@ -172,7 +171,7 @@ local function UpdateByAura(unitframe)
 
     if SI_CASTER_NAME_SHOW and sourceUnit then
         local useTranslit, useReplaceDiacritics, useCut = true, true, false;
-        local name = GetCachedName(UnitName(sourceUnit), useTranslit, useReplaceDiacritics, useCut);
+        local name = S_GetCachedName(UnitName(sourceUnit), useTranslit, useReplaceDiacritics, useCut);
 
         spellInterruptedFrame.casterName:SetText(name);
         spellInterruptedFrame.casterName:SetTextColor(U_GetUnitColor(sourceUnit, 2));
@@ -245,7 +244,7 @@ local function GetCasterInfo(sourceGUID, sourceName)
 
     if casterNameText and casterNameUnit then
         local useTranslit, useReplaceDiacritics, useCut = true, true, false;
-        casterNameText = GetCachedName(casterNameText, useTranslit, useReplaceDiacritics, useCut);
+        casterNameText = S_GetCachedName(casterNameText, useTranslit, useReplaceDiacritics, useCut);
 
         return casterNameUnit, casterNameText;
     end
@@ -324,8 +323,8 @@ function Module:UpdateLocalConfig()
     SI_DRAW_EDGE             = O.db.spell_interrupted_icon_cooldown_draw_edge;
     SI_SHOW_INTERRUPTED_ICON = O.db.spell_interrupted_icon_show_interrupted_icon;
 
-    UpdateFontObject(StripesSpellInterruptedCooldownFont, O.db.spell_interrupted_icon_countdown_font_value, O.db.spell_interrupted_icon_countdown_font_size, O.db.spell_interrupted_icon_countdown_font_flag, O.db.spell_interrupted_icon_countdown_font_shadow);
-    UpdateFontObject(StripesSpellInterruptedCasterFont, O.db.spell_interrupted_icon_caster_name_font_value, O.db.spell_interrupted_icon_caster_name_font_size, O.db.spell_interrupted_icon_caster_name_font_flag, O.db.spell_interrupted_icon_caster_name_font_shadow);
+    S_UpdateFontObject(StripesSpellInterruptedCooldownFont, O.db.spell_interrupted_icon_countdown_font_value, O.db.spell_interrupted_icon_countdown_font_size, O.db.spell_interrupted_icon_countdown_font_flag, O.db.spell_interrupted_icon_countdown_font_shadow);
+    S_UpdateFontObject(StripesSpellInterruptedCasterFont, O.db.spell_interrupted_icon_caster_name_font_value, O.db.spell_interrupted_icon_caster_name_font_size, O.db.spell_interrupted_icon_caster_name_font_flag, O.db.spell_interrupted_icon_caster_name_font_shadow);
 
     if WI_ENABLED or SI_ENABLED then
         self:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED', HandleCombatLogEvent);

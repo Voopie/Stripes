@@ -2,8 +2,8 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('AbsorbBar');
 
 -- Stripes API
-local ShortValue = U.ShortValue;
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local S_UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local S_ShortValue = U.ShortValue;
 
 -- Local Config
 local ENABLED, AT_TOP;
@@ -111,7 +111,7 @@ local function Update(unitframe)
         end
 
         if ABSORB_TEXT_ENABLED then
-            absorbText.text:SetText(ShortValue(absorbAmount));
+            absorbText.text:SetText(S_ShortValue(absorbAmount));
             absorbText:Show();
         else
             absorbText:Hide();
@@ -182,7 +182,7 @@ function Module:UpdateLocalConfig()
     ABSORB_TEXT_COLOR[3] = O.db.absorb_text_color[3];
     ABSORB_TEXT_COLOR[4] = O.db.absorb_text_color[4] or 1;
 
-    UpdateFontObject(StripesAbsorbTextFont, O.db.absorb_text_font_value, O.db.absorb_text_font_size, O.db.absorb_text_font_flag, O.db.absorb_text_font_shadow);
+    S_UpdateFontObject(StripesAbsorbTextFont, O.db.absorb_text_font_value, O.db.absorb_text_font_size, O.db.absorb_text_font_flag, O.db.absorb_text_font_shadow);
 end
 
 function Module:StartUp()

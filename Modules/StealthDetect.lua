@@ -13,7 +13,7 @@ local LCG_SUFFIX = 'S_STEALTHDETECT';
 -- Local Config
 local ENABLED, ALWAYS, NOT_IN_COMBAT, GLOW_ENABLED, GLOW_TYPE, GLOW_COLOR;
 
-local PlayerState = D.Player.State;
+local playerState = D.Player.State;
 
 local STEALTH_TEXTURE = 1391768;
 
@@ -170,7 +170,7 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    if not ENABLED or (NOT_IN_COMBAT and PlayerState.inCombat) then
+    if not ENABLED or (NOT_IN_COMBAT and playerState.inCombat) then
         unitframe.StealthDetect:Hide();
         return;
     end

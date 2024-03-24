@@ -17,14 +17,14 @@ local TooltipUtil_FindLinesFromData = TooltipUtil.FindLinesFromData;
 local Enum_TooltipDataLineType_QuestTitle, Enum_TooltipDataLineType_QuestObjective = Enum.TooltipDataLineType.QuestTitle, Enum.TooltipDataLineType.QuestObjective;
 
 -- Stripes API
-local UpdateFontObject = Stripes.UpdateFontObject;
-
-local PlayerState = D.Player.State;
+local S_UpdateFontObject = Stripes.UpdateFontObject;
 
 -- Local Config
 local ENABLED, POSITION;
 
 local StripesQuestIndicatorFont = CreateFont('StripesQuestIndicatorFont');
+
+local playerState = D.Player.State;
 
 local QuestActiveCache, QuestLogIndexCache = {}, {};
 
@@ -113,7 +113,7 @@ end
 local function Update(unitframe, unit)
     unit = unit or unitframe.data.unit;
 
-    if not ENABLED or not unit or unitframe.data.isPersonal or PlayerState.inChallenge or PlayerState.inPvPInstance or PlayerState.inArena then
+    if not ENABLED or not unit or unitframe.data.isPersonal or playerState.inChallenge or playerState.inPvPInstance or playerState.inArena then
         unitframe.QuestIndicator:Hide();
         return;
     end
@@ -328,7 +328,7 @@ function Module:UpdateLocalConfig()
     ENABLED  = O.db.quest_indicator_enabled;
     POSITION = O.db.quest_indicator_position;
 
-    UpdateFontObject(StripesQuestIndicatorFont, O.db.quest_indicator_font_value, O.db.quest_indicator_font_size, O.db.quest_indicator_font_flag, O.db.quest_indicator_font_shadow);
+    S_UpdateFontObject(StripesQuestIndicatorFont, O.db.quest_indicator_font_value, O.db.quest_indicator_font_size, O.db.quest_indicator_font_flag, O.db.quest_indicator_font_shadow);
 
     if ENABLED then
         self:RegisterEvent('QUEST_ACCEPTED', 'QuestChanged');

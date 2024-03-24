@@ -1,7 +1,7 @@
 local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('ClassIcon');
 
-local ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
+local S_ShouldShowName = S:GetNameplateModule('Handler').ShouldShowName;
 
 -- Local Config
 local ENABLED, ONLY_IN_ARENA, ONLY_ENEMY;
@@ -35,7 +35,7 @@ local function Update(unitframe)
         return;
     end
 
-    if not (ENABLED and unitframe.data.className and ShouldShowName(unitframe)) then
+    if not (ENABLED and unitframe.data.className and S_ShouldShowName(unitframe)) then
         unitframe.ClassIcon:Hide();
         return;
     end

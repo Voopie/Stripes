@@ -10,8 +10,7 @@ local CooldownFrame_Set = CooldownFrame_Set;
 local DebuffTypeColor = DebuffTypeColor;
 
 -- Stripes API
-local ShouldShowName   = Stripes.ShouldShowName;
-local UpdateFontObject = Stripes.UpdateFontObject;
+local S_ShouldShowName, S_UpdateFontObject = Stripes.ShouldShowName, Stripes.UpdateFontObject;
 local U_GetTrulySpellId, U_IsSpellKnown = U.GetTrulySpellId, U.IsSpellKnown;
 local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
 
@@ -188,7 +187,7 @@ local function UpdateAnchor(self)
 
     self:ClearAllPoints();
 
-    if unit and ShouldShowName(unitframe) then
+    if unit and S_ShouldShowName(unitframe) then
         local nameOffset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
         PixelUtil.SetPoint(self, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 2 + nameOffset + squareOffset + BUFFFRAME_OFFSET_Y);
     else
@@ -727,8 +726,8 @@ function Module:UpdateLocalConfig()
 
     SHOW_DEBUFFS_ON_FRIENDLY = O.db.auras_show_debuffs_on_friendly;
 
-    UpdateFontObject(StripesAurasModCooldownFont, O.db.auras_cooldown_font_value, O.db.auras_cooldown_font_size, O.db.auras_cooldown_font_flag, O.db.auras_cooldown_font_shadow);
-    UpdateFontObject(StripesAurasModCountFont, O.db.auras_count_font_value, O.db.auras_count_font_size, O.db.auras_count_font_flag, O.db.auras_count_font_shadow);
+    S_UpdateFontObject(StripesAurasModCooldownFont, O.db.auras_cooldown_font_value, O.db.auras_cooldown_font_size, O.db.auras_cooldown_font_flag, O.db.auras_cooldown_font_shadow);
+    S_UpdateFontObject(StripesAurasModCountFont, O.db.auras_count_font_value, O.db.auras_count_font_size, O.db.auras_count_font_flag, O.db.auras_count_font_shadow);
 
     UpdateBlacklistCache();
     UpdateWhitelistCache();

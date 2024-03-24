@@ -9,7 +9,7 @@ local GetArenaOpponentSpec, GetNumArenaOpponentSpecs, GetBattlefieldScore, GetNu
 local GetSpecializationInfoByID, UnitName = GetSpecializationInfoByID, UnitName;
 local UNKNOWN = UNKNOWN;
 
-local PlayerState = D.Player.State;
+local playerState = D.Player.State;
 
 local HEALERS_TEXTURE = S.Media.Path .. 'Textures\\icons_healers';
 local TANKS_TEXTURE   = S.Media.Path .. 'Textures\\icons_tanks';
@@ -83,7 +83,7 @@ local function GetNameWithRealm(unit)
 end
 
 local function UpdateData()
-    if not PlayerState.inPvPInstance then
+    if not playerState.inPvPInstance then
         return;
     end
 
@@ -141,7 +141,7 @@ local function Create(unitframe)
 end
 
 local function Update(unitframe)
-    if not ENABLED or unitframe.data.isPersonal or not PlayerState.inPvPInstance or not unitframe.data.unit then
+    if not ENABLED or unitframe.data.isPersonal or not playerState.inPvPInstance or not unitframe.data.unit then
         unitframe.PVPHealers:Hide();
         return;
     end
@@ -172,7 +172,7 @@ local function Update(unitframe)
 end
 
 local function UpdateMouseoverUnit()
-    if not PlayerState.inPvPInstance then
+    if not playerState.inPvPInstance then
         return;
     end
 

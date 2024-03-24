@@ -9,8 +9,7 @@ local bit_band, math_max = bit.band, math.max;
 local CooldownFrame_Set, UnitName, AuraUtil_ForEachAura = CooldownFrame_Set, UnitName, AuraUtil.ForEachAura;
 
 -- Sripes API
-local ShouldShowName = Stripes.ShouldShowName;
-local UpdateFontObject = Stripes.UpdateFontObject;
+local S_ShouldShowName, S_UpdateFontObject = Stripes.ShouldShowName, Stripes.UpdateFontObject;
 local U_GetUnitColor = U.GetUnitColor;
 local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
 
@@ -97,7 +96,7 @@ local function CreateBuffFrame(unitframe)
         if uf.BuffFrame.buffPool:GetNumActive() > 0 then
             self:SetPoint('BOTTOMLEFT', uf.BuffFrame, 'TOPLEFT', OFFSET_X, 4 + squareOffset + OFFSET_Y);
         else
-            if ShouldShowName(uf) then
+            if S_ShouldShowName(uf) then
                 local nameOffset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
                 self:SetPoint('BOTTOMLEFT', uf.healthBar, 'TOPLEFT', OFFSET_X, 2 + nameOffset + squareOffset + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             else
@@ -481,9 +480,9 @@ function Module:UpdateLocalConfig()
     BORDER_COLOR[3] = O.db.auras_important_border_color[3];
     BORDER_COLOR[4] = O.db.auras_important_border_color[4] or 1;
 
-    UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
-    UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);
-    UpdateFontObject(StripesAurasImportantCasterFont, O.db.auras_important_castername_font_value, O.db.auras_important_castername_font_size, O.db.auras_important_castername_font_flag, O.db.auras_important_castername_font_shadow);
+    S_UpdateFontObject(StripesAurasImportantCooldownFont, O.db.auras_important_cooldown_font_value, O.db.auras_important_cooldown_font_size, O.db.auras_important_cooldown_font_flag, O.db.auras_important_cooldown_font_shadow);
+    S_UpdateFontObject(StripesAurasImportantCountFont, O.db.auras_important_count_font_value, O.db.auras_important_count_font_size, O.db.auras_important_count_font_flag, O.db.auras_important_count_font_shadow);
+    S_UpdateFontObject(StripesAurasImportantCasterFont, O.db.auras_important_castername_font_value, O.db.auras_important_castername_font_size, O.db.auras_important_castername_font_flag, O.db.auras_important_castername_font_shadow);
 end
 
 function Module:StartUp()

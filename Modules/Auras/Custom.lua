@@ -9,8 +9,7 @@ local math_max = math.max;
 local CooldownFrame_Set, AuraUtil_ForEachAura = CooldownFrame_Set, AuraUtil.ForEachAura;
 
 -- Stripes API
-local ShouldShowName = Stripes.ShouldShowName;
-local UpdateFontObject = Stripes.UpdateFontObject;
+local S_ShouldShowName, S_UpdateFontObject = Stripes.ShouldShowName, Stripes.UpdateFontObject;
 
 -- Local Config
 local ENABLED, COUNTDOWN_ENABLED;
@@ -59,7 +58,7 @@ local function CreateBuffFrame(unitframe)
             local unit = uf.data.unit or uf.unit;
             local squareOffset = SQUARE and 6 or 0;
 
-            if unit and ShouldShowName(uf) then
+            if unit and S_ShouldShowName(uf) then
                 local nameOffset = NAME_TEXT_POSITION_V == 1 and (uf.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
                 self:SetPoint('BOTTOM', uf.healthBar, 'TOP', 0, 2 + nameOffset + squareOffset + BUFFFRAME_OFFSET_Y + OFFSET_Y);
             else
@@ -416,8 +415,8 @@ function Module:UpdateLocalConfig()
     AURAS_DIRECTION = O.db.auras_custom_direction;
     AURAS_MAX_DISPLAY = O.db.auras_custom_max_display;
 
-    UpdateFontObject(StripesAurasCustomCooldownFont, O.db.auras_custom_cooldown_font_value, O.db.auras_custom_cooldown_font_size, O.db.auras_custom_cooldown_font_flag, O.db.auras_custom_cooldown_font_shadow);
-    UpdateFontObject(StripesAurasCustomCountFont, O.db.auras_custom_count_font_value, O.db.auras_custom_count_font_size, O.db.auras_custom_count_font_flag, O.db.auras_custom_count_font_shadow);
+    S_UpdateFontObject(StripesAurasCustomCooldownFont, O.db.auras_custom_cooldown_font_value, O.db.auras_custom_cooldown_font_size, O.db.auras_custom_cooldown_font_flag, O.db.auras_custom_cooldown_font_shadow);
+    S_UpdateFontObject(StripesAurasCustomCountFont, O.db.auras_custom_count_font_value, O.db.auras_custom_count_font_size, O.db.auras_custom_count_font_flag, O.db.auras_custom_count_font_shadow);
 end
 
 function Module:StartUp()

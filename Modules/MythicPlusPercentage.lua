@@ -5,7 +5,7 @@ local Module = S:NewNameplateModule('MythicPlusPercentage');
 local string_format = string.format;
 
 -- Stripes API
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local S_UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Local Config
 local ENABLED, DB_MODE;
@@ -102,7 +102,7 @@ function Module:UpdateLocalConfig()
     OFFSET_X       = O.db.mythic_plus_percentage_offset_x;
     OFFSET_Y       = O.db.mythic_plus_percentage_offset_y;
 
-    UpdateFontObject(StripesMythicPlusPercentageFont, O.db.mythic_plus_percentage_font_value, O.db.mythic_plus_percentage_font_size, O.db.mythic_plus_percentage_font_flag, O.db.mythic_plus_percentage_font_shadow);
+    S_UpdateFontObject(StripesMythicPlusPercentageFont, O.db.mythic_plus_percentage_font_value, O.db.mythic_plus_percentage_font_size, O.db.mythic_plus_percentage_font_flag, O.db.mythic_plus_percentage_font_shadow);
 end
 
 function Module:MythicDungeonTools()

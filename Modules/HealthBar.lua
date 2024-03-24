@@ -8,8 +8,8 @@ local UnitSelectionType, UnitSelectionColor, UnitTreatAsPlayerForDisplay, UnitPl
 local GetRaidTargetIndex = GetRaidTargetIndex;
 
 -- Stripes API
+local S_UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local U_UnitIsTapped, U_UnitIsOnThreatListWithPlayer, U_IsPlayerEffectivelyTank = U.UnitIsTapped, U.UnitIsOnThreatListWithPlayer, U.IsPlayerEffectivelyTank;
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 
 -- Libraries
 local LCG = S.Libraries.LCG;
@@ -1145,7 +1145,7 @@ function Module:UpdateLocalConfig()
     DB.TP_RELATIVE_POINT = O.Lists.frame_points[O.db.threat_percentage_relative_point] or 'BOTTOMLEFT';
     DB.TP_OFFSET_X       = O.db.threat_percentage_offset_x;
     DB.TP_OFFSET_Y       = O.db.threat_percentage_offset_y;
-    UpdateFontObject(StripesThreatPercentageFont, O.db.threat_percentage_font_value, O.db.threat_percentage_font_size, O.db.threat_percentage_font_flag, O.db.threat_percentage_font_shadow);
+    S_UpdateFontObject(StripesThreatPercentageFont, O.db.threat_percentage_font_value, O.db.threat_percentage_font_size, O.db.threat_percentage_font_flag, O.db.threat_percentage_font_shadow);
 
     DB.THREAT_NAME_COLORING = O.db.threat_color_name;
     DB.THREAT_NAME_ONLY     = O.db.threat_color_name_only;

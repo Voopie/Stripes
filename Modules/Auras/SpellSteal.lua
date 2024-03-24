@@ -9,8 +9,7 @@ local math_max = math.max;
 local CooldownFrame_Set, GetTime, AuraUtil_ForEachAura = CooldownFrame_Set, GetTime, AuraUtil.ForEachAura;
 
 -- Stripes API
-local ShouldShowName   = Stripes.ShouldShowName;
-local UpdateFontObject = Stripes.UpdateFontObject;
+local S_ShouldShowName, S_UpdateFontObject = Stripes.ShouldShowName, Stripes.UpdateFontObject;
 local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Local Config
@@ -65,7 +64,7 @@ local function CreateBuffFrame(unitframe)
                 self:SetPoint('BOTTOM', uf.BuffFrame, 'TOP', OFFSET_X, 4 + OFFSET_Y);
             end
         else
-            if ShouldShowName(uf) then
+            if S_ShouldShowName(uf) then
                 if STATIC_POSITION then
                     self:SetPoint('BOTTOM', uf.healthBar, 'TOP', OFFSET_X, 2 + squareOffset + OFFSET_Y);
                 else
@@ -448,8 +447,8 @@ function Module:UpdateLocalConfig()
     AURAS_DIRECTION = O.db.auras_spellsteal_direction;
     AURAS_MAX_DISPLAY = O.db.auras_spellsteal_max_display;
 
-    UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
-    UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);
+    S_UpdateFontObject(StripesAurasSpellStealCooldownFont, O.db.auras_spellsteal_cooldown_font_value, O.db.auras_spellsteal_cooldown_font_size, O.db.auras_spellsteal_cooldown_font_flag, O.db.auras_spellsteal_cooldown_font_shadow);
+    S_UpdateFontObject(StripesAurasSpellStealCountFont, O.db.auras_spellsteal_count_font_value, O.db.auras_spellsteal_count_font_size, O.db.auras_spellsteal_count_font_flag, O.db.auras_spellsteal_count_font_shadow);
 end
 
 function Module:StartUp()

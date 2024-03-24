@@ -10,9 +10,9 @@ local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
 local GetTime = GetTime;
 
 -- Stripes API
-local GetUnitColor, U_GetInterruptSpellId = U.GetUnitColor, U.GetInterruptSpellId;
-local GlowStart, GlowStopAll = U.GlowStart, U.GlowStopAll;
-local GetCachedName = Stripes.GetCachedName;
+local S_GetCachedName = Stripes.GetCachedName;
+local U_GetUnitColor, U_GetInterruptSpellId = U.GetUnitColor, U.GetInterruptSpellId;
+local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
 
 -- Libraries
 local LSM = S.Libraries.LSM;
@@ -85,7 +85,7 @@ local function UpdateCustomCast(self, changedInterruptibleState)
     local castData = spellId and CUSTOM_CASTS_DATA[spellId];
 
     if not (CUSTOM_CASTS_ENABLED and castData and castData.enabled) then
-        GlowStopAll(self);
+        U_GlowStopAll(self);
         self.customColored = nil;
         return;
     end
@@ -109,8 +109,8 @@ local function UpdateCustomCast(self, changedInterruptibleState)
     end
 
     if castData.glow_enabled then
-        GlowStopAll(self);
-        GlowStart(self, castData.glow_type, Colors:Get(castData.glow_color_name));
+        U_GlowStopAll(self);
+        U_GlowStart(self, castData.glow_type, Colors:Get(castData.glow_color_name));
     end
 
     if castData.sound_enabled and not changedInterruptibleState then
@@ -143,17 +143,17 @@ local function UpdateCastTargetName(self)
 
     if UnitExists(targetUnit) and not UnitIsUnit(self.unit, targetUnit) then
         local useTranslit, useReplaceDiacritics, useCut = true, true, false;
-        local targetName = GetCachedName(UnitName(targetUnit), useTranslit, useReplaceDiacritics, useCut);
+        local targetName = S_GetCachedName(UnitName(targetUnit), useTranslit, useReplaceDiacritics, useCut);
 
         if self.castTargetNameInSpellName and self.spellName then
-            local classColor = self.castTargetNameUseClassColor and GetUnitColor(targetUnit, true) or 'ffffff';
+            local classColor = self.castTargetNameUseClassColor and U_GetUnitColor(targetUnit, true) or 'ffffff';
             self.Text:SetText(string.format('%s > |cff%s%s|r', self.spellName, classColor, targetName));
             self.TargetText:Hide();
         else
             self.TargetText:SetText(targetName);
 
             if self.castTargetNameUseClassColor then
-                self.TargetText:SetTextColor(GetUnitColor(targetUnit, 2));
+                self.TargetText:SetTextColor(U_GetUnitColor(targetUnit, 2));
             else
                 self.TargetText:SetTextColor(1, 1, 1, 1);
             end
@@ -633,7 +633,7 @@ function StripesCastingBar_OnEvent(self, event, ...)
                 self.TargetText:Hide();
             end
 
-            GlowStopAll(self);
+            U_GlowStopAll(self);
 
             self.casting = nil;
             self.channeling = nil;

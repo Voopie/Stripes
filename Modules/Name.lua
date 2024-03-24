@@ -10,13 +10,11 @@ local strlenutf8 = strlenutf8;
 local UnitSelectionColor = UnitSelectionColor;
 
 -- Stripes API
-local ShouldShowName = Stripes.ShouldShowName;
-local UpdateFontObject = Stripes.UpdateFontObject;
-local GetCachedName = Stripes.GetCachedName;
-local U_utf8sub, U_firstUpper, U_firstLower = U.UTF8SUB, U.FirstToUpper, U.FirstToLower;
+local S_ShouldShowName, S_UpdateFontObject, S_GetCachedName = Stripes.ShouldShowName, Stripes.UpdateFontObject, Stripes.GetCachedName;
+local U_utf8sub, U_FirstToUpper, U_FirstToLower = U.UTF8SUB, U.FirstToUpper, U.FirstToLower;
 local U_UnitIsTapped, U_GetUnitArenaId, U_GetNpcSubLabelByID = U.UnitIsTapped, U.GetUnitArenaId, U.GetNpcSubLabelByID;
 
-local PlayerState = D.Player.State;
+local playerState = D.Player.State;
 
 -- Libraries
 local LT = S.Libraries.LT;
@@ -111,9 +109,9 @@ end
 
 local function ApplyCaseTransformation(name, caseTransformation)
     if caseTransformation == 'upper' then
-        return U_firstUpper(name);
+        return U_FirstToUpper(name);
     elseif caseTransformation == 'lower' then
-        return U_firstLower(name);
+        return U_FirstToLower(name);
     else
         return name;
     end
@@ -300,7 +298,7 @@ local function UpdateName(unitframe)
     local isEnemyPlayer    = unitframe.data.unitType == 'ENEMY_PLAYER';
     local isFriendlyPlayer = unitframe.data.unitType == 'FRIENDLY_PLAYER';
 
-    if isEnemyPlayer and SHOW_ARENA_ID and PlayerState.inArena then
+    if isEnemyPlayer and SHOW_ARENA_ID and playerState.inArena then
         HandleArenaName(unitframe);
     elseif isEnemyPlayer or (isFriendlyPlayer and not (Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsNameHealthColoring())) then
         HandlePlayerName(unitframe);
@@ -562,9 +560,9 @@ end
 
 local function UpdateNameVisibility(unitframe)
     if Stripes.NameOnly:IsActive(unitframe) then
-        unitframe.name:SetShown(NAME_TEXT_ENABLED and not unitframe.data.widgetsOnly and ShouldShowName(unitframe));
+        unitframe.name:SetShown(NAME_TEXT_ENABLED and not unitframe.data.widgetsOnly and S_ShouldShowName(unitframe));
     else
-        unitframe.name:SetShown(ShouldShowName(unitframe));
+        unitframe.name:SetShown(S_ShouldShowName(unitframe));
     end
 end
 
@@ -709,7 +707,7 @@ local function NameOnly_UpdateGuildName(unitframe)
 
     if unitframe.data.unitType == 'FRIENDLY_PLAYER' then
         local useTranslit, useReplaceDiacritics, useCut = true, true, false;
-        local guild = GetCachedName(unitframe.data.guild, useTranslit, useReplaceDiacritics, useCut);
+        local guild = S_GetCachedName(unitframe.data.guild, useTranslit, useReplaceDiacritics, useCut);
 
         if guild then
             local guildColor = D.Player.GuildName == unitframe.data.guild and Stripes.NameOnly:GetGuildNameSameColor() or Stripes.NameOnly:GetGuildNameColor();
@@ -762,7 +760,7 @@ local function NameOnly_UpdateBackgroundVisibility(unitframe)
         return;
     end
 
-    if not (unitframe.isActive and Stripes.NameOnly:IsActive(unitframe) and Stripes.NameOnly:ShouldShowBackground() and ShouldShowName(unitframe)) then
+    if not (unitframe.isActive and Stripes.NameOnly:IsActive(unitframe) and Stripes.NameOnly:ShouldShowBackground() and S_ShouldShowName(unitframe)) then
         unitframe.NameOnlyBackground:Hide();
         return;
     end
@@ -963,13 +961,13 @@ function Module:UpdateLocalConfig()
 
     NAME_HOLDER_FRAME_STRATA = O.db.name_text_frame_strata ~= 1 and O.Lists.frame_strata[O.db.name_text_frame_strata] or 1;
 
-    UpdateFontObject(SystemFont_NamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
-    UpdateFontObject(SystemFont_NamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
-    UpdateFontObject(SystemFont_LargeNamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
-    UpdateFontObject(SystemFont_LargeNamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    S_UpdateFontObject(SystemFont_NamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    S_UpdateFontObject(SystemFont_NamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    S_UpdateFontObject(SystemFont_LargeNamePlate, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    S_UpdateFontObject(SystemFont_LargeNamePlateFixed, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
 
-    UpdateFontObject(StripesNameFont, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
-    UpdateFontObject(StripesGuildNameFont, O.db.name_text_font_value, O.db.name_text_font_size - 2, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    S_UpdateFontObject(StripesNameFont, O.db.name_text_font_value, O.db.name_text_font_size, O.db.name_text_font_flag, O.db.name_text_font_shadow);
+    S_UpdateFontObject(StripesGuildNameFont, O.db.name_text_font_value, O.db.name_text_font_size - 2, O.db.name_text_font_flag, O.db.name_text_font_shadow);
 end
 
 function Module:StartUp()

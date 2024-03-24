@@ -6,14 +6,14 @@ local Stripes = S:GetNameplateModule('Handler');
 local UnitName, UnitExists, UnitGroupRolesAssigned = UnitName, UnitExists, UnitGroupRolesAssigned;
 
 -- Stripes API
-local ShouldShowName = Stripes.ShouldShowName;
-local GetCachedName = Stripes.GetCachedName;
+local S_ShouldShowName, S_GetCachedName = Stripes.ShouldShowName, Stripes.GetCachedName;
 local U_GetUnitColor = U.GetUnitColor;
 
 -- Local Config
 local ENABLED, ONLY_ENEMY, NOT_ME, ROLE_ICON;
 
-local PlayerData = D.Player;
+local playerData = D.Player;
+
 local YOU = YOU;
 
 local partyRolesCache = {};
@@ -29,22 +29,22 @@ local function TargetChanged(unitframe)
         return;
     end
 
-    if not ENABLED or not unitframe.data.targetName or unitframe.data.isUnimportantUnit or not ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.isPersonal or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
+    if not ENABLED or not unitframe.data.targetName or unitframe.data.isUnimportantUnit or not S_ShouldShowName(unitframe) or unitframe.data.widgetsOnly or unitframe.data.isPersonal or (ONLY_ENEMY and unitframe.data.commonReaction == 'FRIENDLY') then
         unitframe.TargetName:Hide();
         return;
     end
 
-    if unitframe.data.targetName == PlayerData.Name then
+    if unitframe.data.targetName == playerData.Name then
         if NOT_ME then
             unitframe.TargetName:SetText('');
         else
-            local roleIconText = ROLE_ICON and partyRolesCache[PlayerData.Name] and ('» ' .. partyRolesCache[PlayerData.Name] .. ' ' .. YOU) or ('» ' .. YOU);
+            local roleIconText = ROLE_ICON and partyRolesCache[playerData.Name] and ('» ' .. partyRolesCache[playerData.Name] .. ' ' .. YOU) or ('» ' .. YOU);
             unitframe.TargetName:SetText(roleIconText);
             unitframe.TargetName:SetTextColor(1, 0.2, 0.2);
         end
     else
         local useTranslit, useReplaceDiacritics, useCut = true, true, true;
-        local targetName = GetCachedName(unitframe.data.targetName, useTranslit, useReplaceDiacritics, useCut);
+        local targetName = S_GetCachedName(unitframe.data.targetName, useTranslit, useReplaceDiacritics, useCut);
         local roleIconText = ROLE_ICON and partyRolesCache[unitframe.data.targetName] and ('» ' .. partyRolesCache[unitframe.data.targetName] .. ' ' .. targetName) or ('» ' .. targetName);
         unitframe.TargetName:SetText(roleIconText);
         unitframe.TargetName:SetTextColor(U_GetUnitColor(unitframe.data.unit .. 'target', 2));
@@ -130,7 +130,7 @@ function Module:UpdatePartyCache()
     -- Player role
     local spec = GetSpecialization();
     local role = spec and GetSpecializationRole(spec) or '';
-    partyRolesCache[PlayerData.Name] = ROLE_ICONS[role] or '';
+    partyRolesCache[playerData.Name] = ROLE_ICONS[role] or '';
 
     local unit;
 

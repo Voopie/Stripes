@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('Level');
 
 -- Stripes API
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local S_UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local U_RGB2CFFHEX = U.RGB2CFFHEX;
 
 -- Local Config
@@ -102,7 +102,7 @@ function Module:UpdateLocalConfig()
 
     SHOW_ONLY_ON_TARGET = O.db.level_text_show_only_on_target;
 
-    UpdateFontObject(StripesLevelTextFont, O.db.level_text_font_value, O.db.level_text_font_size, O.db.level_text_font_flag, O.db.level_text_font_shadow);
+    S_UpdateFontObject(StripesLevelTextFont, O.db.level_text_font_value, O.db.level_text_font_size, O.db.level_text_font_flag, O.db.level_text_font_shadow);
 
     if ENABLED then
         self:RegisterEvent('UNIT_LEVEL');

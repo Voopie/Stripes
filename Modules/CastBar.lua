@@ -6,7 +6,7 @@ local Stripes = S:GetNameplateModule('Handler');
 local string_format, math_max = string.format, math.max;
 
 -- Stripes API
-local UpdateFontObject = Stripes.UpdateFontObject;
+local S_UpdateFontObject = Stripes.UpdateFontObject;
 
 -- Libraries
 local LSM = S.Libraries.LSM;
@@ -466,9 +466,9 @@ function Module:UpdateLocalConfig()
 
     CAST_BAR_OFFSET_Y = O.db.castbar_offset_y;
 
-    UpdateFontObject(StripesCastBarFont, O.db.castbar_text_font_value, O.db.castbar_text_font_size, O.db.castbar_text_font_flag, O.db.castbar_text_font_shadow);
-    UpdateFontObject(StripesCastBarTimerFont, O.db.castbar_timer_font_value, O.db.castbar_timer_font_size, O.db.castbar_timer_font_flag, O.db.castbar_timer_font_shadow);
-    UpdateFontObject(StripesCastBarTargetFont, O.db.castbar_target_font_value, O.db.castbar_target_font_size, O.db.castbar_target_font_flag, O.db.castbar_target_font_shadow);
+    S_UpdateFontObject(StripesCastBarFont, O.db.castbar_text_font_value, O.db.castbar_text_font_size, O.db.castbar_text_font_flag, O.db.castbar_text_font_shadow);
+    S_UpdateFontObject(StripesCastBarTimerFont, O.db.castbar_timer_font_value, O.db.castbar_timer_font_size, O.db.castbar_timer_font_flag, O.db.castbar_timer_font_shadow);
+    S_UpdateFontObject(StripesCastBarTargetFont, O.db.castbar_target_font_value, O.db.castbar_target_font_size, O.db.castbar_target_font_flag, O.db.castbar_target_font_shadow);
 end
 
 function Module:StartUp()

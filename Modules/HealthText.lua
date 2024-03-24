@@ -2,7 +2,7 @@ local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('HealthText');
 
 -- Stripes API
-local UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
+local S_UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local U_ShortValue, U_LargeNumberFormat = U.ShortValue, U.LargeNumberFormat;
 
 -- Local Config
@@ -189,7 +189,7 @@ function Module:UpdateLocalConfig()
 
     SHOW_ONLY_ON_TARGET = O.db.health_text_show_only_on_target;
 
-    UpdateFontObject(StripesHealthTextFont, O.db.health_text_font_value, O.db.health_text_font_size, O.db.health_text_font_flag, O.db.health_text_font_shadow);
+    S_UpdateFontObject(StripesHealthTextFont, O.db.health_text_font_value, O.db.health_text_font_size, O.db.health_text_font_flag, O.db.health_text_font_shadow);
 end
 
 function Module:StartUp()
