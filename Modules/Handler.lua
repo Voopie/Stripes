@@ -14,7 +14,7 @@ local UnitGUID, UnitHealth, UnitHealthMax, UnitGetTotalAbsorbs, UnitCreatureType
 local U_GetNpcIDByGUID, U_GetUnitLevel, U_GetUnitColor, U_UnitInGuild, U_IsPlayer, U_IsRealPlayer, U_GetUnitThreatSituationStatus =
       U.GetNpcIDByGUID, U.GetUnitLevel, U.GetUnitColor, U.UnitInGuild, U.IsPlayer, U.IsRealPlayer, U.GetUnitThreatSituationStatus;
 local U_utf8sub = U.UTF8SUB;
-local PlayerState = D.Player.State;
+local playerState = D.Player.State;
 
 -- Libraries
 local LT = S.Libraries.LT;
@@ -49,6 +49,12 @@ local excludeAuraUnits = {
     ['softfriend']   = true,
     ['softinteract'] = true,
 };
+
+do
+    for unit, state in pairs(D.PlayerUnits) do
+        excludeAuraUnits[unit] = state;
+    end
+end
 
 -- Updater
 Stripes.Updater = CreateFrame('Frame');
@@ -191,7 +197,7 @@ Stripes.NameOnly = {
     IsActive = function(self, unitframe)
         local currentMode = self:GetMode();
 
-        return self:IsUnitFrameFriendly(unitframe) and (currentMode == 'anywhere' or (currentMode == 'openworld' and not PlayerState.inInstance));
+        return self:IsUnitFrameFriendly(unitframe) and (currentMode == 'anywhere' or (currentMode == 'openworld' and not playerState.inInstance));
     end,
 
     IsFriendlyStacking = function(self)
@@ -940,7 +946,7 @@ local function ResetNameplateData(unitframe)
 end
 
 function Stripes:NAME_PLATE_UNIT_ADDED(unit)
-    if not (D.PlayerUnits[unit] or excludeAuraUnits[unit]) then
+    if not excludeAuraUnits[unit] then
         S:GetModule('Auras_Cache'):ProcessAuras(unit);
     end
 
@@ -990,7 +996,7 @@ function Stripes:NAME_PLATE_UNIT_ADDED(unit)
 end
 
 function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
-    if not (D.PlayerUnits[unit] or excludeAuraUnits[unit]) then
+    if not excludeAuraUnits[unit] then
         S:GetModule('Auras_Cache'):FlushUnit(unit);
     end
 
@@ -1002,7 +1008,7 @@ function Stripes:NAME_PLATE_UNIT_REMOVED(unit)
 end
 
 function Stripes:UNIT_AURA(unit, unitAuraUpdateInfo)
-    if not (D.PlayerUnits[unit] or excludeAuraUnits[unit]) then
+    if not excludeAuraUnits[unit] then
         S:GetModule('Auras_Cache'):ProcessAuras(unit, unitAuraUpdateInfo);
     end
 
