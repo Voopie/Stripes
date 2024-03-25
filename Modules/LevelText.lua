@@ -1,6 +1,9 @@
 local S, L, O, U, D, E = unpack((select(2, ...)));
 local Module = S:NewNameplateModule('Level');
 
+-- Lua API
+local string_format = string.format;
+
 -- Stripes API
 local S_UpdateFontObject = S:GetNameplateModule('Handler').UpdateFontObject;
 local U_RGB2CFFHEX = U.RGB2CFFHEX;
@@ -9,8 +12,6 @@ local U_RGB2CFFHEX = U.RGB2CFFHEX;
 local ENABLED, TEXT_FRAME_STRATA, HIDE_MAX, USE_DIFF_COLOR, CUSTOM_COLOR_ENABLED, CUSTOM_COLOR_CODE;
 local TEXT_ANCHOR, TEXT_X_OFFSET, TEXT_Y_OFFSET;
 local SHOW_ONLY_ON_TARGET;
-
-local CLOSE_COLOR = '|r';
 
 local StripesLevelTextFont = CreateFont('StripesLevelTextFont');
 
@@ -39,11 +40,11 @@ local function Update(unitframe)
     end
 
     if USE_DIFF_COLOR then
-        unitframe.LevelText.text:SetText(U_RGB2CFFHEX(unitframe.data.diff) .. unitframe.data.level .. unitframe.data.classification .. CLOSE_COLOR);
+        unitframe.LevelText.text:SetText(string_format('%s%s%s|r', U_RGB2CFFHEX(unitframe.data.diff), unitframe.data.level, unitframe.data.classification));
     elseif CUSTOM_COLOR_ENABLED then
-        unitframe.LevelText.text:SetText(CUSTOM_COLOR_CODE .. unitframe.data.level .. unitframe.data.classification .. CLOSE_COLOR);
+        unitframe.LevelText.text:SetText(string_format('%s%s%s|r', CUSTOM_COLOR_CODE, unitframe.data.level, unitframe.data.classification));
     else
-        unitframe.LevelText.text:SetText(unitframe.data.level .. unitframe.data.classification);
+        unitframe.LevelText.text:SetText(string_format('%s%s', unitframe.data.level, unitframe.data.classification));
     end
 end
 
