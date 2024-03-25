@@ -221,6 +221,8 @@ do
         LCN[v] = k;
     end
 
+    local defaultClassColor = CreateColor(0.8, 0.8, 0.8);
+
     U.GetClassColor = function(class, str)
         if not class then
             class = UnitClassBase('player');
@@ -240,7 +242,7 @@ do
         end
 
         if not class then
-            class = CreateColor(0.8, 0.8, 0.8);
+            class = defaultClassColor;
         end
 
         if str == 2 then
