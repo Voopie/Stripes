@@ -13,6 +13,7 @@ local GetTime = GetTime;
 local S_GetCachedName = Stripes.GetCachedName;
 local U_GetUnitColor, U_GetInterruptSpellId = U.GetUnitColor, U.GetInterruptSpellId;
 local U_GlowStart, U_GlowStopAll = U.GlowStart, U.GlowStopAll;
+local U_CreateColor = U.CreateColor;
 
 -- Libraries
 local LSM = S.Libraries.LSM;
@@ -335,31 +336,31 @@ function StripesCastingBar_ClearStages(self)
 end
 
 function StripesCastingBar_SetStartCastColor(self, r, g, b, a)
-    self.startCastColor = CreateColor(r, g, b, a or 1);
+    self.startCastColor = U_CreateColor(r, g, b, a or 1);
 end
 
 function StripesCastingBar_SetStartChannelColor(self, r, g, b, a)
-    self.startChannelColor = CreateColor(r, g, b, a or 1);
+    self.startChannelColor = U_CreateColor(r, g, b, a or 1);
 end
 
 function StripesCastingBar_SetFinishedCastColor(self, r, g, b, a)
-    self.finishedCastColor = CreateColor(r, g, b, a or 1);
+    self.finishedCastColor = U_CreateColor(r, g, b, a or 1);
 end
 
 function StripesCastingBar_SetFailedCastColor(self, r, g, b, a)
-    self.failedCastColor = CreateColor(r, g, b, a or 1);
+    self.failedCastColor = U_CreateColor(r, g, b, a or 1);
 end
 
 function StripesCastingBar_SetNonInterruptibleCastColor(self, r, g, b, a)
-    self.nonInterruptibleColor = CreateColor(r, g, b, a or 1);
+    self.nonInterruptibleColor = U_CreateColor(r, g, b, a or 1);
 end
 
 function StripesCastingBar_SetInterruptReadyInTimeCastColor(self, r, g, b, a)
-    self.interruptReadyInTimeColor = CreateColor(r, g, b, a or 1);
+    self.interruptReadyInTimeColor = U_CreateColor(r, g, b, a or 1);
 end
 
 function StripesCastingBar_SetInterruptNotReadyCastColor(self, r, g, b, a)
-    self.interruptNotReadyColor = CreateColor(r, g, b, a or 1);
+    self.interruptNotReadyColor = U_CreateColor(r, g, b, a or 1);
 end
 
 function StripesCastingBar_SetUseStartColorForFinished(self, finishedColorSameAsStart)

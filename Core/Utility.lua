@@ -18,6 +18,7 @@ local IsInGuild, GetGuildInfo = IsInGuild, GetGuildInfo;
 local IsActiveBattlefieldArena, GetZonePVPInfo,       IsInInstance, UnitInBattleground, C_Map_GetBestMapForUnit =
       IsActiveBattlefieldArena, C_PvP.GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map.GetBestMapForUnit
 local GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell = GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell;
+local CreateColor = CreateColor;
 
 -- WoW C API
 local C_MythicPlus_GetCurrentAffixes, C_ChallengeMode_GetActiveKeystoneInfo = C_MythicPlus.GetCurrentAffixes, C_ChallengeMode.GetActiveKeystoneInfo;
@@ -211,6 +212,26 @@ U.GetNpcIDByGUID = function(guid)
 end
 
 do
+    local CACHE = {};
+
+    U.CreateColor = function(r, g, b, a)
+        a = a or 1;
+
+        local cacheKey = string_format('%s%s%s%s', r, g, b, a);
+
+        if CACHE[cacheKey] then
+            return CACHE[cacheKey];
+        end
+
+        local color = CreateColor(r, g, b, a);
+
+        CACHE[cacheKey] = color;
+
+        return color;
+    end
+end
+
+do
     local LCN = {};
 
     for k, v in pairs(LOCALIZED_CLASS_NAMES_MALE) do
@@ -221,7 +242,7 @@ do
         LCN[v] = k;
     end
 
-    local defaultClassColor = CreateColor(0.8, 0.8, 0.8);
+    local defaultClassColor = U.CreateColor(0.8, 0.8, 0.8);
 
     U.GetClassColor = function(class, str)
         if not class then

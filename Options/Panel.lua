@@ -481,7 +481,7 @@ O.ClearLeftHighlight = function()
 end
 
 do
-    local backgroundStartColor, backgroundEndColor = CreateColor(0.9, 0.9, 0.9, 1), CreateColor(0.1, 0.1, 0.1, 1);
+    local backgroundStartColor, backgroundEndColor = U.CreateColor(0.9, 0.9, 0.9, 1), U.CreateColor(0.1, 0.1, 0.1, 1);
 
     O.CreateLeftButton = function(text, name, order, panel, hideButton)
         local button = Mixin(CreateFrame('Button', 'Stripes_Options_Left_' .. name, O.frame.Left), E.PixelPerfectMixin);
