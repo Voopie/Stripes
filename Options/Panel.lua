@@ -480,48 +480,52 @@ O.ClearLeftHighlight = function()
     end
 end
 
-O.CreateLeftButton = function(text, name, order, panel, hideButton)
-    local button = Mixin(CreateFrame('Button', 'Stripes_Options_Left_' .. name, O.frame.Left), E.PixelPerfectMixin);
-    button:SetPosition('TOPLEFT', O.frame.Left, 'TOPLEFT', 0, -(28*order-28));
-    button:SetSize(O.frame.config.width * 1/4, 28);
+do
+    local backgroundStartColor, backgroundEndColor = CreateColor(0.9, 0.9, 0.9, 1), CreateColor(0.1, 0.1, 0.1, 1);
 
-    if hideButton then
-        button:Hide();
+    O.CreateLeftButton = function(text, name, order, panel, hideButton)
+        local button = Mixin(CreateFrame('Button', 'Stripes_Options_Left_' .. name, O.frame.Left), E.PixelPerfectMixin);
+        button:SetPosition('TOPLEFT', O.frame.Left, 'TOPLEFT', 0, -(28*order-28));
+        button:SetSize(O.frame.config.width * 1/4, 28);
+
+        if hideButton then
+            button:Hide();
+        end
+
+        button:SetNormalFontObject('StripesCategoryButtonNormalFont');
+        button:SetHighlightFontObject('StripesCategoryButtonHighlightFont');
+
+        text = string.gsub(text, '(:%d+|)T', '%1t');
+        button:SetText('   ' .. text);
+
+        button.Background = button:CreateTexture(nil, 'BACKGROUND');
+        button.Background:SetAllPoints();
+        button.Background:SetColorTexture(1, 1, 1, 1);
+        button.Background:SetGradient('HORIZONTAL', backgroundStartColor, backgroundEndColor);
+        button.Background:Hide();
+
+        button:SetScript('OnClick', function(self)
+            O.ClearLeftHighlight();
+            O.HideAllPanels();
+
+            self:LockHighlight();
+            self.Background:Show();
+
+            if panel.Tabs and panel.Tabs[1] and not panel.tabClicked then
+                panel.Tabs[1]:Click();
+            end
+
+            O.ShowRightPanel(panel);
+
+            S:GetModule('Options_Colors'):HideListFrame();
+
+            if self.Callback then
+                self:Callback();
+            end
+        end);
+
+        return button;
     end
-
-    button:SetNormalFontObject('StripesCategoryButtonNormalFont');
-    button:SetHighlightFontObject('StripesCategoryButtonHighlightFont');
-
-    text = string.gsub(text, '(:%d+|)T', '%1t');
-    button:SetText('   ' .. text);
-
-    button.Background = button:CreateTexture(nil, 'BACKGROUND');
-    button.Background:SetAllPoints();
-    button.Background:SetColorTexture(1, 1, 1, 1);
-    button.Background:SetGradient('HORIZONTAL', CreateColor(0.9, 0.9, 0.9, 1), CreateColor(0.1, 0.1, 0.1, 1));
-    button.Background:Hide();
-
-    button:SetScript('OnClick', function(self)
-        O.ClearLeftHighlight();
-        O.HideAllPanels();
-
-        self:LockHighlight();
-        self.Background:Show();
-
-        if panel.Tabs and panel.Tabs[1] and not panel.tabClicked then
-            panel.Tabs[1]:Click();
-        end
-
-        O.ShowRightPanel(panel);
-
-        S:GetModule('Options_Colors'):HideListFrame();
-
-        if self.Callback then
-            self:Callback();
-        end
-    end);
-
-    return button;
 end
 
 O.RegisterPanel = function(name, panel)
