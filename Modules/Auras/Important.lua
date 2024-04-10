@@ -65,6 +65,20 @@ local additionalAuras = {
     -- Evoker
     [360806] = true, -- Sleep Walk
 
+    -- Shaman
+    [210873] = true, -- Hex (Compy)
+    [211004] = true, -- Hex (Spider)
+    [211010] = true, -- Hex (Snake)
+    [211015] = true, -- Hex (Cockroach)
+    [269352] = true, -- Hex (Skeletal Hatchling)
+    [277778] = true, -- Hex (Zandalari Tendonripper)
+    [277784] = true, -- Hex (Wicker Mongrel)
+    [309328] = true, -- Hex (Living Honey)
+
+    -- Mage
+    [391622] = true, -- Polymorph (Duck)
+    [321395] = true, -- Polymorph (Mawrat)
+
     -- Covenant
     [331866] = true, -- Agent of Chaos (Venthyr)
     [332423] = true, -- Sparkling Driftglobe Core (Kyrian)
