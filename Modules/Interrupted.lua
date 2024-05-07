@@ -64,6 +64,7 @@ local auras = {
     [202137] = true, -- Sigil of Silence - Demon Hunter (Vengeance)
     [207682] = true, -- Sigil of Silence - Demon Hunter (Vengeance)
     [214459] = true, -- Choking Flames - Ember of Nullification (Trinket)
+    [ 15487] = true, -- Priest (Shadow) -- Silence
 };
 
 local DEFAULT_DURATION = 3;
