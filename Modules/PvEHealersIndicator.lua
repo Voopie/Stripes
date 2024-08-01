@@ -101,10 +101,10 @@ local function Create(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentPVEHealersIcon', unitframe);
-    frame:SetAllPoints(unitframe.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');
-    icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    icon:SetPoint(POINT, unitframe.HealthBarsContainer.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
     icon:SetTexture(TEXTURE);
     icon:SetTexCoord(3/4, 4/4, 0, 1/2); -- Monk Mistweaver icon
     icon:SetSize(32, 32);
@@ -128,10 +128,10 @@ local function Update(unitframe)
 
     local pveHealersFrame = unitframe.PVEHealers;
 
-    pveHealersFrame:SetFrameStrata(STRATA == 1 and unitframe.healthBar:GetFrameStrata() or STRATA);
+    pveHealersFrame:SetFrameStrata(STRATA == 1 and unitframe.HealthBarsContainer.healthBar:GetFrameStrata() or STRATA);
     pveHealersFrame:SetScale(ICON_SCALE);
     pveHealersFrame.icon:ClearAllPoints();
-    pveHealersFrame.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    pveHealersFrame.icon:SetPoint(POINT, unitframe.HealthBarsContainer.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
     pveHealersFrame:Show();
 end
 

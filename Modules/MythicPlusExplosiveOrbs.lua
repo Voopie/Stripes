@@ -100,8 +100,8 @@ function Module:CreateExplosive(unitframe)
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentExplosive', unitframe.healthBar);
-    frame:SetAllPoints(unitframe.healthBar);
+    local frame = CreateFrame('Frame', '$parentExplosive', unitframe.HealthBarsContainer.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     local icon = frame:CreateTexture(nil, 'ARTWORK', nil, 2);
     icon:SetPoint('BOTTOM', unitframe, 'TOP', 0, 4);

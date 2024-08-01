@@ -40,7 +40,7 @@ local function CreateBuffFrame(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentAurasSpellSteal', unitframe);
-    frame:SetPoint('LEFT', unitframe.healthBar, 'LEFT', 0, 0);
+    frame:SetPoint('LEFT', unitframe.HealthBarsContainer.healthBar, 'LEFT', 0, 0);
     frame:SetPoint('BOTTOM', unitframe.BuffFrame, 'TOP', 0, 4);
     frame:SetHeight(14);
 

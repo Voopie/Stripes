@@ -142,12 +142,12 @@ local function Create(unitframe)
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentStealthDetect', unitframe.healthBar);
-    frame:SetAllPoints(unitframe.healthBar);
+    local frame = CreateFrame('Frame', '$parentStealthDetect', unitframe.HealthBarsContainer.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
     frame:SetFrameStrata('HIGH');
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');
-    icon:SetPoint('LEFT', unitframe.healthBar, 'RIGHT', 4, 0);
+    icon:SetPoint('LEFT', unitframe.HealthBarsContainer.healthBar, 'RIGHT', 4, 0);
     icon:SetTexture(STEALTH_TEXTURE);
     icon:SetTexCoord(0.1, 0.9, 0.1, 0.9);
     icon:SetSize(20, 20);

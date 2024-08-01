@@ -481,7 +481,7 @@ local function UpdateAnchor(unitframe)
         unitframe.name:SetParent(unitframe);
         unitframe.name:SetDrawLayer('ARTWORK', 0);
         unitframe.name:SetJustifyH('CENTER');
-        PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.healthBar, 'TOP', 0, Stripes.NameOnly:GetNameOffsetY());
+        PixelUtil.SetPoint(unitframe.name, 'BOTTOM', unitframe.HealthBarsContainer.healthBar, 'TOP', 0, Stripes.NameOnly:GetNameOffsetY());
 
         return;
     end
@@ -493,7 +493,7 @@ local function UpdateAnchor(unitframe)
     local points = verticalPositionTable.points;
     local justifyH = positionsTable.justifyH;
 
-    unitframe.name:SetParent(unitframe.NameHolder or unitframe.healthBar);
+    unitframe.name:SetParent(unitframe.NameHolder or unitframe.HealthBarsContainer.healthBar);
     unitframe.name:SetDrawLayer('OVERLAY', 7);
     unitframe.name:SetJustifyH(justifyH);
 
@@ -501,7 +501,7 @@ local function UpdateAnchor(unitframe)
         local xOffset = point[3] == 'OFFSET_X' and OFFSET_X or point[3];
         local yOffset = point[4] == 'OFFSET_Y' and OFFSET_Y or point[4];
 
-        PixelUtil.SetPoint(unitframe.name, point[1], unitframe.healthBar, point[2], xOffset, yOffset);
+        PixelUtil.SetPoint(unitframe.name, point[1], unitframe.HealthBarsContainer.healthBar, point[2], xOffset, yOffset);
     end
 
     PixelUtil.SetHeight(unitframe.name, unitframe.name:GetLineHeight() + 1);
@@ -568,23 +568,23 @@ end
 
 local UpdateRaidTargetIconPosition = {
     [1] = function(unitframe)
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'RIGHT', unitframe.healthBar, 'LEFT', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'RIGHT', unitframe.HealthBarsContainer.healthBar, 'LEFT', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
     end,
 
     [2] = function(unitframe)
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'LEFT', unitframe.healthBar, 'RIGHT', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'LEFT', unitframe.HealthBarsContainer.healthBar, 'RIGHT', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
     end,
 
     [3] = function(unitframe)
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'CENTER', unitframe.healthBar, 'CENTER', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'CENTER', unitframe.HealthBarsContainer.healthBar, 'CENTER', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
     end,
 
     [4] = function(unitframe)
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.healthBar, 'TOP', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.HealthBarsContainer.healthBar, 'TOP', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
     end,
 
     [5] = function(unitframe)
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'TOP', unitframe.healthBar, 'BOTTOM', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'TOP', unitframe.HealthBarsContainer.healthBar, 'BOTTOM', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
     end,
 };
 
@@ -610,15 +610,15 @@ local function UpdateHealthBarVisibility(unitframe)
     if Stripes.NameOnly:IsActive(unitframe) then
         PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.name, 'TOP', 0, 8);
 
-        unitframe.healthBar:Hide();
+        unitframe.HealthBarsContainer.healthBar:Hide();
         unitframe.classificationIndicator:Hide();
     else
         UpdateRaidTargetIconPosition[RAID_TARGET_ICON_POSITION](unitframe);
 
         if unitframe.data.widgetsOnly or unitframe.data.isGameObject then
-            unitframe.healthBar:Hide();
+            unitframe.HealthBarsContainer.healthBar:Hide();
         else
-            unitframe.healthBar:Show();
+            unitframe.HealthBarsContainer.healthBar:Show();
         end
     end
 end
@@ -679,7 +679,7 @@ local function NameOnly_CreateGuildName(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentGuildName', unitframe);
-    frame:SetAllPoints(unitframe.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     local text = frame:CreateFontString(nil, 'OVERLAY', 'StripesGuildNameFont');
     text:SetPoint('TOP', unitframe.name, 'BOTTOM', 0, -1);
@@ -698,7 +698,7 @@ local function NameOnly_UpdateGuildName(unitframe)
 
     local guildName = unitframe.GuildName;
 
-    if not (Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:ShouldShowGuildName() and not unitframe.healthBar:IsShown()) then
+    if not (Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:ShouldShowGuildName() and not unitframe.HealthBarsContainer.healthBar:IsShown()) then
         guildName:Hide();
         return;
     end
@@ -842,16 +842,16 @@ local function UpdateClassificationIndicatorPosition(unitframe)
     local classificationIndicator = unitframe.classificationIndicator;
 
     classificationIndicator:ClearAllPoints();
-    classificationIndicator:SetPoint(CLASSIFICATION_INDICATOR_POINT, unitframe.healthBar, CLASSIFICATION_INDICATOR_RELATIVE_POINT, CLASSIFICATION_INDICATOR_OFFSET_X, CLASSIFICATION_INDICATOR_OFFSET_Y);
+    classificationIndicator:SetPoint(CLASSIFICATION_INDICATOR_POINT, unitframe.HealthBarsContainer.healthBar, CLASSIFICATION_INDICATOR_RELATIVE_POINT, CLASSIFICATION_INDICATOR_OFFSET_X, CLASSIFICATION_INDICATOR_OFFSET_Y);
 end
 
 local function UpdateNameHolder(unitframe)
     if not unitframe.NameHolder then
         unitframe.NameHolder = CreateFrame('Frame', '$parentNameHolder', unitframe);
-        unitframe.NameHolder:SetAllPoints(unitframe.healthBar);
+        unitframe.NameHolder:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
     end
 
-    unitframe.NameHolder:SetFrameStrata(NAME_HOLDER_FRAME_STRATA == 1 and unitframe.healthBar:GetFrameStrata() or NAME_HOLDER_FRAME_STRATA);
+    unitframe.NameHolder:SetFrameStrata(NAME_HOLDER_FRAME_STRATA == 1 and unitframe.HealthBarsContainer.healthBar:GetFrameStrata() or NAME_HOLDER_FRAME_STRATA);
 end
 
 function Module:UnitAdded(unitframe)

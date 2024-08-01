@@ -16,9 +16,9 @@ local function OnUpdate(self, elapsed)
         return;
     end
 
-    local unitframe  = self:GetParent():GetParent();
-    local unit       = unitframe.data.unit;
-    local isEnemy    = unitframe.data.commonReaction == 'ENEMY';
+    local unitframe  = self:GetParent():GetParent():GetParent();
+    local unit       = unitframe.data and unitframe.data.unit;
+    local isEnemy    = unitframe.data and unitframe.data.commonReaction == 'ENEMY';
     local shouldShow = isEnemy and unit and (UnitAffectingCombat(unit) or (UnitExists(unit .. 'pet') and UnitAffectingCombat(unit .. 'pet')));
 
     self.icon:SetShown(shouldShow);
@@ -31,7 +31,7 @@ local function Create(unitframe)
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentCombatIndicator', unitframe.healthBar);
+    local frame = CreateFrame('Frame', '$parentCombatIndicator', unitframe.HealthBarsContainer.healthBar);
     frame:SetAllPoints();
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');

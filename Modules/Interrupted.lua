@@ -74,8 +74,8 @@ local function Create(unitframe)
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentSpellInterrupted', unitframe.healthBar);
-    frame:SetAllPoints(unitframe.healthBar);
+    local frame = CreateFrame('Frame', '$parentSpellInterrupted', unitframe.HealthBarsContainer.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
     frame:SetFrameLevel(frame:GetFrameLevel() + 100);
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');
@@ -134,7 +134,7 @@ local function Update(unitframe)
     spellInterruptedFrame.cooldown:SetDrawSwipe(SI_DRAW_SWIPE);
 
     spellInterruptedFrame.icon:ClearAllPoints();
-    PixelUtil.SetPoint(spellInterruptedFrame.icon, SI_POINT, unitframe.healthBar, SI_RELATIVE_POINT, SI_OFFSET_X, SI_OFFSET_Y);
+    PixelUtil.SetPoint(spellInterruptedFrame.icon, SI_POINT, unitframe.HealthBarsContainer.healthBar, SI_RELATIVE_POINT, SI_OFFSET_X, SI_OFFSET_Y);
     spellInterruptedFrame.icon:SetSize(SI_SIZE, SI_SIZE);
 
     spellInterruptedFrame:SetShown(spellInterruptedFrame.expTime > GetTime() and unitframe.data.unitGUID == spellInterruptedFrame.destGUID);

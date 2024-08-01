@@ -19,8 +19,8 @@ local function Create(unitframe)
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentHealthText', unitframe.healthBar);
-    frame:SetAllPoints(unitframe.healthBar);
+    local frame = CreateFrame('Frame', '$parentHealthText', unitframe.HealthBarsContainer.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     frame.text      = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
     frame.LeftText  = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');

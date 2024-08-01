@@ -28,7 +28,7 @@ local function Create(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentMythicPlusPercentage', unitframe);
-    frame:SetAllPoints(unitframe.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     local text = frame:CreateFontString(nil, 'BACKGROUND', 'StripesMythicPlusPercentageFont');
     text:ClearAllPoints();

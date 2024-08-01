@@ -145,7 +145,7 @@ local function CreateThreatPercentage(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentThreatPercentage', unitframe);
-    frame:SetAllPoints(unitframe.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     local text = frame:CreateFontString(nil, 'BACKGROUND', 'StripesThreatPercentageFont');
     text:SetPoint(DB.TP_POINT, frame, DB.TP_RELATIVE_POINT, DB.TP_OFFSET_X, DB.TP_OFFSET_Y);
@@ -296,7 +296,7 @@ local function UpdateExecutionGlow(unitframe, shouldExecute)
 
     if not shouldExecute then
         if isExecutionGlow then
-            LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
+            LCG_PixelGlow_Stop(unitframe.HealthBarsContainer.healthBar, 'S_EXECUTION');
             unitframe.data.isExecutionGlow = nil;
         end
 
@@ -305,12 +305,12 @@ local function UpdateExecutionGlow(unitframe, shouldExecute)
 
     if DB.EXECUTION_GLOW then
         if shouldExecute and not isExecutionGlow then
-            LCG_PixelGlow_Start(unitframe.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_EXECUTION');
+            LCG_PixelGlow_Start(unitframe.HealthBarsContainer.healthBar, nil, 16, nil, 6, nil, 1, 1, nil, 'S_EXECUTION');
             unitframe.data.isExecutionGlow = true;
         end
     else
         if isExecutionGlow then
-            LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
+            LCG_PixelGlow_Stop(unitframe.HealthBarsContainer.healthBar, 'S_EXECUTION');
             unitframe.data.isExecutionGlow = nil;
         end
     end
@@ -339,13 +339,13 @@ local COLORING_FUNCTIONS = {
             else
                 if U_UnitIsTapped(unitframe.data.unit) then
                     if DB.THREAT_COLOR_ISTAPPED_BORDER then
-                        unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+                        unitframe.HealthBarsContainer.border:SetVertexColor(r, g, b, a);
                     end
                 else
-                    local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+                    local cR, cG, cB, cA = unitframe.HealthBarsContainer.healthBar:GetStatusBarColor();
 
                     if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
-                        unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                        unitframe.HealthBarsContainer.healthBar:SetStatusBarColor(r, g, b, a);
                     end
 
                     result = 'HIGH_THREAT';
@@ -384,13 +384,13 @@ local COLORING_FUNCTIONS = {
             else
                 if U_UnitIsTapped(unitframe.data.unit) then
                     if DB.THREAT_COLOR_ISTAPPED_BORDER then
-                        unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+                        unitframe.HealthBarsContainer.border:SetVertexColor(r, g, b, a);
                     end
                 else
-                    local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+                    local cR, cG, cB, cA = unitframe.HealthBarsContainer.healthBar:GetStatusBarColor();
 
                     if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
-                        unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                        unitframe.HealthBarsContainer.healthBar:SetStatusBarColor(r, g, b, a);
                     end
 
                     result = 'LOW_THREAT';
@@ -412,19 +412,19 @@ local COLORING_FUNCTIONS = {
 
         if DB.CURRENT_TARGET_COLOR_ENABLED and unitframe.data.isTarget then
             local color = DB.CURRENT_TARGET_USE_CLASS_COLOR and DB.CURRENT_TARGET_CLASS_COLOR or DB.CURRENT_TARGET_COLOR;
-            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+            local cR, cG, cB, cA = unitframe.HealthBarsContainer.healthBar:GetStatusBarColor();
 
             if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+                unitframe.HealthBarsContainer.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
             end
 
             result = 'CURRENT_TARGET';
         elseif DB.CURRENT_FOCUS_COLOR_ENABLED and unitframe.data.isFocus then
             local color = DB.CURRENT_FOCUS_USE_CLASS_COLOR and DB.CURRENT_FOCUS_CLASS_COLOR or DB.CURRENT_FOCUS_COLOR;
-            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+            local cR, cG, cB, cA = unitframe.HealthBarsContainer.healthBar:GetStatusBarColor();
 
             if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+                unitframe.HealthBarsContainer.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
             end
 
             result = 'CURRENT_FOCUS';
@@ -436,9 +436,9 @@ local COLORING_FUNCTIONS = {
     CUSTOM = function(unitframe)
         local result = nil;
 
-        LCG_PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
-        LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
-        LCG_ButtonGlow_Stop(unitframe.healthBar);
+        LCG_PixelGlow_Stop(unitframe.HealthBarsContainer.healthBar, 'S_CUSTOMHP');
+        LCG_AutoCastGlow_Stop(unitframe.HealthBarsContainer.healthBar, 'S_CUSTOMHP');
+        LCG_ButtonGlow_Stop(unitframe.HealthBarsContainer.healthBar);
 
         if unitframe.data.isPlayer then
             return result;
@@ -449,10 +449,10 @@ local COLORING_FUNCTIONS = {
 
             if custom.color_enabled then
                 local color = Colors:Get(custom.color_name);
-                local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+                local cR, cG, cB, cA = unitframe.HealthBarsContainer.healthBar:GetStatusBarColor();
 
                 if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-                    unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+                    unitframe.HealthBarsContainer.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
                 end
 
                 result = 'CUSTOM';
@@ -460,11 +460,11 @@ local COLORING_FUNCTIONS = {
 
             if custom.glow_enabled then
                 if custom.glow_type == 1 then
-                    LCG_PixelGlow_Start(unitframe.healthBar, Colors:Get(custom.glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
+                    LCG_PixelGlow_Start(unitframe.HealthBarsContainer.healthBar, Colors:Get(custom.glow_color_name), 16, nil, 6, nil, 1, 1, nil, 'S_CUSTOMHP');
                 elseif custom.glow_type == 2 then
-                    LCG_AutoCastGlow_Start(unitframe.healthBar, Colors:Get(custom.glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
+                    LCG_AutoCastGlow_Start(unitframe.HealthBarsContainer.healthBar, Colors:Get(custom.glow_color_name), nil, nil, nil, nil, nil, 'S_CUSTOMHP');
                 elseif custom.glow_type == 3 then
-                    LCG_ButtonGlow_Start(unitframe.healthBar);
+                    LCG_ButtonGlow_Start(unitframe.HealthBarsContainer.healthBar);
                 end
             end
         end
@@ -489,10 +489,10 @@ local COLORING_FUNCTIONS = {
 
         if RAID_TARGET_COLORS[raidIndex] then
             local color = RAID_TARGET_COLORS[raidIndex];
-            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+            local cR, cG, cB, cA = unitframe.HealthBarsContainer.healthBar:GetStatusBarColor();
 
             if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+                unitframe.HealthBarsContainer.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
             end
 
             unitframe.data.raidIndex = raidIndex;
@@ -516,10 +516,10 @@ local COLORING_FUNCTIONS = {
             return result;
         end
 
-        local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+        local cR, cG, cB, cA = unitframe.HealthBarsContainer.healthBar:GetStatusBarColor();
 
         if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
-            unitframe.healthBar:SetStatusBarColor(r, g, b, a or 1);
+            unitframe.HealthBarsContainer.healthBar:SetStatusBarColor(r, g, b, a or 1);
         end
 
         result = 'AURA';
@@ -535,10 +535,10 @@ local COLORING_FUNCTIONS = {
 
         if shouldExecute then
             local color = DB.EXECUTION_COLOR;
-            local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+            local cR, cG, cB, cA = unitframe.HealthBarsContainer.healthBar:GetStatusBarColor();
 
             if color[1] ~= cR or color[2] ~= cG or color[3] ~= cB or color[4] ~= cA then
-                unitframe.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
+                unitframe.HealthBarsContainer.healthBar:SetStatusBarColor(color[1], color[2], color[3], color[4]);
             end
 
             result = 'EXECUTION';
@@ -566,13 +566,13 @@ local COLORING_FUNCTIONS = {
             else
                 if U_UnitIsTapped(unitframe.data.unit) then
                     if DB.THREAT_COLOR_ISTAPPED_BORDER then
-                        unitframe.healthBar.border:SetVertexColor(r, g, b, a);
+                        unitframe.HealthBarsContainer.border:SetVertexColor(r, g, b, a);
                     end
                 else
-                    local cR, cG, cB, cA = unitframe.healthBar:GetStatusBarColor();
+                    local cR, cG, cB, cA = unitframe.HealthBarsContainer.healthBar:GetStatusBarColor();
 
                     if r ~= cR or g ~= cG or b ~= cB or a ~= cA then
-                        unitframe.healthBar:SetStatusBarColor(r, g, b, a);
+                        unitframe.HealthBarsContainer.healthBar:SetStatusBarColor(r, g, b, a);
                     end
                 end
 
@@ -639,25 +639,27 @@ local function UpdateHealthBarColor(unitframe, partial)
 end
 
 local function UpdateBorder(unitframe)
+    local border = unitframe.HealthBarsContainer.border;
+
     if DB.BORDER_HIDE then
         if unitframe.data.isPersonal then
-            unitframe.healthBar.border:SetVertexColor(0, 0, 0);
-            unitframe.healthBar.border:Show();
+            border:SetVertexColor(0, 0, 0);
+            border:Show();
         else
-            unitframe.healthBar.border:Hide();
+            border:Hide();
         end
 
         return;
     end
 
-    unitframe.healthBar.border:Show();
+    border:Show();
 
     if DB.SAME_BORDER_COLOR then
-        unitframe.healthBar.border:SetVertexColor(unitframe.healthBar:GetStatusBarTexture():GetVertexColor());
+        border:SetVertexColor(unitframe.HealthBarsContainer.healthBar:GetStatusBarTexture():GetVertexColor());
     elseif unitframe.data.isTarget then
-        unitframe.healthBar.border:SetVertexColor(DB.BORDER_SELECTED_COLOR[1], DB.BORDER_SELECTED_COLOR[2], DB.BORDER_SELECTED_COLOR[3], DB.BORDER_SELECTED_COLOR[4]);
+        border:SetVertexColor(DB.BORDER_SELECTED_COLOR[1], DB.BORDER_SELECTED_COLOR[2], DB.BORDER_SELECTED_COLOR[3], DB.BORDER_SELECTED_COLOR[4]);
     else
-        unitframe.healthBar.border:SetVertexColor(DB.BORDER_COLOR[1], DB.BORDER_COLOR[2], DB.BORDER_COLOR[3], DB.BORDER_COLOR[4]);
+        border:SetVertexColor(DB.BORDER_COLOR[1], DB.BORDER_COLOR[2], DB.BORDER_COLOR[3], DB.BORDER_COLOR[4]);
     end
 end
 
@@ -668,7 +670,7 @@ local function UpdateBorderSizes(unitframe)
         borderSize, minPixels = 1, 2;
     end
 
-    local healthBarBorder = unitframe.healthBar.border;
+    local healthBarBorder = unitframe.HealthBarsContainer.border;
 
     PixelUtil.SetWidth(healthBarBorder.Left, borderSize, minPixels);
     PixelUtil.SetPoint(healthBarBorder.Left, 'TOPRIGHT', healthBarBorder, 'TOPLEFT', 0, borderSize, 0, minPixels);
@@ -713,7 +715,7 @@ end
 
 local function UpdateSizes(unitframe)
     if unitframe.data.isPersonal then
-        unitframe.healthBar:SetHeight(DB.PLAYER_HEIGHT);
+        unitframe.HealthBarsContainer:SetHeight(DB.PLAYER_HEIGHT);
 
         if unitframe.powerBar and unitframe.powerBar:IsShown() then
             unitframe.powerBar:SetHeight(DB.PLAYER_HEIGHT);
@@ -724,15 +726,15 @@ local function UpdateSizes(unitframe)
         end
     elseif unitframe.data.commonReaction == 'ENEMY' then
         if unitframe.data.minus then
-            unitframe.healthBar:SetHeight(DB.ENEMY_MINUS_HEIGHT);
-            unitframe.healthBar.sHeight = DB.ENEMY_MINUS_HEIGHT;
+            unitframe.HealthBarsContainer:SetHeight(DB.ENEMY_MINUS_HEIGHT);
+            unitframe.HealthBarsContainer.sHeight = DB.ENEMY_MINUS_HEIGHT;
         else
-            unitframe.healthBar:SetHeight(DB.ENEMY_HEIGHT);
-            unitframe.healthBar.sHeight = DB.ENEMY_HEIGHT;
+            unitframe.HealthBarsContainer:SetHeight(DB.ENEMY_HEIGHT);
+            unitframe.HealthBarsContainer.sHeight = DB.ENEMY_HEIGHT;
         end
     elseif unitframe.data.commonReaction == 'FRIENDLY' then
-        unitframe.healthBar:SetHeight(DB.FRIENDLY_HEIGHT);
-        unitframe.healthBar.sHeight = DB.FRIENDLY_HEIGHT;
+        unitframe.HealthBarsContainer:SetHeight(DB.FRIENDLY_HEIGHT);
+        unitframe.HealthBarsContainer.sHeight = DB.FRIENDLY_HEIGHT;
     end
 
     UpdateBorderSizes(unitframe);
@@ -783,22 +785,22 @@ local function UpdateClickableArea(unitframe)
 end
 
 local function CreateCustomBorder(unitframe)
-    if not unitframe.healthBar.CustomBorderTexture then
-        unitframe.healthBar.CustomBorderTexture = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
+    if not unitframe.HealthBarsContainer.healthBar.CustomBorderTexture then
+        unitframe.HealthBarsContainer.healthBar.CustomBorderTexture = unitframe.HealthBarsContainer.healthBar:CreateTexture(nil, 'OVERLAY');
     end
 end
 
 local function UpdateCustomBorder(unitframe)
-    if not unitframe.healthBar.CustomBorderTexture then
+    if not unitframe.HealthBarsContainer.healthBar.CustomBorderTexture then
         return;
     end
 
     if not DB.CUSTOM_BORDER_ENABLED then
-        unitframe.healthBar.CustomBorderTexture:Hide();
+        unitframe.HealthBarsContainer.healthBar.CustomBorderTexture:Hide();
         return;
     end
 
-    local healthBarCustomBorderTexture = unitframe.healthBar.CustomBorderTexture;
+    local healthBarCustomBorderTexture = unitframe.HealthBarsContainer.healthBar.CustomBorderTexture;
 
     healthBarCustomBorderTexture:SetTexture(DB.CUSTOM_BORDER_PATH);
     healthBarCustomBorderTexture:SetPoint('CENTER', DB.CUSTOM_BORDER_X_OFFSET, DB.CUSTOM_BORDER_Y_OFFSET);
@@ -807,37 +809,37 @@ local function UpdateCustomBorder(unitframe)
 end
 
 local function UpdateBackgroundTexture(unitframe)
-    if not unitframe.healthBar.background then
+    if not unitframe.HealthBarsContainer.healthBar.background then
         return;
     end
 
-    unitframe.healthBar.background:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_BACKGROUND_TEXTURE));
-    unitframe.healthBar.background:SetVertexColor(DB.HEALTH_BAR_BACKGROUND_COLOR[1], DB.HEALTH_BAR_BACKGROUND_COLOR[2], DB.HEALTH_BAR_BACKGROUND_COLOR[3], DB.HEALTH_BAR_BACKGROUND_COLOR[4]);
+    unitframe.HealthBarsContainer.healthBar.background:SetTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, DB.HEALTH_BAR_BACKGROUND_TEXTURE));
+    unitframe.HealthBarsContainer.healthBar.background:SetVertexColor(DB.HEALTH_BAR_BACKGROUND_COLOR[1], DB.HEALTH_BAR_BACKGROUND_COLOR[2], DB.HEALTH_BAR_BACKGROUND_COLOR[3], DB.HEALTH_BAR_BACKGROUND_COLOR[4]);
 end
 
 local function SetHealthBarTexture(unitframe, textureValue)
-    if textureValue == unitframe.healthBar.textureValue then
+    if textureValue == unitframe.HealthBarsContainer.healthBar.textureValue then
         return;
     end
 
-    unitframe.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, textureValue));
-    unitframe.healthBar.textureValue = textureValue;
+    unitframe.HealthBarsContainer.healthBar:SetStatusBarTexture(LSM:Fetch(LSM_MEDIATYPE_STATUSBAR, textureValue));
+    unitframe.HealthBarsContainer.healthBar.textureValue = textureValue;
 end
 
 local function CreateExtraTexture(unitframe)
-    if unitframe.healthBar.ExtraTexture then
+    if unitframe.HealthBarsContainer.healthBar.ExtraTexture then
         return;
     end
 
-    local extraTexture = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
+    local extraTexture = unitframe.HealthBarsContainer.healthBar:CreateTexture(nil, 'OVERLAY');
     extraTexture:SetAllPoints();
     extraTexture:Hide();
 
-    unitframe.healthBar.ExtraTexture = extraTexture;
+    unitframe.HealthBarsContainer.healthBar.ExtraTexture = extraTexture;
 end
 
 local function SetExtraTextureAndColor(unitframe, textureValue, textureColor)
-    local extraTexture = unitframe.healthBar.ExtraTexture;
+    local extraTexture = unitframe.HealthBarsContainer.healthBar.ExtraTexture;
     local r, g, b, a = extraTexture:GetVertexColor();
 
     local isSameValue = textureValue == extraTexture.textureValue;
@@ -853,13 +855,13 @@ local function SetExtraTextureAndColor(unitframe, textureValue, textureColor)
 end
 
 local function UpdateExtraTexture(unitframe)
-    if not unitframe.healthBar.ExtraTexture then
+    if not unitframe.HealthBarsContainer.healthBar.ExtraTexture then
         return;
     end
 
     if unitframe.data.isPersonal then
         SetHealthBarTexture(unitframe, DEFAULT_STATUSBAR_TEXTURE);
-        unitframe.healthBar.ExtraTexture:Hide();
+        unitframe.HealthBarsContainer.healthBar.ExtraTexture:Hide();
     else
         local isTarget = unitframe.data.isTarget;
         local isFocus  = unitframe.data.isFocus;
@@ -874,72 +876,72 @@ local function UpdateExtraTexture(unitframe)
             if textureOverlay then
                 SetHealthBarTexture(unitframe, DB.HEALTH_BAR_TEXTURE);
                 SetExtraTextureAndColor(unitframe, textureValue, textureColor);
-                unitframe.healthBar.ExtraTexture:Show();
+                unitframe.HealthBarsContainer.healthBar.ExtraTexture:Show();
             else
                 SetHealthBarTexture(unitframe, textureValue);
-                unitframe.healthBar.ExtraTexture:Hide();
+                unitframe.HealthBarsContainer.healthBar.ExtraTexture:Hide();
             end
         else
             SetHealthBarTexture(unitframe, DB.HEALTH_BAR_TEXTURE);
-            unitframe.healthBar.ExtraTexture:Hide();
+            unitframe.HealthBarsContainer.healthBar.ExtraTexture:Hide();
         end
     end
 end
 
 local function CreateSpark(unitframe)
-    if unitframe.healthBar.Spark then
+    if unitframe.HealthBarsContainer.healthBar.Spark then
         return;
     end
 
-    local spark = unitframe.healthBar:CreateTexture(nil, 'OVERLAY');
-    spark:SetPoint('CENTER', unitframe.healthBar:GetStatusBarTexture(), 'RIGHT', 0, 0);
+    local spark = unitframe.HealthBarsContainer.healthBar:CreateTexture(nil, 'OVERLAY');
+    spark:SetPoint('CENTER', unitframe.HealthBarsContainer.healthBar:GetStatusBarTexture(), 'RIGHT', 0, 0);
     spark:SetTexture('Interface\\CastingBar\\UI-CastingBar-Spark');
     spark:SetBlendMode('ADD');
 
-    unitframe.healthBar.Spark = spark;
+    unitframe.HealthBarsContainer.healthBar.Spark = spark;
 end
 
 local function UpdateSpark(unitframe)
-    if not unitframe.healthBar.Spark then
+    if not unitframe.HealthBarsContainer.healthBar.Spark then
         return;
     end
 
     if DB.SPARK_SHOW and not unitframe.data.isPersonal then
-        unitframe.healthBar.Spark:SetSize(DB.SPARK_WIDTH, DB.SPARK_HEIGHT);
+        unitframe.HealthBarsContainer.healthBar.Spark:SetSize(DB.SPARK_WIDTH, DB.SPARK_HEIGHT);
 
-        local _, maxValue = unitframe.healthBar:GetMinMaxValues();
-        local currentValue = unitframe.healthBar:GetValue();
+        local _, maxValue = unitframe.HealthBarsContainer.healthBar:GetMinMaxValues();
+        local currentValue = unitframe.HealthBarsContainer.healthBar:GetValue();
 
         if DB.SPARK_HIDE_AT_MAX_HEALTH and currentValue == maxValue then
-            unitframe.healthBar.Spark:Hide();
+            unitframe.HealthBarsContainer.healthBar.Spark:Hide();
         else
-            unitframe.healthBar.Spark:Show();
+            unitframe.HealthBarsContainer.healthBar.Spark:Show();
         end
     else
-        unitframe.healthBar.Spark:Hide();
+        unitframe.HealthBarsContainer.healthBar.Spark:Hide();
     end
 end
 
 local function UpdateSparkPosition(unitframe)
-    if unitframe.healthBar.Spark and DB.SPARK_SHOW and not unitframe.data.isPersonal then
+    if unitframe.HealthBarsContainer.healthBar.Spark and DB.SPARK_SHOW and not unitframe.data.isPersonal then
         if DB.SPARK_HIDE_AT_MAX_HEALTH then
-            local _, maxValue = unitframe.healthBar:GetMinMaxValues();
-            local currentValue = unitframe.healthBar:GetValue();
+            local _, maxValue = unitframe.HealthBarsContainer.healthBar:GetMinMaxValues();
+            local currentValue = unitframe.HealthBarsContainer.healthBar:GetValue();
 
             if currentValue == maxValue then
-                unitframe.healthBar.Spark:Hide();
+                unitframe.HealthBarsContainer.healthBar.Spark:Hide();
             else
-                unitframe.healthBar.Spark:Show();
+                unitframe.HealthBarsContainer.healthBar.Spark:Show();
             end
         else
-            unitframe.healthBar.Spark:Show();
+            unitframe.HealthBarsContainer.healthBar.Spark:Show();
         end
     end
 end
 
 function Module:UnitAdded(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
-    unitframe.healthBar:SetFrameStrata(unitframe.data.isPersonal and 'HIGH' or 'MEDIUM');
+    unitframe.HealthBarsContainer.healthBar:SetFrameStrata(unitframe.data.isPersonal and 'HIGH' or 'MEDIUM');
 
     if unitframe.selectionHighlight then
         unitframe.selectionHighlight:SetAlpha(0);
@@ -981,11 +983,11 @@ function Module:UnitRemoved(unitframe)
     unitframe.data.threatColorG = nil;
     unitframe.data.threatColorB = nil;
 
-    LCG_PixelGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
-    LCG_AutoCastGlow_Stop(unitframe.healthBar, 'S_CUSTOMHP');
-    LCG_ButtonGlow_Stop(unitframe.healthBar);
+    LCG_PixelGlow_Stop(unitframe.HealthBarsContainer.healthBar, 'S_CUSTOMHP');
+    LCG_AutoCastGlow_Stop(unitframe.HealthBarsContainer.healthBar, 'S_CUSTOMHP');
+    LCG_ButtonGlow_Stop(unitframe.HealthBarsContainer.healthBar);
 
-    LCG_PixelGlow_Stop(unitframe.healthBar, 'S_EXECUTION');
+    LCG_PixelGlow_Stop(unitframe.HealthBarsContainer.healthBar, 'S_EXECUTION');
 end
 
 function Module:UnitAura(unitframe)
@@ -1005,7 +1007,7 @@ end
 
 function Module:Update(unitframe)
     -- Hack to fix overlapping borders for personal nameplate :(
-    unitframe.healthBar:SetFrameStrata(unitframe.data.isPersonal and 'HIGH' or 'MEDIUM');
+    unitframe.HealthBarsContainer.healthBar:SetFrameStrata(unitframe.data.isPersonal and 'HIGH' or 'MEDIUM');
 
     UpdateThreatPercentagePosition(unitframe);
     UpdateCustomBorder(unitframe);

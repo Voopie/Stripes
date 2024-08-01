@@ -127,10 +127,10 @@ local function Create(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentPVPHealersIcon', unitframe);
-    frame:SetAllPoints(unitframe.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');
-    icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+    icon:SetPoint(POINT, unitframe.HealthBarsContainer.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
     icon:SetSize(32, 32);
 
     frame.icon = icon;
@@ -159,11 +159,11 @@ local function Update(unitframe)
     local pvpHealersFrame = unitframe.PVPHealers;
 
     if iconCoords then
-        pvpHealersFrame:SetFrameStrata(STRATA == 1 and unitframe.healthBar:GetFrameStrata() or STRATA);
+        pvpHealersFrame:SetFrameStrata(STRATA == 1 and unitframe.HealthBarsContainer.healthBar:GetFrameStrata() or STRATA);
         pvpHealersFrame.icon:SetTexture(tankSpecIDs[specID] and TANKS_TEXTURE or HEALERS_TEXTURE);
         pvpHealersFrame.icon:SetTexCoord(iconCoords[1], iconCoords[2], iconCoords[3], iconCoords[4]);
         pvpHealersFrame.icon:ClearAllPoints();
-        pvpHealersFrame.icon:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+        pvpHealersFrame.icon:SetPoint(POINT, unitframe.HealthBarsContainer.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
         pvpHealersFrame:SetScale(ICON_SCALE);
         pvpHealersFrame:Show();
     else

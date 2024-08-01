@@ -20,8 +20,8 @@ local function Create(unitframe)
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentLevelText', unitframe.healthBar);
-    frame:SetAllPoints(unitframe.healthBar);
+    local frame = CreateFrame('Frame', '$parentLevelText', unitframe.HealthBarsContainer.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     local text = frame:CreateFontString(nil, 'OVERLAY', 'StripesLevelTextFont');
     text:SetTextColor(1, 1, 1);

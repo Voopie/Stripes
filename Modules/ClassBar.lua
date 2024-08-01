@@ -20,7 +20,7 @@ local function UpdatePositionForUnitFrame(unitframe)
     elseif unitframe.data.isTarget then
         if unitframe.data.canAttack then
             mechanicFrame:ClearAllPoints();
-            mechanicFrame:SetPoint(POINT, unitframe.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
+            mechanicFrame:SetPoint(POINT, unitframe.HealthBarsContainer.healthBar, RELATIVE_POINT, OFFSET_X, OFFSET_Y);
         else
             mechanicFrame:Hide();
         end

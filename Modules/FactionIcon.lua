@@ -17,7 +17,7 @@ local function Create(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentFactionIcon', unitframe);
-    frame:SetAllPoints(unitframe.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');
     icon:SetPoint('RIGHT', unitframe.name, 'LEFT', -2, 0);

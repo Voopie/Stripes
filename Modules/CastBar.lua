@@ -74,24 +74,23 @@ local function UpdateStyle(unitframe)
     local castingBarIcon         = castingBar.Icon;
     local castingBarBorderShield = castingBar.BorderShield;
 
-    local healthBar = unitframe.healthBar;
+    local healthBarsContainer = unitframe.HealthBarsContainer;
+    local healthBarHeight = healthBarsContainer.sHeight or 12;
 
     castingBar:ClearAllPoints();
     castingBarIcon:ClearAllPoints();
-    healthBar:ClearAllPoints();
-
-    local healthBarHeight = healthBar.sHeight or 12;
+    healthBarsContainer:ClearAllPoints();
 
     PixelUtil.SetHeight(castingBar, ON_HP_BAR and healthBarHeight or BAR_HEIGHT);
 
     if ON_HP_BAR then
-        PixelUtil.SetPoint(healthBar, 'BOTTOM', unitframe, 'BOTTOM', 0, 6 + 2 + BAR_HEIGHT);
+        PixelUtil.SetPoint(healthBarsContainer, 'BOTTOM', unitframe, 'BOTTOM', 0, 6 + 2 + BAR_HEIGHT);
 
         local healthBarWidth = unitframe.data.isPersonal and PLAYER_WIDTH or (unitframe.data.commonReaction == 'ENEMY' and ENEMY_WIDTH or FRIENDLY_WIDTH);
-        PixelUtil.SetWidth(healthBar, healthBarWidth - WIDTH_OFFSET);
+        PixelUtil.SetWidth(healthBarsContainer, healthBarWidth - WIDTH_OFFSET);
 
-        PixelUtil.SetPoint(castingBar, 'BOTTOMLEFT', healthBar, 'TOPLEFT', 0, -healthBarHeight);
-        PixelUtil.SetPoint(castingBar, 'BOTTOMRIGHT', healthBar, 'TOPRIGHT', 0, -healthBarHeight);
+        PixelUtil.SetPoint(castingBar, 'BOTTOMLEFT', healthBarsContainer, 'TOPLEFT', 0, -healthBarHeight);
+        PixelUtil.SetPoint(castingBar, 'BOTTOMRIGHT', healthBarsContainer, 'TOPRIGHT', 0, -healthBarHeight);
 
         PixelUtil.SetPoint(castingBarIcon, ICON_RIGHT_SIDE and 'LEFT' or 'RIGHT', castingBar, ICON_RIGHT_SIDE and 'RIGHT' or 'LEFT', 0, 0);
         PixelUtil.SetSize(castingBarIcon, healthBarHeight, healthBarHeight);
@@ -101,13 +100,13 @@ local function UpdateStyle(unitframe)
         local castingBarWidth = unitframe.data.isPersonal and PLAYER_WIDTH or (unitframe.data.commonReaction == 'ENEMY' and ENEMY_WIDTH or FRIENDLY_WIDTH);
         PixelUtil.SetWidth(castingBar, castingBarWidth - WIDTH_OFFSET);
 
-        PixelUtil.SetPoint(healthBar, 'BOTTOMLEFT', castingBar, 'TOPLEFT', 0, CAST_BAR_OFFSET_Y);
-        PixelUtil.SetPoint(healthBar, 'BOTTOMRIGHT', castingBar, 'TOPRIGHT', 0, CAST_BAR_OFFSET_Y);
+        PixelUtil.SetPoint(healthBarsContainer, 'BOTTOMLEFT', castingBar, 'TOPLEFT', 0, CAST_BAR_OFFSET_Y);
+        PixelUtil.SetPoint(healthBarsContainer, 'BOTTOMRIGHT', castingBar, 'TOPRIGHT', 0, CAST_BAR_OFFSET_Y);
 
         local iconWidth = BAR_HEIGHT + (BORDER_ENABLED and BORDER_SIZE or 0);
 
         if ICON_LARGE then
-            PixelUtil.SetPoint(castingBarIcon, ICON_RIGHT_SIDE and 'TOPLEFT' or 'TOPRIGHT', healthBar, ICON_RIGHT_SIDE and 'TOPRIGHT' or 'TOPLEFT', ICON_RIGHT_SIDE and 1 or -1, 0.5);
+            PixelUtil.SetPoint(castingBarIcon, ICON_RIGHT_SIDE and 'TOPLEFT' or 'TOPRIGHT', healthBarsContainer, ICON_RIGHT_SIDE and 'TOPRIGHT' or 'TOPLEFT', ICON_RIGHT_SIDE and 1 or -1, 0.5);
             PixelUtil.SetPoint(castingBarIcon, ICON_RIGHT_SIDE and 'BOTTOMLEFT' or 'BOTTOMRIGHT', castingBar, ICON_RIGHT_SIDE and 'BOTTOMRIGHT' or 'BOTTOMLEFT', 0, BORDER_ENABLED and -BORDER_SIZE or 0);
             PixelUtil.SetWidth(castingBarIcon, 2 + healthBarHeight + iconWidth);
         else

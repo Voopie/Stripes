@@ -192,7 +192,7 @@ local function Create(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentQuestIndicator', unitframe);
-    frame:SetAllPoints(unitframe.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
     frame:SetFrameStrata('HIGH');
     frame:SetFrameLevel(frame:GetFrameLevel() + 50);
     frame:Hide();
@@ -227,7 +227,7 @@ local function UpdateStyle(unitframe)
     if Stripes.NameOnly:IsUnitFrameFriendly(unitframe) then
         questIndicator:SetAllPoints(unitframe.name);
     else
-        questIndicator:SetAllPoints(unitframe.healthBar);
+        questIndicator:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
     end
 
     questIndicator.swordIcon:ClearAllPoints();

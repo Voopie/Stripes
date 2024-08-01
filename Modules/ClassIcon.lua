@@ -16,7 +16,7 @@ local function Create(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentClassIcon', unitframe);
-    frame:SetAllPoints(unitframe.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');
     PixelUtil.SetPoint(icon, 'BOTTOM', unitframe.name, 'TOP', 0, 2);

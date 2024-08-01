@@ -21,7 +21,7 @@ local function Create(unitframe)
         return;
     end
 
-    local frame = CreateFrame('Frame', '$parentSpiteful', unitframe.healthBar);
+    local frame = CreateFrame('Frame', '$parentSpiteful', unitframe.HealthBarsContainer.healthBar);
     frame:SetPoint('BOTTOM', unitframe, 'TOP', 0, 4);
     frame:SetSize(32, 32);
     frame:SetFrameStrata('LOW');
@@ -33,7 +33,7 @@ local function Create(unitframe)
     icon:Hide();
 
     local ttd = frame:CreateFontString(nil, 'OVERLAY', 'StripesHealthTextFont');
-    ttd:SetPoint('TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', 0, 0);
+    ttd:SetPoint('TOPRIGHT', unitframe.HealthBarsContainer.healthBar, 'BOTTOMRIGHT', 0, 0);
     ttd:Hide();
 
     frame.icon = icon;
