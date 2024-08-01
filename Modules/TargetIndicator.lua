@@ -28,7 +28,7 @@ local function Glow_Show(unitframe)
 end
 
 local function Glow_Hide(unitframe)
-    if unitframe.data.isTarget then
+    if unitframe.data and unitframe.data.isTarget then
         return;
     end
 
@@ -44,7 +44,7 @@ local function Glow_Hide(unitframe)
 end
 
 local function MouseOnUnit(unitframe)
-    if unitframe and unitframe.data.unit and unitframe:IsVisible() and UnitExists('mouseover') then
+    if unitframe and unitframe.data and unitframe.data.unit and unitframe:IsVisible() and UnitExists('mouseover') then
         return UnitIsUnit('mouseover', unitframe.data.unit);
     end
 
@@ -53,7 +53,7 @@ end
 
 local function OnUpdate(self, elapsed)
     if self.elapsed and self.elapsed > GLOW_UPDATE_INTERVAL then
-        local unitframe = self:GetParent():GetParent();
+        local unitframe = self:GetParent():GetParent():GetParent();
 
         if not MouseOnUnit(unitframe) then
             Glow_Hide(unitframe);
@@ -91,9 +91,9 @@ local function CreateTargetIndicator(unitframe)
         return;
     end
 
-    local indicator = CreateFrame('Frame', nil, unitframe.healthBar);
+    local indicator = CreateFrame('Frame', nil, unitframe.HealthBarsContainer.healthBar);
     indicator:SetFrameStrata('LOW');
-    indicator:SetAllPoints(unitframe.healthBar);
+    indicator:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     indicator.left = indicator:CreateTexture(nil, 'BORDER');
     indicator.left:Hide();
@@ -103,8 +103,8 @@ local function CreateTargetIndicator(unitframe)
     indicator.right:Hide();
 
     local glowUp = indicator:CreateTexture(nil, 'BORDER');
-    PixelUtil.SetPoint(glowUp, 'BOTTOMLEFT', unitframe.healthBar, 'TOPLEFT', 0, 0);
-    PixelUtil.SetPoint(glowUp, 'BOTTOMRIGHT', unitframe.healthBar, 'TOPRIGHT', 0, 0);
+    PixelUtil.SetPoint(glowUp, 'BOTTOMLEFT', unitframe.HealthBarsContainer.healthBar, 'TOPLEFT', 0, 0);
+    PixelUtil.SetPoint(glowUp, 'BOTTOMRIGHT', unitframe.HealthBarsContainer.healthBar, 'TOPRIGHT', 0, 0);
     PixelUtil.SetHeight(glowUp, GLOW_SIZE);
     glowUp:SetTexture(GLOW_TEXTURE);
     glowUp:SetTexCoord(0, 1, 1, 0);
@@ -112,18 +112,17 @@ local function CreateTargetIndicator(unitframe)
     indicator.glowUp = glowUp;
 
     local glowDown = indicator:CreateTexture(nil, 'BORDER');
-    PixelUtil.SetPoint(glowDown, 'TOPLEFT', unitframe.healthBar, 'BOTTOMLEFT', 0, 0);
-    PixelUtil.SetPoint(glowDown, 'TOPRIGHT', unitframe.healthBar, 'BOTTOMRIGHT', 0, 0);
+    PixelUtil.SetPoint(glowDown, 'TOPLEFT', unitframe.HealthBarsContainer.healthBar, 'BOTTOMLEFT', 0, 0);
+    PixelUtil.SetPoint(glowDown, 'TOPRIGHT', unitframe.HealthBarsContainer.healthBar, 'BOTTOMRIGHT', 0, 0);
     PixelUtil.SetHeight(glowDown, GLOW_SIZE);
     glowDown:SetTexture(GLOW_TEXTURE);
     glowDown:Hide();
     indicator.glowDown = glowDown;
 
-    indicator:HookScript('OnUpdate', OnUpdate);
-
     unitframe.TargetIndicator = indicator;
-
     unitframe.TargetIndicator:Hide();
+
+    indicator:HookScript('OnUpdate', OnUpdate);
 end
 
 local function UpdateStyle(unitframe)
@@ -132,8 +131,8 @@ local function UpdateStyle(unitframe)
     PixelUtil.SetSize(targetIndicator.left, SIZE, SIZE);
     PixelUtil.SetSize(targetIndicator.right, SIZE, SIZE);
 
-    PixelUtil.SetPoint(targetIndicator.left, 'RIGHT', unitframe.healthBar, 'LEFT', -X_OFFSET, Y_OFFSET);
-    PixelUtil.SetPoint(targetIndicator.right, 'LEFT', unitframe.healthBar, 'RIGHT', X_OFFSET, Y_OFFSET);
+    PixelUtil.SetPoint(targetIndicator.left, 'RIGHT', unitframe.HealthBarsContainer.healthBar, 'LEFT', -X_OFFSET, Y_OFFSET);
+    PixelUtil.SetPoint(targetIndicator.right, 'LEFT', unitframe.HealthBarsContainer.healthBar, 'RIGHT', X_OFFSET, Y_OFFSET);
 
     targetIndicator.left:SetTexture(TEXTURE);
     targetIndicator.right:SetTexture(TEXTURE);

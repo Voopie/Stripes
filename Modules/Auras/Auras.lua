@@ -189,20 +189,20 @@ local function UpdateAnchor(self)
 
     if unit and S_ShouldShowName(unitframe) then
         local nameOffset = NAME_TEXT_POSITION_V == 1 and (unitframe.name:GetLineHeight() + math_max(NAME_TEXT_OFFSET_Y, MAX_OFFSET_Y)) or 0;
-        PixelUtil.SetPoint(self, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 2 + nameOffset + squareOffset + BUFFFRAME_OFFSET_Y);
+        PixelUtil.SetPoint(self, 'BOTTOM', unitframe.HealthBarsContainer.healthBar, 'TOP', 0, 2 + nameOffset + squareOffset + BUFFFRAME_OFFSET_Y);
     else
         local buffFrameBaseYOffset = self:GetBaseYOffset();
         local buffFrameTargetYOffset = unitframe.data.isTarget and self:GetTargetYOffset() or 0;
 
-        PixelUtil.SetPoint(self, 'BOTTOM', unitframe.healthBar, 'TOP', 0, 5 + buffFrameBaseYOffset + buffFrameTargetYOffset + squareOffset + BUFFFRAME_OFFSET_Y);
+        PixelUtil.SetPoint(self, 'BOTTOM', unitframe.HealthBarsContainer.healthBar, 'TOP', 0, 5 + buffFrameBaseYOffset + buffFrameTargetYOffset + squareOffset + BUFFFRAME_OFFSET_Y);
     end
 
     if AURAS_DIRECTION == 1 then
-        PixelUtil.SetPoint(self, 'LEFT', unitframe.healthBar, 'LEFT', BUFFFRAME_OFFSET_X, 0);
+        PixelUtil.SetPoint(self, 'LEFT', unitframe.HealthBarsContainer.healthBar, 'LEFT', BUFFFRAME_OFFSET_X, 0);
     elseif AURAS_DIRECTION == 2 then
-        PixelUtil.SetPoint(self, 'RIGHT', unitframe.healthBar, 'RIGHT', BUFFFRAME_OFFSET_X, 0);
+        PixelUtil.SetPoint(self, 'RIGHT', unitframe.HealthBarsContainer.healthBar, 'RIGHT', BUFFFRAME_OFFSET_X, 0);
     else
-        self:SetWidth(unitframe.healthBar:GetWidth());
+        self:SetWidth(unitframe.HealthBarsContainer.healthBar:GetWidth());
     end
 end
 
@@ -603,27 +603,31 @@ local function UpdateStyle(unitframe)
         UpdateAuraStyle(aura, true);
     end
 
-    for _, aura in unitframe.BuffFrame.buffPool:EnumerateInactive() do
-        if Stripes.Masque then
-            if MASQUE_SUPPORT then
-                Stripes.MasqueAurasGroup:RemoveButton(aura);
-                Stripes.MasqueAurasGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
+    local inactiveObjects = unitframe.BuffFrame.buffPool.inactiveObjects;
 
-                aura.Border:SetDrawLayer('BACKGROUND');
-            else
-                Stripes.MasqueAurasGroup:RemoveButton(aura);
+    if inactiveObjects and type(inactiveObjects) == 'table' then
+        for _, aura in ipairs(inactiveObjects) do
+            if Stripes.Masque then
+                if MASQUE_SUPPORT then
+                    Stripes.MasqueAurasGroup:RemoveButton(aura);
+                    Stripes.MasqueAurasGroup:AddButton(aura, { Icon = aura.Icon, Cooldown = aura.Cooldown }, 'Aura', true);
 
-                aura.Border:SetColorTexture(0, 0, 0, 1);
-                aura.Border:SetDrawLayer('BACKGROUND');
+                    aura.Border:SetDrawLayer('BACKGROUND');
+                else
+                    Stripes.MasqueAurasGroup:RemoveButton(aura);
 
-                aura.Icon:SetDrawLayer('ARTWORK');
+                    aura.Border:SetColorTexture(0, 0, 0, 1);
+                    aura.Border:SetDrawLayer('BACKGROUND');
 
-                aura.Cooldown:ClearAllPoints();
-                aura.Cooldown:SetAllPoints();
+                    aura.Icon:SetDrawLayer('ARTWORK');
+
+                    aura.Cooldown:ClearAllPoints();
+                    aura.Cooldown:SetAllPoints();
+                end
             end
-        end
 
-        UpdateAuraStyle(aura, true);
+            UpdateAuraStyle(aura, true);
+        end
     end
 end
 

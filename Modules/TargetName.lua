@@ -84,7 +84,7 @@ local function Update(unitframe)
     if Stripes.NameOnly:IsActive(unitframe) then
         unitframe.TargetName:SetParent(unitframe);
     else
-        unitframe.TargetName:SetParent(unitframe.healthBar);
+        unitframe.TargetName:SetParent(unitframe.HealthBarsContainer.healthBar);
     end
 end
 

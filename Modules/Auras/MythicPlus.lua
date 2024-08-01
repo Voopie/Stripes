@@ -104,7 +104,7 @@ local function CreateBuffFrame(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentAurasMythicPlus', unitframe);
-    frame:SetPoint('RIGHT', unitframe.healthBar, 'RIGHT', 0, 0);
+    frame:SetPoint('RIGHT', unitframe.HealthBarsContainer.healthBar, 'RIGHT', 0, 0);
     frame:SetHeight(14);
 
     frame.buffList = {};

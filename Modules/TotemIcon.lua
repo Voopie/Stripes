@@ -30,7 +30,7 @@ local function Create(unitframe)
     end
 
     local frame = CreateFrame('Frame', '$parentTotemIcon', unitframe);
-    frame:SetAllPoints(unitframe.healthBar);
+    frame:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
     frame:SetFrameStrata('HIGH');
 
     local icon = frame:CreateTexture(nil, 'OVERLAY');
