@@ -1,4 +1,5 @@
 local S, L, O, U, D, E = unpack((select(2, ...)));
+local Stripes = S:GetNameplateModule('Handler');
 local Module = S:NewNameplateModule('HealthBar');
 local Colors = S:GetModule('Options_Colors');
 
@@ -640,6 +641,11 @@ end
 
 local function UpdateBorder(unitframe)
     local border = unitframe.HealthBarsContainer.border;
+
+    if Stripes.NameOnly:IsActive(unitframe) then
+        border:Hide();
+        return;
+    end
 
     if DB.BORDER_HIDE then
         if unitframe.data.isPersonal then

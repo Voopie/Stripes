@@ -611,14 +611,20 @@ local function UpdateHealthBarVisibility(unitframe)
         PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.name, 'TOP', 0, 8);
 
         unitframe.HealthBarsContainer.healthBar:Hide();
+        unitframe.HealthBarsContainer.background:Hide();
+        unitframe.HealthBarsContainer.border:Hide();
         unitframe.classificationIndicator:Hide();
     else
         UpdateRaidTargetIconPosition[RAID_TARGET_ICON_POSITION](unitframe);
 
         if unitframe.data.widgetsOnly or unitframe.data.isGameObject then
             unitframe.HealthBarsContainer.healthBar:Hide();
+            unitframe.HealthBarsContainer.background:Hide();
+            unitframe.HealthBarsContainer.border:Hide();
         else
             unitframe.HealthBarsContainer.healthBar:Show();
+            unitframe.HealthBarsContainer.background:Show();
+            unitframe.HealthBarsContainer.border:Show();
         end
     end
 end
