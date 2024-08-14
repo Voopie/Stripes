@@ -712,7 +712,7 @@ AddOn:RegisterEvent('ADDON_LOADED');
 -- Modified code from WeakAuras (https://github.com/WeakAuras/WeakAuras2/blob/main/WeakAurasOptions/Cache.lua)
 -- It will only be rebuilt if the client build number and locale changes
 local string_find, string_lower = string.find, string.lower;
-local GetSpellInfo = GetSpellInfo;
+local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo;
 local SpellCache, SpellCacheMetaData, SpellCacheCoroutine;
 
 local SpellCacheUpdater = CreateFrame('Frame');
@@ -776,7 +776,8 @@ function SpellCacheUpdater.Build()
         while misses < 80000 do
             id = id + 1;
 
-            local name, _, icon = GetSpellInfo(id);
+            local spellInfo = C_Spell_GetSpellInfo(id);
+            local name, icon = spellInfo and spellInfo.name, spellInfo and spellInfo.iconID;
             local nameLower = name and string_lower(name);
 
             -- 136243 is the a gear icon, we can ignore those spells

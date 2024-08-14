@@ -17,7 +17,7 @@ local GetQuestDifficultyColor = GetQuestDifficultyColor;
 local IsInGuild, GetGuildInfo = IsInGuild, GetGuildInfo;
 local IsActiveBattlefieldArena, GetZonePVPInfo,       IsInInstance, UnitInBattleground, C_Map_GetBestMapForUnit =
       IsActiveBattlefieldArena, C_PvP.GetZonePVPInfo, IsInInstance, UnitInBattleground, C_Map.GetBestMapForUnit
-local GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell = GetSpellInfo, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell;
+local C_Spell_GetSpellInfo, C_Spell_GetSpellName, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell = C_Spell.GetSpellInfo, C_Spell.GetSpellName, IsSpellKnown, IsSpellKnownOrOverridesKnown, IsPlayerSpell;
 local CreateColor = CreateColor;
 
 -- WoW C API
@@ -452,7 +452,11 @@ end
 ]]
 
 U.GetTrulySpellId = function(spellId)
-    return select(7, GetSpellInfo(GetSpellInfo(spellId))); -- here we extract the spell name and then get needed spellId by spell name
+    -- here we extract the spell name and then get needed spellId by spell name
+    local spellName = C_Spell_GetSpellName(spellId);
+    local spellInfo = spellName and C_Spell_GetSpellInfo(spellName);
+
+    return spellInfo.spellID;
 end
 
 U.GetInterruptSpellId = function()

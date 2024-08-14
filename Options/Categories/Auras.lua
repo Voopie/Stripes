@@ -363,13 +363,13 @@ panel.UpdateCustomScroll = function()
 
     table.sort(sortedCustomData, function(a, b)
         if type(a) == 'string' and type(b) == 'number' then
-            return a < (GetSpellInfo(b));
+            return a < C_Spell.GetSpellName(b);
         elseif type(a) == 'number' and type(b) == 'string' then
-            return (GetSpellInfo(a)) < b;
+            return C_Spell.GetSpellName(a) < b;
         elseif type(a) == 'string' and type(b) == 'string' then
             return a < b;
         else
-            return (GetSpellInfo(a)) < (GetSpellInfo(b));
+            return C_Spell.GetSpellName(a) < C_Spell.GetSpellName(b);
         end
     end);
 
@@ -385,10 +385,11 @@ panel.UpdateCustomScroll = function()
             icon = GetIconFromSpellCache(name);
 
             if not icon then
-                _, _, icon = GetSpellInfo(name);
+                icon = C_Spell.GetSpellTexture(name);
             end
         else
-            name, _, icon = GetSpellInfo(id);
+            name = C_Spell.GetSpellName(id)
+            icon = C_Spell.GetSpellTexture(id);
         end
 
         data = O.db.auras_custom_data[id];
@@ -544,13 +545,13 @@ panel.UpdateBlackListScroll = function()
 
     table.sort(sortedBlackListData, function(a, b)
         if type(a) == 'string' and type(b) == 'number' then
-            return a < (GetSpellInfo(b));
+            return a < C_Spell.GetSpellName(b);
         elseif type(a) == 'number' and type(b) == 'string' then
-            return (GetSpellInfo(a)) < b;
+            return C_Spell.GetSpellName(a) < b;
         elseif type(a) == 'string' and type(b) == 'string' then
             return a < b;
         else
-            return (GetSpellInfo(a)) < (GetSpellInfo(b));
+            return C_Spell.GetSpellName(a) < C_Spell.GetSpellName(b);
         end
     end);
 
@@ -566,10 +567,11 @@ panel.UpdateBlackListScroll = function()
             icon = GetIconFromSpellCache(name);
 
             if not icon then
-                _, _, icon = GetSpellInfo(name);
+                icon = C_Spell.GetSpellTexture(name);
             end
         else
-            name, _, icon = GetSpellInfo(id);
+            name = C_Spell.GetSpellName(id);
+            icon = C_Spell.GetSpellTexture(id);
         end
 
         data = O.db.auras_blacklist[id];
@@ -722,13 +724,13 @@ panel.UpdateWhiteListScroll = function()
 
     table.sort(sortedWhiteListData, function(a, b)
         if type(a) == 'string' and type(b) == 'number' then
-            return a < (GetSpellInfo(b));
+            return a < C_Spell.GetSpellName(b);
         elseif type(a) == 'number' and type(b) == 'string' then
-            return (GetSpellInfo(a)) < b;
+            return C_Spell.GetSpellName(a) < b;
         elseif type(a) == 'string' and type(b) == 'string' then
             return a < b;
         else
-            return (GetSpellInfo(a)) < (GetSpellInfo(b));
+            return C_Spell.GetSpellName(a) < C_Spell.GetSpellName(b);
         end
     end);
 
@@ -744,10 +746,11 @@ panel.UpdateWhiteListScroll = function()
             icon = GetIconFromSpellCache(name);
 
             if not icon then
-                _, _, icon = GetSpellInfo(name);
+                icon = C_Spell.GetSpellTexture(name);
             end
         else
-            name, _, icon = GetSpellInfo(id);
+            name = C_Spell.GetSpellName(id);
+            icon = C_Spell.GetSpellTexture(id);
         end
 
         data = O.db.auras_whitelist[id];
@@ -918,13 +921,13 @@ panel.UpdateHPBarColorScroll = function()
 
     table.sort(sortedHBBarColorData, function(a, b)
         if type(a) == 'string' and type(b) == 'number' then
-            return a < (GetSpellInfo(b));
+            return a < C_Spell.GetSpellName(b);
         elseif type(a) == 'number' and type(b) == 'string' then
-            return (GetSpellInfo(a)) < b;
+            return C_Spell.GetSpellName(a) < b;
         elseif type(a) == 'string' and type(b) == 'string' then
             return a < b;
         else
-            return (GetSpellInfo(a)) < (GetSpellInfo(b));
+            return C_Spell.GetSpellName(a) < C_Spell.GetSpellName(b);
         end
     end);
 
@@ -940,10 +943,11 @@ panel.UpdateHPBarColorScroll = function()
             icon = GetIconFromSpellCache(name);
 
             if not icon then
-                _, _, icon = GetSpellInfo(name);
+                icon = C_Spell.GetSpellTexture(name);
             end
         else
-            name, _, icon = GetSpellInfo(id);
+            name = C_Spell.GetSpellName(id);
+            icon = C_Spell.GetSpellTexture(id);
         end
 
         data = O.db.auras_hpbar_color_data[id];
@@ -1105,7 +1109,7 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
+        if id and id ~= 0 and C_Spell.GetSpellName(id) then
             saveId = id;
         else
             byNameIcon = GetIconFromSpellCache(text);
@@ -1190,7 +1194,7 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
+        if id and id ~= 0 and C_Spell.GetSpellName(id) then
             saveId = id;
         else
             byNameIcon = GetIconFromSpellCache(text);
@@ -1359,7 +1363,7 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
+        if id and id ~= 0 and C_Spell.GetSpellName(id) then
             saveId = id;
         else
             byNameIcon = GetIconFromSpellCache(text);
@@ -3534,7 +3538,7 @@ panel.Load = function(self)
         local byName = false;
         local byNameIcon;
 
-        if id and id ~= 0 and GetSpellInfo(id) then
+        if id and id ~= 0 and C_Spell.GetSpellName(id) then
             saveId = id;
         else
             byNameIcon = GetIconFromSpellCache(text);

@@ -3,9 +3,6 @@ local Module = S:NewModule('Options_Categories_CastBar');
 local Profile = S:GetModule('Options_Categories_Profiles');
 local Colors = S:GetModule('Options_Colors');
 
--- WoW API
-local GetSpellInfo = GetSpellInfo;
-
 local LSM = S.Libraries.LSM;
 
 O.frame.Left.CastBar, O.frame.Right.CastBar = O.CreateCategory(string.upper(L['OPTIONS_CATEGORY_CASTBAR']), 'castbar', 5);
@@ -526,7 +523,7 @@ panel.UpdateCustomCastsScroll = function()
     end
 
     table.sort(sortedData, function(a, b)
-        return (GetSpellInfo(a)) < (GetSpellInfo(b));
+        return C_Spell.GetSpellName(a) < C_Spell.GetSpellName(b);
     end);
 
     panel.CastBarCustomCastsFramePool:ReleaseAll();
@@ -537,7 +534,9 @@ panel.UpdateCustomCastsScroll = function()
     local found;
 
     for _, id in ipairs(sortedData) do
-        name, _, icon = GetSpellInfo(id);
+        name = C_Spell.GetSpellName(id);
+        icon = C_Spell.GetSpellTexture(id);
+
         data = O.db.castbar_custom_casts_data[id];
 
         if panel.searchWordLower then
@@ -1599,10 +1598,11 @@ panel.Load = function(self)
         local saveId;
         local id = tonumber(text);
 
-        if id and id ~= 0 and GetSpellInfo(id) then
+        if id and id ~= 0 and C_Spell.GetSpellName(id) then
             saveId = id;
         else
-            saveId = tonumber(select(7, GetSpellInfo(text)) or '');
+            local spellInfo = C_Spell.GetSpellInfo(text);
+            saveId = spellInfo and spellInfo.spellID or '';
         end
 
         if not saveId then
