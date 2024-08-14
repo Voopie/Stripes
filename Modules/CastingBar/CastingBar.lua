@@ -5,7 +5,7 @@ local Stripes = S:GetNameplateModule('Handler');
 
 -- WoW API
 local UnitName, UnitExists, UnitIsUnit = UnitName, UnitExists, UnitIsUnit;
-local GetSpellCooldown, UnitCanAttack = GetSpellCooldown, UnitCanAttack;
+local C_Spell_GetSpellCooldown, UnitCanAttack = C_Spell.GetSpellCooldown, UnitCanAttack;
 local UnitCastingInfo, UnitChannelInfo = UnitCastingInfo, UnitChannelInfo;
 local GetTime = GetTime;
 
@@ -35,7 +35,8 @@ local function GetInterruptReadyTickPosition(self)
         return 0, false, false;
     end
 
-    local cooldownStart, cooldownDuration = GetSpellCooldown(self.interruptSpellId);
+    local spellCooldownInfo = C_Spell_GetSpellCooldown(self.interruptSpellId);
+    local cooldownStart, cooldownDuration = spellCooldownInfo.startTime, spellCooldownInfo.duration;
     local interruptCD = cooldownStart > 0 and cooldownDuration - (GetTime() - cooldownStart) or 0;
     local interruptReady = cooldownStart == 0;
     local interruptWillBeReady = interruptCD < (self.channeling and self.value or (self.maxValue - self.value));
