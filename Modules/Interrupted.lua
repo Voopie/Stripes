@@ -6,8 +6,8 @@ local Stripes = S:GetNameplateModule('Handler');
 local string_format, bit_band = string.format, bit.band;
 
 -- WoW API
-local UnitName, UnitExists, GetPlayerInfoByGUID, GetSpellTexture, CombatLogGetCurrentEventInfo =
-      UnitName, UnitExists, GetPlayerInfoByGUID, GetSpellTexture, CombatLogGetCurrentEventInfo;
+local UnitName, UnitExists, GetPlayerInfoByGUID, CombatLogGetCurrentEventInfo =
+      UnitName, UnitExists, GetPlayerInfoByGUID, CombatLogGetCurrentEventInfo;
 
 -- Stripes API
 local S_GetCachedName, S_UpdateFontObject = Stripes.GetCachedName, Stripes.UpdateFontObject;
@@ -197,7 +197,7 @@ local function OnInterruptIcon(unitframe, spellId, casterNameText, casterNameUni
 
     local spellInterruptedFrame = unitframe.SpellInterrupted;
 
-    spellInterruptedFrame.icon:SetTexture(GetSpellTexture(SI_SHOW_INTERRUPTED_ICON and extraSpellId or spellId));
+    spellInterruptedFrame.icon:SetTexture((C_Spell.GetSpellTexture(SI_SHOW_INTERRUPTED_ICON and extraSpellId or spellId)));
 
     CooldownFrame_Set(spellInterruptedFrame.cooldown, GetTime(), duration, duration > 0, true);
 
