@@ -93,6 +93,11 @@ local mobsIDs = {
     -- Dragonflight
     [188067] = true, -- Ruby Life Pools: Flashfrost Chillweaver
     [197985] = true, -- Ruby Life Pools: Flame Channeler
+
+    -- The War Within
+    [206697] = true, -- Priory of the Sacred Flame: Devout Priest
+    [213338] = true, -- The Stonevault: Forgebound Mender
+    [224962] = true, -- The Stonevault: Cursedforge Mender
 };
 
 local function Create(unitframe)
