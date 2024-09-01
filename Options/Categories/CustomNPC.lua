@@ -25,7 +25,6 @@ local DEFAULT_HB_COLOR_NAME   = 'Fuchsia';
 panel.categoryName = CATEGORY_ALL_NAME;
 
 local HolderModelFrame = CreateFrame('Frame', nil, UIParent, 'BackdropTemplate');
-HolderModelFrame:SetClipsChildren(true);
 HolderModelFrame:SetFrameStrata('TOOLTIP');
 HolderModelFrame:SetFrameLevel(1000);
 HolderModelFrame:SetBackdrop({
@@ -960,6 +959,7 @@ panel.Load = function(self)
         Colors:HideListFrame();
         panel.CategoryList:Hide();
     end);
+    AddFromList:Hide();
 
     self.SearchEditBox = E.CreateEditBox(self);
     self.SearchEditBox:SetPosition('TOPLEFT', EditBox, 'BOTTOMLEFT', 0, -11);
@@ -1230,19 +1230,19 @@ panel.OnShowOnce = function(self)
     self:UpdateMainContentList();
     self:UpdateCategoryList();
 
-    for i = 1, #O.Lists.npcs_groups do
-        self.UpdateChooseNPCList(i);
-    end
+    -- for i = 1, #O.Lists.npcs_groups do
+    --     self.UpdateChooseNPCList(i);
+    -- end
 
-    C_Timer.After(0.1, function()
-        for i = 1, #O.Lists.npcs_groups do
-            self.UpdateChooseNPCList(i);
-        end
-    end);
+    -- C_Timer.After(0.1, function()
+    --     for i = 1, #O.Lists.npcs_groups do
+    --         self.UpdateChooseNPCList(i);
+    --     end
+    -- end);
 
-    C_Timer.After(0.15, function()
-        self.UpdateChooseNPCList(DEFAULT_LIST_VALUE);
-    end);
+    -- C_Timer.After(0.15, function()
+    --     self.UpdateChooseNPCList(DEFAULT_LIST_VALUE);
+    -- end);
 end
 
 panel.OnHide = function()
