@@ -517,6 +517,7 @@ L['OPTIONS_TARGET_INDICATOR_TEXTURE_TOOLTIP'] = 'Target indicator texture|n|nIf 
 L['OPTIONS_TARGET_INDICATOR_SIZE_TOOLTIP'] = 'Size of the target indicator texture';
 L['OPTIONS_TARGET_INDICATOR_X_OFFSET_TOOLTIP'] = 'Horizontal offset of the target indicator texture';
 L['OPTIONS_TARGET_INDICATOR_Y_OFFSET_TOOLTIP'] = 'Vertical offset of the target indicator texture';
+L['OPTIONS_TARGET_INDICATOR_FRAME_STRATA_TOOLTIP'] = 'Strata for target indicator';
 L['OPTIONS_TARGET_GLOW_ENABLED'] = 'Target glow';
 L['OPTIONS_TARGET_GLOW_ENABLED_TOOLTIP'] = 'Show glow of the current target nameplate';
 L['OPTIONS_TARGET_GLOW_COLOR_TOOLTIP'] = 'Target glow color';

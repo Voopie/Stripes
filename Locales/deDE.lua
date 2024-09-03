@@ -517,6 +517,7 @@ L['OPTIONS_TARGET_INDICATOR_TEXTURE_TOOLTIP'] = 'Zielindikator-Textur|n|nWenn di
 L['OPTIONS_TARGET_INDICATOR_SIZE_TOOLTIP'] = 'Größe der Zielanzeigertextur';
 L['OPTIONS_TARGET_INDICATOR_X_OFFSET_TOOLTIP'] = 'Horizontaler Versatz der Zielanzeigertextur';
 L['OPTIONS_TARGET_INDICATOR_Y_OFFSET_TOOLTIP'] = 'Vertikaler Versatz der Zielanzeigertextur';
+L['OPTIONS_TARGET_INDICATOR_FRAME_STRATA_TOOLTIP'] = 'Strata für Zielindikator';
 L['OPTIONS_TARGET_GLOW_ENABLED'] = 'Ziel-Glühen';
 L['OPTIONS_TARGET_GLOW_ENABLED_TOOLTIP'] = 'Glühen des aktuellen Zielanzeigers anzeigen';
 L['OPTIONS_TARGET_GLOW_COLOR_TOOLTIP'] = 'Ziel-Leuchtfarbe';

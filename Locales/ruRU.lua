@@ -517,6 +517,7 @@ L['OPTIONS_TARGET_INDICATOR_TEXTURE_TOOLTIP'] = 'Значок индикатор
 L['OPTIONS_TARGET_INDICATOR_SIZE_TOOLTIP'] = 'Размер значка индикатора цели';
 L['OPTIONS_TARGET_INDICATOR_X_OFFSET_TOOLTIP'] = 'Смещение значка индикатора цели по горизонтали';
 L['OPTIONS_TARGET_INDICATOR_Y_OFFSET_TOOLTIP'] = 'Смещение значка индикатора цели по вертикали';
+L['OPTIONS_TARGET_INDICATOR_FRAME_STRATA_TOOLTIP'] = 'Слой индикатора цели';
 L['OPTIONS_TARGET_GLOW_ENABLED'] = 'Свечение цели';
 L['OPTIONS_TARGET_GLOW_ENABLED_TOOLTIP'] = 'Показывать свечение текущей цели';
 L['OPTIONS_TARGET_GLOW_COLOR_TOOLTIP'] = 'Цвет свечения';

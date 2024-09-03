@@ -7,7 +7,7 @@ local UnitIsUnit, UnitExists = UnitIsUnit, UnitExists;
 -- Local Config
 local TARGET_INDICATOR_ENABLED, TARGET_GLOW_ENABLED;
 local TEXTURE, TARGET_INDICATOR_COLOR, TARGET_GLOW_COLOR;
-local SIZE, X_OFFSET, Y_OFFSET;
+local FRAME_STRATA, SIZE, X_OFFSET, Y_OFFSET;
 local GLOW_SIZE;
 
 local GLOW_TEXTURE = S.Media.Path .. 'Textures\\glow';
@@ -92,7 +92,7 @@ local function CreateTargetIndicator(unitframe)
     end
 
     local indicator = CreateFrame('Frame', nil, unitframe.HealthBarsContainer.healthBar);
-    indicator:SetFrameStrata('LOW');
+    indicator:SetFrameStrata(FRAME_STRATA == 1 and indicator:GetParent():GetFrameStrata() or FRAME_STRATA);
     indicator:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
 
     indicator.left = indicator:CreateTexture(nil, 'BORDER');
@@ -127,6 +127,8 @@ end
 
 local function UpdateStyle(unitframe)
     local targetIndicator = unitframe.TargetIndicator;
+
+    targetIndicator:SetFrameStrata(FRAME_STRATA == 1 and targetIndicator:GetParent():GetFrameStrata() or FRAME_STRATA);
 
     PixelUtil.SetSize(targetIndicator.left, SIZE, SIZE);
     PixelUtil.SetSize(targetIndicator.right, SIZE, SIZE);
@@ -182,10 +184,11 @@ function Module:UpdateLocalConfig()
     TARGET_INDICATOR_ENABLED = O.db.target_indicator_enabled;
     TARGET_GLOW_ENABLED      = O.db.target_glow_enabled;
 
-    SIZE     = O.db.target_indicator_size;
-    X_OFFSET = O.db.target_indicator_x_offset;
-    Y_OFFSET = O.db.target_indicator_y_offset;
-    TEXTURE  = O.Lists.target_indicator_texture_path[O.db.target_indicator_texture] or O.Lists.target_indicator_texture_path[1];
+    FRAME_STRATA = O.db.target_indicator_frame_strata ~= 1 and O.Lists.frame_strata[O.db.target_indicator_frame_strata] or 1;
+    SIZE         = O.db.target_indicator_size;
+    X_OFFSET     = O.db.target_indicator_x_offset;
+    Y_OFFSET     = O.db.target_indicator_y_offset;
+    TEXTURE      = O.Lists.target_indicator_texture_path[O.db.target_indicator_texture] or O.Lists.target_indicator_texture_path[1];
 
     GLOW_SIZE = O.db.target_glow_size;
 

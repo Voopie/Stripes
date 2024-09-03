@@ -307,7 +307,7 @@ O.GetNpcNamesValue = function()
     return 5;
 end
 
--- ~611
+-- ~612
 O.DefaultValues = {
     -- Common
     name_text_enabled                = true,
@@ -490,6 +490,7 @@ O.DefaultValues = {
     target_indicator_x_offset = 0,
     target_indicator_y_offset = 0,
     target_indicator_size     = 16,
+    target_indicator_frame_strata = 3,
     target_glow_enabled       = true,
     target_glow_color         = { 1, 1, 1, 1 },
     target_glow_color_as_class = false,

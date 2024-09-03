@@ -922,7 +922,7 @@ panel.Load = function(self)
 
     self.target_indicator_x_offset = E.CreateSlider(self.TabsFrames['TargetIndicatorTab'].Content);
     self.target_indicator_x_offset:SetPosition('LEFT', self.target_indicator_size, 'RIGHT', 12, 0);
-    self.target_indicator_x_offset:SetValues(O.db.target_indicator_x_offset, -50, 50, 1);
+    self.target_indicator_x_offset:SetValues(O.db.target_indicator_x_offset, -150, 150, 1);
     self.target_indicator_x_offset:SetTooltip(L['OPTIONS_TARGET_INDICATOR_X_OFFSET_TOOLTIP']);
     self.target_indicator_x_offset:AddToSearch(button, L['OPTIONS_TARGET_INDICATOR_X_OFFSET_TOOLTIP'], self.Tabs[3]);
     self.target_indicator_x_offset.OnValueChangedCallback = function(_, value)
@@ -932,7 +932,7 @@ panel.Load = function(self)
 
     self.target_indicator_y_offset = E.CreateSlider(self.TabsFrames['TargetIndicatorTab'].Content);
     self.target_indicator_y_offset:SetPosition('LEFT', self.target_indicator_x_offset, 'RIGHT', 12, 0);
-    self.target_indicator_y_offset:SetValues(O.db.target_indicator_y_offset, -50, 50, 1);
+    self.target_indicator_y_offset:SetValues(O.db.target_indicator_y_offset, -150, 150, 1);
     self.target_indicator_y_offset:SetTooltip(L['OPTIONS_TARGET_INDICATOR_Y_OFFSET_TOOLTIP']);
     self.target_indicator_y_offset:AddToSearch(button, L['OPTIONS_TARGET_INDICATOR_Y_OFFSET_TOOLTIP'], self.Tabs[3]);
     self.target_indicator_y_offset.OnValueChangedCallback = function(_, value)
@@ -940,8 +940,21 @@ panel.Load = function(self)
         Stripes:UpdateAll();
     end
 
+    self.target_indicator_frame_strata = E.CreateDropdown('plain', self.TabsFrames['TargetIndicatorTab'].Content);
+    self.target_indicator_frame_strata:SetPosition('TOPLEFT', self.target_indicator_size, 'BOTTOMLEFT', 0, -12);
+    self.target_indicator_frame_strata:SetSize(160, 20);
+    self.target_indicator_frame_strata:SetList(O.Lists.frame_strata);
+    self.target_indicator_frame_strata:SetValue(O.db.target_indicator_frame_strata);
+    self.target_indicator_frame_strata:SetLabel(L['FRAME_STRATA']);
+    self.target_indicator_frame_strata:SetTooltip(L['OPTIONS_TARGET_INDICATOR_FRAME_STRATA_TOOLTIP']);
+    self.target_indicator_frame_strata:AddToSearch(button, L['OPTIONS_TARGET_INDICATOR_FRAME_STRATA_TOOLTIP'], self.Tabs[3]);
+    self.target_indicator_frame_strata.OnValueChangedCallback = function(_, value)
+        O.db.target_indicator_frame_strata = tonumber(value);
+        Stripes:UpdateAll();
+    end
+
     self.target_glow_enabled = E.CreateCheckButton(self.TabsFrames['TargetIndicatorTab'].Content);
-    self.target_glow_enabled:SetPosition('TOPLEFT', self.target_indicator_size, 'BOTTOMLEFT', 0, -12);
+    self.target_glow_enabled:SetPosition('TOPLEFT', self.target_indicator_frame_strata, 'BOTTOMLEFT', 0, -12);
     self.target_glow_enabled:SetLabel(L['OPTIONS_TARGET_GLOW_ENABLED']);
     self.target_glow_enabled:SetTooltip(L['OPTIONS_TARGET_GLOW_ENABLED_TOOLTIP']);
     self.target_glow_enabled:AddToSearch(button, nil, self.Tabs[3]);
