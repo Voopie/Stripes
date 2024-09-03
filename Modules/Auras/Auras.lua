@@ -569,12 +569,14 @@ local function UpdateBuffs(self, unit, unitAuraUpdateInfo, filter, showAll)
 end
 
 local function Update(unitframe, unitAuraUpdateInfo)
-    unitframe.BuffFrame.spacing        = SPACING_X;
-    unitframe.BuffFrame.isActive       = BUFFFRAME_IS_ACTIVE;
-    unitframe.BuffFrame.UpdateAnchor   = UpdateAnchor;
-    unitframe.BuffFrame.ShouldShowBuff = FilterShouldShowBuff;
-    unitframe.BuffFrame.ParseAllAuras  = ParseAllAuras;
-    unitframe.BuffFrame.UpdateBuffs    = UpdateBuffs;
+    local buffFrame = unitframe.BuffFrame;
+
+    buffFrame.spacing        = SPACING_X;
+    buffFrame.isActive       = BUFFFRAME_IS_ACTIVE;
+    buffFrame.UpdateAnchor   = UpdateAnchor;
+    buffFrame.ShouldShowBuff = FilterShouldShowBuff;
+    buffFrame.ParseAllAuras  = ParseAllAuras;
+    buffFrame.UpdateBuffs    = UpdateBuffs;
 
     OnUnitAuraUpdate(unitframe, unitAuraUpdateInfo);
 end

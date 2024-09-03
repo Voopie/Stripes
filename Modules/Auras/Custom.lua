@@ -78,7 +78,7 @@ local function CreateBuffFrame(unitframe)
     end
 
     frame.ShouldShowBuff = function(self, aura)
-        if not aura or not aura.name then
+        if not (aura and aura.name) then
             return false;
         end
 

@@ -125,7 +125,7 @@ local function CreateBuffFrame(unitframe)
     end
 
     frame.ShouldShowBuff = function(self, aura)
-        if not aura or not aura.spellId then
+        if not (aura and aura.spellId) then
             return false;
         end
 

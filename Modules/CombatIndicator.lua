@@ -16,9 +16,9 @@ local function OnUpdate(self, elapsed)
         return;
     end
 
-    local unitframe  = self:GetParent():GetParent():GetParent();
-    local unit       = unitframe.data and unitframe.data.unit;
-    local isEnemy    = unitframe.data and unitframe.data.commonReaction == 'ENEMY';
+    local data       = self:GetParent():GetParent():GetParent().data;
+    local unit       = data and data.unit;
+    local isEnemy    = data and data.commonReaction == 'ENEMY';
     local shouldShow = isEnemy and unit and (UnitAffectingCombat(unit) or (UnitExists(unit .. 'pet') and UnitAffectingCombat(unit .. 'pet')));
 
     self.icon:SetShown(shouldShow);
