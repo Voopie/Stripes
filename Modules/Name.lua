@@ -507,51 +507,56 @@ local function UpdateAnchor(unitframe)
     PixelUtil.SetHeight(unitframe.name, unitframe.name:GetLineHeight() + 1);
 end
 
-local function SetDefaultNameColor(frame)
-    if not frame.data.unit then
+local function SetDefaultNameColor(unitframe)
+    local unit = unitframe.data.unit;
+
+    if not unit then
         return;
     end
 
-    if frame.UpdateNameOverride and frame:UpdateNameOverride() then
+    if unitframe.UpdateNameOverride and unitframe:UpdateNameOverride() then
         return;
     end
 
-    if U_UnitIsTapped(frame.data.unit) then
-        frame.name:SetVertexColor(0.5, 0.5, 0.5);
-    elseif frame.optionTable.colorNameBySelection then
-        frame.name:SetVertexColor(UnitSelectionColor(frame.data.unit, frame.optionTable.colorNameWithExtendedColors));
+    if U_UnitIsTapped(unit) then
+        unitframe.name:SetVertexColor(0.5, 0.5, 0.5);
+    elseif unitframe.optionTable.colorNameBySelection then
+        unitframe.name:SetVertexColor(UnitSelectionColor(unit, unitframe.optionTable.colorNameWithExtendedColors));
     end
 end
 
 local function UpdateColor(unitframe)
-    if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsNameClassColoring() and unitframe.data.unitType == 'FRIENDLY_PLAYER' then
-        unitframe.name:SetVertexColor(unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB);
+    local data = unitframe.data;
+    local name = unitframe.name;
+
+    if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsNameClassColoring() and data.unitType == 'FRIENDLY_PLAYER' then
+        name:SetVertexColor(data.colorR, data.colorG, data.colorB);
         return;
     end
 
-    local commonUnitType = unitframe.data.commonUnitType;
+    local commonUnitType = data.commonUnitType;
 
     if commonUnitType == 'NPC' then
-        if unitframe.data.threatNameColored and unitframe.data.threatColorR then
-            unitframe.name:SetVertexColor(unitframe.data.threatColorR, unitframe.data.threatColorG, unitframe.data.threatColorB);
+        if data.threatNameColored and data.threatColorR then
+            unitframe.name:SetVertexColor(data.threatColorR, data.threatColorG, data.threatColorB);
         else
             if COLORING_MODE_NPC == 1 then -- NONE
-                unitframe.name:SetVertexColor(1, 1, 1);
+                name:SetVertexColor(1, 1, 1);
             else
                 SetDefaultNameColor(unitframe);
             end
         end
     elseif commonUnitType == 'PET' then
         if COLORING_MODE_NPC == 1 then -- NONE
-            unitframe.name:SetVertexColor(1, 1, 1);
+            name:SetVertexColor(1, 1, 1);
         else
             SetDefaultNameColor(unitframe);
         end
     elseif commonUnitType == 'PLAYER' then
         if COLORING_MODE == 1 then -- NONE
-            unitframe.name:SetVertexColor(1, 1, 1);
+            name:SetVertexColor(1, 1, 1);
         elseif COLORING_MODE == 2 then -- CLASS COLOR
-            unitframe.name:SetVertexColor(unitframe.data.colorR, unitframe.data.colorG, unitframe.data.colorB);
+            name:SetVertexColor(data.colorR, data.colorG, data.colorB);
         else -- FACTION COLOR
             SetDefaultNameColor(unitframe);
         end
@@ -589,15 +594,17 @@ local UpdateRaidTargetIconPosition = {
 };
 
 local function UpdateRaidTargetIcon(unitframe)
-    unitframe.RaidTargetFrame:SetScale(RAID_TARGET_ICON_SCALE);
+    local raidTargetFrame = unitframe.RaidTargetFrame;
+
+    raidTargetFrame:SetScale(RAID_TARGET_ICON_SCALE);
 
     if RAID_TARGET_ICON_FRAME_STRATA == 1 then
-        unitframe.RaidTargetFrame:SetFrameStrata(unitframe.RaidTargetFrame:GetParent():GetFrameStrata());
+        raidTargetFrame:SetFrameStrata(raidTargetFrame:GetParent():GetFrameStrata());
     else
-        unitframe.RaidTargetFrame:SetFrameStrata(RAID_TARGET_ICON_FRAME_STRATA);
+        raidTargetFrame:SetFrameStrata(RAID_TARGET_ICON_FRAME_STRATA);
     end
 
-    unitframe.RaidTargetFrame:SetShown(RAID_TARGET_ICON_SHOW);
+    raidTargetFrame:SetShown(RAID_TARGET_ICON_SHOW);
 end
 
 local function UpdateHealthBarVisibility(unitframe)
@@ -607,24 +614,32 @@ local function UpdateHealthBarVisibility(unitframe)
 
     unitframe.RaidTargetFrame:ClearAllPoints();
 
+    local healthBarsContainer = unitframe.HealthBarsContainer;
+
     if Stripes.NameOnly:IsActive(unitframe) then
         PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.name, 'TOP', 0, 8);
 
-        unitframe.HealthBarsContainer.healthBar:Hide();
-        unitframe.HealthBarsContainer.background:Hide();
-        unitframe.HealthBarsContainer.border:Hide();
+        healthBarsContainer.healthBar:Hide();
+        healthBarsContainer.background:Hide();
+        healthBarsContainer.border:Hide();
+
         unitframe.classificationIndicator:Hide();
     else
         UpdateRaidTargetIconPosition[RAID_TARGET_ICON_POSITION](unitframe);
 
         if unitframe.data.widgetsOnly or unitframe.data.isGameObject then
-            unitframe.HealthBarsContainer.healthBar:Hide();
-            unitframe.HealthBarsContainer.background:Hide();
-            unitframe.HealthBarsContainer.border:Hide();
+            healthBarsContainer.healthBar:Hide();
+            healthBarsContainer.background:Hide();
+            healthBarsContainer.border:Hide();
         else
-            unitframe.HealthBarsContainer.healthBar:Show();
-            unitframe.HealthBarsContainer.background:Show();
-            unitframe.HealthBarsContainer.border:Show();
+            healthBarsContainer.healthBar:Show();
+            healthBarsContainer.background:Show();
+
+            if unitframe.data.isPersonal then
+                healthBarsContainer.border:Show();
+            else
+                healthBarsContainer.border:SetShown(not O.db.health_bar_border_hide);
+            end
         end
     end
 end
