@@ -719,6 +719,136 @@ local function UpdateBorderSizes(unitframe)
     end
 end
 
+local function UpdateClassificationIndicator(unitframe)
+    local classificationIndicator = unitframe.classificationIndicator;
+
+    if not classificationIndicator then
+        return;
+    end
+
+    if unitframe.data.isSoftInteract and not unitframe.data.isSoftEnemy then
+        classificationIndicator:Hide();
+        return;
+    end
+
+    if unitframe.optionTable.showPvPClassificationIndicator and unitframe.unit and CompactUnitFrame_UpdatePvPClassificationIndicator(unitframe) then
+        classificationIndicator:SetSize(DB.CLASSIFICATION_INDICATOR_SIZE, DB.CLASSIFICATION_INDICATOR_SIZE);
+
+        if classificationIndicator.wasChanged then
+            classificationIndicator:SetTexCoord(0, 1, 0, 1);
+            classificationIndicator:SetVertexColor(1, 1, 1, 1);
+
+            classificationIndicator.wasChanged = nil;
+        end
+
+        return;
+    elseif not DB.CLASSIFICATION_INDICATOR_ENABLED or not unitframe.optionTable.showClassificationIndicator then
+        classificationIndicator:Hide();
+    else
+        if DB.CLASSIFICATION_INDICATOR_STAR and unitframe.data.classification then
+            classificationIndicator:SetTexture(S.Media.Icons2.TEXTURE);
+            classificationIndicator:SetTexCoord(unpack(S.Media.Icons2.COORDS.STAR_WHITE));
+            classificationIndicator:SetSize(DB.CLASSIFICATION_INDICATOR_SIZE, DB.CLASSIFICATION_INDICATOR_SIZE);
+
+            local classification = unitframe.data.classification;
+
+            if classification == '+' or classification == 'b' then
+                classificationIndicator:SetVertexColor(0.85, 0.65, 0.13, 1);
+            elseif classification == 'r' then
+                classificationIndicator:SetVertexColor(0.8, 0.4, 0.15, 1);
+            elseif classification == 'r+' then
+                classificationIndicator:SetVertexColor(0.6, 0.6, 0.6, 1);
+            end
+
+            classificationIndicator.wasChanged = true;
+        else
+            classificationIndicator:SetSize(DB.CLASSIFICATION_INDICATOR_SIZE, DB.CLASSIFICATION_INDICATOR_SIZE);
+
+            if classificationIndicator.wasChanged then
+                classificationIndicator:SetTexCoord(0, 1, 0, 1);
+                classificationIndicator:SetVertexColor(1, 1, 1, 1);
+
+                classificationIndicator.wasChanged = nil;
+            end
+        end
+    end
+end
+
+local function UpdateClassificationIndicatorPosition(unitframe)
+    local classificationIndicator = unitframe.classificationIndicator;
+
+    classificationIndicator:ClearAllPoints();
+    classificationIndicator:SetPoint(DB.CLASSIFICATION_INDICATOR_POINT, unitframe.HealthBarsContainer.healthBar, DB.CLASSIFICATION_INDICATOR_RELATIVE_POINT, DB.CLASSIFICATION_INDICATOR_OFFSET_X, DB.CLASSIFICATION_INDICATOR_OFFSET_Y);
+end
+
+local UpdateRaidTargetIconPosition = {
+    [1] = function(unitframe)
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'RIGHT', unitframe.HealthBarsContainer.healthBar, 'LEFT', DB.RAID_TARGET_ICON_POSITION_OFFSET_X, DB.RAID_TARGET_ICON_POSITION_OFFSET_Y);
+    end,
+
+    [2] = function(unitframe)
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'LEFT', unitframe.HealthBarsContainer.healthBar, 'RIGHT', DB.RAID_TARGET_ICON_POSITION_OFFSET_X, DB.RAID_TARGET_ICON_POSITION_OFFSET_Y);
+    end,
+
+    [3] = function(unitframe)
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'CENTER', unitframe.HealthBarsContainer.healthBar, 'CENTER', DB.RAID_TARGET_ICON_POSITION_OFFSET_X, DB.RAID_TARGET_ICON_POSITION_OFFSET_Y);
+    end,
+
+    [4] = function(unitframe)
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.HealthBarsContainer.healthBar, 'TOP', DB.RAID_TARGET_ICON_POSITION_OFFSET_X, DB.RAID_TARGET_ICON_POSITION_OFFSET_Y);
+    end,
+
+    [5] = function(unitframe)
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'TOP', unitframe.HealthBarsContainer.healthBar, 'BOTTOM', DB.RAID_TARGET_ICON_POSITION_OFFSET_X, DB.RAID_TARGET_ICON_POSITION_OFFSET_Y);
+    end,
+};
+
+local function UpdateRaidTargetIcon(unitframe)
+    local raidTargetFrame = unitframe.RaidTargetFrame;
+
+    raidTargetFrame:SetScale(DB.RAID_TARGET_ICON_SCALE);
+
+    if DB.RAID_TARGET_ICON_FRAME_STRATA == 1 then
+        raidTargetFrame:SetFrameStrata(raidTargetFrame:GetParent():GetFrameStrata());
+    else
+        raidTargetFrame:SetFrameStrata(DB.RAID_TARGET_ICON_FRAME_STRATA);
+    end
+
+    raidTargetFrame:SetShown(DB.RAID_TARGET_ICON_SHOW);
+end
+
+local function UpdateHealthBarVisibility(unitframe)
+    if unitframe.data.isPersonal then
+        return;
+    end
+
+    unitframe.RaidTargetFrame:ClearAllPoints();
+
+    local healthBarsContainer = unitframe.HealthBarsContainer;
+
+    if Stripes.NameOnly:IsActive(unitframe) then
+        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.name, 'TOP', 0, 8);
+
+        healthBarsContainer.healthBar:Hide();
+        healthBarsContainer.background:Hide();
+        healthBarsContainer.border:Hide();
+
+        unitframe.classificationIndicator:Hide();
+    else
+        UpdateRaidTargetIconPosition[DB.RAID_TARGET_ICON_POSITION](unitframe);
+
+        if unitframe.data.widgetsOnly or unitframe.data.isGameObject then
+            healthBarsContainer.healthBar:Hide();
+            healthBarsContainer.background:Hide();
+            healthBarsContainer.border:Hide();
+        else
+            healthBarsContainer.healthBar:Show();
+            healthBarsContainer.background:Show();
+            healthBarsContainer.border:SetShown(not DB.BORDER_HIDE);
+        end
+    end
+end
+
 local function UpdateSizes(unitframe)
     if unitframe.data.isPersonal then
         unitframe.HealthBarsContainer:SetHeight(DB.PLAYER_HEIGHT);
@@ -967,6 +1097,12 @@ function Module:UnitAdded(unitframe)
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
 
+    UpdateRaidTargetIcon(unitframe);
+
+    UpdateClassificationIndicatorPosition(unitframe);
+    UpdateClassificationIndicator(unitframe);
+
+    UpdateHealthBarVisibility(unitframe);
     UpdateHealthBarColor(unitframe);
 
     if unitframe.data.tpNeedUpdate then
@@ -1025,6 +1161,11 @@ function Module:Update(unitframe)
     UpdateSizes(unitframe);
     UpdateClickableArea(unitframe);
 
+    UpdateRaidTargetIcon(unitframe);
+    UpdateClassificationIndicatorPosition(unitframe);
+    UpdateClassificationIndicator(unitframe);
+
+    UpdateHealthBarVisibility(unitframe);
     UpdateHealthBarColor(unitframe);
 
     if unitframe.data.tpNeedUpdate then
@@ -1286,9 +1427,9 @@ function Module:UpdateLocalConfig()
         DB.CURRENT_TARGET_CLASS_COLOR[4] = D.Player.ClassColor.a or 1;
     end
 
-    DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED       = O.db.current_target_custom_texture_enabled;
-    DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE         = O.db.current_target_custom_texture_value;
-    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY       = O.db.current_target_custom_texture_overlay;
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED          = O.db.current_target_custom_texture_enabled;
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE            = O.db.current_target_custom_texture_value;
+    DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY          = O.db.current_target_custom_texture_overlay;
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR    = DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR or {};
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[1] = O.db.current_target_custom_texture_overlay_color[1];
     DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR[2] = O.db.current_target_custom_texture_overlay_color[2];
@@ -1336,6 +1477,21 @@ function Module:UpdateLocalConfig()
     DB.SPARK_WIDTH  = O.db.health_bar_spark_width;
     DB.SPARK_HEIGHT = O.db.health_bar_spark_height;
     DB.SPARK_HIDE_AT_MAX_HEALTH = O.db.health_bar_spark_hide_at_max;
+
+    DB.RAID_TARGET_ICON_SHOW              = O.db.raid_target_icon_show;
+    DB.RAID_TARGET_ICON_SCALE             = O.db.raid_target_icon_scale;
+    DB.RAID_TARGET_ICON_FRAME_STRATA      = O.db.raid_target_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.raid_target_icon_frame_strata] or 1;
+    DB.RAID_TARGET_ICON_POSITION          = O.db.raid_target_icon_position;
+    DB.RAID_TARGET_ICON_POSITION_OFFSET_X = O.db.raid_target_icon_position_offset_x;
+    DB.RAID_TARGET_ICON_POSITION_OFFSET_Y = O.db.raid_target_icon_position_offset_y;
+
+    DB.CLASSIFICATION_INDICATOR_ENABLED        = O.db.classification_indicator_enabled;
+    DB.CLASSIFICATION_INDICATOR_STAR           = O.db.classification_indicator_star;
+    DB.CLASSIFICATION_INDICATOR_SIZE           = O.db.classification_indicator_size;
+    DB.CLASSIFICATION_INDICATOR_POINT          = O.Lists.frame_points[O.db.classification_indicator_point] or 'RIGHT';
+    DB.CLASSIFICATION_INDICATOR_RELATIVE_POINT = O.Lists.frame_points[O.db.classification_indicator_relative_point] or 'LEFT';
+    DB.CLASSIFICATION_INDICATOR_OFFSET_X       = O.db.classification_indicator_offset_x;
+    DB.CLASSIFICATION_INDICATOR_OFFSET_Y       = O.db.classification_indicator_offset_y;
 end
 
 function Module:StartUp()
@@ -1345,7 +1501,6 @@ function Module:StartUp()
     self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED');
     self:RegisterEvent('ROLE_CHANGED_INFORM');
     self:RegisterEvent('PLAYER_ROLES_ASSIGNED'); -- Just to be sure...
-
     self:RegisterEvent('RAID_TARGET_UPDATE');
     self:RegisterEvent('PLAYER_FOCUS_CHANGED');
 
@@ -1361,15 +1516,29 @@ function Module:StartUp()
         end
     end);
 
-    self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', UpdateSizes);
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', UpdateSizes);
+    self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', function(unitframe)
+        UpdateSizes(unitframe);
+        UpdateHealthBarVisibility(unitframe);
+    end);
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateName', function(unitframe)
+        UpdateSizes(unitframe);
+        UpdateHealthBarVisibility(unitframe);
+    end);
+
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthBorder', function(unitframe)
         UpdateBorder(unitframe);
         UpdateSizes(unitframe);
     end);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateStatusText', UpdateHealthBarColor);
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', UpdateHealthBarColor);
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', function(unitframe)
+        UpdateHealthBarColor(unitframe)
+        UpdateHealthBarVisibility(unitframe);
+    end);
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateWidgetsOnlyMode', UpdateHealthBarVisibility);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateAggroFlash', function(unitframe)
         UpdateHealthBarColor(unitframe);
@@ -1378,4 +1547,6 @@ function Module:StartUp()
             UpdateThreatPercentage(unitframe);
         end
     end);
+
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateClassificationIndicator', UpdateClassificationIndicator);
 end

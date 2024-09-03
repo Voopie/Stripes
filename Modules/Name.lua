@@ -24,11 +24,8 @@ local LDC = S.Libraries.LDC;
 local POSITION, POSITION_V, OFFSET_X, OFFSET_Y, TRUNCATE, ABBR_ENABLED, ABBR_MODE, ABRR_UNIT_TYPE, SHOW_ARENA_ID, SHOW_ARENA_ID_SOLO, COLORING_MODE, COLORING_MODE_NPC;
 local NAME_WITH_TITLE_ENABLED, NAME_WITH_TITLE_UNIT_TYPE, NAME_WITHOUT_REALM;
 local NAME_TEXT_ENABLED;
-local RAID_TARGET_ICON_SHOW, RAID_TARGET_ICON_SCALE, RAID_TARGET_ICON_FRAME_STRATA, RAID_TARGET_ICON_POSITION, RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y;
 local NAME_TRANSLIT, NAME_REPLACE_DIACRITICS;
 local CUSTOM_NPC_ENABLED;
-local CLASSIFICATION_INDICATOR_ENABLED, CLASSIFICATION_INDICATOR_STAR, CLASSIFICATION_INDICATOR_SIZE;
-local CLASSIFICATION_INDICATOR_POINT, CLASSIFICATION_INDICATOR_RELATIVE_POINT, CLASSIFICATION_INDICATOR_OFFSET_X, CLASSIFICATION_INDICATOR_OFFSET_Y;
 local FIRST_MODE;
 local NAME_CUT_ENABLED, NAME_CUT_NUMBER, NAME_CUT_UNIT_TYPE;
 local NAME_HOLDER_FRAME_STRATA;
@@ -571,79 +568,6 @@ local function UpdateNameVisibility(unitframe)
     end
 end
 
-local UpdateRaidTargetIconPosition = {
-    [1] = function(unitframe)
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'RIGHT', unitframe.HealthBarsContainer.healthBar, 'LEFT', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
-    end,
-
-    [2] = function(unitframe)
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'LEFT', unitframe.HealthBarsContainer.healthBar, 'RIGHT', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
-    end,
-
-    [3] = function(unitframe)
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'CENTER', unitframe.HealthBarsContainer.healthBar, 'CENTER', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
-    end,
-
-    [4] = function(unitframe)
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.HealthBarsContainer.healthBar, 'TOP', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
-    end,
-
-    [5] = function(unitframe)
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'TOP', unitframe.HealthBarsContainer.healthBar, 'BOTTOM', RAID_TARGET_ICON_POSITION_OFFSET_X, RAID_TARGET_ICON_POSITION_OFFSET_Y);
-    end,
-};
-
-local function UpdateRaidTargetIcon(unitframe)
-    local raidTargetFrame = unitframe.RaidTargetFrame;
-
-    raidTargetFrame:SetScale(RAID_TARGET_ICON_SCALE);
-
-    if RAID_TARGET_ICON_FRAME_STRATA == 1 then
-        raidTargetFrame:SetFrameStrata(raidTargetFrame:GetParent():GetFrameStrata());
-    else
-        raidTargetFrame:SetFrameStrata(RAID_TARGET_ICON_FRAME_STRATA);
-    end
-
-    raidTargetFrame:SetShown(RAID_TARGET_ICON_SHOW);
-end
-
-local function UpdateHealthBarVisibility(unitframe)
-    if unitframe.data.isPersonal then
-        return;
-    end
-
-    unitframe.RaidTargetFrame:ClearAllPoints();
-
-    local healthBarsContainer = unitframe.HealthBarsContainer;
-
-    if Stripes.NameOnly:IsActive(unitframe) then
-        PixelUtil.SetPoint(unitframe.RaidTargetFrame, 'BOTTOM', unitframe.name, 'TOP', 0, 8);
-
-        healthBarsContainer.healthBar:Hide();
-        healthBarsContainer.background:Hide();
-        healthBarsContainer.border:Hide();
-
-        unitframe.classificationIndicator:Hide();
-    else
-        UpdateRaidTargetIconPosition[RAID_TARGET_ICON_POSITION](unitframe);
-
-        if unitframe.data.widgetsOnly or unitframe.data.isGameObject then
-            healthBarsContainer.healthBar:Hide();
-            healthBarsContainer.background:Hide();
-            healthBarsContainer.border:Hide();
-        else
-            healthBarsContainer.healthBar:Show();
-            healthBarsContainer.background:Show();
-
-            if unitframe.data.isPersonal then
-                healthBarsContainer.border:Show();
-            else
-                healthBarsContainer.border:SetShown(not O.db.health_bar_border_hide);
-            end
-        end
-    end
-end
-
 local function GetNameAndLevel(unitframe, isFriendlyPlayer, isFriendlyPlayerOrNpc)
     local name, level = '', '';
 
@@ -804,68 +728,6 @@ local function NameOnly_UpdateBackgroundVisibility(unitframe)
     texture:Show();
 end
 
-local function UpdateClassificationIndicator(unitframe)
-    local classificationIndicator = unitframe.classificationIndicator;
-
-    if not classificationIndicator then
-        return;
-    end
-
-    if unitframe.data.isSoftInteract and not unitframe.data.isSoftEnemy then
-        classificationIndicator:Hide();
-        return;
-    end
-
-    if unitframe.optionTable.showPvPClassificationIndicator and unitframe.unit and CompactUnitFrame_UpdatePvPClassificationIndicator(unitframe) then
-        classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
-
-        if classificationIndicator.wasChanged then
-            classificationIndicator:SetTexCoord(0, 1, 0, 1);
-            classificationIndicator:SetVertexColor(1, 1, 1, 1);
-
-            classificationIndicator.wasChanged = nil;
-        end
-
-        return;
-    elseif not CLASSIFICATION_INDICATOR_ENABLED or not unitframe.optionTable.showClassificationIndicator then
-        classificationIndicator:Hide();
-    else
-        if CLASSIFICATION_INDICATOR_STAR and unitframe.data.classification then
-            classificationIndicator:SetTexture(S.Media.Icons2.TEXTURE);
-            classificationIndicator:SetTexCoord(unpack(S.Media.Icons2.COORDS.STAR_WHITE));
-            classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
-
-            local classification = unitframe.data.classification;
-
-            if classification == '+' or classification == 'b' then
-                classificationIndicator:SetVertexColor(0.85, 0.65, 0.13, 1);
-            elseif classification == 'r' then
-                classificationIndicator:SetVertexColor(0.8, 0.4, 0.15, 1);
-            elseif classification == 'r+' then
-                classificationIndicator:SetVertexColor(0.6, 0.6, 0.6, 1);
-            end
-
-            classificationIndicator.wasChanged = true;
-        else
-            classificationIndicator:SetSize(CLASSIFICATION_INDICATOR_SIZE, CLASSIFICATION_INDICATOR_SIZE);
-
-            if classificationIndicator.wasChanged then
-                classificationIndicator:SetTexCoord(0, 1, 0, 1);
-                classificationIndicator:SetVertexColor(1, 1, 1, 1);
-
-                classificationIndicator.wasChanged = nil;
-            end
-        end
-    end
-end
-
-local function UpdateClassificationIndicatorPosition(unitframe)
-    local classificationIndicator = unitframe.classificationIndicator;
-
-    classificationIndicator:ClearAllPoints();
-    classificationIndicator:SetPoint(CLASSIFICATION_INDICATOR_POINT, unitframe.HealthBarsContainer.healthBar, CLASSIFICATION_INDICATOR_RELATIVE_POINT, CLASSIFICATION_INDICATOR_OFFSET_X, CLASSIFICATION_INDICATOR_OFFSET_Y);
-end
-
 local function UpdateNameHolder(unitframe)
     if not unitframe.NameHolder then
         unitframe.NameHolder = CreateFrame('Frame', '$parentNameHolder', unitframe);
@@ -882,7 +744,6 @@ function Module:UnitAdded(unitframe)
     UpdateName(unitframe);
     UpdateColor(unitframe);
     UpdateNameVisibility(unitframe);
-    UpdateHealthBarVisibility(unitframe);
 
     NameOnly_UpdateNameHealth(unitframe);
     NameOnly_CreateGuildName(unitframe);
@@ -890,11 +751,6 @@ function Module:UnitAdded(unitframe)
     NameOnly_CreateBackground(unitframe);
     NameOnly_UpdateBackground(unitframe);
     NameOnly_UpdateBackgroundVisibility(unitframe);
-
-    UpdateRaidTargetIcon(unitframe);
-
-    UpdateClassificationIndicatorPosition(unitframe);
-    UpdateClassificationIndicator(unitframe);
 
     UpdateAnchor(unitframe);
 end
@@ -916,7 +772,6 @@ function Module:Update(unitframe)
     UpdateName(unitframe);
     UpdateColor(unitframe);
     UpdateNameVisibility(unitframe);
-    UpdateHealthBarVisibility(unitframe);
 
     NameOnly_UpdateNameHealth(unitframe);
     NameOnly_CreateGuildName(unitframe);
@@ -924,11 +779,6 @@ function Module:Update(unitframe)
     NameOnly_CreateBackground(unitframe);
     NameOnly_UpdateBackground(unitframe);
     NameOnly_UpdateBackgroundVisibility(unitframe);
-
-    UpdateRaidTargetIcon(unitframe);
-
-    UpdateClassificationIndicatorPosition(unitframe);
-    UpdateClassificationIndicator(unitframe);
 
     UpdateAnchor(unitframe);
 end
@@ -959,21 +809,6 @@ function Module:UpdateLocalConfig()
     NAME_TRANSLIT = O.db.name_text_translit;
     NAME_REPLACE_DIACRITICS = O.db.name_text_replace_diacritics;
 
-    RAID_TARGET_ICON_SHOW              = O.db.raid_target_icon_show;
-    RAID_TARGET_ICON_SCALE             = O.db.raid_target_icon_scale;
-    RAID_TARGET_ICON_FRAME_STRATA      = O.db.raid_target_icon_frame_strata ~= 1 and O.Lists.frame_strata[O.db.raid_target_icon_frame_strata] or 1;
-    RAID_TARGET_ICON_POSITION          = O.db.raid_target_icon_position;
-    RAID_TARGET_ICON_POSITION_OFFSET_X = O.db.raid_target_icon_position_offset_x;
-    RAID_TARGET_ICON_POSITION_OFFSET_Y = O.db.raid_target_icon_position_offset_y;
-
-    CLASSIFICATION_INDICATOR_ENABLED = O.db.classification_indicator_enabled;
-    CLASSIFICATION_INDICATOR_STAR    = O.db.classification_indicator_star;
-    CLASSIFICATION_INDICATOR_SIZE    = O.db.classification_indicator_size;
-    CLASSIFICATION_INDICATOR_POINT          = O.Lists.frame_points[O.db.classification_indicator_point] or 'RIGHT';
-    CLASSIFICATION_INDICATOR_RELATIVE_POINT = O.Lists.frame_points[O.db.classification_indicator_relative_point] or 'LEFT';
-    CLASSIFICATION_INDICATOR_OFFSET_X       = O.db.classification_indicator_offset_x;
-    CLASSIFICATION_INDICATOR_OFFSET_Y       = O.db.classification_indicator_offset_y;
-
     FIRST_MODE = O.db.name_text_first_mode;
 
     NAME_CUT_ENABLED   = O.db.name_text_cut_enabled;
@@ -1001,7 +836,6 @@ function Module:StartUp()
         UpdateName(unitframe);
         UpdateColor(unitframe);
         UpdateNameVisibility(unitframe);
-        UpdateHealthBarVisibility(unitframe);
 
         NameOnly_UpdateNameHealth(unitframe);
         NameOnly_UpdateGuildName(unitframe);
@@ -1012,11 +846,5 @@ function Module:StartUp()
 
     self:SecureUnitFrameHook('DefaultCompactNamePlateFrameAnchorInternal', function(unitframe)
         UpdateAnchor(unitframe);
-        UpdateHealthBarVisibility(unitframe);
     end);
-
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateWidgetsOnlyMode', UpdateHealthBarVisibility);
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealthColor', UpdateHealthBarVisibility);
-
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateClassificationIndicator', UpdateClassificationIndicator);
 end
