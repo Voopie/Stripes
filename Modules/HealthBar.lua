@@ -1037,41 +1037,34 @@ local function CreateSpark(unitframe)
     unitframe.HealthBarsContainer.healthBar.Spark = spark;
 end
 
-local function UpdateSpark(unitframe)
-    if not unitframe.HealthBarsContainer.healthBar.Spark then
+local function UpdateSparkVisibility(unitframe)
+    local healthBar = unitframe.HealthBarsContainer.healthBar;
+    local spark     = healthBar and healthBar.Spark;
+
+    if not (spark and spark.shouldShow) then
         return;
     end
 
-    if DB.SPARK_SHOW and not unitframe.data.isPersonal then
-        unitframe.HealthBarsContainer.healthBar.Spark:SetSize(DB.SPARK_WIDTH, DB.SPARK_HEIGHT);
+    local _, maxValue  = healthBar:GetMinMaxValues();
+    local currentValue = healthBar:GetValue();
 
-        local _, maxValue = unitframe.HealthBarsContainer.healthBar:GetMinMaxValues();
-        local currentValue = unitframe.HealthBarsContainer.healthBar:GetValue();
-
-        if DB.SPARK_HIDE_AT_MAX_HEALTH and currentValue == maxValue then
-            unitframe.HealthBarsContainer.healthBar.Spark:Hide();
-        else
-            unitframe.HealthBarsContainer.healthBar.Spark:Show();
-        end
-    else
-        unitframe.HealthBarsContainer.healthBar.Spark:Hide();
-    end
+    spark:SetShown(not (DB.SPARK_HIDE_AT_MAX_HEALTH and currentValue == maxValue));
 end
 
-local function UpdateSparkPosition(unitframe)
-    if unitframe.HealthBarsContainer.healthBar.Spark and DB.SPARK_SHOW and not unitframe.data.isPersonal then
-        if DB.SPARK_HIDE_AT_MAX_HEALTH then
-            local _, maxValue = unitframe.HealthBarsContainer.healthBar:GetMinMaxValues();
-            local currentValue = unitframe.HealthBarsContainer.healthBar:GetValue();
+local function UpdateSpark(unitframe)
+    local spark = unitframe.HealthBarsContainer.healthBar.Spark;
+    if not spark then
+        return;
+    end
 
-            if currentValue == maxValue then
-                unitframe.HealthBarsContainer.healthBar.Spark:Hide();
-            else
-                unitframe.HealthBarsContainer.healthBar.Spark:Show();
-            end
-        else
-            unitframe.HealthBarsContainer.healthBar.Spark:Show();
-        end
+    spark.shouldShow = DB.SPARK_SHOW and not unitframe.data.isPersonal;
+
+    if spark.shouldShow then
+        spark:SetSize(DB.SPARK_WIDTH, DB.SPARK_HEIGHT);
+
+        UpdateSparkVisibility(unitframe);
+    else
+        spark:Hide();
     end
 end
 
@@ -1091,7 +1084,7 @@ function Module:UnitAdded(unitframe)
     UpdateExtraTexture(unitframe);
     CreateSpark(unitframe);
     UpdateSpark(unitframe);
-    UpdateSparkPosition(unitframe);
+    UpdateSparkVisibility(unitframe);
     UpdateBackgroundTexture(unitframe);
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
@@ -1155,7 +1148,7 @@ function Module:Update(unitframe)
     UpdateCustomBorder(unitframe);
     UpdateExtraTexture(unitframe);
     UpdateSpark(unitframe);
-    UpdateSparkPosition(unitframe);
+    UpdateSparkVisibility(unitframe);
     UpdateBackgroundTexture(unitframe);
     UpdateBorder(unitframe);
     UpdateSizes(unitframe);
@@ -1504,7 +1497,7 @@ function Module:StartUp()
     self:RegisterEvent('RAID_TARGET_UPDATE');
     self:RegisterEvent('PLAYER_FOCUS_CHANGED');
 
-    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', UpdateSparkPosition);
+    self:SecureUnitFrameHook('CompactUnitFrame_UpdateHealth', UpdateSparkVisibility);
 
     self:SecureUnitFrameHook('CompactUnitFrame_UpdateSelectionHighlight', function(unitframe)
         if DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED then
