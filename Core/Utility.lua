@@ -710,8 +710,10 @@ U.Merge = function(src, dst)
     for k, v in pairs(src) do
         if type(v) == 'table' then
             dst[k] = U.Merge(v, dst[k]);
-        elseif type(v) ~= type(dst[k]) then
-            dst[k] = v;
+        else
+            if dst[k] == nil then
+                dst[k] = v;
+            end
         end
     end
 
