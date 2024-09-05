@@ -188,7 +188,7 @@ function Module:UpdateLocalConfig()
     SIZE         = O.db.target_indicator_size;
     X_OFFSET     = O.db.target_indicator_x_offset;
     Y_OFFSET     = O.db.target_indicator_y_offset;
-    TEXTURE      = O.Lists.target_indicator_texture_path[O.db.target_indicator_texture] or O.Lists.target_indicator_texture_path[1];
+    TEXTURE      = O.Lists.target_indicator_texture_path[O.db.target_indicator_texture] or O.Lists.target_indicator_texture_path['Standard'];
 
     GLOW_SIZE = O.db.target_glow_size;
 

@@ -5,32 +5,29 @@ O.Lists = {
     hide_non_casting_modifiers = {'LALT', 'LCTRL', 'LSHIFT', 'RALT', 'RCTRL', 'RSHIFT'},
 
     target_indicator_texture_path = {
-        [1]  = S.Media.Path .. 'Textures\\Arrow\\standart_right_32',
-        [2]  = S.Media.Path .. 'Textures\\Arrow\\single_right_64',
-        [3]  = S.Media.Path .. 'Textures\\Arrow\\double_right_64',
-        [4]  = S.Media.Path .. 'Textures\\Arrow\\triangle_right_64',
-        [5]  = S.Media.Path .. 'Textures\\Arrow\\thin_right_64',
-        [6]  = S.Media.Path .. 'Textures\\Arrow\\thick_arrow_right_64',
-        [7]  = S.Media.Path .. 'Textures\\Arrow\\double_edge_64',
-        [8]  = S.Media.Path .. 'Textures\\Arrow\\double_smooth_64',
-        [9]  = S.Media.Path .. 'Textures\\Arrow\\triple_smooth_64',
-        [10] = S.Media.Path .. 'Textures\\Arrow\\lightning_hor_64',
-        [11] = S.Media.Path .. 'Textures\\Arrow\\letter_a_64',
-        [12] = S.Media.Path .. 'Textures\\Arrow\\likeplane_64',
-        [13] = S.Media.Path .. 'Textures\\Arrow\\wifi_hor_64',
-        [14] = S.Media.Path .. 'Textures\\Arrow\\heart_arrow_64',
-        [15] = S.Media.Path .. 'Textures\\Arrow\\simple_heart_64',
-        [16] = S.Media.Path .. 'Textures\\Arrow\\chick_64',
-        [17] = S.Media.Path .. 'Textures\\Arrow\\kitty_fat_64',
-        [18] = S.Media.Path .. 'Textures\\Arrow\\crab_64',
-        [19] = S.Media.Path .. 'Textures\\Arrow\\turtle_64',
-        [20] = S.Media.Path .. 'Textures\\Arrow\\bat_64',
-        [21] = S.Media.Path .. 'Textures\\Arrow\\snake_64',
-        [22] = S.Media.Path .. 'Textures\\Arrow\\duck_64',
-        [23] = S.Media.Path .. 'Textures\\Arrow\\meorawr_64',
-        [24] = S.Media.Path .. 'Textures\\Arrow\\semlar_64',
-        [25] = S.Media.Path .. 'Textures\\Arrow\\gregory_64',
-        [26] = S.Media.Path .. 'Textures\\Arrow\\composite_right_64',
+        ['Standard'] = S.Media.Path .. 'Textures\\Arrow\\standard_right_32',
+        ['Single'] = S.Media.Path .. 'Textures\\Arrow\\single_right_64',
+        ['Double'] = S.Media.Path .. 'Textures\\Arrow\\double_right_64',
+        ['Triangle'] = S.Media.Path .. 'Textures\\Arrow\\triangle_right_64',
+        ['Thin'] = S.Media.Path .. 'Textures\\Arrow\\thin_right_64',
+        ['Thick Arrow'] = S.Media.Path .. 'Textures\\Arrow\\thick_arrow_right_64',
+        ['Double Edge'] = S.Media.Path .. 'Textures\\Arrow\\double_edge_64',
+        ['Double Smooth'] = S.Media.Path .. 'Textures\\Arrow\\double_smooth_64',
+        ['Triple Smooth'] = S.Media.Path .. 'Textures\\Arrow\\triple_smooth_64',
+        ['Lightning'] = S.Media.Path .. 'Textures\\Arrow\\lightning_hor_64',
+        ['Letter A'] = S.Media.Path .. 'Textures\\Arrow\\letter_a_64',
+        ['Plane'] = S.Media.Path .. 'Textures\\Arrow\\likeplane_64',
+        ['WiFi'] = S.Media.Path .. 'Textures\\Arrow\\wifi_hor_64',
+        ['Heart Arrow'] = S.Media.Path .. 'Textures\\Arrow\\heart_arrow_64',
+        ['Heart'] = S.Media.Path .. 'Textures\\Arrow\\simple_heart_64',
+        ['Chick'] = S.Media.Path .. 'Textures\\Arrow\\chick_64',
+        ['Kitty'] = S.Media.Path .. 'Textures\\Arrow\\kitty_fat_64',
+        ['Crab'] = S.Media.Path .. 'Textures\\Arrow\\crab_64',
+        ['Turtle'] = S.Media.Path .. 'Textures\\Arrow\\turtle_64',
+        ['Bat'] = S.Media.Path .. 'Textures\\Arrow\\bat_64',
+        ['Snake'] = S.Media.Path .. 'Textures\\Arrow\\snake_64',
+        ['Duck'] = S.Media.Path .. 'Textures\\Arrow\\duck_64',
+        ['Composite'] = S.Media.Path .. 'Textures\\Arrow\\composite_right_64',
     },
 
     motion = {
@@ -486,7 +483,7 @@ O.DefaultValues = {
     target_indicator_enabled  = true,
     target_indicator_color    = { 1, 1, 1, 1 },
     target_indicator_color_as_class = false,
-    target_indicator_texture  = 3,
+    target_indicator_texture  = 'Standard',
     target_indicator_x_offset = 0,
     target_indicator_y_offset = 0,
     target_indicator_size     = 16,
@@ -1290,11 +1287,48 @@ function Module:Migration_UnimportantUnits()
     end
 end
 
+function Module:Migration_TargetIndicatorIdToName()
+    local NEW_NAMES = {
+        [1]  = 'Standard',
+        [2]  = 'Single',
+        [3]  = 'Double',
+        [4]  = 'Triangle',
+        [5]  = 'Thin',
+        [6]  = 'Thick Arrow',
+        [7]  = 'Double Edge',
+        [8]  = 'Double Smooth',
+        [9]  = 'Triple Smooth',
+        [10] = 'Lightning',
+        [11] = 'Letter A',
+        [12] = 'Plane',
+        [13] = 'WiFi',
+        [14] = 'Heart Arrow',
+        [15] = 'Heart',
+        [16] = 'Chick',
+        [17] = 'Kitty',
+        [18] = 'Crab',
+        [19] = 'Turtle',
+        [20] = 'Bat',
+        [21] = 'Snake',
+        [22] = 'Duck',
+        [26] = 'Composite',
+    };
+
+    for pId, _ in pairs(StripesDB.profiles) do
+        local profile = StripesDB.profiles[pId];
+
+        if profile.target_indicator_texture and type(profile.target_indicator_texture) == 'number' then
+            profile.target_indicator_texture = NEW_NAMES[profile.target_indicator_texture] or 'Standard';
+        end
+    end
+end
+
 local MigrationsFunctions = {
-    ['Migration_ColorsAndCategories']  = { majorVersion = 1, minorVersion = 24 },
-    ['Migration_CustomColorsAndNames'] = { majorVersion = 1, minorVersion = 28 },
-    ['Migration_FontValueOptions']     = { majorVersion = 1, minorVersion = 28 },
-    ['Migration_UnimportantUnits']     = { majorVersion = 1, minorVersion = 29 },
+    ['Migration_ColorsAndCategories']     = { majorVersion = 1, minorVersion = 24 },
+    ['Migration_CustomColorsAndNames']    = { majorVersion = 1, minorVersion = 28 },
+    ['Migration_FontValueOptions']        = { majorVersion = 1, minorVersion = 28 },
+    ['Migration_UnimportantUnits']        = { majorVersion = 1, minorVersion = 29 },
+    ['Migration_TargetIndicatorIdToName'] = { majorVersion = 1, minorVersion = 43 },
 };
 
 function Module:RunAllMigrations()
@@ -1353,7 +1387,9 @@ function Module:StartUp()
     O.activeProfileName = StripesDB.profiles[profileId].profileName;
 
     for pId, data in pairs(StripesDB.profiles) do
-        StripesDB.profiles[pId] = U.Merge(O.DefaultValues, data);
+        if not (pId == profileId) then
+            StripesDB.profiles[pId] = U.Merge(O.DefaultValues, data);
+        end
     end
 
     -- Rename default profile when switching client language

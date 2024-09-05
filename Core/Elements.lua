@@ -1229,7 +1229,7 @@ do
         button.Text:SetJustifyV('MIDDLE');
 
         button.Texture = button:CreateTexture(nil, 'ARTWORK');
-        PixelUtil.SetPoint(button.Texture, 'LEFT', button.Text , 'LEFT', 22, 0);
+        PixelUtil.SetPoint(button.Texture, 'RIGHT', button, 'RIGHT', -4, 0);
 
         button.Color = button:CreateTexture(nil, 'ARTWORK');
         PixelUtil.SetPoint(button.Color, 'TOPLEFT', button.SelectedIcon, 'TOPRIGHT', 2, 4);
@@ -1401,10 +1401,25 @@ do
         },
 
         ['texture'] = {
-            SetList = function(self, itemsTable)
-                self.kind       = 'texture';
-                self.subType    = 'number';
-                self.itemsTable = itemsTable or {};
+            SetList = function(self, itemsTable, sortFunc, byValue)
+                self.kind        = 'texture';
+                self.subType     = 'string';
+                self.itemsTable  = itemsTable or {};
+                self.sortedTable = self.sortedTable or {};
+
+                wipe(self.sortedTable);
+
+                for k, v in pairs(self.itemsTable) do
+                    table.insert(self.sortedTable, { key = k, value = v });
+                end
+
+                if sortFunc and type(sortFunc) == 'function' then
+                    table.sort(self.sortedTable, sortFunc);
+                else
+                    table.sort(self.sortedTable, function(a, b)
+                        return a.key < b.key;
+                    end);
+                end
             end,
 
             UpdateList = function(self)
@@ -1415,7 +1430,7 @@ do
                 DropdownList.kind = self.kind;
                 DropdownList.buttonPool:ReleaseAll();
 
-                for key, value in ipairs(self.itemsTable) do
+                for _, data in pairs(self.sortedTable) do
                     itemCounter = itemCounter + 1;
                     itemButton, isNew = DropdownList.buttonPool:Acquire();
 
@@ -1450,12 +1465,12 @@ do
                     PixelUtil.SetSize(itemButton.SelectedIcon, self.HeightValue / 1.5, self.HeightValue / 1.5);
                     PixelUtil.SetSize(itemButton.Texture, self.HeightValue - 2, self.HeightValue - 2);
 
-                    itemButton.Text:SetText(key);
-                    itemButton.Texture:SetTexture(value);
+                    itemButton.Text:SetText(data.key);
+                    itemButton.Texture:SetTexture(self.itemsTable[data.key]);
                     itemButton.Texture:Show();
 
-                    itemButton.Key   = key;
-                    itemButton.Value = value;
+                    itemButton.Key   = data.key;
+                    itemButton.Value = self.itemsTable[data.key];
                     itemButton.Kind  = self.kind;
 
                     itemButton:Show();
@@ -2166,20 +2181,6 @@ do
         PixelUtil.SetPoint(holderButton.Text, 'BOTTOMRIGHT', holderButton, 'BOTTOMRIGHT', -6, 0);
         holderButton.Text:SetJustifyH('LEFT');
 
-        holderButton.StatusBar = holderButton:CreateTexture(nil, 'ARTWORK');
-        PixelUtil.SetPoint(holderButton.StatusBar, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
-        PixelUtil.SetPoint(holderButton.StatusBar, 'BOTTOMRIGHT', holderButton, 'BOTTOMRIGHT', 0, 0);
-
-        holderButton.Color = holderButton:CreateTexture(nil, 'ARTWORK');
-        PixelUtil.SetPoint(holderButton.Color, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
-        PixelUtil.SetPoint(holderButton.Color, 'BOTTOMRIGHT', holderButton, 'BOTTOMRIGHT', 0, 0);
-        holderButton.Color:SetColorTexture(1, 1, 1, 1);
-        holderButton.Color:Hide();
-
-        holderButton.Texture = holderButton:CreateTexture(nil, 'ARTWORK');
-        PixelUtil.SetPoint(holderButton.Texture, 'LEFT', holderButton.Text, 'LEFT', 22, 0);
-        PixelUtil.SetSize(holderButton.Texture, container.HeightValue - 2, container.HeightValue - 2);
-
         local arrowButton = CreateFrame('Button', nil, holderButton, 'BackdropTemplate');
         PixelUtil.SetPoint(arrowButton, 'TOPRIGHT', holderButton, 'TOPRIGHT', 0, 0);
         PixelUtil.SetSize(arrowButton, container.HeightValue, container.HeightValue);
@@ -2235,6 +2236,20 @@ do
         end);
 
         holderButton.arrowButton = arrowButton;
+
+        holderButton.StatusBar = holderButton:CreateTexture(nil, 'ARTWORK');
+        PixelUtil.SetPoint(holderButton.StatusBar, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
+        PixelUtil.SetPoint(holderButton.StatusBar, 'BOTTOMRIGHT', holderButton, 'BOTTOMRIGHT', 0, 0);
+
+        holderButton.Color = holderButton:CreateTexture(nil, 'ARTWORK');
+        PixelUtil.SetPoint(holderButton.Color, 'TOPLEFT', holderButton, 'TOPLEFT', 0, 0);
+        PixelUtil.SetPoint(holderButton.Color, 'BOTTOMRIGHT', holderButton, 'BOTTOMRIGHT', 0, 0);
+        holderButton.Color:SetColorTexture(1, 1, 1, 1);
+        holderButton.Color:Hide();
+
+        holderButton.Texture = holderButton:CreateTexture(nil, 'ARTWORK');
+        PixelUtil.SetPoint(holderButton.Texture, 'RIGHT', holderButton.arrowButton, 'LEFT', -4, 0);
+        PixelUtil.SetSize(holderButton.Texture, container.HeightValue - 2, container.HeightValue - 2);
 
         holderButton:HookScript('OnEnter', function()
             arrowButton.Icon:SetVertexColor(1, 0.72, 0.2);

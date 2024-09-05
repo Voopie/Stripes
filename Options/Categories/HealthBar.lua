@@ -874,14 +874,14 @@ panel.Load = function(self)
 
     self.target_indicator_texture = E.CreateDropdown('texture', self.TabsFrames['TargetIndicatorTab'].Content);
     self.target_indicator_texture:SetPosition('LEFT', self.target_indicator_enabled.Label, 'RIGHT', 12, 0);
-    self.target_indicator_texture:SetSize(87, 20);
+    self.target_indicator_texture:SetSize(180, 20);
     self.target_indicator_texture:SetList(O.Lists.target_indicator_texture_path);
     self.target_indicator_texture:SetLabel(L['OPTIONS_TARGET_INDICATOR_TEXTURE']);
     self.target_indicator_texture:SetTooltip(L['OPTIONS_TARGET_INDICATOR_TEXTURE_TOOLTIP']);
     self.target_indicator_texture:AddToSearch(button, L['OPTIONS_TARGET_INDICATOR_TEXTURE_TOOLTIP'], self.Tabs[3]);
     self.target_indicator_texture:SetValue(O.db.target_indicator_texture);
     self.target_indicator_texture.OnValueChangedCallback = function(_, value)
-        O.db.target_indicator_texture = tonumber(value);
+        O.db.target_indicator_texture = value;
         Stripes:UpdateAll();
     end
 
