@@ -28,6 +28,8 @@ O.Lists = {
         ['Snake'] = S.Media.Path .. 'Textures\\Arrow\\snake_64',
         ['Duck'] = S.Media.Path .. 'Textures\\Arrow\\duck_64',
         ['Composite'] = S.Media.Path .. 'Textures\\Arrow\\composite_right_64',
+        ['Double Arrow'] = S.Media.Path .. 'Textures\\Arrow\\double_arrow_64',
+        ['Double Closer'] = S.Media.Path .. 'Textures\\Arrow\\double_closer_64',
     },
 
     motion = {
