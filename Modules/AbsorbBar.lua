@@ -15,8 +15,6 @@ local BACKDROP = {
     edgeSize = 1,
 };
 
-local FRAME_POINTS_SIMPLE = O.Lists.frame_points_simple;
-
 local StripesAbsorbTextFont = CreateFont('StripesAbsorbTextFont');
 
 local function Create(unitframe)
@@ -24,8 +22,10 @@ local function Create(unitframe)
         return;
     end
 
-    local absorbBar = CreateFrame('StatusBar', '$parentAbsorbBar', unitframe.HealthBarsContainer.healthBar, 'BackdropTemplate');
-    absorbBar:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
+    local healthBar = unitframe.HealthBarsContainer.healthBar;
+
+    local absorbBar = CreateFrame('StatusBar', '$parentAbsorbBar', healthBar, 'BackdropTemplate');
+    absorbBar:SetAllPoints(healthBar);
     absorbBar:SetBackdrop(BACKDROP);
     absorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 0);
 
@@ -44,8 +44,8 @@ local function Create(unitframe)
 
     if AT_TOP then
         absorbBar:ClearAllPoints();
-        PixelUtil.SetPoint(absorbBar, 'BOTTOMLEFT', unitframe.HealthBarsContainer.healthBar, 'TOPLEFT', -0.5, 0);
-        PixelUtil.SetPoint(absorbBar, 'BOTTOMRIGHT', unitframe.HealthBarsContainer.healthBar, 'TOPRIGHT', 0.5, 0);
+        PixelUtil.SetPoint(absorbBar, 'BOTTOMLEFT', healthBar, 'TOPLEFT', -0.5, 0);
+        PixelUtil.SetPoint(absorbBar, 'BOTTOMRIGHT', healthBar, 'TOPRIGHT', 0.5, 0);
         absorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
         PixelUtil.SetHeight(absorbBar, 2);
     end
@@ -54,8 +54,8 @@ local function Create(unitframe)
     absorbBar:SetValue(0);
     absorbBar:Hide();
 
-    local absorbText = CreateFrame('Frame', '$parentAbsorbText', unitframe.HealthBarsContainer.healthBar);
-    absorbText:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
+    local absorbText = CreateFrame('Frame', '$parentAbsorbText', healthBar);
+    absorbText:SetAllPoints(healthBar);
     absorbText.text = absorbText:CreateFontString(nil, 'OVERLAY', 'StripesAbsorbTextFont');
     PixelUtil.SetPoint(absorbText.text, ABSORB_TEXT_ANCHOR, absorbText, ABSORB_TEXT_ANCHOR, ABSORB_TEXT_X_OFFSET, ABSORB_TEXT_Y_OFFSET);
     absorbText.text:SetTextColor(ABSORB_TEXT_COLOR[1], ABSORB_TEXT_COLOR[2], ABSORB_TEXT_COLOR[3], ABSORB_TEXT_COLOR[4]);
@@ -131,17 +131,19 @@ local function UpdateShow(unitframe)
 end
 
 local function UpdateStyle(unitframe)
+    local healthBar = unitframe.HealthBarsContainer.healthBar;
+
     local absorbBar  = unitframe.AbsorbBar;
     local absorbText = unitframe.AbsorbText;
 
     absorbBar:ClearAllPoints();
 
     if not AT_TOP then
-        absorbBar:SetAllPoints(unitframe.HealthBarsContainer.healthBar);
+        absorbBar:SetAllPoints(healthBar);
         absorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 0);
     else
-        PixelUtil.SetPoint(absorbBar, 'BOTTOMLEFT', unitframe.HealthBarsContainer.healthBar, 'TOPLEFT', -0.5, 0);
-        PixelUtil.SetPoint(absorbBar, 'BOTTOMRIGHT', unitframe.HealthBarsContainer.healthBar, 'TOPRIGHT', 0.5, 0);
+        PixelUtil.SetPoint(absorbBar, 'BOTTOMLEFT', healthBar, 'TOPLEFT', -0.5, 0);
+        PixelUtil.SetPoint(absorbBar, 'BOTTOMRIGHT', healthBar, 'TOPRIGHT', 0.5, 0);
         absorbBar:SetBackdropBorderColor(0.3, 0.3, 0.3, 1);
         PixelUtil.SetHeight(absorbBar, 2);
     end
@@ -173,7 +175,7 @@ function Module:UpdateLocalConfig()
     AT_TOP  = O.db.absorb_bar_at_top;
 
     ABSORB_TEXT_ENABLED  = O.db.absorb_text_enabled;
-    ABSORB_TEXT_ANCHOR   = FRAME_POINTS_SIMPLE[O.db.absorb_text_anchor];
+    ABSORB_TEXT_ANCHOR   = O.Lists.frame_points_simple[O.db.absorb_text_anchor];
     ABSORB_TEXT_X_OFFSET = O.db.absorb_text_x_offset;
     ABSORB_TEXT_Y_OFFSET = O.db.absorb_text_y_offset;
     ABSORB_TEXT_COLOR    = ABSORB_TEXT_COLOR or {};

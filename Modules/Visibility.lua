@@ -14,30 +14,18 @@ local function HandleVisibility()
         return;
     end
 
+    local showAll, maxDistance = SHOW_ALWAYS_OPENWORLD and 1 or 0, MAX_DISTANCE_OPENWORLD;
+
     if D.Player.State.inPvPInstance then
-        Stripes.SetCVar('nameplateShowAll', SHOW_ALWAYS_PVP_INSTANCE and 1 or 0);
-        Stripes.SetCVar('nameplateMaxDistance', MAX_DISTANCE_PVP_INSTANCE);
-    elseif U.IsInInstance() then
-        Stripes.SetCVar('nameplateShowAll', SHOW_ALWAYS_INSTANCE and 1 or 0);
-        Stripes.SetCVar('nameplateMaxDistance', MAX_DISTANCE_INSTANCE);
-    else
-        Stripes.SetCVar('nameplateShowAll', SHOW_ALWAYS_OPENWORLD and 1 or 0);
-        Stripes.SetCVar('nameplateMaxDistance', MAX_DISTANCE_OPENWORLD);
+        showAll, maxDistance = SHOW_ALWAYS_PVP_INSTANCE and 1 or 0, MAX_DISTANCE_PVP_INSTANCE;
+    elseif D.Player.State.inInstance then
+        showAll, maxDistance = SHOW_ALWAYS_INSTANCE and 1 or 0, MAX_DISTANCE_INSTANCE;
     end
 
-    if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsFriendlyStacking() then
-        if U.IsInInstance() then
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
-        else
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
-        end
-    else
-        if U.IsInInstance() then
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
-        else
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
-        end
-    end
+    Stripes.SetCVar('nameplateShowAll', showAll);
+    Stripes.SetCVar('nameplateMaxDistance', maxDistance);
+
+    Stripes.UpdateFriendlySizes();
 end
 
 function Module:PLAYER_LOGIN()
@@ -94,6 +82,8 @@ function Module:UpdateLocalConfig()
 
     ENEMY_ONLY_IN_COMBAT    = O.db.show_enemy_only_in_combat;
     FRIENDLY_ONLY_IN_COMBAT = O.db.show_friendly_only_in_combat;
+
+    Stripes.UpdateFriendlySizes();
 end
 
 function Module:StartUp()

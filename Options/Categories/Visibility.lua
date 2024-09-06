@@ -71,7 +71,7 @@ panel.Load = function(self)
     self.show_always_openworld.Callback = function(self)
         O.db.show_always_openworld = self:GetChecked();
 
-        if not U.IsInInstance() then
+        if not D.Player.State.inInstance then
             C_CVar.SetCVar('nameplateShowAll', O.db.show_always_openworld and 1 or 0);
         end
 
@@ -87,7 +87,7 @@ panel.Load = function(self)
     self.show_always_instance.Callback = function(self)
         O.db.show_always_instance = self:GetChecked();
 
-        if U.IsInInstance() and not D.Player.State.inPvPInstance then
+        if D.Player.State.inInstance and not D.Player.State.inPvPInstance then
             C_CVar.SetCVar('nameplateShowAll', O.db.show_always_instance and 1 or 0);
         end
 
@@ -130,7 +130,7 @@ panel.Load = function(self)
         O.db.max_distance_openworld = number;
         self:SetText(number);
 
-        if not U.IsInInstance() then
+        if not D.Player.State.inInstance then
             C_CVar.SetCVar('nameplateMaxDistance', number);
         end
     end
@@ -155,7 +155,7 @@ panel.Load = function(self)
         O.db.max_distance_instance = number;
         self:SetText(number);
 
-        if U.IsInInstance() and not D.Player.State.inPvPInstance then
+        if D.Player.State.inInstance and not D.Player.State.inPvPInstance then
             C_CVar.SetCVar('nameplateMaxDistance', number);
         end
     end
@@ -844,20 +844,6 @@ panel.Load = function(self)
         panel.name_only_friendly_y_offset:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_stacking:SetEnabled(O.db.name_only_friendly_enabled);
 
-        if O.db.name_only_friendly_enabled and O.db.name_only_friendly_stacking then
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
-            end
-        else
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
-            end
-        end
-
         Stripes:UpdateAll();
     end
 
@@ -882,20 +868,6 @@ panel.Load = function(self)
             C_CVar.SetCVar('nameplateShowOnlyNames', 0);
         end
 
-        if O.db.name_only_friendly_enabled and O.db.name_only_friendly_stacking then
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
-            end
-        else
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
-            end
-        end
-
         Stripes:UpdateAll();
     end
 
@@ -908,23 +880,7 @@ panel.Load = function(self)
     self.name_only_friendly_players_only:SetEnabled(O.db.name_only_friendly_enabled);
     self.name_only_friendly_players_only.Callback = function(self)
         O.db.name_only_friendly_players_only = self:GetChecked();
-
         panel.name_only_friendly_stacking:SetEnabled(O.db.name_only_friendly_enabled);
-
-        if O.db.name_only_friendly_enabled and O.db.name_only_friendly_stacking then
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
-            end
-        else
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
-            end
-        end
-
         Stripes:UpdateAll();
     end
 
@@ -938,21 +894,6 @@ panel.Load = function(self)
     self.name_only_friendly_stacking:SetEnabled(O.db.name_only_friendly_enabled);
     self.name_only_friendly_stacking.Callback = function(self)
         O.db.name_only_friendly_stacking = self:GetChecked();
-
-        if O.db.name_only_friendly_enabled and O.db.name_only_friendly_stacking then
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
-            end
-        else
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
-            end
-        end
-
         Stripes:UpdateAll();
     end
 

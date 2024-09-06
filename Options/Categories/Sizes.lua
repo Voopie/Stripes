@@ -152,19 +152,6 @@ panel.Load = function(self)
     self.size_friendly_clickable_width:SetValues(O.db.size_friendly_clickable_width, 25, 300, 1);
     self.size_friendly_clickable_width.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_clickable_width = tonumber(value);
-
-        if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsFriendlyStacking() then
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
-            end
-        else
-            if not U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
-            end
-        end
-
         Stripes:UpdateAll();
     end
 
@@ -177,19 +164,6 @@ panel.Load = function(self)
     self.size_friendly_clickable_height:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_CLICKABLE_HEIGHT_TOOLTIP'], self.Tabs[2]);
     self.size_friendly_clickable_height.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_clickable_height = tonumber(value);
-
-        if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsFriendlyStacking() then
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
-            end
-        else
-            if not U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
-            end
-        end
-
         Stripes:UpdateAll();
     end
 
@@ -218,19 +192,6 @@ panel.Load = function(self)
     self.size_friendly_instance_clickable_width:SetValues(O.db.size_friendly_instance_clickable_width, 25, 300, 1);
     self.size_friendly_instance_clickable_width.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_instance_clickable_width = tonumber(value);
-
-        if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsFriendlyStacking() then
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
-            end
-        else
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
-            end
-        end
-
         Stripes:UpdateAll();
     end
 
@@ -243,19 +204,6 @@ panel.Load = function(self)
     self.size_friendly_instance_clickable_height:AddToSearch(button, L['OPTIONS_SIZES_FRIENDLY_INSTANCE_CLICKABLE_HEIGHT_TOOLTIP'], self.Tabs[2]);
     self.size_friendly_instance_clickable_height.OnValueChangedCallback = function(_, value)
         O.db.size_friendly_instance_clickable_height = tonumber(value);
-
-        if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsFriendlyStacking() then
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
-            else
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
-            end
-        else
-            if U.IsInInstance() then
-                C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
-            end
-        end
-
         Stripes:UpdateAll();
     end
 

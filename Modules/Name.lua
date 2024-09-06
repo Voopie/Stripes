@@ -536,12 +536,10 @@ local function UpdateColor(unitframe)
     if commonUnitType == 'NPC' then
         if data.threatNameColored and data.threatColorR then
             unitframe.name:SetVertexColor(data.threatColorR, data.threatColorG, data.threatColorB);
+        elseif COLORING_MODE_NPC == 1 then -- NONE
+            name:SetVertexColor(1, 1, 1);
         else
-            if COLORING_MODE_NPC == 1 then -- NONE
-                name:SetVertexColor(1, 1, 1);
-            else
-                SetDefaultNameColor(unitframe);
-            end
+            SetDefaultNameColor(unitframe);
         end
     elseif commonUnitType == 'PET' then
         if COLORING_MODE_NPC == 1 then -- NONE

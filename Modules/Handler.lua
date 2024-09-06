@@ -283,30 +283,38 @@ do
     end
 end
 
+local function UpdateFriendlySizes()
+    local friendlyWidth, friendlyHeight;
+
+    if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsFriendlyStacking() then
+        if D.Player.State.inInstance then
+            friendlyWidth, friendlyHeight = O.db.size_friendly_instance_clickable_width, 1;
+        else
+            friendlyWidth, friendlyHeight = O.db.size_friendly_clickable_width, 1;
+        end
+    else
+        if D.Player.State.inInstance then
+            friendlyWidth, friendlyHeight = O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height;
+        else
+            friendlyWidth, friendlyHeight = O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height;
+        end
+    end
+
+    C_NamePlate.SetNamePlateFriendlySize(friendlyWidth, friendlyHeight);
+end
+
+Stripes.UpdateFriendlySizes = UpdateFriendlySizes;
+
 local function UpdateSizesSafe()
     if U.PlayerInCombat() then
         Stripes:RegisterEvent('PLAYER_REGEN_ENABLED');
         return;
     end
 
+    UpdateFriendlySizes();
+
     C_NamePlate.SetNamePlateEnemySize(O.db.size_enemy_clickable_width, O.db.size_enemy_clickable_height);
-
-    if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsFriendlyStacking() then
-        if U.IsInInstance() then
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, 1);
-        else
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, 1);
-        end
-    else
-        if U.IsInInstance() then
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height);
-        else
-            C_NamePlate.SetNamePlateFriendlySize(O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height);
-        end
-    end
-
     C_NamePlate.SetNamePlateSelfSize(O.db.size_self_width, O.db.size_self_height);
-
     C_NamePlate.SetNamePlateEnemyClickThrough(O.db.size_enemy_click_through);
     C_NamePlate.SetNamePlateFriendlyClickThrough(O.db.size_friendly_click_through);
 
