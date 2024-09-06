@@ -53,3 +53,23 @@ end
 StripesAPI.GetUnimportantUnits = function()
     return StripesDB.UnimportantsUnits;
 end
+
+StripesAPI.GetOptions = function()
+    return O;
+end
+
+StripesAPI.GetUtility = function()
+    return U;
+end
+
+StripesAPI.GetData = function()
+    return D;
+end
+
+StripesAPI.GetElements = function()
+    return E;
+end
+
+StripesAPI.GetAll = function()
+    return S, L, O, U, D, E;
+end
