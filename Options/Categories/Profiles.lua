@@ -120,7 +120,7 @@ local function EditActiveProfileName(profileId, newProfileName)
         return UpdateElementsVisibility();
     end
 
-    newProfileName = Options:IsNameExists(newProfileName) and string.format('%s-%s', newProfileName, date('%Y%m%d%H%M%S')) or newProfileName;
+    newProfileName = Options:IsProfileNameExists(newProfileName) and string.format('%s-%s', newProfileName, date('%Y%m%d%H%M%S')) or newProfileName;
 
     StripesDB.profiles[profileId].profileName = newProfileName;
 
@@ -144,7 +144,7 @@ local function CopyFromActive(name)
 
     StripesDB.profiles[index] = {};
     StripesDB.profiles[index] = U.Merge(O.db, StripesDB.profiles[index]);
-    StripesDB.profiles[index].profileName = Options:IsNameExists(name) and string.format('%s-%s', name, date('%Y%m%d%H%M%S')) or name;
+    StripesDB.profiles[index].profileName = Options:IsProfileNameExists(name) and string.format('%s-%s', name, date('%Y%m%d%H%M%S')) or name;
 
     O.db = StripesDB.profiles[index];
     O.activeProfileId   = index;
@@ -172,7 +172,7 @@ local function CreateDefaultProfile(name)
 
     StripesDB.profiles[index] = {};
     StripesDB.profiles[index] = U.DeepCopy(O.DefaultValues);
-    StripesDB.profiles[index].profileName = Options:IsNameExists(name) and string.format('%s-%s', name, date('%Y%m%d%H%M%S')) or name;
+    StripesDB.profiles[index].profileName = Options:IsProfileNameExists(name) and string.format('%s-%s', name, date('%Y%m%d%H%M%S')) or name;
 
     O.db = StripesDB.profiles[index];
     O.activeProfileId   = index;
@@ -201,7 +201,7 @@ local function ImportProfile(name, data)
     StripesDB.profiles[index] = {};
     StripesDB.profiles[index] = U.DeepCopy(O.DefaultValues);
     StripesDB.profiles[index] = U.Merge(StripesDB.profiles[index], data);
-    StripesDB.profiles[index].profileName = Options:IsNameExists(name) and string.format('%s-%s', name, date('%Y%m%d%H%M%S')) or name;
+    StripesDB.profiles[index].profileName = Options:IsProfileNameExists(name) and string.format('%s-%s', name, date('%Y%m%d%H%M%S')) or name;
 
     O.db                = StripesDB.profiles[index];
     O.activeProfileId   = index;
@@ -234,7 +234,7 @@ Module.ChooseProfileByName = function(name)
         return false;
     end
 
-    local index = Options:FindIndexByName(name);
+    local index = Options:FindIndexByProfileName(name);
 
     if not index then
         return false;
@@ -268,7 +268,7 @@ local function RemoveProfileByName(name)
         return false;
     end
 
-    local index = Options:FindIndexByName(name);
+    local index = Options:FindIndexByProfileName(name);
 
     if not index then
         return false;

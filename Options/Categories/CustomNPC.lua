@@ -1080,7 +1080,7 @@ panel.Load = function(self)
     self.ProfilesDropdown:SetSize(157, 22);
     self.ProfilesDropdown:SetTooltip(L['OPTIONS_COPY_REPLACE_FROM_PROFILE_TOOLTIP']);
     self.ProfilesDropdown.OnValueChangedCallback = function(self, _, name, isShiftKeyDown)
-        local index = S:GetModule('Options'):FindIndexByName(name);
+        local index = S:GetModule('Options'):FindIndexByProfileName(name);
 
         if not index then
             self:SetValue(nil);

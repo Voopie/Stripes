@@ -54,6 +54,14 @@ StripesAPI.GetUnimportantUnits = function()
     return StripesDB.UnimportantsUnits;
 end
 
+StripesAPI.GetModule = function(moduleName)
+    return S:GetModule(moduleName);
+end
+
+StripesAPI.GetNameplateModule = function(moduleName)
+    return S:GetNameplateModule(moduleName);
+end
+
 StripesAPI.GetOptions = function()
     return O;
 end

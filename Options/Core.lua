@@ -1012,7 +1012,7 @@ local RESERVED_PROFILE_NAMES = {
     ['默認']           = true, -- zhTW
 };
 
-function Module:IsNameExists(name)
+function Module:IsProfileNameExists(name)
     if name == O.PROFILE_DEFAULT_NAME then
         return true;
     end
@@ -1030,7 +1030,7 @@ function Module:IsNameExists(name)
     return false;
 end
 
-function Module:FindIndexByName(name)
+function Module:FindIndexByProfileName(name)
     for index, data in pairs(StripesDB.profiles) do
         if name == data.profileName then
             return index;
@@ -1064,121 +1064,127 @@ function Module:RenameDefaultProfile()
 end
 
 function Module:CleanUp()
-    for pId, _ in pairs(StripesDB.profiles) do
+    for profileId, _ in pairs(StripesDB.profiles) do
+        local profile = StripesDB.profiles[profileId];
+
         -- 1.27
-        StripesDB.profiles[pId].current_target_custom_texture_overlay_alpha = nil;
-        StripesDB.profiles[pId].current_target_custom_texture_overlay_alpha_mode = nil;
-        StripesDB.profiles[pId].current_focus_custom_texture_overlay_alpha = nil;
-        StripesDB.profiles[pId].current_focus_custom_texture_overlay_alpha_mode = nil;
+        profile.current_target_custom_texture_overlay_alpha = nil;
+        profile.current_target_custom_texture_overlay_alpha_mode = nil;
+        profile.current_focus_custom_texture_overlay_alpha = nil;
+        profile.current_focus_custom_texture_overlay_alpha_mode = nil;
 
         -- ~1.25
-        StripesDB.profiles[pId].spiteful_glow = nil;
-        StripesDB.profiles[pId].spitefil_glow_color = nil;
-        StripesDB.profiles[pId].target_highlight = nil;
-        StripesDB.profiles[pId].explosive_orbs_glow = nil
-        StripesDB.profiles[pId].health_bar_border_thin = nil
-        StripesDB.profiles[pId].castbar_interrupt_ready_color = nil;
+        profile.spiteful_glow = nil;
+        profile.spitefil_glow_color = nil;
+        profile.target_highlight = nil;
+        profile.explosive_orbs_glow = nil
+        profile.health_bar_border_thin = nil
+        profile.castbar_interrupt_ready_color = nil;
     end
 end
 
 function Module:Migration_ColorsAndCategories()
-    for pId, _ in pairs(StripesDB.profiles) do
+    for profileId, _ in pairs(StripesDB.profiles) do
+        local profile = StripesDB.profiles[profileId];
+
         -- Color categories
-        if StripesDB.profiles[pId].color_category_data then
-            for _, d in ipairs(StripesDB.profiles[pId].color_category_data) do
-                StripesDB.profiles[pId].colors_data[d.name] = { d.color[1] or 1, d.color[2] or 1, d.color[3] or 1, d.color[4] or 1 };
+        if profile.color_category_data then
+            for _, data in ipairs(profile.color_category_data) do
+                profile.colors_data[data.name] = { data.color[1] or 1, data.color[2] or 1, data.color[3] or 1, data.color[4] or 1 };
             end
 
-            for id, _ in pairs(StripesDB.profiles[pId].custom_color_data) do
-                if StripesDB.profiles[pId].custom_color_data[id].custom_color_enabled then
-                    if StripesDB.profiles[pId].custom_color_data[id].custom_color_category then
-                        StripesDB.profiles[pId].custom_color_data[id].color_name = StripesDB.profiles[pId].color_category_data[StripesDB.profiles[pId].custom_color_data[id].custom_color_category].name;
+            for id, _ in pairs(profile.custom_color_data) do
+                if profile.custom_color_data[id].custom_color_enabled then
+                    if profile.custom_color_data[id].custom_color_category then
+                        profile.custom_color_data[id].color_name = profile.color_category_data[profile.custom_color_data[id].custom_color_category].name;
                     end
-                elseif StripesDB.profiles[pId].custom_color_data[id].color_enabled then
-                    if StripesDB.profiles[pId].custom_color_data[id].color_category then
-                        local colorName = S:GetModule('Options_Colors').PREDEFINED_COLORS_OLD[StripesDB.profiles[pId].custom_color_data[id].color_category].name;
+                elseif profile.custom_color_data[id].color_enabled then
+                    if profile.custom_color_data[id].color_category then
+                        local colorName = S:GetModule('Options_Colors').PREDEFINED_COLORS_OLD[profile.custom_color_data[id].color_category].name;
                         if colorName then
-                            StripesDB.profiles[pId].custom_color_data[id].color_name = colorName;
+                            profile.custom_color_data[id].color_name = colorName;
                         end
                     end
                 end
 
-                StripesDB.profiles[pId].custom_color_data[id].custom_color_enabled  = nil;
-                StripesDB.profiles[pId].custom_color_data[id].custom_color_category = nil;
-                StripesDB.profiles[pId].custom_color_data[id].color_category = nil;
-                StripesDB.profiles[pId].custom_color_data[id].color = nil;
+                profile.custom_color_data[id].custom_color_enabled  = nil;
+                profile.custom_color_data[id].custom_color_category = nil;
+                profile.custom_color_data[id].color_category = nil;
+                profile.custom_color_data[id].color = nil;
             end
 
-            for id, _ in pairs(StripesDB.profiles[pId].castbar_custom_casts_data) do
-                if StripesDB.profiles[pId].castbar_custom_casts_data[id].custom_color_enabled then
-                    StripesDB.profiles[pId].castbar_custom_casts_data[id].color_name = StripesDB.profiles[pId].color_category_data[StripesDB.profiles[pId].castbar_custom_casts_data[id].custom_color_category].name;
-                elseif StripesDB.profiles[pId].castbar_custom_casts_data[id].color_enabled then
-                    if StripesDB.profiles[pId].castbar_custom_casts_data[id].color_category then
-                        local colorName = S:GetModule('Options_Colors').PREDEFINED_COLORS_OLD[StripesDB.profiles[pId].castbar_custom_casts_data[id].color_category].name;
+            for id, _ in pairs(profile.castbar_custom_casts_data) do
+                if profile.castbar_custom_casts_data[id].custom_color_enabled then
+                    profile.castbar_custom_casts_data[id].color_name = profile.color_category_data[profile.castbar_custom_casts_data[id].custom_color_category].name;
+                elseif profile.castbar_custom_casts_data[id].color_enabled then
+                    if profile.castbar_custom_casts_data[id].color_category then
+                        local colorName = S:GetModule('Options_Colors').PREDEFINED_COLORS_OLD[profile.castbar_custom_casts_data[id].color_category].name;
                         if colorName then
-                            StripesDB.profiles[pId].castbar_custom_casts_data[id].color_name = colorName;
+                            profile.castbar_custom_casts_data[id].color_name = colorName;
                         end
                     end
                 end
 
-                StripesDB.profiles[pId].castbar_custom_casts_data[id].custom_color_enabled  = nil;
-                StripesDB.profiles[pId].castbar_custom_casts_data[id].custom_color_category = nil;
-                StripesDB.profiles[pId].castbar_custom_casts_data[id].color_category = nil;
-                StripesDB.profiles[pId].castbar_custom_casts_data[id].color = nil;
+                profile.castbar_custom_casts_data[id].custom_color_enabled  = nil;
+                profile.castbar_custom_casts_data[id].custom_color_category = nil;
+                profile.castbar_custom_casts_data[id].color_category = nil;
+                profile.castbar_custom_casts_data[id].color = nil;
             end
 
-            StripesDB.profiles[pId].color_category_data = nil;
+            profile.color_category_data = nil;
         end
 
         -- Custom npcs color categories
-        if StripesDB.profiles[pId].custom_color_category_data then
-            for _, d in ipairs(StripesDB.profiles[pId].custom_color_category_data) do
-                StripesDB.profiles[pId].custom_color_categories_data[d.name] = true;
+        if profile.custom_color_category_data then
+            for _, data in ipairs(profile.custom_color_category_data) do
+                profile.custom_color_categories_data[data.name] = true;
             end
 
-            for id, _ in pairs(StripesDB.profiles[pId].custom_color_data) do
-                if StripesDB.profiles[pId].custom_color_data[id].category_id then
-                    if StripesDB.profiles[pId].custom_color_data[id].category_id == 0 then
-                        StripesDB.profiles[pId].custom_color_data[id].category_name = O.CATEGORY_ALL_NAME;
+            for id, _ in pairs(profile.custom_color_data) do
+                if profile.custom_color_data[id].category_id then
+                    if profile.custom_color_data[id].category_id == 0 then
+                        profile.custom_color_data[id].category_name = O.CATEGORY_ALL_NAME;
                     else
-                        StripesDB.profiles[pId].custom_color_data[id].category_name = StripesDB.profiles[pId].custom_color_category_data[StripesDB.profiles[pId].custom_color_data[id].category_id].name;
+                        profile.custom_color_data[id].category_name = profile.custom_color_category_data[profile.custom_color_data[id].category_id].name;
                     end
 
-                    StripesDB.profiles[pId].custom_color_data[id].category_id = nil;
+                    profile.custom_color_data[id].category_id = nil;
                 end
             end
 
-            StripesDB.profiles[pId].custom_color_category_data = nil;
+            profile.custom_color_category_data = nil;
         end
 
         -- Cast bar custom casts categories
-        if StripesDB.profiles[pId].castbar_custom_casts_category_data then
-            for _, d in ipairs(StripesDB.profiles[pId].castbar_custom_casts_category_data) do
-                StripesDB.profiles[pId].castbar_custom_casts_categories_data[d.name] = true;
+        if profile.castbar_custom_casts_category_data then
+            for _, data in ipairs(profile.castbar_custom_casts_category_data) do
+                profile.castbar_custom_casts_categories_data[data.name] = true;
             end
 
-            for id, _ in pairs(StripesDB.profiles[pId].castbar_custom_casts_data) do
-                if StripesDB.profiles[pId].castbar_custom_casts_data[id].category_id then
-                    if StripesDB.profiles[pId].castbar_custom_casts_data[id].category_id == 0 then
-                        StripesDB.profiles[pId].castbar_custom_casts_data[id].category_name = O.CATEGORY_ALL_NAME;
+            for id, _ in pairs(profile.castbar_custom_casts_data) do
+                if profile.castbar_custom_casts_data[id].category_id then
+                    if profile.castbar_custom_casts_data[id].category_id == 0 then
+                        profile.castbar_custom_casts_data[id].category_name = O.CATEGORY_ALL_NAME;
                     else
-                        StripesDB.profiles[pId].castbar_custom_casts_data[id].category_name = StripesDB.profiles[pId].castbar_custom_casts_category_data[StripesDB.profiles[pId].castbar_custom_casts_data[id].category_id].name;
+                        profile.castbar_custom_casts_data[id].category_name = profile.castbar_custom_casts_category_data[profile.castbar_custom_casts_data[id].category_id].name;
                     end
 
-                    StripesDB.profiles[pId].castbar_custom_casts_data[id].category_id = nil;
+                    profile.castbar_custom_casts_data[id].category_id = nil;
                 end
             end
 
-            StripesDB.profiles[pId].castbar_custom_casts_category_data = nil;
+            profile.castbar_custom_casts_category_data = nil;
         end
     end
 end
 
 function Module:Migration_CustomColorsAndNames()
-    for pId, _ in pairs(StripesDB.profiles) do
-        if StripesDB.profiles[pId].custom_color_data then
-            for npc_id, data in pairs(StripesDB.profiles[pId].custom_color_data) do
-                StripesDB.profiles[pId].custom_npc[npc_id] = {
+    for profileId, _ in pairs(StripesDB.profiles) do
+        local profile = StripesDB.profiles[profileId];
+
+        if profile.custom_color_data then
+            for npc_id, data in pairs(profile.custom_color_data) do
+                profile.custom_npc[npc_id] = {
                     enabled  = data.enabled,
 
                     npc_id       = npc_id,
@@ -1196,24 +1202,24 @@ function Module:Migration_CustomColorsAndNames()
                 };
             end
 
-            StripesDB.profiles[pId].custom_color_enabled = nil;
-            StripesDB.profiles[pId].custom_color_data    = nil;
+            profile.custom_color_enabled = nil;
+            profile.custom_color_data    = nil;
         end
 
-        if StripesDB.profiles[pId].custom_color_categories_data then
-            for category_name, _ in pairs(StripesDB.profiles[pId].custom_color_categories_data) do
-                StripesDB.profiles[pId].custom_npc_categories[category_name] = true;
+        if profile.custom_color_categories_data then
+            for category_name, _ in pairs(profile.custom_color_categories_data) do
+                profile.custom_npc_categories[category_name] = true;
             end
 
-            StripesDB.profiles[pId].custom_color_categories_data = nil;
+            profile.custom_color_categories_data = nil;
         end
 
-        if StripesDB.profiles[pId].custom_name_data then
-            for npc_id, data in pairs(StripesDB.profiles[pId].custom_name_data) do
-                if StripesDB.profiles[pId].custom_npc[npc_id] then
-                    StripesDB.profiles[pId].custom_npc[npc_id].npc_new_name = data.new_name;
+        if profile.custom_name_data then
+            for npc_id, data in pairs(profile.custom_name_data) do
+                if profile.custom_npc[npc_id] then
+                    profile.custom_npc[npc_id].npc_new_name = data.new_name;
                 else
-                    StripesDB.profiles[pId].custom_npc[npc_id] = {
+                    profile.custom_npc[npc_id] = {
                         enabled  = data.enabled,
 
                         npc_id       = npc_id,
@@ -1232,8 +1238,8 @@ function Module:Migration_CustomColorsAndNames()
                 end
             end
 
-            StripesDB.profiles[pId].custom_name_enabled = nil;
-            StripesDB.profiles[pId].custom_name_data = nil;
+            profile.custom_name_enabled = nil;
+            profile.custom_name_data = nil;
         end
     end
 end
@@ -1267,9 +1273,11 @@ do
 
     function Module:Migration_FontValueOptions()
         for profileId, _ in pairs(StripesDB.profiles) do
+            local profile = StripesDB.profiles[profileId];
+
             for _, fontOptionName in ipairs(fontValueOptions) do
-                if StripesDB.profiles[profileId][fontOptionName] and StripesDB.profiles[profileId][fontOptionName] == 'Avant Garde Gothic Bold ' then
-                    StripesDB.profiles[profileId][fontOptionName] = 'Avant Garde Gothic Bold';
+                if profile[fontOptionName] and profile[fontOptionName] == 'Avant Garde Gothic Bold ' then
+                    profile[fontOptionName] = 'Avant Garde Gothic Bold';
                 end
             end
         end
@@ -1316,8 +1324,8 @@ function Module:Migration_TargetIndicatorIdToName()
         [26] = 'Composite',
     };
 
-    for pId, _ in pairs(StripesDB.profiles) do
-        local profile = StripesDB.profiles[pId];
+    for profileId, _ in pairs(StripesDB.profiles) do
+        local profile = StripesDB.profiles[profileId];
 
         if profile.target_indicator_texture and type(profile.target_indicator_texture) == 'number' then
             profile.target_indicator_texture = NEW_NAMES[profile.target_indicator_texture] or 'Standard';
