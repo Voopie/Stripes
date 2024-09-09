@@ -843,6 +843,8 @@ panel.Load = function(self)
         panel.name_only_friendly_guild_name_same_color:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_y_offset:SetEnabled(O.db.name_only_friendly_enabled);
         panel.name_only_friendly_stacking:SetEnabled(O.db.name_only_friendly_enabled);
+        panel.name_only_friendly_show_background:SetEnabled(O.db.name_only_friendly_enabled);
+        panel.name_only_friendly_background_color:SetEnabled(O.db.name_only_friendly_enabled);
 
         Stripes:UpdateAll();
     end
