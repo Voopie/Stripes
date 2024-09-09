@@ -335,23 +335,18 @@ local namePositions = {
             nontruncate = {
                 [1] = { -- TOP
                     points = {
-                        { 'RIGHT', 'RIGHT', 0, 0 },
-                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
                         { 'BOTTOMLEFT', 'TOPLEFT', 'OFFSET_X', 'OFFSET_Y' },
                     }
                 },
 
                 [2] = { -- CENTER 
                     points = {
-                        { 'RIGHT', 'RIGHT', 0, 0 },
                         { 'LEFT', 'LEFT', 'OFFSET_X', 'OFFSET_Y' },
                     }
                 },
 
                 [3] = { -- BOTTOM
                     points = {
-                        { 'RIGHT', 'RIGHT', 0, 0 },
-                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
                         { 'TOPLEFT', 'BOTTOMLEFT', 'OFFSET_X', 'OFFSET_Y' },
                     }
                 }
@@ -390,24 +385,18 @@ local namePositions = {
             nontruncate = {
                 [1] = { -- TOP
                     points = {
-                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
-                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
-                        { 'BOTTOM', 'TOP', 'OFFSET_X', 'OFFSET_Y' },
+                        { 'BOTTOM', 'TOP', 'OFFSET_X', 'OFFSET_Y' }
                     }
                 },
 
                 [2] = { -- CENTER 
                     points = {
-                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
-                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
                         { 'CENTER', 'CENTER', 'OFFSET_X', 'OFFSET_Y' },
                     }
                 },
 
                 [3] = { -- BOTTOM
                     points = {
-                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
-                        { 'LEFT', 'LEFT', 'OFFSET_X', 0 },
                         { 'TOP', 'BOTTOM', 'OFFSET_X', 'OFFSET_Y' },
                     }
                 }
@@ -446,23 +435,18 @@ local namePositions = {
             nontruncate = {
                 [1] = { -- TOP
                     points = {
-                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
-                        { 'LEFT', 'LEFT', 0, 0 },
                         { 'BOTTOMRIGHT', 'TOPRIGHT', 'OFFSET_X', 'OFFSET_Y' },
                     }
                 },
 
                 [2] = { -- CENTER 
                     points = {
-                        { 'LEFT', 'LEFT', 0, 0 },
                         { 'RIGHT', 'RIGHT', 'OFFSET_X', 'OFFSET_Y' },
                     }
                 },
 
                 [3] = { -- BOTTOM
                     points = {
-                        { 'RIGHT', 'RIGHT', 'OFFSET_X', 0 },
-                        { 'LEFT', 'LEFT', 0, 0 },
                         { 'TOPRIGHT', 'BOTTOMRIGHT', 'OFFSET_X', 'OFFSET_Y' },
                     }
                 }
