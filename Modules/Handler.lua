@@ -284,23 +284,16 @@ do
 end
 
 local function UpdateFriendlySizes()
-    local friendlyWidth, friendlyHeight;
+    local width, height;
+    local inInstance = D.Player.State.inInstance;
 
     if Stripes.NameOnly:IsEnabled() and Stripes.NameOnly:IsFriendlyStacking() then
-        if D.Player.State.inInstance then
-            friendlyWidth, friendlyHeight = O.db.size_friendly_instance_clickable_width, 1;
-        else
-            friendlyWidth, friendlyHeight = O.db.size_friendly_clickable_width, 1;
-        end
+        width, height = inInstance and O.db.size_friendly_instance_clickable_width or O.db.size_friendly_clickable_width, 1;
     else
-        if D.Player.State.inInstance then
-            friendlyWidth, friendlyHeight = O.db.size_friendly_instance_clickable_width, O.db.size_friendly_instance_clickable_height;
-        else
-            friendlyWidth, friendlyHeight = O.db.size_friendly_clickable_width, O.db.size_friendly_clickable_height;
-        end
+        width, height = inInstance and O.db.size_friendly_instance_clickable_width or O.db.size_friendly_clickable_width, inInstance and O.db.size_friendly_instance_clickable_height or O.db.size_friendly_clickable_height;
     end
 
-    C_NamePlate.SetNamePlateFriendlySize(friendlyWidth, friendlyHeight);
+    C_NamePlate.SetNamePlateFriendlySize(width, height);
 end
 
 Stripes.UpdateFriendlySizes = UpdateFriendlySizes;

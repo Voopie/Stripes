@@ -8,24 +8,28 @@ local SHOW_ENEMY, SHOW_FRIENDLY, ENEMY_ONLY_IN_COMBAT, FRIENDLY_ONLY_IN_COMBAT;
 
 local wasInCombat = false;
 
-local function HandleVisibility()
+local function HandleVisibility(onlySizes)
     if U.PlayerInCombat() then
         wasInCombat = true;
         return;
     end
 
-    local showAll, maxDistance = SHOW_ALWAYS_OPENWORLD and 1 or 0, MAX_DISTANCE_OPENWORLD;
+    if onlySizes then
+        Stripes.UpdateFriendlySizes();
+    else
+        local showAll, maxDistance = SHOW_ALWAYS_OPENWORLD and 1 or 0, MAX_DISTANCE_OPENWORLD;
 
-    if D.Player.State.inPvPInstance then
-        showAll, maxDistance = SHOW_ALWAYS_PVP_INSTANCE and 1 or 0, MAX_DISTANCE_PVP_INSTANCE;
-    elseif D.Player.State.inInstance then
-        showAll, maxDistance = SHOW_ALWAYS_INSTANCE and 1 or 0, MAX_DISTANCE_INSTANCE;
+        if D.Player.State.inPvPInstance then
+            showAll, maxDistance = SHOW_ALWAYS_PVP_INSTANCE and 1 or 0, MAX_DISTANCE_PVP_INSTANCE;
+        elseif D.Player.State.inInstance then
+            showAll, maxDistance = SHOW_ALWAYS_INSTANCE and 1 or 0, MAX_DISTANCE_INSTANCE;
+        end
+
+        Stripes.SetCVar('nameplateShowAll', showAll);
+        Stripes.SetCVar('nameplateMaxDistance', maxDistance);
+
+        Stripes.UpdateFriendlySizes();
     end
-
-    Stripes.SetCVar('nameplateShowAll', showAll);
-    Stripes.SetCVar('nameplateMaxDistance', maxDistance);
-
-    Stripes.UpdateFriendlySizes();
 end
 
 function Module:PLAYER_LOGIN()
@@ -83,7 +87,7 @@ function Module:UpdateLocalConfig()
     ENEMY_ONLY_IN_COMBAT    = O.db.show_enemy_only_in_combat;
     FRIENDLY_ONLY_IN_COMBAT = O.db.show_friendly_only_in_combat;
 
-    Stripes.UpdateFriendlySizes();
+    HandleVisibility(true);
 end
 
 function Module:StartUp()
