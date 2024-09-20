@@ -55,6 +55,9 @@ local auras = {
 
     [330577] = true, -- Trained Eyes
 
+    [333302] = true, -- Keen Senses
+    [434734] = true, -- Keen Senses
+
     [ 79140] = true, -- Vendetta (Rogue)
     [188501] = true, -- Spectral Sight (Demon Hunter)
 };
