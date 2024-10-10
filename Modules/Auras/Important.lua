@@ -66,6 +66,7 @@ local additionalAuras = {
     [360806] = true, -- Sleep Walk
 
     -- Shaman
+    [3600]   = true, -- Earthbind Totem
     [210873] = true, -- Hex (Compy)
     [211004] = true, -- Hex (Spider)
     [211010] = true, -- Hex (Snake)
