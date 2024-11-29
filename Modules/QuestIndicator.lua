@@ -274,7 +274,7 @@ function Module:QuestChanged(questID)
 end
 
 function Module:QuestRemoved(questID)
-    local questName = C_TaskQuest_GetQuestInfoByQuestID(questID);
+    local questName = questID and C_TaskQuest_GetQuestInfoByQuestID(questID);
     if questName and QuestActiveCache[questName] then
         QuestActiveCache[questName] = nil;
     end
@@ -294,7 +294,7 @@ function Module:UpdateQuestActive()
     for _, task in pairs(C_TaskQuest.GetQuestsForPlayerByMapID(uiMapID) or {}) do
         if task.inProgress then
             local questID = task.questId;
-            local questName = C_TaskQuest_GetQuestInfoByQuestID(questID);
+            local questName = questID and C_TaskQuest_GetQuestInfoByQuestID(questID);
 
             if questName then
                 QuestActiveCache[questName] = questID;
