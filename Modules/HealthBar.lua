@@ -999,26 +999,26 @@ local function UpdateExtraTexture(unitframe)
         SetHealthBarTexture(unitframe, DEFAULT_STATUSBAR_TEXTURE);
         unitframe.HealthBarsContainer.healthBar.ExtraTexture:Hide();
     else
-        local isTarget = unitframe.data.isTarget;
-        local isFocus  = unitframe.data.isFocus;
+        local textureOverlay, textureColor, textureValue;
 
-        local textureEnabled = isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED or isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED;
-
-        if textureEnabled then
-            local textureOverlay = isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY or isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY;
-            local textureValue   = isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE or isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE;
-            local textureColor   = isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR or isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR;
-
-            if textureOverlay then
-                SetHealthBarTexture(unitframe, DB.HEALTH_BAR_TEXTURE);
-                SetExtraTextureAndColor(unitframe, textureValue, textureColor);
-                unitframe.HealthBarsContainer.healthBar.ExtraTexture:Show();
-            else
-                SetHealthBarTexture(unitframe, textureValue);
-                unitframe.HealthBarsContainer.healthBar.ExtraTexture:Hide();
-            end
+        if unitframe.data.isFocus and DB.CURRENT_FOCUS_CUSTOM_TEXTURE_ENABLED then
+            textureOverlay = DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY;
+            textureColor   = DB.CURRENT_FOCUS_CUSTOM_TEXTURE_OVERLAY_COLOR;
+            textureValue   = DB.CURRENT_FOCUS_CUSTOM_TEXTURE_VALUE;
+        elseif unitframe.data.isTarget and DB.CURRENT_TARGET_CUSTOM_TEXTURE_ENABLED then
+            textureOverlay = DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY;
+            textureColor   = DB.CURRENT_TARGET_CUSTOM_TEXTURE_OVERLAY_COLOR;
+            textureValue   = DB.CURRENT_TARGET_CUSTOM_TEXTURE_VALUE;
         else
+            textureValue = DB.HEALTH_BAR_TEXTURE;
+        end
+
+        if textureOverlay then
             SetHealthBarTexture(unitframe, DB.HEALTH_BAR_TEXTURE);
+            SetExtraTextureAndColor(unitframe, textureValue, textureColor);
+            unitframe.HealthBarsContainer.healthBar.ExtraTexture:Show();
+        else
+            SetHealthBarTexture(unitframe, textureValue);
             unitframe.HealthBarsContainer.healthBar.ExtraTexture:Hide();
         end
     end
