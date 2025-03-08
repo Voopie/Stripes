@@ -5,6 +5,17 @@
 ## Notes-ruRU: Еще один аддон для кастомизации неймплейтов 
 ## Version: 1.43.8
 ## IconTexture: Interface\AddOns\Stripes\Media\Textures\Assets\stripes_logo_mini.blp
+## Category-enUS: Unit Frames
+## Category-deDE: Einheitenfenster
+## Category-esES: Marcos de unidades
+## Category-esMX: Marcos de unidades
+## Category-frFR: Portraits d'unités
+## Category-itIT: Riquadri delle unità
+## Category-koKR: 개체창
+## Category-ptBR: Quadros de unidade
+## Category-ruRU: Рамки портретов
+## Category-zhCN: 单位框体
+## Category-zhTW: 單位框架
 ## SavedVariables: StripesDB, StripesSpellDB
 
 Stripes.xml
