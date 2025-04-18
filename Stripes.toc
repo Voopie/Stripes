@@ -3,7 +3,7 @@
 ## Title: Stripes
 ## Notes: Yet another nameplates customization addon
 ## Notes-ruRU: Еще один аддон для кастомизации неймплейтов 
-## Version: 1.43.9
+## Version: 1.43.10
 ## IconTexture: Interface\AddOns\Stripes\Media\Textures\Assets\stripes_logo_mini.blp
 ## Category-enUS: Unit Frames
 ## Category-deDE: Einheitenfenster
