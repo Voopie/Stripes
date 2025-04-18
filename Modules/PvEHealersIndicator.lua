@@ -98,6 +98,7 @@ local mobsIDs = {
     [206697] = true, -- Priory of the Sacred Flame: Devout Priest
     [213338] = true, -- The Stonevault: Forgebound Mender
     [224962] = true, -- The Stonevault: Cursedforge Mender
+    [222964] = true, -- Cinderbrew Meadery: Flavor Scientist
 };
 
 local function Create(unitframe)
