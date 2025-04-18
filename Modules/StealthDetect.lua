@@ -20,6 +20,34 @@ local STEALTH_TEXTURE = 1391768;
 local isStealthed;
 
 local auras = {
+    [8279]  = true, -- Stealth Detection
+    [12418] = true, -- Stealth Detection
+    [23217] = true, -- Stealth Detection
+    [37691] = true, -- Stealth Detection
+    [38551] = true, -- Stealth Detection
+    [40273] = true, -- Stealth Detection
+
+    [28496] = true, -- Greater Stealth Detection
+
+    [1223119] = true, -- Invisibility and Stealth Detection
+    [412892]  = true, -- Invisibility and Stealth Detection
+    [41634]   = true, -- Invisibility and Stealth Detection
+    [312398]  = true, -- Invisibility and Stealth Detection
+    [18950]   = true, -- Invisibility and Stealth Detection
+    [371325]  = true, -- Invisibility and Stealth Detection
+    [67236]   = true, -- Invisibility and Stealth Detection
+    [93105]   = true, -- Invisibility and Stealth Detection
+    [148500]  = true, -- Invisibility and Stealth Detection
+    [155183]  = true, -- Invisibility and Stealth Detection
+    [363794]  = true, -- Invisibility and Stealth Detection
+    [372149]  = true, -- Invisibility and Stealth Detection
+    [70465]   = true, -- Invisibility and Stealth Detection
+
+    [413451] = true, -- Stealth and Invisibility Detection [DNT]
+    [141956] = true, -- Stealth and Invisibility Detection [DNT]
+    [141048] = true, -- Stealth and Invisibility Detection [DNT]
+    [141753] = true, -- Stealth and Invisibility Detection [DNT]
+
     [201626] = true, -- Sight Beyond Sight
     [238468] = true, -- Sight Beyond Sight
     [311928] = true, -- Sight Beyond Sight
@@ -57,6 +85,7 @@ local auras = {
 
     [333302] = true, -- Keen Senses
     [434734] = true, -- Keen Senses
+    [411710] = true, -- Primal Senses
 
     [ 79140] = true, -- Vendetta (Rogue)
     [188501] = true, -- Spectral Sight (Demon Hunter)
@@ -65,7 +94,12 @@ local auras = {
 local units = {
     -- Cataclysm
     -- Dungeons
-    [40936] = true, -- Faceless Watcher (Throne of the Tides)
+    [40936]  = true, -- Faceless Watcher (Throne of the Tides)
+    [39392]  = true, -- Faceless Corruptor (Grim Batol)
+    [40166]  = true, -- Molten Giant (Grim Batol)
+    [224609] = true, -- Twilight Destroyer (Grim Batol)
+    [224221] = true, -- Twilight Overseer (Grim Batol)
+    [224249] = true, -- Twilight Lavabender (Grim Batol)
 
     -- Legion
     -- Dungeons
@@ -78,8 +112,12 @@ local units = {
 
     -- BfA
     -- Dungeons
+    [136139] = true, -- Mechanized Peacekeeper (The MOTHERLODE!!)
+    [133430] = true, -- Venture Co. Mastermind (The MOTHERLODE!!)
+    [133463] = true, -- Venture Co. War Machine (The MOTHERLODE!!)
     [150254] = true, -- Scraphound (Operation Mechagon: JY)
     [150292] = true, -- Mechagon Cavalry (Operation Mechagon: JY)
+    [144293] = true, -- Waste Processing Unit (Operation Mechagon: UP)
     [144298] = true, -- Defense Bot Mk III (Operation Mechagon: UP)
 
     -- Shadowlands
@@ -87,6 +125,7 @@ local units = {
     [164563] = true, -- Vicious Gargon (Halls of Atonement)
     [163524] = true, -- Kyrian Dark-Praetor (Spires of Ascension)
     [164929] = true, -- Tirnenn Villager (Mists of Tirna Scithe)
+    [163086] = true, -- Rancid Gasbag (Theater of Pain)
     [170850] = true, -- Raging Bloodhorn (Theater of Pain)
     [163882] = true, -- Decaying Flesh Giant (Plaguefall)
     [179837] = true, -- Tracker Zo'korss (Tazavesh: Streets)
@@ -138,6 +177,49 @@ local units = {
     [195696] = true, -- Primalist Thunderbeast (The Nokhud Offensive)
     [187897] = true, -- Defier Draghar (Ruby Life Pools)
     [206214] = true, -- Infinite Infiltrator (Dawn of the Infinite: Galakrond's Fall)
+
+    -- The War Within
+    -- Dungeons
+    [217531] = true, -- Ixin <Sureki Attendant> (Ara-Kara, City of Echoes)
+    [218324] = true, -- Nakt <Sureki Attendant> (Ara-Kara, City of Echoes)
+    [217533] = true, -- Atik <Sureki Attendant> (Ara-Kara, City of Echoes)
+    [216338] = true, -- Hulking Bloodguard (Ara-Kara, City of Echoes)
+    [216364] = true, -- Blood Overseer (Ara-Kara, City of Echoes)
+    [217039] = true, -- Nerubian Hauler (Ara-Kara, City of Echoes)
+    [220197] = true, -- Royal Swarmguard (City of Threads)
+    [220196] = true, -- Herald of Ansurek (City of Threads)
+    [220423] = true, -- Retired Lord Vul'azak (City of Threads)
+    [216328] = true, -- Unstable Test Subject (City of Threads)
+    [210109] = true, -- Earth Infused Golem (The Stonevault)
+    [214264] = true, -- Cursedforge Honor Guard (The Stonevault)
+    [213343] = true, -- Forge Loader (The Stonevault)
+    [213954] = true, -- Rock Smasher (The Stonevault)
+    [212765] = true, -- Void-Bound Despoiler (The Stonevault)
+    [214761] = true, -- Nightfall Ritualist (The Dawnbreaker)
+    [214762] = true, -- Nightfall Commander (The Dawnbreaker)
+    [210966] = true, -- Sureki Webmage (The Dawnbreaker)
+    [211261] = true, -- Ascendant Vis'coxria (The Dawnbreaker)
+    [213934] = true, -- Nightfall Tactician (The Dawnbreaker)
+    [213932] = true, -- Sureki Militant (The Dawnbreaker)
+    [211341] = true, -- Manifested Shadow (The Dawnbreaker)
+    [211262] = true, -- Ixkreten the Unbreakable (The Dawnbreaker)
+    [211263] = true, -- Deathscreamer Iken'tak (The Dawnbreaker)
+    [213885] = true, -- Nightfall Dark Architect (The Dawnbreaker)
+    [206696] = true, -- Arathi Knight (Priory of the Sacred Flame)
+    [206710] = true, -- Lightspawn (Priory of the Sacred Flame)
+    [212826] = true, -- Guard Captain Suleyman (Priory of the Sacred Flame)
+    [212827] = true, -- High Priest Aemya (Priory of the Sacred Flame)
+    [212831] = true, -- Forge Master Damian (Priory of the Sacred Flame)
+    [239833] = true, -- Elaena Emberlanz (Priory of the Sacred Flame)
+    [239834] = true, -- Taener Duelmal (Priory of the Sacred Flame)
+    [239836] = true, -- Sergeant Shaynemail (Priory of the Sacred Flame)
+    [223423] = true, -- Careless Hopgoblin (Cinderbrew Meadery)
+    [220946] = true, -- Venture Co. Honey Harvester (Cinderbrew Meadery)
+    [211121] = true, -- Rank Overseer (Darkflame Cleft)
+    [212411] = true, -- Torchsnarl (Darkflame Cleft)
+    [231325] = true, -- Darkfuse Jumpstarter (Operation: Floodgate)
+    [231197] = true, -- Bubbles (Operation: Floodgate)
+    [230740] = true, -- Shreddinator 3000 (Operation: Floodgate)
 };
 
 local function Create(unitframe)
