@@ -87,6 +87,8 @@ local additionalAuras = {
     -- Other
     [228626] = true, -- Haunted Urn (De Other Side) (Stun)
     [348723] = true, -- Haunted Urn (De Other Side) (Stun) ???
+
+    [1213327] = true, -- Flashbang (Stun)
 };
 
 local function CreateBuffFrame(unitframe)
